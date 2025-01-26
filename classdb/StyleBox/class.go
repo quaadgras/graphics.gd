@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
@@ -45,7 +46,7 @@ type Any interface {
 	AsStyleBox() Instance
 }
 type Interface interface {
-	Draw(to_canvas_item Resource.ID, rect Rect2.PositionSize)
+	Draw(to_canvas_item RID.Any, rect Rect2.PositionSize)
 	GetDrawRect(rect Rect2.PositionSize) Rect2.PositionSize
 	//Virtual method to be implemented by the user. Returns a custom minimum size that the stylebox must respect when drawing. By default [method get_minimum_size] only takes content margins into account. This method can be overridden to add another size restriction. A combination of the default behavior and the output of this method will be used, to account for both sizes.
 	GetMinimumSize() Vector2.XY
@@ -57,11 +58,11 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Draw(to_canvas_item Resource.ID, rect Rect2.PositionSize)    { return }
+func (self implementation) Draw(to_canvas_item RID.Any, rect Rect2.PositionSize)        { return }
 func (self implementation) GetDrawRect(rect Rect2.PositionSize) (_ Rect2.PositionSize)  { return }
 func (self implementation) GetMinimumSize() (_ Vector2.XY)                              { return }
 func (self implementation) TestMask(point Vector2.XY, rect Rect2.PositionSize) (_ bool) { return }
-func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item Resource.ID, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
 
@@ -136,8 +137,8 @@ func (self Instance) GetOffset() Vector2.XY { //gd:StyleBox.get_offset
 Draws this stylebox using a canvas item identified by the given [RID].
 The [RID] value can either be the result of [method CanvasItem.get_canvas_item] called on an existing [CanvasItem]-derived node, or directly from creating a canvas item in the [RenderingServer] with [method RenderingServer.canvas_item_create].
 */
-func (self Instance) Draw(canvas_item Resource.ID, rect Rect2.PositionSize) { //gd:StyleBox.draw
-	class(self).Draw(canvas_item, gd.Rect2(rect))
+func (self Instance) Draw(canvas_item RID.CanvasItem, rect Rect2.PositionSize) { //gd:StyleBox.draw
+	class(self).Draw(gd.RID(canvas_item), gd.Rect2(rect))
 }
 
 /*

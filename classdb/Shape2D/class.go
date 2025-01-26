@@ -16,6 +16,7 @@ import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Rect2"
 
@@ -82,8 +83,8 @@ func (self Instance) CollideWithMotionAndGetContacts(local_xform Transform2D.Ori
 /*
 Draws a solid shape onto a [CanvasItem] with the [RenderingServer] API filled with the specified [param color]. The exact drawing method is specific for each shape and cannot be configured.
 */
-func (self Instance) Draw(canvas_item Resource.ID, color Color.RGBA) { //gd:Shape2D.draw
-	class(self).Draw(canvas_item, gd.Color(color))
+func (self Instance) Draw(canvas_item RID.CanvasItem, color Color.RGBA) { //gd:Shape2D.draw
+	class(self).Draw(gd.RID(canvas_item), gd.Color(color))
 }
 
 /*

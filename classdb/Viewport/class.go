@@ -15,7 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Rect2"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 
@@ -99,8 +99,8 @@ func (self Instance) GetTexture() [1]gdclass.ViewportTexture { //gd:Viewport.get
 /*
 Returns the viewport's RID from the [RenderingServer].
 */
-func (self Instance) GetViewportRid() Resource.ID { //gd:Viewport.get_viewport_rid
-	return Resource.ID(class(self).GetViewportRid())
+func (self Instance) GetViewportRid() RID.Viewport { //gd:Viewport.get_viewport_rid
+	return RID.Viewport(class(self).GetViewportRid())
 }
 
 /*

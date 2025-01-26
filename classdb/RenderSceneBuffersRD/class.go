@@ -14,7 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/RenderSceneBuffers"
 import "graphics.gd/variant/Vector2i"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -53,29 +53,29 @@ func (self Instance) HasTexture(context string, name string) bool { //gd:RenderS
 /*
 Create a new texture with the given definition and cache this under the given name. Will return the existing texture if it already exists.
 */
-func (self Instance) CreateTexture(context string, name string, data_format gdclass.RenderingDeviceDataFormat, usage_bits int, texture_samples gdclass.RenderingDeviceTextureSamples, size Vector2i.XY, layers int, mipmaps int, unique bool) Resource.ID { //gd:RenderSceneBuffersRD.create_texture
-	return Resource.ID(class(self).CreateTexture(gd.NewStringName(context), gd.NewStringName(name), data_format, gd.Int(usage_bits), texture_samples, gd.Vector2i(size), gd.Int(layers), gd.Int(mipmaps), unique))
+func (self Instance) CreateTexture(context string, name string, data_format gdclass.RenderingDeviceDataFormat, usage_bits int, texture_samples gdclass.RenderingDeviceTextureSamples, size Vector2i.XY, layers int, mipmaps int, unique bool) RID.Texture { //gd:RenderSceneBuffersRD.create_texture
+	return RID.Texture(class(self).CreateTexture(gd.NewStringName(context), gd.NewStringName(name), data_format, gd.Int(usage_bits), texture_samples, gd.Vector2i(size), gd.Int(layers), gd.Int(mipmaps), unique))
 }
 
 /*
 Create a new texture using the given format and view and cache this under the given name. Will return the existing texture if it already exists.
 */
-func (self Instance) CreateTextureFromFormat(context string, name string, format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView, unique bool) Resource.ID { //gd:RenderSceneBuffersRD.create_texture_from_format
-	return Resource.ID(class(self).CreateTextureFromFormat(gd.NewStringName(context), gd.NewStringName(name), format, view, unique))
+func (self Instance) CreateTextureFromFormat(context string, name string, format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView, unique bool) RID.Texture { //gd:RenderSceneBuffersRD.create_texture_from_format
+	return RID.Texture(class(self).CreateTextureFromFormat(gd.NewStringName(context), gd.NewStringName(name), format, view, unique))
 }
 
 /*
 Create a new texture view for an existing texture and cache this under the given view_name. Will return the existing teture view if it already exists. Will error if the source texture doesn't exist.
 */
-func (self Instance) CreateTextureView(context string, name string, view_name string, view [1]gdclass.RDTextureView) Resource.ID { //gd:RenderSceneBuffersRD.create_texture_view
-	return Resource.ID(class(self).CreateTextureView(gd.NewStringName(context), gd.NewStringName(name), gd.NewStringName(view_name), view))
+func (self Instance) CreateTextureView(context string, name string, view_name string, view [1]gdclass.RDTextureView) RID.Texture { //gd:RenderSceneBuffersRD.create_texture_view
+	return RID.Texture(class(self).CreateTextureView(gd.NewStringName(context), gd.NewStringName(name), gd.NewStringName(view_name), view))
 }
 
 /*
 Returns a cached texture with this name.
 */
-func (self Instance) GetTexture(context string, name string) Resource.ID { //gd:RenderSceneBuffersRD.get_texture
-	return Resource.ID(class(self).GetTexture(gd.NewStringName(context), gd.NewStringName(name)))
+func (self Instance) GetTexture(context string, name string) RID.Texture { //gd:RenderSceneBuffersRD.get_texture
+	return RID.Texture(class(self).GetTexture(gd.NewStringName(context), gd.NewStringName(name)))
 }
 
 /*
@@ -88,15 +88,15 @@ func (self Instance) GetTextureFormat(context string, name string) [1]gdclass.RD
 /*
 Returns a specific slice (layer or mipmap) for a cached texture.
 */
-func (self Instance) GetTextureSlice(context string, name string, layer int, mipmap int, layers int, mipmaps int) Resource.ID { //gd:RenderSceneBuffersRD.get_texture_slice
-	return Resource.ID(class(self).GetTextureSlice(gd.NewStringName(context), gd.NewStringName(name), gd.Int(layer), gd.Int(mipmap), gd.Int(layers), gd.Int(mipmaps)))
+func (self Instance) GetTextureSlice(context string, name string, layer int, mipmap int, layers int, mipmaps int) RID.Texture { //gd:RenderSceneBuffersRD.get_texture_slice
+	return RID.Texture(class(self).GetTextureSlice(gd.NewStringName(context), gd.NewStringName(name), gd.Int(layer), gd.Int(mipmap), gd.Int(layers), gd.Int(mipmaps)))
 }
 
 /*
 Returns a specific view of a slice (layer or mipmap) for a cached texture.
 */
-func (self Instance) GetTextureSliceView(context string, name string, layer int, mipmap int, layers int, mipmaps int, view [1]gdclass.RDTextureView) Resource.ID { //gd:RenderSceneBuffersRD.get_texture_slice_view
-	return Resource.ID(class(self).GetTextureSliceView(gd.NewStringName(context), gd.NewStringName(name), gd.Int(layer), gd.Int(mipmap), gd.Int(layers), gd.Int(mipmaps), view))
+func (self Instance) GetTextureSliceView(context string, name string, layer int, mipmap int, layers int, mipmaps int, view [1]gdclass.RDTextureView) RID.Texture { //gd:RenderSceneBuffersRD.get_texture_slice_view
+	return RID.Texture(class(self).GetTextureSliceView(gd.NewStringName(context), gd.NewStringName(name), gd.Int(layer), gd.Int(mipmap), gd.Int(layers), gd.Int(mipmaps), view))
 }
 
 /*
@@ -117,54 +117,54 @@ func (self Instance) ClearContext(context string) { //gd:RenderSceneBuffersRD.cl
 Returns the color texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
 If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Instance) GetColorTexture() Resource.ID { //gd:RenderSceneBuffersRD.get_color_texture
-	return Resource.ID(class(self).GetColorTexture(false))
+func (self Instance) GetColorTexture() RID.Texture { //gd:RenderSceneBuffersRD.get_color_texture
+	return RID.Texture(class(self).GetColorTexture(false))
 }
 
 /*
 Returns the specified layer from the color texture we are rendering 3D content to.
 If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Instance) GetColorLayer(layer int) Resource.ID { //gd:RenderSceneBuffersRD.get_color_layer
-	return Resource.ID(class(self).GetColorLayer(gd.Int(layer), false))
+func (self Instance) GetColorLayer(layer int) RID.Texture { //gd:RenderSceneBuffersRD.get_color_layer
+	return RID.Texture(class(self).GetColorLayer(gd.Int(layer), false))
 }
 
 /*
 Returns the depth texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
 If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Instance) GetDepthTexture() Resource.ID { //gd:RenderSceneBuffersRD.get_depth_texture
-	return Resource.ID(class(self).GetDepthTexture(false))
+func (self Instance) GetDepthTexture() RID.Texture { //gd:RenderSceneBuffersRD.get_depth_texture
+	return RID.Texture(class(self).GetDepthTexture(false))
 }
 
 /*
 Returns the specified layer from the depth texture we are rendering 3D content to.
 If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Instance) GetDepthLayer(layer int) Resource.ID { //gd:RenderSceneBuffersRD.get_depth_layer
-	return Resource.ID(class(self).GetDepthLayer(gd.Int(layer), false))
+func (self Instance) GetDepthLayer(layer int) RID.Texture { //gd:RenderSceneBuffersRD.get_depth_layer
+	return RID.Texture(class(self).GetDepthLayer(gd.Int(layer), false))
 }
 
 /*
 Returns the velocity texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
 If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Instance) GetVelocityTexture() Resource.ID { //gd:RenderSceneBuffersRD.get_velocity_texture
-	return Resource.ID(class(self).GetVelocityTexture(false))
+func (self Instance) GetVelocityTexture() RID.Texture { //gd:RenderSceneBuffersRD.get_velocity_texture
+	return RID.Texture(class(self).GetVelocityTexture(false))
 }
 
 /*
 Returns the specified layer from the velocity texture we are rendering 3D content to.
 */
-func (self Instance) GetVelocityLayer(layer int) Resource.ID { //gd:RenderSceneBuffersRD.get_velocity_layer
-	return Resource.ID(class(self).GetVelocityLayer(gd.Int(layer), false))
+func (self Instance) GetVelocityLayer(layer int) RID.Texture { //gd:RenderSceneBuffersRD.get_velocity_layer
+	return RID.Texture(class(self).GetVelocityLayer(gd.Int(layer), false))
 }
 
 /*
 Returns the render target associated with this buffers object.
 */
-func (self Instance) GetRenderTarget() Resource.ID { //gd:RenderSceneBuffersRD.get_render_target
-	return Resource.ID(class(self).GetRenderTarget())
+func (self Instance) GetRenderTarget() RID.Framebuffer { //gd:RenderSceneBuffersRD.get_render_target
+	return RID.Framebuffer(class(self).GetRenderTarget())
 }
 
 /*

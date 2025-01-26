@@ -12,7 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -55,15 +55,15 @@ func (self Instance) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:Rend
 /*
 Returns the [RID] of the environments object in the [RenderingServer] being used to render this viewport.
 */
-func (self Instance) GetEnvironment() Resource.ID { //gd:RenderData.get_environment
-	return Resource.ID(class(self).GetEnvironment())
+func (self Instance) GetEnvironment() RID.Environment { //gd:RenderData.get_environment
+	return RID.Environment(class(self).GetEnvironment())
 }
 
 /*
 Returns the [RID] of the camera attributes object in the [RenderingServer] being used to render this viewport.
 */
-func (self Instance) GetCameraAttributes() Resource.ID { //gd:RenderData.get_camera_attributes
-	return Resource.ID(class(self).GetCameraAttributes())
+func (self Instance) GetCameraAttributes() RID.CameraAttributes { //gd:RenderData.get_camera_attributes
+	return RID.CameraAttributes(class(self).GetCameraAttributes())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

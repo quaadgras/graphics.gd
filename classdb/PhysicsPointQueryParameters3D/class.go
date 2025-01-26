@@ -13,7 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Vector3"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -73,11 +73,11 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(gd.Int(value))
 }
 
-func (self Instance) Exclude() []Resource.ID {
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).GetExclude())))
+func (self Instance) Exclude() []RID.Any {
+	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetExclude())))
 }
 
-func (self Instance) SetExclude(value []Resource.ID) {
+func (self Instance) SetExclude(value []RID.Any) {
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[gd.RID]](value))
 }
 

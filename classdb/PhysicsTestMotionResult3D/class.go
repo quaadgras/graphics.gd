@@ -14,7 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -105,8 +105,8 @@ func (self Instance) GetColliderId() int { //gd:PhysicsTestMotionResult3D.get_co
 /*
 Returns the colliding body's [RID] used by the [PhysicsServer3D] given a collision index (the deepest collision by default), if a collision occurred.
 */
-func (self Instance) GetColliderRid() Resource.ID { //gd:PhysicsTestMotionResult3D.get_collider_rid
-	return Resource.ID(class(self).GetColliderRid(gd.Int(0)))
+func (self Instance) GetColliderRid() RID.Body3D { //gd:PhysicsTestMotionResult3D.get_collider_rid
+	return RID.Body3D(class(self).GetColliderRid(gd.Int(0)))
 }
 
 /*

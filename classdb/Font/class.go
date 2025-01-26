@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 
@@ -42,15 +43,15 @@ type Any interface {
 /*
 Returns [TextServer] RID of the font cache for specific variation.
 */
-func (self Instance) FindVariation(variation_coordinates map[any]any) Resource.ID { //gd:Font.find_variation
-	return Resource.ID(class(self).FindVariation(gd.NewVariant(variation_coordinates).Interface().(gd.Dictionary), gd.Int(0), gd.Float(0.0), gd.Transform2D(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), gd.Int(0), gd.Int(0), gd.Int(0), gd.Int(0), gd.Float(0.0)))
+func (self Instance) FindVariation(variation_coordinates map[any]any) RID.Font { //gd:Font.find_variation
+	return RID.Font(class(self).FindVariation(gd.NewVariant(variation_coordinates).Interface().(gd.Dictionary), gd.Int(0), gd.Float(0.0), gd.Transform2D(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), gd.Int(0), gd.Int(0), gd.Int(0), gd.Int(0), gd.Float(0.0)))
 }
 
 /*
 Returns [Array] of valid [Font] [RID]s, which can be passed to the [TextServer] methods.
 */
-func (self Instance) GetRids() []Resource.ID { //gd:Font.get_rids
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).GetRids())))
+func (self Instance) GetRids() [][]RID.Font { //gd:Font.get_rids
+	return [][]RID.Font(gd.ArrayAs[[][]RID.Font](gd.InternalArray(class(self).GetRids())))
 }
 
 /*
@@ -187,32 +188,32 @@ func (self Instance) GetMultilineStringSize(text string) Vector2.XY { //gd:Font.
 Draw [param text] into a canvas item using the font, at a given position, with [param modulate] color, optionally clipping the width and aligning horizontally. [param pos] specifies the baseline, not the top. To draw from the top, [i]ascent[/i] must be added to the Y axis.
 See also [method CanvasItem.draw_string].
 */
-func (self Instance) DrawString(canvas_item Resource.ID, pos Vector2.XY, text string) { //gd:Font.draw_string
-	class(self).DrawString(canvas_item, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Color(gd.Color{1, 1, 1, 1}), 3, 0, 0)
+func (self Instance) DrawString(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_string
+	class(self).DrawString(gd.RID(canvas_item), gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Color(gd.Color{1, 1, 1, 1}), 3, 0, 0)
 }
 
 /*
 Breaks [param text] into lines using rules specified by [param brk_flags] and draws it into a canvas item using the font, at a given position, with [param modulate] color, optionally clipping the width and aligning horizontally. [param pos] specifies the baseline of the first line, not the top. To draw from the top, [i]ascent[/i] must be added to the Y axis.
 See also [method CanvasItem.draw_multiline_string].
 */
-func (self Instance) DrawMultilineString(canvas_item Resource.ID, pos Vector2.XY, text string) { //gd:Font.draw_multiline_string
-	class(self).DrawMultilineString(canvas_item, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
+func (self Instance) DrawMultilineString(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_multiline_string
+	class(self).DrawMultilineString(gd.RID(canvas_item), gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
 }
 
 /*
 Draw [param text] outline into a canvas item using the font, at a given position, with [param modulate] color and [param size] outline size, optionally clipping the width and aligning horizontally. [param pos] specifies the baseline, not the top. To draw from the top, [i]ascent[/i] must be added to the Y axis.
 See also [method CanvasItem.draw_string_outline].
 */
-func (self Instance) DrawStringOutline(canvas_item Resource.ID, pos Vector2.XY, text string) { //gd:Font.draw_string_outline
-	class(self).DrawStringOutline(canvas_item, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 0, 0)
+func (self Instance) DrawStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_string_outline
+	class(self).DrawStringOutline(gd.RID(canvas_item), gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 0, 0)
 }
 
 /*
 Breaks [param text] to the lines using rules specified by [param brk_flags] and draws text outline into a canvas item using the font, at a given position, with [param modulate] color and [param size] outline size, optionally clipping the width and aligning horizontally. [param pos] specifies the baseline of the first line, not the top. To draw from the top, [i]ascent[/i] must be added to the Y axis.
 See also [method CanvasItem.draw_multiline_string_outline].
 */
-func (self Instance) DrawMultilineStringOutline(canvas_item Resource.ID, pos Vector2.XY, text string) { //gd:Font.draw_multiline_string_outline
-	class(self).DrawMultilineStringOutline(canvas_item, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
+func (self Instance) DrawMultilineStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_multiline_string_outline
+	class(self).DrawMultilineStringOutline(gd.RID(canvas_item), gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
 }
 
 /*
@@ -227,16 +228,16 @@ func (self Instance) GetCharSize(char int, font_size int) Vector2.XY { //gd:Font
 Draw a single Unicode character [param char] into a canvas item using the font, at a given position, with [param modulate] color. [param pos] specifies the baseline, not the top. To draw from the top, [i]ascent[/i] must be added to the Y axis.
 [b]Note:[/b] Do not use this function to draw strings character by character, use [method draw_string] or [TextLine] instead.
 */
-func (self Instance) DrawChar(canvas_item Resource.ID, pos Vector2.XY, char int, font_size int) Float.X { //gd:Font.draw_char
-	return Float.X(Float.X(class(self).DrawChar(canvas_item, gd.Vector2(pos), gd.Int(char), gd.Int(font_size), gd.Color(gd.Color{1, 1, 1, 1}))))
+func (self Instance) DrawChar(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int) Float.X { //gd:Font.draw_char
+	return Float.X(Float.X(class(self).DrawChar(gd.RID(canvas_item), gd.Vector2(pos), gd.Int(char), gd.Int(font_size), gd.Color(gd.Color{1, 1, 1, 1}))))
 }
 
 /*
 Draw a single Unicode character [param char] outline into a canvas item using the font, at a given position, with [param modulate] color and [param size] outline size. [param pos] specifies the baseline, not the top. To draw from the top, [i]ascent[/i] must be added to the Y axis.
 [b]Note:[/b] Do not use this function to draw strings character by character, use [method draw_string] or [TextLine] instead.
 */
-func (self Instance) DrawCharOutline(canvas_item Resource.ID, pos Vector2.XY, char int, font_size int) Float.X { //gd:Font.draw_char_outline
-	return Float.X(Float.X(class(self).DrawCharOutline(canvas_item, gd.Vector2(pos), gd.Int(char), gd.Int(font_size), gd.Int(-1), gd.Color(gd.Color{1, 1, 1, 1}))))
+func (self Instance) DrawCharOutline(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int) Float.X { //gd:Font.draw_char_outline
+	return Float.X(Float.X(class(self).DrawCharOutline(gd.RID(canvas_item), gd.Vector2(pos), gd.Int(char), gd.Int(font_size), gd.Int(-1), gd.Color(gd.Color{1, 1, 1, 1}))))
 }
 
 /*

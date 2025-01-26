@@ -53,7 +53,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		classDB.simpleVirtualCall(w, class, method)
 		return
 	}
-	resultSimple := classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultSimple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type)
 	resultExpert := classDB.convertType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
 	if singleton || method.IsStatic {
 		fmt.Fprintf(w, "func %v(", convertName(method.Name))

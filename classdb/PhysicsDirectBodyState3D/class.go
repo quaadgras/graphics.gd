@@ -16,7 +16,7 @@ import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Basis"
 import "graphics.gd/variant/Transform3D"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -200,8 +200,8 @@ func (self Instance) GetContactLocalVelocityAtPosition(contact_idx int) Vector3.
 /*
 Returns the collider's [RID].
 */
-func (self Instance) GetContactCollider(contact_idx int) Resource.ID { //gd:PhysicsDirectBodyState3D.get_contact_collider
-	return Resource.ID(class(self).GetContactCollider(gd.Int(contact_idx)))
+func (self Instance) GetContactCollider(contact_idx int) RID.Body3D { //gd:PhysicsDirectBodyState3D.get_contact_collider
+	return RID.Body3D(class(self).GetContactCollider(gd.Int(contact_idx)))
 }
 
 /*

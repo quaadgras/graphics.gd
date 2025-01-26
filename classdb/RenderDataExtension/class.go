@@ -13,7 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/RenderData"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -47,9 +47,9 @@ type Interface interface {
 	//Implement this in GDExtension to return the implementation's [RenderSceneDataExtension] object.
 	GetRenderSceneData() [1]gdclass.RenderSceneData
 	//Implement this in GDExtension to return the [RID] of the implementation's environment object.
-	GetEnvironment() Resource.ID
+	GetEnvironment() RID.Any
 	//Implement this in GDExtension to return the [RID] for the implementation's camera attributes object.
-	GetCameraAttributes() Resource.ID
+	GetCameraAttributes() RID.Any
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -59,8 +59,8 @@ type implementation struct{}
 
 func (self implementation) GetRenderSceneBuffers() (_ [1]gdclass.RenderSceneBuffers) { return }
 func (self implementation) GetRenderSceneData() (_ [1]gdclass.RenderSceneData)       { return }
-func (self implementation) GetEnvironment() (_ Resource.ID)                          { return }
-func (self implementation) GetCameraAttributes() (_ Resource.ID)                     { return }
+func (self implementation) GetEnvironment() (_ RID.Any)                              { return }
+func (self implementation) GetCameraAttributes() (_ RID.Any)                         { return }
 
 /*
 Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.
@@ -97,22 +97,22 @@ func (Instance) _get_render_scene_data(impl func(ptr unsafe.Pointer) [1]gdclass.
 /*
 Implement this in GDExtension to return the [RID] of the implementation's environment object.
 */
-func (Instance) _get_environment(impl func(ptr unsafe.Pointer) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_environment(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.RID(ret))
 	}
 }
 
 /*
 Implement this in GDExtension to return the [RID] for the implementation's camera attributes object.
 */
-func (Instance) _get_camera_attributes(impl func(ptr unsafe.Pointer) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_camera_attributes(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.RID(ret))
 	}
 }
 

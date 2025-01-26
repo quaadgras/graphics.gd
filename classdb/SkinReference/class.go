@@ -12,7 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -44,8 +44,8 @@ type Any interface {
 /*
 Returns the [RID] owned by this SkinReference, as returned by [method RenderingServer.skeleton_create].
 */
-func (self Instance) GetSkeleton() Resource.ID { //gd:SkinReference.get_skeleton
-	return Resource.ID(class(self).GetSkeleton())
+func (self Instance) GetSkeleton() RID.Skeleton { //gd:SkinReference.get_skeleton
+	return RID.Skeleton(class(self).GetSkeleton())
 }
 
 /*

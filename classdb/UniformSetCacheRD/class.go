@@ -12,7 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,9 +40,9 @@ type Any interface {
 /*
 Creates/returns a cached uniform set based on the provided uniforms for a given shader.
 */
-func GetCache(shader Resource.ID, set int, uniforms [][1]gdclass.RDUniform) Resource.ID { //gd:UniformSetCacheRD.get_cache
+func GetCache(shader RID.Shader, set int, uniforms [][1]gdclass.RDUniform) RID.UniformSet { //gd:UniformSetCacheRD.get_cache
 	self := Instance{}
-	return Resource.ID(class(self).GetCache(shader, gd.Int(set), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms)))
+	return RID.UniformSet(class(self).GetCache(gd.RID(shader), gd.Int(set), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

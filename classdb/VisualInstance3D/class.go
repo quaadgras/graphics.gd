@@ -15,7 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/AABB"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -65,22 +65,22 @@ func (Instance) _get_aabb(impl func(ptr unsafe.Pointer) AABB.PositionSize) (cb g
 /*
 Sets the resource that is instantiated by this [VisualInstance3D], which changes how the engine handles the [VisualInstance3D] under the hood. Equivalent to [method RenderingServer.instance_set_base].
 */
-func (self Instance) SetBase(base Resource.ID) { //gd:VisualInstance3D.set_base
-	class(self).SetBase(base)
+func (self Instance) SetBase(base RID.VisualInstance) { //gd:VisualInstance3D.set_base
+	class(self).SetBase(gd.RID(base))
 }
 
 /*
 Returns the RID of the resource associated with this [VisualInstance3D]. For example, if the Node is a [MeshInstance3D], this will return the RID of the associated [Mesh].
 */
-func (self Instance) GetBase() Resource.ID { //gd:VisualInstance3D.get_base
-	return Resource.ID(class(self).GetBase())
+func (self Instance) GetBase() RID.VisualInstance { //gd:VisualInstance3D.get_base
+	return RID.VisualInstance(class(self).GetBase())
 }
 
 /*
 Returns the RID of this instance. This RID is the same as the RID returned by [method RenderingServer.instance_create]. This RID is needed if you want to call [RenderingServer] functions directly on this [VisualInstance3D].
 */
-func (self Instance) GetInstance() Resource.ID { //gd:VisualInstance3D.get_instance
-	return Resource.ID(class(self).GetInstance())
+func (self Instance) GetInstance() RID.VisualInstance { //gd:VisualInstance3D.get_instance
+	return RID.VisualInstance(class(self).GetInstance())
 }
 
 /*

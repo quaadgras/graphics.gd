@@ -16,7 +16,7 @@ import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -68,8 +68,8 @@ func (self Instance) GetFinalTransform() Transform2D.OriginXY { //gd:CanvasLayer
 /*
 Returns the RID of the canvas used by this layer.
 */
-func (self Instance) GetCanvas() Resource.ID { //gd:CanvasLayer.get_canvas
-	return Resource.ID(class(self).GetCanvas())
+func (self Instance) GetCanvas() RID.Canvas { //gd:CanvasLayer.get_canvas
+	return RID.Canvas(class(self).GetCanvas())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

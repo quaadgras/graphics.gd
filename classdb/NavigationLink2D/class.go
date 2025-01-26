@@ -15,7 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 
@@ -45,8 +45,8 @@ type Any interface {
 /*
 Returns the [RID] of this link on the [NavigationServer2D].
 */
-func (self Instance) GetRid() Resource.ID { //gd:NavigationLink2D.get_rid
-	return Resource.ID(class(self).GetRid())
+func (self Instance) GetRid() RID.NavigationLink2D { //gd:NavigationLink2D.get_rid
+	return RID.NavigationLink2D(class(self).GetRid())
 }
 
 /*

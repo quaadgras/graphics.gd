@@ -13,7 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Vector2"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -84,8 +84,8 @@ func (self Instance) GetColliderId() int { //gd:PhysicsTestMotionResult2D.get_co
 /*
 Returns the colliding body's [RID] used by the [PhysicsServer2D], if a collision occurred.
 */
-func (self Instance) GetColliderRid() Resource.ID { //gd:PhysicsTestMotionResult2D.get_collider_rid
-	return Resource.ID(class(self).GetColliderRid())
+func (self Instance) GetColliderRid() RID.Body2D { //gd:PhysicsTestMotionResult2D.get_collider_rid
+	return RID.Body2D(class(self).GetColliderRid())
 }
 
 /*

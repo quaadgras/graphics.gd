@@ -15,7 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Rect2"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -107,8 +107,8 @@ func (self Instance) GetSize() Vector2.XY { //gd:TextLine.get_size
 /*
 Returns TextServer buffer RID.
 */
-func (self Instance) GetRid() Resource.ID { //gd:TextLine.get_rid
-	return Resource.ID(class(self).GetRid())
+func (self Instance) GetRid() RID.TextBuffer { //gd:TextLine.get_rid
+	return RID.TextBuffer(class(self).GetRid())
 }
 
 /*
@@ -149,15 +149,15 @@ func (self Instance) GetLineUnderlineThickness() Float.X { //gd:TextLine.get_lin
 /*
 Draw text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) Draw(canvas Resource.ID, pos Vector2.XY) { //gd:TextLine.draw
-	class(self).Draw(canvas, gd.Vector2(pos), gd.Color(gd.Color{1, 1, 1, 1}))
+func (self Instance) Draw(canvas RID.Canvas, pos Vector2.XY) { //gd:TextLine.draw
+	class(self).Draw(gd.RID(canvas), gd.Vector2(pos), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawOutline(canvas Resource.ID, pos Vector2.XY) { //gd:TextLine.draw_outline
-	class(self).DrawOutline(canvas, gd.Vector2(pos), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}))
+func (self Instance) DrawOutline(canvas RID.Canvas, pos Vector2.XY) { //gd:TextLine.draw_outline
+	class(self).DrawOutline(gd.RID(canvas), gd.Vector2(pos), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*

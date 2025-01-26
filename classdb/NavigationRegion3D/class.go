@@ -14,7 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -49,22 +49,22 @@ type Any interface {
 /*
 Returns the [RID] of this region on the [NavigationServer3D]. Combined with [method NavigationServer3D.map_get_closest_point_owner] can be used to identify the [NavigationRegion3D] closest to a point on the merged navigation map.
 */
-func (self Instance) GetRid() Resource.ID { //gd:NavigationRegion3D.get_rid
-	return Resource.ID(class(self).GetRid())
+func (self Instance) GetRid() RID.NavigationRegion3D { //gd:NavigationRegion3D.get_rid
+	return RID.NavigationRegion3D(class(self).GetRid())
 }
 
 /*
 Sets the [RID] of the navigation map this region should use. By default the region will automatically join the [World3D] default navigation map so this function is only required to override the default map.
 */
-func (self Instance) SetNavigationMap(navigation_map Resource.ID) { //gd:NavigationRegion3D.set_navigation_map
-	class(self).SetNavigationMap(navigation_map)
+func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd:NavigationRegion3D.set_navigation_map
+	class(self).SetNavigationMap(gd.RID(navigation_map))
 }
 
 /*
 Returns the current navigation map [RID] used by this region.
 */
-func (self Instance) GetNavigationMap() Resource.ID { //gd:NavigationRegion3D.get_navigation_map
-	return Resource.ID(class(self).GetNavigationMap())
+func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:NavigationRegion3D.get_navigation_map
+	return RID.NavigationMap3D(class(self).GetNavigationMap())
 }
 
 /*
@@ -84,8 +84,8 @@ func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:Navig
 /*
 Returns the [RID] of this region on the [NavigationServer3D].
 */
-func (self Instance) GetRegionRid() Resource.ID { //gd:NavigationRegion3D.get_region_rid
-	return Resource.ID(class(self).GetRegionRid())
+func (self Instance) GetRegionRid() RID.NavigationRegion3D { //gd:NavigationRegion3D.get_region_rid
+	return RID.NavigationRegion3D(class(self).GetRegionRid())
 }
 
 /*

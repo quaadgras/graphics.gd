@@ -17,7 +17,7 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -45,8 +45,8 @@ type Any interface {
 /*
 Returns the joint's internal [RID] from the [PhysicsServer2D].
 */
-func (self Instance) GetRid() Resource.ID { //gd:Joint2D.get_rid
-	return Resource.ID(class(self).GetRid())
+func (self Instance) GetRid() RID.Joint2D { //gd:Joint2D.get_rid
+	return RID.Joint2D(class(self).GetRid())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

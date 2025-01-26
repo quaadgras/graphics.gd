@@ -16,7 +16,7 @@ import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Color"
 
 var _ Object.ID
@@ -83,8 +83,8 @@ func (self Instance) GetCollider(index int) Object.Instance { //gd:ShapeCast3D.g
 /*
 Returns the [RID] of the collided object of one of the multiple collisions at [param index].
 */
-func (self Instance) GetColliderRid(index int) Resource.ID { //gd:ShapeCast3D.get_collider_rid
-	return Resource.ID(class(self).GetColliderRid(gd.Int(index)))
+func (self Instance) GetColliderRid(index int) RID.Body3D { //gd:ShapeCast3D.get_collider_rid
+	return RID.Body3D(class(self).GetColliderRid(gd.Int(index)))
 }
 
 /*
@@ -127,8 +127,8 @@ func (self Instance) GetClosestCollisionUnsafeFraction() Float.X { //gd:ShapeCas
 /*
 Adds a collision exception so the shape does not report collisions with the specified [RID].
 */
-func (self Instance) AddExceptionRid(rid Resource.ID) { //gd:ShapeCast3D.add_exception_rid
-	class(self).AddExceptionRid(rid)
+func (self Instance) AddExceptionRid(rid RID.Body3D) { //gd:ShapeCast3D.add_exception_rid
+	class(self).AddExceptionRid(gd.RID(rid))
 }
 
 /*
@@ -141,8 +141,8 @@ func (self Instance) AddException(node [1]gdclass.CollisionObject3D) { //gd:Shap
 /*
 Removes a collision exception so the shape does report collisions with the specified [RID].
 */
-func (self Instance) RemoveExceptionRid(rid Resource.ID) { //gd:ShapeCast3D.remove_exception_rid
-	class(self).RemoveExceptionRid(rid)
+func (self Instance) RemoveExceptionRid(rid RID.Body3D) { //gd:ShapeCast3D.remove_exception_rid
+	class(self).RemoveExceptionRid(gd.RID(rid))
 }
 
 /*

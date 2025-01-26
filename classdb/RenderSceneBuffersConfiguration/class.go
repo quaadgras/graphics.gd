@@ -12,7 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Float"
 
@@ -58,12 +58,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) RenderTarget() Resource.ID {
-	return Resource.ID(class(self).GetRenderTarget())
+func (self Instance) RenderTarget() RID.Any {
+	return RID.Any(class(self).GetRenderTarget())
 }
 
-func (self Instance) SetRenderTarget(value Resource.ID) {
-	class(self).SetRenderTarget(value)
+func (self Instance) SetRenderTarget(value RID.Any) {
+	class(self).SetRenderTarget(gd.RID(value))
 }
 
 func (self Instance) InternalSize() Vector2i.XY {

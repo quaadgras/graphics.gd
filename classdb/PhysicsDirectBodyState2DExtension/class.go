@@ -16,7 +16,7 @@ import "graphics.gd/classdb/PhysicsDirectBodyState2D"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -115,7 +115,7 @@ type Interface interface {
 	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_velocity_at_position].
 	GetContactLocalVelocityAtPosition(contact_idx int) Vector2.XY
 	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider].
-	GetContactCollider(contact_idx int) Resource.ID
+	GetContactCollider(contact_idx int) RID.Any
 	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_position].
 	GetContactColliderPosition(contact_idx int) Vector2.XY
 	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_id].
@@ -177,7 +177,7 @@ func (self implementation) GetContactLocalPosition(contact_idx int) (_ Vector2.X
 func (self implementation) GetContactLocalNormal(contact_idx int) (_ Vector2.XY)             { return }
 func (self implementation) GetContactLocalShape(contact_idx int) (_ int)                     { return }
 func (self implementation) GetContactLocalVelocityAtPosition(contact_idx int) (_ Vector2.XY) { return }
-func (self implementation) GetContactCollider(contact_idx int) (_ Resource.ID)               { return }
+func (self implementation) GetContactCollider(contact_idx int) (_ RID.Any)                   { return }
 func (self implementation) GetContactColliderPosition(contact_idx int) (_ Vector2.XY)        { return }
 func (self implementation) GetContactColliderId(contact_idx int) (_ int)                     { return }
 func (self implementation) GetContactColliderObject(contact_idx int) (_ Object.Instance)     { return }
@@ -598,13 +598,13 @@ func (Instance) _get_contact_local_velocity_at_position(impl func(ptr unsafe.Poi
 /*
 Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider].
 */
-func (Instance) _get_contact_collider(impl func(ptr unsafe.Pointer, contact_idx int) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_contact_collider(impl func(ptr unsafe.Pointer, contact_idx int) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[gd.Int](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.RID(ret))
 	}
 }
 

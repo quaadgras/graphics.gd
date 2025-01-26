@@ -12,7 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,8 +40,8 @@ type Any interface {
 /*
 Binds the given id to the uniform. The data associated with the id is then used when the uniform is passed to a shader.
 */
-func (self Instance) AddId(id Resource.ID) { //gd:RDUniform.add_id
-	class(self).AddId(id)
+func (self Instance) AddId(id RID.Any) { //gd:RDUniform.add_id
+	class(self).AddId(gd.RID(id))
 }
 
 /*
@@ -54,8 +54,8 @@ func (self Instance) ClearIds() { //gd:RDUniform.clear_ids
 /*
 Returns an array of all ids currently bound to the uniform.
 */
-func (self Instance) GetIds() []Resource.ID { //gd:RDUniform.get_ids
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).GetIds())))
+func (self Instance) GetIds() [][]gd.RID { //gd:RDUniform.get_ids
+	return [][]gd.RID(gd.ArrayAs[[][]gd.RID](gd.InternalArray(class(self).GetIds())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

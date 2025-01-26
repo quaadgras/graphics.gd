@@ -15,7 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -50,15 +50,15 @@ func (self Instance) GetHitLength() Float.X { //gd:SpringArm3D.get_hit_length
 /*
 Adds the [PhysicsBody3D] object with the given [RID] to the list of [PhysicsBody3D] objects excluded from the collision check.
 */
-func (self Instance) AddExcludedObject(rid Resource.ID) { //gd:SpringArm3D.add_excluded_object
-	class(self).AddExcludedObject(rid)
+func (self Instance) AddExcludedObject(rid RID.Body3D) { //gd:SpringArm3D.add_excluded_object
+	class(self).AddExcludedObject(gd.RID(rid))
 }
 
 /*
 Removes the given [RID] from the list of [PhysicsBody3D] objects excluded from the collision check.
 */
-func (self Instance) RemoveExcludedObject(rid Resource.ID) bool { //gd:SpringArm3D.remove_excluded_object
-	return bool(class(self).RemoveExcludedObject(rid))
+func (self Instance) RemoveExcludedObject(rid RID.Body3D) bool { //gd:SpringArm3D.remove_excluded_object
+	return bool(class(self).RemoveExcludedObject(gd.RID(rid)))
 }
 
 /*

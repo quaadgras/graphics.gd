@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -56,16 +57,16 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Canvas() Resource.ID {
-	return Resource.ID(class(self).GetCanvas())
+func (self Instance) Canvas() RID.Any {
+	return RID.Any(class(self).GetCanvas())
 }
 
-func (self Instance) Space() Resource.ID {
-	return Resource.ID(class(self).GetSpace())
+func (self Instance) Space() RID.Any {
+	return RID.Any(class(self).GetSpace())
 }
 
-func (self Instance) NavigationMap() Resource.ID {
-	return Resource.ID(class(self).GetNavigationMap())
+func (self Instance) NavigationMap() RID.Any {
+	return RID.Any(class(self).GetNavigationMap())
 }
 
 func (self Instance) DirectSpaceState() [1]gdclass.PhysicsDirectSpaceState2D {

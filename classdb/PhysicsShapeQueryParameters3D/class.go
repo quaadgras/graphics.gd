@@ -12,7 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
@@ -67,11 +67,11 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(gd.Int(value))
 }
 
-func (self Instance) Exclude() []Resource.ID {
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).GetExclude())))
+func (self Instance) Exclude() []RID.Any {
+	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetExclude())))
 }
 
-func (self Instance) SetExclude(value []Resource.ID) {
+func (self Instance) SetExclude(value []RID.Any) {
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[gd.RID]](value))
 }
 
@@ -99,12 +99,12 @@ func (self Instance) SetShape(value [1]gdclass.Resource) {
 	class(self).SetShape(value)
 }
 
-func (self Instance) ShapeRid() Resource.ID {
-	return Resource.ID(class(self).GetShapeRid())
+func (self Instance) ShapeRid() RID.Any {
+	return RID.Any(class(self).GetShapeRid())
 }
 
-func (self Instance) SetShapeRid(value Resource.ID) {
-	class(self).SetShapeRid(value)
+func (self Instance) SetShapeRid(value RID.Any) {
+	class(self).SetShapeRid(gd.RID(value))
 }
 
 func (self Instance) Transform() Transform3D.BasisOrigin {

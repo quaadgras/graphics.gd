@@ -15,7 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Vector3i"
 import "graphics.gd/variant/Basis"
@@ -78,16 +78,16 @@ func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:GridMa
 /*
 Sets the [RID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
 */
-func (self Instance) SetNavigationMap(navigation_map Resource.ID) { //gd:GridMap.set_navigation_map
-	class(self).SetNavigationMap(navigation_map)
+func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd:GridMap.set_navigation_map
+	class(self).SetNavigationMap(gd.RID(navigation_map))
 }
 
 /*
 Returns the [RID] of the navigation map this GridMap node uses for its cell baked navigation meshes.
 This function returns always the map set on the GridMap node and not the map on the NavigationServer. If the map is changed directly with the NavigationServer API the GridMap node will not be aware of the map change.
 */
-func (self Instance) GetNavigationMap() Resource.ID { //gd:GridMap.get_navigation_map
-	return Resource.ID(class(self).GetNavigationMap())
+func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:GridMap.get_navigation_map
+	return RID.NavigationMap3D(class(self).GetNavigationMap())
 }
 
 /*
@@ -193,8 +193,8 @@ func (self Instance) GetBakeMeshes() []any { //gd:GridMap.get_bake_meshes
 /*
 Returns [RID] of a baked mesh with the given [param idx].
 */
-func (self Instance) GetBakeMeshInstance(idx int) Resource.ID { //gd:GridMap.get_bake_mesh_instance
-	return Resource.ID(class(self).GetBakeMeshInstance(gd.Int(idx)))
+func (self Instance) GetBakeMeshInstance(idx int) RID.Mesh { //gd:GridMap.get_bake_mesh_instance
+	return RID.Mesh(class(self).GetBakeMeshInstance(gd.Int(idx)))
 }
 
 /*

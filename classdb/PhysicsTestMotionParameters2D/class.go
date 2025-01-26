@@ -15,7 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -91,11 +91,11 @@ func (self Instance) SetCollideSeparationRay(value bool) {
 	class(self).SetCollideSeparationRayEnabled(value)
 }
 
-func (self Instance) ExcludeBodies() []Resource.ID {
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).GetExcludeBodies())))
+func (self Instance) ExcludeBodies() []RID.Any {
+	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetExcludeBodies())))
 }
 
-func (self Instance) SetExcludeBodies(value []Resource.ID) {
+func (self Instance) SetExcludeBodies(value []RID.Any) {
 	class(self).SetExcludeBodies(gd.ArrayFromSlice[Array.Contains[gd.RID]](value))
 }
 

@@ -13,7 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Vector3"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -47,7 +47,7 @@ var collision = get_world_3d().direct_space_state.intersect_ray(query)
 */
 func Create(from Vector3.XYZ, to Vector3.XYZ) [1]gdclass.PhysicsRayQueryParameters3D { //gd:PhysicsRayQueryParameters3D.create
 	self := Instance{}
-	return [1]gdclass.PhysicsRayQueryParameters3D(class(self).Create(gd.Vector3(from), gd.Vector3(to), gd.Int(4294967295), gd.ArrayFromSlice[Array.Contains[gd.RID]]([1][]Resource.ID{}[0])))
+	return [1]gdclass.PhysicsRayQueryParameters3D(class(self).Create(gd.Vector3(from), gd.Vector3(to), gd.Int(4294967295), gd.ArrayFromSlice[Array.Contains[gd.RID]]([1][]RID.Any{}[0])))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -93,11 +93,11 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(gd.Int(value))
 }
 
-func (self Instance) Exclude() []Resource.ID {
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).GetExclude())))
+func (self Instance) Exclude() []RID.Any {
+	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetExclude())))
 }
 
-func (self Instance) SetExclude(value []Resource.ID) {
+func (self Instance) SetExclude(value []RID.Any) {
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[gd.RID]](value))
 }
 

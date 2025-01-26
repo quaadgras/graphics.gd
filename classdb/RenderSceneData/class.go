@@ -15,7 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Projection"
 import "graphics.gd/variant/Vector3"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -82,8 +82,8 @@ func (self Instance) GetViewProjection(view int) Projection.XYZW { //gd:RenderSc
 /*
 Return the [RID] of the uniform buffer containing the scene data as a UBO.
 */
-func (self Instance) GetUniformBuffer() Resource.ID { //gd:RenderSceneData.get_uniform_buffer
-	return Resource.ID(class(self).GetUniformBuffer())
+func (self Instance) GetUniformBuffer() RID.UniformBuffer { //gd:RenderSceneData.get_uniform_buffer
+	return RID.UniformBuffer(class(self).GetUniformBuffer())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

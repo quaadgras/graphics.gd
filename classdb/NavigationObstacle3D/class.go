@@ -14,7 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
 
@@ -46,22 +46,22 @@ type Any interface {
 /*
 Returns the [RID] of this obstacle on the [NavigationServer3D].
 */
-func (self Instance) GetRid() Resource.ID { //gd:NavigationObstacle3D.get_rid
-	return Resource.ID(class(self).GetRid())
+func (self Instance) GetRid() RID.NavigationObstacle3D { //gd:NavigationObstacle3D.get_rid
+	return RID.NavigationObstacle3D(class(self).GetRid())
 }
 
 /*
 Sets the [RID] of the navigation map this NavigationObstacle node should use and also updates the [code]obstacle[/code] on the NavigationServer.
 */
-func (self Instance) SetNavigationMap(navigation_map Resource.ID) { //gd:NavigationObstacle3D.set_navigation_map
-	class(self).SetNavigationMap(navigation_map)
+func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd:NavigationObstacle3D.set_navigation_map
+	class(self).SetNavigationMap(gd.RID(navigation_map))
 }
 
 /*
 Returns the [RID] of the navigation map for this NavigationObstacle node. This function returns always the map set on the NavigationObstacle node and not the map of the abstract obstacle on the NavigationServer. If the obstacle map is changed directly with the NavigationServer API the NavigationObstacle node will not be aware of the map change. Use [method set_navigation_map] to change the navigation map for the NavigationObstacle and also update the obstacle on the NavigationServer.
 */
-func (self Instance) GetNavigationMap() Resource.ID { //gd:NavigationObstacle3D.get_navigation_map
-	return Resource.ID(class(self).GetNavigationMap())
+func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:NavigationObstacle3D.get_navigation_map
+	return RID.NavigationMap3D(class(self).GetNavigationMap())
 }
 
 /*

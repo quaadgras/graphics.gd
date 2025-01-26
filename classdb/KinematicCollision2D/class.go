@@ -14,7 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -106,8 +106,8 @@ func (self Instance) GetColliderId() int { //gd:KinematicCollision2D.get_collide
 /*
 Returns the colliding body's [RID] used by the [PhysicsServer2D].
 */
-func (self Instance) GetColliderRid() Resource.ID { //gd:KinematicCollision2D.get_collider_rid
-	return Resource.ID(class(self).GetColliderRid())
+func (self Instance) GetColliderRid() RID.Body2D { //gd:KinematicCollision2D.get_collider_rid
+	return RID.Body2D(class(self).GetColliderRid())
 }
 
 /*

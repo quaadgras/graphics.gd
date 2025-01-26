@@ -15,7 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector3"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Color"
 
 var _ Object.ID
@@ -69,8 +69,8 @@ func (self Instance) GetCollider() Object.Instance { //gd:RayCast3D.get_collider
 /*
 Returns the [RID] of the first object that the ray intersects, or an empty [RID] if no object is intersecting the ray (i.e. [method is_colliding] returns [code]false[/code]).
 */
-func (self Instance) GetColliderRid() Resource.ID { //gd:RayCast3D.get_collider_rid
-	return Resource.ID(class(self).GetColliderRid())
+func (self Instance) GetColliderRid() RID.Body3D { //gd:RayCast3D.get_collider_rid
+	return RID.Body3D(class(self).GetColliderRid())
 }
 
 /*
@@ -121,8 +121,8 @@ func (self Instance) GetCollisionFaceIndex() int { //gd:RayCast3D.get_collision_
 /*
 Adds a collision exception so the ray does not report collisions with the specified [RID].
 */
-func (self Instance) AddExceptionRid(rid Resource.ID) { //gd:RayCast3D.add_exception_rid
-	class(self).AddExceptionRid(rid)
+func (self Instance) AddExceptionRid(rid RID.Body3D) { //gd:RayCast3D.add_exception_rid
+	class(self).AddExceptionRid(gd.RID(rid))
 }
 
 /*
@@ -135,8 +135,8 @@ func (self Instance) AddException(node [1]gdclass.CollisionObject3D) { //gd:RayC
 /*
 Removes a collision exception so the ray does report collisions with the specified [RID].
 */
-func (self Instance) RemoveExceptionRid(rid Resource.ID) { //gd:RayCast3D.remove_exception_rid
-	class(self).RemoveExceptionRid(rid)
+func (self Instance) RemoveExceptionRid(rid RID.Body3D) { //gd:RayCast3D.remove_exception_rid
+	class(self).RemoveExceptionRid(gd.RID(rid))
 }
 
 /*

@@ -13,7 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
@@ -77,8 +77,8 @@ func (Instance) _draw(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVi
 /*
 Returns the canvas item RID used by [RenderingServer] for this item.
 */
-func (self Instance) GetCanvasItem() Resource.ID { //gd:CanvasItem.get_canvas_item
-	return Resource.ID(class(self).GetCanvasItem())
+func (self Instance) GetCanvasItem() RID.CanvasItem { //gd:CanvasItem.get_canvas_item
+	return RID.CanvasItem(class(self).GetCanvasItem())
 }
 
 /*
@@ -446,8 +446,8 @@ func (self Instance) GetGlobalMousePosition() Vector2.XY { //gd:CanvasItem.get_g
 /*
 Returns the [RID] of the [World2D] canvas where this item is in.
 */
-func (self Instance) GetCanvas() Resource.ID { //gd:CanvasItem.get_canvas
-	return Resource.ID(class(self).GetCanvas())
+func (self Instance) GetCanvas() RID.Canvas { //gd:CanvasItem.get_canvas
+	return RID.Canvas(class(self).GetCanvas())
 }
 
 /*

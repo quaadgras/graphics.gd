@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -43,7 +44,7 @@ type Any interface {
 }
 type Interface interface {
 	//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [Material]'s [Shader].
-	GetShaderRid() Resource.ID
+	GetShaderRid() RID.Any
 	//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools.
 	GetShaderMode() gdclass.ShaderMode
 	//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally to determine if [member next_pass] should be shown in the editor or not.
@@ -57,7 +58,7 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetShaderRid() (_ Resource.ID)         { return }
+func (self implementation) GetShaderRid() (_ RID.Any)             { return }
 func (self implementation) GetShaderMode() (_ gdclass.ShaderMode) { return }
 func (self implementation) CanDoNextPass() (_ bool)               { return }
 func (self implementation) CanUseRenderPriority() (_ bool)        { return }
@@ -65,11 +66,11 @@ func (self implementation) CanUseRenderPriority() (_ bool)        { return }
 /*
 Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [Material]'s [Shader].
 */
-func (Instance) _get_shader_rid(impl func(ptr unsafe.Pointer) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_shader_rid(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.RID(ret))
 	}
 }
 

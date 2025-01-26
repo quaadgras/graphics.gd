@@ -13,7 +13,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Transform2D"
@@ -62,9 +62,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 [b]Note:[/b] The equivalent resource is [Texture2D].
 [b]Note:[/b] Not to be confused with [method RenderingDevice.texture_create], which creates the graphics API's own texture type as opposed to the Godot-specific [Texture2D] resource.
 */
-func Texture2dCreate(image [1]gdclass.Image) Resource.ID { //gd:RenderingServer.texture_2d_create
+func Texture2dCreate(image [1]gdclass.Image) RID.Texture2D { //gd:RenderingServer.texture_2d_create
 	once.Do(singleton)
-	return Resource.ID(class(self).Texture2dCreate(image))
+	return RID.Texture2D(class(self).Texture2dCreate(image))
 }
 
 /*
@@ -72,51 +72,51 @@ Creates a 2-dimensional layered texture and adds it to the RenderingServer. It c
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent resource is [TextureLayered].
 */
-func Texture2dLayeredCreate(layers [][1]gdclass.Image, layered_type gdclass.RenderingServerTextureLayeredType) Resource.ID { //gd:RenderingServer.texture_2d_layered_create
+func Texture2dLayeredCreate(layers [][1]gdclass.Image, layered_type gdclass.RenderingServerTextureLayeredType) RID.Texture2D { //gd:RenderingServer.texture_2d_layered_create
 	once.Do(singleton)
-	return Resource.ID(class(self).Texture2dLayeredCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](layers), layered_type))
+	return RID.Texture2D(class(self).Texture2dLayeredCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](layers), layered_type))
 }
 
 /*
 [b]Note:[/b] The equivalent resource is [Texture3D].
 */
-func Texture3dCreate(format gdclass.ImageFormat, width int, height int, depth int, mipmaps bool, data [][1]gdclass.Image) Resource.ID { //gd:RenderingServer.texture_3d_create
+func Texture3dCreate(format gdclass.ImageFormat, width int, height int, depth int, mipmaps bool, data [][1]gdclass.Image) RID.Texture3D { //gd:RenderingServer.texture_3d_create
 	once.Do(singleton)
-	return Resource.ID(class(self).Texture3dCreate(format, gd.Int(width), gd.Int(height), gd.Int(depth), mipmaps, gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data)))
+	return RID.Texture3D(class(self).Texture3dCreate(format, gd.Int(width), gd.Int(height), gd.Int(depth), mipmaps, gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data)))
 }
 
 /*
 This method does nothing and always returns an invalid [RID].
 */
-func TextureProxyCreate(base Resource.ID) Resource.ID { //gd:RenderingServer.texture_proxy_create
+func TextureProxyCreate(base RID.TextureProxy) RID.TextureProxy { //gd:RenderingServer.texture_proxy_create
 	once.Do(singleton)
-	return Resource.ID(class(self).TextureProxyCreate(base))
+	return RID.TextureProxy(class(self).TextureProxyCreate(gd.RID(base)))
 }
 
 /*
 Updates the texture specified by the [param texture] [RID] with the data in [param image]. A [param layer] must also be specified, which should be [code]0[/code] when updating a single-layer texture ([Texture2D]).
 [b]Note:[/b] The [param image] must have the same width, height and format as the current [param texture] data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height or format, use [method texture_replace] instead.
 */
-func Texture2dUpdate(texture Resource.ID, image [1]gdclass.Image, layer int) { //gd:RenderingServer.texture_2d_update
+func Texture2dUpdate(texture RID.Texture2D, image [1]gdclass.Image, layer int) { //gd:RenderingServer.texture_2d_update
 	once.Do(singleton)
-	class(self).Texture2dUpdate(texture, image, gd.Int(layer))
+	class(self).Texture2dUpdate(gd.RID(texture), image, gd.Int(layer))
 }
 
 /*
 Updates the texture specified by the [param texture] [RID]'s data with the data in [param data]. All the texture's layers must be replaced at once.
 [b]Note:[/b] The [param texture] must have the same width, height, depth and format as the current texture data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height, depth or format, use [method texture_replace] instead.
 */
-func Texture3dUpdate(texture Resource.ID, data [][1]gdclass.Image) { //gd:RenderingServer.texture_3d_update
+func Texture3dUpdate(texture RID.Texture3D, data [][1]gdclass.Image) { //gd:RenderingServer.texture_3d_update
 	once.Do(singleton)
-	class(self).Texture3dUpdate(texture, gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))
+	class(self).Texture3dUpdate(gd.RID(texture), gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))
 }
 
 /*
 This method does nothing.
 */
-func TextureProxyUpdate(texture Resource.ID, proxy_to Resource.ID) { //gd:RenderingServer.texture_proxy_update
+func TextureProxyUpdate(texture RID.TextureProxy, proxy_to RID.Texture) { //gd:RenderingServer.texture_proxy_update
 	once.Do(singleton)
-	class(self).TextureProxyUpdate(texture, proxy_to)
+	class(self).TextureProxyUpdate(gd.RID(texture), gd.RID(proxy_to))
 }
 
 /*
@@ -124,18 +124,18 @@ Creates a placeholder for a 2-dimensional layered texture and adds it to the Ren
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent resource is [PlaceholderTexture2D].
 */
-func Texture2dPlaceholderCreate() Resource.ID { //gd:RenderingServer.texture_2d_placeholder_create
+func Texture2dPlaceholderCreate() RID.Texture2D { //gd:RenderingServer.texture_2d_placeholder_create
 	once.Do(singleton)
-	return Resource.ID(class(self).Texture2dPlaceholderCreate())
+	return RID.Texture2D(class(self).Texture2dPlaceholderCreate())
 }
 
 /*
 Creates a placeholder for a 2-dimensional layered texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]texture_2d_layered_*[/code] RenderingServer functions, although it does nothing when used. See also [method texture_2d_placeholder_create].
 [b]Note:[/b] The equivalent resource is [PlaceholderTextureLayered].
 */
-func Texture2dLayeredPlaceholderCreate(layered_type gdclass.RenderingServerTextureLayeredType) Resource.ID { //gd:RenderingServer.texture_2d_layered_placeholder_create
+func Texture2dLayeredPlaceholderCreate(layered_type gdclass.RenderingServerTextureLayeredType) RID.Texture2D { //gd:RenderingServer.texture_2d_layered_placeholder_create
 	once.Do(singleton)
-	return Resource.ID(class(self).Texture2dLayeredPlaceholderCreate(layered_type))
+	return RID.Texture2D(class(self).Texture2dLayeredPlaceholderCreate(layered_type))
 }
 
 /*
@@ -143,9 +143,9 @@ Creates a placeholder for a 3-dimensional texture and adds it to the RenderingSe
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent resource is [PlaceholderTexture3D].
 */
-func Texture3dPlaceholderCreate() Resource.ID { //gd:RenderingServer.texture_3d_placeholder_create
+func Texture3dPlaceholderCreate() RID.Texture3D { //gd:RenderingServer.texture_3d_placeholder_create
 	once.Do(singleton)
-	return Resource.ID(class(self).Texture3dPlaceholderCreate())
+	return RID.Texture3D(class(self).Texture3dPlaceholderCreate())
 }
 
 /*
@@ -157,82 +157,82 @@ var texture = ImageTexture.create_from_image(RenderingServer.texture_2d_get(text
 $Sprite2D.texture = texture
 [/codeblock]
 */
-func Texture2dGet(texture Resource.ID) [1]gdclass.Image { //gd:RenderingServer.texture_2d_get
+func Texture2dGet(texture RID.Texture2D) [1]gdclass.Image { //gd:RenderingServer.texture_2d_get
 	once.Do(singleton)
-	return [1]gdclass.Image(class(self).Texture2dGet(texture))
+	return [1]gdclass.Image(class(self).Texture2dGet(gd.RID(texture)))
 }
 
 /*
 Returns an [Image] instance from the given [param texture] [RID] and [param layer].
 */
-func Texture2dLayerGet(texture Resource.ID, layer int) [1]gdclass.Image { //gd:RenderingServer.texture_2d_layer_get
+func Texture2dLayerGet(texture RID.Texture2D, layer int) [1]gdclass.Image { //gd:RenderingServer.texture_2d_layer_get
 	once.Do(singleton)
-	return [1]gdclass.Image(class(self).Texture2dLayerGet(texture, gd.Int(layer)))
+	return [1]gdclass.Image(class(self).Texture2dLayerGet(gd.RID(texture), gd.Int(layer)))
 }
 
 /*
 Returns 3D texture data as an array of [Image]s for the specified texture [RID].
 */
-func Texture3dGet(texture Resource.ID) [][1]gdclass.Image { //gd:RenderingServer.texture_3d_get
+func Texture3dGet(texture RID.Texture3D) [][1]gdclass.Image { //gd:RenderingServer.texture_3d_get
 	once.Do(singleton)
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(class(self).Texture3dGet(texture))))
+	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(class(self).Texture3dGet(gd.RID(texture)))))
 }
 
 /*
 Replaces [param texture]'s texture data by the texture specified by the [param by_texture] RID, without changing [param texture]'s RID.
 */
-func TextureReplace(texture Resource.ID, by_texture Resource.ID) { //gd:RenderingServer.texture_replace
+func TextureReplace(texture RID.Texture, by_texture RID.Texture) { //gd:RenderingServer.texture_replace
 	once.Do(singleton)
-	class(self).TextureReplace(texture, by_texture)
+	class(self).TextureReplace(gd.RID(texture), gd.RID(by_texture))
 }
-func TextureSetSizeOverride(texture Resource.ID, width int, height int) { //gd:RenderingServer.texture_set_size_override
+func TextureSetSizeOverride(texture RID.Texture, width int, height int) { //gd:RenderingServer.texture_set_size_override
 	once.Do(singleton)
-	class(self).TextureSetSizeOverride(texture, gd.Int(width), gd.Int(height))
+	class(self).TextureSetSizeOverride(gd.RID(texture), gd.Int(width), gd.Int(height))
 }
-func TextureSetPath(texture Resource.ID, path string) { //gd:RenderingServer.texture_set_path
+func TextureSetPath(texture RID.Texture, path string) { //gd:RenderingServer.texture_set_path
 	once.Do(singleton)
-	class(self).TextureSetPath(texture, gd.NewString(path))
+	class(self).TextureSetPath(gd.RID(texture), gd.NewString(path))
 }
-func TextureGetPath(texture Resource.ID) string { //gd:RenderingServer.texture_get_path
+func TextureGetPath(texture RID.Texture) string { //gd:RenderingServer.texture_get_path
 	once.Do(singleton)
-	return string(class(self).TextureGetPath(texture).String())
+	return string(class(self).TextureGetPath(gd.RID(texture)).String())
 }
 
 /*
 Returns the format for the texture.
 */
-func TextureGetFormat(texture Resource.ID) gdclass.ImageFormat { //gd:RenderingServer.texture_get_format
+func TextureGetFormat(texture RID.Texture) gdclass.ImageFormat { //gd:RenderingServer.texture_get_format
 	once.Do(singleton)
-	return gdclass.ImageFormat(class(self).TextureGetFormat(texture))
+	return gdclass.ImageFormat(class(self).TextureGetFormat(gd.RID(texture)))
 }
-func TextureSetForceRedrawIfVisible(texture Resource.ID, enable bool) { //gd:RenderingServer.texture_set_force_redraw_if_visible
+func TextureSetForceRedrawIfVisible(texture RID.Texture, enable bool) { //gd:RenderingServer.texture_set_force_redraw_if_visible
 	once.Do(singleton)
-	class(self).TextureSetForceRedrawIfVisible(texture, enable)
+	class(self).TextureSetForceRedrawIfVisible(gd.RID(texture), enable)
 }
 
 /*
 Creates a new texture object based on a texture created directly on the [RenderingDevice]. If the texture contains layers, [param layer_type] is used to define the layer type.
 */
-func TextureRdCreate(rd_texture Resource.ID) Resource.ID { //gd:RenderingServer.texture_rd_create
+func TextureRdCreate(rd_texture RID.Texture) RID.Texture { //gd:RenderingServer.texture_rd_create
 	once.Do(singleton)
-	return Resource.ID(class(self).TextureRdCreate(rd_texture, 0))
+	return RID.Texture(class(self).TextureRdCreate(gd.RID(rd_texture), 0))
 }
 
 /*
 Returns a texture [RID] that can be used with [RenderingDevice].
 */
-func TextureGetRdTexture(texture Resource.ID) Resource.ID { //gd:RenderingServer.texture_get_rd_texture
+func TextureGetRdTexture(texture RID.Texture) RID.Texture { //gd:RenderingServer.texture_get_rd_texture
 	once.Do(singleton)
-	return Resource.ID(class(self).TextureGetRdTexture(texture, false))
+	return RID.Texture(class(self).TextureGetRdTexture(gd.RID(texture), false))
 }
 
 /*
 Returns the internal graphics handle for this texture object. For use when communicating with third-party APIs mostly with GDExtension.
 [b]Note:[/b] This function returns a [code]uint64_t[/code] which internally maps to a [code]GLuint[/code] (OpenGL) or [code]VkImage[/code] (Vulkan).
 */
-func TextureGetNativeHandle(texture Resource.ID) int { //gd:RenderingServer.texture_get_native_handle
+func TextureGetNativeHandle(texture RID.Texture) int { //gd:RenderingServer.texture_get_native_handle
 	once.Do(singleton)
-	return int(int(class(self).TextureGetNativeHandle(texture, false)))
+	return int(int(class(self).TextureGetNativeHandle(gd.RID(texture), false)))
 }
 
 /*
@@ -240,67 +240,67 @@ Creates an empty shader and adds it to the RenderingServer. It can be accessed w
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent resource is [Shader].
 */
-func ShaderCreate() Resource.ID { //gd:RenderingServer.shader_create
+func ShaderCreate() RID.Shader { //gd:RenderingServer.shader_create
 	once.Do(singleton)
-	return Resource.ID(class(self).ShaderCreate())
+	return RID.Shader(class(self).ShaderCreate())
 }
 
 /*
 Sets the shader's source code (which triggers recompilation after being changed).
 */
-func ShaderSetCode(shader Resource.ID, code string) { //gd:RenderingServer.shader_set_code
+func ShaderSetCode(shader RID.Shader, code string) { //gd:RenderingServer.shader_set_code
 	once.Do(singleton)
-	class(self).ShaderSetCode(shader, gd.NewString(code))
+	class(self).ShaderSetCode(gd.RID(shader), gd.NewString(code))
 }
 
 /*
 Sets the path hint for the specified shader. This should generally match the [Shader] resource's [member Resource.resource_path].
 */
-func ShaderSetPathHint(shader Resource.ID, path string) { //gd:RenderingServer.shader_set_path_hint
+func ShaderSetPathHint(shader RID.Shader, path string) { //gd:RenderingServer.shader_set_path_hint
 	once.Do(singleton)
-	class(self).ShaderSetPathHint(shader, gd.NewString(path))
+	class(self).ShaderSetPathHint(gd.RID(shader), gd.NewString(path))
 }
 
 /*
 Returns a shader's source code as a string.
 */
-func ShaderGetCode(shader Resource.ID) string { //gd:RenderingServer.shader_get_code
+func ShaderGetCode(shader RID.Shader) string { //gd:RenderingServer.shader_get_code
 	once.Do(singleton)
-	return string(class(self).ShaderGetCode(shader).String())
+	return string(class(self).ShaderGetCode(gd.RID(shader)).String())
 }
 
 /*
 Returns the parameters of a shader.
 */
-func GetShaderParameterList(shader Resource.ID) []map[any]any { //gd:RenderingServer.get_shader_parameter_list
+func GetShaderParameterList(shader RID.Shader) []map[any]any { //gd:RenderingServer.get_shader_parameter_list
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetShaderParameterList(shader))))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetShaderParameterList(gd.RID(shader)))))
 }
 
 /*
 Returns the default value for the specified shader uniform. This is usually the value written in the shader source code.
 */
-func ShaderGetParameterDefault(shader Resource.ID, name string) any { //gd:RenderingServer.shader_get_parameter_default
+func ShaderGetParameterDefault(shader RID.Shader, name string) any { //gd:RenderingServer.shader_get_parameter_default
 	once.Do(singleton)
-	return any(class(self).ShaderGetParameterDefault(shader, gd.NewStringName(name)).Interface())
+	return any(class(self).ShaderGetParameterDefault(gd.RID(shader), gd.NewStringName(name)).Interface())
 }
 
 /*
 Sets a shader's default texture. Overwrites the texture given by name.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
-func ShaderSetDefaultTextureParameter(shader Resource.ID, name string, texture Resource.ID) { //gd:RenderingServer.shader_set_default_texture_parameter
+func ShaderSetDefaultTextureParameter(shader RID.Shader, name string, texture RID.Texture) { //gd:RenderingServer.shader_set_default_texture_parameter
 	once.Do(singleton)
-	class(self).ShaderSetDefaultTextureParameter(shader, gd.NewStringName(name), texture, gd.Int(0))
+	class(self).ShaderSetDefaultTextureParameter(gd.RID(shader), gd.NewStringName(name), gd.RID(texture), gd.Int(0))
 }
 
 /*
 Returns a default texture from a shader searched by name.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
-func ShaderGetDefaultTextureParameter(shader Resource.ID, name string) Resource.ID { //gd:RenderingServer.shader_get_default_texture_parameter
+func ShaderGetDefaultTextureParameter(shader RID.Shader, name string) RID.Texture { //gd:RenderingServer.shader_get_default_texture_parameter
 	once.Do(singleton)
-	return Resource.ID(class(self).ShaderGetDefaultTextureParameter(shader, gd.NewStringName(name), gd.Int(0)))
+	return RID.Texture(class(self).ShaderGetDefaultTextureParameter(gd.RID(shader), gd.NewStringName(name), gd.Int(0)))
 }
 
 /*
@@ -308,53 +308,53 @@ Creates an empty material and adds it to the RenderingServer. It can be accessed
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent resource is [Material].
 */
-func MaterialCreate() Resource.ID { //gd:RenderingServer.material_create
+func MaterialCreate() RID.Material { //gd:RenderingServer.material_create
 	once.Do(singleton)
-	return Resource.ID(class(self).MaterialCreate())
+	return RID.Material(class(self).MaterialCreate())
 }
 
 /*
 Sets a shader material's shader.
 */
-func MaterialSetShader(shader_material Resource.ID, shader Resource.ID) { //gd:RenderingServer.material_set_shader
+func MaterialSetShader(shader_material RID.Material, shader RID.Shader) { //gd:RenderingServer.material_set_shader
 	once.Do(singleton)
-	class(self).MaterialSetShader(shader_material, shader)
+	class(self).MaterialSetShader(gd.RID(shader_material), gd.RID(shader))
 }
 
 /*
 Sets a material's parameter.
 */
-func MaterialSetParam(material Resource.ID, parameter string, value any) { //gd:RenderingServer.material_set_param
+func MaterialSetParam(material RID.Material, parameter string, value any) { //gd:RenderingServer.material_set_param
 	once.Do(singleton)
-	class(self).MaterialSetParam(material, gd.NewStringName(parameter), gd.NewVariant(value))
+	class(self).MaterialSetParam(gd.RID(material), gd.NewStringName(parameter), gd.NewVariant(value))
 }
 
 /*
 Returns the value of a certain material's parameter.
 */
-func MaterialGetParam(material Resource.ID, parameter string) any { //gd:RenderingServer.material_get_param
+func MaterialGetParam(material RID.Material, parameter string) any { //gd:RenderingServer.material_get_param
 	once.Do(singleton)
-	return any(class(self).MaterialGetParam(material, gd.NewStringName(parameter)).Interface())
+	return any(class(self).MaterialGetParam(gd.RID(material), gd.NewStringName(parameter)).Interface())
 }
 
 /*
 Sets a material's render priority.
 */
-func MaterialSetRenderPriority(material Resource.ID, priority int) { //gd:RenderingServer.material_set_render_priority
+func MaterialSetRenderPriority(material RID.Material, priority int) { //gd:RenderingServer.material_set_render_priority
 	once.Do(singleton)
-	class(self).MaterialSetRenderPriority(material, gd.Int(priority))
+	class(self).MaterialSetRenderPriority(gd.RID(material), gd.Int(priority))
 }
 
 /*
 Sets an object's next material.
 */
-func MaterialSetNextPass(material Resource.ID, next_material Resource.ID) { //gd:RenderingServer.material_set_next_pass
+func MaterialSetNextPass(material RID.Material, next_material RID.Material) { //gd:RenderingServer.material_set_next_pass
 	once.Do(singleton)
-	class(self).MaterialSetNextPass(material, next_material)
+	class(self).MaterialSetNextPass(gd.RID(material), gd.RID(next_material))
 }
-func MeshCreateFromSurfaces(surfaces []map[any]any) Resource.ID { //gd:RenderingServer.mesh_create_from_surfaces
+func MeshCreateFromSurfaces(surfaces []map[any]any) RID.Mesh { //gd:RenderingServer.mesh_create_from_surfaces
 	once.Do(singleton)
-	return Resource.ID(class(self).MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](surfaces), gd.Int(0)))
+	return RID.Mesh(class(self).MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](surfaces), gd.Int(0)))
 }
 
 /*
@@ -363,9 +363,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 To place in a scene, attach this mesh to an instance using [method instance_set_base] using the returned RID.
 [b]Note:[/b] The equivalent resource is [Mesh].
 */
-func MeshCreate() Resource.ID { //gd:RenderingServer.mesh_create
+func MeshCreate() RID.Mesh { //gd:RenderingServer.mesh_create
 	once.Do(singleton)
-	return Resource.ID(class(self).MeshCreate())
+	return RID.Mesh(class(self).MeshCreate())
 }
 
 /*
@@ -407,121 +407,121 @@ func MeshSurfaceGetFormatSkinStride(format gdclass.RenderingServerArrayFormat, v
 	once.Do(singleton)
 	return int(int(class(self).MeshSurfaceGetFormatSkinStride(format, gd.Int(vertex_count))))
 }
-func MeshAddSurface(mesh Resource.ID, surface map[any]any) { //gd:RenderingServer.mesh_add_surface
+func MeshAddSurface(mesh RID.Mesh, surface map[any]any) { //gd:RenderingServer.mesh_add_surface
 	once.Do(singleton)
-	class(self).MeshAddSurface(mesh, gd.NewVariant(surface).Interface().(gd.Dictionary))
+	class(self).MeshAddSurface(gd.RID(mesh), gd.NewVariant(surface).Interface().(gd.Dictionary))
 }
-func MeshAddSurfaceFromArrays(mesh Resource.ID, primitive gdclass.RenderingServerPrimitiveType, arrays []any) { //gd:RenderingServer.mesh_add_surface_from_arrays
+func MeshAddSurfaceFromArrays(mesh RID.Mesh, primitive gdclass.RenderingServerPrimitiveType, arrays []any) { //gd:RenderingServer.mesh_add_surface_from_arrays
 	once.Do(singleton)
-	class(self).MeshAddSurfaceFromArrays(mesh, primitive, gd.EngineArrayFromSlice(arrays), Array.Nil, gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), 0)
+	class(self).MeshAddSurfaceFromArrays(gd.RID(mesh), primitive, gd.EngineArrayFromSlice(arrays), Array.Nil, gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), 0)
 }
 
 /*
 Returns a mesh's blend shape count.
 */
-func MeshGetBlendShapeCount(mesh Resource.ID) int { //gd:RenderingServer.mesh_get_blend_shape_count
+func MeshGetBlendShapeCount(mesh RID.Mesh) int { //gd:RenderingServer.mesh_get_blend_shape_count
 	once.Do(singleton)
-	return int(int(class(self).MeshGetBlendShapeCount(mesh)))
+	return int(int(class(self).MeshGetBlendShapeCount(gd.RID(mesh))))
 }
 
 /*
 Sets a mesh's blend shape mode.
 */
-func MeshSetBlendShapeMode(mesh Resource.ID, mode gdclass.RenderingServerBlendShapeMode) { //gd:RenderingServer.mesh_set_blend_shape_mode
+func MeshSetBlendShapeMode(mesh RID.Mesh, mode gdclass.RenderingServerBlendShapeMode) { //gd:RenderingServer.mesh_set_blend_shape_mode
 	once.Do(singleton)
-	class(self).MeshSetBlendShapeMode(mesh, mode)
+	class(self).MeshSetBlendShapeMode(gd.RID(mesh), mode)
 }
 
 /*
 Returns a mesh's blend shape mode.
 */
-func MeshGetBlendShapeMode(mesh Resource.ID) gdclass.RenderingServerBlendShapeMode { //gd:RenderingServer.mesh_get_blend_shape_mode
+func MeshGetBlendShapeMode(mesh RID.Mesh) gdclass.RenderingServerBlendShapeMode { //gd:RenderingServer.mesh_get_blend_shape_mode
 	once.Do(singleton)
-	return gdclass.RenderingServerBlendShapeMode(class(self).MeshGetBlendShapeMode(mesh))
+	return gdclass.RenderingServerBlendShapeMode(class(self).MeshGetBlendShapeMode(gd.RID(mesh)))
 }
 
 /*
 Sets a mesh's surface's material.
 */
-func MeshSurfaceSetMaterial(mesh Resource.ID, surface int, material Resource.ID) { //gd:RenderingServer.mesh_surface_set_material
+func MeshSurfaceSetMaterial(mesh RID.Mesh, surface int, material RID.Material) { //gd:RenderingServer.mesh_surface_set_material
 	once.Do(singleton)
-	class(self).MeshSurfaceSetMaterial(mesh, gd.Int(surface), material)
+	class(self).MeshSurfaceSetMaterial(gd.RID(mesh), gd.Int(surface), gd.RID(material))
 }
 
 /*
 Returns a mesh's surface's material.
 */
-func MeshSurfaceGetMaterial(mesh Resource.ID, surface int) Resource.ID { //gd:RenderingServer.mesh_surface_get_material
+func MeshSurfaceGetMaterial(mesh RID.Mesh, surface int) RID.Material { //gd:RenderingServer.mesh_surface_get_material
 	once.Do(singleton)
-	return Resource.ID(class(self).MeshSurfaceGetMaterial(mesh, gd.Int(surface)))
+	return RID.Material(class(self).MeshSurfaceGetMaterial(gd.RID(mesh), gd.Int(surface)))
 }
-func MeshGetSurface(mesh Resource.ID, surface int) map[any]any { //gd:RenderingServer.mesh_get_surface
+func MeshGetSurface(mesh RID.Mesh, surface int) map[any]any { //gd:RenderingServer.mesh_get_surface
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[any, any](class(self).MeshGetSurface(mesh, gd.Int(surface))))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).MeshGetSurface(gd.RID(mesh), gd.Int(surface))))
 }
 
 /*
 Returns a mesh's surface's buffer arrays.
 */
-func MeshSurfaceGetArrays(mesh Resource.ID, surface int) []any { //gd:RenderingServer.mesh_surface_get_arrays
+func MeshSurfaceGetArrays(mesh RID.Mesh, surface int) []any { //gd:RenderingServer.mesh_surface_get_arrays
 	once.Do(singleton)
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).MeshSurfaceGetArrays(mesh, gd.Int(surface)))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).MeshSurfaceGetArrays(gd.RID(mesh), gd.Int(surface)))))
 }
 
 /*
 Returns a mesh's surface's arrays for blend shapes.
 */
-func MeshSurfaceGetBlendShapeArrays(mesh Resource.ID, surface int) [][]any { //gd:RenderingServer.mesh_surface_get_blend_shape_arrays
+func MeshSurfaceGetBlendShapeArrays(mesh RID.Mesh, surface int) [][]any { //gd:RenderingServer.mesh_surface_get_blend_shape_arrays
 	once.Do(singleton)
-	return [][]any(gd.ArrayAs[[][]any](gd.InternalArray(class(self).MeshSurfaceGetBlendShapeArrays(mesh, gd.Int(surface)))))
+	return [][]any(gd.ArrayAs[[][]any](gd.InternalArray(class(self).MeshSurfaceGetBlendShapeArrays(gd.RID(mesh), gd.Int(surface)))))
 }
 
 /*
 Returns a mesh's number of surfaces.
 */
-func MeshGetSurfaceCount(mesh Resource.ID) int { //gd:RenderingServer.mesh_get_surface_count
+func MeshGetSurfaceCount(mesh RID.Mesh) int { //gd:RenderingServer.mesh_get_surface_count
 	once.Do(singleton)
-	return int(int(class(self).MeshGetSurfaceCount(mesh)))
+	return int(int(class(self).MeshGetSurfaceCount(gd.RID(mesh))))
 }
 
 /*
 Sets a mesh's custom aabb.
 */
-func MeshSetCustomAabb(mesh Resource.ID, aabb AABB.PositionSize) { //gd:RenderingServer.mesh_set_custom_aabb
+func MeshSetCustomAabb(mesh RID.Mesh, aabb AABB.PositionSize) { //gd:RenderingServer.mesh_set_custom_aabb
 	once.Do(singleton)
-	class(self).MeshSetCustomAabb(mesh, gd.AABB(aabb))
+	class(self).MeshSetCustomAabb(gd.RID(mesh), gd.AABB(aabb))
 }
 
 /*
 Returns a mesh's custom aabb.
 */
-func MeshGetCustomAabb(mesh Resource.ID) AABB.PositionSize { //gd:RenderingServer.mesh_get_custom_aabb
+func MeshGetCustomAabb(mesh RID.Mesh) AABB.PositionSize { //gd:RenderingServer.mesh_get_custom_aabb
 	once.Do(singleton)
-	return AABB.PositionSize(class(self).MeshGetCustomAabb(mesh))
+	return AABB.PositionSize(class(self).MeshGetCustomAabb(gd.RID(mesh)))
 }
 
 /*
 Removes all surfaces from a mesh.
 */
-func MeshClear(mesh Resource.ID) { //gd:RenderingServer.mesh_clear
+func MeshClear(mesh RID.Mesh) { //gd:RenderingServer.mesh_clear
 	once.Do(singleton)
-	class(self).MeshClear(mesh)
+	class(self).MeshClear(gd.RID(mesh))
 }
-func MeshSurfaceUpdateVertexRegion(mesh Resource.ID, surface int, offset int, data []byte) { //gd:RenderingServer.mesh_surface_update_vertex_region
+func MeshSurfaceUpdateVertexRegion(mesh RID.Mesh, surface int, offset int, data []byte) { //gd:RenderingServer.mesh_surface_update_vertex_region
 	once.Do(singleton)
-	class(self).MeshSurfaceUpdateVertexRegion(mesh, gd.Int(surface), gd.Int(offset), gd.NewPackedByteSlice(data))
+	class(self).MeshSurfaceUpdateVertexRegion(gd.RID(mesh), gd.Int(surface), gd.Int(offset), gd.NewPackedByteSlice(data))
 }
-func MeshSurfaceUpdateAttributeRegion(mesh Resource.ID, surface int, offset int, data []byte) { //gd:RenderingServer.mesh_surface_update_attribute_region
+func MeshSurfaceUpdateAttributeRegion(mesh RID.Mesh, surface int, offset int, data []byte) { //gd:RenderingServer.mesh_surface_update_attribute_region
 	once.Do(singleton)
-	class(self).MeshSurfaceUpdateAttributeRegion(mesh, gd.Int(surface), gd.Int(offset), gd.NewPackedByteSlice(data))
+	class(self).MeshSurfaceUpdateAttributeRegion(gd.RID(mesh), gd.Int(surface), gd.Int(offset), gd.NewPackedByteSlice(data))
 }
-func MeshSurfaceUpdateSkinRegion(mesh Resource.ID, surface int, offset int, data []byte) { //gd:RenderingServer.mesh_surface_update_skin_region
+func MeshSurfaceUpdateSkinRegion(mesh RID.Mesh, surface int, offset int, data []byte) { //gd:RenderingServer.mesh_surface_update_skin_region
 	once.Do(singleton)
-	class(self).MeshSurfaceUpdateSkinRegion(mesh, gd.Int(surface), gd.Int(offset), gd.NewPackedByteSlice(data))
+	class(self).MeshSurfaceUpdateSkinRegion(gd.RID(mesh), gd.Int(surface), gd.Int(offset), gd.NewPackedByteSlice(data))
 }
-func MeshSetShadowMesh(mesh Resource.ID, shadow_mesh Resource.ID) { //gd:RenderingServer.mesh_set_shadow_mesh
+func MeshSetShadowMesh(mesh RID.Mesh, shadow_mesh RID.Mesh) { //gd:RenderingServer.mesh_set_shadow_mesh
 	once.Do(singleton)
-	class(self).MeshSetShadowMesh(mesh, shadow_mesh)
+	class(self).MeshSetShadowMesh(gd.RID(mesh), gd.RID(shadow_mesh))
 }
 
 /*
@@ -530,141 +530,141 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 To place in a scene, attach this multimesh to an instance using [method instance_set_base] using the returned RID.
 [b]Note:[/b] The equivalent resource is [MultiMesh].
 */
-func MultimeshCreate() Resource.ID { //gd:RenderingServer.multimesh_create
+func MultimeshCreate() RID.MultiMesh { //gd:RenderingServer.multimesh_create
 	once.Do(singleton)
-	return Resource.ID(class(self).MultimeshCreate())
+	return RID.MultiMesh(class(self).MultimeshCreate())
 }
-func MultimeshAllocateData(multimesh Resource.ID, instances int, transform_format gdclass.RenderingServerMultimeshTransformFormat) { //gd:RenderingServer.multimesh_allocate_data
+func MultimeshAllocateData(multimesh RID.MultiMesh, instances int, transform_format gdclass.RenderingServerMultimeshTransformFormat) { //gd:RenderingServer.multimesh_allocate_data
 	once.Do(singleton)
-	class(self).MultimeshAllocateData(multimesh, gd.Int(instances), transform_format, false, false)
+	class(self).MultimeshAllocateData(gd.RID(multimesh), gd.Int(instances), transform_format, false, false)
 }
 
 /*
 Returns the number of instances allocated for this multimesh.
 */
-func MultimeshGetInstanceCount(multimesh Resource.ID) int { //gd:RenderingServer.multimesh_get_instance_count
+func MultimeshGetInstanceCount(multimesh RID.MultiMesh) int { //gd:RenderingServer.multimesh_get_instance_count
 	once.Do(singleton)
-	return int(int(class(self).MultimeshGetInstanceCount(multimesh)))
+	return int(int(class(self).MultimeshGetInstanceCount(gd.RID(multimesh))))
 }
 
 /*
 Sets the mesh to be drawn by the multimesh. Equivalent to [member MultiMesh.mesh].
 */
-func MultimeshSetMesh(multimesh Resource.ID, mesh Resource.ID) { //gd:RenderingServer.multimesh_set_mesh
+func MultimeshSetMesh(multimesh RID.MultiMesh, mesh RID.Mesh) { //gd:RenderingServer.multimesh_set_mesh
 	once.Do(singleton)
-	class(self).MultimeshSetMesh(multimesh, mesh)
+	class(self).MultimeshSetMesh(gd.RID(multimesh), gd.RID(mesh))
 }
 
 /*
 Sets the [Transform3D] for this instance. Equivalent to [method MultiMesh.set_instance_transform].
 */
-func MultimeshInstanceSetTransform(multimesh Resource.ID, index int, transform Transform3D.BasisOrigin) { //gd:RenderingServer.multimesh_instance_set_transform
+func MultimeshInstanceSetTransform(multimesh RID.MultiMesh, index int, transform Transform3D.BasisOrigin) { //gd:RenderingServer.multimesh_instance_set_transform
 	once.Do(singleton)
-	class(self).MultimeshInstanceSetTransform(multimesh, gd.Int(index), gd.Transform3D(transform))
+	class(self).MultimeshInstanceSetTransform(gd.RID(multimesh), gd.Int(index), gd.Transform3D(transform))
 }
 
 /*
 Sets the [Transform2D] for this instance. For use when multimesh is used in 2D. Equivalent to [method MultiMesh.set_instance_transform_2d].
 */
-func MultimeshInstanceSetTransform2d(multimesh Resource.ID, index int, transform Transform2D.OriginXY) { //gd:RenderingServer.multimesh_instance_set_transform_2d
+func MultimeshInstanceSetTransform2d(multimesh RID.MultiMesh, index int, transform Transform2D.OriginXY) { //gd:RenderingServer.multimesh_instance_set_transform_2d
 	once.Do(singleton)
-	class(self).MultimeshInstanceSetTransform2d(multimesh, gd.Int(index), gd.Transform2D(transform))
+	class(self).MultimeshInstanceSetTransform2d(gd.RID(multimesh), gd.Int(index), gd.Transform2D(transform))
 }
 
 /*
 Sets the color by which this instance will be modulated. Equivalent to [method MultiMesh.set_instance_color].
 */
-func MultimeshInstanceSetColor(multimesh Resource.ID, index int, color Color.RGBA) { //gd:RenderingServer.multimesh_instance_set_color
+func MultimeshInstanceSetColor(multimesh RID.MultiMesh, index int, color Color.RGBA) { //gd:RenderingServer.multimesh_instance_set_color
 	once.Do(singleton)
-	class(self).MultimeshInstanceSetColor(multimesh, gd.Int(index), gd.Color(color))
+	class(self).MultimeshInstanceSetColor(gd.RID(multimesh), gd.Int(index), gd.Color(color))
 }
 
 /*
 Sets the custom data for this instance. Custom data is passed as a [Color], but is interpreted as a [code]vec4[/code] in the shader. Equivalent to [method MultiMesh.set_instance_custom_data].
 */
-func MultimeshInstanceSetCustomData(multimesh Resource.ID, index int, custom_data Color.RGBA) { //gd:RenderingServer.multimesh_instance_set_custom_data
+func MultimeshInstanceSetCustomData(multimesh RID.MultiMesh, index int, custom_data Color.RGBA) { //gd:RenderingServer.multimesh_instance_set_custom_data
 	once.Do(singleton)
-	class(self).MultimeshInstanceSetCustomData(multimesh, gd.Int(index), gd.Color(custom_data))
+	class(self).MultimeshInstanceSetCustomData(gd.RID(multimesh), gd.Int(index), gd.Color(custom_data))
 }
 
 /*
 Returns the RID of the mesh that will be used in drawing this multimesh.
 */
-func MultimeshGetMesh(multimesh Resource.ID) Resource.ID { //gd:RenderingServer.multimesh_get_mesh
+func MultimeshGetMesh(multimesh RID.MultiMesh) RID.Mesh { //gd:RenderingServer.multimesh_get_mesh
 	once.Do(singleton)
-	return Resource.ID(class(self).MultimeshGetMesh(multimesh))
+	return RID.Mesh(class(self).MultimeshGetMesh(gd.RID(multimesh)))
 }
 
 /*
 Calculates and returns the axis-aligned bounding box that encloses all instances within the multimesh.
 */
-func MultimeshGetAabb(multimesh Resource.ID) AABB.PositionSize { //gd:RenderingServer.multimesh_get_aabb
+func MultimeshGetAabb(multimesh RID.MultiMesh) AABB.PositionSize { //gd:RenderingServer.multimesh_get_aabb
 	once.Do(singleton)
-	return AABB.PositionSize(class(self).MultimeshGetAabb(multimesh))
+	return AABB.PositionSize(class(self).MultimeshGetAabb(gd.RID(multimesh)))
 }
 
 /*
 Sets the custom AABB for this MultiMesh resource.
 */
-func MultimeshSetCustomAabb(multimesh Resource.ID, aabb AABB.PositionSize) { //gd:RenderingServer.multimesh_set_custom_aabb
+func MultimeshSetCustomAabb(multimesh RID.MultiMesh, aabb AABB.PositionSize) { //gd:RenderingServer.multimesh_set_custom_aabb
 	once.Do(singleton)
-	class(self).MultimeshSetCustomAabb(multimesh, gd.AABB(aabb))
+	class(self).MultimeshSetCustomAabb(gd.RID(multimesh), gd.AABB(aabb))
 }
 
 /*
 Returns the custom AABB defined for this MultiMesh resource.
 */
-func MultimeshGetCustomAabb(multimesh Resource.ID) AABB.PositionSize { //gd:RenderingServer.multimesh_get_custom_aabb
+func MultimeshGetCustomAabb(multimesh RID.MultiMesh) AABB.PositionSize { //gd:RenderingServer.multimesh_get_custom_aabb
 	once.Do(singleton)
-	return AABB.PositionSize(class(self).MultimeshGetCustomAabb(multimesh))
+	return AABB.PositionSize(class(self).MultimeshGetCustomAabb(gd.RID(multimesh)))
 }
 
 /*
 Returns the [Transform3D] of the specified instance.
 */
-func MultimeshInstanceGetTransform(multimesh Resource.ID, index int) Transform3D.BasisOrigin { //gd:RenderingServer.multimesh_instance_get_transform
+func MultimeshInstanceGetTransform(multimesh RID.MultiMesh, index int) Transform3D.BasisOrigin { //gd:RenderingServer.multimesh_instance_get_transform
 	once.Do(singleton)
-	return Transform3D.BasisOrigin(class(self).MultimeshInstanceGetTransform(multimesh, gd.Int(index)))
+	return Transform3D.BasisOrigin(class(self).MultimeshInstanceGetTransform(gd.RID(multimesh), gd.Int(index)))
 }
 
 /*
 Returns the [Transform2D] of the specified instance. For use when the multimesh is set to use 2D transforms.
 */
-func MultimeshInstanceGetTransform2d(multimesh Resource.ID, index int) Transform2D.OriginXY { //gd:RenderingServer.multimesh_instance_get_transform_2d
+func MultimeshInstanceGetTransform2d(multimesh RID.MultiMesh, index int) Transform2D.OriginXY { //gd:RenderingServer.multimesh_instance_get_transform_2d
 	once.Do(singleton)
-	return Transform2D.OriginXY(class(self).MultimeshInstanceGetTransform2d(multimesh, gd.Int(index)))
+	return Transform2D.OriginXY(class(self).MultimeshInstanceGetTransform2d(gd.RID(multimesh), gd.Int(index)))
 }
 
 /*
 Returns the color by which the specified instance will be modulated.
 */
-func MultimeshInstanceGetColor(multimesh Resource.ID, index int) Color.RGBA { //gd:RenderingServer.multimesh_instance_get_color
+func MultimeshInstanceGetColor(multimesh RID.MultiMesh, index int) Color.RGBA { //gd:RenderingServer.multimesh_instance_get_color
 	once.Do(singleton)
-	return Color.RGBA(class(self).MultimeshInstanceGetColor(multimesh, gd.Int(index)))
+	return Color.RGBA(class(self).MultimeshInstanceGetColor(gd.RID(multimesh), gd.Int(index)))
 }
 
 /*
 Returns the custom data associated with the specified instance.
 */
-func MultimeshInstanceGetCustomData(multimesh Resource.ID, index int) Color.RGBA { //gd:RenderingServer.multimesh_instance_get_custom_data
+func MultimeshInstanceGetCustomData(multimesh RID.MultiMesh, index int) Color.RGBA { //gd:RenderingServer.multimesh_instance_get_custom_data
 	once.Do(singleton)
-	return Color.RGBA(class(self).MultimeshInstanceGetCustomData(multimesh, gd.Int(index)))
+	return Color.RGBA(class(self).MultimeshInstanceGetCustomData(gd.RID(multimesh), gd.Int(index)))
 }
 
 /*
 Sets the number of instances visible at a given time. If -1, all instances that have been allocated are drawn. Equivalent to [member MultiMesh.visible_instance_count].
 */
-func MultimeshSetVisibleInstances(multimesh Resource.ID, visible int) { //gd:RenderingServer.multimesh_set_visible_instances
+func MultimeshSetVisibleInstances(multimesh RID.MultiMesh, visible int) { //gd:RenderingServer.multimesh_set_visible_instances
 	once.Do(singleton)
-	class(self).MultimeshSetVisibleInstances(multimesh, gd.Int(visible))
+	class(self).MultimeshSetVisibleInstances(gd.RID(multimesh), gd.Int(visible))
 }
 
 /*
 Returns the number of visible instances for this multimesh.
 */
-func MultimeshGetVisibleInstances(multimesh Resource.ID) int { //gd:RenderingServer.multimesh_get_visible_instances
+func MultimeshGetVisibleInstances(multimesh RID.MultiMesh) int { //gd:RenderingServer.multimesh_get_visible_instances
 	once.Do(singleton)
-	return int(int(class(self).MultimeshGetVisibleInstances(multimesh)))
+	return int(int(class(self).MultimeshGetVisibleInstances(gd.RID(multimesh))))
 }
 
 /*
@@ -685,75 +685,75 @@ The per-instance data size and expected data order is:
 
 [/codeblock]
 */
-func MultimeshSetBuffer(multimesh Resource.ID, buffer []float32) { //gd:RenderingServer.multimesh_set_buffer
+func MultimeshSetBuffer(multimesh RID.MultiMesh, buffer []float32) { //gd:RenderingServer.multimesh_set_buffer
 	once.Do(singleton)
-	class(self).MultimeshSetBuffer(multimesh, gd.NewPackedFloat32Slice(buffer))
+	class(self).MultimeshSetBuffer(gd.RID(multimesh), gd.NewPackedFloat32Slice(buffer))
 }
 
 /*
 Returns the MultiMesh data (such as instance transforms, colors, etc.). See [method multimesh_set_buffer] for details on the returned data.
 [b]Note:[/b] If the buffer is in the engine's internal cache, it will have to be fetched from GPU memory and possibly decompressed. This means [method multimesh_get_buffer] is potentially a slow operation and should be avoided whenever possible.
 */
-func MultimeshGetBuffer(multimesh Resource.ID) []float32 { //gd:RenderingServer.multimesh_get_buffer
+func MultimeshGetBuffer(multimesh RID.MultiMesh) []float32 { //gd:RenderingServer.multimesh_get_buffer
 	once.Do(singleton)
-	return []float32(class(self).MultimeshGetBuffer(multimesh).AsSlice())
+	return []float32(class(self).MultimeshGetBuffer(gd.RID(multimesh)).AsSlice())
 }
 
 /*
 Creates a skeleton and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]skeleton_*[/code] RenderingServer functions.
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 */
-func SkeletonCreate() Resource.ID { //gd:RenderingServer.skeleton_create
+func SkeletonCreate() RID.Skeleton { //gd:RenderingServer.skeleton_create
 	once.Do(singleton)
-	return Resource.ID(class(self).SkeletonCreate())
+	return RID.Skeleton(class(self).SkeletonCreate())
 }
-func SkeletonAllocateData(skeleton Resource.ID, bones int) { //gd:RenderingServer.skeleton_allocate_data
+func SkeletonAllocateData(skeleton RID.Skeleton, bones int) { //gd:RenderingServer.skeleton_allocate_data
 	once.Do(singleton)
-	class(self).SkeletonAllocateData(skeleton, gd.Int(bones), false)
+	class(self).SkeletonAllocateData(gd.RID(skeleton), gd.Int(bones), false)
 }
 
 /*
 Returns the number of bones allocated for this skeleton.
 */
-func SkeletonGetBoneCount(skeleton Resource.ID) int { //gd:RenderingServer.skeleton_get_bone_count
+func SkeletonGetBoneCount(skeleton RID.Skeleton) int { //gd:RenderingServer.skeleton_get_bone_count
 	once.Do(singleton)
-	return int(int(class(self).SkeletonGetBoneCount(skeleton)))
+	return int(int(class(self).SkeletonGetBoneCount(gd.RID(skeleton))))
 }
 
 /*
 Sets the [Transform3D] for a specific bone of this skeleton.
 */
-func SkeletonBoneSetTransform(skeleton Resource.ID, bone int, transform Transform3D.BasisOrigin) { //gd:RenderingServer.skeleton_bone_set_transform
+func SkeletonBoneSetTransform(skeleton RID.Skeleton, bone int, transform Transform3D.BasisOrigin) { //gd:RenderingServer.skeleton_bone_set_transform
 	once.Do(singleton)
-	class(self).SkeletonBoneSetTransform(skeleton, gd.Int(bone), gd.Transform3D(transform))
+	class(self).SkeletonBoneSetTransform(gd.RID(skeleton), gd.Int(bone), gd.Transform3D(transform))
 }
 
 /*
 Returns the [Transform3D] set for a specific bone of this skeleton.
 */
-func SkeletonBoneGetTransform(skeleton Resource.ID, bone int) Transform3D.BasisOrigin { //gd:RenderingServer.skeleton_bone_get_transform
+func SkeletonBoneGetTransform(skeleton RID.Skeleton, bone int) Transform3D.BasisOrigin { //gd:RenderingServer.skeleton_bone_get_transform
 	once.Do(singleton)
-	return Transform3D.BasisOrigin(class(self).SkeletonBoneGetTransform(skeleton, gd.Int(bone)))
+	return Transform3D.BasisOrigin(class(self).SkeletonBoneGetTransform(gd.RID(skeleton), gd.Int(bone)))
 }
 
 /*
 Sets the [Transform2D] for a specific bone of this skeleton.
 */
-func SkeletonBoneSetTransform2d(skeleton Resource.ID, bone int, transform Transform2D.OriginXY) { //gd:RenderingServer.skeleton_bone_set_transform_2d
+func SkeletonBoneSetTransform2d(skeleton RID.Skeleton, bone int, transform Transform2D.OriginXY) { //gd:RenderingServer.skeleton_bone_set_transform_2d
 	once.Do(singleton)
-	class(self).SkeletonBoneSetTransform2d(skeleton, gd.Int(bone), gd.Transform2D(transform))
+	class(self).SkeletonBoneSetTransform2d(gd.RID(skeleton), gd.Int(bone), gd.Transform2D(transform))
 }
 
 /*
 Returns the [Transform2D] set for a specific bone of this skeleton.
 */
-func SkeletonBoneGetTransform2d(skeleton Resource.ID, bone int) Transform2D.OriginXY { //gd:RenderingServer.skeleton_bone_get_transform_2d
+func SkeletonBoneGetTransform2d(skeleton RID.Skeleton, bone int) Transform2D.OriginXY { //gd:RenderingServer.skeleton_bone_get_transform_2d
 	once.Do(singleton)
-	return Transform2D.OriginXY(class(self).SkeletonBoneGetTransform2d(skeleton, gd.Int(bone)))
+	return Transform2D.OriginXY(class(self).SkeletonBoneGetTransform2d(gd.RID(skeleton), gd.Int(bone)))
 }
-func SkeletonSetBaseTransform2d(skeleton Resource.ID, base_transform Transform2D.OriginXY) { //gd:RenderingServer.skeleton_set_base_transform_2d
+func SkeletonSetBaseTransform2d(skeleton RID.Skeleton, base_transform Transform2D.OriginXY) { //gd:RenderingServer.skeleton_set_base_transform_2d
 	once.Do(singleton)
-	class(self).SkeletonSetBaseTransform2d(skeleton, gd.Transform2D(base_transform))
+	class(self).SkeletonSetBaseTransform2d(gd.RID(skeleton), gd.Transform2D(base_transform))
 }
 
 /*
@@ -762,9 +762,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 To place in a scene, attach this directional light to an instance using [method instance_set_base] using the returned RID.
 [b]Note:[/b] The equivalent node is [DirectionalLight3D].
 */
-func DirectionalLightCreate() Resource.ID { //gd:RenderingServer.directional_light_create
+func DirectionalLightCreate() RID.Light { //gd:RenderingServer.directional_light_create
 	once.Do(singleton)
-	return Resource.ID(class(self).DirectionalLightCreate())
+	return RID.Light(class(self).DirectionalLightCreate())
 }
 
 /*
@@ -773,9 +773,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 To place in a scene, attach this omni light to an instance using [method instance_set_base] using the returned RID.
 [b]Note:[/b] The equivalent node is [OmniLight3D].
 */
-func OmniLightCreate() Resource.ID { //gd:RenderingServer.omni_light_create
+func OmniLightCreate() RID.Light { //gd:RenderingServer.omni_light_create
 	once.Do(singleton)
-	return Resource.ID(class(self).OmniLightCreate())
+	return RID.Light(class(self).OmniLightCreate())
 }
 
 /*
@@ -783,121 +783,121 @@ Creates a spot light and adds it to the RenderingServer. It can be accessed with
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 To place in a scene, attach this spot light to an instance using [method instance_set_base] using the returned RID.
 */
-func SpotLightCreate() Resource.ID { //gd:RenderingServer.spot_light_create
+func SpotLightCreate() RID.Light { //gd:RenderingServer.spot_light_create
 	once.Do(singleton)
-	return Resource.ID(class(self).SpotLightCreate())
+	return RID.Light(class(self).SpotLightCreate())
 }
 
 /*
 Sets the color of the light. Equivalent to [member Light3D.light_color].
 */
-func LightSetColor(light Resource.ID, color Color.RGBA) { //gd:RenderingServer.light_set_color
+func LightSetColor(light RID.Light, color Color.RGBA) { //gd:RenderingServer.light_set_color
 	once.Do(singleton)
-	class(self).LightSetColor(light, gd.Color(color))
+	class(self).LightSetColor(gd.RID(light), gd.Color(color))
 }
 
 /*
 Sets the specified 3D light parameter. See [enum LightParam] for options. Equivalent to [method Light3D.set_param].
 */
-func LightSetParam(light Resource.ID, param gdclass.RenderingServerLightParam, value Float.X) { //gd:RenderingServer.light_set_param
+func LightSetParam(light RID.Light, param gdclass.RenderingServerLightParam, value Float.X) { //gd:RenderingServer.light_set_param
 	once.Do(singleton)
-	class(self).LightSetParam(light, param, gd.Float(value))
+	class(self).LightSetParam(gd.RID(light), param, gd.Float(value))
 }
 
 /*
 If [code]true[/code], light will cast shadows. Equivalent to [member Light3D.shadow_enabled].
 */
-func LightSetShadow(light Resource.ID, enabled bool) { //gd:RenderingServer.light_set_shadow
+func LightSetShadow(light RID.Light, enabled bool) { //gd:RenderingServer.light_set_shadow
 	once.Do(singleton)
-	class(self).LightSetShadow(light, enabled)
+	class(self).LightSetShadow(gd.RID(light), enabled)
 }
 
 /*
 Sets the projector texture to use for the specified 3D light. Equivalent to [member Light3D.light_projector].
 */
-func LightSetProjector(light Resource.ID, texture Resource.ID) { //gd:RenderingServer.light_set_projector
+func LightSetProjector(light RID.Light, texture RID.Texture) { //gd:RenderingServer.light_set_projector
 	once.Do(singleton)
-	class(self).LightSetProjector(light, texture)
+	class(self).LightSetProjector(gd.RID(light), gd.RID(texture))
 }
 
 /*
 If [code]true[/code], the 3D light will subtract light instead of adding light. Equivalent to [member Light3D.light_negative].
 */
-func LightSetNegative(light Resource.ID, enable bool) { //gd:RenderingServer.light_set_negative
+func LightSetNegative(light RID.Light, enable bool) { //gd:RenderingServer.light_set_negative
 	once.Do(singleton)
-	class(self).LightSetNegative(light, enable)
+	class(self).LightSetNegative(gd.RID(light), enable)
 }
 
 /*
 Sets the cull mask for this 3D light. Lights only affect objects in the selected layers. Equivalent to [member Light3D.light_cull_mask].
 */
-func LightSetCullMask(light Resource.ID, mask int) { //gd:RenderingServer.light_set_cull_mask
+func LightSetCullMask(light RID.Light, mask int) { //gd:RenderingServer.light_set_cull_mask
 	once.Do(singleton)
-	class(self).LightSetCullMask(light, gd.Int(mask))
+	class(self).LightSetCullMask(gd.RID(light), gd.Int(mask))
 }
 
 /*
 Sets the distance fade for this 3D light. This acts as a form of level of detail (LOD) and can be used to improve performance. Equivalent to [member Light3D.distance_fade_enabled], [member Light3D.distance_fade_begin], [member Light3D.distance_fade_shadow], and [member Light3D.distance_fade_length].
 */
-func LightSetDistanceFade(decal Resource.ID, enabled bool, begin Float.X, shadow Float.X, length Float.X) { //gd:RenderingServer.light_set_distance_fade
+func LightSetDistanceFade(decal RID.Light, enabled bool, begin Float.X, shadow Float.X, length Float.X) { //gd:RenderingServer.light_set_distance_fade
 	once.Do(singleton)
-	class(self).LightSetDistanceFade(decal, enabled, gd.Float(begin), gd.Float(shadow), gd.Float(length))
+	class(self).LightSetDistanceFade(gd.RID(decal), enabled, gd.Float(begin), gd.Float(shadow), gd.Float(length))
 }
 
 /*
 If [code]true[/code], reverses the backface culling of the mesh. This can be useful when you have a flat mesh that has a light behind it. If you need to cast a shadow on both sides of the mesh, set the mesh to use double-sided shadows with [method instance_geometry_set_cast_shadows_setting]. Equivalent to [member Light3D.shadow_reverse_cull_face].
 */
-func LightSetReverseCullFaceMode(light Resource.ID, enabled bool) { //gd:RenderingServer.light_set_reverse_cull_face_mode
+func LightSetReverseCullFaceMode(light RID.Light, enabled bool) { //gd:RenderingServer.light_set_reverse_cull_face_mode
 	once.Do(singleton)
-	class(self).LightSetReverseCullFaceMode(light, enabled)
+	class(self).LightSetReverseCullFaceMode(gd.RID(light), enabled)
 }
 
 /*
 Sets the bake mode to use for the specified 3D light. Equivalent to [member Light3D.light_bake_mode].
 */
-func LightSetBakeMode(light Resource.ID, bake_mode gdclass.RenderingServerLightBakeMode) { //gd:RenderingServer.light_set_bake_mode
+func LightSetBakeMode(light RID.Light, bake_mode gdclass.RenderingServerLightBakeMode) { //gd:RenderingServer.light_set_bake_mode
 	once.Do(singleton)
-	class(self).LightSetBakeMode(light, bake_mode)
+	class(self).LightSetBakeMode(gd.RID(light), bake_mode)
 }
 
 /*
 Sets the maximum SDFGI cascade in which the 3D light's indirect lighting is rendered. Higher values allow the light to be rendered in SDFGI further away from the camera.
 */
-func LightSetMaxSdfgiCascade(light Resource.ID, cascade int) { //gd:RenderingServer.light_set_max_sdfgi_cascade
+func LightSetMaxSdfgiCascade(light RID.Light, cascade int) { //gd:RenderingServer.light_set_max_sdfgi_cascade
 	once.Do(singleton)
-	class(self).LightSetMaxSdfgiCascade(light, gd.Int(cascade))
+	class(self).LightSetMaxSdfgiCascade(gd.RID(light), gd.Int(cascade))
 }
 
 /*
 Sets whether to use a dual paraboloid or a cubemap for the shadow map. Dual paraboloid is faster but may suffer from artifacts. Equivalent to [member OmniLight3D.omni_shadow_mode].
 */
-func LightOmniSetShadowMode(light Resource.ID, mode gdclass.RenderingServerLightOmniShadowMode) { //gd:RenderingServer.light_omni_set_shadow_mode
+func LightOmniSetShadowMode(light RID.Light, mode gdclass.RenderingServerLightOmniShadowMode) { //gd:RenderingServer.light_omni_set_shadow_mode
 	once.Do(singleton)
-	class(self).LightOmniSetShadowMode(light, mode)
+	class(self).LightOmniSetShadowMode(gd.RID(light), mode)
 }
 
 /*
 Sets the shadow mode for this directional light. Equivalent to [member DirectionalLight3D.directional_shadow_mode]. See [enum LightDirectionalShadowMode] for options.
 */
-func LightDirectionalSetShadowMode(light Resource.ID, mode gdclass.RenderingServerLightDirectionalShadowMode) { //gd:RenderingServer.light_directional_set_shadow_mode
+func LightDirectionalSetShadowMode(light RID.Light, mode gdclass.RenderingServerLightDirectionalShadowMode) { //gd:RenderingServer.light_directional_set_shadow_mode
 	once.Do(singleton)
-	class(self).LightDirectionalSetShadowMode(light, mode)
+	class(self).LightDirectionalSetShadowMode(gd.RID(light), mode)
 }
 
 /*
 If [code]true[/code], this directional light will blend between shadow map splits resulting in a smoother transition between them. Equivalent to [member DirectionalLight3D.directional_shadow_blend_splits].
 */
-func LightDirectionalSetBlendSplits(light Resource.ID, enable bool) { //gd:RenderingServer.light_directional_set_blend_splits
+func LightDirectionalSetBlendSplits(light RID.Light, enable bool) { //gd:RenderingServer.light_directional_set_blend_splits
 	once.Do(singleton)
-	class(self).LightDirectionalSetBlendSplits(light, enable)
+	class(self).LightDirectionalSetBlendSplits(gd.RID(light), enable)
 }
 
 /*
 If [code]true[/code], this light will not be used for anything except sky shaders. Use this for lights that impact your sky shader that you may want to hide from affecting the rest of the scene. For example, you may want to enable this when the sun in your sky shader falls below the horizon.
 */
-func LightDirectionalSetSkyMode(light Resource.ID, mode gdclass.RenderingServerLightDirectionalSkyMode) { //gd:RenderingServer.light_directional_set_sky_mode
+func LightDirectionalSetSkyMode(light RID.Light, mode gdclass.RenderingServerLightDirectionalSkyMode) { //gd:RenderingServer.light_directional_set_sky_mode
 	once.Do(singleton)
-	class(self).LightDirectionalSetSkyMode(light, mode)
+	class(self).LightDirectionalSetSkyMode(gd.RID(light), mode)
 }
 
 /*
@@ -938,129 +938,129 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 To place in a scene, attach this reflection probe to an instance using [method instance_set_base] using the returned RID.
 [b]Note:[/b] The equivalent node is [ReflectionProbe].
 */
-func ReflectionProbeCreate() Resource.ID { //gd:RenderingServer.reflection_probe_create
+func ReflectionProbeCreate() RID.ReflectionProbe { //gd:RenderingServer.reflection_probe_create
 	once.Do(singleton)
-	return Resource.ID(class(self).ReflectionProbeCreate())
+	return RID.ReflectionProbe(class(self).ReflectionProbeCreate())
 }
 
 /*
 Sets how often the reflection probe updates. Can either be once or every frame. See [enum ReflectionProbeUpdateMode] for options.
 */
-func ReflectionProbeSetUpdateMode(probe Resource.ID, mode gdclass.RenderingServerReflectionProbeUpdateMode) { //gd:RenderingServer.reflection_probe_set_update_mode
+func ReflectionProbeSetUpdateMode(probe RID.ReflectionProbe, mode gdclass.RenderingServerReflectionProbeUpdateMode) { //gd:RenderingServer.reflection_probe_set_update_mode
 	once.Do(singleton)
-	class(self).ReflectionProbeSetUpdateMode(probe, mode)
+	class(self).ReflectionProbeSetUpdateMode(gd.RID(probe), mode)
 }
 
 /*
 Sets the intensity of the reflection probe. Intensity modulates the strength of the reflection. Equivalent to [member ReflectionProbe.intensity].
 */
-func ReflectionProbeSetIntensity(probe Resource.ID, intensity Float.X) { //gd:RenderingServer.reflection_probe_set_intensity
+func ReflectionProbeSetIntensity(probe RID.ReflectionProbe, intensity Float.X) { //gd:RenderingServer.reflection_probe_set_intensity
 	once.Do(singleton)
-	class(self).ReflectionProbeSetIntensity(probe, gd.Float(intensity))
+	class(self).ReflectionProbeSetIntensity(gd.RID(probe), gd.Float(intensity))
 }
 
 /*
 Sets the reflection probe's ambient light mode. Equivalent to [member ReflectionProbe.ambient_mode].
 */
-func ReflectionProbeSetAmbientMode(probe Resource.ID, mode gdclass.RenderingServerReflectionProbeAmbientMode) { //gd:RenderingServer.reflection_probe_set_ambient_mode
+func ReflectionProbeSetAmbientMode(probe RID.ReflectionProbe, mode gdclass.RenderingServerReflectionProbeAmbientMode) { //gd:RenderingServer.reflection_probe_set_ambient_mode
 	once.Do(singleton)
-	class(self).ReflectionProbeSetAmbientMode(probe, mode)
+	class(self).ReflectionProbeSetAmbientMode(gd.RID(probe), mode)
 }
 
 /*
 Sets the reflection probe's custom ambient light color. Equivalent to [member ReflectionProbe.ambient_color].
 */
-func ReflectionProbeSetAmbientColor(probe Resource.ID, color Color.RGBA) { //gd:RenderingServer.reflection_probe_set_ambient_color
+func ReflectionProbeSetAmbientColor(probe RID.ReflectionProbe, color Color.RGBA) { //gd:RenderingServer.reflection_probe_set_ambient_color
 	once.Do(singleton)
-	class(self).ReflectionProbeSetAmbientColor(probe, gd.Color(color))
+	class(self).ReflectionProbeSetAmbientColor(gd.RID(probe), gd.Color(color))
 }
 
 /*
 Sets the reflection probe's custom ambient light energy. Equivalent to [member ReflectionProbe.ambient_color_energy].
 */
-func ReflectionProbeSetAmbientEnergy(probe Resource.ID, energy Float.X) { //gd:RenderingServer.reflection_probe_set_ambient_energy
+func ReflectionProbeSetAmbientEnergy(probe RID.ReflectionProbe, energy Float.X) { //gd:RenderingServer.reflection_probe_set_ambient_energy
 	once.Do(singleton)
-	class(self).ReflectionProbeSetAmbientEnergy(probe, gd.Float(energy))
+	class(self).ReflectionProbeSetAmbientEnergy(gd.RID(probe), gd.Float(energy))
 }
 
 /*
 Sets the max distance away from the probe an object can be before it is culled. Equivalent to [member ReflectionProbe.max_distance].
 */
-func ReflectionProbeSetMaxDistance(probe Resource.ID, distance Float.X) { //gd:RenderingServer.reflection_probe_set_max_distance
+func ReflectionProbeSetMaxDistance(probe RID.ReflectionProbe, distance Float.X) { //gd:RenderingServer.reflection_probe_set_max_distance
 	once.Do(singleton)
-	class(self).ReflectionProbeSetMaxDistance(probe, gd.Float(distance))
+	class(self).ReflectionProbeSetMaxDistance(gd.RID(probe), gd.Float(distance))
 }
 
 /*
 Sets the size of the area that the reflection probe will capture. Equivalent to [member ReflectionProbe.size].
 */
-func ReflectionProbeSetSize(probe Resource.ID, size Vector3.XYZ) { //gd:RenderingServer.reflection_probe_set_size
+func ReflectionProbeSetSize(probe RID.ReflectionProbe, size Vector3.XYZ) { //gd:RenderingServer.reflection_probe_set_size
 	once.Do(singleton)
-	class(self).ReflectionProbeSetSize(probe, gd.Vector3(size))
+	class(self).ReflectionProbeSetSize(gd.RID(probe), gd.Vector3(size))
 }
 
 /*
 Sets the origin offset to be used when this reflection probe is in box project mode. Equivalent to [member ReflectionProbe.origin_offset].
 */
-func ReflectionProbeSetOriginOffset(probe Resource.ID, offset Vector3.XYZ) { //gd:RenderingServer.reflection_probe_set_origin_offset
+func ReflectionProbeSetOriginOffset(probe RID.ReflectionProbe, offset Vector3.XYZ) { //gd:RenderingServer.reflection_probe_set_origin_offset
 	once.Do(singleton)
-	class(self).ReflectionProbeSetOriginOffset(probe, gd.Vector3(offset))
+	class(self).ReflectionProbeSetOriginOffset(gd.RID(probe), gd.Vector3(offset))
 }
 
 /*
 If [code]true[/code], reflections will ignore sky contribution. Equivalent to [member ReflectionProbe.interior].
 */
-func ReflectionProbeSetAsInterior(probe Resource.ID, enable bool) { //gd:RenderingServer.reflection_probe_set_as_interior
+func ReflectionProbeSetAsInterior(probe RID.ReflectionProbe, enable bool) { //gd:RenderingServer.reflection_probe_set_as_interior
 	once.Do(singleton)
-	class(self).ReflectionProbeSetAsInterior(probe, enable)
+	class(self).ReflectionProbeSetAsInterior(gd.RID(probe), enable)
 }
 
 /*
 If [code]true[/code], uses box projection. This can make reflections look more correct in certain situations. Equivalent to [member ReflectionProbe.box_projection].
 */
-func ReflectionProbeSetEnableBoxProjection(probe Resource.ID, enable bool) { //gd:RenderingServer.reflection_probe_set_enable_box_projection
+func ReflectionProbeSetEnableBoxProjection(probe RID.ReflectionProbe, enable bool) { //gd:RenderingServer.reflection_probe_set_enable_box_projection
 	once.Do(singleton)
-	class(self).ReflectionProbeSetEnableBoxProjection(probe, enable)
+	class(self).ReflectionProbeSetEnableBoxProjection(gd.RID(probe), enable)
 }
 
 /*
 If [code]true[/code], computes shadows in the reflection probe. This makes the reflection much slower to compute. Equivalent to [member ReflectionProbe.enable_shadows].
 */
-func ReflectionProbeSetEnableShadows(probe Resource.ID, enable bool) { //gd:RenderingServer.reflection_probe_set_enable_shadows
+func ReflectionProbeSetEnableShadows(probe RID.ReflectionProbe, enable bool) { //gd:RenderingServer.reflection_probe_set_enable_shadows
 	once.Do(singleton)
-	class(self).ReflectionProbeSetEnableShadows(probe, enable)
+	class(self).ReflectionProbeSetEnableShadows(gd.RID(probe), enable)
 }
 
 /*
 Sets the render cull mask for this reflection probe. Only instances with a matching layer will be reflected by this probe. Equivalent to [member ReflectionProbe.cull_mask].
 */
-func ReflectionProbeSetCullMask(probe Resource.ID, layers int) { //gd:RenderingServer.reflection_probe_set_cull_mask
+func ReflectionProbeSetCullMask(probe RID.ReflectionProbe, layers int) { //gd:RenderingServer.reflection_probe_set_cull_mask
 	once.Do(singleton)
-	class(self).ReflectionProbeSetCullMask(probe, gd.Int(layers))
+	class(self).ReflectionProbeSetCullMask(gd.RID(probe), gd.Int(layers))
 }
 
 /*
 Sets the render reflection mask for this reflection probe. Only instances with a matching layer will have reflections applied from this probe. Equivalent to [member ReflectionProbe.reflection_mask].
 */
-func ReflectionProbeSetReflectionMask(probe Resource.ID, layers int) { //gd:RenderingServer.reflection_probe_set_reflection_mask
+func ReflectionProbeSetReflectionMask(probe RID.ReflectionProbe, layers int) { //gd:RenderingServer.reflection_probe_set_reflection_mask
 	once.Do(singleton)
-	class(self).ReflectionProbeSetReflectionMask(probe, gd.Int(layers))
+	class(self).ReflectionProbeSetReflectionMask(gd.RID(probe), gd.Int(layers))
 }
 
 /*
 Sets the resolution to use when rendering the specified reflection probe. The [param resolution] is specified for each cubemap face: for instance, specifying [code]512[/code] will allocate 6 faces of 512×512 each (plus mipmaps for roughness levels).
 */
-func ReflectionProbeSetResolution(probe Resource.ID, resolution int) { //gd:RenderingServer.reflection_probe_set_resolution
+func ReflectionProbeSetResolution(probe RID.ReflectionProbe, resolution int) { //gd:RenderingServer.reflection_probe_set_resolution
 	once.Do(singleton)
-	class(self).ReflectionProbeSetResolution(probe, gd.Int(resolution))
+	class(self).ReflectionProbeSetResolution(gd.RID(probe), gd.Int(resolution))
 }
 
 /*
 Sets the mesh level of detail to use in the reflection probe rendering. Higher values will use less detailed versions of meshes that have LOD variations generated, which can improve performance. Equivalent to [member ReflectionProbe.mesh_lod_threshold].
 */
-func ReflectionProbeSetMeshLodThreshold(probe Resource.ID, pixels Float.X) { //gd:RenderingServer.reflection_probe_set_mesh_lod_threshold
+func ReflectionProbeSetMeshLodThreshold(probe RID.ReflectionProbe, pixels Float.X) { //gd:RenderingServer.reflection_probe_set_mesh_lod_threshold
 	once.Do(singleton)
-	class(self).ReflectionProbeSetMeshLodThreshold(probe, gd.Float(pixels))
+	class(self).ReflectionProbeSetMeshLodThreshold(gd.RID(probe), gd.Float(pixels))
 }
 
 /*
@@ -1069,81 +1069,81 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 To place in a scene, attach this decal to an instance using [method instance_set_base] using the returned RID.
 [b]Note:[/b] The equivalent node is [Decal].
 */
-func DecalCreate() Resource.ID { //gd:RenderingServer.decal_create
+func DecalCreate() RID.Decal { //gd:RenderingServer.decal_create
 	once.Do(singleton)
-	return Resource.ID(class(self).DecalCreate())
+	return RID.Decal(class(self).DecalCreate())
 }
 
 /*
 Sets the [param size] of the decal specified by the [param decal] RID. Equivalent to [member Decal.size].
 */
-func DecalSetSize(decal Resource.ID, size Vector3.XYZ) { //gd:RenderingServer.decal_set_size
+func DecalSetSize(decal RID.Decal, size Vector3.XYZ) { //gd:RenderingServer.decal_set_size
 	once.Do(singleton)
-	class(self).DecalSetSize(decal, gd.Vector3(size))
+	class(self).DecalSetSize(gd.RID(decal), gd.Vector3(size))
 }
 
 /*
 Sets the [param texture] in the given texture [param type] slot for the specified decal. Equivalent to [method Decal.set_texture].
 */
-func DecalSetTexture(decal Resource.ID, atype gdclass.RenderingServerDecalTexture, texture Resource.ID) { //gd:RenderingServer.decal_set_texture
+func DecalSetTexture(decal RID.Decal, atype gdclass.RenderingServerDecalTexture, texture RID.Texture) { //gd:RenderingServer.decal_set_texture
 	once.Do(singleton)
-	class(self).DecalSetTexture(decal, atype, texture)
+	class(self).DecalSetTexture(gd.RID(decal), atype, gd.RID(texture))
 }
 
 /*
 Sets the emission [param energy] in the decal specified by the [param decal] RID. Equivalent to [member Decal.emission_energy].
 */
-func DecalSetEmissionEnergy(decal Resource.ID, energy Float.X) { //gd:RenderingServer.decal_set_emission_energy
+func DecalSetEmissionEnergy(decal RID.Decal, energy Float.X) { //gd:RenderingServer.decal_set_emission_energy
 	once.Do(singleton)
-	class(self).DecalSetEmissionEnergy(decal, gd.Float(energy))
+	class(self).DecalSetEmissionEnergy(gd.RID(decal), gd.Float(energy))
 }
 
 /*
 Sets the [param albedo_mix] in the decal specified by the [param decal] RID. Equivalent to [member Decal.albedo_mix].
 */
-func DecalSetAlbedoMix(decal Resource.ID, albedo_mix Float.X) { //gd:RenderingServer.decal_set_albedo_mix
+func DecalSetAlbedoMix(decal RID.Decal, albedo_mix Float.X) { //gd:RenderingServer.decal_set_albedo_mix
 	once.Do(singleton)
-	class(self).DecalSetAlbedoMix(decal, gd.Float(albedo_mix))
+	class(self).DecalSetAlbedoMix(gd.RID(decal), gd.Float(albedo_mix))
 }
 
 /*
 Sets the color multiplier in the decal specified by the [param decal] RID to [param color]. Equivalent to [member Decal.modulate].
 */
-func DecalSetModulate(decal Resource.ID, color Color.RGBA) { //gd:RenderingServer.decal_set_modulate
+func DecalSetModulate(decal RID.Decal, color Color.RGBA) { //gd:RenderingServer.decal_set_modulate
 	once.Do(singleton)
-	class(self).DecalSetModulate(decal, gd.Color(color))
+	class(self).DecalSetModulate(gd.RID(decal), gd.Color(color))
 }
 
 /*
 Sets the cull [param mask] in the decal specified by the [param decal] RID. Equivalent to [member Decal.cull_mask].
 */
-func DecalSetCullMask(decal Resource.ID, mask int) { //gd:RenderingServer.decal_set_cull_mask
+func DecalSetCullMask(decal RID.Decal, mask int) { //gd:RenderingServer.decal_set_cull_mask
 	once.Do(singleton)
-	class(self).DecalSetCullMask(decal, gd.Int(mask))
+	class(self).DecalSetCullMask(gd.RID(decal), gd.Int(mask))
 }
 
 /*
 Sets the distance fade parameters in the decal specified by the [param decal] RID. Equivalent to [member Decal.distance_fade_enabled], [member Decal.distance_fade_begin] and [member Decal.distance_fade_length].
 */
-func DecalSetDistanceFade(decal Resource.ID, enabled bool, begin Float.X, length Float.X) { //gd:RenderingServer.decal_set_distance_fade
+func DecalSetDistanceFade(decal RID.Decal, enabled bool, begin Float.X, length Float.X) { //gd:RenderingServer.decal_set_distance_fade
 	once.Do(singleton)
-	class(self).DecalSetDistanceFade(decal, enabled, gd.Float(begin), gd.Float(length))
+	class(self).DecalSetDistanceFade(gd.RID(decal), enabled, gd.Float(begin), gd.Float(length))
 }
 
 /*
 Sets the upper fade ([param above]) and lower fade ([param below]) in the decal specified by the [param decal] RID. Equivalent to [member Decal.upper_fade] and [member Decal.lower_fade].
 */
-func DecalSetFade(decal Resource.ID, above Float.X, below Float.X) { //gd:RenderingServer.decal_set_fade
+func DecalSetFade(decal RID.Decal, above Float.X, below Float.X) { //gd:RenderingServer.decal_set_fade
 	once.Do(singleton)
-	class(self).DecalSetFade(decal, gd.Float(above), gd.Float(below))
+	class(self).DecalSetFade(gd.RID(decal), gd.Float(above), gd.Float(below))
 }
 
 /*
 Sets the normal [param fade] in the decal specified by the [param decal] RID. Equivalent to [member Decal.normal_fade].
 */
-func DecalSetNormalFade(decal Resource.ID, fade Float.X) { //gd:RenderingServer.decal_set_normal_fade
+func DecalSetNormalFade(decal RID.Decal, fade Float.X) { //gd:RenderingServer.decal_set_normal_fade
 	once.Do(singleton)
-	class(self).DecalSetNormalFade(decal, gd.Float(fade))
+	class(self).DecalSetNormalFade(gd.RID(decal), gd.Float(fade))
 }
 
 /*
@@ -1167,101 +1167,101 @@ Creates a new voxel-based global illumination object and adds it to the Renderin
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent node is [VoxelGI].
 */
-func VoxelGiCreate() Resource.ID { //gd:RenderingServer.voxel_gi_create
+func VoxelGiCreate() RID.VoxelGI { //gd:RenderingServer.voxel_gi_create
 	once.Do(singleton)
-	return Resource.ID(class(self).VoxelGiCreate())
+	return RID.VoxelGI(class(self).VoxelGiCreate())
 }
-func VoxelGiAllocateData(voxel_gi Resource.ID, to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3i.XYZ, octree_cells []byte, data_cells []byte, distance_field []byte, level_counts []int32) { //gd:RenderingServer.voxel_gi_allocate_data
+func VoxelGiAllocateData(voxel_gi RID.VoxelGI, to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3i.XYZ, octree_cells []byte, data_cells []byte, distance_field []byte, level_counts []int32) { //gd:RenderingServer.voxel_gi_allocate_data
 	once.Do(singleton)
-	class(self).VoxelGiAllocateData(voxel_gi, gd.Transform3D(to_cell_xform), gd.AABB(aabb), gd.Vector3i(octree_size), gd.NewPackedByteSlice(octree_cells), gd.NewPackedByteSlice(data_cells), gd.NewPackedByteSlice(distance_field), gd.NewPackedInt32Slice(level_counts))
+	class(self).VoxelGiAllocateData(gd.RID(voxel_gi), gd.Transform3D(to_cell_xform), gd.AABB(aabb), gd.Vector3i(octree_size), gd.NewPackedByteSlice(octree_cells), gd.NewPackedByteSlice(data_cells), gd.NewPackedByteSlice(distance_field), gd.NewPackedInt32Slice(level_counts))
 }
-func VoxelGiGetOctreeSize(voxel_gi Resource.ID) Vector3i.XYZ { //gd:RenderingServer.voxel_gi_get_octree_size
+func VoxelGiGetOctreeSize(voxel_gi RID.VoxelGI) Vector3i.XYZ { //gd:RenderingServer.voxel_gi_get_octree_size
 	once.Do(singleton)
-	return Vector3i.XYZ(class(self).VoxelGiGetOctreeSize(voxel_gi))
+	return Vector3i.XYZ(class(self).VoxelGiGetOctreeSize(gd.RID(voxel_gi)))
 }
-func VoxelGiGetOctreeCells(voxel_gi Resource.ID) []byte { //gd:RenderingServer.voxel_gi_get_octree_cells
+func VoxelGiGetOctreeCells(voxel_gi RID.VoxelGI) []byte { //gd:RenderingServer.voxel_gi_get_octree_cells
 	once.Do(singleton)
-	return []byte(class(self).VoxelGiGetOctreeCells(voxel_gi).Bytes())
+	return []byte(class(self).VoxelGiGetOctreeCells(gd.RID(voxel_gi)).Bytes())
 }
-func VoxelGiGetDataCells(voxel_gi Resource.ID) []byte { //gd:RenderingServer.voxel_gi_get_data_cells
+func VoxelGiGetDataCells(voxel_gi RID.VoxelGI) []byte { //gd:RenderingServer.voxel_gi_get_data_cells
 	once.Do(singleton)
-	return []byte(class(self).VoxelGiGetDataCells(voxel_gi).Bytes())
+	return []byte(class(self).VoxelGiGetDataCells(gd.RID(voxel_gi)).Bytes())
 }
-func VoxelGiGetDistanceField(voxel_gi Resource.ID) []byte { //gd:RenderingServer.voxel_gi_get_distance_field
+func VoxelGiGetDistanceField(voxel_gi RID.VoxelGI) []byte { //gd:RenderingServer.voxel_gi_get_distance_field
 	once.Do(singleton)
-	return []byte(class(self).VoxelGiGetDistanceField(voxel_gi).Bytes())
+	return []byte(class(self).VoxelGiGetDistanceField(gd.RID(voxel_gi)).Bytes())
 }
-func VoxelGiGetLevelCounts(voxel_gi Resource.ID) []int32 { //gd:RenderingServer.voxel_gi_get_level_counts
+func VoxelGiGetLevelCounts(voxel_gi RID.VoxelGI) []int32 { //gd:RenderingServer.voxel_gi_get_level_counts
 	once.Do(singleton)
-	return []int32(class(self).VoxelGiGetLevelCounts(voxel_gi).AsSlice())
+	return []int32(class(self).VoxelGiGetLevelCounts(gd.RID(voxel_gi)).AsSlice())
 }
-func VoxelGiGetToCellXform(voxel_gi Resource.ID) Transform3D.BasisOrigin { //gd:RenderingServer.voxel_gi_get_to_cell_xform
+func VoxelGiGetToCellXform(voxel_gi RID.VoxelGI) Transform3D.BasisOrigin { //gd:RenderingServer.voxel_gi_get_to_cell_xform
 	once.Do(singleton)
-	return Transform3D.BasisOrigin(class(self).VoxelGiGetToCellXform(voxel_gi))
+	return Transform3D.BasisOrigin(class(self).VoxelGiGetToCellXform(gd.RID(voxel_gi)))
 }
 
 /*
 Sets the [member VoxelGIData.dynamic_range] value to use on the specified [param voxel_gi]'s [RID].
 */
-func VoxelGiSetDynamicRange(voxel_gi Resource.ID, arange Float.X) { //gd:RenderingServer.voxel_gi_set_dynamic_range
+func VoxelGiSetDynamicRange(voxel_gi RID.VoxelGI, arange Float.X) { //gd:RenderingServer.voxel_gi_set_dynamic_range
 	once.Do(singleton)
-	class(self).VoxelGiSetDynamicRange(voxel_gi, gd.Float(arange))
+	class(self).VoxelGiSetDynamicRange(gd.RID(voxel_gi), gd.Float(arange))
 }
 
 /*
 Sets the [member VoxelGIData.propagation] value to use on the specified [param voxel_gi]'s [RID].
 */
-func VoxelGiSetPropagation(voxel_gi Resource.ID, amount Float.X) { //gd:RenderingServer.voxel_gi_set_propagation
+func VoxelGiSetPropagation(voxel_gi RID.VoxelGI, amount Float.X) { //gd:RenderingServer.voxel_gi_set_propagation
 	once.Do(singleton)
-	class(self).VoxelGiSetPropagation(voxel_gi, gd.Float(amount))
+	class(self).VoxelGiSetPropagation(gd.RID(voxel_gi), gd.Float(amount))
 }
 
 /*
 Sets the [member VoxelGIData.energy] value to use on the specified [param voxel_gi]'s [RID].
 */
-func VoxelGiSetEnergy(voxel_gi Resource.ID, energy Float.X) { //gd:RenderingServer.voxel_gi_set_energy
+func VoxelGiSetEnergy(voxel_gi RID.VoxelGI, energy Float.X) { //gd:RenderingServer.voxel_gi_set_energy
 	once.Do(singleton)
-	class(self).VoxelGiSetEnergy(voxel_gi, gd.Float(energy))
+	class(self).VoxelGiSetEnergy(gd.RID(voxel_gi), gd.Float(energy))
 }
 
 /*
 Used to inform the renderer what exposure normalization value was used while baking the voxel gi. This value will be used and modulated at run time to ensure that the voxel gi maintains a consistent level of exposure even if the scene-wide exposure normalization is changed at run time. For more information see [method camera_attributes_set_exposure].
 */
-func VoxelGiSetBakedExposureNormalization(voxel_gi Resource.ID, baked_exposure Float.X) { //gd:RenderingServer.voxel_gi_set_baked_exposure_normalization
+func VoxelGiSetBakedExposureNormalization(voxel_gi RID.VoxelGI, baked_exposure Float.X) { //gd:RenderingServer.voxel_gi_set_baked_exposure_normalization
 	once.Do(singleton)
-	class(self).VoxelGiSetBakedExposureNormalization(voxel_gi, gd.Float(baked_exposure))
+	class(self).VoxelGiSetBakedExposureNormalization(gd.RID(voxel_gi), gd.Float(baked_exposure))
 }
 
 /*
 Sets the [member VoxelGIData.bias] value to use on the specified [param voxel_gi]'s [RID].
 */
-func VoxelGiSetBias(voxel_gi Resource.ID, bias Float.X) { //gd:RenderingServer.voxel_gi_set_bias
+func VoxelGiSetBias(voxel_gi RID.VoxelGI, bias Float.X) { //gd:RenderingServer.voxel_gi_set_bias
 	once.Do(singleton)
-	class(self).VoxelGiSetBias(voxel_gi, gd.Float(bias))
+	class(self).VoxelGiSetBias(gd.RID(voxel_gi), gd.Float(bias))
 }
 
 /*
 Sets the [member VoxelGIData.normal_bias] value to use on the specified [param voxel_gi]'s [RID].
 */
-func VoxelGiSetNormalBias(voxel_gi Resource.ID, bias Float.X) { //gd:RenderingServer.voxel_gi_set_normal_bias
+func VoxelGiSetNormalBias(voxel_gi RID.VoxelGI, bias Float.X) { //gd:RenderingServer.voxel_gi_set_normal_bias
 	once.Do(singleton)
-	class(self).VoxelGiSetNormalBias(voxel_gi, gd.Float(bias))
+	class(self).VoxelGiSetNormalBias(gd.RID(voxel_gi), gd.Float(bias))
 }
 
 /*
 Sets the [member VoxelGIData.interior] value to use on the specified [param voxel_gi]'s [RID].
 */
-func VoxelGiSetInterior(voxel_gi Resource.ID, enable bool) { //gd:RenderingServer.voxel_gi_set_interior
+func VoxelGiSetInterior(voxel_gi RID.VoxelGI, enable bool) { //gd:RenderingServer.voxel_gi_set_interior
 	once.Do(singleton)
-	class(self).VoxelGiSetInterior(voxel_gi, enable)
+	class(self).VoxelGiSetInterior(gd.RID(voxel_gi), enable)
 }
 
 /*
 Sets the [member VoxelGIData.use_two_bounces] value to use on the specified [param voxel_gi]'s [RID].
 */
-func VoxelGiSetUseTwoBounces(voxel_gi Resource.ID, enable bool) { //gd:RenderingServer.voxel_gi_set_use_two_bounces
+func VoxelGiSetUseTwoBounces(voxel_gi RID.VoxelGI, enable bool) { //gd:RenderingServer.voxel_gi_set_use_two_bounces
 	once.Do(singleton)
-	class(self).VoxelGiSetUseTwoBounces(voxel_gi, enable)
+	class(self).VoxelGiSetUseTwoBounces(gd.RID(voxel_gi), enable)
 }
 
 /*
@@ -1277,53 +1277,53 @@ Creates a new lightmap global illumination instance and adds it to the Rendering
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent node is [LightmapGI].
 */
-func LightmapCreate() Resource.ID { //gd:RenderingServer.lightmap_create
+func LightmapCreate() RID.Lightmap { //gd:RenderingServer.lightmap_create
 	once.Do(singleton)
-	return Resource.ID(class(self).LightmapCreate())
+	return RID.Lightmap(class(self).LightmapCreate())
 }
 
 /*
 Set the textures on the given [param lightmap] GI instance to the texture array pointed to by the [param light] RID. If the lightmap texture was baked with [member LightmapGI.directional] set to [code]true[/code], then [param uses_sh] must also be [code]true[/code].
 */
-func LightmapSetTextures(lightmap Resource.ID, light Resource.ID, uses_sh bool) { //gd:RenderingServer.lightmap_set_textures
+func LightmapSetTextures(lightmap RID.Lightmap, light RID.Light, uses_sh bool) { //gd:RenderingServer.lightmap_set_textures
 	once.Do(singleton)
-	class(self).LightmapSetTextures(lightmap, light, uses_sh)
+	class(self).LightmapSetTextures(gd.RID(lightmap), gd.RID(light), uses_sh)
 }
-func LightmapSetProbeBounds(lightmap Resource.ID, bounds AABB.PositionSize) { //gd:RenderingServer.lightmap_set_probe_bounds
+func LightmapSetProbeBounds(lightmap RID.Lightmap, bounds AABB.PositionSize) { //gd:RenderingServer.lightmap_set_probe_bounds
 	once.Do(singleton)
-	class(self).LightmapSetProbeBounds(lightmap, gd.AABB(bounds))
+	class(self).LightmapSetProbeBounds(gd.RID(lightmap), gd.AABB(bounds))
 }
-func LightmapSetProbeInterior(lightmap Resource.ID, interior bool) { //gd:RenderingServer.lightmap_set_probe_interior
+func LightmapSetProbeInterior(lightmap RID.Lightmap, interior bool) { //gd:RenderingServer.lightmap_set_probe_interior
 	once.Do(singleton)
-	class(self).LightmapSetProbeInterior(lightmap, interior)
+	class(self).LightmapSetProbeInterior(gd.RID(lightmap), interior)
 }
-func LightmapSetProbeCaptureData(lightmap Resource.ID, points []Vector3.XYZ, point_sh []Color.RGBA, tetrahedra []int32, bsp_tree []int32) { //gd:RenderingServer.lightmap_set_probe_capture_data
+func LightmapSetProbeCaptureData(lightmap RID.Lightmap, points []Vector3.XYZ, point_sh []Color.RGBA, tetrahedra []int32, bsp_tree []int32) { //gd:RenderingServer.lightmap_set_probe_capture_data
 	once.Do(singleton)
-	class(self).LightmapSetProbeCaptureData(lightmap, gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&point_sh))), gd.NewPackedInt32Slice(tetrahedra), gd.NewPackedInt32Slice(bsp_tree))
+	class(self).LightmapSetProbeCaptureData(gd.RID(lightmap), gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&point_sh))), gd.NewPackedInt32Slice(tetrahedra), gd.NewPackedInt32Slice(bsp_tree))
 }
-func LightmapGetProbeCapturePoints(lightmap Resource.ID) []Vector3.XYZ { //gd:RenderingServer.lightmap_get_probe_capture_points
+func LightmapGetProbeCapturePoints(lightmap RID.Lightmap) []Vector3.XYZ { //gd:RenderingServer.lightmap_get_probe_capture_points
 	once.Do(singleton)
-	return []Vector3.XYZ(class(self).LightmapGetProbeCapturePoints(lightmap).AsSlice())
+	return []Vector3.XYZ(class(self).LightmapGetProbeCapturePoints(gd.RID(lightmap)).AsSlice())
 }
-func LightmapGetProbeCaptureSh(lightmap Resource.ID) []Color.RGBA { //gd:RenderingServer.lightmap_get_probe_capture_sh
+func LightmapGetProbeCaptureSh(lightmap RID.Lightmap) []Color.RGBA { //gd:RenderingServer.lightmap_get_probe_capture_sh
 	once.Do(singleton)
-	return []Color.RGBA(class(self).LightmapGetProbeCaptureSh(lightmap).AsSlice())
+	return []Color.RGBA(class(self).LightmapGetProbeCaptureSh(gd.RID(lightmap)).AsSlice())
 }
-func LightmapGetProbeCaptureTetrahedra(lightmap Resource.ID) []int32 { //gd:RenderingServer.lightmap_get_probe_capture_tetrahedra
+func LightmapGetProbeCaptureTetrahedra(lightmap RID.Lightmap) []int32 { //gd:RenderingServer.lightmap_get_probe_capture_tetrahedra
 	once.Do(singleton)
-	return []int32(class(self).LightmapGetProbeCaptureTetrahedra(lightmap).AsSlice())
+	return []int32(class(self).LightmapGetProbeCaptureTetrahedra(gd.RID(lightmap)).AsSlice())
 }
-func LightmapGetProbeCaptureBspTree(lightmap Resource.ID) []int32 { //gd:RenderingServer.lightmap_get_probe_capture_bsp_tree
+func LightmapGetProbeCaptureBspTree(lightmap RID.Lightmap) []int32 { //gd:RenderingServer.lightmap_get_probe_capture_bsp_tree
 	once.Do(singleton)
-	return []int32(class(self).LightmapGetProbeCaptureBspTree(lightmap).AsSlice())
+	return []int32(class(self).LightmapGetProbeCaptureBspTree(gd.RID(lightmap)).AsSlice())
 }
 
 /*
 Used to inform the renderer what exposure normalization value was used while baking the lightmap. This value will be used and modulated at run time to ensure that the lightmap maintains a consistent level of exposure even if the scene-wide exposure normalization is changed at run time. For more information see [method camera_attributes_set_exposure].
 */
-func LightmapSetBakedExposureNormalization(lightmap Resource.ID, baked_exposure Float.X) { //gd:RenderingServer.lightmap_set_baked_exposure_normalization
+func LightmapSetBakedExposureNormalization(lightmap RID.Lightmap, baked_exposure Float.X) { //gd:RenderingServer.lightmap_set_baked_exposure_normalization
 	once.Do(singleton)
-	class(self).LightmapSetBakedExposureNormalization(lightmap, gd.Float(baked_exposure))
+	class(self).LightmapSetBakedExposureNormalization(gd.RID(lightmap), gd.Float(baked_exposure))
 }
 func LightmapSetProbeCaptureUpdateSpeed(speed Float.X) { //gd:RenderingServer.lightmap_set_probe_capture_update_speed
 	once.Do(singleton)
@@ -1337,343 +1337,343 @@ To place in a scene, attach these particles to an instance using [method instanc
 [b]Note:[/b] The equivalent nodes are [GPUParticles2D] and [GPUParticles3D].
 [b]Note:[/b] All [code]particles_*[/code] methods only apply to GPU-based particles, not CPU-based particles. [CPUParticles2D] and [CPUParticles3D] do not have equivalent RenderingServer functions available, as these use [MultiMeshInstance2D] and [MultiMeshInstance3D] under the hood (see [code]multimesh_*[/code] methods).
 */
-func ParticlesCreate() Resource.ID { //gd:RenderingServer.particles_create
+func ParticlesCreate() RID.Particles { //gd:RenderingServer.particles_create
 	once.Do(singleton)
-	return Resource.ID(class(self).ParticlesCreate())
+	return RID.Particles(class(self).ParticlesCreate())
 }
 
 /*
 Sets whether the GPU particles specified by the [param particles] RID should be rendered in 2D or 3D according to [param mode].
 */
-func ParticlesSetMode(particles Resource.ID, mode gdclass.RenderingServerParticlesMode) { //gd:RenderingServer.particles_set_mode
+func ParticlesSetMode(particles RID.Particles, mode gdclass.RenderingServerParticlesMode) { //gd:RenderingServer.particles_set_mode
 	once.Do(singleton)
-	class(self).ParticlesSetMode(particles, mode)
+	class(self).ParticlesSetMode(gd.RID(particles), mode)
 }
 
 /*
 If [code]true[/code], particles will emit over time. Setting to false does not reset the particles, but only stops their emission. Equivalent to [member GPUParticles3D.emitting].
 */
-func ParticlesSetEmitting(particles Resource.ID, emitting bool) { //gd:RenderingServer.particles_set_emitting
+func ParticlesSetEmitting(particles RID.Particles, emitting bool) { //gd:RenderingServer.particles_set_emitting
 	once.Do(singleton)
-	class(self).ParticlesSetEmitting(particles, emitting)
+	class(self).ParticlesSetEmitting(gd.RID(particles), emitting)
 }
 
 /*
 Returns [code]true[/code] if particles are currently set to emitting.
 */
-func ParticlesGetEmitting(particles Resource.ID) bool { //gd:RenderingServer.particles_get_emitting
+func ParticlesGetEmitting(particles RID.Particles) bool { //gd:RenderingServer.particles_get_emitting
 	once.Do(singleton)
-	return bool(class(self).ParticlesGetEmitting(particles))
+	return bool(class(self).ParticlesGetEmitting(gd.RID(particles)))
 }
 
 /*
 Sets the number of particles to be drawn and allocates the memory for them. Equivalent to [member GPUParticles3D.amount].
 */
-func ParticlesSetAmount(particles Resource.ID, amount int) { //gd:RenderingServer.particles_set_amount
+func ParticlesSetAmount(particles RID.Particles, amount int) { //gd:RenderingServer.particles_set_amount
 	once.Do(singleton)
-	class(self).ParticlesSetAmount(particles, gd.Int(amount))
+	class(self).ParticlesSetAmount(gd.RID(particles), gd.Int(amount))
 }
 
 /*
 Sets the amount ratio for particles to be emitted. Equivalent to [member GPUParticles3D.amount_ratio].
 */
-func ParticlesSetAmountRatio(particles Resource.ID, ratio Float.X) { //gd:RenderingServer.particles_set_amount_ratio
+func ParticlesSetAmountRatio(particles RID.Particles, ratio Float.X) { //gd:RenderingServer.particles_set_amount_ratio
 	once.Do(singleton)
-	class(self).ParticlesSetAmountRatio(particles, gd.Float(ratio))
+	class(self).ParticlesSetAmountRatio(gd.RID(particles), gd.Float(ratio))
 }
 
 /*
 Sets the lifetime of each particle in the system. Equivalent to [member GPUParticles3D.lifetime].
 */
-func ParticlesSetLifetime(particles Resource.ID, lifetime Float.X) { //gd:RenderingServer.particles_set_lifetime
+func ParticlesSetLifetime(particles RID.Particles, lifetime Float.X) { //gd:RenderingServer.particles_set_lifetime
 	once.Do(singleton)
-	class(self).ParticlesSetLifetime(particles, gd.Float(lifetime))
+	class(self).ParticlesSetLifetime(gd.RID(particles), gd.Float(lifetime))
 }
 
 /*
 If [code]true[/code], particles will emit once and then stop. Equivalent to [member GPUParticles3D.one_shot].
 */
-func ParticlesSetOneShot(particles Resource.ID, one_shot bool) { //gd:RenderingServer.particles_set_one_shot
+func ParticlesSetOneShot(particles RID.Particles, one_shot bool) { //gd:RenderingServer.particles_set_one_shot
 	once.Do(singleton)
-	class(self).ParticlesSetOneShot(particles, one_shot)
+	class(self).ParticlesSetOneShot(gd.RID(particles), one_shot)
 }
 
 /*
 Sets the preprocess time for the particles' animation. This lets you delay starting an animation until after the particles have begun emitting. Equivalent to [member GPUParticles3D.preprocess].
 */
-func ParticlesSetPreProcessTime(particles Resource.ID, time Float.X) { //gd:RenderingServer.particles_set_pre_process_time
+func ParticlesSetPreProcessTime(particles RID.Particles, time Float.X) { //gd:RenderingServer.particles_set_pre_process_time
 	once.Do(singleton)
-	class(self).ParticlesSetPreProcessTime(particles, gd.Float(time))
+	class(self).ParticlesSetPreProcessTime(gd.RID(particles), gd.Float(time))
 }
 
 /*
 Sets the explosiveness ratio. Equivalent to [member GPUParticles3D.explosiveness].
 */
-func ParticlesSetExplosivenessRatio(particles Resource.ID, ratio Float.X) { //gd:RenderingServer.particles_set_explosiveness_ratio
+func ParticlesSetExplosivenessRatio(particles RID.Particles, ratio Float.X) { //gd:RenderingServer.particles_set_explosiveness_ratio
 	once.Do(singleton)
-	class(self).ParticlesSetExplosivenessRatio(particles, gd.Float(ratio))
+	class(self).ParticlesSetExplosivenessRatio(gd.RID(particles), gd.Float(ratio))
 }
 
 /*
 Sets the emission randomness ratio. This randomizes the emission of particles within their phase. Equivalent to [member GPUParticles3D.randomness].
 */
-func ParticlesSetRandomnessRatio(particles Resource.ID, ratio Float.X) { //gd:RenderingServer.particles_set_randomness_ratio
+func ParticlesSetRandomnessRatio(particles RID.Particles, ratio Float.X) { //gd:RenderingServer.particles_set_randomness_ratio
 	once.Do(singleton)
-	class(self).ParticlesSetRandomnessRatio(particles, gd.Float(ratio))
+	class(self).ParticlesSetRandomnessRatio(gd.RID(particles), gd.Float(ratio))
 }
 
 /*
 Sets the value that informs a [ParticleProcessMaterial] to rush all particles towards the end of their lifetime.
 */
-func ParticlesSetInterpToEnd(particles Resource.ID, factor Float.X) { //gd:RenderingServer.particles_set_interp_to_end
+func ParticlesSetInterpToEnd(particles RID.Particles, factor Float.X) { //gd:RenderingServer.particles_set_interp_to_end
 	once.Do(singleton)
-	class(self).ParticlesSetInterpToEnd(particles, gd.Float(factor))
+	class(self).ParticlesSetInterpToEnd(gd.RID(particles), gd.Float(factor))
 }
 
 /*
 Sets the velocity of a particle node, that will be used by [member ParticleProcessMaterial.inherit_velocity_ratio].
 */
-func ParticlesSetEmitterVelocity(particles Resource.ID, velocity Vector3.XYZ) { //gd:RenderingServer.particles_set_emitter_velocity
+func ParticlesSetEmitterVelocity(particles RID.Particles, velocity Vector3.XYZ) { //gd:RenderingServer.particles_set_emitter_velocity
 	once.Do(singleton)
-	class(self).ParticlesSetEmitterVelocity(particles, gd.Vector3(velocity))
+	class(self).ParticlesSetEmitterVelocity(gd.RID(particles), gd.Vector3(velocity))
 }
 
 /*
 Sets a custom axis-aligned bounding box for the particle system. Equivalent to [member GPUParticles3D.visibility_aabb].
 */
-func ParticlesSetCustomAabb(particles Resource.ID, aabb AABB.PositionSize) { //gd:RenderingServer.particles_set_custom_aabb
+func ParticlesSetCustomAabb(particles RID.Particles, aabb AABB.PositionSize) { //gd:RenderingServer.particles_set_custom_aabb
 	once.Do(singleton)
-	class(self).ParticlesSetCustomAabb(particles, gd.AABB(aabb))
+	class(self).ParticlesSetCustomAabb(gd.RID(particles), gd.AABB(aabb))
 }
 
 /*
 Sets the speed scale of the particle system. Equivalent to [member GPUParticles3D.speed_scale].
 */
-func ParticlesSetSpeedScale(particles Resource.ID, scale Float.X) { //gd:RenderingServer.particles_set_speed_scale
+func ParticlesSetSpeedScale(particles RID.Particles, scale Float.X) { //gd:RenderingServer.particles_set_speed_scale
 	once.Do(singleton)
-	class(self).ParticlesSetSpeedScale(particles, gd.Float(scale))
+	class(self).ParticlesSetSpeedScale(gd.RID(particles), gd.Float(scale))
 }
 
 /*
 If [code]true[/code], particles use local coordinates. If [code]false[/code] they use global coordinates. Equivalent to [member GPUParticles3D.local_coords].
 */
-func ParticlesSetUseLocalCoordinates(particles Resource.ID, enable bool) { //gd:RenderingServer.particles_set_use_local_coordinates
+func ParticlesSetUseLocalCoordinates(particles RID.Particles, enable bool) { //gd:RenderingServer.particles_set_use_local_coordinates
 	once.Do(singleton)
-	class(self).ParticlesSetUseLocalCoordinates(particles, enable)
+	class(self).ParticlesSetUseLocalCoordinates(gd.RID(particles), enable)
 }
 
 /*
 Sets the material for processing the particles.
 [b]Note:[/b] This is not the material used to draw the materials. Equivalent to [member GPUParticles3D.process_material].
 */
-func ParticlesSetProcessMaterial(particles Resource.ID, material Resource.ID) { //gd:RenderingServer.particles_set_process_material
+func ParticlesSetProcessMaterial(particles RID.Particles, material RID.Material) { //gd:RenderingServer.particles_set_process_material
 	once.Do(singleton)
-	class(self).ParticlesSetProcessMaterial(particles, material)
+	class(self).ParticlesSetProcessMaterial(gd.RID(particles), gd.RID(material))
 }
 
 /*
 Sets the frame rate that the particle system rendering will be fixed to. Equivalent to [member GPUParticles3D.fixed_fps].
 */
-func ParticlesSetFixedFps(particles Resource.ID, fps int) { //gd:RenderingServer.particles_set_fixed_fps
+func ParticlesSetFixedFps(particles RID.Particles, fps int) { //gd:RenderingServer.particles_set_fixed_fps
 	once.Do(singleton)
-	class(self).ParticlesSetFixedFps(particles, gd.Int(fps))
+	class(self).ParticlesSetFixedFps(gd.RID(particles), gd.Int(fps))
 }
-func ParticlesSetInterpolate(particles Resource.ID, enable bool) { //gd:RenderingServer.particles_set_interpolate
+func ParticlesSetInterpolate(particles RID.Particles, enable bool) { //gd:RenderingServer.particles_set_interpolate
 	once.Do(singleton)
-	class(self).ParticlesSetInterpolate(particles, enable)
+	class(self).ParticlesSetInterpolate(gd.RID(particles), enable)
 }
 
 /*
 If [code]true[/code], uses fractional delta which smooths the movement of the particles. Equivalent to [member GPUParticles3D.fract_delta].
 */
-func ParticlesSetFractionalDelta(particles Resource.ID, enable bool) { //gd:RenderingServer.particles_set_fractional_delta
+func ParticlesSetFractionalDelta(particles RID.Particles, enable bool) { //gd:RenderingServer.particles_set_fractional_delta
 	once.Do(singleton)
-	class(self).ParticlesSetFractionalDelta(particles, enable)
+	class(self).ParticlesSetFractionalDelta(gd.RID(particles), enable)
 }
-func ParticlesSetCollisionBaseSize(particles Resource.ID, size Float.X) { //gd:RenderingServer.particles_set_collision_base_size
+func ParticlesSetCollisionBaseSize(particles RID.Particles, size Float.X) { //gd:RenderingServer.particles_set_collision_base_size
 	once.Do(singleton)
-	class(self).ParticlesSetCollisionBaseSize(particles, gd.Float(size))
+	class(self).ParticlesSetCollisionBaseSize(gd.RID(particles), gd.Float(size))
 }
-func ParticlesSetTransformAlign(particles Resource.ID, align gdclass.RenderingServerParticlesTransformAlign) { //gd:RenderingServer.particles_set_transform_align
+func ParticlesSetTransformAlign(particles RID.Particles, align gdclass.RenderingServerParticlesTransformAlign) { //gd:RenderingServer.particles_set_transform_align
 	once.Do(singleton)
-	class(self).ParticlesSetTransformAlign(particles, align)
+	class(self).ParticlesSetTransformAlign(gd.RID(particles), align)
 }
 
 /*
 If [param enable] is [code]true[/code], enables trails for the [param particles] with the specified [param length_sec] in seconds. Equivalent to [member GPUParticles3D.trail_enabled] and [member GPUParticles3D.trail_lifetime].
 */
-func ParticlesSetTrails(particles Resource.ID, enable bool, length_sec Float.X) { //gd:RenderingServer.particles_set_trails
+func ParticlesSetTrails(particles RID.Particles, enable bool, length_sec Float.X) { //gd:RenderingServer.particles_set_trails
 	once.Do(singleton)
-	class(self).ParticlesSetTrails(particles, enable, gd.Float(length_sec))
+	class(self).ParticlesSetTrails(gd.RID(particles), enable, gd.Float(length_sec))
 }
-func ParticlesSetTrailBindPoses(particles Resource.ID, bind_poses []Transform3D.BasisOrigin) { //gd:RenderingServer.particles_set_trail_bind_poses
+func ParticlesSetTrailBindPoses(particles RID.Particles, bind_poses []Transform3D.BasisOrigin) { //gd:RenderingServer.particles_set_trail_bind_poses
 	once.Do(singleton)
-	class(self).ParticlesSetTrailBindPoses(particles, gd.ArrayFromSlice[Array.Contains[gd.Transform3D]](bind_poses))
+	class(self).ParticlesSetTrailBindPoses(gd.RID(particles), gd.ArrayFromSlice[Array.Contains[gd.Transform3D]](bind_poses))
 }
 
 /*
 Returns [code]true[/code] if particles are not emitting and particles are set to inactive.
 */
-func ParticlesIsInactive(particles Resource.ID) bool { //gd:RenderingServer.particles_is_inactive
+func ParticlesIsInactive(particles RID.Particles) bool { //gd:RenderingServer.particles_is_inactive
 	once.Do(singleton)
-	return bool(class(self).ParticlesIsInactive(particles))
+	return bool(class(self).ParticlesIsInactive(gd.RID(particles)))
 }
 
 /*
 Add particle system to list of particle systems that need to be updated. Update will take place on the next frame, or on the next call to [method instances_cull_aabb], [method instances_cull_convex], or [method instances_cull_ray].
 */
-func ParticlesRequestProcess(particles Resource.ID) { //gd:RenderingServer.particles_request_process
+func ParticlesRequestProcess(particles RID.Particles) { //gd:RenderingServer.particles_request_process
 	once.Do(singleton)
-	class(self).ParticlesRequestProcess(particles)
+	class(self).ParticlesRequestProcess(gd.RID(particles))
 }
 
 /*
 Reset the particles on the next update. Equivalent to [method GPUParticles3D.restart].
 */
-func ParticlesRestart(particles Resource.ID) { //gd:RenderingServer.particles_restart
+func ParticlesRestart(particles RID.Particles) { //gd:RenderingServer.particles_restart
 	once.Do(singleton)
-	class(self).ParticlesRestart(particles)
+	class(self).ParticlesRestart(gd.RID(particles))
 }
-func ParticlesSetSubemitter(particles Resource.ID, subemitter_particles Resource.ID) { //gd:RenderingServer.particles_set_subemitter
+func ParticlesSetSubemitter(particles RID.Particles, subemitter_particles RID.Particles) { //gd:RenderingServer.particles_set_subemitter
 	once.Do(singleton)
-	class(self).ParticlesSetSubemitter(particles, subemitter_particles)
+	class(self).ParticlesSetSubemitter(gd.RID(particles), gd.RID(subemitter_particles))
 }
 
 /*
 Manually emits particles from the [param particles] instance.
 */
-func ParticlesEmit(particles Resource.ID, transform Transform3D.BasisOrigin, velocity Vector3.XYZ, color Color.RGBA, custom Color.RGBA, emit_flags int) { //gd:RenderingServer.particles_emit
+func ParticlesEmit(particles RID.Particles, transform Transform3D.BasisOrigin, velocity Vector3.XYZ, color Color.RGBA, custom Color.RGBA, emit_flags int) { //gd:RenderingServer.particles_emit
 	once.Do(singleton)
-	class(self).ParticlesEmit(particles, gd.Transform3D(transform), gd.Vector3(velocity), gd.Color(color), gd.Color(custom), gd.Int(emit_flags))
+	class(self).ParticlesEmit(gd.RID(particles), gd.Transform3D(transform), gd.Vector3(velocity), gd.Color(color), gd.Color(custom), gd.Int(emit_flags))
 }
 
 /*
 Sets the draw order of the particles to one of the named enums from [enum ParticlesDrawOrder]. See [enum ParticlesDrawOrder] for options. Equivalent to [member GPUParticles3D.draw_order].
 */
-func ParticlesSetDrawOrder(particles Resource.ID, order gdclass.RenderingServerParticlesDrawOrder) { //gd:RenderingServer.particles_set_draw_order
+func ParticlesSetDrawOrder(particles RID.Particles, order gdclass.RenderingServerParticlesDrawOrder) { //gd:RenderingServer.particles_set_draw_order
 	once.Do(singleton)
-	class(self).ParticlesSetDrawOrder(particles, order)
+	class(self).ParticlesSetDrawOrder(gd.RID(particles), order)
 }
 
 /*
 Sets the number of draw passes to use. Equivalent to [member GPUParticles3D.draw_passes].
 */
-func ParticlesSetDrawPasses(particles Resource.ID, count int) { //gd:RenderingServer.particles_set_draw_passes
+func ParticlesSetDrawPasses(particles RID.Particles, count int) { //gd:RenderingServer.particles_set_draw_passes
 	once.Do(singleton)
-	class(self).ParticlesSetDrawPasses(particles, gd.Int(count))
+	class(self).ParticlesSetDrawPasses(gd.RID(particles), gd.Int(count))
 }
 
 /*
 Sets the mesh to be used for the specified draw pass. Equivalent to [member GPUParticles3D.draw_pass_1], [member GPUParticles3D.draw_pass_2], [member GPUParticles3D.draw_pass_3], and [member GPUParticles3D.draw_pass_4].
 */
-func ParticlesSetDrawPassMesh(particles Resource.ID, pass int, mesh Resource.ID) { //gd:RenderingServer.particles_set_draw_pass_mesh
+func ParticlesSetDrawPassMesh(particles RID.Particles, pass int, mesh RID.Mesh) { //gd:RenderingServer.particles_set_draw_pass_mesh
 	once.Do(singleton)
-	class(self).ParticlesSetDrawPassMesh(particles, gd.Int(pass), mesh)
+	class(self).ParticlesSetDrawPassMesh(gd.RID(particles), gd.Int(pass), gd.RID(mesh))
 }
 
 /*
 Calculates and returns the axis-aligned bounding box that contains all the particles. Equivalent to [method GPUParticles3D.capture_aabb].
 */
-func ParticlesGetCurrentAabb(particles Resource.ID) AABB.PositionSize { //gd:RenderingServer.particles_get_current_aabb
+func ParticlesGetCurrentAabb(particles RID.Particles) AABB.PositionSize { //gd:RenderingServer.particles_get_current_aabb
 	once.Do(singleton)
-	return AABB.PositionSize(class(self).ParticlesGetCurrentAabb(particles))
+	return AABB.PositionSize(class(self).ParticlesGetCurrentAabb(gd.RID(particles)))
 }
 
 /*
 Sets the [Transform3D] that will be used by the particles when they first emit.
 */
-func ParticlesSetEmissionTransform(particles Resource.ID, transform Transform3D.BasisOrigin) { //gd:RenderingServer.particles_set_emission_transform
+func ParticlesSetEmissionTransform(particles RID.Particles, transform Transform3D.BasisOrigin) { //gd:RenderingServer.particles_set_emission_transform
 	once.Do(singleton)
-	class(self).ParticlesSetEmissionTransform(particles, gd.Transform3D(transform))
+	class(self).ParticlesSetEmissionTransform(gd.RID(particles), gd.Transform3D(transform))
 }
 
 /*
 Creates a new 3D GPU particle collision or attractor and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID can be used in most [code]particles_collision_*[/code] RenderingServer functions.
 [b]Note:[/b] The equivalent nodes are [GPUParticlesCollision3D] and [GPUParticlesAttractor3D].
 */
-func ParticlesCollisionCreate() Resource.ID { //gd:RenderingServer.particles_collision_create
+func ParticlesCollisionCreate() RID.ParticlesCollision { //gd:RenderingServer.particles_collision_create
 	once.Do(singleton)
-	return Resource.ID(class(self).ParticlesCollisionCreate())
+	return RID.ParticlesCollision(class(self).ParticlesCollisionCreate())
 }
 
 /*
 Sets the collision or attractor shape [param type] for the 3D GPU particles collision or attractor specified by the [param particles_collision] RID.
 */
-func ParticlesCollisionSetCollisionType(particles_collision Resource.ID, atype gdclass.RenderingServerParticlesCollisionType) { //gd:RenderingServer.particles_collision_set_collision_type
+func ParticlesCollisionSetCollisionType(particles_collision RID.ParticlesCollision, atype gdclass.RenderingServerParticlesCollisionType) { //gd:RenderingServer.particles_collision_set_collision_type
 	once.Do(singleton)
-	class(self).ParticlesCollisionSetCollisionType(particles_collision, atype)
+	class(self).ParticlesCollisionSetCollisionType(gd.RID(particles_collision), atype)
 }
 
 /*
 Sets the cull [param mask] for the 3D GPU particles collision or attractor specified by the [param particles_collision] RID. Equivalent to [member GPUParticlesCollision3D.cull_mask] or [member GPUParticlesAttractor3D.cull_mask] depending on the [param particles_collision] type.
 */
-func ParticlesCollisionSetCullMask(particles_collision Resource.ID, mask int) { //gd:RenderingServer.particles_collision_set_cull_mask
+func ParticlesCollisionSetCullMask(particles_collision RID.ParticlesCollision, mask int) { //gd:RenderingServer.particles_collision_set_cull_mask
 	once.Do(singleton)
-	class(self).ParticlesCollisionSetCullMask(particles_collision, gd.Int(mask))
+	class(self).ParticlesCollisionSetCullMask(gd.RID(particles_collision), gd.Int(mask))
 }
 
 /*
 Sets the [param radius] for the 3D GPU particles sphere collision or attractor specified by the [param particles_collision] RID. Equivalent to [member GPUParticlesCollisionSphere3D.radius] or [member GPUParticlesAttractorSphere3D.radius] depending on the [param particles_collision] type.
 */
-func ParticlesCollisionSetSphereRadius(particles_collision Resource.ID, radius Float.X) { //gd:RenderingServer.particles_collision_set_sphere_radius
+func ParticlesCollisionSetSphereRadius(particles_collision RID.ParticlesCollision, radius Float.X) { //gd:RenderingServer.particles_collision_set_sphere_radius
 	once.Do(singleton)
-	class(self).ParticlesCollisionSetSphereRadius(particles_collision, gd.Float(radius))
+	class(self).ParticlesCollisionSetSphereRadius(gd.RID(particles_collision), gd.Float(radius))
 }
 
 /*
 Sets the [param extents] for the 3D GPU particles collision by the [param particles_collision] RID. Equivalent to [member GPUParticlesCollisionBox3D.size], [member GPUParticlesCollisionSDF3D.size], [member GPUParticlesCollisionHeightField3D.size], [member GPUParticlesAttractorBox3D.size] or [member GPUParticlesAttractorVectorField3D.size] depending on the [param particles_collision] type.
 */
-func ParticlesCollisionSetBoxExtents(particles_collision Resource.ID, extents Vector3.XYZ) { //gd:RenderingServer.particles_collision_set_box_extents
+func ParticlesCollisionSetBoxExtents(particles_collision RID.ParticlesCollision, extents Vector3.XYZ) { //gd:RenderingServer.particles_collision_set_box_extents
 	once.Do(singleton)
-	class(self).ParticlesCollisionSetBoxExtents(particles_collision, gd.Vector3(extents))
+	class(self).ParticlesCollisionSetBoxExtents(gd.RID(particles_collision), gd.Vector3(extents))
 }
 
 /*
 Sets the [param strength] for the 3D GPU particles attractor specified by the [param particles_collision] RID. Only used for attractors, not colliders. Equivalent to [member GPUParticlesAttractor3D.strength].
 */
-func ParticlesCollisionSetAttractorStrength(particles_collision Resource.ID, strength Float.X) { //gd:RenderingServer.particles_collision_set_attractor_strength
+func ParticlesCollisionSetAttractorStrength(particles_collision RID.ParticlesCollision, strength Float.X) { //gd:RenderingServer.particles_collision_set_attractor_strength
 	once.Do(singleton)
-	class(self).ParticlesCollisionSetAttractorStrength(particles_collision, gd.Float(strength))
+	class(self).ParticlesCollisionSetAttractorStrength(gd.RID(particles_collision), gd.Float(strength))
 }
 
 /*
 Sets the directionality [param amount] for the 3D GPU particles attractor specified by the [param particles_collision] RID. Only used for attractors, not colliders. Equivalent to [member GPUParticlesAttractor3D.directionality].
 */
-func ParticlesCollisionSetAttractorDirectionality(particles_collision Resource.ID, amount Float.X) { //gd:RenderingServer.particles_collision_set_attractor_directionality
+func ParticlesCollisionSetAttractorDirectionality(particles_collision RID.ParticlesCollision, amount Float.X) { //gd:RenderingServer.particles_collision_set_attractor_directionality
 	once.Do(singleton)
-	class(self).ParticlesCollisionSetAttractorDirectionality(particles_collision, gd.Float(amount))
+	class(self).ParticlesCollisionSetAttractorDirectionality(gd.RID(particles_collision), gd.Float(amount))
 }
 
 /*
 Sets the attenuation [param curve] for the 3D GPU particles attractor specified by the [param particles_collision] RID. Only used for attractors, not colliders. Equivalent to [member GPUParticlesAttractor3D.attenuation].
 */
-func ParticlesCollisionSetAttractorAttenuation(particles_collision Resource.ID, curve Float.X) { //gd:RenderingServer.particles_collision_set_attractor_attenuation
+func ParticlesCollisionSetAttractorAttenuation(particles_collision RID.ParticlesCollision, curve Float.X) { //gd:RenderingServer.particles_collision_set_attractor_attenuation
 	once.Do(singleton)
-	class(self).ParticlesCollisionSetAttractorAttenuation(particles_collision, gd.Float(curve))
+	class(self).ParticlesCollisionSetAttractorAttenuation(gd.RID(particles_collision), gd.Float(curve))
 }
 
 /*
 Sets the signed distance field [param texture] for the 3D GPU particles collision specified by the [param particles_collision] RID. Equivalent to [member GPUParticlesCollisionSDF3D.texture] or [member GPUParticlesAttractorVectorField3D.texture] depending on the [param particles_collision] type.
 */
-func ParticlesCollisionSetFieldTexture(particles_collision Resource.ID, texture Resource.ID) { //gd:RenderingServer.particles_collision_set_field_texture
+func ParticlesCollisionSetFieldTexture(particles_collision RID.ParticlesCollision, texture RID.Texture) { //gd:RenderingServer.particles_collision_set_field_texture
 	once.Do(singleton)
-	class(self).ParticlesCollisionSetFieldTexture(particles_collision, texture)
+	class(self).ParticlesCollisionSetFieldTexture(gd.RID(particles_collision), gd.RID(texture))
 }
 
 /*
 Requests an update for the 3D GPU particle collision heightfield. This may be automatically called by the 3D GPU particle collision heightfield depending on its [member GPUParticlesCollisionHeightField3D.update_mode].
 */
-func ParticlesCollisionHeightFieldUpdate(particles_collision Resource.ID) { //gd:RenderingServer.particles_collision_height_field_update
+func ParticlesCollisionHeightFieldUpdate(particles_collision RID.ParticlesCollision) { //gd:RenderingServer.particles_collision_height_field_update
 	once.Do(singleton)
-	class(self).ParticlesCollisionHeightFieldUpdate(particles_collision)
+	class(self).ParticlesCollisionHeightFieldUpdate(gd.RID(particles_collision))
 }
 
 /*
 Sets the heightmap [param resolution] for the 3D GPU particles heightfield collision specified by the [param particles_collision] RID. Equivalent to [member GPUParticlesCollisionHeightField3D.resolution].
 */
-func ParticlesCollisionSetHeightFieldResolution(particles_collision Resource.ID, resolution gdclass.RenderingServerParticlesCollisionHeightfieldResolution) { //gd:RenderingServer.particles_collision_set_height_field_resolution
+func ParticlesCollisionSetHeightFieldResolution(particles_collision RID.ParticlesCollision, resolution gdclass.RenderingServerParticlesCollisionHeightfieldResolution) { //gd:RenderingServer.particles_collision_set_height_field_resolution
 	once.Do(singleton)
-	class(self).ParticlesCollisionSetHeightFieldResolution(particles_collision, resolution)
+	class(self).ParticlesCollisionSetHeightFieldResolution(gd.RID(particles_collision), resolution)
 }
 
 /*
@@ -1681,33 +1681,33 @@ Creates a new fog volume and adds it to the RenderingServer. It can be accessed 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent node is [FogVolume].
 */
-func FogVolumeCreate() Resource.ID { //gd:RenderingServer.fog_volume_create
+func FogVolumeCreate() RID.FogVolume { //gd:RenderingServer.fog_volume_create
 	once.Do(singleton)
-	return Resource.ID(class(self).FogVolumeCreate())
+	return RID.FogVolume(class(self).FogVolumeCreate())
 }
 
 /*
 Sets the shape of the fog volume to either [constant RenderingServer.FOG_VOLUME_SHAPE_ELLIPSOID], [constant RenderingServer.FOG_VOLUME_SHAPE_CONE], [constant RenderingServer.FOG_VOLUME_SHAPE_CYLINDER], [constant RenderingServer.FOG_VOLUME_SHAPE_BOX] or [constant RenderingServer.FOG_VOLUME_SHAPE_WORLD].
 */
-func FogVolumeSetShape(fog_volume Resource.ID, shape gdclass.RenderingServerFogVolumeShape) { //gd:RenderingServer.fog_volume_set_shape
+func FogVolumeSetShape(fog_volume RID.FogVolume, shape gdclass.RenderingServerFogVolumeShape) { //gd:RenderingServer.fog_volume_set_shape
 	once.Do(singleton)
-	class(self).FogVolumeSetShape(fog_volume, shape)
+	class(self).FogVolumeSetShape(gd.RID(fog_volume), shape)
 }
 
 /*
 Sets the size of the fog volume when shape is [constant RenderingServer.FOG_VOLUME_SHAPE_ELLIPSOID], [constant RenderingServer.FOG_VOLUME_SHAPE_CONE], [constant RenderingServer.FOG_VOLUME_SHAPE_CYLINDER] or [constant RenderingServer.FOG_VOLUME_SHAPE_BOX].
 */
-func FogVolumeSetSize(fog_volume Resource.ID, size Vector3.XYZ) { //gd:RenderingServer.fog_volume_set_size
+func FogVolumeSetSize(fog_volume RID.FogVolume, size Vector3.XYZ) { //gd:RenderingServer.fog_volume_set_size
 	once.Do(singleton)
-	class(self).FogVolumeSetSize(fog_volume, gd.Vector3(size))
+	class(self).FogVolumeSetSize(gd.RID(fog_volume), gd.Vector3(size))
 }
 
 /*
 Sets the [Material] of the fog volume. Can be either a [FogMaterial] or a custom [ShaderMaterial].
 */
-func FogVolumeSetMaterial(fog_volume Resource.ID, material Resource.ID) { //gd:RenderingServer.fog_volume_set_material
+func FogVolumeSetMaterial(fog_volume RID.FogVolume, material RID.Material) { //gd:RenderingServer.fog_volume_set_material
 	once.Do(singleton)
-	class(self).FogVolumeSetMaterial(fog_volume, material)
+	class(self).FogVolumeSetMaterial(gd.RID(fog_volume), gd.RID(material))
 }
 
 /*
@@ -1716,17 +1716,17 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 To place in a scene, attach this mesh to an instance using [method instance_set_base] using the returned RID.
 [b]Note:[/b] The equivalent node is [VisibleOnScreenNotifier3D].
 */
-func VisibilityNotifierCreate() Resource.ID { //gd:RenderingServer.visibility_notifier_create
+func VisibilityNotifierCreate() RID.VisibilityNotifier { //gd:RenderingServer.visibility_notifier_create
 	once.Do(singleton)
-	return Resource.ID(class(self).VisibilityNotifierCreate())
+	return RID.VisibilityNotifier(class(self).VisibilityNotifierCreate())
 }
-func VisibilityNotifierSetAabb(notifier Resource.ID, aabb AABB.PositionSize) { //gd:RenderingServer.visibility_notifier_set_aabb
+func VisibilityNotifierSetAabb(notifier RID.VisibilityNotifier, aabb AABB.PositionSize) { //gd:RenderingServer.visibility_notifier_set_aabb
 	once.Do(singleton)
-	class(self).VisibilityNotifierSetAabb(notifier, gd.AABB(aabb))
+	class(self).VisibilityNotifierSetAabb(gd.RID(notifier), gd.AABB(aabb))
 }
-func VisibilityNotifierSetCallbacks(notifier Resource.ID, enter_callable func(), exit_callable func()) { //gd:RenderingServer.visibility_notifier_set_callbacks
+func VisibilityNotifierSetCallbacks(notifier RID.VisibilityNotifier, enter_callable func(), exit_callable func()) { //gd:RenderingServer.visibility_notifier_set_callbacks
 	once.Do(singleton)
-	class(self).VisibilityNotifierSetCallbacks(notifier, Callable.New(enter_callable), Callable.New(exit_callable))
+	class(self).VisibilityNotifierSetCallbacks(gd.RID(notifier), Callable.New(enter_callable), Callable.New(exit_callable))
 }
 
 /*
@@ -1734,17 +1734,17 @@ Creates an occluder instance and adds it to the RenderingServer. It can be acces
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent resource is [Occluder3D] (not to be confused with the [OccluderInstance3D] node).
 */
-func OccluderCreate() Resource.ID { //gd:RenderingServer.occluder_create
+func OccluderCreate() RID.Occluder { //gd:RenderingServer.occluder_create
 	once.Do(singleton)
-	return Resource.ID(class(self).OccluderCreate())
+	return RID.Occluder(class(self).OccluderCreate())
 }
 
 /*
 Sets the mesh data for the given occluder RID, which controls the shape of the occlusion culling that will be performed.
 */
-func OccluderSetMesh(occluder Resource.ID, vertices []Vector3.XYZ, indices []int32) { //gd:RenderingServer.occluder_set_mesh
+func OccluderSetMesh(occluder RID.Occluder, vertices []Vector3.XYZ, indices []int32) { //gd:RenderingServer.occluder_set_mesh
 	once.Do(singleton)
-	class(self).OccluderSetMesh(occluder, gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&vertices))), gd.NewPackedInt32Slice(indices))
+	class(self).OccluderSetMesh(gd.RID(occluder), gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&vertices))), gd.NewPackedInt32Slice(indices))
 }
 
 /*
@@ -1752,81 +1752,81 @@ Creates a 3D camera and adds it to the RenderingServer. It can be accessed with 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent node is [Camera3D].
 */
-func CameraCreate() Resource.ID { //gd:RenderingServer.camera_create
+func CameraCreate() RID.Camera { //gd:RenderingServer.camera_create
 	once.Do(singleton)
-	return Resource.ID(class(self).CameraCreate())
+	return RID.Camera(class(self).CameraCreate())
 }
 
 /*
 Sets camera to use perspective projection. Objects on the screen becomes smaller when they are far away.
 */
-func CameraSetPerspective(camera Resource.ID, fovy_degrees Float.X, z_near Float.X, z_far Float.X) { //gd:RenderingServer.camera_set_perspective
+func CameraSetPerspective(camera RID.Camera, fovy_degrees Float.X, z_near Float.X, z_far Float.X) { //gd:RenderingServer.camera_set_perspective
 	once.Do(singleton)
-	class(self).CameraSetPerspective(camera, gd.Float(fovy_degrees), gd.Float(z_near), gd.Float(z_far))
+	class(self).CameraSetPerspective(gd.RID(camera), gd.Float(fovy_degrees), gd.Float(z_near), gd.Float(z_far))
 }
 
 /*
 Sets camera to use orthogonal projection, also known as orthographic projection. Objects remain the same size on the screen no matter how far away they are.
 */
-func CameraSetOrthogonal(camera Resource.ID, size Float.X, z_near Float.X, z_far Float.X) { //gd:RenderingServer.camera_set_orthogonal
+func CameraSetOrthogonal(camera RID.Camera, size Float.X, z_near Float.X, z_far Float.X) { //gd:RenderingServer.camera_set_orthogonal
 	once.Do(singleton)
-	class(self).CameraSetOrthogonal(camera, gd.Float(size), gd.Float(z_near), gd.Float(z_far))
+	class(self).CameraSetOrthogonal(gd.RID(camera), gd.Float(size), gd.Float(z_near), gd.Float(z_far))
 }
 
 /*
 Sets camera to use frustum projection. This mode allows adjusting the [param offset] argument to create "tilted frustum" effects.
 */
-func CameraSetFrustum(camera Resource.ID, size Float.X, offset Vector2.XY, z_near Float.X, z_far Float.X) { //gd:RenderingServer.camera_set_frustum
+func CameraSetFrustum(camera RID.Camera, size Float.X, offset Vector2.XY, z_near Float.X, z_far Float.X) { //gd:RenderingServer.camera_set_frustum
 	once.Do(singleton)
-	class(self).CameraSetFrustum(camera, gd.Float(size), gd.Vector2(offset), gd.Float(z_near), gd.Float(z_far))
+	class(self).CameraSetFrustum(gd.RID(camera), gd.Float(size), gd.Vector2(offset), gd.Float(z_near), gd.Float(z_far))
 }
 
 /*
 Sets [Transform3D] of camera.
 */
-func CameraSetTransform(camera Resource.ID, transform Transform3D.BasisOrigin) { //gd:RenderingServer.camera_set_transform
+func CameraSetTransform(camera RID.Camera, transform Transform3D.BasisOrigin) { //gd:RenderingServer.camera_set_transform
 	once.Do(singleton)
-	class(self).CameraSetTransform(camera, gd.Transform3D(transform))
+	class(self).CameraSetTransform(gd.RID(camera), gd.Transform3D(transform))
 }
 
 /*
 Sets the cull mask associated with this camera. The cull mask describes which 3D layers are rendered by this camera. Equivalent to [member Camera3D.cull_mask].
 */
-func CameraSetCullMask(camera Resource.ID, layers int) { //gd:RenderingServer.camera_set_cull_mask
+func CameraSetCullMask(camera RID.Camera, layers int) { //gd:RenderingServer.camera_set_cull_mask
 	once.Do(singleton)
-	class(self).CameraSetCullMask(camera, gd.Int(layers))
+	class(self).CameraSetCullMask(gd.RID(camera), gd.Int(layers))
 }
 
 /*
 Sets the environment used by this camera. Equivalent to [member Camera3D.environment].
 */
-func CameraSetEnvironment(camera Resource.ID, env Resource.ID) { //gd:RenderingServer.camera_set_environment
+func CameraSetEnvironment(camera RID.Camera, env RID.Environment) { //gd:RenderingServer.camera_set_environment
 	once.Do(singleton)
-	class(self).CameraSetEnvironment(camera, env)
+	class(self).CameraSetEnvironment(gd.RID(camera), gd.RID(env))
 }
 
 /*
 Sets the camera_attributes created with [method camera_attributes_create] to the given camera.
 */
-func CameraSetCameraAttributes(camera Resource.ID, effects Resource.ID) { //gd:RenderingServer.camera_set_camera_attributes
+func CameraSetCameraAttributes(camera RID.Camera, effects RID.CameraAttributes) { //gd:RenderingServer.camera_set_camera_attributes
 	once.Do(singleton)
-	class(self).CameraSetCameraAttributes(camera, effects)
+	class(self).CameraSetCameraAttributes(gd.RID(camera), gd.RID(effects))
 }
 
 /*
 Sets the compositor used by this camera. Equivalent to [member Camera3D.compositor].
 */
-func CameraSetCompositor(camera Resource.ID, compositor Resource.ID) { //gd:RenderingServer.camera_set_compositor
+func CameraSetCompositor(camera RID.Camera, compositor RID.Compositor) { //gd:RenderingServer.camera_set_compositor
 	once.Do(singleton)
-	class(self).CameraSetCompositor(camera, compositor)
+	class(self).CameraSetCompositor(gd.RID(camera), gd.RID(compositor))
 }
 
 /*
 If [code]true[/code], preserves the horizontal aspect ratio which is equivalent to [constant Camera3D.KEEP_WIDTH]. If [code]false[/code], preserves the vertical aspect ratio which is equivalent to [constant Camera3D.KEEP_HEIGHT].
 */
-func CameraSetUseVerticalAspect(camera Resource.ID, enable bool) { //gd:RenderingServer.camera_set_use_vertical_aspect
+func CameraSetUseVerticalAspect(camera RID.Camera, enable bool) { //gd:RenderingServer.camera_set_use_vertical_aspect
 	once.Do(singleton)
-	class(self).CameraSetUseVerticalAspect(camera, enable)
+	class(self).CameraSetUseVerticalAspect(gd.RID(camera), enable)
 }
 
 /*
@@ -1834,41 +1834,41 @@ Creates an empty viewport and adds it to the RenderingServer. It can be accessed
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent node is [Viewport].
 */
-func ViewportCreate() Resource.ID { //gd:RenderingServer.viewport_create
+func ViewportCreate() RID.Viewport { //gd:RenderingServer.viewport_create
 	once.Do(singleton)
-	return Resource.ID(class(self).ViewportCreate())
+	return RID.Viewport(class(self).ViewportCreate())
 }
 
 /*
 If [code]true[/code], the viewport uses augmented or virtual reality technologies. See [XRInterface].
 */
-func ViewportSetUseXr(viewport Resource.ID, use_xr bool) { //gd:RenderingServer.viewport_set_use_xr
+func ViewportSetUseXr(viewport RID.Viewport, use_xr bool) { //gd:RenderingServer.viewport_set_use_xr
 	once.Do(singleton)
-	class(self).ViewportSetUseXr(viewport, use_xr)
+	class(self).ViewportSetUseXr(gd.RID(viewport), use_xr)
 }
 
 /*
 Sets the viewport's width and height in pixels.
 */
-func ViewportSetSize(viewport Resource.ID, width int, height int) { //gd:RenderingServer.viewport_set_size
+func ViewportSetSize(viewport RID.Viewport, width int, height int) { //gd:RenderingServer.viewport_set_size
 	once.Do(singleton)
-	class(self).ViewportSetSize(viewport, gd.Int(width), gd.Int(height))
+	class(self).ViewportSetSize(gd.RID(viewport), gd.Int(width), gd.Int(height))
 }
 
 /*
 If [code]true[/code], sets the viewport active, else sets it inactive.
 */
-func ViewportSetActive(viewport Resource.ID, active bool) { //gd:RenderingServer.viewport_set_active
+func ViewportSetActive(viewport RID.Viewport, active bool) { //gd:RenderingServer.viewport_set_active
 	once.Do(singleton)
-	class(self).ViewportSetActive(viewport, active)
+	class(self).ViewportSetActive(gd.RID(viewport), active)
 }
 
 /*
 Sets the viewport's parent to the viewport specified by the [param parent_viewport] RID.
 */
-func ViewportSetParentViewport(viewport Resource.ID, parent_viewport Resource.ID) { //gd:RenderingServer.viewport_set_parent_viewport
+func ViewportSetParentViewport(viewport RID.Viewport, parent_viewport RID.Viewport) { //gd:RenderingServer.viewport_set_parent_viewport
 	once.Do(singleton)
-	class(self).ViewportSetParentViewport(viewport, parent_viewport)
+	class(self).ViewportSetParentViewport(gd.RID(viewport), gd.RID(parent_viewport))
 }
 
 /*
@@ -1886,303 +1886,303 @@ func _ready():
 [/codeblocks]
 Using this can result in significant optimization, especially on lower-end devices. However, it comes at the cost of having to manage your viewports manually. For further optimization, see [method viewport_set_render_direct_to_screen].
 */
-func ViewportAttachToScreen(viewport Resource.ID) { //gd:RenderingServer.viewport_attach_to_screen
+func ViewportAttachToScreen(viewport RID.Viewport) { //gd:RenderingServer.viewport_attach_to_screen
 	once.Do(singleton)
-	class(self).ViewportAttachToScreen(viewport, gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.Int(0))
+	class(self).ViewportAttachToScreen(gd.RID(viewport), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.Int(0))
 }
 
 /*
 If [code]true[/code], render the contents of the viewport directly to screen. This allows a low-level optimization where you can skip drawing a viewport to the root viewport. While this optimization can result in a significant increase in speed (especially on older devices), it comes at a cost of usability. When this is enabled, you cannot read from the viewport or from the screen_texture. You also lose the benefit of certain window settings, such as the various stretch modes. Another consequence to be aware of is that in 2D the rendering happens in window coordinates, so if you have a viewport that is double the size of the window, and you set this, then only the portion that fits within the window will be drawn, no automatic scaling is possible, even if your game scene is significantly larger than the window size.
 */
-func ViewportSetRenderDirectToScreen(viewport Resource.ID, enabled bool) { //gd:RenderingServer.viewport_set_render_direct_to_screen
+func ViewportSetRenderDirectToScreen(viewport RID.Viewport, enabled bool) { //gd:RenderingServer.viewport_set_render_direct_to_screen
 	once.Do(singleton)
-	class(self).ViewportSetRenderDirectToScreen(viewport, enabled)
+	class(self).ViewportSetRenderDirectToScreen(gd.RID(viewport), enabled)
 }
 
 /*
 Sets the rendering mask associated with this [Viewport]. Only [CanvasItem] nodes with a matching rendering visibility layer will be rendered by this [Viewport].
 */
-func ViewportSetCanvasCullMask(viewport Resource.ID, canvas_cull_mask int) { //gd:RenderingServer.viewport_set_canvas_cull_mask
+func ViewportSetCanvasCullMask(viewport RID.Viewport, canvas_cull_mask int) { //gd:RenderingServer.viewport_set_canvas_cull_mask
 	once.Do(singleton)
-	class(self).ViewportSetCanvasCullMask(viewport, gd.Int(canvas_cull_mask))
+	class(self).ViewportSetCanvasCullMask(gd.RID(viewport), gd.Int(canvas_cull_mask))
 }
 
 /*
 Sets the 3D resolution scaling mode. Bilinear scaling renders at different resolution to either undersample or supersample the viewport. FidelityFX Super Resolution 1.0, abbreviated to FSR, is an upscaling technology that produces high quality images at fast framerates by using a spatially aware upscaling algorithm. FSR is slightly more expensive than bilinear, but it produces significantly higher image quality. FSR should be used where possible.
 */
-func ViewportSetScaling3dMode(viewport Resource.ID, scaling_3d_mode gdclass.RenderingServerViewportScaling3DMode) { //gd:RenderingServer.viewport_set_scaling_3d_mode
+func ViewportSetScaling3dMode(viewport RID.Viewport, scaling_3d_mode gdclass.RenderingServerViewportScaling3DMode) { //gd:RenderingServer.viewport_set_scaling_3d_mode
 	once.Do(singleton)
-	class(self).ViewportSetScaling3dMode(viewport, scaling_3d_mode)
+	class(self).ViewportSetScaling3dMode(gd.RID(viewport), scaling_3d_mode)
 }
 
 /*
 Scales the 3D render buffer based on the viewport size uses an image filter specified in [enum ViewportScaling3DMode] to scale the output image to the full viewport size. Values lower than [code]1.0[/code] can be used to speed up 3D rendering at the cost of quality (undersampling). Values greater than [code]1.0[/code] are only valid for bilinear mode and can be used to improve 3D rendering quality at a high performance cost (supersampling). See also [enum ViewportMSAA] for multi-sample antialiasing, which is significantly cheaper but only smoothens the edges of polygons.
 When using FSR upscaling, AMD recommends exposing the following values as preset options to users "Ultra Quality: 0.77", "Quality: 0.67", "Balanced: 0.59", "Performance: 0.5" instead of exposing the entire scale.
 */
-func ViewportSetScaling3dScale(viewport Resource.ID, scale Float.X) { //gd:RenderingServer.viewport_set_scaling_3d_scale
+func ViewportSetScaling3dScale(viewport RID.Viewport, scale Float.X) { //gd:RenderingServer.viewport_set_scaling_3d_scale
 	once.Do(singleton)
-	class(self).ViewportSetScaling3dScale(viewport, gd.Float(scale))
+	class(self).ViewportSetScaling3dScale(gd.RID(viewport), gd.Float(scale))
 }
 
 /*
 Determines how sharp the upscaled image will be when using the FSR upscaling mode. Sharpness halves with every whole number. Values go from 0.0 (sharpest) to 2.0. Values above 2.0 won't make a visible difference.
 */
-func ViewportSetFsrSharpness(viewport Resource.ID, sharpness Float.X) { //gd:RenderingServer.viewport_set_fsr_sharpness
+func ViewportSetFsrSharpness(viewport RID.Viewport, sharpness Float.X) { //gd:RenderingServer.viewport_set_fsr_sharpness
 	once.Do(singleton)
-	class(self).ViewportSetFsrSharpness(viewport, gd.Float(sharpness))
+	class(self).ViewportSetFsrSharpness(gd.RID(viewport), gd.Float(sharpness))
 }
 
 /*
 Affects the final texture sharpness by reading from a lower or higher mipmap (also called "texture LOD bias"). Negative values make mipmapped textures sharper but grainier when viewed at a distance, while positive values make mipmapped textures blurrier (even when up close). To get sharper textures at a distance without introducing too much graininess, set this between [code]-0.75[/code] and [code]0.0[/code]. Enabling temporal antialiasing ([member ProjectSettings.rendering/anti_aliasing/quality/use_taa]) can help reduce the graininess visible when using negative mipmap bias.
 [b]Note:[/b] When the 3D scaling mode is set to FSR 1.0, this value is used to adjust the automatic mipmap bias which is calculated internally based on the scale factor. The formula for this is [code]-log2(1.0 / scale) + mipmap_bias[/code].
 */
-func ViewportSetTextureMipmapBias(viewport Resource.ID, mipmap_bias Float.X) { //gd:RenderingServer.viewport_set_texture_mipmap_bias
+func ViewportSetTextureMipmapBias(viewport RID.Viewport, mipmap_bias Float.X) { //gd:RenderingServer.viewport_set_texture_mipmap_bias
 	once.Do(singleton)
-	class(self).ViewportSetTextureMipmapBias(viewport, gd.Float(mipmap_bias))
+	class(self).ViewportSetTextureMipmapBias(gd.RID(viewport), gd.Float(mipmap_bias))
 }
 
 /*
 Sets when the viewport should be updated. See [enum ViewportUpdateMode] constants for options.
 */
-func ViewportSetUpdateMode(viewport Resource.ID, update_mode gdclass.RenderingServerViewportUpdateMode) { //gd:RenderingServer.viewport_set_update_mode
+func ViewportSetUpdateMode(viewport RID.Viewport, update_mode gdclass.RenderingServerViewportUpdateMode) { //gd:RenderingServer.viewport_set_update_mode
 	once.Do(singleton)
-	class(self).ViewportSetUpdateMode(viewport, update_mode)
+	class(self).ViewportSetUpdateMode(gd.RID(viewport), update_mode)
 }
 
 /*
 Returns the viewport's update mode. See [enum ViewportUpdateMode] constants for options.
 [b]Warning:[/b] Calling this from any thread other than the rendering thread will be detrimental to performance.
 */
-func ViewportGetUpdateMode(viewport Resource.ID) gdclass.RenderingServerViewportUpdateMode { //gd:RenderingServer.viewport_get_update_mode
+func ViewportGetUpdateMode(viewport RID.Viewport) gdclass.RenderingServerViewportUpdateMode { //gd:RenderingServer.viewport_get_update_mode
 	once.Do(singleton)
-	return gdclass.RenderingServerViewportUpdateMode(class(self).ViewportGetUpdateMode(viewport))
+	return gdclass.RenderingServerViewportUpdateMode(class(self).ViewportGetUpdateMode(gd.RID(viewport)))
 }
 
 /*
 Sets the clear mode of a viewport. See [enum ViewportClearMode] for options.
 */
-func ViewportSetClearMode(viewport Resource.ID, clear_mode gdclass.RenderingServerViewportClearMode) { //gd:RenderingServer.viewport_set_clear_mode
+func ViewportSetClearMode(viewport RID.Viewport, clear_mode gdclass.RenderingServerViewportClearMode) { //gd:RenderingServer.viewport_set_clear_mode
 	once.Do(singleton)
-	class(self).ViewportSetClearMode(viewport, clear_mode)
+	class(self).ViewportSetClearMode(gd.RID(viewport), clear_mode)
 }
 
 /*
 Returns the render target for the viewport.
 */
-func ViewportGetRenderTarget(viewport Resource.ID) Resource.ID { //gd:RenderingServer.viewport_get_render_target
+func ViewportGetRenderTarget(viewport RID.Viewport) RID.Framebuffer { //gd:RenderingServer.viewport_get_render_target
 	once.Do(singleton)
-	return Resource.ID(class(self).ViewportGetRenderTarget(viewport))
+	return RID.Framebuffer(class(self).ViewportGetRenderTarget(gd.RID(viewport)))
 }
 
 /*
 Returns the viewport's last rendered frame.
 */
-func ViewportGetTexture(viewport Resource.ID) Resource.ID { //gd:RenderingServer.viewport_get_texture
+func ViewportGetTexture(viewport RID.Viewport) RID.Texture { //gd:RenderingServer.viewport_get_texture
 	once.Do(singleton)
-	return Resource.ID(class(self).ViewportGetTexture(viewport))
+	return RID.Texture(class(self).ViewportGetTexture(gd.RID(viewport)))
 }
 
 /*
 If [code]true[/code], the viewport's 3D elements are not rendered.
 */
-func ViewportSetDisable3d(viewport Resource.ID, disable bool) { //gd:RenderingServer.viewport_set_disable_3d
+func ViewportSetDisable3d(viewport RID.Viewport, disable bool) { //gd:RenderingServer.viewport_set_disable_3d
 	once.Do(singleton)
-	class(self).ViewportSetDisable3d(viewport, disable)
+	class(self).ViewportSetDisable3d(gd.RID(viewport), disable)
 }
 
 /*
 If [code]true[/code], the viewport's canvas (i.e. 2D and GUI elements) is not rendered.
 */
-func ViewportSetDisable2d(viewport Resource.ID, disable bool) { //gd:RenderingServer.viewport_set_disable_2d
+func ViewportSetDisable2d(viewport RID.Viewport, disable bool) { //gd:RenderingServer.viewport_set_disable_2d
 	once.Do(singleton)
-	class(self).ViewportSetDisable2d(viewport, disable)
+	class(self).ViewportSetDisable2d(gd.RID(viewport), disable)
 }
 
 /*
 Sets the viewport's environment mode which allows enabling or disabling rendering of 3D environment over 2D canvas. When disabled, 2D will not be affected by the environment. When enabled, 2D will be affected by the environment if the environment background mode is [constant ENV_BG_CANVAS]. The default behavior is to inherit the setting from the viewport's parent. If the topmost parent is also set to [constant VIEWPORT_ENVIRONMENT_INHERIT], then the behavior will be the same as if it was set to [constant VIEWPORT_ENVIRONMENT_ENABLED].
 */
-func ViewportSetEnvironmentMode(viewport Resource.ID, mode gdclass.RenderingServerViewportEnvironmentMode) { //gd:RenderingServer.viewport_set_environment_mode
+func ViewportSetEnvironmentMode(viewport RID.Viewport, mode gdclass.RenderingServerViewportEnvironmentMode) { //gd:RenderingServer.viewport_set_environment_mode
 	once.Do(singleton)
-	class(self).ViewportSetEnvironmentMode(viewport, mode)
+	class(self).ViewportSetEnvironmentMode(gd.RID(viewport), mode)
 }
 
 /*
 Sets a viewport's camera.
 */
-func ViewportAttachCamera(viewport Resource.ID, camera Resource.ID) { //gd:RenderingServer.viewport_attach_camera
+func ViewportAttachCamera(viewport RID.Viewport, camera RID.Camera) { //gd:RenderingServer.viewport_attach_camera
 	once.Do(singleton)
-	class(self).ViewportAttachCamera(viewport, camera)
+	class(self).ViewportAttachCamera(gd.RID(viewport), gd.RID(camera))
 }
 
 /*
 Sets a viewport's scenario. The scenario contains information about environment information, reflection atlas, etc.
 */
-func ViewportSetScenario(viewport Resource.ID, scenario Resource.ID) { //gd:RenderingServer.viewport_set_scenario
+func ViewportSetScenario(viewport RID.Viewport, scenario RID.Scenario) { //gd:RenderingServer.viewport_set_scenario
 	once.Do(singleton)
-	class(self).ViewportSetScenario(viewport, scenario)
+	class(self).ViewportSetScenario(gd.RID(viewport), gd.RID(scenario))
 }
 
 /*
 Sets a viewport's canvas.
 */
-func ViewportAttachCanvas(viewport Resource.ID, canvas Resource.ID) { //gd:RenderingServer.viewport_attach_canvas
+func ViewportAttachCanvas(viewport RID.Viewport, canvas RID.Canvas) { //gd:RenderingServer.viewport_attach_canvas
 	once.Do(singleton)
-	class(self).ViewportAttachCanvas(viewport, canvas)
+	class(self).ViewportAttachCanvas(gd.RID(viewport), gd.RID(canvas))
 }
 
 /*
 Detaches a viewport from a canvas.
 */
-func ViewportRemoveCanvas(viewport Resource.ID, canvas Resource.ID) { //gd:RenderingServer.viewport_remove_canvas
+func ViewportRemoveCanvas(viewport RID.Viewport, canvas RID.Canvas) { //gd:RenderingServer.viewport_remove_canvas
 	once.Do(singleton)
-	class(self).ViewportRemoveCanvas(viewport, canvas)
+	class(self).ViewportRemoveCanvas(gd.RID(viewport), gd.RID(canvas))
 }
 
 /*
 If [code]true[/code], canvas item transforms (i.e. origin position) are snapped to the nearest pixel when rendering. This can lead to a crisper appearance at the cost of less smooth movement, especially when [Camera2D] smoothing is enabled. Equivalent to [member ProjectSettings.rendering/2d/snap/snap_2d_transforms_to_pixel].
 */
-func ViewportSetSnap2dTransformsToPixel(viewport Resource.ID, enabled bool) { //gd:RenderingServer.viewport_set_snap_2d_transforms_to_pixel
+func ViewportSetSnap2dTransformsToPixel(viewport RID.Viewport, enabled bool) { //gd:RenderingServer.viewport_set_snap_2d_transforms_to_pixel
 	once.Do(singleton)
-	class(self).ViewportSetSnap2dTransformsToPixel(viewport, enabled)
+	class(self).ViewportSetSnap2dTransformsToPixel(gd.RID(viewport), enabled)
 }
 
 /*
 If [code]true[/code], canvas item vertices (i.e. polygon points) are snapped to the nearest pixel when rendering. This can lead to a crisper appearance at the cost of less smooth movement, especially when [Camera2D] smoothing is enabled. Equivalent to [member ProjectSettings.rendering/2d/snap/snap_2d_vertices_to_pixel].
 */
-func ViewportSetSnap2dVerticesToPixel(viewport Resource.ID, enabled bool) { //gd:RenderingServer.viewport_set_snap_2d_vertices_to_pixel
+func ViewportSetSnap2dVerticesToPixel(viewport RID.Viewport, enabled bool) { //gd:RenderingServer.viewport_set_snap_2d_vertices_to_pixel
 	once.Do(singleton)
-	class(self).ViewportSetSnap2dVerticesToPixel(viewport, enabled)
+	class(self).ViewportSetSnap2dVerticesToPixel(gd.RID(viewport), enabled)
 }
 
 /*
 Sets the default texture filtering mode for the specified [param viewport] RID. See [enum CanvasItemTextureFilter] for options.
 */
-func ViewportSetDefaultCanvasItemTextureFilter(viewport Resource.ID, filter gdclass.RenderingServerCanvasItemTextureFilter) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_filter
+func ViewportSetDefaultCanvasItemTextureFilter(viewport RID.Viewport, filter gdclass.RenderingServerCanvasItemTextureFilter) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_filter
 	once.Do(singleton)
-	class(self).ViewportSetDefaultCanvasItemTextureFilter(viewport, filter)
+	class(self).ViewportSetDefaultCanvasItemTextureFilter(gd.RID(viewport), filter)
 }
 
 /*
 Sets the default texture repeat mode for the specified [param viewport] RID. See [enum CanvasItemTextureRepeat] for options.
 */
-func ViewportSetDefaultCanvasItemTextureRepeat(viewport Resource.ID, repeat gdclass.RenderingServerCanvasItemTextureRepeat) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_repeat
+func ViewportSetDefaultCanvasItemTextureRepeat(viewport RID.Viewport, repeat gdclass.RenderingServerCanvasItemTextureRepeat) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_repeat
 	once.Do(singleton)
-	class(self).ViewportSetDefaultCanvasItemTextureRepeat(viewport, repeat)
+	class(self).ViewportSetDefaultCanvasItemTextureRepeat(gd.RID(viewport), repeat)
 }
 
 /*
 Sets the transformation of a viewport's canvas.
 */
-func ViewportSetCanvasTransform(viewport Resource.ID, canvas Resource.ID, offset Transform2D.OriginXY) { //gd:RenderingServer.viewport_set_canvas_transform
+func ViewportSetCanvasTransform(viewport RID.Viewport, canvas RID.Canvas, offset Transform2D.OriginXY) { //gd:RenderingServer.viewport_set_canvas_transform
 	once.Do(singleton)
-	class(self).ViewportSetCanvasTransform(viewport, canvas, gd.Transform2D(offset))
+	class(self).ViewportSetCanvasTransform(gd.RID(viewport), gd.RID(canvas), gd.Transform2D(offset))
 }
 
 /*
 Sets the stacking order for a viewport's canvas.
 [param layer] is the actual canvas layer, while [param sublayer] specifies the stacking order of the canvas among those in the same layer.
 */
-func ViewportSetCanvasStacking(viewport Resource.ID, canvas Resource.ID, layer int, sublayer int) { //gd:RenderingServer.viewport_set_canvas_stacking
+func ViewportSetCanvasStacking(viewport RID.Viewport, canvas RID.Canvas, layer int, sublayer int) { //gd:RenderingServer.viewport_set_canvas_stacking
 	once.Do(singleton)
-	class(self).ViewportSetCanvasStacking(viewport, canvas, gd.Int(layer), gd.Int(sublayer))
+	class(self).ViewportSetCanvasStacking(gd.RID(viewport), gd.RID(canvas), gd.Int(layer), gd.Int(sublayer))
 }
 
 /*
 If [code]true[/code], the viewport renders its background as transparent.
 */
-func ViewportSetTransparentBackground(viewport Resource.ID, enabled bool) { //gd:RenderingServer.viewport_set_transparent_background
+func ViewportSetTransparentBackground(viewport RID.Viewport, enabled bool) { //gd:RenderingServer.viewport_set_transparent_background
 	once.Do(singleton)
-	class(self).ViewportSetTransparentBackground(viewport, enabled)
+	class(self).ViewportSetTransparentBackground(gd.RID(viewport), enabled)
 }
 
 /*
 Sets the viewport's global transformation matrix.
 */
-func ViewportSetGlobalCanvasTransform(viewport Resource.ID, transform Transform2D.OriginXY) { //gd:RenderingServer.viewport_set_global_canvas_transform
+func ViewportSetGlobalCanvasTransform(viewport RID.Viewport, transform Transform2D.OriginXY) { //gd:RenderingServer.viewport_set_global_canvas_transform
 	once.Do(singleton)
-	class(self).ViewportSetGlobalCanvasTransform(viewport, gd.Transform2D(transform))
+	class(self).ViewportSetGlobalCanvasTransform(gd.RID(viewport), gd.Transform2D(transform))
 }
 
 /*
 Sets the viewport's 2D signed distance field [member ProjectSettings.rendering/2d/sdf/oversize] and [member ProjectSettings.rendering/2d/sdf/scale]. This is used when sampling the signed distance field in [CanvasItem] shaders as well as [GPUParticles2D] collision. This is [i]not[/i] used by SDFGI in 3D rendering.
 */
-func ViewportSetSdfOversizeAndScale(viewport Resource.ID, oversize gdclass.RenderingServerViewportSDFOversize, scale gdclass.RenderingServerViewportSDFScale) { //gd:RenderingServer.viewport_set_sdf_oversize_and_scale
+func ViewportSetSdfOversizeAndScale(viewport RID.Viewport, oversize gdclass.RenderingServerViewportSDFOversize, scale gdclass.RenderingServerViewportSDFScale) { //gd:RenderingServer.viewport_set_sdf_oversize_and_scale
 	once.Do(singleton)
-	class(self).ViewportSetSdfOversizeAndScale(viewport, oversize, scale)
+	class(self).ViewportSetSdfOversizeAndScale(gd.RID(viewport), oversize, scale)
 }
 
 /*
 Sets the [param size] of the shadow atlas's images (used for omni and spot lights) on the viewport specified by the [param viewport] RID. The value is rounded up to the nearest power of 2. If [param use_16_bits] is [code]true[/code], use 16 bits for the omni/spot shadow depth map. Enabling this results in shadows having less precision and may result in shadow acne, but can lead to performance improvements on some devices.
 [b]Note:[/b] If this is set to [code]0[/code], no positional shadows will be visible at all. This can improve performance significantly on low-end systems by reducing both the CPU and GPU load (as fewer draw calls are needed to draw the scene without shadows).
 */
-func ViewportSetPositionalShadowAtlasSize(viewport Resource.ID, size int) { //gd:RenderingServer.viewport_set_positional_shadow_atlas_size
+func ViewportSetPositionalShadowAtlasSize(viewport RID.Viewport, size int) { //gd:RenderingServer.viewport_set_positional_shadow_atlas_size
 	once.Do(singleton)
-	class(self).ViewportSetPositionalShadowAtlasSize(viewport, gd.Int(size), false)
+	class(self).ViewportSetPositionalShadowAtlasSize(gd.RID(viewport), gd.Int(size), false)
 }
 
 /*
 Sets the number of subdivisions to use in the specified shadow atlas [param quadrant] for omni and spot shadows. See also [method Viewport.set_positional_shadow_atlas_quadrant_subdiv].
 */
-func ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport Resource.ID, quadrant int, subdivision int) { //gd:RenderingServer.viewport_set_positional_shadow_atlas_quadrant_subdivision
+func ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport RID.Viewport, quadrant int, subdivision int) { //gd:RenderingServer.viewport_set_positional_shadow_atlas_quadrant_subdivision
 	once.Do(singleton)
-	class(self).ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport, gd.Int(quadrant), gd.Int(subdivision))
+	class(self).ViewportSetPositionalShadowAtlasQuadrantSubdivision(gd.RID(viewport), gd.Int(quadrant), gd.Int(subdivision))
 }
 
 /*
 Sets the multisample anti-aliasing mode for 3D on the specified [param viewport] RID. See [enum ViewportMSAA] for options.
 */
-func ViewportSetMsaa3d(viewport Resource.ID, msaa gdclass.RenderingServerViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_3d
+func ViewportSetMsaa3d(viewport RID.Viewport, msaa gdclass.RenderingServerViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_3d
 	once.Do(singleton)
-	class(self).ViewportSetMsaa3d(viewport, msaa)
+	class(self).ViewportSetMsaa3d(gd.RID(viewport), msaa)
 }
 
 /*
 Sets the multisample anti-aliasing mode for 2D/Canvas on the specified [param viewport] RID. See [enum ViewportMSAA] for options.
 */
-func ViewportSetMsaa2d(viewport Resource.ID, msaa gdclass.RenderingServerViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_2d
+func ViewportSetMsaa2d(viewport RID.Viewport, msaa gdclass.RenderingServerViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_2d
 	once.Do(singleton)
-	class(self).ViewportSetMsaa2d(viewport, msaa)
+	class(self).ViewportSetMsaa2d(gd.RID(viewport), msaa)
 }
 
 /*
 If [code]true[/code], 2D rendering will use a high dynamic range (HDR) format framebuffer matching the bit depth of the 3D framebuffer. When using the Forward+ renderer this will be an [code]RGBA16[/code] framebuffer, while when using the Mobile renderer it will be an [code]RGB10_A2[/code] framebuffer. Additionally, 2D rendering will take place in linear color space and will be converted to sRGB space immediately before blitting to the screen (if the Viewport is attached to the screen). Practically speaking, this means that the end result of the Viewport will not be clamped into the [code]0-1[/code] range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients. This setting has the same effect as [member Viewport.use_hdr_2d].
 [b]Note:[/b] This setting will have no effect when using the GL Compatibility renderer as the GL Compatibility renderer always renders in low dynamic range for performance reasons.
 */
-func ViewportSetUseHdr2d(viewport Resource.ID, enabled bool) { //gd:RenderingServer.viewport_set_use_hdr_2d
+func ViewportSetUseHdr2d(viewport RID.Viewport, enabled bool) { //gd:RenderingServer.viewport_set_use_hdr_2d
 	once.Do(singleton)
-	class(self).ViewportSetUseHdr2d(viewport, enabled)
+	class(self).ViewportSetUseHdr2d(gd.RID(viewport), enabled)
 }
 
 /*
 Sets the viewport's screen-space antialiasing mode.
 */
-func ViewportSetScreenSpaceAa(viewport Resource.ID, mode gdclass.RenderingServerViewportScreenSpaceAA) { //gd:RenderingServer.viewport_set_screen_space_aa
+func ViewportSetScreenSpaceAa(viewport RID.Viewport, mode gdclass.RenderingServerViewportScreenSpaceAA) { //gd:RenderingServer.viewport_set_screen_space_aa
 	once.Do(singleton)
-	class(self).ViewportSetScreenSpaceAa(viewport, mode)
+	class(self).ViewportSetScreenSpaceAa(gd.RID(viewport), mode)
 }
 
 /*
 If [code]true[/code], use Temporal Anti-Aliasing. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/use_taa].
 */
-func ViewportSetUseTaa(viewport Resource.ID, enable bool) { //gd:RenderingServer.viewport_set_use_taa
+func ViewportSetUseTaa(viewport RID.Viewport, enable bool) { //gd:RenderingServer.viewport_set_use_taa
 	once.Do(singleton)
-	class(self).ViewportSetUseTaa(viewport, enable)
+	class(self).ViewportSetUseTaa(gd.RID(viewport), enable)
 }
 
 /*
 If [code]true[/code], enables debanding on the specified viewport. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/use_debanding].
 */
-func ViewportSetUseDebanding(viewport Resource.ID, enable bool) { //gd:RenderingServer.viewport_set_use_debanding
+func ViewportSetUseDebanding(viewport RID.Viewport, enable bool) { //gd:RenderingServer.viewport_set_use_debanding
 	once.Do(singleton)
-	class(self).ViewportSetUseDebanding(viewport, enable)
+	class(self).ViewportSetUseDebanding(gd.RID(viewport), enable)
 }
 
 /*
 If [code]true[/code], enables occlusion culling on the specified viewport. Equivalent to [member ProjectSettings.rendering/occlusion_culling/use_occlusion_culling].
 */
-func ViewportSetUseOcclusionCulling(viewport Resource.ID, enable bool) { //gd:RenderingServer.viewport_set_use_occlusion_culling
+func ViewportSetUseOcclusionCulling(viewport RID.Viewport, enable bool) { //gd:RenderingServer.viewport_set_use_occlusion_culling
 	once.Do(singleton)
-	class(self).ViewportSetUseOcclusionCulling(viewport, enable)
+	class(self).ViewportSetUseOcclusionCulling(gd.RID(viewport), enable)
 }
 
 /*
@@ -2219,34 +2219,34 @@ func _ready():
 
 [/codeblock]
 */
-func ViewportGetRenderInfo(viewport Resource.ID, atype gdclass.RenderingServerViewportRenderInfoType, info gdclass.RenderingServerViewportRenderInfo) int { //gd:RenderingServer.viewport_get_render_info
+func ViewportGetRenderInfo(viewport RID.Viewport, atype gdclass.RenderingServerViewportRenderInfoType, info gdclass.RenderingServerViewportRenderInfo) int { //gd:RenderingServer.viewport_get_render_info
 	once.Do(singleton)
-	return int(int(class(self).ViewportGetRenderInfo(viewport, atype, info)))
+	return int(int(class(self).ViewportGetRenderInfo(gd.RID(viewport), atype, info)))
 }
 
 /*
 Sets the debug draw mode of a viewport. See [enum ViewportDebugDraw] for options.
 */
-func ViewportSetDebugDraw(viewport Resource.ID, draw gdclass.RenderingServerViewportDebugDraw) { //gd:RenderingServer.viewport_set_debug_draw
+func ViewportSetDebugDraw(viewport RID.Viewport, draw gdclass.RenderingServerViewportDebugDraw) { //gd:RenderingServer.viewport_set_debug_draw
 	once.Do(singleton)
-	class(self).ViewportSetDebugDraw(viewport, draw)
+	class(self).ViewportSetDebugDraw(gd.RID(viewport), draw)
 }
 
 /*
 Sets the measurement for the given [param viewport] RID (obtained using [method Viewport.get_viewport_rid]). Once enabled, [method viewport_get_measured_render_time_cpu] and [method viewport_get_measured_render_time_gpu] will return values greater than [code]0.0[/code] when queried with the given [param viewport].
 */
-func ViewportSetMeasureRenderTime(viewport Resource.ID, enable bool) { //gd:RenderingServer.viewport_set_measure_render_time
+func ViewportSetMeasureRenderTime(viewport RID.Viewport, enable bool) { //gd:RenderingServer.viewport_set_measure_render_time
 	once.Do(singleton)
-	class(self).ViewportSetMeasureRenderTime(viewport, enable)
+	class(self).ViewportSetMeasureRenderTime(gd.RID(viewport), enable)
 }
 
 /*
 Returns the CPU time taken to render the last frame in milliseconds. This [i]only[/i] includes time spent in rendering-related operations; scripts' [code]_process[/code] functions and other engine subsystems are not included in this readout. To get a complete readout of CPU time spent to render the scene, sum the render times of all viewports that are drawn every frame plus [method get_frame_setup_time_cpu]. Unlike [method Engine.get_frames_per_second], this method will accurately reflect CPU utilization even if framerate is capped via V-Sync or [member Engine.max_fps]. See also [method viewport_get_measured_render_time_gpu].
 [b]Note:[/b] Requires measurements to be enabled on the specified [param viewport] using [method viewport_set_measure_render_time]. Otherwise, this method returns [code]0.0[/code].
 */
-func ViewportGetMeasuredRenderTimeCpu(viewport Resource.ID) Float.X { //gd:RenderingServer.viewport_get_measured_render_time_cpu
+func ViewportGetMeasuredRenderTimeCpu(viewport RID.Viewport) Float.X { //gd:RenderingServer.viewport_get_measured_render_time_cpu
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).ViewportGetMeasuredRenderTimeCpu(viewport)))
+	return Float.X(Float.X(class(self).ViewportGetMeasuredRenderTimeCpu(gd.RID(viewport))))
 }
 
 /*
@@ -2254,67 +2254,67 @@ Returns the GPU time taken to render the last frame in milliseconds. To get a co
 [b]Note:[/b] Requires measurements to be enabled on the specified [param viewport] using [method viewport_set_measure_render_time]. Otherwise, this method returns [code]0.0[/code].
 [b]Note:[/b] When GPU utilization is low enough during a certain period of time, GPUs will decrease their power state (which in turn decreases core and memory clock speeds). This can cause the reported GPU time to increase if GPU utilization is kept low enough by a framerate cap (compared to what it would be at the GPU's highest power state). Keep this in mind when benchmarking using [method viewport_get_measured_render_time_gpu]. This behavior can be overridden in the graphics driver settings at the cost of higher power usage.
 */
-func ViewportGetMeasuredRenderTimeGpu(viewport Resource.ID) Float.X { //gd:RenderingServer.viewport_get_measured_render_time_gpu
+func ViewportGetMeasuredRenderTimeGpu(viewport RID.Viewport) Float.X { //gd:RenderingServer.viewport_get_measured_render_time_gpu
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).ViewportGetMeasuredRenderTimeGpu(viewport)))
+	return Float.X(Float.X(class(self).ViewportGetMeasuredRenderTimeGpu(gd.RID(viewport))))
 }
 
 /*
 Sets the Variable Rate Shading (VRS) mode for the viewport. If the GPU does not support VRS, this property is ignored. Equivalent to [member ProjectSettings.rendering/vrs/mode].
 */
-func ViewportSetVrsMode(viewport Resource.ID, mode gdclass.RenderingServerViewportVRSMode) { //gd:RenderingServer.viewport_set_vrs_mode
+func ViewportSetVrsMode(viewport RID.Viewport, mode gdclass.RenderingServerViewportVRSMode) { //gd:RenderingServer.viewport_set_vrs_mode
 	once.Do(singleton)
-	class(self).ViewportSetVrsMode(viewport, mode)
+	class(self).ViewportSetVrsMode(gd.RID(viewport), mode)
 }
 
 /*
 Sets the update mode for Variable Rate Shading (VRS) for the viewport. VRS requires the input texture to be converted to the format usable by the VRS method supported by the hardware. The update mode defines how often this happens. If the GPU does not support VRS, or VRS is not enabled, this property is ignored.
 If set to [constant RenderingServer.VIEWPORT_VRS_UPDATE_ONCE], the input texture is copied once and the mode is changed to [constant RenderingServer.VIEWPORT_VRS_UPDATE_DISABLED].
 */
-func ViewportSetVrsUpdateMode(viewport Resource.ID, mode gdclass.RenderingServerViewportVRSUpdateMode) { //gd:RenderingServer.viewport_set_vrs_update_mode
+func ViewportSetVrsUpdateMode(viewport RID.Viewport, mode gdclass.RenderingServerViewportVRSUpdateMode) { //gd:RenderingServer.viewport_set_vrs_update_mode
 	once.Do(singleton)
-	class(self).ViewportSetVrsUpdateMode(viewport, mode)
+	class(self).ViewportSetVrsUpdateMode(gd.RID(viewport), mode)
 }
 
 /*
 The texture to use when the VRS mode is set to [constant RenderingServer.VIEWPORT_VRS_TEXTURE]. Equivalent to [member ProjectSettings.rendering/vrs/texture].
 */
-func ViewportSetVrsTexture(viewport Resource.ID, texture Resource.ID) { //gd:RenderingServer.viewport_set_vrs_texture
+func ViewportSetVrsTexture(viewport RID.Viewport, texture RID.Texture) { //gd:RenderingServer.viewport_set_vrs_texture
 	once.Do(singleton)
-	class(self).ViewportSetVrsTexture(viewport, texture)
+	class(self).ViewportSetVrsTexture(gd.RID(viewport), gd.RID(texture))
 }
 
 /*
 Creates an empty sky and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]sky_*[/code] RenderingServer functions.
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 */
-func SkyCreate() Resource.ID { //gd:RenderingServer.sky_create
+func SkyCreate() RID.Sky { //gd:RenderingServer.sky_create
 	once.Do(singleton)
-	return Resource.ID(class(self).SkyCreate())
+	return RID.Sky(class(self).SkyCreate())
 }
 
 /*
 Sets the [param radiance_size] of the sky specified by the [param sky] RID (in pixels). Equivalent to [member Sky.radiance_size].
 */
-func SkySetRadianceSize(sky Resource.ID, radiance_size int) { //gd:RenderingServer.sky_set_radiance_size
+func SkySetRadianceSize(sky RID.Sky, radiance_size int) { //gd:RenderingServer.sky_set_radiance_size
 	once.Do(singleton)
-	class(self).SkySetRadianceSize(sky, gd.Int(radiance_size))
+	class(self).SkySetRadianceSize(gd.RID(sky), gd.Int(radiance_size))
 }
 
 /*
 Sets the process [param mode] of the sky specified by the [param sky] RID. Equivalent to [member Sky.process_mode].
 */
-func SkySetMode(sky Resource.ID, mode gdclass.RenderingServerSkyMode) { //gd:RenderingServer.sky_set_mode
+func SkySetMode(sky RID.Sky, mode gdclass.RenderingServerSkyMode) { //gd:RenderingServer.sky_set_mode
 	once.Do(singleton)
-	class(self).SkySetMode(sky, mode)
+	class(self).SkySetMode(gd.RID(sky), mode)
 }
 
 /*
 Sets the material that the sky uses to render the background, ambient and reflection maps.
 */
-func SkySetMaterial(sky Resource.ID, material Resource.ID) { //gd:RenderingServer.sky_set_material
+func SkySetMaterial(sky RID.Sky, material RID.Material) { //gd:RenderingServer.sky_set_material
 	once.Do(singleton)
-	class(self).SkySetMaterial(sky, material)
+	class(self).SkySetMaterial(gd.RID(sky), gd.RID(material))
 }
 
 /*
@@ -2322,59 +2322,59 @@ Generates and returns an [Image] containing the radiance map for the specified [
 [b]Note:[/b] The image is saved in linear color space without any tonemapping performed, which means it will look too dark if viewed directly in an image editor. [param energy] values above [code]1.0[/code] can be used to brighten the resulting image.
 [b]Note:[/b] [param size] should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [member Sky.radiance_size], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
 */
-func SkyBakePanorama(sky Resource.ID, energy Float.X, bake_irradiance bool, size Vector2i.XY) [1]gdclass.Image { //gd:RenderingServer.sky_bake_panorama
+func SkyBakePanorama(sky RID.Sky, energy Float.X, bake_irradiance bool, size Vector2i.XY) [1]gdclass.Image { //gd:RenderingServer.sky_bake_panorama
 	once.Do(singleton)
-	return [1]gdclass.Image(class(self).SkyBakePanorama(sky, gd.Float(energy), bake_irradiance, gd.Vector2i(size)))
+	return [1]gdclass.Image(class(self).SkyBakePanorama(gd.RID(sky), gd.Float(energy), bake_irradiance, gd.Vector2i(size)))
 }
 
 /*
 Creates a new rendering effect and adds it to the RenderingServer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 */
-func CompositorEffectCreate() Resource.ID { //gd:RenderingServer.compositor_effect_create
+func CompositorEffectCreate() RID.CompositorEffect { //gd:RenderingServer.compositor_effect_create
 	once.Do(singleton)
-	return Resource.ID(class(self).CompositorEffectCreate())
+	return RID.CompositorEffect(class(self).CompositorEffectCreate())
 }
 
 /*
 Enables/disables this rendering effect.
 */
-func CompositorEffectSetEnabled(effect Resource.ID, enabled bool) { //gd:RenderingServer.compositor_effect_set_enabled
+func CompositorEffectSetEnabled(effect RID.CompositorEffect, enabled bool) { //gd:RenderingServer.compositor_effect_set_enabled
 	once.Do(singleton)
-	class(self).CompositorEffectSetEnabled(effect, enabled)
+	class(self).CompositorEffectSetEnabled(gd.RID(effect), enabled)
 }
 
 /*
 Sets the callback type ([param callback_type]) and callback method([param callback]) for this rendering effect.
 */
-func CompositorEffectSetCallback(effect Resource.ID, callback_type gdclass.RenderingServerCompositorEffectCallbackType, callback func()) { //gd:RenderingServer.compositor_effect_set_callback
+func CompositorEffectSetCallback(effect RID.CompositorEffect, callback_type gdclass.RenderingServerCompositorEffectCallbackType, callback func()) { //gd:RenderingServer.compositor_effect_set_callback
 	once.Do(singleton)
-	class(self).CompositorEffectSetCallback(effect, callback_type, Callable.New(callback))
+	class(self).CompositorEffectSetCallback(gd.RID(effect), callback_type, Callable.New(callback))
 }
 
 /*
 Sets the flag ([param flag]) for this rendering effect to [code]true[/code] or [code]false[/code] ([param set]).
 */
-func CompositorEffectSetFlag(effect Resource.ID, flag gdclass.RenderingServerCompositorEffectFlags, set bool) { //gd:RenderingServer.compositor_effect_set_flag
+func CompositorEffectSetFlag(effect RID.CompositorEffect, flag gdclass.RenderingServerCompositorEffectFlags, set bool) { //gd:RenderingServer.compositor_effect_set_flag
 	once.Do(singleton)
-	class(self).CompositorEffectSetFlag(effect, flag, set)
+	class(self).CompositorEffectSetFlag(gd.RID(effect), flag, set)
 }
 
 /*
 Creates a new compositor and adds it to the RenderingServer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 */
-func CompositorCreate() Resource.ID { //gd:RenderingServer.compositor_create
+func CompositorCreate() RID.Compositor { //gd:RenderingServer.compositor_create
 	once.Do(singleton)
-	return Resource.ID(class(self).CompositorCreate())
+	return RID.Compositor(class(self).CompositorCreate())
 }
 
 /*
 Sets the compositor effects for the specified compositor RID. [param effects] should be an array containing RIDs created with [method compositor_effect_create].
 */
-func CompositorSetCompositorEffects(compositor Resource.ID, effects []Resource.ID) { //gd:RenderingServer.compositor_set_compositor_effects
+func CompositorSetCompositorEffects(compositor RID.Compositor, effects [][]RID.CompositorEffect) { //gd:RenderingServer.compositor_set_compositor_effects
 	once.Do(singleton)
-	class(self).CompositorSetCompositorEffects(compositor, gd.ArrayFromSlice[Array.Contains[gd.RID]](effects))
+	class(self).CompositorSetCompositorEffects(gd.RID(compositor), gd.ArrayFromSlice[Array.Contains[gd.RID]](effects))
 }
 
 /*
@@ -2382,137 +2382,137 @@ Creates an environment and adds it to the RenderingServer. It can be accessed wi
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent resource is [Environment].
 */
-func EnvironmentCreate() Resource.ID { //gd:RenderingServer.environment_create
+func EnvironmentCreate() RID.Environment { //gd:RenderingServer.environment_create
 	once.Do(singleton)
-	return Resource.ID(class(self).EnvironmentCreate())
+	return RID.Environment(class(self).EnvironmentCreate())
 }
 
 /*
 Sets the environment's background mode. Equivalent to [member Environment.background_mode].
 */
-func EnvironmentSetBackground(env Resource.ID, bg gdclass.RenderingServerEnvironmentBG) { //gd:RenderingServer.environment_set_background
+func EnvironmentSetBackground(env RID.Environment, bg gdclass.RenderingServerEnvironmentBG) { //gd:RenderingServer.environment_set_background
 	once.Do(singleton)
-	class(self).EnvironmentSetBackground(env, bg)
+	class(self).EnvironmentSetBackground(gd.RID(env), bg)
 }
 
 /*
 Sets the [Sky] to be used as the environment's background when using [i]BGMode[/i] sky. Equivalent to [member Environment.sky].
 */
-func EnvironmentSetSky(env Resource.ID, sky Resource.ID) { //gd:RenderingServer.environment_set_sky
+func EnvironmentSetSky(env RID.Environment, sky RID.Sky) { //gd:RenderingServer.environment_set_sky
 	once.Do(singleton)
-	class(self).EnvironmentSetSky(env, sky)
+	class(self).EnvironmentSetSky(gd.RID(env), gd.RID(sky))
 }
 
 /*
 Sets a custom field of view for the background [Sky]. Equivalent to [member Environment.sky_custom_fov].
 */
-func EnvironmentSetSkyCustomFov(env Resource.ID, scale Float.X) { //gd:RenderingServer.environment_set_sky_custom_fov
+func EnvironmentSetSkyCustomFov(env RID.Environment, scale Float.X) { //gd:RenderingServer.environment_set_sky_custom_fov
 	once.Do(singleton)
-	class(self).EnvironmentSetSkyCustomFov(env, gd.Float(scale))
+	class(self).EnvironmentSetSkyCustomFov(gd.RID(env), gd.Float(scale))
 }
 
 /*
 Sets the rotation of the background [Sky] expressed as a [Basis]. Equivalent to [member Environment.sky_rotation], where the rotation vector is used to construct the [Basis].
 */
-func EnvironmentSetSkyOrientation(env Resource.ID, orientation Basis.XYZ) { //gd:RenderingServer.environment_set_sky_orientation
+func EnvironmentSetSkyOrientation(env RID.Environment, orientation Basis.XYZ) { //gd:RenderingServer.environment_set_sky_orientation
 	once.Do(singleton)
-	class(self).EnvironmentSetSkyOrientation(env, gd.Basis(orientation))
+	class(self).EnvironmentSetSkyOrientation(gd.RID(env), gd.Basis(orientation))
 }
 
 /*
 Color displayed for clear areas of the scene. Only effective if using the [constant ENV_BG_COLOR] background mode.
 */
-func EnvironmentSetBgColor(env Resource.ID, color Color.RGBA) { //gd:RenderingServer.environment_set_bg_color
+func EnvironmentSetBgColor(env RID.Environment, color Color.RGBA) { //gd:RenderingServer.environment_set_bg_color
 	once.Do(singleton)
-	class(self).EnvironmentSetBgColor(env, gd.Color(color))
+	class(self).EnvironmentSetBgColor(gd.RID(env), gd.Color(color))
 }
 
 /*
 Sets the intensity of the background color.
 */
-func EnvironmentSetBgEnergy(env Resource.ID, multiplier Float.X, exposure_value Float.X) { //gd:RenderingServer.environment_set_bg_energy
+func EnvironmentSetBgEnergy(env RID.Environment, multiplier Float.X, exposure_value Float.X) { //gd:RenderingServer.environment_set_bg_energy
 	once.Do(singleton)
-	class(self).EnvironmentSetBgEnergy(env, gd.Float(multiplier), gd.Float(exposure_value))
+	class(self).EnvironmentSetBgEnergy(gd.RID(env), gd.Float(multiplier), gd.Float(exposure_value))
 }
 
 /*
 Sets the maximum layer to use if using Canvas background mode.
 */
-func EnvironmentSetCanvasMaxLayer(env Resource.ID, max_layer int) { //gd:RenderingServer.environment_set_canvas_max_layer
+func EnvironmentSetCanvasMaxLayer(env RID.Environment, max_layer int) { //gd:RenderingServer.environment_set_canvas_max_layer
 	once.Do(singleton)
-	class(self).EnvironmentSetCanvasMaxLayer(env, gd.Int(max_layer))
+	class(self).EnvironmentSetCanvasMaxLayer(gd.RID(env), gd.Int(max_layer))
 }
 
 /*
 Sets the values to be used for ambient light rendering. See [Environment] for more details.
 */
-func EnvironmentSetAmbientLight(env Resource.ID, color Color.RGBA) { //gd:RenderingServer.environment_set_ambient_light
+func EnvironmentSetAmbientLight(env RID.Environment, color Color.RGBA) { //gd:RenderingServer.environment_set_ambient_light
 	once.Do(singleton)
-	class(self).EnvironmentSetAmbientLight(env, gd.Color(color), 0, gd.Float(1.0), gd.Float(0.0), 0)
+	class(self).EnvironmentSetAmbientLight(gd.RID(env), gd.Color(color), 0, gd.Float(1.0), gd.Float(0.0), 0)
 }
 
 /*
 Configures glow for the specified environment RID. See [code]glow_*[/code] properties in [Environment] for more information.
 */
-func EnvironmentSetGlow(env Resource.ID, enable bool, levels []float32, intensity Float.X, strength Float.X, mix Float.X, bloom_threshold Float.X, blend_mode gdclass.RenderingServerEnvironmentGlowBlendMode, hdr_bleed_threshold Float.X, hdr_bleed_scale Float.X, hdr_luminance_cap Float.X, glow_map_strength Float.X, glow_map Resource.ID) { //gd:RenderingServer.environment_set_glow
+func EnvironmentSetGlow(env RID.Environment, enable bool, levels []float32, intensity Float.X, strength Float.X, mix Float.X, bloom_threshold Float.X, blend_mode gdclass.RenderingServerEnvironmentGlowBlendMode, hdr_bleed_threshold Float.X, hdr_bleed_scale Float.X, hdr_luminance_cap Float.X, glow_map_strength Float.X, glow_map RID.Texture) { //gd:RenderingServer.environment_set_glow
 	once.Do(singleton)
-	class(self).EnvironmentSetGlow(env, enable, gd.NewPackedFloat32Slice(levels), gd.Float(intensity), gd.Float(strength), gd.Float(mix), gd.Float(bloom_threshold), blend_mode, gd.Float(hdr_bleed_threshold), gd.Float(hdr_bleed_scale), gd.Float(hdr_luminance_cap), gd.Float(glow_map_strength), glow_map)
+	class(self).EnvironmentSetGlow(gd.RID(env), enable, gd.NewPackedFloat32Slice(levels), gd.Float(intensity), gd.Float(strength), gd.Float(mix), gd.Float(bloom_threshold), blend_mode, gd.Float(hdr_bleed_threshold), gd.Float(hdr_bleed_scale), gd.Float(hdr_luminance_cap), gd.Float(glow_map_strength), gd.RID(glow_map))
 }
 
 /*
 Sets the variables to be used with the "tonemap" post-process effect. See [Environment] for more details.
 */
-func EnvironmentSetTonemap(env Resource.ID, tone_mapper gdclass.RenderingServerEnvironmentToneMapper, exposure Float.X, white Float.X) { //gd:RenderingServer.environment_set_tonemap
+func EnvironmentSetTonemap(env RID.Environment, tone_mapper gdclass.RenderingServerEnvironmentToneMapper, exposure Float.X, white Float.X) { //gd:RenderingServer.environment_set_tonemap
 	once.Do(singleton)
-	class(self).EnvironmentSetTonemap(env, tone_mapper, gd.Float(exposure), gd.Float(white))
+	class(self).EnvironmentSetTonemap(gd.RID(env), tone_mapper, gd.Float(exposure), gd.Float(white))
 }
 
 /*
 Sets the values to be used with the "adjustments" post-process effect. See [Environment] for more details.
 */
-func EnvironmentSetAdjustment(env Resource.ID, enable bool, brightness Float.X, contrast Float.X, saturation Float.X, use_1d_color_correction bool, color_correction Resource.ID) { //gd:RenderingServer.environment_set_adjustment
+func EnvironmentSetAdjustment(env RID.Environment, enable bool, brightness Float.X, contrast Float.X, saturation Float.X, use_1d_color_correction bool, color_correction RID.ColorCorrection) { //gd:RenderingServer.environment_set_adjustment
 	once.Do(singleton)
-	class(self).EnvironmentSetAdjustment(env, enable, gd.Float(brightness), gd.Float(contrast), gd.Float(saturation), use_1d_color_correction, color_correction)
+	class(self).EnvironmentSetAdjustment(gd.RID(env), enable, gd.Float(brightness), gd.Float(contrast), gd.Float(saturation), use_1d_color_correction, gd.RID(color_correction))
 }
 
 /*
 Sets the variables to be used with the screen-space reflections (SSR) post-process effect. See [Environment] for more details.
 */
-func EnvironmentSetSsr(env Resource.ID, enable bool, max_steps int, fade_in Float.X, fade_out Float.X, depth_tolerance Float.X) { //gd:RenderingServer.environment_set_ssr
+func EnvironmentSetSsr(env RID.Environment, enable bool, max_steps int, fade_in Float.X, fade_out Float.X, depth_tolerance Float.X) { //gd:RenderingServer.environment_set_ssr
 	once.Do(singleton)
-	class(self).EnvironmentSetSsr(env, enable, gd.Int(max_steps), gd.Float(fade_in), gd.Float(fade_out), gd.Float(depth_tolerance))
+	class(self).EnvironmentSetSsr(gd.RID(env), enable, gd.Int(max_steps), gd.Float(fade_in), gd.Float(fade_out), gd.Float(depth_tolerance))
 }
 
 /*
 Sets the variables to be used with the screen-space ambient occlusion (SSAO) post-process effect. See [Environment] for more details.
 */
-func EnvironmentSetSsao(env Resource.ID, enable bool, radius Float.X, intensity Float.X, power Float.X, detail Float.X, horizon Float.X, sharpness Float.X, light_affect Float.X, ao_channel_affect Float.X) { //gd:RenderingServer.environment_set_ssao
+func EnvironmentSetSsao(env RID.Environment, enable bool, radius Float.X, intensity Float.X, power Float.X, detail Float.X, horizon Float.X, sharpness Float.X, light_affect Float.X, ao_channel_affect Float.X) { //gd:RenderingServer.environment_set_ssao
 	once.Do(singleton)
-	class(self).EnvironmentSetSsao(env, enable, gd.Float(radius), gd.Float(intensity), gd.Float(power), gd.Float(detail), gd.Float(horizon), gd.Float(sharpness), gd.Float(light_affect), gd.Float(ao_channel_affect))
+	class(self).EnvironmentSetSsao(gd.RID(env), enable, gd.Float(radius), gd.Float(intensity), gd.Float(power), gd.Float(detail), gd.Float(horizon), gd.Float(sharpness), gd.Float(light_affect), gd.Float(ao_channel_affect))
 }
 
 /*
 Configures fog for the specified environment RID. See [code]fog_*[/code] properties in [Environment] for more information.
 */
-func EnvironmentSetFog(env Resource.ID, enable bool, light_color Color.RGBA, light_energy Float.X, sun_scatter Float.X, density Float.X, height Float.X, height_density Float.X, aerial_perspective Float.X, sky_affect Float.X) { //gd:RenderingServer.environment_set_fog
+func EnvironmentSetFog(env RID.Environment, enable bool, light_color Color.RGBA, light_energy Float.X, sun_scatter Float.X, density Float.X, height Float.X, height_density Float.X, aerial_perspective Float.X, sky_affect Float.X) { //gd:RenderingServer.environment_set_fog
 	once.Do(singleton)
-	class(self).EnvironmentSetFog(env, enable, gd.Color(light_color), gd.Float(light_energy), gd.Float(sun_scatter), gd.Float(density), gd.Float(height), gd.Float(height_density), gd.Float(aerial_perspective), gd.Float(sky_affect), 0)
+	class(self).EnvironmentSetFog(gd.RID(env), enable, gd.Color(light_color), gd.Float(light_energy), gd.Float(sun_scatter), gd.Float(density), gd.Float(height), gd.Float(height_density), gd.Float(aerial_perspective), gd.Float(sky_affect), 0)
 }
 
 /*
 Configures signed distance field global illumination for the specified environment RID. See [code]sdfgi_*[/code] properties in [Environment] for more information.
 */
-func EnvironmentSetSdfgi(env Resource.ID, enable bool, cascades int, min_cell_size Float.X, y_scale gdclass.RenderingServerEnvironmentSDFGIYScale, use_occlusion bool, bounce_feedback Float.X, read_sky bool, energy Float.X, normal_bias Float.X, probe_bias Float.X) { //gd:RenderingServer.environment_set_sdfgi
+func EnvironmentSetSdfgi(env RID.Environment, enable bool, cascades int, min_cell_size Float.X, y_scale gdclass.RenderingServerEnvironmentSDFGIYScale, use_occlusion bool, bounce_feedback Float.X, read_sky bool, energy Float.X, normal_bias Float.X, probe_bias Float.X) { //gd:RenderingServer.environment_set_sdfgi
 	once.Do(singleton)
-	class(self).EnvironmentSetSdfgi(env, enable, gd.Int(cascades), gd.Float(min_cell_size), y_scale, use_occlusion, gd.Float(bounce_feedback), read_sky, gd.Float(energy), gd.Float(normal_bias), gd.Float(probe_bias))
+	class(self).EnvironmentSetSdfgi(gd.RID(env), enable, gd.Int(cascades), gd.Float(min_cell_size), y_scale, use_occlusion, gd.Float(bounce_feedback), read_sky, gd.Float(energy), gd.Float(normal_bias), gd.Float(probe_bias))
 }
 
 /*
 Sets the variables to be used with the volumetric fog post-process effect. See [Environment] for more details.
 */
-func EnvironmentSetVolumetricFog(env Resource.ID, enable bool, density Float.X, albedo Color.RGBA, emission Color.RGBA, emission_energy Float.X, anisotropy Float.X, length Float.X, p_detail_spread Float.X, gi_inject Float.X, temporal_reprojection bool, temporal_reprojection_amount Float.X, ambient_inject Float.X, sky_affect Float.X) { //gd:RenderingServer.environment_set_volumetric_fog
+func EnvironmentSetVolumetricFog(env RID.Environment, enable bool, density Float.X, albedo Color.RGBA, emission Color.RGBA, emission_energy Float.X, anisotropy Float.X, length Float.X, p_detail_spread Float.X, gi_inject Float.X, temporal_reprojection bool, temporal_reprojection_amount Float.X, ambient_inject Float.X, sky_affect Float.X) { //gd:RenderingServer.environment_set_volumetric_fog
 	once.Do(singleton)
-	class(self).EnvironmentSetVolumetricFog(env, enable, gd.Float(density), gd.Color(albedo), gd.Color(emission), gd.Float(emission_energy), gd.Float(anisotropy), gd.Float(length), gd.Float(p_detail_spread), gd.Float(gi_inject), temporal_reprojection, gd.Float(temporal_reprojection_amount), gd.Float(ambient_inject), gd.Float(sky_affect))
+	class(self).EnvironmentSetVolumetricFog(gd.RID(env), enable, gd.Float(density), gd.Color(albedo), gd.Color(emission), gd.Float(emission_energy), gd.Float(anisotropy), gd.Float(length), gd.Float(p_detail_spread), gd.Float(gi_inject), temporal_reprojection, gd.Float(temporal_reprojection_amount), gd.Float(ambient_inject), gd.Float(sky_affect))
 }
 
 /*
@@ -2588,9 +2588,9 @@ Generates and returns an [Image] containing the radiance map for the specified [
 [b]Note:[/b] The image is saved in linear color space without any tonemapping performed, which means it will look too dark if viewed directly in an image editor.
 [b]Note:[/b] [param size] should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [member Sky.radiance_size], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
 */
-func EnvironmentBakePanorama(environment Resource.ID, bake_irradiance bool, size Vector2i.XY) [1]gdclass.Image { //gd:RenderingServer.environment_bake_panorama
+func EnvironmentBakePanorama(environment RID.Environment, bake_irradiance bool, size Vector2i.XY) [1]gdclass.Image { //gd:RenderingServer.environment_bake_panorama
 	once.Do(singleton)
-	return [1]gdclass.Image(class(self).EnvironmentBakePanorama(environment, bake_irradiance, gd.Vector2i(size)))
+	return [1]gdclass.Image(class(self).EnvironmentBakePanorama(gd.RID(environment), bake_irradiance, gd.Vector2i(size)))
 }
 
 /*
@@ -2622,9 +2622,9 @@ Creates a camera attributes object and adds it to the RenderingServer. It can be
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent resource is [CameraAttributes].
 */
-func CameraAttributesCreate() Resource.ID { //gd:RenderingServer.camera_attributes_create
+func CameraAttributesCreate() RID.CameraAttributes { //gd:RenderingServer.camera_attributes_create
 	once.Do(singleton)
-	return Resource.ID(class(self).CameraAttributesCreate())
+	return RID.CameraAttributes(class(self).CameraAttributesCreate())
 }
 
 /*
@@ -2646,9 +2646,9 @@ func CameraAttributesSetDofBlurBokehShape(shape gdclass.RenderingServerDOFBokehS
 /*
 Sets the parameters to use with the DOF blur effect. These parameters take on the same meaning as their counterparts in [CameraAttributesPractical].
 */
-func CameraAttributesSetDofBlur(camera_attributes Resource.ID, far_enable bool, far_distance Float.X, far_transition Float.X, near_enable bool, near_distance Float.X, near_transition Float.X, amount Float.X) { //gd:RenderingServer.camera_attributes_set_dof_blur
+func CameraAttributesSetDofBlur(camera_attributes RID.CameraAttributes, far_enable bool, far_distance Float.X, far_transition Float.X, near_enable bool, near_distance Float.X, near_transition Float.X, amount Float.X) { //gd:RenderingServer.camera_attributes_set_dof_blur
 	once.Do(singleton)
-	class(self).CameraAttributesSetDofBlur(camera_attributes, far_enable, gd.Float(far_distance), gd.Float(far_transition), near_enable, gd.Float(near_distance), gd.Float(near_transition), gd.Float(amount))
+	class(self).CameraAttributesSetDofBlur(gd.RID(camera_attributes), far_enable, gd.Float(far_distance), gd.Float(far_transition), near_enable, gd.Float(near_distance), gd.Float(near_transition), gd.Float(amount))
 }
 
 /*
@@ -2668,17 +2668,17 @@ func get_exposure(aperture: float, shutter_speed: float, sensitivity: float):
 
 [/codeblock]
 */
-func CameraAttributesSetExposure(camera_attributes Resource.ID, multiplier Float.X, normalization Float.X) { //gd:RenderingServer.camera_attributes_set_exposure
+func CameraAttributesSetExposure(camera_attributes RID.CameraAttributes, multiplier Float.X, normalization Float.X) { //gd:RenderingServer.camera_attributes_set_exposure
 	once.Do(singleton)
-	class(self).CameraAttributesSetExposure(camera_attributes, gd.Float(multiplier), gd.Float(normalization))
+	class(self).CameraAttributesSetExposure(gd.RID(camera_attributes), gd.Float(multiplier), gd.Float(normalization))
 }
 
 /*
 Sets the parameters to use with the auto-exposure effect. These parameters take on the same meaning as their counterparts in [CameraAttributes] and [CameraAttributesPractical].
 */
-func CameraAttributesSetAutoExposure(camera_attributes Resource.ID, enable bool, min_sensitivity Float.X, max_sensitivity Float.X, speed Float.X, scale Float.X) { //gd:RenderingServer.camera_attributes_set_auto_exposure
+func CameraAttributesSetAutoExposure(camera_attributes RID.CameraAttributes, enable bool, min_sensitivity Float.X, max_sensitivity Float.X, speed Float.X, scale Float.X) { //gd:RenderingServer.camera_attributes_set_auto_exposure
 	once.Do(singleton)
-	class(self).CameraAttributesSetAutoExposure(camera_attributes, enable, gd.Float(min_sensitivity), gd.Float(max_sensitivity), gd.Float(speed), gd.Float(scale))
+	class(self).CameraAttributesSetAutoExposure(gd.RID(camera_attributes), enable, gd.Float(min_sensitivity), gd.Float(max_sensitivity), gd.Float(speed), gd.Float(scale))
 }
 
 /*
@@ -2686,50 +2686,50 @@ Creates a scenario and adds it to the RenderingServer. It can be accessed with t
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 The scenario is the 3D world that all the visual instances exist in.
 */
-func ScenarioCreate() Resource.ID { //gd:RenderingServer.scenario_create
+func ScenarioCreate() RID.Scenario { //gd:RenderingServer.scenario_create
 	once.Do(singleton)
-	return Resource.ID(class(self).ScenarioCreate())
+	return RID.Scenario(class(self).ScenarioCreate())
 }
 
 /*
 Sets the environment that will be used with this scenario. See also [Environment].
 */
-func ScenarioSetEnvironment(scenario Resource.ID, environment Resource.ID) { //gd:RenderingServer.scenario_set_environment
+func ScenarioSetEnvironment(scenario RID.Scenario, environment RID.Environment) { //gd:RenderingServer.scenario_set_environment
 	once.Do(singleton)
-	class(self).ScenarioSetEnvironment(scenario, environment)
+	class(self).ScenarioSetEnvironment(gd.RID(scenario), gd.RID(environment))
 }
 
 /*
 Sets the fallback environment to be used by this scenario. The fallback environment is used if no environment is set. Internally, this is used by the editor to provide a default environment.
 */
-func ScenarioSetFallbackEnvironment(scenario Resource.ID, environment Resource.ID) { //gd:RenderingServer.scenario_set_fallback_environment
+func ScenarioSetFallbackEnvironment(scenario RID.Scenario, environment RID.Environment) { //gd:RenderingServer.scenario_set_fallback_environment
 	once.Do(singleton)
-	class(self).ScenarioSetFallbackEnvironment(scenario, environment)
+	class(self).ScenarioSetFallbackEnvironment(gd.RID(scenario), gd.RID(environment))
 }
 
 /*
 Sets the camera attributes ([param effects]) that will be used with this scenario. See also [CameraAttributes].
 */
-func ScenarioSetCameraAttributes(scenario Resource.ID, effects Resource.ID) { //gd:RenderingServer.scenario_set_camera_attributes
+func ScenarioSetCameraAttributes(scenario RID.Scenario, effects RID.CameraAttributes) { //gd:RenderingServer.scenario_set_camera_attributes
 	once.Do(singleton)
-	class(self).ScenarioSetCameraAttributes(scenario, effects)
+	class(self).ScenarioSetCameraAttributes(gd.RID(scenario), gd.RID(effects))
 }
 
 /*
 Sets the compositor ([param compositor]) that will be used with this scenario. See also [Compositor].
 */
-func ScenarioSetCompositor(scenario Resource.ID, compositor Resource.ID) { //gd:RenderingServer.scenario_set_compositor
+func ScenarioSetCompositor(scenario RID.Scenario, compositor RID.Compositor) { //gd:RenderingServer.scenario_set_compositor
 	once.Do(singleton)
-	class(self).ScenarioSetCompositor(scenario, compositor)
+	class(self).ScenarioSetCompositor(gd.RID(scenario), gd.RID(compositor))
 }
 
 /*
 Creates a visual instance, adds it to the RenderingServer, and sets both base and scenario. It can be accessed with the RID that is returned. This RID will be used in all [code]instance_*[/code] RenderingServer functions.
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method. This is a shorthand for using [method instance_create] and setting the base and scenario manually.
 */
-func InstanceCreate2(base Resource.ID, scenario Resource.ID) Resource.ID { //gd:RenderingServer.instance_create2
+func InstanceCreate2(base RID.VisualInstance, scenario RID.Scenario) RID.VisualInstance { //gd:RenderingServer.instance_create2
 	once.Do(singleton)
-	return Resource.ID(class(self).InstanceCreate2(base, scenario))
+	return RID.VisualInstance(class(self).InstanceCreate2(gd.RID(base), gd.RID(scenario)))
 }
 
 /*
@@ -2738,81 +2738,81 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 An instance is a way of placing a 3D object in the scenario. Objects like particles, meshes, reflection probes and decals need to be associated with an instance to be visible in the scenario using [method instance_set_base].
 [b]Note:[/b] The equivalent node is [VisualInstance3D].
 */
-func InstanceCreate() Resource.ID { //gd:RenderingServer.instance_create
+func InstanceCreate() RID.VisualInstance { //gd:RenderingServer.instance_create
 	once.Do(singleton)
-	return Resource.ID(class(self).InstanceCreate())
+	return RID.VisualInstance(class(self).InstanceCreate())
 }
 
 /*
 Sets the base of the instance. A base can be any of the 3D objects that are created in the RenderingServer that can be displayed. For example, any of the light types, mesh, multimesh, particle system, reflection probe, decal, lightmap, voxel GI and visibility notifiers are all types that can be set as the base of an instance in order to be displayed in the scenario.
 */
-func InstanceSetBase(instance Resource.ID, base Resource.ID) { //gd:RenderingServer.instance_set_base
+func InstanceSetBase(instance RID.VisualInstance, base RID.VisualInstance) { //gd:RenderingServer.instance_set_base
 	once.Do(singleton)
-	class(self).InstanceSetBase(instance, base)
+	class(self).InstanceSetBase(gd.RID(instance), gd.RID(base))
 }
 
 /*
 Sets the scenario that the instance is in. The scenario is the 3D world that the objects will be displayed in.
 */
-func InstanceSetScenario(instance Resource.ID, scenario Resource.ID) { //gd:RenderingServer.instance_set_scenario
+func InstanceSetScenario(instance RID.VisualInstance, scenario RID.Scenario) { //gd:RenderingServer.instance_set_scenario
 	once.Do(singleton)
-	class(self).InstanceSetScenario(instance, scenario)
+	class(self).InstanceSetScenario(gd.RID(instance), gd.RID(scenario))
 }
 
 /*
 Sets the render layers that this instance will be drawn to. Equivalent to [member VisualInstance3D.layers].
 */
-func InstanceSetLayerMask(instance Resource.ID, mask int) { //gd:RenderingServer.instance_set_layer_mask
+func InstanceSetLayerMask(instance RID.VisualInstance, mask int) { //gd:RenderingServer.instance_set_layer_mask
 	once.Do(singleton)
-	class(self).InstanceSetLayerMask(instance, gd.Int(mask))
+	class(self).InstanceSetLayerMask(gd.RID(instance), gd.Int(mask))
 }
 
 /*
 Sets the sorting offset and switches between using the bounding box or instance origin for depth sorting.
 */
-func InstanceSetPivotData(instance Resource.ID, sorting_offset Float.X, use_aabb_center bool) { //gd:RenderingServer.instance_set_pivot_data
+func InstanceSetPivotData(instance RID.VisualInstance, sorting_offset Float.X, use_aabb_center bool) { //gd:RenderingServer.instance_set_pivot_data
 	once.Do(singleton)
-	class(self).InstanceSetPivotData(instance, gd.Float(sorting_offset), use_aabb_center)
+	class(self).InstanceSetPivotData(gd.RID(instance), gd.Float(sorting_offset), use_aabb_center)
 }
 
 /*
 Sets the world space transform of the instance. Equivalent to [member Node3D.global_transform].
 */
-func InstanceSetTransform(instance Resource.ID, transform Transform3D.BasisOrigin) { //gd:RenderingServer.instance_set_transform
+func InstanceSetTransform(instance RID.VisualInstance, transform Transform3D.BasisOrigin) { //gd:RenderingServer.instance_set_transform
 	once.Do(singleton)
-	class(self).InstanceSetTransform(instance, gd.Transform3D(transform))
+	class(self).InstanceSetTransform(gd.RID(instance), gd.Transform3D(transform))
 }
 
 /*
 Attaches a unique Object ID to instance. Object ID must be attached to instance for proper culling with [method instances_cull_aabb], [method instances_cull_convex], and [method instances_cull_ray].
 */
-func InstanceAttachObjectInstanceId(instance Resource.ID, id int) { //gd:RenderingServer.instance_attach_object_instance_id
+func InstanceAttachObjectInstanceId(instance RID.VisualInstance, id int) { //gd:RenderingServer.instance_attach_object_instance_id
 	once.Do(singleton)
-	class(self).InstanceAttachObjectInstanceId(instance, gd.Int(id))
+	class(self).InstanceAttachObjectInstanceId(gd.RID(instance), gd.Int(id))
 }
 
 /*
 Sets the weight for a given blend shape associated with this instance.
 */
-func InstanceSetBlendShapeWeight(instance Resource.ID, shape int, weight Float.X) { //gd:RenderingServer.instance_set_blend_shape_weight
+func InstanceSetBlendShapeWeight(instance RID.VisualInstance, shape int, weight Float.X) { //gd:RenderingServer.instance_set_blend_shape_weight
 	once.Do(singleton)
-	class(self).InstanceSetBlendShapeWeight(instance, gd.Int(shape), gd.Float(weight))
+	class(self).InstanceSetBlendShapeWeight(gd.RID(instance), gd.Int(shape), gd.Float(weight))
 }
 
 /*
 Sets the override material of a specific surface. Equivalent to [method MeshInstance3D.set_surface_override_material].
 */
-func InstanceSetSurfaceOverrideMaterial(instance Resource.ID, surface int, material Resource.ID) { //gd:RenderingServer.instance_set_surface_override_material
+func InstanceSetSurfaceOverrideMaterial(instance RID.VisualInstance, surface int, material RID.Material) { //gd:RenderingServer.instance_set_surface_override_material
 	once.Do(singleton)
-	class(self).InstanceSetSurfaceOverrideMaterial(instance, gd.Int(surface), material)
+	class(self).InstanceSetSurfaceOverrideMaterial(gd.RID(instance), gd.Int(surface), gd.RID(material))
 }
 
 /*
 Sets whether an instance is drawn or not. Equivalent to [member Node3D.visible].
 */
-func InstanceSetVisible(instance Resource.ID, visible bool) { //gd:RenderingServer.instance_set_visible
+func InstanceSetVisible(instance RID.VisualInstance, visible bool) { //gd:RenderingServer.instance_set_visible
 	once.Do(singleton)
-	class(self).InstanceSetVisible(instance, visible)
+	class(self).InstanceSetVisible(gd.RID(instance), visible)
 }
 
 /*
@@ -2821,138 +2821,138 @@ A transparency of [code]0.0[/code] is fully opaque, while [code]1.0[/code] is fu
 In spatial shaders, [code]1.0 - transparency[/code] is set as the default value of the [code]ALPHA[/code] built-in.
 [b]Note:[/b] [param transparency] is clamped between [code]0.0[/code] and [code]1.0[/code], so this property cannot be used to make transparent materials more opaque than they originally are.
 */
-func InstanceGeometrySetTransparency(instance Resource.ID, transparency Float.X) { //gd:RenderingServer.instance_geometry_set_transparency
+func InstanceGeometrySetTransparency(instance RID.VisualInstance, transparency Float.X) { //gd:RenderingServer.instance_geometry_set_transparency
 	once.Do(singleton)
-	class(self).InstanceGeometrySetTransparency(instance, gd.Float(transparency))
+	class(self).InstanceGeometrySetTransparency(gd.RID(instance), gd.Float(transparency))
 }
 
 /*
 Sets a custom AABB to use when culling objects from the view frustum. Equivalent to setting [member GeometryInstance3D.custom_aabb].
 */
-func InstanceSetCustomAabb(instance Resource.ID, aabb AABB.PositionSize) { //gd:RenderingServer.instance_set_custom_aabb
+func InstanceSetCustomAabb(instance RID.VisualInstance, aabb AABB.PositionSize) { //gd:RenderingServer.instance_set_custom_aabb
 	once.Do(singleton)
-	class(self).InstanceSetCustomAabb(instance, gd.AABB(aabb))
+	class(self).InstanceSetCustomAabb(gd.RID(instance), gd.AABB(aabb))
 }
 
 /*
 Attaches a skeleton to an instance. Removes the previous skeleton from the instance.
 */
-func InstanceAttachSkeleton(instance Resource.ID, skeleton Resource.ID) { //gd:RenderingServer.instance_attach_skeleton
+func InstanceAttachSkeleton(instance RID.VisualInstance, skeleton RID.Skeleton) { //gd:RenderingServer.instance_attach_skeleton
 	once.Do(singleton)
-	class(self).InstanceAttachSkeleton(instance, skeleton)
+	class(self).InstanceAttachSkeleton(gd.RID(instance), gd.RID(skeleton))
 }
 
 /*
 Sets a margin to increase the size of the AABB when culling objects from the view frustum. This allows you to avoid culling objects that fall outside the view frustum. Equivalent to [member GeometryInstance3D.extra_cull_margin].
 */
-func InstanceSetExtraVisibilityMargin(instance Resource.ID, margin Float.X) { //gd:RenderingServer.instance_set_extra_visibility_margin
+func InstanceSetExtraVisibilityMargin(instance RID.VisualInstance, margin Float.X) { //gd:RenderingServer.instance_set_extra_visibility_margin
 	once.Do(singleton)
-	class(self).InstanceSetExtraVisibilityMargin(instance, gd.Float(margin))
+	class(self).InstanceSetExtraVisibilityMargin(gd.RID(instance), gd.Float(margin))
 }
 
 /*
 Sets the visibility parent for the given instance. Equivalent to [member Node3D.visibility_parent].
 */
-func InstanceSetVisibilityParent(instance Resource.ID, parent Resource.ID) { //gd:RenderingServer.instance_set_visibility_parent
+func InstanceSetVisibilityParent(instance RID.VisualInstance, parent RID.VisualInstance) { //gd:RenderingServer.instance_set_visibility_parent
 	once.Do(singleton)
-	class(self).InstanceSetVisibilityParent(instance, parent)
+	class(self).InstanceSetVisibilityParent(gd.RID(instance), gd.RID(parent))
 }
 
 /*
 If [code]true[/code], ignores both frustum and occlusion culling on the specified 3D geometry instance. This is not the same as [member GeometryInstance3D.ignore_occlusion_culling], which only ignores occlusion culling and leaves frustum culling intact.
 */
-func InstanceSetIgnoreCulling(instance Resource.ID, enabled bool) { //gd:RenderingServer.instance_set_ignore_culling
+func InstanceSetIgnoreCulling(instance RID.VisualInstance, enabled bool) { //gd:RenderingServer.instance_set_ignore_culling
 	once.Do(singleton)
-	class(self).InstanceSetIgnoreCulling(instance, enabled)
+	class(self).InstanceSetIgnoreCulling(gd.RID(instance), enabled)
 }
 
 /*
 Sets the flag for a given [enum InstanceFlags]. See [enum InstanceFlags] for more details.
 */
-func InstanceGeometrySetFlag(instance Resource.ID, flag gdclass.RenderingServerInstanceFlags, enabled bool) { //gd:RenderingServer.instance_geometry_set_flag
+func InstanceGeometrySetFlag(instance RID.VisualInstance, flag gdclass.RenderingServerInstanceFlags, enabled bool) { //gd:RenderingServer.instance_geometry_set_flag
 	once.Do(singleton)
-	class(self).InstanceGeometrySetFlag(instance, flag, enabled)
+	class(self).InstanceGeometrySetFlag(gd.RID(instance), flag, enabled)
 }
 
 /*
 Sets the shadow casting setting to one of [enum ShadowCastingSetting]. Equivalent to [member GeometryInstance3D.cast_shadow].
 */
-func InstanceGeometrySetCastShadowsSetting(instance Resource.ID, shadow_casting_setting gdclass.RenderingServerShadowCastingSetting) { //gd:RenderingServer.instance_geometry_set_cast_shadows_setting
+func InstanceGeometrySetCastShadowsSetting(instance RID.VisualInstance, shadow_casting_setting gdclass.RenderingServerShadowCastingSetting) { //gd:RenderingServer.instance_geometry_set_cast_shadows_setting
 	once.Do(singleton)
-	class(self).InstanceGeometrySetCastShadowsSetting(instance, shadow_casting_setting)
+	class(self).InstanceGeometrySetCastShadowsSetting(gd.RID(instance), shadow_casting_setting)
 }
 
 /*
 Sets a material that will override the material for all surfaces on the mesh associated with this instance. Equivalent to [member GeometryInstance3D.material_override].
 */
-func InstanceGeometrySetMaterialOverride(instance Resource.ID, material Resource.ID) { //gd:RenderingServer.instance_geometry_set_material_override
+func InstanceGeometrySetMaterialOverride(instance RID.VisualInstance, material RID.Material) { //gd:RenderingServer.instance_geometry_set_material_override
 	once.Do(singleton)
-	class(self).InstanceGeometrySetMaterialOverride(instance, material)
+	class(self).InstanceGeometrySetMaterialOverride(gd.RID(instance), gd.RID(material))
 }
 
 /*
 Sets a material that will be rendered for all surfaces on top of active materials for the mesh associated with this instance. Equivalent to [member GeometryInstance3D.material_overlay].
 */
-func InstanceGeometrySetMaterialOverlay(instance Resource.ID, material Resource.ID) { //gd:RenderingServer.instance_geometry_set_material_overlay
+func InstanceGeometrySetMaterialOverlay(instance RID.VisualInstance, material RID.Material) { //gd:RenderingServer.instance_geometry_set_material_overlay
 	once.Do(singleton)
-	class(self).InstanceGeometrySetMaterialOverlay(instance, material)
+	class(self).InstanceGeometrySetMaterialOverlay(gd.RID(instance), gd.RID(material))
 }
 
 /*
 Sets the visibility range values for the given geometry instance. Equivalent to [member GeometryInstance3D.visibility_range_begin] and related properties.
 */
-func InstanceGeometrySetVisibilityRange(instance Resource.ID, min Float.X, max Float.X, min_margin Float.X, max_margin Float.X, fade_mode gdclass.RenderingServerVisibilityRangeFadeMode) { //gd:RenderingServer.instance_geometry_set_visibility_range
+func InstanceGeometrySetVisibilityRange(instance RID.VisualInstance, min Float.X, max Float.X, min_margin Float.X, max_margin Float.X, fade_mode gdclass.RenderingServerVisibilityRangeFadeMode) { //gd:RenderingServer.instance_geometry_set_visibility_range
 	once.Do(singleton)
-	class(self).InstanceGeometrySetVisibilityRange(instance, gd.Float(min), gd.Float(max), gd.Float(min_margin), gd.Float(max_margin), fade_mode)
+	class(self).InstanceGeometrySetVisibilityRange(gd.RID(instance), gd.Float(min), gd.Float(max), gd.Float(min_margin), gd.Float(max_margin), fade_mode)
 }
 
 /*
 Sets the lightmap GI instance to use for the specified 3D geometry instance. The lightmap UV scale for the specified instance (equivalent to [member GeometryInstance3D.gi_lightmap_scale]) and lightmap atlas slice must also be specified.
 */
-func InstanceGeometrySetLightmap(instance Resource.ID, lightmap Resource.ID, lightmap_uv_scale Rect2.PositionSize, lightmap_slice int) { //gd:RenderingServer.instance_geometry_set_lightmap
+func InstanceGeometrySetLightmap(instance RID.VisualInstance, lightmap RID.Lightmap, lightmap_uv_scale Rect2.PositionSize, lightmap_slice int) { //gd:RenderingServer.instance_geometry_set_lightmap
 	once.Do(singleton)
-	class(self).InstanceGeometrySetLightmap(instance, lightmap, gd.Rect2(lightmap_uv_scale), gd.Int(lightmap_slice))
+	class(self).InstanceGeometrySetLightmap(gd.RID(instance), gd.RID(lightmap), gd.Rect2(lightmap_uv_scale), gd.Int(lightmap_slice))
 }
 
 /*
 Sets the level of detail bias to use when rendering the specified 3D geometry instance. Higher values result in higher detail from further away. Equivalent to [member GeometryInstance3D.lod_bias].
 */
-func InstanceGeometrySetLodBias(instance Resource.ID, lod_bias Float.X) { //gd:RenderingServer.instance_geometry_set_lod_bias
+func InstanceGeometrySetLodBias(instance RID.VisualInstance, lod_bias Float.X) { //gd:RenderingServer.instance_geometry_set_lod_bias
 	once.Do(singleton)
-	class(self).InstanceGeometrySetLodBias(instance, gd.Float(lod_bias))
+	class(self).InstanceGeometrySetLodBias(gd.RID(instance), gd.Float(lod_bias))
 }
 
 /*
 Sets the per-instance shader uniform on the specified 3D geometry instance. Equivalent to [method GeometryInstance3D.set_instance_shader_parameter].
 */
-func InstanceGeometrySetShaderParameter(instance Resource.ID, parameter string, value any) { //gd:RenderingServer.instance_geometry_set_shader_parameter
+func InstanceGeometrySetShaderParameter(instance RID.VisualInstance, parameter string, value any) { //gd:RenderingServer.instance_geometry_set_shader_parameter
 	once.Do(singleton)
-	class(self).InstanceGeometrySetShaderParameter(instance, gd.NewStringName(parameter), gd.NewVariant(value))
+	class(self).InstanceGeometrySetShaderParameter(gd.RID(instance), gd.NewStringName(parameter), gd.NewVariant(value))
 }
 
 /*
 Returns the value of the per-instance shader uniform from the specified 3D geometry instance. Equivalent to [method GeometryInstance3D.get_instance_shader_parameter].
 [b]Note:[/b] Per-instance shader parameter names are case-sensitive.
 */
-func InstanceGeometryGetShaderParameter(instance Resource.ID, parameter string) any { //gd:RenderingServer.instance_geometry_get_shader_parameter
+func InstanceGeometryGetShaderParameter(instance RID.VisualInstance, parameter string) any { //gd:RenderingServer.instance_geometry_get_shader_parameter
 	once.Do(singleton)
-	return any(class(self).InstanceGeometryGetShaderParameter(instance, gd.NewStringName(parameter)).Interface())
+	return any(class(self).InstanceGeometryGetShaderParameter(gd.RID(instance), gd.NewStringName(parameter)).Interface())
 }
 
 /*
 Returns the default value of the per-instance shader uniform from the specified 3D geometry instance. Equivalent to [method GeometryInstance3D.get_instance_shader_parameter].
 */
-func InstanceGeometryGetShaderParameterDefaultValue(instance Resource.ID, parameter string) any { //gd:RenderingServer.instance_geometry_get_shader_parameter_default_value
+func InstanceGeometryGetShaderParameterDefaultValue(instance RID.VisualInstance, parameter string) any { //gd:RenderingServer.instance_geometry_get_shader_parameter_default_value
 	once.Do(singleton)
-	return any(class(self).InstanceGeometryGetShaderParameterDefaultValue(instance, gd.NewStringName(parameter)).Interface())
+	return any(class(self).InstanceGeometryGetShaderParameterDefaultValue(gd.RID(instance), gd.NewStringName(parameter)).Interface())
 }
 
 /*
 Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified 3D geometry instance. The returned dictionary is in PropertyInfo format, with the keys [code]name[/code], [code]class_name[/code], [code]type[/code], [code]hint[/code], [code]hint_string[/code] and [code]usage[/code]. Equivalent to [method GeometryInstance3D.get_instance_shader_parameter].
 */
-func InstanceGeometryGetShaderParameterList(instance Resource.ID) []map[any]any { //gd:RenderingServer.instance_geometry_get_shader_parameter_list
+func InstanceGeometryGetShaderParameterList(instance RID.VisualInstance) []map[any]any { //gd:RenderingServer.instance_geometry_get_shader_parameter_list
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).InstanceGeometryGetShaderParameterList(instance))))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).InstanceGeometryGetShaderParameterList(gd.RID(instance)))))
 }
 
 /*
@@ -2961,7 +2961,7 @@ Returns an array of object IDs intersecting with the provided AABB. Only 3D node
 */
 func InstancesCullAabb(aabb AABB.PositionSize) []int64 { //gd:RenderingServer.instances_cull_aabb
 	once.Do(singleton)
-	return []int64(class(self).InstancesCullAabb(gd.AABB(aabb), [1]Resource.ID{}[0]).AsSlice())
+	return []int64(class(self).InstancesCullAabb(gd.AABB(aabb), gd.RID([1]RID.Any{}[0])).AsSlice())
 }
 
 /*
@@ -2970,7 +2970,7 @@ Returns an array of object IDs intersecting with the provided 3D ray. Only 3D no
 */
 func InstancesCullRay(from Vector3.XYZ, to Vector3.XYZ) []int64 { //gd:RenderingServer.instances_cull_ray
 	once.Do(singleton)
-	return []int64(class(self).InstancesCullRay(gd.Vector3(from), gd.Vector3(to), [1]Resource.ID{}[0]).AsSlice())
+	return []int64(class(self).InstancesCullRay(gd.Vector3(from), gd.Vector3(to), gd.RID([1]RID.Any{}[0])).AsSlice())
 }
 
 /*
@@ -2979,15 +2979,15 @@ Returns an array of object IDs intersecting with the provided convex shape. Only
 */
 func InstancesCullConvex(convex []Plane.NormalD) []int64 { //gd:RenderingServer.instances_cull_convex
 	once.Do(singleton)
-	return []int64(class(self).InstancesCullConvex(gd.ArrayFromSlice[Array.Contains[gd.Plane]](convex), [1]Resource.ID{}[0]).AsSlice())
+	return []int64(class(self).InstancesCullConvex(gd.ArrayFromSlice[Array.Contains[gd.Plane]](convex), gd.RID([1]RID.Any{}[0])).AsSlice())
 }
 
 /*
 Bakes the material data of the Mesh passed in the [param base] parameter with optional [param material_overrides] to a set of [Image]s of size [param image_size]. Returns an array of [Image]s containing material properties as specified in [enum BakeChannels].
 */
-func BakeRenderUv2(base Resource.ID, material_overrides []Resource.ID, image_size Vector2i.XY) [][1]gdclass.Image { //gd:RenderingServer.bake_render_uv2
+func BakeRenderUv2(base RID.Mesh, material_overrides [][]RID.Material, image_size Vector2i.XY) [][1]gdclass.Image { //gd:RenderingServer.bake_render_uv2
 	once.Do(singleton)
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(class(self).BakeRenderUv2(base, gd.ArrayFromSlice[Array.Contains[gd.RID]](material_overrides), gd.Vector2i(image_size)))))
+	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(class(self).BakeRenderUv2(gd.RID(base), gd.ArrayFromSlice[Array.Contains[gd.RID]](material_overrides), gd.Vector2i(image_size)))))
 }
 
 /*
@@ -2995,33 +2995,33 @@ Creates a canvas and returns the assigned [RID]. It can be accessed with the RID
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 Canvas has no [Resource] or [Node] equivalent.
 */
-func CanvasCreate() Resource.ID { //gd:RenderingServer.canvas_create
+func CanvasCreate() RID.Canvas { //gd:RenderingServer.canvas_create
 	once.Do(singleton)
-	return Resource.ID(class(self).CanvasCreate())
+	return RID.Canvas(class(self).CanvasCreate())
 }
 
 /*
 A copy of the canvas item will be drawn with a local offset of the mirroring [Vector2].
 */
-func CanvasSetItemMirroring(canvas Resource.ID, item Resource.ID, mirroring Vector2.XY) { //gd:RenderingServer.canvas_set_item_mirroring
+func CanvasSetItemMirroring(canvas RID.Canvas, item RID.CanvasItem, mirroring Vector2.XY) { //gd:RenderingServer.canvas_set_item_mirroring
 	once.Do(singleton)
-	class(self).CanvasSetItemMirroring(canvas, item, gd.Vector2(mirroring))
+	class(self).CanvasSetItemMirroring(gd.RID(canvas), gd.RID(item), gd.Vector2(mirroring))
 }
 
 /*
 A copy of the canvas item will be drawn with a local offset of the [param repeat_size] by the number of times of the [param repeat_times]. As the [param repeat_times] increases, the copies will spread away from the origin texture.
 */
-func CanvasSetItemRepeat(item Resource.ID, repeat_size Vector2.XY, repeat_times int) { //gd:RenderingServer.canvas_set_item_repeat
+func CanvasSetItemRepeat(item RID.CanvasItem, repeat_size Vector2.XY, repeat_times int) { //gd:RenderingServer.canvas_set_item_repeat
 	once.Do(singleton)
-	class(self).CanvasSetItemRepeat(item, gd.Vector2(repeat_size), gd.Int(repeat_times))
+	class(self).CanvasSetItemRepeat(gd.RID(item), gd.Vector2(repeat_size), gd.Int(repeat_times))
 }
 
 /*
 Modulates all colors in the given canvas.
 */
-func CanvasSetModulate(canvas Resource.ID, color Color.RGBA) { //gd:RenderingServer.canvas_set_modulate
+func CanvasSetModulate(canvas RID.Canvas, color Color.RGBA) { //gd:RenderingServer.canvas_set_modulate
 	once.Do(singleton)
-	class(self).CanvasSetModulate(canvas, gd.Color(color))
+	class(self).CanvasSetModulate(gd.RID(canvas), gd.Color(color))
 }
 func CanvasSetDisableScale(disable bool) { //gd:RenderingServer.canvas_set_disable_scale
 	once.Do(singleton)
@@ -3033,41 +3033,41 @@ Creates a canvas texture and adds it to the RenderingServer. It can be accessed 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method. See also [method texture_2d_create].
 [b]Note:[/b] The equivalent resource is [CanvasTexture] and is only meant to be used in 2D rendering, not 3D.
 */
-func CanvasTextureCreate() Resource.ID { //gd:RenderingServer.canvas_texture_create
+func CanvasTextureCreate() RID.CanvasTexture { //gd:RenderingServer.canvas_texture_create
 	once.Do(singleton)
-	return Resource.ID(class(self).CanvasTextureCreate())
+	return RID.CanvasTexture(class(self).CanvasTextureCreate())
 }
 
 /*
 Sets the [param channel]'s [param texture] for the canvas texture specified by the [param canvas_texture] RID. Equivalent to [member CanvasTexture.diffuse_texture], [member CanvasTexture.normal_texture] and [member CanvasTexture.specular_texture].
 */
-func CanvasTextureSetChannel(canvas_texture Resource.ID, channel gdclass.RenderingServerCanvasTextureChannel, texture Resource.ID) { //gd:RenderingServer.canvas_texture_set_channel
+func CanvasTextureSetChannel(canvas_texture RID.CanvasTexture, channel gdclass.RenderingServerCanvasTextureChannel, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_texture_set_channel
 	once.Do(singleton)
-	class(self).CanvasTextureSetChannel(canvas_texture, channel, texture)
+	class(self).CanvasTextureSetChannel(gd.RID(canvas_texture), channel, gd.RID(texture))
 }
 
 /*
 Sets the [param base_color] and [param shininess] to use for the canvas texture specified by the [param canvas_texture] RID. Equivalent to [member CanvasTexture.specular_color] and [member CanvasTexture.specular_shininess].
 */
-func CanvasTextureSetShadingParameters(canvas_texture Resource.ID, base_color Color.RGBA, shininess Float.X) { //gd:RenderingServer.canvas_texture_set_shading_parameters
+func CanvasTextureSetShadingParameters(canvas_texture RID.CanvasTexture, base_color Color.RGBA, shininess Float.X) { //gd:RenderingServer.canvas_texture_set_shading_parameters
 	once.Do(singleton)
-	class(self).CanvasTextureSetShadingParameters(canvas_texture, gd.Color(base_color), gd.Float(shininess))
+	class(self).CanvasTextureSetShadingParameters(gd.RID(canvas_texture), gd.Color(base_color), gd.Float(shininess))
 }
 
 /*
 Sets the texture [param filter] mode to use for the canvas texture specified by the [param canvas_texture] RID.
 */
-func CanvasTextureSetTextureFilter(canvas_texture Resource.ID, filter gdclass.RenderingServerCanvasItemTextureFilter) { //gd:RenderingServer.canvas_texture_set_texture_filter
+func CanvasTextureSetTextureFilter(canvas_texture RID.CanvasTexture, filter gdclass.RenderingServerCanvasItemTextureFilter) { //gd:RenderingServer.canvas_texture_set_texture_filter
 	once.Do(singleton)
-	class(self).CanvasTextureSetTextureFilter(canvas_texture, filter)
+	class(self).CanvasTextureSetTextureFilter(gd.RID(canvas_texture), filter)
 }
 
 /*
 Sets the texture [param repeat] mode to use for the canvas texture specified by the [param canvas_texture] RID.
 */
-func CanvasTextureSetTextureRepeat(canvas_texture Resource.ID, repeat gdclass.RenderingServerCanvasItemTextureRepeat) { //gd:RenderingServer.canvas_texture_set_texture_repeat
+func CanvasTextureSetTextureRepeat(canvas_texture RID.CanvasTexture, repeat gdclass.RenderingServerCanvasItemTextureRepeat) { //gd:RenderingServer.canvas_texture_set_texture_repeat
 	once.Do(singleton)
-	class(self).CanvasTextureSetTextureRepeat(canvas_texture, repeat)
+	class(self).CanvasTextureSetTextureRepeat(gd.RID(canvas_texture), repeat)
 }
 
 /*
@@ -3075,384 +3075,384 @@ Creates a new CanvasItem instance and returns its [RID]. It can be accessed with
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent node is [CanvasItem].
 */
-func CanvasItemCreate() Resource.ID { //gd:RenderingServer.canvas_item_create
+func CanvasItemCreate() RID.CanvasItem { //gd:RenderingServer.canvas_item_create
 	once.Do(singleton)
-	return Resource.ID(class(self).CanvasItemCreate())
+	return RID.CanvasItem(class(self).CanvasItemCreate())
 }
 
 /*
 Sets a parent [CanvasItem] to the [CanvasItem]. The item will inherit transform, modulation and visibility from its parent, like [CanvasItem] nodes in the scene tree.
 */
-func CanvasItemSetParent(item Resource.ID, parent Resource.ID) { //gd:RenderingServer.canvas_item_set_parent
+func CanvasItemSetParent(item RID.CanvasItem, parent RID.CanvasItem) { //gd:RenderingServer.canvas_item_set_parent
 	once.Do(singleton)
-	class(self).CanvasItemSetParent(item, parent)
+	class(self).CanvasItemSetParent(gd.RID(item), gd.RID(parent))
 }
 
 /*
 Sets the default texture filter mode for the canvas item specified by the [param item] RID. Equivalent to [member CanvasItem.texture_filter].
 */
-func CanvasItemSetDefaultTextureFilter(item Resource.ID, filter gdclass.RenderingServerCanvasItemTextureFilter) { //gd:RenderingServer.canvas_item_set_default_texture_filter
+func CanvasItemSetDefaultTextureFilter(item RID.CanvasItem, filter gdclass.RenderingServerCanvasItemTextureFilter) { //gd:RenderingServer.canvas_item_set_default_texture_filter
 	once.Do(singleton)
-	class(self).CanvasItemSetDefaultTextureFilter(item, filter)
+	class(self).CanvasItemSetDefaultTextureFilter(gd.RID(item), filter)
 }
 
 /*
 Sets the default texture repeat mode for the canvas item specified by the [param item] RID. Equivalent to [member CanvasItem.texture_repeat].
 */
-func CanvasItemSetDefaultTextureRepeat(item Resource.ID, repeat gdclass.RenderingServerCanvasItemTextureRepeat) { //gd:RenderingServer.canvas_item_set_default_texture_repeat
+func CanvasItemSetDefaultTextureRepeat(item RID.CanvasItem, repeat gdclass.RenderingServerCanvasItemTextureRepeat) { //gd:RenderingServer.canvas_item_set_default_texture_repeat
 	once.Do(singleton)
-	class(self).CanvasItemSetDefaultTextureRepeat(item, repeat)
+	class(self).CanvasItemSetDefaultTextureRepeat(gd.RID(item), repeat)
 }
 
 /*
 Sets the visibility of the [CanvasItem].
 */
-func CanvasItemSetVisible(item Resource.ID, visible bool) { //gd:RenderingServer.canvas_item_set_visible
+func CanvasItemSetVisible(item RID.CanvasItem, visible bool) { //gd:RenderingServer.canvas_item_set_visible
 	once.Do(singleton)
-	class(self).CanvasItemSetVisible(item, visible)
+	class(self).CanvasItemSetVisible(gd.RID(item), visible)
 }
 
 /*
 Sets the light [param mask] for the canvas item specified by the [param item] RID. Equivalent to [member CanvasItem.light_mask].
 */
-func CanvasItemSetLightMask(item Resource.ID, mask int) { //gd:RenderingServer.canvas_item_set_light_mask
+func CanvasItemSetLightMask(item RID.CanvasItem, mask int) { //gd:RenderingServer.canvas_item_set_light_mask
 	once.Do(singleton)
-	class(self).CanvasItemSetLightMask(item, gd.Int(mask))
+	class(self).CanvasItemSetLightMask(gd.RID(item), gd.Int(mask))
 }
 
 /*
 Sets the rendering visibility layer associated with this [CanvasItem]. Only [Viewport] nodes with a matching rendering mask will render this [CanvasItem].
 */
-func CanvasItemSetVisibilityLayer(item Resource.ID, visibility_layer int) { //gd:RenderingServer.canvas_item_set_visibility_layer
+func CanvasItemSetVisibilityLayer(item RID.CanvasItem, visibility_layer int) { //gd:RenderingServer.canvas_item_set_visibility_layer
 	once.Do(singleton)
-	class(self).CanvasItemSetVisibilityLayer(item, gd.Int(visibility_layer))
+	class(self).CanvasItemSetVisibilityLayer(gd.RID(item), gd.Int(visibility_layer))
 }
 
 /*
 Sets the [param transform] of the canvas item specified by the [param item] RID. This affects where and how the item will be drawn. Child canvas items' transforms are multiplied by their parent's transform. Equivalent to [member Node2D.transform].
 */
-func CanvasItemSetTransform(item Resource.ID, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_set_transform
+func CanvasItemSetTransform(item RID.CanvasItem, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_set_transform
 	once.Do(singleton)
-	class(self).CanvasItemSetTransform(item, gd.Transform2D(transform))
+	class(self).CanvasItemSetTransform(gd.RID(item), gd.Transform2D(transform))
 }
 
 /*
 If [param clip] is [code]true[/code], makes the canvas item specified by the [param item] RID not draw anything outside of its rect's coordinates. This clipping is fast, but works only with axis-aligned rectangles. This means that rotation is ignored by the clipping rectangle. For more advanced clipping shapes, use [method canvas_item_set_canvas_group_mode] instead.
 [b]Note:[/b] The equivalent node functionality is found in [member Label.clip_text], [RichTextLabel] (always enabled) and more.
 */
-func CanvasItemSetClip(item Resource.ID, clip bool) { //gd:RenderingServer.canvas_item_set_clip
+func CanvasItemSetClip(item RID.CanvasItem, clip bool) { //gd:RenderingServer.canvas_item_set_clip
 	once.Do(singleton)
-	class(self).CanvasItemSetClip(item, clip)
+	class(self).CanvasItemSetClip(gd.RID(item), clip)
 }
 
 /*
 If [param enabled] is [code]true[/code], enables multichannel signed distance field rendering mode for the canvas item specified by the [param item] RID. This is meant to be used for font rendering, or with specially generated images using [url=https://github.com/Chlumsky/msdfgen]msdfgen[/url].
 */
-func CanvasItemSetDistanceFieldMode(item Resource.ID, enabled bool) { //gd:RenderingServer.canvas_item_set_distance_field_mode
+func CanvasItemSetDistanceFieldMode(item RID.CanvasItem, enabled bool) { //gd:RenderingServer.canvas_item_set_distance_field_mode
 	once.Do(singleton)
-	class(self).CanvasItemSetDistanceFieldMode(item, enabled)
+	class(self).CanvasItemSetDistanceFieldMode(gd.RID(item), enabled)
 }
 
 /*
 If [param use_custom_rect] is [code]true[/code], sets the custom visibility rectangle (used for culling) to [param rect] for the canvas item specified by [param item]. Setting a custom visibility rect can reduce CPU load when drawing lots of 2D instances. If [param use_custom_rect] is [code]false[/code], automatically computes a visibility rectangle based on the canvas item's draw commands.
 */
-func CanvasItemSetCustomRect(item Resource.ID, use_custom_rect bool) { //gd:RenderingServer.canvas_item_set_custom_rect
+func CanvasItemSetCustomRect(item RID.CanvasItem, use_custom_rect bool) { //gd:RenderingServer.canvas_item_set_custom_rect
 	once.Do(singleton)
-	class(self).CanvasItemSetCustomRect(item, use_custom_rect, gd.Rect2(gd.NewRect2(0, 0, 0, 0)))
+	class(self).CanvasItemSetCustomRect(gd.RID(item), use_custom_rect, gd.Rect2(gd.NewRect2(0, 0, 0, 0)))
 }
 
 /*
 Multiplies the color of the canvas item specified by the [param item] RID, while affecting its children. See also [method canvas_item_set_self_modulate]. Equivalent to [member CanvasItem.modulate].
 */
-func CanvasItemSetModulate(item Resource.ID, color Color.RGBA) { //gd:RenderingServer.canvas_item_set_modulate
+func CanvasItemSetModulate(item RID.CanvasItem, color Color.RGBA) { //gd:RenderingServer.canvas_item_set_modulate
 	once.Do(singleton)
-	class(self).CanvasItemSetModulate(item, gd.Color(color))
+	class(self).CanvasItemSetModulate(gd.RID(item), gd.Color(color))
 }
 
 /*
 Multiplies the color of the canvas item specified by the [param item] RID, without affecting its children. See also [method canvas_item_set_modulate]. Equivalent to [member CanvasItem.self_modulate].
 */
-func CanvasItemSetSelfModulate(item Resource.ID, color Color.RGBA) { //gd:RenderingServer.canvas_item_set_self_modulate
+func CanvasItemSetSelfModulate(item RID.CanvasItem, color Color.RGBA) { //gd:RenderingServer.canvas_item_set_self_modulate
 	once.Do(singleton)
-	class(self).CanvasItemSetSelfModulate(item, gd.Color(color))
+	class(self).CanvasItemSetSelfModulate(gd.RID(item), gd.Color(color))
 }
 
 /*
 If [param enabled] is [code]true[/code], draws the canvas item specified by the [param item] RID behind its parent. Equivalent to [member CanvasItem.show_behind_parent].
 */
-func CanvasItemSetDrawBehindParent(item Resource.ID, enabled bool) { //gd:RenderingServer.canvas_item_set_draw_behind_parent
+func CanvasItemSetDrawBehindParent(item RID.CanvasItem, enabled bool) { //gd:RenderingServer.canvas_item_set_draw_behind_parent
 	once.Do(singleton)
-	class(self).CanvasItemSetDrawBehindParent(item, enabled)
+	class(self).CanvasItemSetDrawBehindParent(gd.RID(item), enabled)
 }
 
 /*
 If [param interpolated] is [code]true[/code], turns on physics interpolation for the canvas item.
 */
-func CanvasItemSetInterpolated(item Resource.ID, interpolated bool) { //gd:RenderingServer.canvas_item_set_interpolated
+func CanvasItemSetInterpolated(item RID.CanvasItem, interpolated bool) { //gd:RenderingServer.canvas_item_set_interpolated
 	once.Do(singleton)
-	class(self).CanvasItemSetInterpolated(item, interpolated)
+	class(self).CanvasItemSetInterpolated(gd.RID(item), interpolated)
 }
 
 /*
 Prevents physics interpolation for the current physics tick.
 This is useful when moving a canvas item to a new location, to give an instantaneous change rather than interpolation from the previous location.
 */
-func CanvasItemResetPhysicsInterpolation(item Resource.ID) { //gd:RenderingServer.canvas_item_reset_physics_interpolation
+func CanvasItemResetPhysicsInterpolation(item RID.CanvasItem) { //gd:RenderingServer.canvas_item_reset_physics_interpolation
 	once.Do(singleton)
-	class(self).CanvasItemResetPhysicsInterpolation(item)
+	class(self).CanvasItemResetPhysicsInterpolation(gd.RID(item))
 }
 
 /*
 Transforms both the current and previous stored transform for a canvas item.
 This allows transforming a canvas item without creating a "glitch" in the interpolation, which is particularly useful for large worlds utilizing a shifting origin.
 */
-func CanvasItemTransformPhysicsInterpolation(item Resource.ID, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_transform_physics_interpolation
+func CanvasItemTransformPhysicsInterpolation(item RID.CanvasItem, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_transform_physics_interpolation
 	once.Do(singleton)
-	class(self).CanvasItemTransformPhysicsInterpolation(item, gd.Transform2D(transform))
+	class(self).CanvasItemTransformPhysicsInterpolation(gd.RID(item), gd.Transform2D(transform))
 }
 
 /*
 Draws a line on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_line].
 */
-func CanvasItemAddLine(item Resource.ID, from Vector2.XY, to Vector2.XY, color Color.RGBA) { //gd:RenderingServer.canvas_item_add_line
+func CanvasItemAddLine(item RID.CanvasItem, from Vector2.XY, to Vector2.XY, color Color.RGBA) { //gd:RenderingServer.canvas_item_add_line
 	once.Do(singleton)
-	class(self).CanvasItemAddLine(item, gd.Vector2(from), gd.Vector2(to), gd.Color(color), gd.Float(-1.0), false)
+	class(self).CanvasItemAddLine(gd.RID(item), gd.Vector2(from), gd.Vector2(to), gd.Color(color), gd.Float(-1.0), false)
 }
 
 /*
 Draws a 2D polyline on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_polyline] and [method CanvasItem.draw_polyline_colors].
 */
-func CanvasItemAddPolyline(item Resource.ID, points []Vector2.XY, colors []Color.RGBA) { //gd:RenderingServer.canvas_item_add_polyline
+func CanvasItemAddPolyline(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA) { //gd:RenderingServer.canvas_item_add_polyline
 	once.Do(singleton)
-	class(self).CanvasItemAddPolyline(item, gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.Float(-1.0), false)
+	class(self).CanvasItemAddPolyline(gd.RID(item), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.Float(-1.0), false)
 }
 
 /*
 Draws a 2D multiline on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_multiline] and [method CanvasItem.draw_multiline_colors].
 */
-func CanvasItemAddMultiline(item Resource.ID, points []Vector2.XY, colors []Color.RGBA) { //gd:RenderingServer.canvas_item_add_multiline
+func CanvasItemAddMultiline(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA) { //gd:RenderingServer.canvas_item_add_multiline
 	once.Do(singleton)
-	class(self).CanvasItemAddMultiline(item, gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.Float(-1.0), false)
+	class(self).CanvasItemAddMultiline(gd.RID(item), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.Float(-1.0), false)
 }
 
 /*
 Draws a rectangle on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_rect].
 */
-func CanvasItemAddRect(item Resource.ID, rect Rect2.PositionSize, color Color.RGBA) { //gd:RenderingServer.canvas_item_add_rect
+func CanvasItemAddRect(item RID.CanvasItem, rect Rect2.PositionSize, color Color.RGBA) { //gd:RenderingServer.canvas_item_add_rect
 	once.Do(singleton)
-	class(self).CanvasItemAddRect(item, gd.Rect2(rect), gd.Color(color), false)
+	class(self).CanvasItemAddRect(gd.RID(item), gd.Rect2(rect), gd.Color(color), false)
 }
 
 /*
 Draws a circle on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_circle].
 */
-func CanvasItemAddCircle(item Resource.ID, pos Vector2.XY, radius Float.X, color Color.RGBA) { //gd:RenderingServer.canvas_item_add_circle
+func CanvasItemAddCircle(item RID.CanvasItem, pos Vector2.XY, radius Float.X, color Color.RGBA) { //gd:RenderingServer.canvas_item_add_circle
 	once.Do(singleton)
-	class(self).CanvasItemAddCircle(item, gd.Vector2(pos), gd.Float(radius), gd.Color(color), false)
+	class(self).CanvasItemAddCircle(gd.RID(item), gd.Vector2(pos), gd.Float(radius), gd.Color(color), false)
 }
 
 /*
 Draws a 2D textured rectangle on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_texture_rect] and [method Texture2D.draw_rect].
 */
-func CanvasItemAddTextureRect(item Resource.ID, rect Rect2.PositionSize, texture Resource.ID) { //gd:RenderingServer.canvas_item_add_texture_rect
+func CanvasItemAddTextureRect(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_item_add_texture_rect
 	once.Do(singleton)
-	class(self).CanvasItemAddTextureRect(item, gd.Rect2(rect), texture, false, gd.Color(gd.Color{1, 1, 1, 1}), false)
+	class(self).CanvasItemAddTextureRect(gd.RID(item), gd.Rect2(rect), gd.RID(texture), false, gd.Color(gd.Color{1, 1, 1, 1}), false)
 }
 
 /*
 See also [method CanvasItem.draw_msdf_texture_rect_region].
 */
-func CanvasItemAddMsdfTextureRectRegion(item Resource.ID, rect Rect2.PositionSize, texture Resource.ID, src_rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_add_msdf_texture_rect_region
+func CanvasItemAddMsdfTextureRectRegion(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, src_rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_add_msdf_texture_rect_region
 	once.Do(singleton)
-	class(self).CanvasItemAddMsdfTextureRectRegion(item, gd.Rect2(rect), texture, gd.Rect2(src_rect), gd.Color(gd.Color{1, 1, 1, 1}), gd.Int(0), gd.Float(1.0), gd.Float(1.0))
+	class(self).CanvasItemAddMsdfTextureRectRegion(gd.RID(item), gd.Rect2(rect), gd.RID(texture), gd.Rect2(src_rect), gd.Color(gd.Color{1, 1, 1, 1}), gd.Int(0), gd.Float(1.0), gd.Float(1.0))
 }
 
 /*
 See also [method CanvasItem.draw_lcd_texture_rect_region].
 */
-func CanvasItemAddLcdTextureRectRegion(item Resource.ID, rect Rect2.PositionSize, texture Resource.ID, src_rect Rect2.PositionSize, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_lcd_texture_rect_region
+func CanvasItemAddLcdTextureRectRegion(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, src_rect Rect2.PositionSize, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_lcd_texture_rect_region
 	once.Do(singleton)
-	class(self).CanvasItemAddLcdTextureRectRegion(item, gd.Rect2(rect), texture, gd.Rect2(src_rect), gd.Color(modulate))
+	class(self).CanvasItemAddLcdTextureRectRegion(gd.RID(item), gd.Rect2(rect), gd.RID(texture), gd.Rect2(src_rect), gd.Color(modulate))
 }
 
 /*
 Draws the specified region of a 2D textured rectangle on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_texture_rect_region] and [method Texture2D.draw_rect_region].
 */
-func CanvasItemAddTextureRectRegion(item Resource.ID, rect Rect2.PositionSize, texture Resource.ID, src_rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_add_texture_rect_region
+func CanvasItemAddTextureRectRegion(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, src_rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_add_texture_rect_region
 	once.Do(singleton)
-	class(self).CanvasItemAddTextureRectRegion(item, gd.Rect2(rect), texture, gd.Rect2(src_rect), gd.Color(gd.Color{1, 1, 1, 1}), false, true)
+	class(self).CanvasItemAddTextureRectRegion(gd.RID(item), gd.Rect2(rect), gd.RID(texture), gd.Rect2(src_rect), gd.Color(gd.Color{1, 1, 1, 1}), false, true)
 }
 
 /*
 Draws a nine-patch rectangle on the [CanvasItem] pointed to by the [param item] [RID].
 */
-func CanvasItemAddNinePatch(item Resource.ID, rect Rect2.PositionSize, source Rect2.PositionSize, texture Resource.ID, topleft Vector2.XY, bottomright Vector2.XY) { //gd:RenderingServer.canvas_item_add_nine_patch
+func CanvasItemAddNinePatch(item RID.CanvasItem, rect Rect2.PositionSize, source Rect2.PositionSize, texture RID.CanvasTexture, topleft Vector2.XY, bottomright Vector2.XY) { //gd:RenderingServer.canvas_item_add_nine_patch
 	once.Do(singleton)
-	class(self).CanvasItemAddNinePatch(item, gd.Rect2(rect), gd.Rect2(source), texture, gd.Vector2(topleft), gd.Vector2(bottomright), 0, 0, true, gd.Color(gd.Color{1, 1, 1, 1}))
+	class(self).CanvasItemAddNinePatch(gd.RID(item), gd.Rect2(rect), gd.Rect2(source), gd.RID(texture), gd.Vector2(topleft), gd.Vector2(bottomright), 0, 0, true, gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a 2D primitive on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_primitive].
 */
-func CanvasItemAddPrimitive(item Resource.ID, points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, texture Resource.ID) { //gd:RenderingServer.canvas_item_add_primitive
+func CanvasItemAddPrimitive(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_item_add_primitive
 	once.Do(singleton)
-	class(self).CanvasItemAddPrimitive(item, gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&uvs))), texture)
+	class(self).CanvasItemAddPrimitive(gd.RID(item), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&uvs))), gd.RID(texture))
 }
 
 /*
 Draws a 2D polygon on the [CanvasItem] pointed to by the [param item] [RID]. If you need more flexibility (such as being able to use bones), use [method canvas_item_add_triangle_array] instead. See also [method CanvasItem.draw_polygon].
 */
-func CanvasItemAddPolygon(item Resource.ID, points []Vector2.XY, colors []Color.RGBA) { //gd:RenderingServer.canvas_item_add_polygon
+func CanvasItemAddPolygon(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA) { //gd:RenderingServer.canvas_item_add_polygon
 	once.Do(singleton)
-	class(self).CanvasItemAddPolygon(item, gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.NewPackedVector2Slice(nil), [1]Resource.ID{}[0])
+	class(self).CanvasItemAddPolygon(gd.RID(item), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.NewPackedVector2Slice(nil), gd.RID([1]RID.Any{}[0]))
 }
 
 /*
 Draws a triangle array on the [CanvasItem] pointed to by the [param item] [RID]. This is internally used by [Line2D] and [StyleBoxFlat] for rendering. [method canvas_item_add_triangle_array] is highly flexible, but more complex to use than [method canvas_item_add_polygon].
 [b]Note:[/b] [param count] is unused and can be left unspecified.
 */
-func CanvasItemAddTriangleArray(item Resource.ID, indices []int32, points []Vector2.XY, colors []Color.RGBA) { //gd:RenderingServer.canvas_item_add_triangle_array
+func CanvasItemAddTriangleArray(item RID.CanvasItem, indices []int32, points []Vector2.XY, colors []Color.RGBA) { //gd:RenderingServer.canvas_item_add_triangle_array
 	once.Do(singleton)
-	class(self).CanvasItemAddTriangleArray(item, gd.NewPackedInt32Slice(indices), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.NewPackedVector2Slice(nil), gd.NewPackedInt32Slice([1][]int32{}[0]), gd.NewPackedFloat32Slice([1][]float32{}[0]), [1]Resource.ID{}[0], gd.Int(-1))
+	class(self).CanvasItemAddTriangleArray(gd.RID(item), gd.NewPackedInt32Slice(indices), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.NewPackedVector2Slice(nil), gd.NewPackedInt32Slice([1][]int32{}[0]), gd.NewPackedFloat32Slice([1][]float32{}[0]), gd.RID([1]RID.Any{}[0]), gd.Int(-1))
 }
 
 /*
 Draws a mesh created with [method mesh_create] with given [param transform], [param modulate] color, and [param texture]. This is used internally by [MeshInstance2D].
 */
-func CanvasItemAddMesh(item Resource.ID, mesh Resource.ID) { //gd:RenderingServer.canvas_item_add_mesh
+func CanvasItemAddMesh(item RID.CanvasItem, mesh RID.Mesh) { //gd:RenderingServer.canvas_item_add_mesh
 	once.Do(singleton)
-	class(self).CanvasItemAddMesh(item, mesh, gd.Transform2D(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), gd.Color(gd.Color{1, 1, 1, 1}), [1]Resource.ID{}[0])
+	class(self).CanvasItemAddMesh(gd.RID(item), gd.RID(mesh), gd.Transform2D(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), gd.Color(gd.Color{1, 1, 1, 1}), gd.RID([1]RID.Any{}[0]))
 }
 
 /*
 Draws a 2D [MultiMesh] on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_multimesh].
 */
-func CanvasItemAddMultimesh(item Resource.ID, mesh Resource.ID) { //gd:RenderingServer.canvas_item_add_multimesh
+func CanvasItemAddMultimesh(item RID.CanvasItem, mesh RID.MultiMesh) { //gd:RenderingServer.canvas_item_add_multimesh
 	once.Do(singleton)
-	class(self).CanvasItemAddMultimesh(item, mesh, [1]Resource.ID{}[0])
+	class(self).CanvasItemAddMultimesh(gd.RID(item), gd.RID(mesh), gd.RID([1]RID.Any{}[0]))
 }
 
 /*
 Draws particles on the [CanvasItem] pointed to by the [param item] [RID].
 */
-func CanvasItemAddParticles(item Resource.ID, particles Resource.ID, texture Resource.ID) { //gd:RenderingServer.canvas_item_add_particles
+func CanvasItemAddParticles(item RID.CanvasItem, particles RID.Particles, texture RID.Texture) { //gd:RenderingServer.canvas_item_add_particles
 	once.Do(singleton)
-	class(self).CanvasItemAddParticles(item, particles, texture)
+	class(self).CanvasItemAddParticles(gd.RID(item), gd.RID(particles), gd.RID(texture))
 }
 
 /*
 Sets a [Transform2D] that will be used to transform subsequent canvas item commands.
 */
-func CanvasItemAddSetTransform(item Resource.ID, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_add_set_transform
+func CanvasItemAddSetTransform(item RID.CanvasItem, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_add_set_transform
 	once.Do(singleton)
-	class(self).CanvasItemAddSetTransform(item, gd.Transform2D(transform))
+	class(self).CanvasItemAddSetTransform(gd.RID(item), gd.Transform2D(transform))
 }
 
 /*
 If [param ignore] is [code]true[/code], ignore clipping on items drawn with this canvas item until this is called again with [param ignore] set to false.
 */
-func CanvasItemAddClipIgnore(item Resource.ID, ignore bool) { //gd:RenderingServer.canvas_item_add_clip_ignore
+func CanvasItemAddClipIgnore(item RID.CanvasItem, ignore bool) { //gd:RenderingServer.canvas_item_add_clip_ignore
 	once.Do(singleton)
-	class(self).CanvasItemAddClipIgnore(item, ignore)
+	class(self).CanvasItemAddClipIgnore(gd.RID(item), ignore)
 }
 
 /*
 Subsequent drawing commands will be ignored unless they fall within the specified animation slice. This is a faster way to implement animations that loop on background rather than redrawing constantly.
 */
-func CanvasItemAddAnimationSlice(item Resource.ID, animation_length Float.X, slice_begin Float.X, slice_end Float.X) { //gd:RenderingServer.canvas_item_add_animation_slice
+func CanvasItemAddAnimationSlice(item RID.CanvasItem, animation_length Float.X, slice_begin Float.X, slice_end Float.X) { //gd:RenderingServer.canvas_item_add_animation_slice
 	once.Do(singleton)
-	class(self).CanvasItemAddAnimationSlice(item, gd.Float(animation_length), gd.Float(slice_begin), gd.Float(slice_end), gd.Float(0.0))
+	class(self).CanvasItemAddAnimationSlice(gd.RID(item), gd.Float(animation_length), gd.Float(slice_begin), gd.Float(slice_end), gd.Float(0.0))
 }
 
 /*
 If [param enabled] is [code]true[/code], child nodes with the lowest Y position are drawn before those with a higher Y position. Y-sorting only affects children that inherit from the canvas item specified by the [param item] RID, not the canvas item itself. Equivalent to [member CanvasItem.y_sort_enabled].
 */
-func CanvasItemSetSortChildrenByY(item Resource.ID, enabled bool) { //gd:RenderingServer.canvas_item_set_sort_children_by_y
+func CanvasItemSetSortChildrenByY(item RID.CanvasItem, enabled bool) { //gd:RenderingServer.canvas_item_set_sort_children_by_y
 	once.Do(singleton)
-	class(self).CanvasItemSetSortChildrenByY(item, enabled)
+	class(self).CanvasItemSetSortChildrenByY(gd.RID(item), enabled)
 }
 
 /*
 Sets the [CanvasItem]'s Z index, i.e. its draw order (lower indexes are drawn first).
 */
-func CanvasItemSetZIndex(item Resource.ID, z_index int) { //gd:RenderingServer.canvas_item_set_z_index
+func CanvasItemSetZIndex(item RID.CanvasItem, z_index int) { //gd:RenderingServer.canvas_item_set_z_index
 	once.Do(singleton)
-	class(self).CanvasItemSetZIndex(item, gd.Int(z_index))
+	class(self).CanvasItemSetZIndex(gd.RID(item), gd.Int(z_index))
 }
 
 /*
 If this is enabled, the Z index of the parent will be added to the children's Z index.
 */
-func CanvasItemSetZAsRelativeToParent(item Resource.ID, enabled bool) { //gd:RenderingServer.canvas_item_set_z_as_relative_to_parent
+func CanvasItemSetZAsRelativeToParent(item RID.CanvasItem, enabled bool) { //gd:RenderingServer.canvas_item_set_z_as_relative_to_parent
 	once.Do(singleton)
-	class(self).CanvasItemSetZAsRelativeToParent(item, enabled)
+	class(self).CanvasItemSetZAsRelativeToParent(gd.RID(item), enabled)
 }
 
 /*
 Sets the [CanvasItem] to copy a rect to the backbuffer.
 */
-func CanvasItemSetCopyToBackbuffer(item Resource.ID, enabled bool, rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_set_copy_to_backbuffer
+func CanvasItemSetCopyToBackbuffer(item RID.CanvasItem, enabled bool, rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_set_copy_to_backbuffer
 	once.Do(singleton)
-	class(self).CanvasItemSetCopyToBackbuffer(item, enabled, gd.Rect2(rect))
+	class(self).CanvasItemSetCopyToBackbuffer(gd.RID(item), enabled, gd.Rect2(rect))
 }
 
 /*
 Clears the [CanvasItem] and removes all commands in it.
 */
-func CanvasItemClear(item Resource.ID) { //gd:RenderingServer.canvas_item_clear
+func CanvasItemClear(item RID.CanvasItem) { //gd:RenderingServer.canvas_item_clear
 	once.Do(singleton)
-	class(self).CanvasItemClear(item)
+	class(self).CanvasItemClear(gd.RID(item))
 }
 
 /*
 Sets the index for the [CanvasItem].
 */
-func CanvasItemSetDrawIndex(item Resource.ID, index int) { //gd:RenderingServer.canvas_item_set_draw_index
+func CanvasItemSetDrawIndex(item RID.CanvasItem, index int) { //gd:RenderingServer.canvas_item_set_draw_index
 	once.Do(singleton)
-	class(self).CanvasItemSetDrawIndex(item, gd.Int(index))
+	class(self).CanvasItemSetDrawIndex(gd.RID(item), gd.Int(index))
 }
 
 /*
 Sets a new [param material] to the canvas item specified by the [param item] RID. Equivalent to [member CanvasItem.material].
 */
-func CanvasItemSetMaterial(item Resource.ID, material Resource.ID) { //gd:RenderingServer.canvas_item_set_material
+func CanvasItemSetMaterial(item RID.CanvasItem, material RID.Material) { //gd:RenderingServer.canvas_item_set_material
 	once.Do(singleton)
-	class(self).CanvasItemSetMaterial(item, material)
+	class(self).CanvasItemSetMaterial(gd.RID(item), gd.RID(material))
 }
 
 /*
 Sets if the [CanvasItem] uses its parent's material.
 */
-func CanvasItemSetUseParentMaterial(item Resource.ID, enabled bool) { //gd:RenderingServer.canvas_item_set_use_parent_material
+func CanvasItemSetUseParentMaterial(item RID.CanvasItem, enabled bool) { //gd:RenderingServer.canvas_item_set_use_parent_material
 	once.Do(singleton)
-	class(self).CanvasItemSetUseParentMaterial(item, enabled)
+	class(self).CanvasItemSetUseParentMaterial(gd.RID(item), enabled)
 }
 
 /*
 Sets the given [CanvasItem] as visibility notifier. [param area] defines the area of detecting visibility. [param enter_callable] is called when the [CanvasItem] enters the screen, [param exit_callable] is called when the [CanvasItem] exits the screen. If [param enable] is [code]false[/code], the item will no longer function as notifier.
 This method can be used to manually mimic [VisibleOnScreenNotifier2D].
 */
-func CanvasItemSetVisibilityNotifier(item Resource.ID, enable bool, area Rect2.PositionSize, enter_callable func(), exit_callable func()) { //gd:RenderingServer.canvas_item_set_visibility_notifier
+func CanvasItemSetVisibilityNotifier(item RID.CanvasItem, enable bool, area Rect2.PositionSize, enter_callable func(), exit_callable func()) { //gd:RenderingServer.canvas_item_set_visibility_notifier
 	once.Do(singleton)
-	class(self).CanvasItemSetVisibilityNotifier(item, enable, gd.Rect2(area), Callable.New(enter_callable), Callable.New(exit_callable))
+	class(self).CanvasItemSetVisibilityNotifier(gd.RID(item), enable, gd.Rect2(area), Callable.New(enter_callable), Callable.New(exit_callable))
 }
 
 /*
 Sets the canvas group mode used during 2D rendering for the canvas item specified by the [param item] RID. For faster but more limited clipping, use [method canvas_item_set_clip] instead.
 [b]Note:[/b] The equivalent node functionality is found in [CanvasGroup] and [member CanvasItem.clip_children].
 */
-func CanvasItemSetCanvasGroupMode(item Resource.ID, mode gdclass.RenderingServerCanvasGroupMode) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
+func CanvasItemSetCanvasGroupMode(item RID.CanvasItem, mode gdclass.RenderingServerCanvasGroupMode) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
 	once.Do(singleton)
-	class(self).CanvasItemSetCanvasGroupMode(item, mode, gd.Float(5.0), false, gd.Float(0.0), false)
+	class(self).CanvasItemSetCanvasGroupMode(gd.RID(item), mode, gd.Float(5.0), false, gd.Float(0.0), false)
 }
 
 /*
 Returns the bounding rectangle for a canvas item in local space, as calculated by the renderer. This bound is used internally for culling.
 [b]Warning:[/b] This function is intended for debugging in the editor, and will pass through and return a zero [Rect2] in exported projects.
 */
-func DebugCanvasItemGetRect(item Resource.ID) Rect2.PositionSize { //gd:RenderingServer.debug_canvas_item_get_rect
+func DebugCanvasItemGetRect(item RID.CanvasItem) Rect2.PositionSize { //gd:RenderingServer.debug_canvas_item_get_rect
 	once.Do(singleton)
-	return Rect2.PositionSize(class(self).DebugCanvasItemGetRect(item))
+	return Rect2.PositionSize(class(self).DebugCanvasItemGetRect(gd.RID(item)))
 }
 
 /*
@@ -3460,187 +3460,187 @@ Creates a canvas light and adds it to the RenderingServer. It can be accessed wi
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent node is [Light2D].
 */
-func CanvasLightCreate() Resource.ID { //gd:RenderingServer.canvas_light_create
+func CanvasLightCreate() RID.CanvasLight { //gd:RenderingServer.canvas_light_create
 	once.Do(singleton)
-	return Resource.ID(class(self).CanvasLightCreate())
+	return RID.CanvasLight(class(self).CanvasLightCreate())
 }
 
 /*
 Attaches the canvas light to the canvas. Removes it from its previous canvas.
 */
-func CanvasLightAttachToCanvas(light Resource.ID, canvas Resource.ID) { //gd:RenderingServer.canvas_light_attach_to_canvas
+func CanvasLightAttachToCanvas(light RID.CanvasLight, canvas RID.Canvas) { //gd:RenderingServer.canvas_light_attach_to_canvas
 	once.Do(singleton)
-	class(self).CanvasLightAttachToCanvas(light, canvas)
+	class(self).CanvasLightAttachToCanvas(gd.RID(light), gd.RID(canvas))
 }
 
 /*
 Enables or disables a canvas light.
 */
-func CanvasLightSetEnabled(light Resource.ID, enabled bool) { //gd:RenderingServer.canvas_light_set_enabled
+func CanvasLightSetEnabled(light RID.CanvasLight, enabled bool) { //gd:RenderingServer.canvas_light_set_enabled
 	once.Do(singleton)
-	class(self).CanvasLightSetEnabled(light, enabled)
+	class(self).CanvasLightSetEnabled(gd.RID(light), enabled)
 }
 
 /*
 Sets the scale factor of a [PointLight2D]'s texture. Equivalent to [member PointLight2D.texture_scale].
 */
-func CanvasLightSetTextureScale(light Resource.ID, scale Float.X) { //gd:RenderingServer.canvas_light_set_texture_scale
+func CanvasLightSetTextureScale(light RID.CanvasLight, scale Float.X) { //gd:RenderingServer.canvas_light_set_texture_scale
 	once.Do(singleton)
-	class(self).CanvasLightSetTextureScale(light, gd.Float(scale))
+	class(self).CanvasLightSetTextureScale(gd.RID(light), gd.Float(scale))
 }
 
 /*
 Sets the canvas light's [Transform2D].
 */
-func CanvasLightSetTransform(light Resource.ID, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_set_transform
+func CanvasLightSetTransform(light RID.CanvasLight, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_set_transform
 	once.Do(singleton)
-	class(self).CanvasLightSetTransform(light, gd.Transform2D(transform))
+	class(self).CanvasLightSetTransform(gd.RID(light), gd.Transform2D(transform))
 }
 
 /*
 Sets the texture to be used by a [PointLight2D]. Equivalent to [member PointLight2D.texture].
 */
-func CanvasLightSetTexture(light Resource.ID, texture Resource.ID) { //gd:RenderingServer.canvas_light_set_texture
+func CanvasLightSetTexture(light RID.CanvasLight, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_light_set_texture
 	once.Do(singleton)
-	class(self).CanvasLightSetTexture(light, texture)
+	class(self).CanvasLightSetTexture(gd.RID(light), gd.RID(texture))
 }
 
 /*
 Sets the offset of a [PointLight2D]'s texture. Equivalent to [member PointLight2D.offset].
 */
-func CanvasLightSetTextureOffset(light Resource.ID, offset Vector2.XY) { //gd:RenderingServer.canvas_light_set_texture_offset
+func CanvasLightSetTextureOffset(light RID.CanvasLight, offset Vector2.XY) { //gd:RenderingServer.canvas_light_set_texture_offset
 	once.Do(singleton)
-	class(self).CanvasLightSetTextureOffset(light, gd.Vector2(offset))
+	class(self).CanvasLightSetTextureOffset(gd.RID(light), gd.Vector2(offset))
 }
 
 /*
 Sets the color for a light.
 */
-func CanvasLightSetColor(light Resource.ID, color Color.RGBA) { //gd:RenderingServer.canvas_light_set_color
+func CanvasLightSetColor(light RID.CanvasLight, color Color.RGBA) { //gd:RenderingServer.canvas_light_set_color
 	once.Do(singleton)
-	class(self).CanvasLightSetColor(light, gd.Color(color))
+	class(self).CanvasLightSetColor(gd.RID(light), gd.Color(color))
 }
 
 /*
 Sets a canvas light's height.
 */
-func CanvasLightSetHeight(light Resource.ID, height Float.X) { //gd:RenderingServer.canvas_light_set_height
+func CanvasLightSetHeight(light RID.CanvasLight, height Float.X) { //gd:RenderingServer.canvas_light_set_height
 	once.Do(singleton)
-	class(self).CanvasLightSetHeight(light, gd.Float(height))
+	class(self).CanvasLightSetHeight(gd.RID(light), gd.Float(height))
 }
 
 /*
 Sets a canvas light's energy.
 */
-func CanvasLightSetEnergy(light Resource.ID, energy Float.X) { //gd:RenderingServer.canvas_light_set_energy
+func CanvasLightSetEnergy(light RID.CanvasLight, energy Float.X) { //gd:RenderingServer.canvas_light_set_energy
 	once.Do(singleton)
-	class(self).CanvasLightSetEnergy(light, gd.Float(energy))
+	class(self).CanvasLightSetEnergy(gd.RID(light), gd.Float(energy))
 }
 
 /*
 Sets the Z range of objects that will be affected by this light. Equivalent to [member Light2D.range_z_min] and [member Light2D.range_z_max].
 */
-func CanvasLightSetZRange(light Resource.ID, min_z int, max_z int) { //gd:RenderingServer.canvas_light_set_z_range
+func CanvasLightSetZRange(light RID.CanvasLight, min_z int, max_z int) { //gd:RenderingServer.canvas_light_set_z_range
 	once.Do(singleton)
-	class(self).CanvasLightSetZRange(light, gd.Int(min_z), gd.Int(max_z))
+	class(self).CanvasLightSetZRange(gd.RID(light), gd.Int(min_z), gd.Int(max_z))
 }
 
 /*
 The layer range that gets rendered with this light.
 */
-func CanvasLightSetLayerRange(light Resource.ID, min_layer int, max_layer int) { //gd:RenderingServer.canvas_light_set_layer_range
+func CanvasLightSetLayerRange(light RID.CanvasLight, min_layer int, max_layer int) { //gd:RenderingServer.canvas_light_set_layer_range
 	once.Do(singleton)
-	class(self).CanvasLightSetLayerRange(light, gd.Int(min_layer), gd.Int(max_layer))
+	class(self).CanvasLightSetLayerRange(gd.RID(light), gd.Int(min_layer), gd.Int(max_layer))
 }
 
 /*
 The light mask. See [LightOccluder2D] for more information on light masks.
 */
-func CanvasLightSetItemCullMask(light Resource.ID, mask int) { //gd:RenderingServer.canvas_light_set_item_cull_mask
+func CanvasLightSetItemCullMask(light RID.CanvasLight, mask int) { //gd:RenderingServer.canvas_light_set_item_cull_mask
 	once.Do(singleton)
-	class(self).CanvasLightSetItemCullMask(light, gd.Int(mask))
+	class(self).CanvasLightSetItemCullMask(gd.RID(light), gd.Int(mask))
 }
 
 /*
 The binary mask used to determine which layers this canvas light's shadows affects. See [LightOccluder2D] for more information on light masks.
 */
-func CanvasLightSetItemShadowCullMask(light Resource.ID, mask int) { //gd:RenderingServer.canvas_light_set_item_shadow_cull_mask
+func CanvasLightSetItemShadowCullMask(light RID.CanvasLight, mask int) { //gd:RenderingServer.canvas_light_set_item_shadow_cull_mask
 	once.Do(singleton)
-	class(self).CanvasLightSetItemShadowCullMask(light, gd.Int(mask))
+	class(self).CanvasLightSetItemShadowCullMask(gd.RID(light), gd.Int(mask))
 }
 
 /*
 The mode of the light, see [enum CanvasLightMode] constants.
 */
-func CanvasLightSetMode(light Resource.ID, mode gdclass.RenderingServerCanvasLightMode) { //gd:RenderingServer.canvas_light_set_mode
+func CanvasLightSetMode(light RID.CanvasLight, mode gdclass.RenderingServerCanvasLightMode) { //gd:RenderingServer.canvas_light_set_mode
 	once.Do(singleton)
-	class(self).CanvasLightSetMode(light, mode)
+	class(self).CanvasLightSetMode(gd.RID(light), mode)
 }
 
 /*
 Enables or disables the canvas light's shadow.
 */
-func CanvasLightSetShadowEnabled(light Resource.ID, enabled bool) { //gd:RenderingServer.canvas_light_set_shadow_enabled
+func CanvasLightSetShadowEnabled(light RID.CanvasLight, enabled bool) { //gd:RenderingServer.canvas_light_set_shadow_enabled
 	once.Do(singleton)
-	class(self).CanvasLightSetShadowEnabled(light, enabled)
+	class(self).CanvasLightSetShadowEnabled(gd.RID(light), enabled)
 }
 
 /*
 Sets the canvas light's shadow's filter, see [enum CanvasLightShadowFilter] constants.
 */
-func CanvasLightSetShadowFilter(light Resource.ID, filter gdclass.RenderingServerCanvasLightShadowFilter) { //gd:RenderingServer.canvas_light_set_shadow_filter
+func CanvasLightSetShadowFilter(light RID.CanvasLight, filter gdclass.RenderingServerCanvasLightShadowFilter) { //gd:RenderingServer.canvas_light_set_shadow_filter
 	once.Do(singleton)
-	class(self).CanvasLightSetShadowFilter(light, filter)
+	class(self).CanvasLightSetShadowFilter(gd.RID(light), filter)
 }
 
 /*
 Sets the color of the canvas light's shadow.
 */
-func CanvasLightSetShadowColor(light Resource.ID, color Color.RGBA) { //gd:RenderingServer.canvas_light_set_shadow_color
+func CanvasLightSetShadowColor(light RID.CanvasLight, color Color.RGBA) { //gd:RenderingServer.canvas_light_set_shadow_color
 	once.Do(singleton)
-	class(self).CanvasLightSetShadowColor(light, gd.Color(color))
+	class(self).CanvasLightSetShadowColor(gd.RID(light), gd.Color(color))
 }
 
 /*
 Smoothens the shadow. The lower, the smoother.
 */
-func CanvasLightSetShadowSmooth(light Resource.ID, smooth Float.X) { //gd:RenderingServer.canvas_light_set_shadow_smooth
+func CanvasLightSetShadowSmooth(light RID.CanvasLight, smooth Float.X) { //gd:RenderingServer.canvas_light_set_shadow_smooth
 	once.Do(singleton)
-	class(self).CanvasLightSetShadowSmooth(light, gd.Float(smooth))
+	class(self).CanvasLightSetShadowSmooth(gd.RID(light), gd.Float(smooth))
 }
 
 /*
 Sets the blend mode for the given canvas light. See [enum CanvasLightBlendMode] for options. Equivalent to [member Light2D.blend_mode].
 */
-func CanvasLightSetBlendMode(light Resource.ID, mode gdclass.RenderingServerCanvasLightBlendMode) { //gd:RenderingServer.canvas_light_set_blend_mode
+func CanvasLightSetBlendMode(light RID.CanvasLight, mode gdclass.RenderingServerCanvasLightBlendMode) { //gd:RenderingServer.canvas_light_set_blend_mode
 	once.Do(singleton)
-	class(self).CanvasLightSetBlendMode(light, mode)
+	class(self).CanvasLightSetBlendMode(gd.RID(light), mode)
 }
 
 /*
 If [param interpolated] is [code]true[/code], turns on physics interpolation for the canvas light.
 */
-func CanvasLightSetInterpolated(light Resource.ID, interpolated bool) { //gd:RenderingServer.canvas_light_set_interpolated
+func CanvasLightSetInterpolated(light RID.CanvasLight, interpolated bool) { //gd:RenderingServer.canvas_light_set_interpolated
 	once.Do(singleton)
-	class(self).CanvasLightSetInterpolated(light, interpolated)
+	class(self).CanvasLightSetInterpolated(gd.RID(light), interpolated)
 }
 
 /*
 Prevents physics interpolation for the current physics tick.
 This is useful when moving a canvas item to a new location, to give an instantaneous change rather than interpolation from the previous location.
 */
-func CanvasLightResetPhysicsInterpolation(light Resource.ID) { //gd:RenderingServer.canvas_light_reset_physics_interpolation
+func CanvasLightResetPhysicsInterpolation(light RID.CanvasLight) { //gd:RenderingServer.canvas_light_reset_physics_interpolation
 	once.Do(singleton)
-	class(self).CanvasLightResetPhysicsInterpolation(light)
+	class(self).CanvasLightResetPhysicsInterpolation(gd.RID(light))
 }
 
 /*
 Transforms both the current and previous stored transform for a canvas light.
 This allows transforming a light without creating a "glitch" in the interpolation, which is is particularly useful for large worlds utilizing a shifting origin.
 */
-func CanvasLightTransformPhysicsInterpolation(light Resource.ID, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_transform_physics_interpolation
+func CanvasLightTransformPhysicsInterpolation(light RID.CanvasLight, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_transform_physics_interpolation
 	once.Do(singleton)
-	class(self).CanvasLightTransformPhysicsInterpolation(light, gd.Transform2D(transform))
+	class(self).CanvasLightTransformPhysicsInterpolation(gd.RID(light), gd.Transform2D(transform))
 }
 
 /*
@@ -3648,79 +3648,79 @@ Creates a light occluder and adds it to the RenderingServer. It can be accessed 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent node is [LightOccluder2D].
 */
-func CanvasLightOccluderCreate() Resource.ID { //gd:RenderingServer.canvas_light_occluder_create
+func CanvasLightOccluderCreate() RID.CanvasLightOccluder { //gd:RenderingServer.canvas_light_occluder_create
 	once.Do(singleton)
-	return Resource.ID(class(self).CanvasLightOccluderCreate())
+	return RID.CanvasLightOccluder(class(self).CanvasLightOccluderCreate())
 }
 
 /*
 Attaches a light occluder to the canvas. Removes it from its previous canvas.
 */
-func CanvasLightOccluderAttachToCanvas(occluder Resource.ID, canvas Resource.ID) { //gd:RenderingServer.canvas_light_occluder_attach_to_canvas
+func CanvasLightOccluderAttachToCanvas(occluder RID.CanvasLightOccluder, canvas RID.Canvas) { //gd:RenderingServer.canvas_light_occluder_attach_to_canvas
 	once.Do(singleton)
-	class(self).CanvasLightOccluderAttachToCanvas(occluder, canvas)
+	class(self).CanvasLightOccluderAttachToCanvas(gd.RID(occluder), gd.RID(canvas))
 }
 
 /*
 Enables or disables light occluder.
 */
-func CanvasLightOccluderSetEnabled(occluder Resource.ID, enabled bool) { //gd:RenderingServer.canvas_light_occluder_set_enabled
+func CanvasLightOccluderSetEnabled(occluder RID.CanvasLightOccluder, enabled bool) { //gd:RenderingServer.canvas_light_occluder_set_enabled
 	once.Do(singleton)
-	class(self).CanvasLightOccluderSetEnabled(occluder, enabled)
+	class(self).CanvasLightOccluderSetEnabled(gd.RID(occluder), enabled)
 }
 
 /*
 Sets a light occluder's polygon.
 */
-func CanvasLightOccluderSetPolygon(occluder Resource.ID, polygon Resource.ID) { //gd:RenderingServer.canvas_light_occluder_set_polygon
+func CanvasLightOccluderSetPolygon(occluder RID.CanvasLightOccluder, polygon RID.CanvasLightOccluderPolygon) { //gd:RenderingServer.canvas_light_occluder_set_polygon
 	once.Do(singleton)
-	class(self).CanvasLightOccluderSetPolygon(occluder, polygon)
+	class(self).CanvasLightOccluderSetPolygon(gd.RID(occluder), gd.RID(polygon))
 }
-func CanvasLightOccluderSetAsSdfCollision(occluder Resource.ID, enable bool) { //gd:RenderingServer.canvas_light_occluder_set_as_sdf_collision
+func CanvasLightOccluderSetAsSdfCollision(occluder RID.CanvasLightOccluder, enable bool) { //gd:RenderingServer.canvas_light_occluder_set_as_sdf_collision
 	once.Do(singleton)
-	class(self).CanvasLightOccluderSetAsSdfCollision(occluder, enable)
+	class(self).CanvasLightOccluderSetAsSdfCollision(gd.RID(occluder), enable)
 }
 
 /*
 Sets a light occluder's [Transform2D].
 */
-func CanvasLightOccluderSetTransform(occluder Resource.ID, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_occluder_set_transform
+func CanvasLightOccluderSetTransform(occluder RID.CanvasLightOccluder, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_occluder_set_transform
 	once.Do(singleton)
-	class(self).CanvasLightOccluderSetTransform(occluder, gd.Transform2D(transform))
+	class(self).CanvasLightOccluderSetTransform(gd.RID(occluder), gd.Transform2D(transform))
 }
 
 /*
 The light mask. See [LightOccluder2D] for more information on light masks.
 */
-func CanvasLightOccluderSetLightMask(occluder Resource.ID, mask int) { //gd:RenderingServer.canvas_light_occluder_set_light_mask
+func CanvasLightOccluderSetLightMask(occluder RID.CanvasLightOccluder, mask int) { //gd:RenderingServer.canvas_light_occluder_set_light_mask
 	once.Do(singleton)
-	class(self).CanvasLightOccluderSetLightMask(occluder, gd.Int(mask))
+	class(self).CanvasLightOccluderSetLightMask(gd.RID(occluder), gd.Int(mask))
 }
 
 /*
 If [param interpolated] is [code]true[/code], turns on physics interpolation for the light occluder.
 */
-func CanvasLightOccluderSetInterpolated(occluder Resource.ID, interpolated bool) { //gd:RenderingServer.canvas_light_occluder_set_interpolated
+func CanvasLightOccluderSetInterpolated(occluder RID.CanvasLightOccluder, interpolated bool) { //gd:RenderingServer.canvas_light_occluder_set_interpolated
 	once.Do(singleton)
-	class(self).CanvasLightOccluderSetInterpolated(occluder, interpolated)
+	class(self).CanvasLightOccluderSetInterpolated(gd.RID(occluder), interpolated)
 }
 
 /*
 Prevents physics interpolation for the current physics tick.
 This is useful when moving an occluder to a new location, to give an instantaneous change rather than interpolation from the previous location.
 */
-func CanvasLightOccluderResetPhysicsInterpolation(occluder Resource.ID) { //gd:RenderingServer.canvas_light_occluder_reset_physics_interpolation
+func CanvasLightOccluderResetPhysicsInterpolation(occluder RID.CanvasLightOccluder) { //gd:RenderingServer.canvas_light_occluder_reset_physics_interpolation
 	once.Do(singleton)
-	class(self).CanvasLightOccluderResetPhysicsInterpolation(occluder)
+	class(self).CanvasLightOccluderResetPhysicsInterpolation(gd.RID(occluder))
 }
 
 /*
 Transforms both the current and previous stored transform for a light occluder.
 This allows transforming an occluder without creating a "glitch" in the interpolation, which is particularly useful for large worlds utilizing a shifting origin.
 */
-func CanvasLightOccluderTransformPhysicsInterpolation(occluder Resource.ID, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_occluder_transform_physics_interpolation
+func CanvasLightOccluderTransformPhysicsInterpolation(occluder RID.CanvasLightOccluder, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_occluder_transform_physics_interpolation
 	once.Do(singleton)
-	class(self).CanvasLightOccluderTransformPhysicsInterpolation(occluder, gd.Transform2D(transform))
+	class(self).CanvasLightOccluderTransformPhysicsInterpolation(gd.RID(occluder), gd.Transform2D(transform))
 }
 
 /*
@@ -3728,25 +3728,25 @@ Creates a new light occluder polygon and adds it to the RenderingServer. It can 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent resource is [OccluderPolygon2D].
 */
-func CanvasOccluderPolygonCreate() Resource.ID { //gd:RenderingServer.canvas_occluder_polygon_create
+func CanvasOccluderPolygonCreate() RID.CanvasLightOccluderPolygon { //gd:RenderingServer.canvas_occluder_polygon_create
 	once.Do(singleton)
-	return Resource.ID(class(self).CanvasOccluderPolygonCreate())
+	return RID.CanvasLightOccluderPolygon(class(self).CanvasOccluderPolygonCreate())
 }
 
 /*
 Sets the shape of the occluder polygon.
 */
-func CanvasOccluderPolygonSetShape(occluder_polygon Resource.ID, shape []Vector2.XY, closed bool) { //gd:RenderingServer.canvas_occluder_polygon_set_shape
+func CanvasOccluderPolygonSetShape(occluder_polygon RID.CanvasLightOccluderPolygon, shape []Vector2.XY, closed bool) { //gd:RenderingServer.canvas_occluder_polygon_set_shape
 	once.Do(singleton)
-	class(self).CanvasOccluderPolygonSetShape(occluder_polygon, gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&shape))), closed)
+	class(self).CanvasOccluderPolygonSetShape(gd.RID(occluder_polygon), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&shape))), closed)
 }
 
 /*
 Sets an occluder polygons cull mode. See [enum CanvasOccluderPolygonCullMode] constants.
 */
-func CanvasOccluderPolygonSetCullMode(occluder_polygon Resource.ID, mode gdclass.RenderingServerCanvasOccluderPolygonCullMode) { //gd:RenderingServer.canvas_occluder_polygon_set_cull_mode
+func CanvasOccluderPolygonSetCullMode(occluder_polygon RID.CanvasLightOccluderPolygon, mode gdclass.RenderingServerCanvasOccluderPolygonCullMode) { //gd:RenderingServer.canvas_occluder_polygon_set_cull_mode
 	once.Do(singleton)
-	class(self).CanvasOccluderPolygonSetCullMode(occluder_polygon, mode)
+	class(self).CanvasOccluderPolygonSetCullMode(gd.RID(occluder_polygon), mode)
 }
 
 /*
@@ -3820,9 +3820,9 @@ func GlobalShaderParameterGetType(name string) gdclass.RenderingServerGlobalShad
 /*
 Tries to free an object in the RenderingServer. To avoid memory leaks, this should be called after using an object as memory management does not occur automatically when using RenderingServer directly.
 */
-func FreeRid(rid Resource.ID) { //gd:RenderingServer.free_rid
+func FreeRid(rid RID.Any) { //gd:RenderingServer.free_rid
 	once.Do(singleton)
-	class(self).FreeRid(rid)
+	class(self).FreeRid(gd.RID(rid))
 }
 
 /*
@@ -3900,17 +3900,17 @@ func GetVideoAdapterApiVersion() string { //gd:RenderingServer.get_video_adapter
 /*
 Returns a mesh of a sphere with the given number of horizontal subdivisions, vertical subdivisions and radius. See also [method get_test_cube].
 */
-func MakeSphereMesh(latitudes int, longitudes int, radius Float.X) Resource.ID { //gd:RenderingServer.make_sphere_mesh
+func MakeSphereMesh(latitudes int, longitudes int, radius Float.X) RID.Mesh { //gd:RenderingServer.make_sphere_mesh
 	once.Do(singleton)
-	return Resource.ID(class(self).MakeSphereMesh(gd.Int(latitudes), gd.Int(longitudes), gd.Float(radius)))
+	return RID.Mesh(class(self).MakeSphereMesh(gd.Int(latitudes), gd.Int(longitudes), gd.Float(radius)))
 }
 
 /*
 Returns the RID of the test cube. This mesh will be created and returned on the first call to [method get_test_cube], then it will be cached for subsequent calls. See also [method make_sphere_mesh].
 */
-func GetTestCube() Resource.ID { //gd:RenderingServer.get_test_cube
+func GetTestCube() RID.Mesh { //gd:RenderingServer.get_test_cube
 	once.Do(singleton)
-	return Resource.ID(class(self).GetTestCube())
+	return RID.Mesh(class(self).GetTestCube())
 }
 
 /*
@@ -3922,9 +3922,9 @@ var texture = ImageTexture.create_from_image(RenderingServer.texture_2d_get(text
 $Sprite2D.texture = texture
 [/codeblock]
 */
-func GetTestTexture() Resource.ID { //gd:RenderingServer.get_test_texture
+func GetTestTexture() RID.Texture { //gd:RenderingServer.get_test_texture
 	once.Do(singleton)
-	return Resource.ID(class(self).GetTestTexture())
+	return RID.Texture(class(self).GetTestTexture())
 }
 
 /*
@@ -3936,9 +3936,9 @@ var texture = ImageTexture.create_from_image(RenderingServer.texture_2d_get(text
 $Sprite2D.texture = texture
 [/codeblock]
 */
-func GetWhiteTexture() Resource.ID { //gd:RenderingServer.get_white_texture
+func GetWhiteTexture() RID.Texture { //gd:RenderingServer.get_white_texture
 	once.Do(singleton)
-	return Resource.ID(class(self).GetWhiteTexture())
+	return RID.Texture(class(self).GetWhiteTexture())
 }
 
 /*

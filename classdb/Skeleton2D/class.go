@@ -15,7 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
 
@@ -60,8 +60,8 @@ func (self Instance) GetBone(idx int) [1]gdclass.Bone2D { //gd:Skeleton2D.get_bo
 /*
 Returns the [RID] of a Skeleton2D instance.
 */
-func (self Instance) GetSkeleton() Resource.ID { //gd:Skeleton2D.get_skeleton
-	return Resource.ID(class(self).GetSkeleton())
+func (self Instance) GetSkeleton() RID.Skeleton { //gd:Skeleton2D.get_skeleton
+	return RID.Skeleton(class(self).GetSkeleton())
 }
 
 /*

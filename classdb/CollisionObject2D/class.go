@@ -15,7 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
 
@@ -139,8 +139,8 @@ func (Instance) _mouse_shape_exit(impl func(ptr unsafe.Pointer, shape_idx int)) 
 /*
 Returns the object's [RID].
 */
-func (self Instance) GetRid() Resource.ID { //gd:CollisionObject2D.get_rid
-	return Resource.ID(class(self).GetRid())
+func (self Instance) GetRid() RID.Body2D { //gd:CollisionObject2D.get_rid
+	return RID.Body2D(class(self).GetRid())
 }
 
 /*

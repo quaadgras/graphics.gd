@@ -64,6 +64,8 @@ func (name Name) ConvertToSimple(val string) string {
 			return "Array.Nil"
 		}
 		return fmt.Sprintf("gd.EngineArrayFromSlice(%v)", val)
+	case "gd.RID":
+		return fmt.Sprintf("gd.RID(%v)", val)
 	case "gd.String":
 		return fmt.Sprintf("gd.NewString(%v)", val)
 	case "gd.StringName":

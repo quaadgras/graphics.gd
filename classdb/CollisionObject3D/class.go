@@ -16,7 +16,7 @@ import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
@@ -141,8 +141,8 @@ func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:Collisi
 /*
 Returns the object's [RID].
 */
-func (self Instance) GetRid() Resource.ID { //gd:CollisionObject3D.get_rid
-	return Resource.ID(class(self).GetRid())
+func (self Instance) GetRid() RID.Body3D { //gd:CollisionObject3D.get_rid
+	return RID.Body3D(class(self).GetRid())
 }
 
 /*

@@ -17,7 +17,7 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Rect2i"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -232,15 +232,15 @@ func (self Instance) SetCellsTerrainPath(path []Vector2i.XY, terrain_set int, te
 /*
 Returns whether the provided [param body] [RID] belongs to one of this [TileMapLayer]'s cells.
 */
-func (self Instance) HasBodyRid(body Resource.ID) bool { //gd:TileMapLayer.has_body_rid
-	return bool(class(self).HasBodyRid(body))
+func (self Instance) HasBodyRid(body RID.Body2D) bool { //gd:TileMapLayer.has_body_rid
+	return bool(class(self).HasBodyRid(gd.RID(body)))
 }
 
 /*
 Returns the coordinates of the tile for given physics body [RID]. Such an [RID] can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 */
-func (self Instance) GetCoordsForBodyRid(body Resource.ID) Vector2i.XY { //gd:TileMapLayer.get_coords_for_body_rid
-	return Vector2i.XY(class(self).GetCoordsForBodyRid(body))
+func (self Instance) GetCoordsForBodyRid(body RID.Body2D) Vector2i.XY { //gd:TileMapLayer.get_coords_for_body_rid
+	return Vector2i.XY(class(self).GetCoordsForBodyRid(gd.RID(body)))
 }
 
 /*
@@ -300,16 +300,16 @@ func (self Instance) LocalToMap(local_position Vector2.XY) Vector2i.XY { //gd:Ti
 /*
 Sets a custom [param map] as a [NavigationServer2D] navigation map. If not set, uses the default [World2D] navigation map instead.
 */
-func (self Instance) SetNavigationMap(mapping Resource.ID) { //gd:TileMapLayer.set_navigation_map
-	class(self).SetNavigationMap(mapping)
+func (self Instance) SetNavigationMap(mapping RID.NavigationMap2D) { //gd:TileMapLayer.set_navigation_map
+	class(self).SetNavigationMap(gd.RID(mapping))
 }
 
 /*
 Returns the [RID] of the [NavigationServer2D] navigation used by this [TileMapLayer].
 By default this returns the default [World2D] navigation map, unless a custom map was provided using [method set_navigation_map].
 */
-func (self Instance) GetNavigationMap() Resource.ID { //gd:TileMapLayer.get_navigation_map
-	return Resource.ID(class(self).GetNavigationMap())
+func (self Instance) GetNavigationMap() RID.NavigationMap2D { //gd:TileMapLayer.get_navigation_map
+	return RID.NavigationMap2D(class(self).GetNavigationMap())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

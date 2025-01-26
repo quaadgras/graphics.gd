@@ -13,7 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Color"
@@ -46,8 +46,8 @@ type Any interface {
 /*
 Returns the [RID] of this agent on the [NavigationServer2D].
 */
-func (self Instance) GetRid() Resource.ID { //gd:NavigationAgent2D.get_rid
-	return Resource.ID(class(self).GetRid())
+func (self Instance) GetRid() RID.NavigationAgent2D { //gd:NavigationAgent2D.get_rid
+	return RID.NavigationAgent2D(class(self).GetRid())
 }
 
 /*
@@ -67,15 +67,15 @@ func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:Navig
 /*
 Sets the [RID] of the navigation map this NavigationAgent node should use and also updates the [code]agent[/code] on the NavigationServer.
 */
-func (self Instance) SetNavigationMap(navigation_map Resource.ID) { //gd:NavigationAgent2D.set_navigation_map
-	class(self).SetNavigationMap(navigation_map)
+func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap2D) { //gd:NavigationAgent2D.set_navigation_map
+	class(self).SetNavigationMap(gd.RID(navigation_map))
 }
 
 /*
 Returns the [RID] of the navigation map for this NavigationAgent node. This function returns always the map set on the NavigationAgent node and not the map of the abstract agent on the NavigationServer. If the agent map is changed directly with the NavigationServer API the NavigationAgent node will not be aware of the map change. Use [method set_navigation_map] to change the navigation map for the NavigationAgent and also update the agent on the NavigationServer.
 */
-func (self Instance) GetNavigationMap() Resource.ID { //gd:NavigationAgent2D.get_navigation_map
-	return Resource.ID(class(self).GetNavigationMap())
+func (self Instance) GetNavigationMap() RID.NavigationMap2D { //gd:NavigationAgent2D.get_navigation_map
+	return RID.NavigationMap2D(class(self).GetNavigationMap())
 }
 
 /*

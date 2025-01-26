@@ -2,8 +2,10 @@ package main
 
 import (
 	"iter"
+	"reflect"
 	"strings"
 
+	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdjson"
 )
 
@@ -106,7 +108,7 @@ func importsVariant(class gdjson.Class, identifier, s string) iter.Seq[string] {
 			if class.Name == "Resource" {
 				return
 			}
-			yield("graphics.gd/classdb/Resource")
+			yield("graphics.gd/variant/RID")
 		case "Dictionary", "Signal":
 			//return "graphics.gd/variant/" + s
 			return
@@ -317,11 +319,17 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 		return "Color.RGBA"
 	case "NodePath":
 		return "NodePath.String"
-	case "RID":
+	case "RID", "gd.RID":
 		if class.Name == "Resource" {
 			return "ID"
 		}
-		return "Resource.ID"
+		if typed, ok := gdjson.Resources[lookup]; ok {
+			if typed == reflect.TypeFor[gd.RID]() {
+				return "RID.Any"
+			}
+			return typed.String()
+		}
+		return "RID.Any"
 	case "ObjectID":
 		return "Object.ID"
 	case "Signal":
@@ -336,7 +344,7 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 		return "Object.Instance"
 	case "Callable":
 		details, ok := gdjson.Callables[lookup]
-		if !ok || len(details) == 0 {
+		if !ok || len(details) == 0 || strings.HasSuffix(lookup, ".") {
 			return "Callable.Function"
 		}
 		var ftype string = "func("

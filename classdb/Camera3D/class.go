@@ -20,7 +20,7 @@ import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Projection"
 import "graphics.gd/variant/Plane"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -161,15 +161,15 @@ func (self Instance) IsPositionInFrustum(world_point Vector3.XYZ) bool { //gd:Ca
 /*
 Returns the camera's RID from the [RenderingServer].
 */
-func (self Instance) GetCameraRid() Resource.ID { //gd:Camera3D.get_camera_rid
-	return Resource.ID(class(self).GetCameraRid())
+func (self Instance) GetCameraRid() RID.Camera { //gd:Camera3D.get_camera_rid
+	return RID.Camera(class(self).GetCameraRid())
 }
 
 /*
 Returns the RID of a pyramid shape encompassing the camera's view frustum, ignoring the camera's near plane. The tip of the pyramid represents the position of the camera.
 */
-func (self Instance) GetPyramidShapeRid() Resource.ID { //gd:Camera3D.get_pyramid_shape_rid
-	return Resource.ID(class(self).GetPyramidShapeRid())
+func (self Instance) GetPyramidShapeRid() RID.Shape3D { //gd:Camera3D.get_pyramid_shape_rid
+	return RID.Shape3D(class(self).GetPyramidShapeRid())
 }
 
 /*

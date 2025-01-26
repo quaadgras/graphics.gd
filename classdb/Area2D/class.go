@@ -18,7 +18,7 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -603,11 +603,11 @@ func (self class) IsOverridingAudioBus() bool { //gd:Area2D.is_overriding_audio_
 	frame.Free()
 	return ret
 }
-func (self Instance) OnBodyShapeEntered(cb func(body_rid Resource.ID, body [1]gdclass.Node2D, body_shape_index int, local_shape_index int)) {
+func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body [1]gdclass.Node2D, body_shape_index int, local_shape_index int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnBodyShapeExited(cb func(body_rid Resource.ID, body [1]gdclass.Node2D, body_shape_index int, local_shape_index int)) {
+func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body [1]gdclass.Node2D, body_shape_index int, local_shape_index int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), 0)
 }
 
@@ -619,11 +619,11 @@ func (self Instance) OnBodyExited(cb func(body [1]gdclass.Node2D)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnAreaShapeEntered(cb func(area_rid Resource.ID, area [1]gdclass.Area2D, area_shape_index int, local_shape_index int)) {
+func (self Instance) OnAreaShapeEntered(cb func(area_rid RID.Any, area [1]gdclass.Area2D, area_shape_index int, local_shape_index int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("area_shape_entered"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnAreaShapeExited(cb func(area_rid Resource.ID, area [1]gdclass.Area2D, area_shape_index int, local_shape_index int)) {
+func (self Instance) OnAreaShapeExited(cb func(area_rid RID.Any, area [1]gdclass.Area2D, area_shape_index int, local_shape_index int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("area_shape_exited"), gd.NewCallable(cb), 0)
 }
 

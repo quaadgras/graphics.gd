@@ -17,7 +17,7 @@ import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
@@ -50,8 +50,8 @@ type Any interface {
 /*
 Returns the internal [RID] used by the [PhysicsServer3D] for this body.
 */
-func (self Instance) GetPhysicsRid() Resource.ID { //gd:SoftBody3D.get_physics_rid
-	return Resource.ID(class(self).GetPhysicsRid())
+func (self Instance) GetPhysicsRid() RID.SoftBody3D { //gd:SoftBody3D.get_physics_rid
+	return RID.SoftBody3D(class(self).GetPhysicsRid())
 }
 
 /*

@@ -17,7 +17,7 @@ import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Color"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -157,12 +157,12 @@ func (self Instance) SetRelativeIndex(value int) {
 	class(self).SetRelativeIndex(gd.Int(value))
 }
 
-func (self Instance) Font() Resource.ID {
-	return Resource.ID(class(self).GetFont())
+func (self Instance) Font() RID.Any {
+	return RID.Any(class(self).GetFont())
 }
 
-func (self Instance) SetFont(value Resource.ID) {
-	class(self).SetFont(value)
+func (self Instance) SetFont(value RID.Any) {
+	class(self).SetFont(gd.RID(value))
 }
 
 //go:nosplit

@@ -20,7 +20,7 @@ import "graphics.gd/variant/Rect2i"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3i"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -1800,9 +1800,9 @@ Sets the application status indicator native popup menu.
 [b]Note:[/b] On Windows, the menu is activated by the right mouse button, selecting the status icon and pressing [kbd]Shift + F10[/kbd], or the applications key. The menu's activation callback for the other mouse buttons is still triggered.
 [b]Note:[/b] Native popup is only supported if [NativeMenu] supports the [constant NativeMenu.FEATURE_POPUP_MENU] feature.
 */
-func StatusIndicatorSetMenu(id int, menu_rid Resource.ID) { //gd:DisplayServer.status_indicator_set_menu
+func StatusIndicatorSetMenu(id int, menu_rid RID.NativeMenu) { //gd:DisplayServer.status_indicator_set_menu
 	once.Do(singleton)
-	class(self).StatusIndicatorSetMenu(gd.Int(id), menu_rid)
+	class(self).StatusIndicatorSetMenu(gd.Int(id), gd.RID(menu_rid))
 }
 
 /*

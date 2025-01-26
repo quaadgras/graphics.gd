@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -58,12 +59,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TextureRdRid() Resource.ID {
-	return Resource.ID(class(self).GetTextureRdRid())
+func (self Instance) TextureRdRid() RID.Any {
+	return RID.Any(class(self).GetTextureRdRid())
 }
 
-func (self Instance) SetTextureRdRid(value Resource.ID) {
-	class(self).SetTextureRdRid(value)
+func (self Instance) SetTextureRdRid(value RID.Any) {
+	class(self).SetTextureRdRid(gd.RID(value))
 }
 
 //go:nosplit

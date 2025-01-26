@@ -12,7 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,9 +40,9 @@ type Any interface {
 /*
 Creates, or obtains a cached, framebuffer. [param textures] lists textures accessed. [param passes] defines the subpasses and texture allocation, if left empty a single pass is created and textures are allocated depending on their usage flags. [param views] defines the number of views used when rendering.
 */
-func GetCacheMultipass(textures []Resource.ID, passes [][1]gdclass.RDFramebufferPass, views int) Resource.ID { //gd:FramebufferCacheRD.get_cache_multipass
+func GetCacheMultipass(textures [][]RID.Texture, passes [][1]gdclass.RDFramebufferPass, views int) RID.Framebuffer { //gd:FramebufferCacheRD.get_cache_multipass
 	self := Instance{}
-	return Resource.ID(class(self).GetCacheMultipass(gd.ArrayFromSlice[Array.Contains[gd.RID]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), gd.Int(views)))
+	return RID.Framebuffer(class(self).GetCacheMultipass(gd.ArrayFromSlice[Array.Contains[gd.RID]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), gd.Int(views)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

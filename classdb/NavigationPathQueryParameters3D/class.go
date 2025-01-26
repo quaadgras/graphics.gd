@@ -12,7 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
 
@@ -58,12 +58,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Map() Resource.ID {
-	return Resource.ID(class(self).GetMap())
+func (self Instance) Map() RID.Any {
+	return RID.Any(class(self).GetMap())
 }
 
-func (self Instance) SetMap(value Resource.ID) {
-	class(self).SetMap(value)
+func (self Instance) SetMap(value RID.Any) {
+	class(self).SetMap(gd.RID(value))
 }
 
 func (self Instance) StartPosition() Vector3.XYZ {

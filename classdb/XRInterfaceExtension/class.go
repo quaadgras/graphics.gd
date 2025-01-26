@@ -17,7 +17,7 @@ import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Float"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Rect2i"
 
@@ -78,15 +78,15 @@ type Interface interface {
 	GetTransformForView(view int, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin
 	//Returns the projection matrix for the given view as a [PackedFloat64Array].
 	GetProjectionForView(view int, aspect Float.X, z_near Float.X, z_far Float.X) []float64
-	GetVrsTexture() Resource.ID
+	GetVrsTexture() RID.Any
 	//Called if this [XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [XRPositionalTracker]s at this point in time.
 	Process()
 	//Called if this [XRInterfaceExtension] is active before rendering starts. Most XR interfaces will sync tracking at this point in time.
 	PreRender()
 	//Called if this is our primary [XRInterfaceExtension] before we start processing a [Viewport] for every active XR [Viewport], returns [code]true[/code] if that viewport should be rendered. An XR interface may return [code]false[/code] if the user has taken off their headset and we can pause rendering.
-	PreDrawViewport(render_target Resource.ID) bool
+	PreDrawViewport(render_target RID.Any) bool
 	//Called after the XR [Viewport] draw logic has completed.
-	PostDrawViewport(render_target Resource.ID, screen_rect Rect2.PositionSize)
+	PostDrawViewport(render_target RID.Any, screen_rect Rect2.PositionSize)
 	//Called if interface is active and queues have been submitted.
 	EndFrame()
 	//Returns a [PackedStringArray] with tracker names configured by this interface. Note that user configuration can override this list.
@@ -104,11 +104,11 @@ type Interface interface {
 	//Returns the camera feed ID for the [CameraFeed] registered with the [CameraServer] that should be presented as the background on an AR capable device (if applicable).
 	GetCameraFeedId() int
 	//Return color texture into which to render (if applicable).
-	GetColorTexture() Resource.ID
+	GetColorTexture() RID.Any
 	//Return depth texture into which to render (if applicable).
-	GetDepthTexture() Resource.ID
+	GetDepthTexture() RID.Any
 	//Return velocity texture into which to render (if applicable).
-	GetVelocityTexture() Resource.ID
+	GetVelocityTexture() RID.Any
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -137,11 +137,11 @@ func (self implementation) GetTransformForView(view int, cam_transform Transform
 func (self implementation) GetProjectionForView(view int, aspect Float.X, z_near Float.X, z_far Float.X) (_ []float64) {
 	return
 }
-func (self implementation) GetVrsTexture() (_ Resource.ID)                     { return }
-func (self implementation) Process()                                           { return }
-func (self implementation) PreRender()                                         { return }
-func (self implementation) PreDrawViewport(render_target Resource.ID) (_ bool) { return }
-func (self implementation) PostDrawViewport(render_target Resource.ID, screen_rect Rect2.PositionSize) {
+func (self implementation) GetVrsTexture() (_ RID.Any)                     { return }
+func (self implementation) Process()                                       { return }
+func (self implementation) PreRender()                                     { return }
+func (self implementation) PreDrawViewport(render_target RID.Any) (_ bool) { return }
+func (self implementation) PostDrawViewport(render_target RID.Any, screen_rect Rect2.PositionSize) {
 	return
 }
 func (self implementation) EndFrame()                                                { return }
@@ -154,9 +154,9 @@ func (self implementation) TriggerHapticPulse(action_name string, tracker_name s
 func (self implementation) GetAnchorDetectionIsEnabled() (_ bool)    { return }
 func (self implementation) SetAnchorDetectionIsEnabled(enabled bool) { return }
 func (self implementation) GetCameraFeedId() (_ int)                 { return }
-func (self implementation) GetColorTexture() (_ Resource.ID)         { return }
-func (self implementation) GetDepthTexture() (_ Resource.ID)         { return }
-func (self implementation) GetVelocityTexture() (_ Resource.ID)      { return }
+func (self implementation) GetColorTexture() (_ RID.Any)             { return }
+func (self implementation) GetDepthTexture() (_ RID.Any)             { return }
+func (self implementation) GetVelocityTexture() (_ RID.Any)          { return }
 
 /*
 Returns the name of this interface.
@@ -357,11 +357,11 @@ func (Instance) _get_projection_for_view(impl func(ptr unsafe.Pointer, view int,
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_vrs_texture(impl func(ptr unsafe.Pointer) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_vrs_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.RID(ret))
 	}
 }
 
@@ -388,7 +388,7 @@ func (Instance) _pre_render(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClass
 /*
 Called if this is our primary [XRInterfaceExtension] before we start processing a [Viewport] for every active XR [Viewport], returns [code]true[/code] if that viewport should be rendered. An XR interface may return [code]false[/code] if the user has taken off their headset and we can pause rendering.
 */
-func (Instance) _pre_draw_viewport(impl func(ptr unsafe.Pointer, render_target Resource.ID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _pre_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var render_target = gd.UnsafeGet[gd.RID](p_args, 0)
 
@@ -401,7 +401,7 @@ func (Instance) _pre_draw_viewport(impl func(ptr unsafe.Pointer, render_target R
 /*
 Called after the XR [Viewport] draw logic has completed.
 */
-func (Instance) _post_draw_viewport(impl func(ptr unsafe.Pointer, render_target Resource.ID, screen_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _post_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.Any, screen_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var render_target = gd.UnsafeGet[gd.RID](p_args, 0)
 
@@ -526,57 +526,57 @@ func (Instance) _get_camera_feed_id(impl func(ptr unsafe.Pointer) int) (cb gd.Ex
 /*
 Return color texture into which to render (if applicable).
 */
-func (Instance) _get_color_texture(impl func(ptr unsafe.Pointer) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_color_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.RID(ret))
 	}
 }
 
 /*
 Return depth texture into which to render (if applicable).
 */
-func (Instance) _get_depth_texture(impl func(ptr unsafe.Pointer) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_depth_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.RID(ret))
 	}
 }
 
 /*
 Return velocity texture into which to render (if applicable).
 */
-func (Instance) _get_velocity_texture(impl func(ptr unsafe.Pointer) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_velocity_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.RID(ret))
 	}
 }
-func (self Instance) GetColorTexture() Resource.ID { //gd:XRInterfaceExtension.get_color_texture
-	return Resource.ID(class(self).GetColorTexture())
+func (self Instance) GetColorTexture() RID.Texture { //gd:XRInterfaceExtension.get_color_texture
+	return RID.Texture(class(self).GetColorTexture())
 }
-func (self Instance) GetDepthTexture() Resource.ID { //gd:XRInterfaceExtension.get_depth_texture
-	return Resource.ID(class(self).GetDepthTexture())
+func (self Instance) GetDepthTexture() RID.Texture { //gd:XRInterfaceExtension.get_depth_texture
+	return RID.Texture(class(self).GetDepthTexture())
 }
-func (self Instance) GetVelocityTexture() Resource.ID { //gd:XRInterfaceExtension.get_velocity_texture
-	return Resource.ID(class(self).GetVelocityTexture())
+func (self Instance) GetVelocityTexture() RID.Texture { //gd:XRInterfaceExtension.get_velocity_texture
+	return RID.Texture(class(self).GetVelocityTexture())
 }
 
 /*
 Blits our render results to screen optionally applying lens distortion. This can only be called while processing [code]_commit_views[/code].
 */
-func (self Instance) AddBlit(render_target Resource.ID, src_rect Rect2.PositionSize, dst_rect Rect2i.PositionSize, use_layer bool, layer int, apply_lens_distortion bool, eye_center Vector2.XY, k1 Float.X, k2 Float.X, upscale Float.X, aspect_ratio Float.X) { //gd:XRInterfaceExtension.add_blit
-	class(self).AddBlit(render_target, gd.Rect2(src_rect), gd.Rect2i(dst_rect), use_layer, gd.Int(layer), apply_lens_distortion, gd.Vector2(eye_center), gd.Float(k1), gd.Float(k2), gd.Float(upscale), gd.Float(aspect_ratio))
+func (self Instance) AddBlit(render_target RID.Framebuffer, src_rect Rect2.PositionSize, dst_rect Rect2i.PositionSize, use_layer bool, layer int, apply_lens_distortion bool, eye_center Vector2.XY, k1 Float.X, k2 Float.X, upscale Float.X, aspect_ratio Float.X) { //gd:XRInterfaceExtension.add_blit
+	class(self).AddBlit(gd.RID(render_target), gd.Rect2(src_rect), gd.Rect2i(dst_rect), use_layer, gd.Int(layer), apply_lens_distortion, gd.Vector2(eye_center), gd.Float(k1), gd.Float(k2), gd.Float(upscale), gd.Float(aspect_ratio))
 }
 
 /*
 Returns a valid [RID] for a texture to which we should render the current frame if supported by the interface.
 */
-func (self Instance) GetRenderTargetTexture(render_target Resource.ID) Resource.ID { //gd:XRInterfaceExtension.get_render_target_texture
-	return Resource.ID(class(self).GetRenderTargetTexture(render_target))
+func (self Instance) GetRenderTargetTexture(render_target RID.Framebuffer) RID.Texture { //gd:XRInterfaceExtension.get_render_target_texture
+	return RID.Texture(class(self).GetRenderTargetTexture(gd.RID(render_target)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -13,7 +13,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Transform2D"
@@ -49,153 +49,153 @@ func singleton() {
 /*
 Returns all created navigation map [RID]s on the NavigationServer. This returns both 2D and 3D created navigation maps as there is technically no distinction between them.
 */
-func GetMaps() []Resource.ID { //gd:NavigationServer2D.get_maps
+func GetMaps() [][]RID.NavigationMap2D { //gd:NavigationServer2D.get_maps
 	once.Do(singleton)
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).GetMaps())))
+	return [][]RID.NavigationMap2D(gd.ArrayAs[[][]RID.NavigationMap2D](gd.InternalArray(class(self).GetMaps())))
 }
 
 /*
 Create a new map.
 */
-func MapCreate() Resource.ID { //gd:NavigationServer2D.map_create
+func MapCreate() RID.NavigationMap2D { //gd:NavigationServer2D.map_create
 	once.Do(singleton)
-	return Resource.ID(class(self).MapCreate())
+	return RID.NavigationMap2D(class(self).MapCreate())
 }
 
 /*
 Sets the map active.
 */
-func MapSetActive(mapping Resource.ID, active bool) { //gd:NavigationServer2D.map_set_active
+func MapSetActive(mapping RID.NavigationMap2D, active bool) { //gd:NavigationServer2D.map_set_active
 	once.Do(singleton)
-	class(self).MapSetActive(mapping, active)
+	class(self).MapSetActive(gd.RID(mapping), active)
 }
 
 /*
 Returns true if the map is active.
 */
-func MapIsActive(mapping Resource.ID) bool { //gd:NavigationServer2D.map_is_active
+func MapIsActive(mapping RID.NavigationMap2D) bool { //gd:NavigationServer2D.map_is_active
 	once.Do(singleton)
-	return bool(class(self).MapIsActive(mapping))
+	return bool(class(self).MapIsActive(gd.RID(mapping)))
 }
 
 /*
 Sets the map cell size used to rasterize the navigation mesh vertices. Must match with the cell size of the used navigation meshes.
 */
-func MapSetCellSize(mapping Resource.ID, cell_size Float.X) { //gd:NavigationServer2D.map_set_cell_size
+func MapSetCellSize(mapping RID.NavigationMap2D, cell_size Float.X) { //gd:NavigationServer2D.map_set_cell_size
 	once.Do(singleton)
-	class(self).MapSetCellSize(mapping, gd.Float(cell_size))
+	class(self).MapSetCellSize(gd.RID(mapping), gd.Float(cell_size))
 }
 
 /*
 Returns the map cell size used to rasterize the navigation mesh vertices.
 */
-func MapGetCellSize(mapping Resource.ID) Float.X { //gd:NavigationServer2D.map_get_cell_size
+func MapGetCellSize(mapping RID.NavigationMap2D) Float.X { //gd:NavigationServer2D.map_get_cell_size
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).MapGetCellSize(mapping)))
+	return Float.X(Float.X(class(self).MapGetCellSize(gd.RID(mapping))))
 }
 
 /*
 Set the navigation [param map] edge connection use. If [param enabled] is [code]true[/code], the navigation map allows navigation regions to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
 */
-func MapSetUseEdgeConnections(mapping Resource.ID, enabled bool) { //gd:NavigationServer2D.map_set_use_edge_connections
+func MapSetUseEdgeConnections(mapping RID.NavigationMap2D, enabled bool) { //gd:NavigationServer2D.map_set_use_edge_connections
 	once.Do(singleton)
-	class(self).MapSetUseEdgeConnections(mapping, enabled)
+	class(self).MapSetUseEdgeConnections(gd.RID(mapping), enabled)
 }
 
 /*
 Returns whether the navigation [param map] allows navigation regions to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
 */
-func MapGetUseEdgeConnections(mapping Resource.ID) bool { //gd:NavigationServer2D.map_get_use_edge_connections
+func MapGetUseEdgeConnections(mapping RID.NavigationMap2D) bool { //gd:NavigationServer2D.map_get_use_edge_connections
 	once.Do(singleton)
-	return bool(class(self).MapGetUseEdgeConnections(mapping))
+	return bool(class(self).MapGetUseEdgeConnections(gd.RID(mapping)))
 }
 
 /*
 Set the map edge connection margin used to weld the compatible region edges.
 */
-func MapSetEdgeConnectionMargin(mapping Resource.ID, margin Float.X) { //gd:NavigationServer2D.map_set_edge_connection_margin
+func MapSetEdgeConnectionMargin(mapping RID.NavigationMap2D, margin Float.X) { //gd:NavigationServer2D.map_set_edge_connection_margin
 	once.Do(singleton)
-	class(self).MapSetEdgeConnectionMargin(mapping, gd.Float(margin))
+	class(self).MapSetEdgeConnectionMargin(gd.RID(mapping), gd.Float(margin))
 }
 
 /*
 Returns the edge connection margin of the map. The edge connection margin is a distance used to connect two regions.
 */
-func MapGetEdgeConnectionMargin(mapping Resource.ID) Float.X { //gd:NavigationServer2D.map_get_edge_connection_margin
+func MapGetEdgeConnectionMargin(mapping RID.NavigationMap2D) Float.X { //gd:NavigationServer2D.map_get_edge_connection_margin
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).MapGetEdgeConnectionMargin(mapping)))
+	return Float.X(Float.X(class(self).MapGetEdgeConnectionMargin(gd.RID(mapping))))
 }
 
 /*
 Set the map's link connection radius used to connect links to navigation polygons.
 */
-func MapSetLinkConnectionRadius(mapping Resource.ID, radius Float.X) { //gd:NavigationServer2D.map_set_link_connection_radius
+func MapSetLinkConnectionRadius(mapping RID.NavigationMap2D, radius Float.X) { //gd:NavigationServer2D.map_set_link_connection_radius
 	once.Do(singleton)
-	class(self).MapSetLinkConnectionRadius(mapping, gd.Float(radius))
+	class(self).MapSetLinkConnectionRadius(gd.RID(mapping), gd.Float(radius))
 }
 
 /*
 Returns the link connection radius of the map. This distance is the maximum range any link will search for navigation mesh polygons to connect to.
 */
-func MapGetLinkConnectionRadius(mapping Resource.ID) Float.X { //gd:NavigationServer2D.map_get_link_connection_radius
+func MapGetLinkConnectionRadius(mapping RID.NavigationMap2D) Float.X { //gd:NavigationServer2D.map_get_link_connection_radius
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).MapGetLinkConnectionRadius(mapping)))
+	return Float.X(Float.X(class(self).MapGetLinkConnectionRadius(gd.RID(mapping))))
 }
 
 /*
 Returns the navigation path to reach the destination from the origin. [param navigation_layers] is a bitmask of all region navigation layers that are allowed to be in the path.
 */
-func MapGetPath(mapping Resource.ID, origin Vector2.XY, destination Vector2.XY, optimize bool) []Vector2.XY { //gd:NavigationServer2D.map_get_path
+func MapGetPath(mapping RID.NavigationMap2D, origin Vector2.XY, destination Vector2.XY, optimize bool) []Vector2.XY { //gd:NavigationServer2D.map_get_path
 	once.Do(singleton)
-	return []Vector2.XY(class(self).MapGetPath(mapping, gd.Vector2(origin), gd.Vector2(destination), optimize, gd.Int(1)).AsSlice())
+	return []Vector2.XY(class(self).MapGetPath(gd.RID(mapping), gd.Vector2(origin), gd.Vector2(destination), optimize, gd.Int(1)).AsSlice())
 }
 
 /*
 Returns the point closest to the provided [param to_point] on the navigation mesh surface.
 */
-func MapGetClosestPoint(mapping Resource.ID, to_point Vector2.XY) Vector2.XY { //gd:NavigationServer2D.map_get_closest_point
+func MapGetClosestPoint(mapping RID.NavigationMap2D, to_point Vector2.XY) Vector2.XY { //gd:NavigationServer2D.map_get_closest_point
 	once.Do(singleton)
-	return Vector2.XY(class(self).MapGetClosestPoint(mapping, gd.Vector2(to_point)))
+	return Vector2.XY(class(self).MapGetClosestPoint(gd.RID(mapping), gd.Vector2(to_point)))
 }
 
 /*
 Returns the owner region RID for the point returned by [method map_get_closest_point].
 */
-func MapGetClosestPointOwner(mapping Resource.ID, to_point Vector2.XY) Resource.ID { //gd:NavigationServer2D.map_get_closest_point_owner
+func MapGetClosestPointOwner(mapping RID.NavigationMap2D, to_point Vector2.XY) RID.NavigationRegion2D { //gd:NavigationServer2D.map_get_closest_point_owner
 	once.Do(singleton)
-	return Resource.ID(class(self).MapGetClosestPointOwner(mapping, gd.Vector2(to_point)))
+	return RID.NavigationRegion2D(class(self).MapGetClosestPointOwner(gd.RID(mapping), gd.Vector2(to_point)))
 }
 
 /*
 Returns all navigation link [RID]s that are currently assigned to the requested navigation [param map].
 */
-func MapGetLinks(mapping Resource.ID) []Resource.ID { //gd:NavigationServer2D.map_get_links
+func MapGetLinks(mapping RID.NavigationMap2D) [][]RID.NavigationLink2D { //gd:NavigationServer2D.map_get_links
 	once.Do(singleton)
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).MapGetLinks(mapping))))
+	return [][]RID.NavigationLink2D(gd.ArrayAs[[][]RID.NavigationLink2D](gd.InternalArray(class(self).MapGetLinks(gd.RID(mapping)))))
 }
 
 /*
 Returns all navigation regions [RID]s that are currently assigned to the requested navigation [param map].
 */
-func MapGetRegions(mapping Resource.ID) []Resource.ID { //gd:NavigationServer2D.map_get_regions
+func MapGetRegions(mapping RID.NavigationMap2D) [][]RID.NavigationRegion2D { //gd:NavigationServer2D.map_get_regions
 	once.Do(singleton)
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).MapGetRegions(mapping))))
+	return [][]RID.NavigationRegion2D(gd.ArrayAs[[][]RID.NavigationRegion2D](gd.InternalArray(class(self).MapGetRegions(gd.RID(mapping)))))
 }
 
 /*
 Returns all navigation agents [RID]s that are currently assigned to the requested navigation [param map].
 */
-func MapGetAgents(mapping Resource.ID) []Resource.ID { //gd:NavigationServer2D.map_get_agents
+func MapGetAgents(mapping RID.NavigationMap2D) [][]RID.NavigationAgent2D { //gd:NavigationServer2D.map_get_agents
 	once.Do(singleton)
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).MapGetAgents(mapping))))
+	return [][]RID.NavigationAgent2D(gd.ArrayAs[[][]RID.NavigationAgent2D](gd.InternalArray(class(self).MapGetAgents(gd.RID(mapping)))))
 }
 
 /*
 Returns all navigation obstacle [RID]s that are currently assigned to the requested navigation [param map].
 */
-func MapGetObstacles(mapping Resource.ID) []Resource.ID { //gd:NavigationServer2D.map_get_obstacles
+func MapGetObstacles(mapping RID.NavigationMap2D) [][]RID.NavigationObstacle2D { //gd:NavigationServer2D.map_get_obstacles
 	once.Do(singleton)
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).MapGetObstacles(mapping))))
+	return [][]RID.NavigationObstacle2D(gd.ArrayAs[[][]RID.NavigationObstacle2D](gd.InternalArray(class(self).MapGetObstacles(gd.RID(mapping)))))
 }
 
 /*
@@ -204,18 +204,18 @@ Due to technical restrictions the current NavigationServer command queue will be
 Avoidance processing and dispatch of the [code]safe_velocity[/code] signals is unaffected by this function and continues to happen for all maps and agents at the end of the physics frame.
 [b]Note:[/b] With great power comes great responsibility. This function should only be used by users that really know what they are doing and have a good reason for it. Forcing an immediate update of a navigation map requires locking the NavigationServer and flushing the entire NavigationServer command queue. Not only can this severely impact the performance of a game but it can also introduce bugs if used inappropriately without much foresight.
 */
-func MapForceUpdate(mapping Resource.ID) { //gd:NavigationServer2D.map_force_update
+func MapForceUpdate(mapping RID.NavigationMap2D) { //gd:NavigationServer2D.map_force_update
 	once.Do(singleton)
-	class(self).MapForceUpdate(mapping)
+	class(self).MapForceUpdate(gd.RID(mapping))
 }
 
 /*
 Returns the current iteration id of the navigation map. Every time the navigation map changes and synchronizes the iteration id increases. An iteration id of 0 means the navigation map has never synchronized.
 [b]Note:[/b] The iteration id will wrap back to 1 after reaching its range limit.
 */
-func MapGetIterationId(mapping Resource.ID) int { //gd:NavigationServer2D.map_get_iteration_id
+func MapGetIterationId(mapping RID.NavigationMap2D) int { //gd:NavigationServer2D.map_get_iteration_id
 	once.Do(singleton)
-	return int(int(class(self).MapGetIterationId(mapping)))
+	return int(int(class(self).MapGetIterationId(gd.RID(mapping))))
 }
 
 /*
@@ -223,9 +223,9 @@ Returns a random position picked from all map region polygons with matching [par
 If [param uniformly] is [code]true[/code], all map regions, polygons, and faces are weighted by their surface area (slower).
 If [param uniformly] is [code]false[/code], just a random region and a random polygon are picked (faster).
 */
-func MapGetRandomPoint(mapping Resource.ID, navigation_layers int, uniformly bool) Vector2.XY { //gd:NavigationServer2D.map_get_random_point
+func MapGetRandomPoint(mapping RID.NavigationMap2D, navigation_layers int, uniformly bool) Vector2.XY { //gd:NavigationServer2D.map_get_random_point
 	once.Do(singleton)
-	return Vector2.XY(class(self).MapGetRandomPoint(mapping, gd.Int(navigation_layers), uniformly))
+	return Vector2.XY(class(self).MapGetRandomPoint(gd.RID(mapping), gd.Int(navigation_layers), uniformly))
 }
 
 /*
@@ -239,89 +239,89 @@ func QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2D, result [1]
 /*
 Creates a new region.
 */
-func RegionCreate() Resource.ID { //gd:NavigationServer2D.region_create
+func RegionCreate() RID.NavigationRegion2D { //gd:NavigationServer2D.region_create
 	once.Do(singleton)
-	return Resource.ID(class(self).RegionCreate())
+	return RID.NavigationRegion2D(class(self).RegionCreate())
 }
 
 /*
 If [param enabled] is [code]true[/code] the specified [param region] will contribute to its current navigation map.
 */
-func RegionSetEnabled(region Resource.ID, enabled bool) { //gd:NavigationServer2D.region_set_enabled
+func RegionSetEnabled(region RID.NavigationRegion2D, enabled bool) { //gd:NavigationServer2D.region_set_enabled
 	once.Do(singleton)
-	class(self).RegionSetEnabled(region, enabled)
+	class(self).RegionSetEnabled(gd.RID(region), enabled)
 }
 
 /*
 Returns [code]true[/code] if the specified [param region] is enabled.
 */
-func RegionGetEnabled(region Resource.ID) bool { //gd:NavigationServer2D.region_get_enabled
+func RegionGetEnabled(region RID.NavigationRegion2D) bool { //gd:NavigationServer2D.region_get_enabled
 	once.Do(singleton)
-	return bool(class(self).RegionGetEnabled(region))
+	return bool(class(self).RegionGetEnabled(gd.RID(region)))
 }
 
 /*
 If [param enabled] is [code]true[/code], the navigation [param region] will use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
 */
-func RegionSetUseEdgeConnections(region Resource.ID, enabled bool) { //gd:NavigationServer2D.region_set_use_edge_connections
+func RegionSetUseEdgeConnections(region RID.NavigationRegion2D, enabled bool) { //gd:NavigationServer2D.region_set_use_edge_connections
 	once.Do(singleton)
-	class(self).RegionSetUseEdgeConnections(region, enabled)
+	class(self).RegionSetUseEdgeConnections(gd.RID(region), enabled)
 }
 
 /*
 Returns whether the navigation [param region] is set to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
 */
-func RegionGetUseEdgeConnections(region Resource.ID) bool { //gd:NavigationServer2D.region_get_use_edge_connections
+func RegionGetUseEdgeConnections(region RID.NavigationRegion2D) bool { //gd:NavigationServer2D.region_get_use_edge_connections
 	once.Do(singleton)
-	return bool(class(self).RegionGetUseEdgeConnections(region))
+	return bool(class(self).RegionGetUseEdgeConnections(gd.RID(region)))
 }
 
 /*
 Sets the [param enter_cost] for this [param region].
 */
-func RegionSetEnterCost(region Resource.ID, enter_cost Float.X) { //gd:NavigationServer2D.region_set_enter_cost
+func RegionSetEnterCost(region RID.NavigationRegion2D, enter_cost Float.X) { //gd:NavigationServer2D.region_set_enter_cost
 	once.Do(singleton)
-	class(self).RegionSetEnterCost(region, gd.Float(enter_cost))
+	class(self).RegionSetEnterCost(gd.RID(region), gd.Float(enter_cost))
 }
 
 /*
 Returns the enter cost of this [param region].
 */
-func RegionGetEnterCost(region Resource.ID) Float.X { //gd:NavigationServer2D.region_get_enter_cost
+func RegionGetEnterCost(region RID.NavigationRegion2D) Float.X { //gd:NavigationServer2D.region_get_enter_cost
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).RegionGetEnterCost(region)))
+	return Float.X(Float.X(class(self).RegionGetEnterCost(gd.RID(region))))
 }
 
 /*
 Sets the [param travel_cost] for this [param region].
 */
-func RegionSetTravelCost(region Resource.ID, travel_cost Float.X) { //gd:NavigationServer2D.region_set_travel_cost
+func RegionSetTravelCost(region RID.NavigationRegion2D, travel_cost Float.X) { //gd:NavigationServer2D.region_set_travel_cost
 	once.Do(singleton)
-	class(self).RegionSetTravelCost(region, gd.Float(travel_cost))
+	class(self).RegionSetTravelCost(gd.RID(region), gd.Float(travel_cost))
 }
 
 /*
 Returns the travel cost of this [param region].
 */
-func RegionGetTravelCost(region Resource.ID) Float.X { //gd:NavigationServer2D.region_get_travel_cost
+func RegionGetTravelCost(region RID.NavigationRegion2D) Float.X { //gd:NavigationServer2D.region_get_travel_cost
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).RegionGetTravelCost(region)))
+	return Float.X(Float.X(class(self).RegionGetTravelCost(gd.RID(region))))
 }
 
 /*
 Set the [code]ObjectID[/code] of the object which manages this region.
 */
-func RegionSetOwnerId(region Resource.ID, owner_id int) { //gd:NavigationServer2D.region_set_owner_id
+func RegionSetOwnerId(region RID.NavigationRegion2D, owner_id int) { //gd:NavigationServer2D.region_set_owner_id
 	once.Do(singleton)
-	class(self).RegionSetOwnerId(region, gd.Int(owner_id))
+	class(self).RegionSetOwnerId(gd.RID(region), gd.Int(owner_id))
 }
 
 /*
 Returns the [code]ObjectID[/code] of the object which manages this region.
 */
-func RegionGetOwnerId(region Resource.ID) int { //gd:NavigationServer2D.region_get_owner_id
+func RegionGetOwnerId(region RID.NavigationRegion2D) int { //gd:NavigationServer2D.region_get_owner_id
 	once.Do(singleton)
-	return int(int(class(self).RegionGetOwnerId(region)))
+	return int(int(class(self).RegionGetOwnerId(gd.RID(region))))
 }
 
 /*
@@ -329,89 +329,89 @@ Returns [code]true[/code] if the provided [param point] in world space is curren
 If multiple navigation meshes have positions at equal distance the navigation region whose polygons are processed first wins the ownership. Polygons are processed in the same order that navigation regions were registered on the NavigationServer.
 [b]Note:[/b] If navigation meshes from different navigation regions overlap (which should be avoided in general) the result might not be what is expected.
 */
-func RegionOwnsPoint(region Resource.ID, point Vector2.XY) bool { //gd:NavigationServer2D.region_owns_point
+func RegionOwnsPoint(region RID.NavigationRegion2D, point Vector2.XY) bool { //gd:NavigationServer2D.region_owns_point
 	once.Do(singleton)
-	return bool(class(self).RegionOwnsPoint(region, gd.Vector2(point)))
+	return bool(class(self).RegionOwnsPoint(gd.RID(region), gd.Vector2(point)))
 }
 
 /*
 Sets the map for the region.
 */
-func RegionSetMap(region Resource.ID, mapping Resource.ID) { //gd:NavigationServer2D.region_set_map
+func RegionSetMap(region RID.NavigationRegion2D, mapping RID.NavigationMap2D) { //gd:NavigationServer2D.region_set_map
 	once.Do(singleton)
-	class(self).RegionSetMap(region, mapping)
+	class(self).RegionSetMap(gd.RID(region), gd.RID(mapping))
 }
 
 /*
 Returns the navigation map [RID] the requested [param region] is currently assigned to.
 */
-func RegionGetMap(region Resource.ID) Resource.ID { //gd:NavigationServer2D.region_get_map
+func RegionGetMap(region RID.NavigationRegion2D) RID.NavigationMap2D { //gd:NavigationServer2D.region_get_map
 	once.Do(singleton)
-	return Resource.ID(class(self).RegionGetMap(region))
+	return RID.NavigationMap2D(class(self).RegionGetMap(gd.RID(region)))
 }
 
 /*
 Set the region's navigation layers. This allows selecting regions from a path request (when using [method NavigationServer2D.map_get_path]).
 */
-func RegionSetNavigationLayers(region Resource.ID, navigation_layers int) { //gd:NavigationServer2D.region_set_navigation_layers
+func RegionSetNavigationLayers(region RID.NavigationRegion2D, navigation_layers int) { //gd:NavigationServer2D.region_set_navigation_layers
 	once.Do(singleton)
-	class(self).RegionSetNavigationLayers(region, gd.Int(navigation_layers))
+	class(self).RegionSetNavigationLayers(gd.RID(region), gd.Int(navigation_layers))
 }
 
 /*
 Returns the region's navigation layers.
 */
-func RegionGetNavigationLayers(region Resource.ID) int { //gd:NavigationServer2D.region_get_navigation_layers
+func RegionGetNavigationLayers(region RID.NavigationRegion2D) int { //gd:NavigationServer2D.region_get_navigation_layers
 	once.Do(singleton)
-	return int(int(class(self).RegionGetNavigationLayers(region)))
+	return int(int(class(self).RegionGetNavigationLayers(gd.RID(region))))
 }
 
 /*
 Sets the global transformation for the region.
 */
-func RegionSetTransform(region Resource.ID, transform Transform2D.OriginXY) { //gd:NavigationServer2D.region_set_transform
+func RegionSetTransform(region RID.NavigationRegion2D, transform Transform2D.OriginXY) { //gd:NavigationServer2D.region_set_transform
 	once.Do(singleton)
-	class(self).RegionSetTransform(region, gd.Transform2D(transform))
+	class(self).RegionSetTransform(gd.RID(region), gd.Transform2D(transform))
 }
 
 /*
 Returns the global transformation of this [param region].
 */
-func RegionGetTransform(region Resource.ID) Transform2D.OriginXY { //gd:NavigationServer2D.region_get_transform
+func RegionGetTransform(region RID.NavigationRegion2D) Transform2D.OriginXY { //gd:NavigationServer2D.region_get_transform
 	once.Do(singleton)
-	return Transform2D.OriginXY(class(self).RegionGetTransform(region))
+	return Transform2D.OriginXY(class(self).RegionGetTransform(gd.RID(region)))
 }
 
 /*
 Sets the [param navigation_polygon] for the region.
 */
-func RegionSetNavigationPolygon(region Resource.ID, navigation_polygon [1]gdclass.NavigationPolygon) { //gd:NavigationServer2D.region_set_navigation_polygon
+func RegionSetNavigationPolygon(region RID.NavigationRegion2D, navigation_polygon [1]gdclass.NavigationPolygon) { //gd:NavigationServer2D.region_set_navigation_polygon
 	once.Do(singleton)
-	class(self).RegionSetNavigationPolygon(region, navigation_polygon)
+	class(self).RegionSetNavigationPolygon(gd.RID(region), navigation_polygon)
 }
 
 /*
 Returns how many connections this [param region] has with other regions in the map.
 */
-func RegionGetConnectionsCount(region Resource.ID) int { //gd:NavigationServer2D.region_get_connections_count
+func RegionGetConnectionsCount(region RID.NavigationRegion2D) int { //gd:NavigationServer2D.region_get_connections_count
 	once.Do(singleton)
-	return int(int(class(self).RegionGetConnectionsCount(region)))
+	return int(int(class(self).RegionGetConnectionsCount(gd.RID(region))))
 }
 
 /*
 Returns the starting point of a connection door. [param connection] is an index between 0 and the return value of [method region_get_connections_count].
 */
-func RegionGetConnectionPathwayStart(region Resource.ID, connection int) Vector2.XY { //gd:NavigationServer2D.region_get_connection_pathway_start
+func RegionGetConnectionPathwayStart(region RID.NavigationRegion2D, connection int) Vector2.XY { //gd:NavigationServer2D.region_get_connection_pathway_start
 	once.Do(singleton)
-	return Vector2.XY(class(self).RegionGetConnectionPathwayStart(region, gd.Int(connection)))
+	return Vector2.XY(class(self).RegionGetConnectionPathwayStart(gd.RID(region), gd.Int(connection)))
 }
 
 /*
 Returns the ending point of a connection door. [param connection] is an index between 0 and the return value of [method region_get_connections_count].
 */
-func RegionGetConnectionPathwayEnd(region Resource.ID, connection int) Vector2.XY { //gd:NavigationServer2D.region_get_connection_pathway_end
+func RegionGetConnectionPathwayEnd(region RID.NavigationRegion2D, connection int) Vector2.XY { //gd:NavigationServer2D.region_get_connection_pathway_end
 	once.Do(singleton)
-	return Vector2.XY(class(self).RegionGetConnectionPathwayEnd(region, gd.Int(connection)))
+	return Vector2.XY(class(self).RegionGetConnectionPathwayEnd(gd.RID(region), gd.Int(connection)))
 }
 
 /*
@@ -419,563 +419,563 @@ Returns a random position picked from all region polygons with matching [param n
 If [param uniformly] is [code]true[/code], all region polygons and faces are weighted by their surface area (slower).
 If [param uniformly] is [code]false[/code], just a random polygon and face is picked (faster).
 */
-func RegionGetRandomPoint(region Resource.ID, navigation_layers int, uniformly bool) Vector2.XY { //gd:NavigationServer2D.region_get_random_point
+func RegionGetRandomPoint(region RID.NavigationRegion2D, navigation_layers int, uniformly bool) Vector2.XY { //gd:NavigationServer2D.region_get_random_point
 	once.Do(singleton)
-	return Vector2.XY(class(self).RegionGetRandomPoint(region, gd.Int(navigation_layers), uniformly))
+	return Vector2.XY(class(self).RegionGetRandomPoint(gd.RID(region), gd.Int(navigation_layers), uniformly))
 }
 
 /*
 Create a new link between two positions on a map.
 */
-func LinkCreate() Resource.ID { //gd:NavigationServer2D.link_create
+func LinkCreate() RID.NavigationLink2D { //gd:NavigationServer2D.link_create
 	once.Do(singleton)
-	return Resource.ID(class(self).LinkCreate())
+	return RID.NavigationLink2D(class(self).LinkCreate())
 }
 
 /*
 Sets the navigation map [RID] for the link.
 */
-func LinkSetMap(link Resource.ID, mapping Resource.ID) { //gd:NavigationServer2D.link_set_map
+func LinkSetMap(link RID.NavigationLink2D, mapping RID.NavigationMap2D) { //gd:NavigationServer2D.link_set_map
 	once.Do(singleton)
-	class(self).LinkSetMap(link, mapping)
+	class(self).LinkSetMap(gd.RID(link), gd.RID(mapping))
 }
 
 /*
 Returns the navigation map [RID] the requested [param link] is currently assigned to.
 */
-func LinkGetMap(link Resource.ID) Resource.ID { //gd:NavigationServer2D.link_get_map
+func LinkGetMap(link RID.NavigationLink2D) RID.NavigationMap2D { //gd:NavigationServer2D.link_get_map
 	once.Do(singleton)
-	return Resource.ID(class(self).LinkGetMap(link))
+	return RID.NavigationMap2D(class(self).LinkGetMap(gd.RID(link)))
 }
 
 /*
 If [param enabled] is [code]true[/code], the specified [param link] will contribute to its current navigation map.
 */
-func LinkSetEnabled(link Resource.ID, enabled bool) { //gd:NavigationServer2D.link_set_enabled
+func LinkSetEnabled(link RID.NavigationLink2D, enabled bool) { //gd:NavigationServer2D.link_set_enabled
 	once.Do(singleton)
-	class(self).LinkSetEnabled(link, enabled)
+	class(self).LinkSetEnabled(gd.RID(link), enabled)
 }
 
 /*
 Returns [code]true[/code] if the specified [param link] is enabled.
 */
-func LinkGetEnabled(link Resource.ID) bool { //gd:NavigationServer2D.link_get_enabled
+func LinkGetEnabled(link RID.NavigationLink2D) bool { //gd:NavigationServer2D.link_get_enabled
 	once.Do(singleton)
-	return bool(class(self).LinkGetEnabled(link))
+	return bool(class(self).LinkGetEnabled(gd.RID(link)))
 }
 
 /*
 Sets whether this [param link] can be travelled in both directions.
 */
-func LinkSetBidirectional(link Resource.ID, bidirectional bool) { //gd:NavigationServer2D.link_set_bidirectional
+func LinkSetBidirectional(link RID.NavigationLink2D, bidirectional bool) { //gd:NavigationServer2D.link_set_bidirectional
 	once.Do(singleton)
-	class(self).LinkSetBidirectional(link, bidirectional)
+	class(self).LinkSetBidirectional(gd.RID(link), bidirectional)
 }
 
 /*
 Returns whether this [param link] can be travelled in both directions.
 */
-func LinkIsBidirectional(link Resource.ID) bool { //gd:NavigationServer2D.link_is_bidirectional
+func LinkIsBidirectional(link RID.NavigationLink2D) bool { //gd:NavigationServer2D.link_is_bidirectional
 	once.Do(singleton)
-	return bool(class(self).LinkIsBidirectional(link))
+	return bool(class(self).LinkIsBidirectional(gd.RID(link)))
 }
 
 /*
 Set the links's navigation layers. This allows selecting links from a path request (when using [method NavigationServer2D.map_get_path]).
 */
-func LinkSetNavigationLayers(link Resource.ID, navigation_layers int) { //gd:NavigationServer2D.link_set_navigation_layers
+func LinkSetNavigationLayers(link RID.NavigationLink2D, navigation_layers int) { //gd:NavigationServer2D.link_set_navigation_layers
 	once.Do(singleton)
-	class(self).LinkSetNavigationLayers(link, gd.Int(navigation_layers))
+	class(self).LinkSetNavigationLayers(gd.RID(link), gd.Int(navigation_layers))
 }
 
 /*
 Returns the navigation layers for this [param link].
 */
-func LinkGetNavigationLayers(link Resource.ID) int { //gd:NavigationServer2D.link_get_navigation_layers
+func LinkGetNavigationLayers(link RID.NavigationLink2D) int { //gd:NavigationServer2D.link_get_navigation_layers
 	once.Do(singleton)
-	return int(int(class(self).LinkGetNavigationLayers(link)))
+	return int(int(class(self).LinkGetNavigationLayers(gd.RID(link))))
 }
 
 /*
 Sets the entry position for this [param link].
 */
-func LinkSetStartPosition(link Resource.ID, position Vector2.XY) { //gd:NavigationServer2D.link_set_start_position
+func LinkSetStartPosition(link RID.NavigationLink2D, position Vector2.XY) { //gd:NavigationServer2D.link_set_start_position
 	once.Do(singleton)
-	class(self).LinkSetStartPosition(link, gd.Vector2(position))
+	class(self).LinkSetStartPosition(gd.RID(link), gd.Vector2(position))
 }
 
 /*
 Returns the starting position of this [param link].
 */
-func LinkGetStartPosition(link Resource.ID) Vector2.XY { //gd:NavigationServer2D.link_get_start_position
+func LinkGetStartPosition(link RID.NavigationLink2D) Vector2.XY { //gd:NavigationServer2D.link_get_start_position
 	once.Do(singleton)
-	return Vector2.XY(class(self).LinkGetStartPosition(link))
+	return Vector2.XY(class(self).LinkGetStartPosition(gd.RID(link)))
 }
 
 /*
 Sets the exit position for the [param link].
 */
-func LinkSetEndPosition(link Resource.ID, position Vector2.XY) { //gd:NavigationServer2D.link_set_end_position
+func LinkSetEndPosition(link RID.NavigationLink2D, position Vector2.XY) { //gd:NavigationServer2D.link_set_end_position
 	once.Do(singleton)
-	class(self).LinkSetEndPosition(link, gd.Vector2(position))
+	class(self).LinkSetEndPosition(gd.RID(link), gd.Vector2(position))
 }
 
 /*
 Returns the ending position of this [param link].
 */
-func LinkGetEndPosition(link Resource.ID) Vector2.XY { //gd:NavigationServer2D.link_get_end_position
+func LinkGetEndPosition(link RID.NavigationLink2D) Vector2.XY { //gd:NavigationServer2D.link_get_end_position
 	once.Do(singleton)
-	return Vector2.XY(class(self).LinkGetEndPosition(link))
+	return Vector2.XY(class(self).LinkGetEndPosition(gd.RID(link)))
 }
 
 /*
 Sets the [param enter_cost] for this [param link].
 */
-func LinkSetEnterCost(link Resource.ID, enter_cost Float.X) { //gd:NavigationServer2D.link_set_enter_cost
+func LinkSetEnterCost(link RID.NavigationLink2D, enter_cost Float.X) { //gd:NavigationServer2D.link_set_enter_cost
 	once.Do(singleton)
-	class(self).LinkSetEnterCost(link, gd.Float(enter_cost))
+	class(self).LinkSetEnterCost(gd.RID(link), gd.Float(enter_cost))
 }
 
 /*
 Returns the enter cost of this [param link].
 */
-func LinkGetEnterCost(link Resource.ID) Float.X { //gd:NavigationServer2D.link_get_enter_cost
+func LinkGetEnterCost(link RID.NavigationLink2D) Float.X { //gd:NavigationServer2D.link_get_enter_cost
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).LinkGetEnterCost(link)))
+	return Float.X(Float.X(class(self).LinkGetEnterCost(gd.RID(link))))
 }
 
 /*
 Sets the [param travel_cost] for this [param link].
 */
-func LinkSetTravelCost(link Resource.ID, travel_cost Float.X) { //gd:NavigationServer2D.link_set_travel_cost
+func LinkSetTravelCost(link RID.NavigationLink2D, travel_cost Float.X) { //gd:NavigationServer2D.link_set_travel_cost
 	once.Do(singleton)
-	class(self).LinkSetTravelCost(link, gd.Float(travel_cost))
+	class(self).LinkSetTravelCost(gd.RID(link), gd.Float(travel_cost))
 }
 
 /*
 Returns the travel cost of this [param link].
 */
-func LinkGetTravelCost(link Resource.ID) Float.X { //gd:NavigationServer2D.link_get_travel_cost
+func LinkGetTravelCost(link RID.NavigationLink2D) Float.X { //gd:NavigationServer2D.link_get_travel_cost
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).LinkGetTravelCost(link)))
+	return Float.X(Float.X(class(self).LinkGetTravelCost(gd.RID(link))))
 }
 
 /*
 Set the [code]ObjectID[/code] of the object which manages this link.
 */
-func LinkSetOwnerId(link Resource.ID, owner_id int) { //gd:NavigationServer2D.link_set_owner_id
+func LinkSetOwnerId(link RID.NavigationLink2D, owner_id int) { //gd:NavigationServer2D.link_set_owner_id
 	once.Do(singleton)
-	class(self).LinkSetOwnerId(link, gd.Int(owner_id))
+	class(self).LinkSetOwnerId(gd.RID(link), gd.Int(owner_id))
 }
 
 /*
 Returns the [code]ObjectID[/code] of the object which manages this link.
 */
-func LinkGetOwnerId(link Resource.ID) int { //gd:NavigationServer2D.link_get_owner_id
+func LinkGetOwnerId(link RID.NavigationLink2D) int { //gd:NavigationServer2D.link_get_owner_id
 	once.Do(singleton)
-	return int(int(class(self).LinkGetOwnerId(link)))
+	return int(int(class(self).LinkGetOwnerId(gd.RID(link))))
 }
 
 /*
 Creates the agent.
 */
-func AgentCreate() Resource.ID { //gd:NavigationServer2D.agent_create
+func AgentCreate() RID.NavigationAgent2D { //gd:NavigationServer2D.agent_create
 	once.Do(singleton)
-	return Resource.ID(class(self).AgentCreate())
+	return RID.NavigationAgent2D(class(self).AgentCreate())
 }
 
 /*
 If [param enabled] is [code]true[/code], the specified [param agent] uses avoidance.
 */
-func AgentSetAvoidanceEnabled(agent Resource.ID, enabled bool) { //gd:NavigationServer2D.agent_set_avoidance_enabled
+func AgentSetAvoidanceEnabled(agent RID.NavigationAgent2D, enabled bool) { //gd:NavigationServer2D.agent_set_avoidance_enabled
 	once.Do(singleton)
-	class(self).AgentSetAvoidanceEnabled(agent, enabled)
+	class(self).AgentSetAvoidanceEnabled(gd.RID(agent), enabled)
 }
 
 /*
 Return [code]true[/code] if the specified [param agent] uses avoidance.
 */
-func AgentGetAvoidanceEnabled(agent Resource.ID) bool { //gd:NavigationServer2D.agent_get_avoidance_enabled
+func AgentGetAvoidanceEnabled(agent RID.NavigationAgent2D) bool { //gd:NavigationServer2D.agent_get_avoidance_enabled
 	once.Do(singleton)
-	return bool(class(self).AgentGetAvoidanceEnabled(agent))
+	return bool(class(self).AgentGetAvoidanceEnabled(gd.RID(agent)))
 }
 
 /*
 Puts the agent in the map.
 */
-func AgentSetMap(agent Resource.ID, mapping Resource.ID) { //gd:NavigationServer2D.agent_set_map
+func AgentSetMap(agent RID.NavigationAgent2D, mapping RID.NavigationMap2D) { //gd:NavigationServer2D.agent_set_map
 	once.Do(singleton)
-	class(self).AgentSetMap(agent, mapping)
+	class(self).AgentSetMap(gd.RID(agent), gd.RID(mapping))
 }
 
 /*
 Returns the navigation map [RID] the requested [param agent] is currently assigned to.
 */
-func AgentGetMap(agent Resource.ID) Resource.ID { //gd:NavigationServer2D.agent_get_map
+func AgentGetMap(agent RID.NavigationAgent2D) RID.NavigationMap2D { //gd:NavigationServer2D.agent_get_map
 	once.Do(singleton)
-	return Resource.ID(class(self).AgentGetMap(agent))
+	return RID.NavigationMap2D(class(self).AgentGetMap(gd.RID(agent)))
 }
 
 /*
 If [param paused] is true the specified [param agent] will not be processed, e.g. calculate avoidance velocities or receive avoidance callbacks.
 */
-func AgentSetPaused(agent Resource.ID, paused bool) { //gd:NavigationServer2D.agent_set_paused
+func AgentSetPaused(agent RID.NavigationAgent2D, paused bool) { //gd:NavigationServer2D.agent_set_paused
 	once.Do(singleton)
-	class(self).AgentSetPaused(agent, paused)
+	class(self).AgentSetPaused(gd.RID(agent), paused)
 }
 
 /*
 Returns [code]true[/code] if the specified [param agent] is paused.
 */
-func AgentGetPaused(agent Resource.ID) bool { //gd:NavigationServer2D.agent_get_paused
+func AgentGetPaused(agent RID.NavigationAgent2D) bool { //gd:NavigationServer2D.agent_get_paused
 	once.Do(singleton)
-	return bool(class(self).AgentGetPaused(agent))
+	return bool(class(self).AgentGetPaused(gd.RID(agent)))
 }
 
 /*
 Sets the maximum distance to other agents this agent takes into account in the navigation. The larger this number, the longer the running time of the simulation. If the number is too low, the simulation will not be safe.
 */
-func AgentSetNeighborDistance(agent Resource.ID, distance Float.X) { //gd:NavigationServer2D.agent_set_neighbor_distance
+func AgentSetNeighborDistance(agent RID.NavigationAgent2D, distance Float.X) { //gd:NavigationServer2D.agent_set_neighbor_distance
 	once.Do(singleton)
-	class(self).AgentSetNeighborDistance(agent, gd.Float(distance))
+	class(self).AgentSetNeighborDistance(gd.RID(agent), gd.Float(distance))
 }
 
 /*
 Returns the maximum distance to other agents the specified [param agent] takes into account in the navigation.
 */
-func AgentGetNeighborDistance(agent Resource.ID) Float.X { //gd:NavigationServer2D.agent_get_neighbor_distance
+func AgentGetNeighborDistance(agent RID.NavigationAgent2D) Float.X { //gd:NavigationServer2D.agent_get_neighbor_distance
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetNeighborDistance(agent)))
+	return Float.X(Float.X(class(self).AgentGetNeighborDistance(gd.RID(agent))))
 }
 
 /*
 Sets the maximum number of other agents the agent takes into account in the navigation. The larger this number, the longer the running time of the simulation. If the number is too low, the simulation will not be safe.
 */
-func AgentSetMaxNeighbors(agent Resource.ID, count int) { //gd:NavigationServer2D.agent_set_max_neighbors
+func AgentSetMaxNeighbors(agent RID.NavigationAgent2D, count int) { //gd:NavigationServer2D.agent_set_max_neighbors
 	once.Do(singleton)
-	class(self).AgentSetMaxNeighbors(agent, gd.Int(count))
+	class(self).AgentSetMaxNeighbors(gd.RID(agent), gd.Int(count))
 }
 
 /*
 Returns the maximum number of other agents the specified [param agent] takes into account in the navigation.
 */
-func AgentGetMaxNeighbors(agent Resource.ID) int { //gd:NavigationServer2D.agent_get_max_neighbors
+func AgentGetMaxNeighbors(agent RID.NavigationAgent2D) int { //gd:NavigationServer2D.agent_get_max_neighbors
 	once.Do(singleton)
-	return int(int(class(self).AgentGetMaxNeighbors(agent)))
+	return int(int(class(self).AgentGetMaxNeighbors(gd.RID(agent))))
 }
 
 /*
 The minimal amount of time for which the agent's velocities that are computed by the simulation are safe with respect to other agents. The larger this number, the sooner this agent will respond to the presence of other agents, but the less freedom this agent has in choosing its velocities. A too high value will slow down agents movement considerably. Must be positive.
 */
-func AgentSetTimeHorizonAgents(agent Resource.ID, time_horizon Float.X) { //gd:NavigationServer2D.agent_set_time_horizon_agents
+func AgentSetTimeHorizonAgents(agent RID.NavigationAgent2D, time_horizon Float.X) { //gd:NavigationServer2D.agent_set_time_horizon_agents
 	once.Do(singleton)
-	class(self).AgentSetTimeHorizonAgents(agent, gd.Float(time_horizon))
+	class(self).AgentSetTimeHorizonAgents(gd.RID(agent), gd.Float(time_horizon))
 }
 
 /*
 Returns the minimal amount of time for which the specified [param agent]'s velocities that are computed by the simulation are safe with respect to other agents.
 */
-func AgentGetTimeHorizonAgents(agent Resource.ID) Float.X { //gd:NavigationServer2D.agent_get_time_horizon_agents
+func AgentGetTimeHorizonAgents(agent RID.NavigationAgent2D) Float.X { //gd:NavigationServer2D.agent_get_time_horizon_agents
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetTimeHorizonAgents(agent)))
+	return Float.X(Float.X(class(self).AgentGetTimeHorizonAgents(gd.RID(agent))))
 }
 
 /*
 The minimal amount of time for which the agent's velocities that are computed by the simulation are safe with respect to static avoidance obstacles. The larger this number, the sooner this agent will respond to the presence of static avoidance obstacles, but the less freedom this agent has in choosing its velocities. A too high value will slow down agents movement considerably. Must be positive.
 */
-func AgentSetTimeHorizonObstacles(agent Resource.ID, time_horizon Float.X) { //gd:NavigationServer2D.agent_set_time_horizon_obstacles
+func AgentSetTimeHorizonObstacles(agent RID.NavigationAgent2D, time_horizon Float.X) { //gd:NavigationServer2D.agent_set_time_horizon_obstacles
 	once.Do(singleton)
-	class(self).AgentSetTimeHorizonObstacles(agent, gd.Float(time_horizon))
+	class(self).AgentSetTimeHorizonObstacles(gd.RID(agent), gd.Float(time_horizon))
 }
 
 /*
 Returns the minimal amount of time for which the specified [param agent]'s velocities that are computed by the simulation are safe with respect to static avoidance obstacles.
 */
-func AgentGetTimeHorizonObstacles(agent Resource.ID) Float.X { //gd:NavigationServer2D.agent_get_time_horizon_obstacles
+func AgentGetTimeHorizonObstacles(agent RID.NavigationAgent2D) Float.X { //gd:NavigationServer2D.agent_get_time_horizon_obstacles
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetTimeHorizonObstacles(agent)))
+	return Float.X(Float.X(class(self).AgentGetTimeHorizonObstacles(gd.RID(agent))))
 }
 
 /*
 Sets the radius of the agent.
 */
-func AgentSetRadius(agent Resource.ID, radius Float.X) { //gd:NavigationServer2D.agent_set_radius
+func AgentSetRadius(agent RID.NavigationAgent2D, radius Float.X) { //gd:NavigationServer2D.agent_set_radius
 	once.Do(singleton)
-	class(self).AgentSetRadius(agent, gd.Float(radius))
+	class(self).AgentSetRadius(gd.RID(agent), gd.Float(radius))
 }
 
 /*
 Returns the radius of the specified [param agent].
 */
-func AgentGetRadius(agent Resource.ID) Float.X { //gd:NavigationServer2D.agent_get_radius
+func AgentGetRadius(agent RID.NavigationAgent2D) Float.X { //gd:NavigationServer2D.agent_get_radius
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetRadius(agent)))
+	return Float.X(Float.X(class(self).AgentGetRadius(gd.RID(agent))))
 }
 
 /*
 Sets the maximum speed of the agent. Must be positive.
 */
-func AgentSetMaxSpeed(agent Resource.ID, max_speed Float.X) { //gd:NavigationServer2D.agent_set_max_speed
+func AgentSetMaxSpeed(agent RID.NavigationAgent2D, max_speed Float.X) { //gd:NavigationServer2D.agent_set_max_speed
 	once.Do(singleton)
-	class(self).AgentSetMaxSpeed(agent, gd.Float(max_speed))
+	class(self).AgentSetMaxSpeed(gd.RID(agent), gd.Float(max_speed))
 }
 
 /*
 Returns the maximum speed of the specified [param agent].
 */
-func AgentGetMaxSpeed(agent Resource.ID) Float.X { //gd:NavigationServer2D.agent_get_max_speed
+func AgentGetMaxSpeed(agent RID.NavigationAgent2D) Float.X { //gd:NavigationServer2D.agent_get_max_speed
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetMaxSpeed(agent)))
+	return Float.X(Float.X(class(self).AgentGetMaxSpeed(gd.RID(agent))))
 }
 
 /*
 Replaces the internal velocity in the collision avoidance simulation with [param velocity] for the specified [param agent]. When an agent is teleported to a new position far away this function should be used in the same frame. If called frequently this function can get agents stuck.
 */
-func AgentSetVelocityForced(agent Resource.ID, velocity Vector2.XY) { //gd:NavigationServer2D.agent_set_velocity_forced
+func AgentSetVelocityForced(agent RID.NavigationAgent2D, velocity Vector2.XY) { //gd:NavigationServer2D.agent_set_velocity_forced
 	once.Do(singleton)
-	class(self).AgentSetVelocityForced(agent, gd.Vector2(velocity))
+	class(self).AgentSetVelocityForced(gd.RID(agent), gd.Vector2(velocity))
 }
 
 /*
 Sets [param velocity] as the new wanted velocity for the specified [param agent]. The avoidance simulation will try to fulfill this velocity if possible but will modify it to avoid collision with other agent's and obstacles. When an agent is teleported to a new position far away use [method agent_set_velocity_forced] instead to reset the internal velocity state.
 */
-func AgentSetVelocity(agent Resource.ID, velocity Vector2.XY) { //gd:NavigationServer2D.agent_set_velocity
+func AgentSetVelocity(agent RID.NavigationAgent2D, velocity Vector2.XY) { //gd:NavigationServer2D.agent_set_velocity
 	once.Do(singleton)
-	class(self).AgentSetVelocity(agent, gd.Vector2(velocity))
+	class(self).AgentSetVelocity(gd.RID(agent), gd.Vector2(velocity))
 }
 
 /*
 Returns the velocity of the specified [param agent].
 */
-func AgentGetVelocity(agent Resource.ID) Vector2.XY { //gd:NavigationServer2D.agent_get_velocity
+func AgentGetVelocity(agent RID.NavigationAgent2D) Vector2.XY { //gd:NavigationServer2D.agent_get_velocity
 	once.Do(singleton)
-	return Vector2.XY(class(self).AgentGetVelocity(agent))
+	return Vector2.XY(class(self).AgentGetVelocity(gd.RID(agent)))
 }
 
 /*
 Sets the position of the agent in world space.
 */
-func AgentSetPosition(agent Resource.ID, position Vector2.XY) { //gd:NavigationServer2D.agent_set_position
+func AgentSetPosition(agent RID.NavigationAgent2D, position Vector2.XY) { //gd:NavigationServer2D.agent_set_position
 	once.Do(singleton)
-	class(self).AgentSetPosition(agent, gd.Vector2(position))
+	class(self).AgentSetPosition(gd.RID(agent), gd.Vector2(position))
 }
 
 /*
 Returns the position of the specified [param agent] in world space.
 */
-func AgentGetPosition(agent Resource.ID) Vector2.XY { //gd:NavigationServer2D.agent_get_position
+func AgentGetPosition(agent RID.NavigationAgent2D) Vector2.XY { //gd:NavigationServer2D.agent_get_position
 	once.Do(singleton)
-	return Vector2.XY(class(self).AgentGetPosition(agent))
+	return Vector2.XY(class(self).AgentGetPosition(gd.RID(agent)))
 }
 
 /*
 Returns true if the map got changed the previous frame.
 */
-func AgentIsMapChanged(agent Resource.ID) bool { //gd:NavigationServer2D.agent_is_map_changed
+func AgentIsMapChanged(agent RID.NavigationAgent2D) bool { //gd:NavigationServer2D.agent_is_map_changed
 	once.Do(singleton)
-	return bool(class(self).AgentIsMapChanged(agent))
+	return bool(class(self).AgentIsMapChanged(gd.RID(agent)))
 }
 
 /*
 Sets the callback [Callable] that gets called after each avoidance processing step for the [param agent]. The calculated [code]safe_velocity[/code] will be dispatched with a signal to the object just before the physics calculations.
 [b]Note:[/b] Created callbacks are always processed independently of the SceneTree state as long as the agent is on a navigation map and not freed. To disable the dispatch of a callback from an agent use [method agent_set_avoidance_callback] again with an empty [Callable].
 */
-func AgentSetAvoidanceCallback(agent Resource.ID, callback func(velocity Vector2.XY)) { //gd:NavigationServer2D.agent_set_avoidance_callback
+func AgentSetAvoidanceCallback(agent RID.NavigationAgent2D, callback func(velocity Vector2.XY)) { //gd:NavigationServer2D.agent_set_avoidance_callback
 	once.Do(singleton)
-	class(self).AgentSetAvoidanceCallback(agent, Callable.New(callback))
+	class(self).AgentSetAvoidanceCallback(gd.RID(agent), Callable.New(callback))
 }
 
 /*
 Return [code]true[/code] if the specified [param agent] has an avoidance callback.
 */
-func AgentHasAvoidanceCallback(agent Resource.ID) bool { //gd:NavigationServer2D.agent_has_avoidance_callback
+func AgentHasAvoidanceCallback(agent RID.NavigationAgent2D) bool { //gd:NavigationServer2D.agent_has_avoidance_callback
 	once.Do(singleton)
-	return bool(class(self).AgentHasAvoidanceCallback(agent))
+	return bool(class(self).AgentHasAvoidanceCallback(gd.RID(agent)))
 }
 
 /*
 Set the agent's [code]avoidance_layers[/code] bitmask.
 */
-func AgentSetAvoidanceLayers(agent Resource.ID, layers int) { //gd:NavigationServer2D.agent_set_avoidance_layers
+func AgentSetAvoidanceLayers(agent RID.NavigationAgent2D, layers int) { //gd:NavigationServer2D.agent_set_avoidance_layers
 	once.Do(singleton)
-	class(self).AgentSetAvoidanceLayers(agent, gd.Int(layers))
+	class(self).AgentSetAvoidanceLayers(gd.RID(agent), gd.Int(layers))
 }
 
 /*
 Returns the [code]avoidance_layers[/code] bitmask of the specified [param agent].
 */
-func AgentGetAvoidanceLayers(agent Resource.ID) int { //gd:NavigationServer2D.agent_get_avoidance_layers
+func AgentGetAvoidanceLayers(agent RID.NavigationAgent2D) int { //gd:NavigationServer2D.agent_get_avoidance_layers
 	once.Do(singleton)
-	return int(int(class(self).AgentGetAvoidanceLayers(agent)))
+	return int(int(class(self).AgentGetAvoidanceLayers(gd.RID(agent))))
 }
 
 /*
 Set the agent's [code]avoidance_mask[/code] bitmask.
 */
-func AgentSetAvoidanceMask(agent Resource.ID, mask int) { //gd:NavigationServer2D.agent_set_avoidance_mask
+func AgentSetAvoidanceMask(agent RID.NavigationAgent2D, mask int) { //gd:NavigationServer2D.agent_set_avoidance_mask
 	once.Do(singleton)
-	class(self).AgentSetAvoidanceMask(agent, gd.Int(mask))
+	class(self).AgentSetAvoidanceMask(gd.RID(agent), gd.Int(mask))
 }
 
 /*
 Returns the [code]avoidance_mask[/code] bitmask of the specified [param agent].
 */
-func AgentGetAvoidanceMask(agent Resource.ID) int { //gd:NavigationServer2D.agent_get_avoidance_mask
+func AgentGetAvoidanceMask(agent RID.NavigationAgent2D) int { //gd:NavigationServer2D.agent_get_avoidance_mask
 	once.Do(singleton)
-	return int(int(class(self).AgentGetAvoidanceMask(agent)))
+	return int(int(class(self).AgentGetAvoidanceMask(gd.RID(agent))))
 }
 
 /*
 Set the agent's [code]avoidance_priority[/code] with a [param priority] between 0.0 (lowest priority) to 1.0 (highest priority).
 The specified [param agent] does not adjust the velocity for other agents that would match the [code]avoidance_mask[/code] but have a lower [code]avoidance_priority[/code]. This in turn makes the other agents with lower priority adjust their velocities even more to avoid collision with this agent.
 */
-func AgentSetAvoidancePriority(agent Resource.ID, priority Float.X) { //gd:NavigationServer2D.agent_set_avoidance_priority
+func AgentSetAvoidancePriority(agent RID.NavigationAgent2D, priority Float.X) { //gd:NavigationServer2D.agent_set_avoidance_priority
 	once.Do(singleton)
-	class(self).AgentSetAvoidancePriority(agent, gd.Float(priority))
+	class(self).AgentSetAvoidancePriority(gd.RID(agent), gd.Float(priority))
 }
 
 /*
 Returns the [code]avoidance_priority[/code] of the specified [param agent].
 */
-func AgentGetAvoidancePriority(agent Resource.ID) Float.X { //gd:NavigationServer2D.agent_get_avoidance_priority
+func AgentGetAvoidancePriority(agent RID.NavigationAgent2D) Float.X { //gd:NavigationServer2D.agent_get_avoidance_priority
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetAvoidancePriority(agent)))
+	return Float.X(Float.X(class(self).AgentGetAvoidancePriority(gd.RID(agent))))
 }
 
 /*
 Creates a new navigation obstacle.
 */
-func ObstacleCreate() Resource.ID { //gd:NavigationServer2D.obstacle_create
+func ObstacleCreate() RID.NavigationObstacle2D { //gd:NavigationServer2D.obstacle_create
 	once.Do(singleton)
-	return Resource.ID(class(self).ObstacleCreate())
+	return RID.NavigationObstacle2D(class(self).ObstacleCreate())
 }
 
 /*
 If [param enabled] is [code]true[/code], the provided [param obstacle] affects avoidance using agents.
 */
-func ObstacleSetAvoidanceEnabled(obstacle Resource.ID, enabled bool) { //gd:NavigationServer2D.obstacle_set_avoidance_enabled
+func ObstacleSetAvoidanceEnabled(obstacle RID.NavigationObstacle2D, enabled bool) { //gd:NavigationServer2D.obstacle_set_avoidance_enabled
 	once.Do(singleton)
-	class(self).ObstacleSetAvoidanceEnabled(obstacle, enabled)
+	class(self).ObstacleSetAvoidanceEnabled(gd.RID(obstacle), enabled)
 }
 
 /*
 Returns [code]true[/code] if the provided [param obstacle] has avoidance enabled.
 */
-func ObstacleGetAvoidanceEnabled(obstacle Resource.ID) bool { //gd:NavigationServer2D.obstacle_get_avoidance_enabled
+func ObstacleGetAvoidanceEnabled(obstacle RID.NavigationObstacle2D) bool { //gd:NavigationServer2D.obstacle_get_avoidance_enabled
 	once.Do(singleton)
-	return bool(class(self).ObstacleGetAvoidanceEnabled(obstacle))
+	return bool(class(self).ObstacleGetAvoidanceEnabled(gd.RID(obstacle)))
 }
 
 /*
 Sets the navigation map [RID] for the obstacle.
 */
-func ObstacleSetMap(obstacle Resource.ID, mapping Resource.ID) { //gd:NavigationServer2D.obstacle_set_map
+func ObstacleSetMap(obstacle RID.NavigationObstacle2D, mapping RID.NavigationMap2D) { //gd:NavigationServer2D.obstacle_set_map
 	once.Do(singleton)
-	class(self).ObstacleSetMap(obstacle, mapping)
+	class(self).ObstacleSetMap(gd.RID(obstacle), gd.RID(mapping))
 }
 
 /*
 Returns the navigation map [RID] the requested [param obstacle] is currently assigned to.
 */
-func ObstacleGetMap(obstacle Resource.ID) Resource.ID { //gd:NavigationServer2D.obstacle_get_map
+func ObstacleGetMap(obstacle RID.NavigationObstacle2D) RID.NavigationMap2D { //gd:NavigationServer2D.obstacle_get_map
 	once.Do(singleton)
-	return Resource.ID(class(self).ObstacleGetMap(obstacle))
+	return RID.NavigationMap2D(class(self).ObstacleGetMap(gd.RID(obstacle)))
 }
 
 /*
 If [param paused] is true the specified [param obstacle] will not be processed, e.g. affect avoidance velocities.
 */
-func ObstacleSetPaused(obstacle Resource.ID, paused bool) { //gd:NavigationServer2D.obstacle_set_paused
+func ObstacleSetPaused(obstacle RID.NavigationObstacle2D, paused bool) { //gd:NavigationServer2D.obstacle_set_paused
 	once.Do(singleton)
-	class(self).ObstacleSetPaused(obstacle, paused)
+	class(self).ObstacleSetPaused(gd.RID(obstacle), paused)
 }
 
 /*
 Returns [code]true[/code] if the specified [param obstacle] is paused.
 */
-func ObstacleGetPaused(obstacle Resource.ID) bool { //gd:NavigationServer2D.obstacle_get_paused
+func ObstacleGetPaused(obstacle RID.NavigationObstacle2D) bool { //gd:NavigationServer2D.obstacle_get_paused
 	once.Do(singleton)
-	return bool(class(self).ObstacleGetPaused(obstacle))
+	return bool(class(self).ObstacleGetPaused(gd.RID(obstacle)))
 }
 
 /*
 Sets the radius of the dynamic obstacle.
 */
-func ObstacleSetRadius(obstacle Resource.ID, radius Float.X) { //gd:NavigationServer2D.obstacle_set_radius
+func ObstacleSetRadius(obstacle RID.NavigationObstacle2D, radius Float.X) { //gd:NavigationServer2D.obstacle_set_radius
 	once.Do(singleton)
-	class(self).ObstacleSetRadius(obstacle, gd.Float(radius))
+	class(self).ObstacleSetRadius(gd.RID(obstacle), gd.Float(radius))
 }
 
 /*
 Returns the radius of the specified dynamic [param obstacle].
 */
-func ObstacleGetRadius(obstacle Resource.ID) Float.X { //gd:NavigationServer2D.obstacle_get_radius
+func ObstacleGetRadius(obstacle RID.NavigationObstacle2D) Float.X { //gd:NavigationServer2D.obstacle_get_radius
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).ObstacleGetRadius(obstacle)))
+	return Float.X(Float.X(class(self).ObstacleGetRadius(gd.RID(obstacle))))
 }
 
 /*
 Sets [param velocity] of the dynamic [param obstacle]. Allows other agents to better predict the movement of the dynamic obstacle. Only works in combination with the radius of the obstacle.
 */
-func ObstacleSetVelocity(obstacle Resource.ID, velocity Vector2.XY) { //gd:NavigationServer2D.obstacle_set_velocity
+func ObstacleSetVelocity(obstacle RID.NavigationObstacle2D, velocity Vector2.XY) { //gd:NavigationServer2D.obstacle_set_velocity
 	once.Do(singleton)
-	class(self).ObstacleSetVelocity(obstacle, gd.Vector2(velocity))
+	class(self).ObstacleSetVelocity(gd.RID(obstacle), gd.Vector2(velocity))
 }
 
 /*
 Returns the velocity of the specified dynamic [param obstacle].
 */
-func ObstacleGetVelocity(obstacle Resource.ID) Vector2.XY { //gd:NavigationServer2D.obstacle_get_velocity
+func ObstacleGetVelocity(obstacle RID.NavigationObstacle2D) Vector2.XY { //gd:NavigationServer2D.obstacle_get_velocity
 	once.Do(singleton)
-	return Vector2.XY(class(self).ObstacleGetVelocity(obstacle))
+	return Vector2.XY(class(self).ObstacleGetVelocity(gd.RID(obstacle)))
 }
 
 /*
 Sets the position of the obstacle in world space.
 */
-func ObstacleSetPosition(obstacle Resource.ID, position Vector2.XY) { //gd:NavigationServer2D.obstacle_set_position
+func ObstacleSetPosition(obstacle RID.NavigationObstacle2D, position Vector2.XY) { //gd:NavigationServer2D.obstacle_set_position
 	once.Do(singleton)
-	class(self).ObstacleSetPosition(obstacle, gd.Vector2(position))
+	class(self).ObstacleSetPosition(gd.RID(obstacle), gd.Vector2(position))
 }
 
 /*
 Returns the position of the specified [param obstacle] in world space.
 */
-func ObstacleGetPosition(obstacle Resource.ID) Vector2.XY { //gd:NavigationServer2D.obstacle_get_position
+func ObstacleGetPosition(obstacle RID.NavigationObstacle2D) Vector2.XY { //gd:NavigationServer2D.obstacle_get_position
 	once.Do(singleton)
-	return Vector2.XY(class(self).ObstacleGetPosition(obstacle))
+	return Vector2.XY(class(self).ObstacleGetPosition(gd.RID(obstacle)))
 }
 
 /*
 Sets the outline vertices for the obstacle. If the vertices are winded in clockwise order agents will be pushed in by the obstacle, else they will be pushed out.
 */
-func ObstacleSetVertices(obstacle Resource.ID, vertices []Vector2.XY) { //gd:NavigationServer2D.obstacle_set_vertices
+func ObstacleSetVertices(obstacle RID.NavigationObstacle2D, vertices []Vector2.XY) { //gd:NavigationServer2D.obstacle_set_vertices
 	once.Do(singleton)
-	class(self).ObstacleSetVertices(obstacle, gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&vertices))))
+	class(self).ObstacleSetVertices(gd.RID(obstacle), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&vertices))))
 }
 
 /*
 Returns the outline vertices for the specified [param obstacle].
 */
-func ObstacleGetVertices(obstacle Resource.ID) []Vector2.XY { //gd:NavigationServer2D.obstacle_get_vertices
+func ObstacleGetVertices(obstacle RID.NavigationObstacle2D) []Vector2.XY { //gd:NavigationServer2D.obstacle_get_vertices
 	once.Do(singleton)
-	return []Vector2.XY(class(self).ObstacleGetVertices(obstacle).AsSlice())
+	return []Vector2.XY(class(self).ObstacleGetVertices(gd.RID(obstacle)).AsSlice())
 }
 
 /*
 Set the obstacles's [code]avoidance_layers[/code] bitmask.
 */
-func ObstacleSetAvoidanceLayers(obstacle Resource.ID, layers int) { //gd:NavigationServer2D.obstacle_set_avoidance_layers
+func ObstacleSetAvoidanceLayers(obstacle RID.NavigationObstacle2D, layers int) { //gd:NavigationServer2D.obstacle_set_avoidance_layers
 	once.Do(singleton)
-	class(self).ObstacleSetAvoidanceLayers(obstacle, gd.Int(layers))
+	class(self).ObstacleSetAvoidanceLayers(gd.RID(obstacle), gd.Int(layers))
 }
 
 /*
 Returns the [code]avoidance_layers[/code] bitmask of the specified [param obstacle].
 */
-func ObstacleGetAvoidanceLayers(obstacle Resource.ID) int { //gd:NavigationServer2D.obstacle_get_avoidance_layers
+func ObstacleGetAvoidanceLayers(obstacle RID.NavigationObstacle2D) int { //gd:NavigationServer2D.obstacle_get_avoidance_layers
 	once.Do(singleton)
-	return int(int(class(self).ObstacleGetAvoidanceLayers(obstacle)))
+	return int(int(class(self).ObstacleGetAvoidanceLayers(gd.RID(obstacle))))
 }
 
 /*
@@ -1015,9 +1015,9 @@ func IsBakingNavigationPolygon(navigation_polygon [1]gdclass.NavigationPolygon) 
 /*
 Creates a new source geometry parser. If a [Callable] is set for the parser with [method source_geometry_parser_set_callback] the callback will be called for every single node that gets parsed whenever [method parse_source_geometry_data] is used.
 */
-func SourceGeometryParserCreate() Resource.ID { //gd:NavigationServer2D.source_geometry_parser_create
+func SourceGeometryParserCreate() RID.NavigationSourceGeometryParser2D { //gd:NavigationServer2D.source_geometry_parser_create
 	once.Do(singleton)
-	return Resource.ID(class(self).SourceGeometryParserCreate())
+	return RID.NavigationSourceGeometryParser2D(class(self).SourceGeometryParserCreate())
 }
 
 /*
@@ -1026,9 +1026,9 @@ Sets the [param callback] [Callable] for the specific source geometry [param par
 - [code]source_geometry_data[/code] - The [NavigationMeshSourceGeometryData2D] reference. Add custom source geometry for navigation mesh baking to this object.
 - [code]node[/code] - The [Node] that is parsed.
 */
-func SourceGeometryParserSetCallback(parser Resource.ID, callback func(navigation_mesh [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, node [1]gdclass.Node)) { //gd:NavigationServer2D.source_geometry_parser_set_callback
+func SourceGeometryParserSetCallback(parser RID.NavigationSourceGeometryParser2D, callback func(navigation_mesh [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, node [1]gdclass.Node)) { //gd:NavigationServer2D.source_geometry_parser_set_callback
 	once.Do(singleton)
-	class(self).SourceGeometryParserSetCallback(parser, Callable.New(callback))
+	class(self).SourceGeometryParserSetCallback(gd.RID(parser), Callable.New(callback))
 }
 
 /*
@@ -1043,9 +1043,9 @@ func SimplifyPath(path []Vector2.XY, epsilon Float.X) []Vector2.XY { //gd:Naviga
 /*
 Destroys the given RID.
 */
-func FreeRid(rid Resource.ID) { //gd:NavigationServer2D.free_rid
+func FreeRid(rid RID.Any) { //gd:NavigationServer2D.free_rid
 	once.Do(singleton)
-	class(self).FreeRid(rid)
+	class(self).FreeRid(gd.RID(rid))
 }
 
 /*
@@ -2793,7 +2793,7 @@ func (self class) GetDebugEnabled() bool { //gd:NavigationServer2D.get_debug_ena
 	frame.Free()
 	return ret
 }
-func OnMapChanged(cb func(mapping Resource.ID)) {
+func OnMapChanged(cb func(mapping RID.Any)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("map_changed"), gd.NewCallable(cb), 0)
 }
 

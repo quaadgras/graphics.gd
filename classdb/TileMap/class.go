@@ -16,7 +16,7 @@ import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2i"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Rect2i"
 import "graphics.gd/variant/Vector2"
@@ -111,15 +111,15 @@ func (Instance) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer in
 /*
 Assigns [param map] as a [NavigationServer2D] navigation map for the specified TileMap layer [param layer].
 */
-func (self Instance) SetNavigationMap(layer int, mapping Resource.ID) { //gd:TileMap.set_navigation_map
-	class(self).SetNavigationMap(gd.Int(layer), mapping)
+func (self Instance) SetNavigationMap(layer int, mapping RID.NavigationMap2D) { //gd:TileMap.set_navigation_map
+	class(self).SetNavigationMap(gd.Int(layer), gd.RID(mapping))
 }
 
 /*
 Returns the [RID] of the [NavigationServer2D] navigation map assigned to the specified TileMap layer [param layer].
 */
-func (self Instance) GetNavigationMap(layer int) Resource.ID { //gd:TileMap.get_navigation_map
-	return Resource.ID(class(self).GetNavigationMap(gd.Int(layer)))
+func (self Instance) GetNavigationMap(layer int) RID.NavigationMap2D { //gd:TileMap.get_navigation_map
+	return RID.NavigationMap2D(class(self).GetNavigationMap(gd.Int(layer)))
 }
 
 /*
@@ -275,8 +275,8 @@ By default the TileMap uses the default [World2D] navigation map for the first T
 In order to make [NavigationAgent2D] switch between TileMap layer navigation maps use [method NavigationAgent2D.set_navigation_map] with the navigation map received from [method get_layer_navigation_map].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetLayerNavigationMap(layer int, mapping Resource.ID) { //gd:TileMap.set_layer_navigation_map
-	class(self).SetLayerNavigationMap(gd.Int(layer), mapping)
+func (self Instance) SetLayerNavigationMap(layer int, mapping RID.NavigationMap2D) { //gd:TileMap.set_layer_navigation_map
+	class(self).SetLayerNavigationMap(gd.Int(layer), gd.RID(mapping))
 }
 
 /*
@@ -285,8 +285,8 @@ By default the TileMap uses the default [World2D] navigation map for the first T
 In order to make [NavigationAgent2D] switch between TileMap layer navigation maps use [method NavigationAgent2D.set_navigation_map] with the navigation map received from [method get_layer_navigation_map].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetLayerNavigationMap(layer int) Resource.ID { //gd:TileMap.get_layer_navigation_map
-	return Resource.ID(class(self).GetLayerNavigationMap(gd.Int(layer)))
+func (self Instance) GetLayerNavigationMap(layer int) RID.NavigationMap2D { //gd:TileMap.get_layer_navigation_map
+	return RID.NavigationMap2D(class(self).GetLayerNavigationMap(gd.Int(layer)))
 }
 
 /*
@@ -359,15 +359,15 @@ func (self Instance) GetCellTileData(layer int, coords Vector2i.XY) [1]gdclass.T
 /*
 Returns the coordinates of the tile for given physics body RID. Such RID can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 */
-func (self Instance) GetCoordsForBodyRid(body Resource.ID) Vector2i.XY { //gd:TileMap.get_coords_for_body_rid
-	return Vector2i.XY(class(self).GetCoordsForBodyRid(body))
+func (self Instance) GetCoordsForBodyRid(body RID.Body2D) Vector2i.XY { //gd:TileMap.get_coords_for_body_rid
+	return Vector2i.XY(class(self).GetCoordsForBodyRid(gd.RID(body)))
 }
 
 /*
 Returns the tilemap layer of the tile for given physics body RID. Such RID can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 */
-func (self Instance) GetLayerForBodyRid(body Resource.ID) int { //gd:TileMap.get_layer_for_body_rid
-	return int(int(class(self).GetLayerForBodyRid(body)))
+func (self Instance) GetLayerForBodyRid(body RID.Body2D) int { //gd:TileMap.get_layer_for_body_rid
+	return int(int(class(self).GetLayerForBodyRid(gd.RID(body))))
 }
 
 /*

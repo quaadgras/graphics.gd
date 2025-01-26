@@ -12,7 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2i"
@@ -49,15 +49,15 @@ Creates a new texture. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 [b]Note:[/b] Not to be confused with [method RenderingServer.texture_2d_create], which creates the Godot-specific [Texture2D] resource as opposed to the graphics API's own texture type.
 */
-func (self Instance) TextureCreate(format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView) Resource.ID { //gd:RenderingDevice.texture_create
-	return Resource.ID(class(self).TextureCreate(format, view, gd.ArrayFromSlice[Array.Contains[gd.PackedByteArray]]([1][][]byte{}[0])))
+func (self Instance) TextureCreate(format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView) RID.Texture { //gd:RenderingDevice.texture_create
+	return RID.Texture(class(self).TextureCreate(format, view, gd.ArrayFromSlice[Array.Contains[gd.PackedByteArray]]([1][][]byte{}[0])))
 }
 
 /*
 Creates a shared texture using the specified [param view] and the texture information from [param with_texture].
 */
-func (self Instance) TextureCreateShared(view [1]gdclass.RDTextureView, with_texture Resource.ID) Resource.ID { //gd:RenderingDevice.texture_create_shared
-	return Resource.ID(class(self).TextureCreateShared(view, with_texture))
+func (self Instance) TextureCreateShared(view [1]gdclass.RDTextureView, with_texture RID.Texture) RID.Texture { //gd:RenderingDevice.texture_create_shared
+	return RID.Texture(class(self).TextureCreateShared(view, gd.RID(with_texture)))
 }
 
 /*
@@ -65,15 +65,15 @@ Creates a shared texture using the specified [param view] and the texture inform
 For 2D textures (which only have one layer), [param layer] must be [code]0[/code].
 [b]Note:[/b] Layer slicing is only supported for 2D texture arrays, not 3D textures or cubemaps.
 */
-func (self Instance) TextureCreateSharedFromSlice(view [1]gdclass.RDTextureView, with_texture Resource.ID, layer int, mipmap int) Resource.ID { //gd:RenderingDevice.texture_create_shared_from_slice
-	return Resource.ID(class(self).TextureCreateSharedFromSlice(view, with_texture, gd.Int(layer), gd.Int(mipmap), gd.Int(1), 0))
+func (self Instance) TextureCreateSharedFromSlice(view [1]gdclass.RDTextureView, with_texture RID.Texture, layer int, mipmap int) RID.Texture { //gd:RenderingDevice.texture_create_shared_from_slice
+	return RID.Texture(class(self).TextureCreateSharedFromSlice(view, gd.RID(with_texture), gd.Int(layer), gd.Int(mipmap), gd.Int(1), 0))
 }
 
 /*
 Returns an RID for an existing [param image] ([code]VkImage[/code]) with the given [param type], [param format], [param samples], [param usage_flags], [param width], [param height], [param depth], and [param layers]. This can be used to allow Godot to render onto foreign images.
 */
-func (self Instance) TextureCreateFromExtension(atype gdclass.RenderingDeviceTextureType, format gdclass.RenderingDeviceDataFormat, samples gdclass.RenderingDeviceTextureSamples, usage_flags gdclass.RenderingDeviceTextureUsageBits, image int, width int, height int, depth int, layers int) Resource.ID { //gd:RenderingDevice.texture_create_from_extension
-	return Resource.ID(class(self).TextureCreateFromExtension(atype, format, samples, usage_flags, gd.Int(image), gd.Int(width), gd.Int(height), gd.Int(depth), gd.Int(layers)))
+func (self Instance) TextureCreateFromExtension(atype gdclass.RenderingDeviceTextureType, format gdclass.RenderingDeviceDataFormat, samples gdclass.RenderingDeviceTextureSamples, usage_flags gdclass.RenderingDeviceTextureUsageBits, image int, width int, height int, depth int, layers int) RID.Texture { //gd:RenderingDevice.texture_create_from_extension
+	return RID.Texture(class(self).TextureCreateFromExtension(atype, format, samples, usage_flags, gd.Int(image), gd.Int(width), gd.Int(height), gd.Int(depth), gd.Int(layers)))
 }
 
 /*
@@ -82,8 +82,8 @@ Updates texture data with new data, replacing the previous data in place. The up
 [b]Note:[/b] The existing [param texture] can't be updated while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [constant FINAL_ACTION_CONTINUE]) to update this texture.
 [b]Note:[/b] The existing [param texture] requires the [constant TEXTURE_USAGE_CAN_UPDATE_BIT] to be updatable.
 */
-func (self Instance) TextureUpdate(texture Resource.ID, layer int, data []byte) error { //gd:RenderingDevice.texture_update
-	return error(gd.ToError(class(self).TextureUpdate(texture, gd.Int(layer), gd.NewPackedByteSlice(data))))
+func (self Instance) TextureUpdate(texture RID.Texture, layer int, data []byte) error { //gd:RenderingDevice.texture_update
+	return error(gd.ToError(class(self).TextureUpdate(gd.RID(texture), gd.Int(layer), gd.NewPackedByteSlice(data))))
 }
 
 /*
@@ -91,8 +91,8 @@ Returns the [param texture] data for the specified [param layer] as raw binary d
 [b]Note:[/b] [param texture] can't be retrieved while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [constant FINAL_ACTION_CONTINUE]) to retrieve this texture. Otherwise, an error is printed and a empty [PackedByteArray] is returned.
 [b]Note:[/b] [param texture] requires the [constant TEXTURE_USAGE_CAN_COPY_FROM_BIT] to be retrieved. Otherwise, an error is printed and a empty [PackedByteArray] is returned.
 */
-func (self Instance) TextureGetData(texture Resource.ID, layer int) []byte { //gd:RenderingDevice.texture_get_data
-	return []byte(class(self).TextureGetData(texture, gd.Int(layer)).Bytes())
+func (self Instance) TextureGetData(texture RID.Texture, layer int) []byte { //gd:RenderingDevice.texture_get_data
+	return []byte(class(self).TextureGetData(gd.RID(texture), gd.Int(layer)).Bytes())
 }
 
 /*
@@ -105,15 +105,15 @@ func (self Instance) TextureIsFormatSupportedForUsage(format gdclass.RenderingDe
 /*
 Returns [code]true[/code] if the [param texture] is shared, [code]false[/code] otherwise. See [RDTextureView].
 */
-func (self Instance) TextureIsShared(texture Resource.ID) bool { //gd:RenderingDevice.texture_is_shared
-	return bool(class(self).TextureIsShared(texture))
+func (self Instance) TextureIsShared(texture RID.Texture) bool { //gd:RenderingDevice.texture_is_shared
+	return bool(class(self).TextureIsShared(gd.RID(texture)))
 }
 
 /*
 Returns [code]true[/code] if the [param texture] is valid, [code]false[/code] otherwise.
 */
-func (self Instance) TextureIsValid(texture Resource.ID) bool { //gd:RenderingDevice.texture_is_valid
-	return bool(class(self).TextureIsValid(texture))
+func (self Instance) TextureIsValid(texture RID.Texture) bool { //gd:RenderingDevice.texture_is_valid
+	return bool(class(self).TextureIsValid(gd.RID(texture)))
 }
 
 /*
@@ -124,16 +124,16 @@ Copies the [param from_texture] to [param to_texture] with the specified [param 
 [b]Note:[/b] [param to_texture] requires the [constant TEXTURE_USAGE_CAN_COPY_TO_BIT] to be retrieved.
 [b]Note:[/b] [param from_texture] and [param to_texture] must be of the same type (color or depth).
 */
-func (self Instance) TextureCopy(from_texture Resource.ID, to_texture Resource.ID, from_pos Vector3.XYZ, to_pos Vector3.XYZ, size Vector3.XYZ, src_mipmap int, dst_mipmap int, src_layer int, dst_layer int) error { //gd:RenderingDevice.texture_copy
-	return error(gd.ToError(class(self).TextureCopy(from_texture, to_texture, gd.Vector3(from_pos), gd.Vector3(to_pos), gd.Vector3(size), gd.Int(src_mipmap), gd.Int(dst_mipmap), gd.Int(src_layer), gd.Int(dst_layer))))
+func (self Instance) TextureCopy(from_texture RID.Texture, to_texture RID.Texture, from_pos Vector3.XYZ, to_pos Vector3.XYZ, size Vector3.XYZ, src_mipmap int, dst_mipmap int, src_layer int, dst_layer int) error { //gd:RenderingDevice.texture_copy
+	return error(gd.ToError(class(self).TextureCopy(gd.RID(from_texture), gd.RID(to_texture), gd.Vector3(from_pos), gd.Vector3(to_pos), gd.Vector3(size), gd.Int(src_mipmap), gd.Int(dst_mipmap), gd.Int(src_layer), gd.Int(dst_layer))))
 }
 
 /*
 Clears the specified [param texture] by replacing all of its pixels with the specified [param color]. [param base_mipmap] and [param mipmap_count] determine which mipmaps of the texture are affected by this clear operation, while [param base_layer] and [param layer_count] determine which layers of a 3D texture (or texture array) are affected by this clear operation. For 2D textures (which only have one layer by design), [param base_layer] must be [code]0[/code] and [param layer_count] must be [code]1[/code].
 [b]Note:[/b] [param texture] can't be cleared while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [constant FINAL_ACTION_CONTINUE]) to clear this texture.
 */
-func (self Instance) TextureClear(texture Resource.ID, color Color.RGBA, base_mipmap int, mipmap_count int, base_layer int, layer_count int) error { //gd:RenderingDevice.texture_clear
-	return error(gd.ToError(class(self).TextureClear(texture, gd.Color(color), gd.Int(base_mipmap), gd.Int(mipmap_count), gd.Int(base_layer), gd.Int(layer_count))))
+func (self Instance) TextureClear(texture RID.Texture, color Color.RGBA, base_mipmap int, mipmap_count int, base_layer int, layer_count int) error { //gd:RenderingDevice.texture_clear
+	return error(gd.ToError(class(self).TextureClear(gd.RID(texture), gd.Color(color), gd.Int(base_mipmap), gd.Int(mipmap_count), gd.Int(base_layer), gd.Int(layer_count))))
 }
 
 /*
@@ -146,23 +146,23 @@ Resolves the [param from_texture] texture onto [param to_texture] with multisamp
 [b]Note:[/b] [param to_texture] texture requires the [constant TEXTURE_USAGE_CAN_COPY_TO_BIT] to be retrieved.
 [b]Note:[/b] [param to_texture] texture must [b]not[/b] be multisampled and must also be 2D (or a slice of a 3D/cubemap texture).
 */
-func (self Instance) TextureResolveMultisample(from_texture Resource.ID, to_texture Resource.ID) error { //gd:RenderingDevice.texture_resolve_multisample
-	return error(gd.ToError(class(self).TextureResolveMultisample(from_texture, to_texture)))
+func (self Instance) TextureResolveMultisample(from_texture RID.Texture, to_texture RID.Texture) error { //gd:RenderingDevice.texture_resolve_multisample
+	return error(gd.ToError(class(self).TextureResolveMultisample(gd.RID(from_texture), gd.RID(to_texture))))
 }
 
 /*
 Returns the data format used to create this texture.
 */
-func (self Instance) TextureGetFormat(texture Resource.ID) [1]gdclass.RDTextureFormat { //gd:RenderingDevice.texture_get_format
-	return [1]gdclass.RDTextureFormat(class(self).TextureGetFormat(texture))
+func (self Instance) TextureGetFormat(texture RID.Texture) [1]gdclass.RDTextureFormat { //gd:RenderingDevice.texture_get_format
+	return [1]gdclass.RDTextureFormat(class(self).TextureGetFormat(gd.RID(texture)))
 }
 
 /*
 Returns the internal graphics handle for this texture object. For use when communicating with third-party APIs mostly with GDExtension.
 [b]Note:[/b] This function returns a [code]uint64_t[/code] which internally maps to a [code]GLuint[/code] (OpenGL) or [code]VkImage[/code] (Vulkan).
 */
-func (self Instance) TextureGetNativeHandle(texture Resource.ID) int { //gd:RenderingDevice.texture_get_native_handle
-	return int(int(class(self).TextureGetNativeHandle(texture)))
+func (self Instance) TextureGetNativeHandle(texture RID.Texture) int { //gd:RenderingDevice.texture_get_native_handle
+	return int(int(class(self).TextureGetNativeHandle(gd.RID(texture))))
 }
 
 /*
@@ -198,46 +198,46 @@ func (self Instance) FramebufferFormatGetTextureSamples(format int) gdclass.Rend
 Creates a new framebuffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) FramebufferCreate(textures []Resource.ID) Resource.ID { //gd:RenderingDevice.framebuffer_create
-	return Resource.ID(class(self).FramebufferCreate(gd.ArrayFromSlice[Array.Contains[gd.RID]](textures), gd.Int(-1), gd.Int(1)))
+func (self Instance) FramebufferCreate(textures [][]RID.Texture) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create
+	return RID.Framebuffer(class(self).FramebufferCreate(gd.ArrayFromSlice[Array.Contains[gd.RID]](textures), gd.Int(-1), gd.Int(1)))
 }
 
 /*
 Creates a new multipass framebuffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) FramebufferCreateMultipass(textures []Resource.ID, passes [][1]gdclass.RDFramebufferPass) Resource.ID { //gd:RenderingDevice.framebuffer_create_multipass
-	return Resource.ID(class(self).FramebufferCreateMultipass(gd.ArrayFromSlice[Array.Contains[gd.RID]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), gd.Int(-1), gd.Int(1)))
+func (self Instance) FramebufferCreateMultipass(textures [][]RID.Texture, passes [][1]gdclass.RDFramebufferPass) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_multipass
+	return RID.Framebuffer(class(self).FramebufferCreateMultipass(gd.ArrayFromSlice[Array.Contains[gd.RID]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), gd.Int(-1), gd.Int(1)))
 }
 
 /*
 Creates a new empty framebuffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) FramebufferCreateEmpty(size Vector2i.XY) Resource.ID { //gd:RenderingDevice.framebuffer_create_empty
-	return Resource.ID(class(self).FramebufferCreateEmpty(gd.Vector2i(size), 0, gd.Int(-1)))
+func (self Instance) FramebufferCreateEmpty(size Vector2i.XY) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_empty
+	return RID.Framebuffer(class(self).FramebufferCreateEmpty(gd.Vector2i(size), 0, gd.Int(-1)))
 }
 
 /*
 Returns the format ID of the framebuffer specified by the [param framebuffer] RID. This ID is guaranteed to be unique for the same formats and does not need to be freed.
 */
-func (self Instance) FramebufferGetFormat(framebuffer Resource.ID) int { //gd:RenderingDevice.framebuffer_get_format
-	return int(int(class(self).FramebufferGetFormat(framebuffer)))
+func (self Instance) FramebufferGetFormat(framebuffer RID.Framebuffer) int { //gd:RenderingDevice.framebuffer_get_format
+	return int(int(class(self).FramebufferGetFormat(gd.RID(framebuffer))))
 }
 
 /*
 Returns [code]true[/code] if the framebuffer specified by the [param framebuffer] RID is valid, [code]false[/code] otherwise.
 */
-func (self Instance) FramebufferIsValid(framebuffer Resource.ID) bool { //gd:RenderingDevice.framebuffer_is_valid
-	return bool(class(self).FramebufferIsValid(framebuffer))
+func (self Instance) FramebufferIsValid(framebuffer RID.Framebuffer) bool { //gd:RenderingDevice.framebuffer_is_valid
+	return bool(class(self).FramebufferIsValid(gd.RID(framebuffer)))
 }
 
 /*
 Creates a new sampler. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) SamplerCreate(state [1]gdclass.RDSamplerState) Resource.ID { //gd:RenderingDevice.sampler_create
-	return Resource.ID(class(self).SamplerCreate(state))
+func (self Instance) SamplerCreate(state [1]gdclass.RDSamplerState) RID.Sampler { //gd:RenderingDevice.sampler_create
+	return RID.Sampler(class(self).SamplerCreate(state))
 }
 
 /*
@@ -251,8 +251,8 @@ func (self Instance) SamplerIsFormatSupportedForFilter(format gdclass.RenderingD
 It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) VertexBufferCreate(size_bytes int) Resource.ID { //gd:RenderingDevice.vertex_buffer_create
-	return Resource.ID(class(self).VertexBufferCreate(gd.Int(size_bytes), gd.NewPackedByteSlice([1][]byte{}[0]), false))
+func (self Instance) VertexBufferCreate(size_bytes int) RID.VertexBuffer { //gd:RenderingDevice.vertex_buffer_create
+	return RID.VertexBuffer(class(self).VertexBufferCreate(gd.Int(size_bytes), gd.NewPackedByteSlice([1][]byte{}[0]), false))
 }
 
 /*
@@ -265,24 +265,24 @@ func (self Instance) VertexFormatCreate(vertex_descriptions [][1]gdclass.RDVerte
 /*
 Creates a vertex array based on the specified buffers. Optionally, [param offsets] (in bytes) may be defined for each buffer.
 */
-func (self Instance) VertexArrayCreate(vertex_count int, vertex_format int, src_buffers []Resource.ID) Resource.ID { //gd:RenderingDevice.vertex_array_create
-	return Resource.ID(class(self).VertexArrayCreate(gd.Int(vertex_count), gd.Int(vertex_format), gd.ArrayFromSlice[Array.Contains[gd.RID]](src_buffers), gd.NewPackedInt64Slice([1][]int64{}[0])))
+func (self Instance) VertexArrayCreate(vertex_count int, vertex_format int, src_buffers [][]RID.VertexBuffer) RID.VertexArray { //gd:RenderingDevice.vertex_array_create
+	return RID.VertexArray(class(self).VertexArrayCreate(gd.Int(vertex_count), gd.Int(vertex_format), gd.ArrayFromSlice[Array.Contains[gd.RID]](src_buffers), gd.NewPackedInt64Slice([1][]int64{}[0])))
 }
 
 /*
 Creates a new index buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) IndexBufferCreate(size_indices int, format gdclass.RenderingDeviceIndexBufferFormat) Resource.ID { //gd:RenderingDevice.index_buffer_create
-	return Resource.ID(class(self).IndexBufferCreate(gd.Int(size_indices), format, gd.NewPackedByteSlice([1][]byte{}[0]), false))
+func (self Instance) IndexBufferCreate(size_indices int, format gdclass.RenderingDeviceIndexBufferFormat) RID.IndexBuffer { //gd:RenderingDevice.index_buffer_create
+	return RID.IndexBuffer(class(self).IndexBufferCreate(gd.Int(size_indices), format, gd.NewPackedByteSlice([1][]byte{}[0]), false))
 }
 
 /*
 Creates a new index array. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) IndexArrayCreate(index_buffer Resource.ID, index_offset int, index_count int) Resource.ID { //gd:RenderingDevice.index_array_create
-	return Resource.ID(class(self).IndexArrayCreate(index_buffer, gd.Int(index_offset), gd.Int(index_count)))
+func (self Instance) IndexArrayCreate(index_buffer RID.IndexBuffer, index_offset int, index_count int) RID.IndexArray { //gd:RenderingDevice.index_array_create
+	return RID.IndexArray(class(self).IndexArrayCreate(gd.RID(index_buffer), gd.Int(index_offset), gd.Int(index_count)))
 }
 
 /*
@@ -305,69 +305,69 @@ func (self Instance) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShader
 Creates a new shader instance from SPIR-V intermediate code. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method. See also [method shader_compile_spirv_from_source] and [method shader_create_from_bytecode].
 */
-func (self Instance) ShaderCreateFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV) Resource.ID { //gd:RenderingDevice.shader_create_from_spirv
-	return Resource.ID(class(self).ShaderCreateFromSpirv(spirv_data, gd.NewString("")))
+func (self Instance) ShaderCreateFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV) RID.Shader { //gd:RenderingDevice.shader_create_from_spirv
+	return RID.Shader(class(self).ShaderCreateFromSpirv(spirv_data, gd.NewString("")))
 }
 
 /*
 Creates a new shader instance from a binary compiled shader. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method. See also [method shader_compile_binary_from_spirv] and [method shader_create_from_spirv].
 */
-func (self Instance) ShaderCreateFromBytecode(binary_data []byte) Resource.ID { //gd:RenderingDevice.shader_create_from_bytecode
-	return Resource.ID(class(self).ShaderCreateFromBytecode(gd.NewPackedByteSlice(binary_data), [1]Resource.ID{}[0]))
+func (self Instance) ShaderCreateFromBytecode(binary_data []byte) RID.Shader { //gd:RenderingDevice.shader_create_from_bytecode
+	return RID.Shader(class(self).ShaderCreateFromBytecode(gd.NewPackedByteSlice(binary_data), gd.RID([1]RID.Any{}[0])))
 }
 
 /*
 Create a placeholder RID by allocating an RID without initializing it for use in [method shader_create_from_bytecode]. This allows you to create an RID for a shader and pass it around, but defer compiling the shader to a later time.
 */
-func (self Instance) ShaderCreatePlaceholder() Resource.ID { //gd:RenderingDevice.shader_create_placeholder
-	return Resource.ID(class(self).ShaderCreatePlaceholder())
+func (self Instance) ShaderCreatePlaceholder() RID.ShaderPlaceholder { //gd:RenderingDevice.shader_create_placeholder
+	return RID.ShaderPlaceholder(class(self).ShaderCreatePlaceholder())
 }
 
 /*
 Returns the internal vertex input mask. Internally, the vertex input mask is an unsigned integer consisting of the locations (specified in GLSL via. [code]layout(location = ...)[/code]) of the input variables (specified in GLSL by the [code]in[/code] keyword).
 */
-func (self Instance) ShaderGetVertexInputAttributeMask(shader Resource.ID) int { //gd:RenderingDevice.shader_get_vertex_input_attribute_mask
-	return int(int(class(self).ShaderGetVertexInputAttributeMask(shader)))
+func (self Instance) ShaderGetVertexInputAttributeMask(shader RID.Shader) int { //gd:RenderingDevice.shader_get_vertex_input_attribute_mask
+	return int(int(class(self).ShaderGetVertexInputAttributeMask(gd.RID(shader))))
 }
 
 /*
 Creates a new uniform buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) UniformBufferCreate(size_bytes int) Resource.ID { //gd:RenderingDevice.uniform_buffer_create
-	return Resource.ID(class(self).UniformBufferCreate(gd.Int(size_bytes), gd.NewPackedByteSlice([1][]byte{}[0])))
+func (self Instance) UniformBufferCreate(size_bytes int) RID.UniformBuffer { //gd:RenderingDevice.uniform_buffer_create
+	return RID.UniformBuffer(class(self).UniformBufferCreate(gd.Int(size_bytes), gd.NewPackedByteSlice([1][]byte{}[0])))
 }
 
 /*
 Creates a [url=https://vkguide.dev/docs/chapter-4/storage_buffers/]storage buffer[/url] with the specified [param data] and [param usage]. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) StorageBufferCreate(size_bytes int) Resource.ID { //gd:RenderingDevice.storage_buffer_create
-	return Resource.ID(class(self).StorageBufferCreate(gd.Int(size_bytes), gd.NewPackedByteSlice([1][]byte{}[0]), 0))
+func (self Instance) StorageBufferCreate(size_bytes int) RID.StorageBuffer { //gd:RenderingDevice.storage_buffer_create
+	return RID.StorageBuffer(class(self).StorageBufferCreate(gd.Int(size_bytes), gd.NewPackedByteSlice([1][]byte{}[0]), 0))
 }
 
 /*
 Creates a new texture buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) TextureBufferCreate(size_bytes int, format gdclass.RenderingDeviceDataFormat) Resource.ID { //gd:RenderingDevice.texture_buffer_create
-	return Resource.ID(class(self).TextureBufferCreate(gd.Int(size_bytes), format, gd.NewPackedByteSlice([1][]byte{}[0])))
+func (self Instance) TextureBufferCreate(size_bytes int, format gdclass.RenderingDeviceDataFormat) RID.TextureBuffer { //gd:RenderingDevice.texture_buffer_create
+	return RID.TextureBuffer(class(self).TextureBufferCreate(gd.Int(size_bytes), format, gd.NewPackedByteSlice([1][]byte{}[0])))
 }
 
 /*
 Creates a new uniform set. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) UniformSetCreate(uniforms [][1]gdclass.RDUniform, shader Resource.ID, shader_set int) Resource.ID { //gd:RenderingDevice.uniform_set_create
-	return Resource.ID(class(self).UniformSetCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms), shader, gd.Int(shader_set)))
+func (self Instance) UniformSetCreate(uniforms [][1]gdclass.RDUniform, shader RID.Shader, shader_set int) RID.UniformSet { //gd:RenderingDevice.uniform_set_create
+	return RID.UniformSet(class(self).UniformSetCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms), gd.RID(shader), gd.Int(shader_set)))
 }
 
 /*
 Checks if the [param uniform_set] is valid, i.e. is owned.
 */
-func (self Instance) UniformSetIsValid(uniform_set Resource.ID) bool { //gd:RenderingDevice.uniform_set_is_valid
-	return bool(class(self).UniformSetIsValid(uniform_set))
+func (self Instance) UniformSetIsValid(uniform_set RID.UniformSet) bool { //gd:RenderingDevice.uniform_set_is_valid
+	return bool(class(self).UniformSetIsValid(gd.RID(uniform_set)))
 }
 
 /*
@@ -377,8 +377,8 @@ Prints an error if:
 - a draw list is currently active (created by [method draw_list_begin])
 - a compute list is currently active (created by [method compute_list_begin])
 */
-func (self Instance) BufferCopy(src_buffer Resource.ID, dst_buffer Resource.ID, src_offset int, dst_offset int, size int) error { //gd:RenderingDevice.buffer_copy
-	return error(gd.ToError(class(self).BufferCopy(src_buffer, dst_buffer, gd.Int(src_offset), gd.Int(dst_offset), gd.Int(size))))
+func (self Instance) BufferCopy(src_buffer RID.Buffer, dst_buffer RID.Buffer, src_offset int, dst_offset int, size int) error { //gd:RenderingDevice.buffer_copy
+	return error(gd.ToError(class(self).BufferCopy(gd.RID(src_buffer), gd.RID(dst_buffer), gd.Int(src_offset), gd.Int(dst_offset), gd.Int(size))))
 }
 
 /*
@@ -388,8 +388,8 @@ Prints an error if:
 - a draw list is currently active (created by [method draw_list_begin])
 - a compute list is currently active (created by [method compute_list_begin])
 */
-func (self Instance) BufferUpdate(buffer Resource.ID, offset int, size_bytes int, data []byte) error { //gd:RenderingDevice.buffer_update
-	return error(gd.ToError(class(self).BufferUpdate(buffer, gd.Int(offset), gd.Int(size_bytes), gd.NewPackedByteSlice(data))))
+func (self Instance) BufferUpdate(buffer RID.Buffer, offset int, size_bytes int, data []byte) error { //gd:RenderingDevice.buffer_update
+	return error(gd.ToError(class(self).BufferUpdate(gd.RID(buffer), gd.Int(offset), gd.Int(size_bytes), gd.NewPackedByteSlice(data))))
 }
 
 /*
@@ -400,45 +400,45 @@ Prints an error if:
 - a draw list is currently active (created by [method draw_list_begin])
 - a compute list is currently active (created by [method compute_list_begin])
 */
-func (self Instance) BufferClear(buffer Resource.ID, offset int, size_bytes int) error { //gd:RenderingDevice.buffer_clear
-	return error(gd.ToError(class(self).BufferClear(buffer, gd.Int(offset), gd.Int(size_bytes))))
+func (self Instance) BufferClear(buffer RID.Buffer, offset int, size_bytes int) error { //gd:RenderingDevice.buffer_clear
+	return error(gd.ToError(class(self).BufferClear(gd.RID(buffer), gd.Int(offset), gd.Int(size_bytes))))
 }
 
 /*
 Returns a copy of the data of the specified [param buffer], optionally [param offset_bytes] and [param size_bytes] can be set to copy only a portion of the buffer.
 */
-func (self Instance) BufferGetData(buffer Resource.ID) []byte { //gd:RenderingDevice.buffer_get_data
-	return []byte(class(self).BufferGetData(buffer, gd.Int(0), gd.Int(0)).Bytes())
+func (self Instance) BufferGetData(buffer RID.Buffer) []byte { //gd:RenderingDevice.buffer_get_data
+	return []byte(class(self).BufferGetData(gd.RID(buffer), gd.Int(0), gd.Int(0)).Bytes())
 }
 
 /*
 Creates a new render pipeline. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) RenderPipelineCreate(shader Resource.ID, framebuffer_format int, vertex_format int, primitive gdclass.RenderingDeviceRenderPrimitive, rasterization_state [1]gdclass.RDPipelineRasterizationState, multisample_state [1]gdclass.RDPipelineMultisampleState, stencil_state [1]gdclass.RDPipelineDepthStencilState, color_blend_state [1]gdclass.RDPipelineColorBlendState) Resource.ID { //gd:RenderingDevice.render_pipeline_create
-	return Resource.ID(class(self).RenderPipelineCreate(shader, gd.Int(framebuffer_format), gd.Int(vertex_format), primitive, rasterization_state, multisample_state, stencil_state, color_blend_state, 0, gd.Int(0), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]]([1][][1]gdclass.RDPipelineSpecializationConstant{}[0])))
+func (self Instance) RenderPipelineCreate(shader RID.Shader, framebuffer_format int, vertex_format int, primitive gdclass.RenderingDeviceRenderPrimitive, rasterization_state [1]gdclass.RDPipelineRasterizationState, multisample_state [1]gdclass.RDPipelineMultisampleState, stencil_state [1]gdclass.RDPipelineDepthStencilState, color_blend_state [1]gdclass.RDPipelineColorBlendState) RID.RenderPipeline { //gd:RenderingDevice.render_pipeline_create
+	return RID.RenderPipeline(class(self).RenderPipelineCreate(gd.RID(shader), gd.Int(framebuffer_format), gd.Int(vertex_format), primitive, rasterization_state, multisample_state, stencil_state, color_blend_state, 0, gd.Int(0), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]]([1][][1]gdclass.RDPipelineSpecializationConstant{}[0])))
 }
 
 /*
 Returns [code]true[/code] if the render pipeline specified by the [param render_pipeline] RID is valid, [code]false[/code] otherwise.
 */
-func (self Instance) RenderPipelineIsValid(render_pipeline Resource.ID) bool { //gd:RenderingDevice.render_pipeline_is_valid
-	return bool(class(self).RenderPipelineIsValid(render_pipeline))
+func (self Instance) RenderPipelineIsValid(render_pipeline RID.RenderPipeline) bool { //gd:RenderingDevice.render_pipeline_is_valid
+	return bool(class(self).RenderPipelineIsValid(gd.RID(render_pipeline)))
 }
 
 /*
 Creates a new compute pipeline. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) ComputePipelineCreate(shader Resource.ID) Resource.ID { //gd:RenderingDevice.compute_pipeline_create
-	return Resource.ID(class(self).ComputePipelineCreate(shader, gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]]([1][][1]gdclass.RDPipelineSpecializationConstant{}[0])))
+func (self Instance) ComputePipelineCreate(shader RID.Shader) RID.ComputePipeline { //gd:RenderingDevice.compute_pipeline_create
+	return RID.ComputePipeline(class(self).ComputePipelineCreate(gd.RID(shader), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]]([1][][1]gdclass.RDPipelineSpecializationConstant{}[0])))
 }
 
 /*
 Returns [code]true[/code] if the compute pipeline specified by the [param compute_pipeline] RID is valid, [code]false[/code] otherwise.
 */
-func (self Instance) ComputePipelineIsValid(compute_pipeline Resource.ID) bool { //gd:RenderingDevice.compute_pipeline_is_valid
-	return bool(class(self).ComputePipelineIsValid(compute_pipeline))
+func (self Instance) ComputePipelineIsValid(compute_pipeline RID.ComputePipeline) bool { //gd:RenderingDevice.compute_pipeline_is_valid
+	return bool(class(self).ComputePipelineIsValid(gd.RID(compute_pipeline)))
 }
 
 /*
@@ -496,15 +496,15 @@ rd.draw_list_draw(draw_list, false, 1, slice_triangle_count[i] * 3)
 rd.draw_list_end()
 [/codeblock]
 */
-func (self Instance) DrawListBegin(framebuffer Resource.ID, initial_color_action gdclass.RenderingDeviceInitialAction, final_color_action gdclass.RenderingDeviceFinalAction, initial_depth_action gdclass.RenderingDeviceInitialAction, final_depth_action gdclass.RenderingDeviceFinalAction) int { //gd:RenderingDevice.draw_list_begin
-	return int(int(class(self).DrawListBegin(framebuffer, initial_color_action, final_color_action, initial_depth_action, final_depth_action, gd.NewPackedColorSlice(nil), gd.Float(1.0), gd.Int(0), gd.Rect2(gd.NewRect2(0, 0, 0, 0)))))
+func (self Instance) DrawListBegin(framebuffer RID.Framebuffer, initial_color_action gdclass.RenderingDeviceInitialAction, final_color_action gdclass.RenderingDeviceFinalAction, initial_depth_action gdclass.RenderingDeviceInitialAction, final_depth_action gdclass.RenderingDeviceFinalAction) int { //gd:RenderingDevice.draw_list_begin
+	return int(int(class(self).DrawListBegin(gd.RID(framebuffer), initial_color_action, final_color_action, initial_depth_action, final_depth_action, gd.NewPackedColorSlice(nil), gd.Float(1.0), gd.Int(0), gd.Rect2(gd.NewRect2(0, 0, 0, 0)))))
 }
 
 /*
 This method does nothing and always returns an empty [PackedInt64Array].
 */
-func (self Instance) DrawListBeginSplit(framebuffer Resource.ID, splits int, initial_color_action gdclass.RenderingDeviceInitialAction, final_color_action gdclass.RenderingDeviceFinalAction, initial_depth_action gdclass.RenderingDeviceInitialAction, final_depth_action gdclass.RenderingDeviceFinalAction) []int64 { //gd:RenderingDevice.draw_list_begin_split
-	return []int64(class(self).DrawListBeginSplit(framebuffer, gd.Int(splits), initial_color_action, final_color_action, initial_depth_action, final_depth_action, gd.NewPackedColorSlice(nil), gd.Float(1.0), gd.Int(0), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.ArrayFromSlice[Array.Contains[gd.RID]]([1][]Resource.ID{}[0])).AsSlice())
+func (self Instance) DrawListBeginSplit(framebuffer RID.Framebuffer, splits int, initial_color_action gdclass.RenderingDeviceInitialAction, final_color_action gdclass.RenderingDeviceFinalAction, initial_depth_action gdclass.RenderingDeviceInitialAction, final_depth_action gdclass.RenderingDeviceFinalAction) []int64 { //gd:RenderingDevice.draw_list_begin_split
+	return []int64(class(self).DrawListBeginSplit(gd.RID(framebuffer), gd.Int(splits), initial_color_action, final_color_action, initial_depth_action, final_depth_action, gd.NewPackedColorSlice(nil), gd.Float(1.0), gd.Int(0), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.ArrayFromSlice[Array.Contains[gd.RID]]([1][]RID.Any{}[0])).AsSlice())
 }
 
 /*
@@ -517,29 +517,29 @@ func (self Instance) DrawListSetBlendConstants(draw_list int, color Color.RGBA) 
 /*
 Binds [param render_pipeline] to the specified [param draw_list].
 */
-func (self Instance) DrawListBindRenderPipeline(draw_list int, render_pipeline Resource.ID) { //gd:RenderingDevice.draw_list_bind_render_pipeline
-	class(self).DrawListBindRenderPipeline(gd.Int(draw_list), render_pipeline)
+func (self Instance) DrawListBindRenderPipeline(draw_list int, render_pipeline RID.RenderPipeline) { //gd:RenderingDevice.draw_list_bind_render_pipeline
+	class(self).DrawListBindRenderPipeline(gd.Int(draw_list), gd.RID(render_pipeline))
 }
 
 /*
 Binds [param uniform_set] to the specified [param draw_list]. A [param set_index] must also be specified, which is an identifier starting from [code]0[/code] that must match the one expected by the draw list.
 */
-func (self Instance) DrawListBindUniformSet(draw_list int, uniform_set Resource.ID, set_index int) { //gd:RenderingDevice.draw_list_bind_uniform_set
-	class(self).DrawListBindUniformSet(gd.Int(draw_list), uniform_set, gd.Int(set_index))
+func (self Instance) DrawListBindUniformSet(draw_list int, uniform_set RID.UniformSet, set_index int) { //gd:RenderingDevice.draw_list_bind_uniform_set
+	class(self).DrawListBindUniformSet(gd.Int(draw_list), gd.RID(uniform_set), gd.Int(set_index))
 }
 
 /*
 Binds [param vertex_array] to the specified [param draw_list].
 */
-func (self Instance) DrawListBindVertexArray(draw_list int, vertex_array Resource.ID) { //gd:RenderingDevice.draw_list_bind_vertex_array
-	class(self).DrawListBindVertexArray(gd.Int(draw_list), vertex_array)
+func (self Instance) DrawListBindVertexArray(draw_list int, vertex_array RID.VertexArray) { //gd:RenderingDevice.draw_list_bind_vertex_array
+	class(self).DrawListBindVertexArray(gd.Int(draw_list), gd.RID(vertex_array))
 }
 
 /*
 Binds [param index_array] to the specified [param draw_list].
 */
-func (self Instance) DrawListBindIndexArray(draw_list int, index_array Resource.ID) { //gd:RenderingDevice.draw_list_bind_index_array
-	class(self).DrawListBindIndexArray(gd.Int(draw_list), index_array)
+func (self Instance) DrawListBindIndexArray(draw_list int, index_array RID.IndexArray) { //gd:RenderingDevice.draw_list_bind_index_array
+	class(self).DrawListBindIndexArray(gd.Int(draw_list), gd.RID(index_array))
 }
 
 /*
@@ -620,8 +620,8 @@ func (self Instance) ComputeListBegin() int { //gd:RenderingDevice.compute_list_
 /*
 Tells the GPU what compute pipeline to use when processing the compute list. If the shader has changed since the last time this function was called, Godot will unbind all descriptor sets and will re-bind them inside [method compute_list_dispatch].
 */
-func (self Instance) ComputeListBindComputePipeline(compute_list int, compute_pipeline Resource.ID) { //gd:RenderingDevice.compute_list_bind_compute_pipeline
-	class(self).ComputeListBindComputePipeline(gd.Int(compute_list), compute_pipeline)
+func (self Instance) ComputeListBindComputePipeline(compute_list int, compute_pipeline RID.ComputePipeline) { //gd:RenderingDevice.compute_list_bind_compute_pipeline
+	class(self).ComputeListBindComputePipeline(gd.Int(compute_list), gd.RID(compute_pipeline))
 }
 
 /*
@@ -634,8 +634,8 @@ func (self Instance) ComputeListSetPushConstant(compute_list int, buffer []byte,
 /*
 Binds the [param uniform_set] to this [param compute_list]. Godot ensures that all textures in the uniform set have the correct Vulkan access masks. If Godot had to change access masks of textures, it will raise a Vulkan image memory barrier.
 */
-func (self Instance) ComputeListBindUniformSet(compute_list int, uniform_set Resource.ID, set_index int) { //gd:RenderingDevice.compute_list_bind_uniform_set
-	class(self).ComputeListBindUniformSet(gd.Int(compute_list), uniform_set, gd.Int(set_index))
+func (self Instance) ComputeListBindUniformSet(compute_list int, uniform_set RID.UniformSet, set_index int) { //gd:RenderingDevice.compute_list_bind_uniform_set
+	class(self).ComputeListBindUniformSet(gd.Int(compute_list), gd.RID(uniform_set), gd.Int(set_index))
 }
 
 /*
@@ -648,8 +648,8 @@ func (self Instance) ComputeListDispatch(compute_list int, x_groups int, y_group
 /*
 Submits the compute list for processing on the GPU with the given group counts stored in the [param buffer] at [param offset]. Buffer must have been created with [constant STORAGE_BUFFER_USAGE_DISPATCH_INDIRECT] flag.
 */
-func (self Instance) ComputeListDispatchIndirect(compute_list int, buffer Resource.ID, offset int) { //gd:RenderingDevice.compute_list_dispatch_indirect
-	class(self).ComputeListDispatchIndirect(gd.Int(compute_list), buffer, gd.Int(offset))
+func (self Instance) ComputeListDispatchIndirect(compute_list int, buffer RID.Buffer, offset int) { //gd:RenderingDevice.compute_list_dispatch_indirect
+	class(self).ComputeListDispatchIndirect(gd.Int(compute_list), gd.RID(buffer), gd.Int(offset))
 }
 
 /*
@@ -669,8 +669,8 @@ func (self Instance) ComputeListEnd() { //gd:RenderingDevice.compute_list_end
 /*
 Tries to free an object in the RenderingDevice. To avoid memory leaks, this should be called after using an object as memory management does not occur automatically when using RenderingDevice directly.
 */
-func (self Instance) FreeRid(rid Resource.ID) { //gd:RenderingDevice.free_rid
-	class(self).FreeRid(rid)
+func (self Instance) FreeRid(rid RID.Any) { //gd:RenderingDevice.free_rid
+	class(self).FreeRid(gd.RID(rid))
 }
 
 /*
@@ -773,8 +773,8 @@ Sets the resource name for [param id] to [param name]. This is used for debuggin
 The following types of resources can be named: texture, sampler, vertex buffer, index buffer, uniform buffer, texture buffer, storage buffer, uniform set buffer, shader, render pipeline and compute pipeline. Framebuffers cannot be named. Attempting to name an incompatible resource type will print an error.
 [b]Note:[/b] Resource names are only set when the engine runs in verbose mode ([method OS.is_stdout_verbose] = [code]true[/code]), or when using an engine build compiled with the [code]dev_mode=yes[/code] SCons option. The graphics driver must also support the [code]VK_EXT_DEBUG_UTILS_EXTENSION_NAME[/code] Vulkan extension for named resources to work.
 */
-func (self Instance) SetResourceName(id Resource.ID, name string) { //gd:RenderingDevice.set_resource_name
-	class(self).SetResourceName(id, gd.NewString(name))
+func (self Instance) SetResourceName(id RID.Any, name string) { //gd:RenderingDevice.set_resource_name
+	class(self).SetResourceName(gd.RID(id), gd.NewString(name))
 }
 
 /*
@@ -830,8 +830,8 @@ func (self Instance) GetMemoryUsage(atype gdclass.RenderingDeviceMemoryType) int
 /*
 Returns the unique identifier of the driver [param resource] for the specified [param rid]. Some driver resource types ignore the specified [param rid] (see [enum DriverResource] descriptions). [param index] is always ignored but must be specified anyway.
 */
-func (self Instance) GetDriverResource(resource gdclass.RenderingDeviceDriverResource, rid Resource.ID, index int) int { //gd:RenderingDevice.get_driver_resource
-	return int(int(class(self).GetDriverResource(resource, rid, gd.Int(index))))
+func (self Instance) GetDriverResource(resource gdclass.RenderingDeviceDriverResource, rid RID.Any, index int) int { //gd:RenderingDevice.get_driver_resource
+	return int(int(class(self).GetDriverResource(resource, gd.RID(rid), gd.Int(index))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

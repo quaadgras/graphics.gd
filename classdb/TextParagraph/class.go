@@ -14,7 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Vector2i"
 
@@ -115,22 +115,22 @@ func (self Instance) GetSize() Vector2.XY { //gd:TextParagraph.get_size
 /*
 Returns TextServer full string buffer RID.
 */
-func (self Instance) GetRid() Resource.ID { //gd:TextParagraph.get_rid
-	return Resource.ID(class(self).GetRid())
+func (self Instance) GetRid() RID.TextBuffer { //gd:TextParagraph.get_rid
+	return RID.TextBuffer(class(self).GetRid())
 }
 
 /*
 Returns TextServer line buffer RID.
 */
-func (self Instance) GetLineRid(line int) Resource.ID { //gd:TextParagraph.get_line_rid
-	return Resource.ID(class(self).GetLineRid(gd.Int(line)))
+func (self Instance) GetLineRid(line int) RID.TextBuffer { //gd:TextParagraph.get_line_rid
+	return RID.TextBuffer(class(self).GetLineRid(gd.Int(line)))
 }
 
 /*
 Returns drop cap text buffer RID.
 */
-func (self Instance) GetDropcapRid() Resource.ID { //gd:TextParagraph.get_dropcap_rid
-	return Resource.ID(class(self).GetDropcapRid())
+func (self Instance) GetDropcapRid() RID.TextBuffer { //gd:TextParagraph.get_dropcap_rid
+	return RID.TextBuffer(class(self).GetDropcapRid())
 }
 
 /*
@@ -220,43 +220,43 @@ func (self Instance) GetDropcapLines() int { //gd:TextParagraph.get_dropcap_line
 /*
 Draw all lines of the text and drop cap into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) Draw(canvas Resource.ID, pos Vector2.XY) { //gd:TextParagraph.draw
-	class(self).Draw(canvas, gd.Vector2(pos), gd.Color(gd.Color{1, 1, 1, 1}), gd.Color(gd.Color{1, 1, 1, 1}))
+func (self Instance) Draw(canvas RID.Canvas, pos Vector2.XY) { //gd:TextParagraph.draw
+	class(self).Draw(gd.RID(canvas), gd.Vector2(pos), gd.Color(gd.Color{1, 1, 1, 1}), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw outlines of all lines of the text and drop cap into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawOutline(canvas Resource.ID, pos Vector2.XY) { //gd:TextParagraph.draw_outline
-	class(self).DrawOutline(canvas, gd.Vector2(pos), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), gd.Color(gd.Color{1, 1, 1, 1}))
+func (self Instance) DrawOutline(canvas RID.Canvas, pos Vector2.XY) { //gd:TextParagraph.draw_outline
+	class(self).DrawOutline(gd.RID(canvas), gd.Vector2(pos), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw single line of text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawLine(canvas Resource.ID, pos Vector2.XY, line int) { //gd:TextParagraph.draw_line
-	class(self).DrawLine(canvas, gd.Vector2(pos), gd.Int(line), gd.Color(gd.Color{1, 1, 1, 1}))
+func (self Instance) DrawLine(canvas RID.Canvas, pos Vector2.XY, line int) { //gd:TextParagraph.draw_line
+	class(self).DrawLine(gd.RID(canvas), gd.Vector2(pos), gd.Int(line), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw outline of the single line of text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawLineOutline(canvas Resource.ID, pos Vector2.XY, line int) { //gd:TextParagraph.draw_line_outline
-	class(self).DrawLineOutline(canvas, gd.Vector2(pos), gd.Int(line), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}))
+func (self Instance) DrawLineOutline(canvas RID.Canvas, pos Vector2.XY, line int) { //gd:TextParagraph.draw_line_outline
+	class(self).DrawLineOutline(gd.RID(canvas), gd.Vector2(pos), gd.Int(line), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw drop cap into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawDropcap(canvas Resource.ID, pos Vector2.XY) { //gd:TextParagraph.draw_dropcap
-	class(self).DrawDropcap(canvas, gd.Vector2(pos), gd.Color(gd.Color{1, 1, 1, 1}))
+func (self Instance) DrawDropcap(canvas RID.Canvas, pos Vector2.XY) { //gd:TextParagraph.draw_dropcap
+	class(self).DrawDropcap(gd.RID(canvas), gd.Vector2(pos), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw drop cap outline into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawDropcapOutline(canvas Resource.ID, pos Vector2.XY) { //gd:TextParagraph.draw_dropcap_outline
-	class(self).DrawDropcapOutline(canvas, gd.Vector2(pos), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}))
+func (self Instance) DrawDropcapOutline(canvas RID.Canvas, pos Vector2.XY) { //gd:TextParagraph.draw_dropcap_outline
+	class(self).DrawDropcapOutline(gd.RID(canvas), gd.Vector2(pos), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*

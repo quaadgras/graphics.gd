@@ -18,7 +18,7 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Quaternion"
 import "graphics.gd/variant/Float"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -344,16 +344,16 @@ func (self Instance) PhysicalBonesStartSimulation() { //gd:Skeleton3D.physical_b
 Adds a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
-func (self Instance) PhysicalBonesAddCollisionException(exception Resource.ID) { //gd:Skeleton3D.physical_bones_add_collision_exception
-	class(self).PhysicalBonesAddCollisionException(exception)
+func (self Instance) PhysicalBonesAddCollisionException(exception RID.Body3D) { //gd:Skeleton3D.physical_bones_add_collision_exception
+	class(self).PhysicalBonesAddCollisionException(gd.RID(exception))
 }
 
 /*
 Removes a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
-func (self Instance) PhysicalBonesRemoveCollisionException(exception Resource.ID) { //gd:Skeleton3D.physical_bones_remove_collision_exception
-	class(self).PhysicalBonesRemoveCollisionException(exception)
+func (self Instance) PhysicalBonesRemoveCollisionException(exception RID.Body3D) { //gd:Skeleton3D.physical_bones_remove_collision_exception
+	class(self).PhysicalBonesRemoveCollisionException(gd.RID(exception))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

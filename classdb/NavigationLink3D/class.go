@@ -14,7 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
 
@@ -44,8 +44,8 @@ type Any interface {
 /*
 Returns the [RID] of this link on the [NavigationServer3D].
 */
-func (self Instance) GetRid() Resource.ID { //gd:NavigationLink3D.get_rid
-	return Resource.ID(class(self).GetRid())
+func (self Instance) GetRid() RID.NavigationLink3D { //gd:NavigationLink3D.get_rid
+	return RID.NavigationLink3D(class(self).GetRid())
 }
 
 /*

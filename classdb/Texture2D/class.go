@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Rect2"
@@ -58,13 +59,13 @@ type Interface interface {
 	HasAlpha() bool
 	//Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem], with the top-left offset specified in [param pos]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 	//[b]Note:[/b] This is only used in 2D rendering, not 3D.
-	Draw(to_canvas_item Resource.ID, pos Vector2.XY, modulate Color.RGBA, transpose bool)
+	Draw(to_canvas_item RID.Any, pos Vector2.XY, modulate Color.RGBA, transpose bool)
 	//Called when the [Texture2D] is requested to be drawn onto [CanvasItem]'s specified [param rect]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 	//[b]Note:[/b] This is only used in 2D rendering, not 3D.
-	DrawRect(to_canvas_item Resource.ID, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)
+	DrawRect(to_canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)
 	//Called when a part of the [Texture2D] specified by [param src_rect]'s coordinates is requested to be drawn onto [CanvasItem]'s specified [param rect]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 	//[b]Note:[/b] This is only used in 2D rendering, not 3D.
-	DrawRectRegion(to_canvas_item Resource.ID, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)
+	DrawRectRegion(to_canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -76,13 +77,13 @@ func (self implementation) GetWidth() (_ int)                   { return }
 func (self implementation) GetHeight() (_ int)                  { return }
 func (self implementation) IsPixelOpaque(x int, y int) (_ bool) { return }
 func (self implementation) HasAlpha() (_ bool)                  { return }
-func (self implementation) Draw(to_canvas_item Resource.ID, pos Vector2.XY, modulate Color.RGBA, transpose bool) {
+func (self implementation) Draw(to_canvas_item RID.Any, pos Vector2.XY, modulate Color.RGBA, transpose bool) {
 	return
 }
-func (self implementation) DrawRect(to_canvas_item Resource.ID, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) {
+func (self implementation) DrawRect(to_canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) {
 	return
 }
-func (self implementation) DrawRectRegion(to_canvas_item Resource.ID, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) {
+func (self implementation) DrawRectRegion(to_canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) {
 	return
 }
 
@@ -138,7 +139,7 @@ func (Instance) _has_alpha(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionC
 Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem], with the top-left offset specified in [param pos]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
-func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item Resource.ID, pos Vector2.XY, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, pos Vector2.XY, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
 
@@ -157,7 +158,7 @@ func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item Resource.ID, 
 Called when the [Texture2D] is requested to be drawn onto [CanvasItem]'s specified [param rect]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
-func (Instance) _draw_rect(impl func(ptr unsafe.Pointer, to_canvas_item Resource.ID, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw_rect(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
 
@@ -178,7 +179,7 @@ func (Instance) _draw_rect(impl func(ptr unsafe.Pointer, to_canvas_item Resource
 Called when a part of the [Texture2D] specified by [param src_rect]'s coordinates is requested to be drawn onto [CanvasItem]'s specified [param rect]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
-func (Instance) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item Resource.ID, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
 
@@ -228,22 +229,22 @@ func (self Instance) HasAlpha() bool { //gd:Texture2D.has_alpha
 /*
 Draws the texture using a [CanvasItem] with the [RenderingServer] API at the specified [param position].
 */
-func (self Instance) Draw(canvas_item Resource.ID, position Vector2.XY) { //gd:Texture2D.draw
-	class(self).Draw(canvas_item, gd.Vector2(position), gd.Color(gd.Color{1, 1, 1, 1}), false)
+func (self Instance) Draw(canvas_item RID.CanvasItem, position Vector2.XY) { //gd:Texture2D.draw
+	class(self).Draw(gd.RID(canvas_item), gd.Vector2(position), gd.Color(gd.Color{1, 1, 1, 1}), false)
 }
 
 /*
 Draws the texture using a [CanvasItem] with the [RenderingServer] API.
 */
-func (self Instance) DrawRect(canvas_item Resource.ID, rect Rect2.PositionSize, tile bool) { //gd:Texture2D.draw_rect
-	class(self).DrawRect(canvas_item, gd.Rect2(rect), tile, gd.Color(gd.Color{1, 1, 1, 1}), false)
+func (self Instance) DrawRect(canvas_item RID.CanvasItem, rect Rect2.PositionSize, tile bool) { //gd:Texture2D.draw_rect
+	class(self).DrawRect(gd.RID(canvas_item), gd.Rect2(rect), tile, gd.Color(gd.Color{1, 1, 1, 1}), false)
 }
 
 /*
 Draws a part of the texture using a [CanvasItem] with the [RenderingServer] API.
 */
-func (self Instance) DrawRectRegion(canvas_item Resource.ID, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:Texture2D.draw_rect_region
-	class(self).DrawRectRegion(canvas_item, gd.Rect2(rect), gd.Rect2(src_rect), gd.Color(gd.Color{1, 1, 1, 1}), false, true)
+func (self Instance) DrawRectRegion(canvas_item RID.CanvasItem, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:Texture2D.draw_rect_region
+	class(self).DrawRectRegion(gd.RID(canvas_item), gd.Rect2(rect), gd.Rect2(src_rect), gd.Color(gd.Color{1, 1, 1, 1}), false, true)
 }
 
 /*
