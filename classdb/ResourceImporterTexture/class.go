@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/ResourceImporter"
 
 var _ Object.ID
@@ -23,6 +24,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 This importer imports [CompressedTexture2D] resources. If you need to process the image in scripts in a more convenient way, use [ResourceImporterImage] instead. See also [ResourceImporterLayeredTexture].

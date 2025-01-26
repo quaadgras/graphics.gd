@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -26,6 +27,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 [LineEdit] provides an input field for editing a single line of text. It features many built-in shortcuts that are always available ([kbd]Ctrl[/kbd] here maps to [kbd]Cmd[/kbd] on macOS):

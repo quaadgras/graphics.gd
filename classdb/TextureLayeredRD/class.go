@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/TextureLayered"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Resource"
@@ -26,6 +27,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Base class for [Texture2DArrayRD], [TextureCubemapRD] and [TextureCubemapArrayRD]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types.

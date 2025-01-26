@@ -13,6 +13,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 
@@ -25,6 +26,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Provides a set of helper functions to create geometric shapes, compute intersections between shapes, and process various other geometric operations in 2D.
@@ -244,7 +246,7 @@ Given an array of [Vector2]s representing tiles, builds an atlas. The returned d
 */
 func MakeAtlas(sizes []Vector2.XY) map[any]any { //gd:Geometry2D.make_atlas
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[any, any](class(self).MakeAtlas(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&sizes))))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).MakeAtlas(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&sizes))))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -628,12 +630,12 @@ func (self class) OffsetPolyline(polyline gd.PackedVector2Array, delta gd.Float,
 Given an array of [Vector2]s representing tiles, builds an atlas. The returned dictionary has two keys: [code]points[/code] is a [PackedVector2Array] that specifies the positions of each tile, [code]size[/code] contains the overall size of the whole atlas as [Vector2i].
 */
 //go:nosplit
-func (self class) MakeAtlas(sizes gd.PackedVector2Array) gd.Dictionary { //gd:Geometry2D.make_atlas
+func (self class) MakeAtlas(sizes gd.PackedVector2Array) Dictionary.Any { //gd:Geometry2D.make_atlas
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(sizes))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_make_atlas, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

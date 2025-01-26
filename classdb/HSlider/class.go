@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Slider"
 import "graphics.gd/classdb/Range"
 import "graphics.gd/classdb/Control"
@@ -27,6 +28,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 A horizontal slider, used to adjust a value by moving a grabber along a horizontal axis. It is a [Range]-based control and goes from left (min) to right (max).

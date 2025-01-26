@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -22,6 +23,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 [url=https://www.jsonrpc.org/]JSON-RPC[/url] is a standard which wraps a method call in a [JSON] object. The object has a particular structure and identifies which method is called, the parameters to that function, and carries an ID to keep track of responses. This class implements that standard on top of [Dictionary]; you will have to convert between a [Dictionary] and [JSON] with other functions.
@@ -59,7 +61,7 @@ Returns a dictionary in the form of a JSON-RPC request. Requests are sent to a s
 - [param id]: Uniquely identifies this request. The server is expected to send a response with the same ID.
 */
 func (self Instance) MakeRequest(method string, params any, id any) map[any]any { //gd:JSONRPC.make_request
-	return map[any]any(gd.DictionaryAs[any, any](class(self).MakeRequest(gd.NewString(method), gd.NewVariant(params), gd.NewVariant(id))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).MakeRequest(gd.NewString(method), gd.NewVariant(params), gd.NewVariant(id))))
 }
 
 /*
@@ -68,7 +70,7 @@ When a server has received and processed a request, it is expected to send a res
 - [param id]: The ID of the request this response is targeted to.
 */
 func (self Instance) MakeResponse(result any, id any) map[any]any { //gd:JSONRPC.make_response
-	return map[any]any(gd.DictionaryAs[any, any](class(self).MakeResponse(gd.NewVariant(result), gd.NewVariant(id))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).MakeResponse(gd.NewVariant(result), gd.NewVariant(id))))
 }
 
 /*
@@ -77,7 +79,7 @@ Returns a dictionary in the form of a JSON-RPC notification. Notifications are o
 - [param params]: An array or dictionary of parameters being passed to the method.
 */
 func (self Instance) MakeNotification(method string, params any) map[any]any { //gd:JSONRPC.make_notification
-	return map[any]any(gd.DictionaryAs[any, any](class(self).MakeNotification(gd.NewString(method), gd.NewVariant(params))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).MakeNotification(gd.NewString(method), gd.NewVariant(params))))
 }
 
 /*
@@ -87,7 +89,7 @@ Creates a response which indicates a previous reply has failed in some way.
 - [param id]: The request this error is a response to.
 */
 func (self Instance) MakeResponseError(code int, message string) map[any]any { //gd:JSONRPC.make_response_error
-	return map[any]any(gd.DictionaryAs[any, any](class(self).MakeResponseError(gd.Int(code), gd.NewString(message), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).MakeResponseError(gd.Int(code), gd.NewString(message), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -153,14 +155,14 @@ Returns a dictionary in the form of a JSON-RPC request. Requests are sent to a s
 - [param id]: Uniquely identifies this request. The server is expected to send a response with the same ID.
 */
 //go:nosplit
-func (self class) MakeRequest(method gd.String, params gd.Variant, id gd.Variant) gd.Dictionary { //gd:JSONRPC.make_request
+func (self class) MakeRequest(method gd.String, params gd.Variant, id gd.Variant) Dictionary.Any { //gd:JSONRPC.make_request
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(params))
 	callframe.Arg(frame, pointers.Get(id))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_request, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -171,13 +173,13 @@ When a server has received and processed a request, it is expected to send a res
 - [param id]: The ID of the request this response is targeted to.
 */
 //go:nosplit
-func (self class) MakeResponse(result gd.Variant, id gd.Variant) gd.Dictionary { //gd:JSONRPC.make_response
+func (self class) MakeResponse(result gd.Variant, id gd.Variant) Dictionary.Any { //gd:JSONRPC.make_response
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(result))
 	callframe.Arg(frame, pointers.Get(id))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_response, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -188,13 +190,13 @@ Returns a dictionary in the form of a JSON-RPC notification. Notifications are o
 - [param params]: An array or dictionary of parameters being passed to the method.
 */
 //go:nosplit
-func (self class) MakeNotification(method gd.String, params gd.Variant) gd.Dictionary { //gd:JSONRPC.make_notification
+func (self class) MakeNotification(method gd.String, params gd.Variant) Dictionary.Any { //gd:JSONRPC.make_notification
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(params))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_notification, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -206,14 +208,14 @@ Creates a response which indicates a previous reply has failed in some way.
 - [param id]: The request this error is a response to.
 */
 //go:nosplit
-func (self class) MakeResponseError(code gd.Int, message gd.String, id gd.Variant) gd.Dictionary { //gd:JSONRPC.make_response_error
+func (self class) MakeResponseError(code gd.Int, message gd.String, id gd.Variant) Dictionary.Any { //gd:JSONRPC.make_response_error
 	var frame = callframe.New()
 	callframe.Arg(frame, code)
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(id))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_response_error, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

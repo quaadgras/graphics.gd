@@ -9,6 +9,7 @@ import (
 	"graphics.gd/internal/pointers"
 
 	float "graphics.gd/variant/Float"
+	rid "graphics.gd/variant/RID"
 	gdVector3 "graphics.gd/variant/Vector3"
 )
 
@@ -53,7 +54,7 @@ type (
 
 type Color = struct{ R, G, B, A float.X }
 
-type RID uint64
+type RID = rid.Any
 
 func (c Callable) Free() {
 	ptr, ok := pointers.End(c)

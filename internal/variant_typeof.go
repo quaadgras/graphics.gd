@@ -5,6 +5,7 @@ import (
 	"unsafe"
 
 	ArrayType "graphics.gd/variant/Array"
+	DictionaryType "graphics.gd/variant/Dictionary"
 	NodePathType "graphics.gd/variant/NodePath"
 )
 
@@ -68,6 +69,8 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 		switch rtype {
 		case reflect.TypeFor[ArrayType.Any]():
 			return TypeArray, true
+		case reflect.TypeFor[DictionaryType.Any]():
+			return TypeDictionary, true
 		case reflect.TypeOf([0]Variant{}).Elem():
 			vtype = TypeNil
 		case reflect.TypeOf([0]Bool{}).Elem():
@@ -152,6 +155,10 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 				vtype = TypeObject
 			case rtype.Implements(reflect.TypeOf([0]IsSignal{}).Elem()):
 				vtype = TypeSignal
+			case rtype.Implements(reflect.TypeFor[ArrayType.Pointer]()):
+				vtype = TypeArray
+			case rtype.Implements(reflect.TypeFor[DictionaryType.Pointer]()):
+				vtype = TypeDictionary
 			default:
 				vtype = TypeDictionary
 			}

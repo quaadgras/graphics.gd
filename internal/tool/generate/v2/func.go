@@ -95,6 +95,8 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 				val = "Array.Nil"
 			case "Callable":
 				val = "Callable.Nil"
+			case "Dictionary":
+				val = "Dictionary.Nil"
 			default:
 				val = *arg.DefaultValue
 				val = strings.TrimPrefix(val, "&")

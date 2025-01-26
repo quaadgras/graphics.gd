@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Node"
 
 var _ Object.ID
@@ -23,6 +24,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Turning on the option [b]Load As Placeholder[/b] for an instantiated scene in the editor causes it to be replaced by an [InstancePlaceholder] when running the game, this will not replace the node in the editor. This makes it possible to delay actually loading the scene until calling [method create_instance]. This is useful to avoid loading large scenes all at once by loading parts of it selectively.
@@ -43,7 +45,7 @@ Returns the list of properties that will be applied to the node when [method cre
 If [param with_order] is [code]true[/code], a key named [code].order[/code] (note the leading period) is added to the dictionary. This [code].order[/code] key is an [Array] of [String] property names specifying the order in which properties will be applied (with index 0 being the first).
 */
 func (self Instance) GetStoredValues() map[any]any { //gd:InstancePlaceholder.get_stored_values
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetStoredValues(false)))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetStoredValues(false)))
 }
 
 /*
@@ -84,12 +86,12 @@ Returns the list of properties that will be applied to the node when [method cre
 If [param with_order] is [code]true[/code], a key named [code].order[/code] (note the leading period) is added to the dictionary. This [code].order[/code] key is an [Array] of [String] property names specifying the order in which properties will be applied (with index 0 being the first).
 */
 //go:nosplit
-func (self class) GetStoredValues(with_order bool) gd.Dictionary { //gd:InstancePlaceholder.get_stored_values
+func (self class) GetStoredValues(with_order bool) Dictionary.Any { //gd:InstancePlaceholder.get_stored_values
 	var frame = callframe.New()
 	callframe.Arg(frame, with_order)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InstancePlaceholder.Bind_get_stored_values, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

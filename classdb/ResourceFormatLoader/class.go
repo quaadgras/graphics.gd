@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -22,6 +23,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Godot loads resources in the editor or in exported games using ResourceFormatLoaders. They are queried automatically via the [ResourceLoader] singleton, or when a resource with internal dependencies is loaded. Each file type may load as a different resource type, so multiple ResourceFormatLoaders are registered in the engine.
@@ -209,10 +211,10 @@ func (Instance) _rename_dependencies(impl func(ptr unsafe.Pointer, path string, 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
-		var renames = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(renames)
+		var renames = gd.UnsafeGet[Dictionary.Any](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, path.String(), gd.DictionaryAs[any, any](renames))
+		ret := impl(self, path.String(), gd.DictionaryAs[map[any]any](renames))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -402,12 +404,12 @@ func (class) _get_dependencies(impl func(ptr unsafe.Pointer, path gd.String, add
 If implemented, renames dependencies within the given resource and saves it. [param renames] is a dictionary [code]{ String => String }[/code] mapping old dependency paths to new paths.
 Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
-func (class) _rename_dependencies(impl func(ptr unsafe.Pointer, path gd.String, renames gd.Dictionary) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _rename_dependencies(impl func(ptr unsafe.Pointer, path gd.String, renames Dictionary.Any) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
-		var renames = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(renames)
+		var renames = gd.UnsafeGet[Dictionary.Any](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, renames)
 		gd.UnsafeSet(p_back, ret)

@@ -106,9 +106,9 @@ func (c Converter) Signal() Signal.Any {
 	return gd.NewSignalOf(c.AsObject(), StringName.New("property_list_changed"))
 }
 func (c Converter) Dictionary() Dictionary.Any {
-	return gd.NewVariant(map[string]string{
-		"hello": "world",
-	}).Interface().(Dictionary.Any)
+	var dict = Dictionary.New[string, string]()
+	dict.SetIndex("hello", "world")
+	return dict.Any()
 }
 func (c Converter) Array() []int                  { return []int{1, 2, 3} }
 func (c Converter) PackedByteArray() []byte       { return []byte{1, 2, 3} }
@@ -190,7 +190,7 @@ func (c Converter) ValidSignal(s Signal.Any) bool {
 	return s.GetName().String() == c.Signal().GetName().String()
 }
 func (c Converter) ValidDictionary(d Dictionary.Any) bool {
-	return d.Index(gd.NewVariant("hello")).Interface().(gd.String).String() == "world"
+	return d.Index(variant.New("hello")).Interface().(gd.String).String() == "world"
 }
 func (c Converter) ValidArray(a []int) bool {
 	return len(a) == 3 && a[0] == 1 && a[1] == 2 && a[2] == 3

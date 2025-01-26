@@ -11,6 +11,7 @@ import (
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
 	CallableType "graphics.gd/variant/Callable"
+	DictionaryType "graphics.gd/variant/Dictionary"
 	FloatType "graphics.gd/variant/Float"
 	NodePathType "graphics.gd/variant/NodePath"
 )
@@ -140,6 +141,12 @@ func NewVariant(v any) Variant {
 		case ArrayType.Interface:
 			var arg = callframe.Arg(frame, pointers.Get(InternalArray(val.Any())))
 			Global.variant.FromType[TypeArray](ret, arg.Addr())
+		case DictionaryType.Any:
+			var arg = callframe.Arg(frame, pointers.Get(InternalDictionary(val)))
+			Global.variant.FromType[TypeDictionary](ret, arg.Addr())
+		case DictionaryType.Interface:
+			var arg = callframe.Arg(frame, pointers.Get(InternalDictionary(val.Any())))
+			Global.variant.FromType[TypeDictionary](ret, arg.Addr())
 		case CallableType.Function:
 			var arg = callframe.Arg(frame, pointers.Get(InternalCallable(val)))
 			Global.variant.FromType[TypeCallable](ret, arg.Addr())
@@ -403,7 +410,8 @@ func (variant Variant) Interface() any {
 	case TypeSignal:
 		return variantAsPointerType[Signal](variant, vtype)
 	case TypeDictionary:
-		return variantAsPointerType[Dictionary](variant, vtype)
+		dict := variantAsPointerType[Dictionary](variant, vtype)
+		return DictionaryType.Through(DictionaryProxy[VariantPkg.Any, VariantPkg.Any]{}, pointers.Pack(dict))
 	case TypeArray:
 		array := variantAsPointerType[Array](variant, vtype)
 		return ArrayType.Through(ArrayProxy[VariantPkg.Any]{}, pointers.Pack(array))

@@ -13,6 +13,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform3D"
 
@@ -25,6 +26,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 The AR/VR server is the heart of our Advanced and Virtual Reality solution and handles all the processing.
@@ -143,7 +145,7 @@ Returns a dictionary of trackers for [param tracker_types].
 */
 func GetTrackers(tracker_types int) map[any]any { //gd:XRServer.get_trackers
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetTrackers(gd.Int(tracker_types))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetTrackers(gd.Int(tracker_types))))
 }
 
 /*
@@ -336,11 +338,11 @@ func (self class) GetInterface(idx gd.Int) [1]gdclass.XRInterface { //gd:XRServe
 Returns a list of available interfaces the ID and name of each interface.
 */
 //go:nosplit
-func (self class) GetInterfaces() Array.Contains[gd.Dictionary] { //gd:XRServer.get_interfaces
+func (self class) GetInterfaces() Array.Contains[Dictionary.Any] { //gd:XRServer.get_interfaces
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_interfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -387,12 +389,12 @@ func (self class) RemoveTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.re
 Returns a dictionary of trackers for [param tracker_types].
 */
 //go:nosplit
-func (self class) GetTrackers(tracker_types gd.Int) gd.Dictionary { //gd:XRServer.get_trackers
+func (self class) GetTrackers(tracker_types gd.Int) Dictionary.Any { //gd:XRServer.get_trackers
 	var frame = callframe.New()
 	callframe.Arg(frame, tracker_types)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_trackers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

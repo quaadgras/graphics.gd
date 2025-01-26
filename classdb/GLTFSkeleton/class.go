@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -23,6 +24,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 type Instance [1]gdclass.GLTFSkeleton
 
@@ -88,11 +90,11 @@ func (self Instance) SetUniqueNames(value []string) {
 }
 
 func (self Instance) GodotBoneNode() map[any]any {
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetGodotBoneNode()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetGodotBoneNode()))
 }
 
 func (self Instance) SetGodotBoneNode(value map[any]any) {
-	class(self).SetGodotBoneNode(gd.NewVariant(value).Interface().(gd.Dictionary))
+	class(self).SetGodotBoneNode(gd.DictionaryFromMap(value))
 }
 
 //go:nosplit
@@ -166,11 +168,11 @@ func (self class) SetUniqueNames(unique_names Array.Contains[gd.String]) { //gd:
 Returns a [Dictionary] that maps skeleton bone indices to the indices of GLTF nodes. This property is unused during import, and only set during export. In a GLTF file, a bone is a node, so Godot converts skeleton bones to GLTF nodes.
 */
 //go:nosplit
-func (self class) GetGodotBoneNode() gd.Dictionary { //gd:GLTFSkeleton.get_godot_bone_node
+func (self class) GetGodotBoneNode() Dictionary.Any { //gd:GLTFSkeleton.get_godot_bone_node
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_get_godot_bone_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -179,9 +181,9 @@ func (self class) GetGodotBoneNode() gd.Dictionary { //gd:GLTFSkeleton.get_godot
 Sets a [Dictionary] that maps skeleton bone indices to the indices of GLTF nodes. This property is unused during import, and only set during export. In a GLTF file, a bone is a node, so Godot converts skeleton bones to GLTF nodes.
 */
 //go:nosplit
-func (self class) SetGodotBoneNode(godot_bone_node gd.Dictionary) { //gd:GLTFSkeleton.set_godot_bone_node
+func (self class) SetGodotBoneNode(godot_bone_node Dictionary.Any) { //gd:GLTFSkeleton.set_godot_bone_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(godot_bone_node))
+	callframe.Arg(frame, godot_bone_node)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_set_godot_bone_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

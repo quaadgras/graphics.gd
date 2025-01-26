@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -22,6 +23,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Contains the results of a single [RegEx] match returned by [method RegEx.search] and [method RegEx.search_all]. It can be used to find the position and range of the match and its capturing groups, and it can extract its substring for you.
@@ -91,7 +93,7 @@ func (self Instance) Subject() string {
 }
 
 func (self Instance) Names() map[any]any {
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetNames()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetNames()))
 }
 
 func (self Instance) Strings() []string {
@@ -122,11 +124,11 @@ func (self class) GetGroupCount() gd.Int { //gd:RegExMatch.get_group_count
 }
 
 //go:nosplit
-func (self class) GetNames() gd.Dictionary { //gd:RegExMatch.get_names
+func (self class) GetNames() Dictionary.Any { //gd:RegExMatch.get_names
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegExMatch.Bind_get_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

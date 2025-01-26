@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -23,6 +24,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Provides direct access to a physics space in the [PhysicsServer3D]. It's used mainly to do queries against objects and areas residing in a given space.
@@ -62,7 +64,7 @@ Intersects a ray in a given space. Ray position and other parameters are defined
 If the ray did not intersect anything, then an empty dictionary is returned instead.
 */
 func (self Instance) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters3D) map[any]any { //gd:PhysicsDirectSpaceState3D.intersect_ray
-	return map[any]any(gd.DictionaryAs[any, any](class(self).IntersectRay(parameters)))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).IntersectRay(parameters)))
 }
 
 /*
@@ -108,7 +110,7 @@ If the shape did not intersect anything, then an empty dictionary is returned in
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
 func (self Instance) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters3D) map[any]any { //gd:PhysicsDirectSpaceState3D.get_rest_info
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetRestInfo(parameters)))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetRestInfo(parameters)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -138,13 +140,13 @@ Checks whether a point is inside any solid shape. Position and other parameters 
 The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 */
 //go:nosplit
-func (self class) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters3D, max_results gd.Int) Array.Contains[gd.Dictionary] { //gd:PhysicsDirectSpaceState3D.intersect_point
+func (self class) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters3D, max_results gd.Int) Array.Contains[Dictionary.Any] { //gd:PhysicsDirectSpaceState3D.intersect_point
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, max_results)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_intersect_point, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -162,12 +164,12 @@ Intersects a ray in a given space. Ray position and other parameters are defined
 If the ray did not intersect anything, then an empty dictionary is returned instead.
 */
 //go:nosplit
-func (self class) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters3D) gd.Dictionary { //gd:PhysicsDirectSpaceState3D.intersect_ray
+func (self class) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters3D) Dictionary.Any { //gd:PhysicsDirectSpaceState3D.intersect_ray
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_intersect_ray, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -182,13 +184,13 @@ The number of intersections can be limited with the [param max_results] paramete
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
 //go:nosplit
-func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D, max_results gd.Int) Array.Contains[gd.Dictionary] { //gd:PhysicsDirectSpaceState3D.intersect_shape
+func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D, max_results gd.Int) Array.Contains[Dictionary.Any] { //gd:PhysicsDirectSpaceState3D.intersect_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, max_results)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_intersect_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -238,12 +240,12 @@ If the shape did not intersect anything, then an empty dictionary is returned in
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
 //go:nosplit
-func (self class) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters3D) gd.Dictionary { //gd:PhysicsDirectSpaceState3D.get_rest_info
+func (self class) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters3D) Dictionary.Any { //gd:PhysicsDirectSpaceState3D.get_rest_info
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_get_rest_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

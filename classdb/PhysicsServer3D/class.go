@@ -13,6 +13,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform3D"
@@ -28,6 +29,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 PhysicsServer3D is the server responsible for all 3D physics. It can directly create and manipulate all physics objects:

@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/SyntaxHighlighter"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Color"
@@ -25,6 +26,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 By adjusting various properties of this resource, you can change the colors of strings, comments, numbers, and other text patterns inside a [TextEdit] control.
@@ -193,27 +195,27 @@ func (self Instance) SetMemberVariableColor(value Color.RGBA) {
 }
 
 func (self Instance) KeywordColors() map[any]any {
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetKeywordColors()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetKeywordColors()))
 }
 
 func (self Instance) SetKeywordColors(value map[any]any) {
-	class(self).SetKeywordColors(gd.NewVariant(value).Interface().(gd.Dictionary))
+	class(self).SetKeywordColors(gd.DictionaryFromMap(value))
 }
 
 func (self Instance) MemberKeywordColors() map[any]any {
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetMemberKeywordColors()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetMemberKeywordColors()))
 }
 
 func (self Instance) SetMemberKeywordColors(value map[any]any) {
-	class(self).SetMemberKeywordColors(gd.NewVariant(value).Interface().(gd.Dictionary))
+	class(self).SetMemberKeywordColors(gd.DictionaryFromMap(value))
 }
 
 func (self Instance) ColorRegions() map[any]any {
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetColorRegions()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetColorRegions()))
 }
 
 func (self Instance) SetColorRegions(value map[any]any) {
-	class(self).SetColorRegions(gd.NewVariant(value).Interface().(gd.Dictionary))
+	class(self).SetColorRegions(gd.DictionaryFromMap(value))
 }
 
 /*
@@ -271,9 +273,9 @@ func (self class) GetKeywordColor(keyword gd.String) gd.Color { //gd:CodeHighlig
 }
 
 //go:nosplit
-func (self class) SetKeywordColors(keywords gd.Dictionary) { //gd:CodeHighlighter.set_keyword_colors
+func (self class) SetKeywordColors(keywords Dictionary.Any) { //gd:CodeHighlighter.set_keyword_colors
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(keywords))
+	callframe.Arg(frame, keywords)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeHighlighter.Bind_set_keyword_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -291,11 +293,11 @@ func (self class) ClearKeywordColors() { //gd:CodeHighlighter.clear_keyword_colo
 }
 
 //go:nosplit
-func (self class) GetKeywordColors() gd.Dictionary { //gd:CodeHighlighter.get_keyword_colors
+func (self class) GetKeywordColors() Dictionary.Any { //gd:CodeHighlighter.get_keyword_colors
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeHighlighter.Bind_get_keyword_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -356,9 +358,9 @@ func (self class) GetMemberKeywordColor(member_keyword gd.String) gd.Color { //g
 }
 
 //go:nosplit
-func (self class) SetMemberKeywordColors(member_keyword gd.Dictionary) { //gd:CodeHighlighter.set_member_keyword_colors
+func (self class) SetMemberKeywordColors(member_keyword Dictionary.Any) { //gd:CodeHighlighter.set_member_keyword_colors
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(member_keyword))
+	callframe.Arg(frame, member_keyword)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeHighlighter.Bind_set_member_keyword_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -376,11 +378,11 @@ func (self class) ClearMemberKeywordColors() { //gd:CodeHighlighter.clear_member
 }
 
 //go:nosplit
-func (self class) GetMemberKeywordColors() gd.Dictionary { //gd:CodeHighlighter.get_member_keyword_colors
+func (self class) GetMemberKeywordColors() Dictionary.Any { //gd:CodeHighlighter.get_member_keyword_colors
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeHighlighter.Bind_get_member_keyword_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -428,9 +430,9 @@ func (self class) HasColorRegion(start_key gd.String) bool { //gd:CodeHighlighte
 }
 
 //go:nosplit
-func (self class) SetColorRegions(color_regions gd.Dictionary) { //gd:CodeHighlighter.set_color_regions
+func (self class) SetColorRegions(color_regions Dictionary.Any) { //gd:CodeHighlighter.set_color_regions
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(color_regions))
+	callframe.Arg(frame, color_regions)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeHighlighter.Bind_set_color_regions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -448,11 +450,11 @@ func (self class) ClearColorRegions() { //gd:CodeHighlighter.clear_color_regions
 }
 
 //go:nosplit
-func (self class) GetColorRegions() gd.Dictionary { //gd:CodeHighlighter.get_color_regions
+func (self class) GetColorRegions() Dictionary.Any { //gd:CodeHighlighter.get_color_regions
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeHighlighter.Bind_get_color_regions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

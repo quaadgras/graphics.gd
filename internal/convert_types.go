@@ -8,6 +8,7 @@ import (
 
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
+	DictionaryType "graphics.gd/variant/Dictionary"
 )
 
 func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.Value, error) {
@@ -43,14 +44,6 @@ func VariantAs[T any](value Variant) T {
 		panic(fmt.Sprintf("cannot convert %T to %s: %v", value, reflect.TypeFor[T](), err))
 	}
 	return result.Interface().(T)
-}
-
-func DictionaryAs[K comparable, V any](dictionary Dictionary) map[K]V {
-	var result = make(map[K]V)
-	for _, key := range dictionary.Keys().Iter() {
-		result[VariantAs[K](key)] = VariantAs[V](dictionary.Index(key))
-	}
-	return result
 }
 
 func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error) {
@@ -148,23 +141,38 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 }
 
 func convertToGoMap(rtype reflect.Type, value any) (reflect.Value, error) {
-	dictionary, ok := value.(Dictionary)
-	if !ok {
+	switch dictionary := value.(type) {
+	case DictionaryType.Any:
+		var mapValue = reflect.MakeMap(rtype)
+		for _, key := range dictionary.Iter() {
+			keyValue, err := convertVariantToDesiredGoType(NewVariant(key), rtype.Key())
+			if err != nil {
+				return reflect.Value{}, err
+			}
+			valueValue, err := convertVariantToDesiredGoType(NewVariant(dictionary.Index(key)), rtype.Elem())
+			if err != nil {
+				return reflect.Value{}, err
+			}
+			mapValue.SetMapIndex(keyValue, valueValue)
+		}
+		return mapValue, nil
+	case Dictionary:
+		var mapValue = reflect.MakeMap(rtype)
+		for _, key := range dictionary.Keys().Iter() {
+			keyValue, err := convertVariantToDesiredGoType(NewVariant(key), rtype.Key())
+			if err != nil {
+				return reflect.Value{}, err
+			}
+			valueValue, err := convertVariantToDesiredGoType(NewVariant(dictionary.Index(key)), rtype.Elem())
+			if err != nil {
+				return reflect.Value{}, err
+			}
+			mapValue.SetMapIndex(keyValue, valueValue)
+		}
+		return mapValue, nil
+	default:
 		return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 	}
-	var mapValue = reflect.MakeMap(rtype)
-	for _, key := range dictionary.Keys().Iter() {
-		keyValue, err := convertVariantToDesiredGoType(key, rtype.Key())
-		if err != nil {
-			return reflect.Value{}, err
-		}
-		valueValue, err := convertVariantToDesiredGoType(dictionary.Index(key), rtype.Elem())
-		if err != nil {
-			return reflect.Value{}, err
-		}
-		mapValue.SetMapIndex(keyValue, valueValue)
-	}
-	return mapValue, nil
 }
 
 func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
@@ -208,6 +216,27 @@ func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
 			return obj.Elem(), nil
 		}
 		return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
+	case DictionaryType.Any:
+		if reflect.PointerTo(rtype).Implements(reflect.TypeFor[DictionaryType.Pointer]()) {
+			var obj = reflect.New(rtype)
+			obj.Interface().(DictionaryType.Pointer).SetAny(value)
+			return obj.Elem(), nil
+		}
+		var structure = reflect.New(rtype)
+		var dictionary = value
+		for i := 0; i < rtype.NumField(); i++ {
+			field := rtype.Field(i)
+			name := field.Name
+			if tag := field.Tag.Get("gd"); tag != "" {
+				name = tag
+			}
+			fieldValue, err := convertVariantToDesiredGoType(NewVariant(dictionary.Index(VariantPkg.New(name))), field.Type)
+			if err != nil {
+				return reflect.Value{}, err
+			}
+			structure.Field(i).Set(fieldValue)
+		}
+		return structure, nil
 	default:
 		return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 	}

@@ -13,6 +13,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
@@ -26,6 +27,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 The [Input] singleton handles key presses, mouse buttons and movement, gamepads, and input actions. Actions and their events can be set in the [b]Input Map[/b] tab in [b]Project > Project Settings[/b], or with the [InputMap] class.
@@ -222,7 +224,7 @@ On Linux:
 */
 func GetJoyInfo(device int) map[any]any { //gd:Input.get_joy_info
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetJoyInfo(gd.Int(device))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetJoyInfo(gd.Int(device))))
 }
 
 /*
@@ -825,12 +827,12 @@ On Linux:
 [code]steam_input_index[/code]: The Steam Input gamepad index, if the device is not a Steam Input device this key won't be present.
 */
 //go:nosplit
-func (self class) GetJoyInfo(device gd.Int) gd.Dictionary { //gd:Input.get_joy_info
+func (self class) GetJoyInfo(device gd.Int) Dictionary.Any { //gd:Input.get_joy_info
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

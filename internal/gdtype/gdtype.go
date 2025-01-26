@@ -64,6 +64,11 @@ func (name Name) ConvertToSimple(val string) string {
 			return "Array.Nil"
 		}
 		return fmt.Sprintf("gd.EngineArrayFromSlice(%v)", val)
+	case "Dictionary.Any":
+		if val == "Dictionary.Nil" {
+			return "Dictionary.Nil"
+		}
+		return fmt.Sprintf("gd.DictionaryFromMap(%v)", val)
 	case "gd.RID":
 		return fmt.Sprintf("gd.RID(%v)", val)
 	case "gd.String":
@@ -144,8 +149,8 @@ func (name Name) ConvertToGo(val string, simple string) string {
 		return fmt.Sprintf("%v.Interface()", val)
 	case "Array.Any":
 		return fmt.Sprintf("gd.ArrayAs[%s](gd.InternalArray(%s))", simple, val)
-	case "gd.Dictionary":
-		return fmt.Sprintf("gd.DictionaryAs[any, any](%s)", val)
+	case "Dictionary.Any":
+		return fmt.Sprintf("gd.DictionaryAs[%s](%s)", simple, val)
 	default:
 		return val
 	}

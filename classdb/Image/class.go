@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Rect2i"
@@ -27,6 +28,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Native image datatype. Contains image data which can be converted to an [ImageTexture] and provides commonly used [i]image processing[/i] methods. The maximum width and height for an [Image] are [constant MAX_WIDTH] and [constant MAX_HEIGHT].
@@ -402,7 +404,7 @@ Compute image metrics on the current image and the compared image.
 The dictionary contains [code]max[/code], [code]mean[/code], [code]mean_squared[/code], [code]root_mean_squared[/code] and [code]peak_snr[/code].
 */
 func (self Instance) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma bool) map[any]any { //gd:Image.compute_image_metrics
-	return map[any]any(gd.DictionaryAs[any, any](class(self).ComputeImageMetrics(compared_image, use_luma)))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ComputeImageMetrics(compared_image, use_luma)))
 }
 
 /*
@@ -1286,13 +1288,13 @@ Compute image metrics on the current image and the compared image.
 The dictionary contains [code]max[/code], [code]mean[/code], [code]mean_squared[/code], [code]root_mean_squared[/code] and [code]peak_snr[/code].
 */
 //go:nosplit
-func (self class) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma bool) gd.Dictionary { //gd:Image.compute_image_metrics
+func (self class) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma bool) Dictionary.Any { //gd:Image.compute_image_metrics
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(compared_image[0])[0])
 	callframe.Arg(frame, use_luma)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_compute_image_metrics, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

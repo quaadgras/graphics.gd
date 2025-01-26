@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/VisualShaderNodeGroupBase"
 import "graphics.gd/classdb/VisualShaderNodeResizableBase"
 import "graphics.gd/classdb/VisualShaderNode"
@@ -26,6 +27,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Custom Godot Shading Language expression, with a custom number of input and output ports.

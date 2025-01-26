@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
@@ -27,6 +28,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 This class needs to be implemented to make an AR or VR platform available to Godot and these should be implemented as C++ modules or GDExtension modules. Part of the interface is exposed to GDScript so you can detect, enable and configure an AR or VR platform.
@@ -86,7 +88,7 @@ Returns a [Dictionary] with extra system info. Interfaces are expected to return
 [b]Note:[/b]This information may only be available after [method initialize] was successfully called.
 */
 func (self Instance) GetSystemInfo() map[any]any { //gd:XRInterface.get_system_info
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetSystemInfo()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetSystemInfo()))
 }
 
 /*
@@ -338,11 +340,11 @@ Returns a [Dictionary] with extra system info. Interfaces are expected to return
 [b]Note:[/b]This information may only be available after [method initialize] was successfully called.
 */
 //go:nosplit
-func (self class) GetSystemInfo() gd.Dictionary { //gd:XRInterface.get_system_info
+func (self class) GetSystemInfo() Dictionary.Any { //gd:XRInterface.get_system_info
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_system_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

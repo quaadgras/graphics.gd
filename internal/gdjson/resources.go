@@ -3,7 +3,6 @@ package gdjson
 import (
 	"reflect"
 
-	"graphics.gd/classdb/Resource"
 	"graphics.gd/variant/RID"
 )
 
@@ -263,7 +262,7 @@ var Resources = map[string]reflect.Type{
 	"NavigationServer2D.obstacle_get_avoidance_layers.obstacle":     reflect.TypeFor[RID.NavigationObstacle2D](),
 	"NavigationServer2D.source_geometry_parser_create.":             reflect.TypeFor[RID.NavigationSourceGeometryParser2D](),
 	"NavigationServer2D.source_geometry_parser_set_callback.parser": reflect.TypeFor[RID.NavigationSourceGeometryParser2D](),
-	"NavigationServer2D.free_rid.rid":                               reflect.TypeFor[Resource.ID](), // FIXME
+	"NavigationServer2D.free_rid.rid":                               reflect.TypeFor[RID.Any](), // FIXME
 	"NavigationServer3D.get_maps.":                                  reflect.TypeFor[[]RID.NavigationMap3D](),
 	"NavigationServer3D.map_create.":                                reflect.TypeFor[RID.NavigationMap3D](),
 	"NavigationServer3D.map_set_active.map":                         reflect.TypeFor[RID.NavigationMap3D](),
@@ -409,7 +408,7 @@ var Resources = map[string]reflect.Type{
 	"NavigationServer3D.obstacle_get_avoidance_layers.obstacle":     reflect.TypeFor[RID.NavigationObstacle3D](),
 	"NavigationServer3D.source_geometry_parser_create.":             reflect.TypeFor[RID.NavigationSourceGeometryParser3D](),
 	"NavigationServer3D.source_geometry_parser_set_callback.parser": reflect.TypeFor[RID.NavigationSourceGeometryParser3D](),
-	"NavigationServer3D.free_rid.rid":                               reflect.TypeFor[Resource.ID](), // FIXME
+	"NavigationServer3D.free_rid.rid":                               reflect.TypeFor[RID.Any](), // FIXME
 
 	"PhysicalBoneSimulator3D.physical_bones_add_collision_exception.exception":    reflect.TypeFor[RID.Body3D](),
 	"PhysicalBoneSimulator3D.physical_bones_remove_collision_exception.exception": reflect.TypeFor[RID.Body3D](),
@@ -561,7 +560,7 @@ var Resources = map[string]reflect.Type{
 	"PhysicsServer2D.damped_spring_joint_set_param.joint":                         reflect.TypeFor[RID.Joint2D](),
 	"PhysicsServer2D.damped_spring_joint_get_param.joint":                         reflect.TypeFor[RID.Joint2D](),
 	"PhysicsServer2D.joint_get_type.joint":                                        reflect.TypeFor[RID.Joint2D](),
-	"PhysicsServer2D.free_rid.rid":                                                reflect.TypeFor[Resource.ID](), // FIXME
+	"PhysicsServer2D.free_rid.rid":                                                reflect.TypeFor[RID.Any](), // FIXME
 	"PhysicsServer2DExtension.body_test_motion_is_excluding_body.body":            reflect.TypeFor[RID.Body2D](),
 	"PhysicsServer3D.world_boundary_shape_create.":                                reflect.TypeFor[RID.Shape3D](),
 	"PhysicsServer3D.separation_ray_shape_create.":                                reflect.TypeFor[RID.Shape3D](),
@@ -756,7 +755,7 @@ var Resources = map[string]reflect.Type{
 	"PhysicsServer3D.generic_6dof_joint_get_param.joint":                          reflect.TypeFor[RID.Joint3D](),
 	"PhysicsServer3D.generic_6dof_joint_set_flag.joint":                           reflect.TypeFor[RID.Joint3D](),
 	"PhysicsServer3D.generic_6dof_joint_get_flag.joint":                           reflect.TypeFor[RID.Joint3D](),
-	"PhysicsServer3D.free_rid.rid":                                                reflect.TypeFor[Resource.ID](), // FIXME
+	"PhysicsServer3D.free_rid.rid":                                                reflect.TypeFor[RID.Any](), // FIXME
 	"PhysicsServer3DExtension.body_test_motion_is_excluding_body.body":            reflect.TypeFor[RID.Body3D](),
 	"PhysicsShapeQueryParameters2D.set_shape_rid.shape":                           reflect.TypeFor[RID.Shape2D](),
 	"PhysicsShapeQueryParameters2D.get_shape_rid.":                                reflect.TypeFor[RID.Shape2D](),
@@ -773,8 +772,8 @@ var Resources = map[string]reflect.Type{
 	"PhysicsTestMotionResult2D.get_collider_rid.":                                 reflect.TypeFor[RID.Body2D](),
 	"PhysicsTestMotionResult3D.get_collider_rid.":                                 reflect.TypeFor[RID.Body3D](),
 
-	"RDUniform.add_id.id":                reflect.TypeFor[Resource.ID](),
-	"RDUniform.get_ids.":                 reflect.TypeFor[[]Resource.ID](),
+	"RDUniform.add_id.id":                reflect.TypeFor[RID.Any](),
+	"RDUniform.get_ids.":                 reflect.TypeFor[[]RID.Any](),
 	"RayCast2D.get_collider_rid.":        reflect.TypeFor[RID.Body2D](),
 	"RayCast2D.add_exception_rid.rid":    reflect.TypeFor[RID.Body2D](),
 	"RayCast2D.remove_exception_rid.rid": reflect.TypeFor[RID.Body2D](),
@@ -863,9 +862,9 @@ var Resources = map[string]reflect.Type{
 	"RenderingDevice.compute_list_bind_compute_pipeline.compute_pipeline": reflect.TypeFor[RID.ComputePipeline](),
 	"RenderingDevice.compute_list_bind_uniform_set.uniform_set":           reflect.TypeFor[RID.UniformSet](),
 	"RenderingDevice.compute_list_dispatch_indirect.buffer":               reflect.TypeFor[RID.Buffer](),
-	"RenderingDevice.free_rid.rid":                                        reflect.TypeFor[Resource.ID](),
-	"RenderingDevice.set_resource_name.id":                                reflect.TypeFor[Resource.ID](),
-	"RenderingDevice.get_driver_resource.rid":                             reflect.TypeFor[Resource.ID](),
+	"RenderingDevice.free_rid.rid":                                        reflect.TypeFor[RID.Any](),
+	"RenderingDevice.set_resource_name.id":                                reflect.TypeFor[RID.Any](),
+	"RenderingDevice.get_driver_resource.rid":                             reflect.TypeFor[RID.Any](),
 
 	"RenderingServer.bake_render_uv2.base":                                  reflect.TypeFor[RID.Mesh](),
 	"RenderingServer.bake_render_uv2.material_overrides":                    reflect.TypeFor[[]RID.Material](),
@@ -1376,13 +1375,13 @@ var Resources = map[string]reflect.Type{
 	"RenderingServer.canvas_occluder_polygon_create.":                                      reflect.TypeFor[RID.CanvasLightOccluderPolygon](),
 	"RenderingServer.canvas_occluder_polygon_set_shape.occluder_polygon":                   reflect.TypeFor[RID.CanvasLightOccluderPolygon](),
 	"RenderingServer.canvas_occluder_polygon_set_cull_mode.occluder_polygon":               reflect.TypeFor[RID.CanvasLightOccluderPolygon](),
-	"RenderingServer.free_rid.rid":                                                         reflect.TypeFor[Resource.ID](), // FIXME
+	"RenderingServer.free_rid.rid":                                                         reflect.TypeFor[RID.Any](), // FIXME
 	"RenderingServer.make_sphere_mesh.":                                                    reflect.TypeFor[RID.Mesh](),
 	"RenderingServer.get_test_cube.":                                                       reflect.TypeFor[RID.Mesh](),
 	"RenderingServer.get_test_texture.":                                                    reflect.TypeFor[RID.Texture](),
 	"RenderingServer.get_white_texture.":                                                   reflect.TypeFor[RID.Texture](),
 
-	"Resource.get_rid.":                                              reflect.TypeFor[Resource.ID](),
+	"Resource.get_rid.":                                              reflect.TypeFor[RID.Any](),
 	"Shape2D.draw.canvas_item":                                       reflect.TypeFor[RID.CanvasItem](),
 	"ShapeCast2D.get_collider_rid.":                                  reflect.TypeFor[RID.Body2D](),
 	"ShapeCast2D.add_exception_rid.rid":                              reflect.TypeFor[RID.Body2D](),
@@ -1412,8 +1411,8 @@ var Resources = map[string]reflect.Type{
 	"TextParagraph.draw_dropcap.canvas":         reflect.TypeFor[RID.Canvas](),
 	"TextParagraph.draw_dropcap_outline.canvas": reflect.TypeFor[RID.Canvas](),
 
-	"TextServer.has.rid":                                              reflect.TypeFor[Resource.ID](),
-	"TextServer.free_rid.rid":                                         reflect.TypeFor[Resource.ID](),
+	"TextServer.has.rid":                                              reflect.TypeFor[RID.Any](),
+	"TextServer.free_rid.rid":                                         reflect.TypeFor[RID.Any](),
 	"TextServer.create_font.":                                         reflect.TypeFor[RID.Font](),
 	"TextServer.create_font_linked_variation.font_rid":                reflect.TypeFor[RID.Font](),
 	"TextServer.create_font_linked_variation.":                        reflect.TypeFor[RID.Font](),

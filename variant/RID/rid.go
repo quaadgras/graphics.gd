@@ -1,22 +1,6 @@
 package RID
 
-import (
-	"graphics.gd/classdb/Resource"
-	gd "graphics.gd/internal"
-)
-
-// New allocates a unique ID which can be used by the implementation to construct an RID.
-// This is used mainly from native extensions to implement servers.
-func New() Any { //gd:rid_allocate_id
-	return gd.RidFromInt64(gd.RidAllocateId())
-}
-
-type Any = Resource.ID
-
-// Int64 returns a resource ID from the given int64.
-func Int64(id int64) Any { //gd:rid_from_int64
-	return gd.RidFromInt64(gd.Int(id))
-}
+type Any uint64
 
 type Either[A, B ~uint64] Any
 

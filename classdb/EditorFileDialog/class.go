@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/Window"
@@ -27,6 +28,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 [EditorFileDialog] is an enhanced version of [FileDialog] available only to editor plugins. Additional features include list of favorited/recent files and the ability to see files as thumbnails grid instead of list.
@@ -111,7 +113,7 @@ func (self Instance) AddOption(name string, values []string, default_value_index
 Returns a [Dictionary] with the selected values of the additional [OptionButton]s and/or [CheckBox]es. [Dictionary] keys are names and values are selected value indices.
 */
 func (self Instance) GetSelectedOptions() map[any]any { //gd:EditorFileDialog.get_selected_options
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetSelectedOptions()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetSelectedOptions()))
 }
 
 /*
@@ -413,11 +415,11 @@ func (self class) AddOption(name gd.String, values gd.PackedStringArray, default
 Returns a [Dictionary] with the selected values of the additional [OptionButton]s and/or [CheckBox]es. [Dictionary] keys are names and values are selected value indices.
 */
 //go:nosplit
-func (self class) GetSelectedOptions() gd.Dictionary { //gd:EditorFileDialog.get_selected_options
+func (self class) GetSelectedOptions() Dictionary.Any { //gd:EditorFileDialog.get_selected_options
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_selected_options, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -22,6 +23,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 [OpenXRExtensionWrapperExtension] allows clients to implement OpenXR extensions with GDExtension. The extension should be registered with [method register_extension_wrapper].
@@ -176,12 +178,7 @@ func (Instance) _get_requested_extensions(impl func(ptr unsafe.Pointer) map[any]
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
 	}
 }
 
@@ -505,12 +502,12 @@ func (Instance) _set_viewport_composition_layer_and_get_next_pointer(impl func(p
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 
-		var property_values = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(property_values)
+		var property_values = gd.UnsafeGet[Dictionary.Any](p_args, 1)
+
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, layer, gd.DictionaryAs[any, any](property_values), next_pointer)
+		ret := impl(self, layer, gd.DictionaryAs[map[any]any](property_values), next_pointer)
 		gd.UnsafeSet(p_back, gd.Int(ret))
 	}
 }
@@ -522,7 +519,7 @@ func (Instance) _get_viewport_composition_layer_extension_properties(impl func(p
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](ret)))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
 		if !ok {
 			return
@@ -538,12 +535,7 @@ func (Instance) _get_viewport_composition_layer_extension_property_defaults(impl
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
 	}
 }
 
@@ -597,16 +589,11 @@ Returns a [Dictionary] of OpenXR extensions related to this extension. The [Dict
 - If the [code]bool *[/code] is a [code]nullptr[/code] this extension is mandatory.
 - If the [code]bool *[/code] points to a boolean, the boolean will be updated to [code]true[/code] if the extension is enabled.
 */
-func (class) _get_requested_extensions(impl func(ptr unsafe.Pointer) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_requested_extensions(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 
@@ -926,12 +913,12 @@ Adds additional data structures to composition layers created by [OpenXRComposit
 [param property_values] contains the values of the properties returned by [method _get_viewport_composition_layer_extension_properties].
 [param layer] is a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct.
 */
-func (class) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr unsafe.Pointer, layer unsafe.Pointer, property_values gd.Dictionary, next_pointer unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr unsafe.Pointer, layer unsafe.Pointer, property_values Dictionary.Any, next_pointer unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 
-		var property_values = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(property_values)
+		var property_values = gd.UnsafeGet[Dictionary.Any](p_args, 1)
+
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -943,7 +930,7 @@ func (class) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr 
 /*
 Gets an array of [Dictionary]s that represent properties, just like [method Object._get_property_list], that will be added to [OpenXRCompositionLayer] nodes.
 */
-func (class) _get_viewport_composition_layer_extension_properties(impl func(ptr unsafe.Pointer) Array.Contains[gd.Dictionary]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_viewport_composition_layer_extension_properties(impl func(ptr unsafe.Pointer) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -959,16 +946,11 @@ func (class) _get_viewport_composition_layer_extension_properties(impl func(ptr 
 /*
 Gets a [Dictionary] containing the default values for the properties returned by [method _get_viewport_composition_layer_extension_properties].
 */
-func (class) _get_viewport_composition_layer_extension_property_defaults(impl func(ptr unsafe.Pointer) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_viewport_composition_layer_extension_property_defaults(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 

@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/classdb/PacketPeer"
 
@@ -24,6 +25,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 This class constructs a full mesh of [WebRTCPeerConnection] (one connection for each peer) that can be used as a [member MultiplayerAPI.multiplayer_peer].
@@ -90,14 +92,14 @@ func (self Instance) HasPeer(peer_id int) bool { //gd:WebRTCMultiplayerPeer.has_
 Returns a dictionary representation of the peer with given [param peer_id] with three keys. [code]"connection"[/code] containing the [WebRTCPeerConnection] to this peer, [code]"channels"[/code] an array of three [WebRTCDataChannel], and [code]"connected"[/code] a boolean representing if the peer connection is currently connected (all three channels are open).
 */
 func (self Instance) GetPeer(peer_id int) map[any]any { //gd:WebRTCMultiplayerPeer.get_peer
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetPeer(gd.Int(peer_id))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetPeer(gd.Int(peer_id))))
 }
 
 /*
 Returns a dictionary which keys are the peer ids and values the peer representation as in [method get_peer].
 */
 func (self Instance) GetPeers() map[any]any { //gd:WebRTCMultiplayerPeer.get_peers
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetPeers()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetPeers()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -212,12 +214,12 @@ func (self class) HasPeer(peer_id gd.Int) bool { //gd:WebRTCMultiplayerPeer.has_
 Returns a dictionary representation of the peer with given [param peer_id] with three keys. [code]"connection"[/code] containing the [WebRTCPeerConnection] to this peer, [code]"channels"[/code] an array of three [WebRTCDataChannel], and [code]"connected"[/code] a boolean representing if the peer connection is currently connected (all three channels are open).
 */
 //go:nosplit
-func (self class) GetPeer(peer_id gd.Int) gd.Dictionary { //gd:WebRTCMultiplayerPeer.get_peer
+func (self class) GetPeer(peer_id gd.Int) Dictionary.Any { //gd:WebRTCMultiplayerPeer.get_peer
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_get_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -226,11 +228,11 @@ func (self class) GetPeer(peer_id gd.Int) gd.Dictionary { //gd:WebRTCMultiplayer
 Returns a dictionary which keys are the peer ids and values the peer representation as in [method get_peer].
 */
 //go:nosplit
-func (self class) GetPeers() gd.Dictionary { //gd:WebRTCMultiplayerPeer.get_peers
+func (self class) GetPeers() Dictionary.Any { //gd:WebRTCMultiplayerPeer.get_peers
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_get_peers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

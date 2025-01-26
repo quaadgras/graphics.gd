@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -22,6 +23,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Resource tooltip plugins are used by [FileSystemDock] to generate customized tooltips for specific resources. E.g. tooltip for a [Texture2D] displays a bigger preview and the texture's dimensions.
@@ -101,13 +103,13 @@ func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
-		var metadata = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(metadata)
+		var metadata = gd.UnsafeGet[Dictionary.Any](p_args, 1)
+
 		var base = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
 
 		defer pointers.End(base[0])
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, path.String(), gd.DictionaryAs[any, any](metadata), base)
+		ret := impl(self, path.String(), gd.DictionaryAs[map[any]any](metadata), base)
 		ptr, ok := pointers.End(ret[0])
 
 		if !ok {
@@ -172,12 +174,12 @@ func _make_tooltip_for_path(path, metadata, base):
 
 [/codeblock]
 */
-func (class) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path gd.String, metadata gd.Dictionary, base [1]gdclass.Control) [1]gdclass.Control) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path gd.String, metadata Dictionary.Any, base [1]gdclass.Control) [1]gdclass.Control) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
-		var metadata = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(metadata)
+		var metadata = gd.UnsafeGet[Dictionary.Any](p_args, 1)
+
 		var base = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
 
 		defer pointers.End(base[0])

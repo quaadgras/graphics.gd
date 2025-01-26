@@ -26,6 +26,9 @@ import (
 
 // New returns a new [Any] variant from the given interface value.
 func New(val any) Any {
+	if val == nil {
+		return Nil
+	}
 	var local complex128
 	rvalue := reflect.ValueOf(val)
 	rtype := rvalue.Type()

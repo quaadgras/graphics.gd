@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
 
@@ -24,6 +25,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 type Instance [1]gdclass.GLTFSkin
 
@@ -111,19 +113,19 @@ func (self Instance) SetSkeleton(value int) {
 }
 
 func (self Instance) JointIToBoneI() map[any]any {
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetJointIToBoneI()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetJointIToBoneI()))
 }
 
 func (self Instance) SetJointIToBoneI(value map[any]any) {
-	class(self).SetJointIToBoneI(gd.NewVariant(value).Interface().(gd.Dictionary))
+	class(self).SetJointIToBoneI(gd.DictionaryFromMap(value))
 }
 
 func (self Instance) JointIToName() map[any]any {
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetJointIToName()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetJointIToName()))
 }
 
 func (self Instance) SetJointIToName(value map[any]any) {
-	class(self).SetJointIToName(gd.NewVariant(value).Interface().(gd.Dictionary))
+	class(self).SetJointIToName(gd.DictionaryFromMap(value))
 }
 
 func (self Instance) GodotSkin() [1]gdclass.Skin {
@@ -268,38 +270,38 @@ func (self class) SetSkeleton(skeleton gd.Int) { //gd:GLTFSkin.set_skeleton
 }
 
 //go:nosplit
-func (self class) GetJointIToBoneI() gd.Dictionary { //gd:GLTFSkin.get_joint_i_to_bone_i
+func (self class) GetJointIToBoneI() Dictionary.Any { //gd:GLTFSkin.get_joint_i_to_bone_i
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_joint_i_to_bone_i, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetJointIToBoneI(joint_i_to_bone_i gd.Dictionary) { //gd:GLTFSkin.set_joint_i_to_bone_i
+func (self class) SetJointIToBoneI(joint_i_to_bone_i Dictionary.Any) { //gd:GLTFSkin.set_joint_i_to_bone_i
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(joint_i_to_bone_i))
+	callframe.Arg(frame, joint_i_to_bone_i)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_set_joint_i_to_bone_i, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetJointIToName() gd.Dictionary { //gd:GLTFSkin.get_joint_i_to_name
+func (self class) GetJointIToName() Dictionary.Any { //gd:GLTFSkin.get_joint_i_to_name
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_joint_i_to_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetJointIToName(joint_i_to_name gd.Dictionary) { //gd:GLTFSkin.set_joint_i_to_name
+func (self class) SetJointIToName(joint_i_to_name Dictionary.Any) { //gd:GLTFSkin.set_joint_i_to_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(joint_i_to_name))
+	callframe.Arg(frame, joint_i_to_name)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_set_joint_i_to_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -22,6 +23,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 A WebRTC connection between the local computer and a remote peer. Provides an interface to connect, maintain and monitor the connection.
@@ -70,7 +72,7 @@ Valid [param configuration] options are:
 [/codeblock]
 */
 func (self Instance) Initialize() error { //gd:WebRTCPeerConnection.initialize
-	return error(gd.ToError(class(self).Initialize(gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary))))
+	return error(gd.ToError(class(self).Initialize(Dictionary.Nil)))
 }
 
 /*
@@ -95,7 +97,7 @@ Valid [param options] are:
 [b]Note:[/b] You must keep a reference to channels created this way, or it will be closed.
 */
 func (self Instance) CreateDataChannel(label string) [1]gdclass.WebRTCDataChannel { //gd:WebRTCPeerConnection.create_data_channel
-	return [1]gdclass.WebRTCDataChannel(class(self).CreateDataChannel(gd.NewString(label), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary)))
+	return [1]gdclass.WebRTCDataChannel(class(self).CreateDataChannel(gd.NewString(label), Dictionary.Nil))
 }
 
 /*
@@ -216,9 +218,9 @@ Valid [param configuration] options are:
 [/codeblock]
 */
 //go:nosplit
-func (self class) Initialize(configuration gd.Dictionary) gd.Error { //gd:WebRTCPeerConnection.initialize
+func (self class) Initialize(configuration Dictionary.Any) gd.Error { //gd:WebRTCPeerConnection.initialize
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(configuration))
+	callframe.Arg(frame, configuration)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_initialize, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -246,10 +248,10 @@ Valid [param options] are:
 [b]Note:[/b] You must keep a reference to channels created this way, or it will be closed.
 */
 //go:nosplit
-func (self class) CreateDataChannel(label gd.String, options gd.Dictionary) [1]gdclass.WebRTCDataChannel { //gd:WebRTCPeerConnection.create_data_channel
+func (self class) CreateDataChannel(label gd.String, options Dictionary.Any) [1]gdclass.WebRTCDataChannel { //gd:WebRTCPeerConnection.create_data_channel
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(options))
+	callframe.Arg(frame, options)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_create_data_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.WebRTCDataChannel{gd.PointerWithOwnershipTransferredToGo[gdclass.WebRTCDataChannel](r_ret.Get())}

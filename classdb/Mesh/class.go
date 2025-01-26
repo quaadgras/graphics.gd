@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Vector2i"
@@ -27,6 +28,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Mesh is a type of [Resource] that contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials. The maximum number of surfaces per mesh is [constant RenderingServer.MAX_MESH_SURFACES].
@@ -177,12 +179,7 @@ func (Instance) _surface_get_lods(impl func(ptr unsafe.Pointer, index int) map[a
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
 	}
 }
 
@@ -492,18 +489,13 @@ func (class) _surface_get_blend_shape_arrays(impl func(ptr unsafe.Pointer, index
 /*
 Virtual method to override the surface LODs for a custom class extending [Mesh].
 */
-func (class) _surface_get_lods(impl func(ptr unsafe.Pointer, index gd.Int) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _surface_get_lods(impl func(ptr unsafe.Pointer, index gd.Int) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
-		ptr, ok := pointers.End(ret)
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 

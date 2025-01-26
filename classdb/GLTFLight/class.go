@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
@@ -25,6 +26,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Represents a light as defined by the [code]KHR_lights_punctual[/code] GLTF extension.
@@ -59,14 +61,14 @@ Creates a new GLTFLight instance by parsing the given [Dictionary].
 */
 func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFLight { //gd:GLTFLight.from_dictionary
 	self := Instance{}
-	return [1]gdclass.GLTFLight(class(self).FromDictionary(gd.NewVariant(dictionary).Interface().(gd.Dictionary)))
+	return [1]gdclass.GLTFLight(class(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
 }
 
 /*
 Serializes this GLTFLight instance into a [Dictionary].
 */
 func (self Instance) ToDictionary() map[any]any { //gd:GLTFLight.to_dictionary
-	return map[any]any(gd.DictionaryAs[any, any](class(self).ToDictionary()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ToDictionary()))
 }
 func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFLight.get_additional_data
 	return any(class(self).GetAdditionalData(gd.NewStringName(extension_name)).Interface())
@@ -173,9 +175,9 @@ func (self class) ToNode() [1]gdclass.Light3D { //gd:GLTFLight.to_node
 Creates a new GLTFLight instance by parsing the given [Dictionary].
 */
 //go:nosplit
-func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFLight { //gd:GLTFLight.from_dictionary
+func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFLight { //gd:GLTFLight.from_dictionary
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dictionary))
+	callframe.Arg(frame, dictionary)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_from_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GLTFLight{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFLight](r_ret.Get())}
@@ -187,11 +189,11 @@ func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFLight 
 Serializes this GLTFLight instance into a [Dictionary].
 */
 //go:nosplit
-func (self class) ToDictionary() gd.Dictionary { //gd:GLTFLight.to_dictionary
+func (self class) ToDictionary() Dictionary.Any { //gd:GLTFLight.to_dictionary
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_to_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

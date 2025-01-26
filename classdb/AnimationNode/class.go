@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/NodePath"
@@ -25,6 +26,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Base resource for [AnimationTree] nodes. In general, it's not used directly, but you can create custom ones with custom blending formulas.
@@ -94,12 +96,7 @@ func (Instance) _get_child_nodes(impl func(ptr unsafe.Pointer) map[any]any) (cb 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
 	}
 }
 
@@ -338,16 +335,11 @@ func (self Instance) SetFilterEnabled(value bool) {
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a [code]name: node[/code] dictionary.
 */
-func (class) _get_child_nodes(impl func(ptr unsafe.Pointer) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_child_nodes(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 

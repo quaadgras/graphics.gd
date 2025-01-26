@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -29,6 +30,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 A control for displaying text that can contain custom fonts, images, and basic formatting. [RichTextLabel] manages these as an internal tag stack. It also adapts itself to given width/heights.
@@ -308,7 +310,7 @@ func (self Instance) PushBgcolor(bgcolor Color.RGBA) { //gd:RichTextLabel.push_b
 Adds a custom effect tag to the tag stack. The effect does not need to be in [member custom_effects]. The environment is directly passed to the effect.
 */
 func (self Instance) PushCustomfx(effect [1]gdclass.RichTextEffect, env map[any]any) { //gd:RichTextLabel.push_customfx
-	class(self).PushCustomfx(effect, gd.NewVariant(env).Interface().(gd.Dictionary))
+	class(self).PushCustomfx(effect, gd.DictionaryFromMap(env))
 }
 
 /*
@@ -524,7 +526,7 @@ func (self Instance) GetParagraphOffset(paragraph int) Float.X { //gd:RichTextLa
 Parses BBCode parameter [param expressions] into a dictionary.
 */
 func (self Instance) ParseExpressionsForValues(expressions []string) map[any]any { //gd:RichTextLabel.parse_expressions_for_values
-	return map[any]any(gd.DictionaryAs[any, any](class(self).ParseExpressionsForValues(gd.NewPackedStringSlice(expressions))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ParseExpressionsForValues(gd.NewPackedStringSlice(expressions))))
 }
 
 /*
@@ -1317,10 +1319,10 @@ func (self class) PushBgcolor(bgcolor gd.Color) { //gd:RichTextLabel.push_bgcolo
 Adds a custom effect tag to the tag stack. The effect does not need to be in [member custom_effects]. The environment is directly passed to the effect.
 */
 //go:nosplit
-func (self class) PushCustomfx(effect [1]gdclass.RichTextEffect, env gd.Dictionary) { //gd:RichTextLabel.push_customfx
+func (self class) PushCustomfx(effect [1]gdclass.RichTextEffect, env Dictionary.Any) { //gd:RichTextLabel.push_customfx
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(effect[0])[0])
-	callframe.Arg(frame, pointers.Get(env))
+	callframe.Arg(frame, env)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_customfx, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2119,12 +2121,12 @@ func (self class) GetParagraphOffset(paragraph gd.Int) gd.Float { //gd:RichTextL
 Parses BBCode parameter [param expressions] into a dictionary.
 */
 //go:nosplit
-func (self class) ParseExpressionsForValues(expressions gd.PackedStringArray) gd.Dictionary { //gd:RichTextLabel.parse_expressions_for_values
+func (self class) ParseExpressionsForValues(expressions gd.PackedStringArray) Dictionary.Any { //gd:RichTextLabel.parse_expressions_for_values
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(expressions))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_parse_expressions_for_values, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -22,6 +23,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 [EditorExportPlugin]s are automatically invoked whenever the user exports the project. Their most common use is to determine what files are being included in the exported project. For each plugin, [method _export_begin] is called at the beginning of the export process and then [method _export_file] is called for each exported file.
@@ -362,7 +364,7 @@ func (Instance) _get_export_options(impl func(ptr unsafe.Pointer, platform [1]gd
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
-		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](ret)))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
 		if !ok {
 			return
@@ -400,12 +402,7 @@ func (Instance) _get_export_options_overrides(impl func(ptr unsafe.Pointer, plat
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
 	}
 }
 
@@ -906,7 +903,7 @@ Each element in the return value is a [Dictionary] with the following keys:
 - [code]default_value[/code]: The default value for this option.
 - [code]update_visibility[/code]: An optional boolean value. If set to [code]true[/code], the preset will emit [signal Object.property_list_changed] when the option is changed.
 */
-func (class) _get_export_options(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) Array.Contains[gd.Dictionary]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_export_options(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -944,19 +941,14 @@ class MyExportPlugin extends EditorExportPlugin:
 
 [/codeblock]
 */
-func (class) _get_export_options_overrides(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_export_options_overrides(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
-		ptr, ok := pointers.End(ret)
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 

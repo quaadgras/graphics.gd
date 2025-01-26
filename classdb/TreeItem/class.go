@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
@@ -25,6 +26,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 A single item of a [Tree] control. It can contain other [TreeItem]s as children, which allows it to create a hierarchy. It can also contain text and buttons. [TreeItem] is not a [Node], it is internal to the [Tree].
@@ -300,7 +302,7 @@ func (self Instance) SetRangeConfig(column int, min Float.X, max Float.X, step F
 Returns a dictionary containing the range parameters for a given column. The keys are "min", "max", "step", and "expr".
 */
 func (self Instance) GetRangeConfig(column int) map[any]any { //gd:TreeItem.get_range_config
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetRangeConfig(gd.Int(column))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetRangeConfig(gd.Int(column))))
 }
 
 /*
@@ -1315,12 +1317,12 @@ func (self class) SetRangeConfig(column gd.Int, min gd.Float, max gd.Float, step
 Returns a dictionary containing the range parameters for a given column. The keys are "min", "max", "step", and "expr".
 */
 //go:nosplit
-func (self class) GetRangeConfig(column gd.Int) gd.Dictionary { //gd:TreeItem.get_range_config
+func (self class) GetRangeConfig(column gd.Int) Dictionary.Any { //gd:TreeItem.get_range_config
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_range_config, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

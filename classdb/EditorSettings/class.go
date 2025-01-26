@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -23,6 +24,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Object that holds the project-independent editor settings. These settings are generally visible in the [b]Editor > Editor Settings[/b] menu.
@@ -131,7 +133,7 @@ settings.AddPropertyInfo(propertyInfo);
 [/codeblocks]
 */
 func (self Instance) AddPropertyInfo(info map[any]any) { //gd:EditorSettings.add_property_info
-	class(self).AddPropertyInfo(gd.NewVariant(info).Interface().(gd.Dictionary))
+	class(self).AddPropertyInfo(gd.DictionaryFromMap(info))
 }
 
 /*
@@ -327,9 +329,9 @@ settings.AddPropertyInfo(propertyInfo);
 [/codeblocks]
 */
 //go:nosplit
-func (self class) AddPropertyInfo(info gd.Dictionary) { //gd:EditorSettings.add_property_info
+func (self class) AddPropertyInfo(info Dictionary.Any) { //gd:EditorSettings.add_property_info
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(info))
+	callframe.Arg(frame, info)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_add_property_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

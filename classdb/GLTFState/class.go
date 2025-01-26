@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -24,6 +25,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Contains all nodes and resources of a GLTF file. This is used by [GLTFDocument] as data storage, which allows [GLTFDocument] and all [GLTFDocumentExtension] classes to remain stateless.
@@ -119,11 +121,11 @@ func New() Instance {
 }
 
 func (self Instance) Json() map[any]any {
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetJson()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetJson()))
 }
 
 func (self Instance) SetJson(value map[any]any) {
-	class(self).SetJson(gd.NewVariant(value).Interface().(gd.Dictionary))
+	class(self).SetJson(gd.DictionaryFromMap(value))
 }
 
 func (self Instance) MajorVersion() int {
@@ -387,19 +389,19 @@ func (self class) AppendDataToBuffers(data gd.PackedByteArray, deduplication boo
 }
 
 //go:nosplit
-func (self class) GetJson() gd.Dictionary { //gd:GLTFState.get_json
+func (self class) GetJson() Dictionary.Any { //gd:GLTFState.get_json
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_json, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetJson(json gd.Dictionary) { //gd:GLTFState.set_json
+func (self class) SetJson(json Dictionary.Any) { //gd:GLTFState.set_json
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(json))
+	callframe.Arg(frame, json)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_json, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

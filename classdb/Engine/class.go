@@ -13,6 +13,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -24,6 +25,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 The [Engine] singleton allows you to query and modify the project's run-time parameters, such as frames per second, time scale, and others. It also stores information about the current build of Godot, such as the current version.
@@ -174,7 +176,7 @@ else
 */
 func GetVersionInfo() map[any]any { //gd:Engine.get_version_info
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetVersionInfo()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetVersionInfo()))
 }
 
 /*
@@ -182,7 +184,7 @@ Returns the engine author information as a [Dictionary], where each entry is an 
 */
 func GetAuthorInfo() map[any]any { //gd:Engine.get_author_info
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetAuthorInfo()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetAuthorInfo()))
 }
 
 /*
@@ -203,7 +205,7 @@ Returns a [Dictionary] of categorized donor names. Each entry is an [Array] of s
 */
 func GetDonorInfo() map[any]any { //gd:Engine.get_donor_info
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetDonorInfo()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetDonorInfo()))
 }
 
 /*
@@ -211,7 +213,7 @@ Returns a [Dictionary] of licenses used by Godot and included third party compon
 */
 func GetLicenseInfo() map[any]any { //gd:Engine.get_license_info
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetLicenseInfo()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetLicenseInfo()))
 }
 
 /*
@@ -717,11 +719,11 @@ else
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetVersionInfo() gd.Dictionary { //gd:Engine.get_version_info
+func (self class) GetVersionInfo() Dictionary.Any { //gd:Engine.get_version_info
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_version_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -730,11 +732,11 @@ func (self class) GetVersionInfo() gd.Dictionary { //gd:Engine.get_version_info
 Returns the engine author information as a [Dictionary], where each entry is an [Array] of strings with the names of notable contributors to the Godot Engine: [code]lead_developers[/code], [code]founders[/code], [code]project_managers[/code], and [code]developers[/code].
 */
 //go:nosplit
-func (self class) GetAuthorInfo() gd.Dictionary { //gd:Engine.get_author_info
+func (self class) GetAuthorInfo() Dictionary.Any { //gd:Engine.get_author_info
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_author_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -747,11 +749,11 @@ Every [Dictionary] contains a [code]name[/code] identifier, and a [code]parts[/c
 - [code]license[/code] - The license applied to this component (such as "[url=https://en.wikipedia.org/wiki/MIT_License#Ambiguity_and_variants]Expat[/url]" or "[url=https://creativecommons.org/licenses/by/4.0/]CC-BY-4.0[/url]").
 */
 //go:nosplit
-func (self class) GetCopyrightInfo() Array.Contains[gd.Dictionary] { //gd:Engine.get_copyright_info
+func (self class) GetCopyrightInfo() Array.Contains[Dictionary.Any] { //gd:Engine.get_copyright_info
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_copyright_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -761,11 +763,11 @@ Returns a [Dictionary] of categorized donor names. Each entry is an [Array] of s
 {[code]platinum_sponsors[/code], [code]gold_sponsors[/code], [code]silver_sponsors[/code], [code]bronze_sponsors[/code], [code]mini_sponsors[/code], [code]gold_donors[/code], [code]silver_donors[/code], [code]bronze_donors[/code]}
 */
 //go:nosplit
-func (self class) GetDonorInfo() gd.Dictionary { //gd:Engine.get_donor_info
+func (self class) GetDonorInfo() Dictionary.Any { //gd:Engine.get_donor_info
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_donor_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -774,11 +776,11 @@ func (self class) GetDonorInfo() gd.Dictionary { //gd:Engine.get_donor_info
 Returns a [Dictionary] of licenses used by Godot and included third party components. Each entry is a license name (such as "[url=https://en.wikipedia.org/wiki/MIT_License#Ambiguity_and_variants]Expat[/url]") and its associated text.
 */
 //go:nosplit
-func (self class) GetLicenseInfo() gd.Dictionary { //gd:Engine.get_license_info
+func (self class) GetLicenseInfo() Dictionary.Any { //gd:Engine.get_license_info
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_license_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

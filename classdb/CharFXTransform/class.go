@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Float"
@@ -28,6 +29,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 By setting various properties on this object, you can control how individual characters will be displayed in a [RichTextEffect].
@@ -118,11 +120,11 @@ func (self Instance) SetColor(value Color.RGBA) {
 }
 
 func (self Instance) Env() map[any]any {
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetEnvironment()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetEnvironment()))
 }
 
 func (self Instance) SetEnv(value map[any]any) {
-	class(self).SetEnvironment(gd.NewVariant(value).Interface().(gd.Dictionary))
+	class(self).SetEnvironment(gd.DictionaryFromMap(value))
 }
 
 func (self Instance) GlyphIndex() int {
@@ -299,19 +301,19 @@ func (self class) SetColor(color gd.Color) { //gd:CharFXTransform.set_color
 }
 
 //go:nosplit
-func (self class) GetEnvironment() gd.Dictionary { //gd:CharFXTransform.get_environment
+func (self class) GetEnvironment() Dictionary.Any { //gd:CharFXTransform.get_environment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharFXTransform.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetEnvironment(environment gd.Dictionary) { //gd:CharFXTransform.set_environment
+func (self class) SetEnvironment(environment Dictionary.Any) { //gd:CharFXTransform.set_environment
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(environment))
+	callframe.Arg(frame, environment)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharFXTransform.Bind_set_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

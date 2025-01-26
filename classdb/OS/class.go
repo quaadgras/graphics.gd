@@ -13,6 +13,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -23,6 +24,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 The [OS] class wraps the most common functionalities for communicating with the host operating system, such as the video driver, delays, environment variables, execution of binaries, command line, etc.
@@ -219,7 +221,7 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 */
 func ExecuteWithPipe(path string, arguments []string) map[any]any { //gd:OS.execute_with_pipe
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[any, any](class(self).ExecuteWithPipe(gd.NewString(path), gd.NewPackedStringSlice(arguments))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ExecuteWithPipe(gd.NewString(path), gd.NewPackedStringSlice(arguments))))
 }
 
 /*
@@ -650,7 +652,7 @@ Returns a [Dictionary] containing information about the current memory with the 
 */
 func GetMemoryInfo() map[any]any { //gd:OS.get_memory_info
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetMemoryInfo()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetMemoryInfo()))
 }
 
 /*
@@ -1255,13 +1257,13 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
 //go:nosplit
-func (self class) ExecuteWithPipe(path gd.String, arguments gd.PackedStringArray) gd.Dictionary { //gd:OS.execute_with_pipe
+func (self class) ExecuteWithPipe(path gd.String, arguments gd.PackedStringArray) Dictionary.Any { //gd:OS.execute_with_pipe
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(arguments))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_execute_with_pipe, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -1849,11 +1851,11 @@ Returns a [Dictionary] containing information about the current memory with the 
 [b]Note:[/b] Each entry's value may be [code]-1[/code] if it is unknown.
 */
 //go:nosplit
-func (self class) GetMemoryInfo() gd.Dictionary { //gd:OS.get_memory_info
+func (self class) GetMemoryInfo() Dictionary.Any { //gd:OS.get_memory_info
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_memory_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

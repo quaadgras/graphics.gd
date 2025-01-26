@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 
 var _ Object.ID
@@ -23,6 +24,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 This object is used by [RenderingDevice].
@@ -54,8 +56,8 @@ func (self Instance) ClearIds() { //gd:RDUniform.clear_ids
 /*
 Returns an array of all ids currently bound to the uniform.
 */
-func (self Instance) GetIds() [][]gd.RID { //gd:RDUniform.get_ids
-	return [][]gd.RID(gd.ArrayAs[[][]gd.RID](gd.InternalArray(class(self).GetIds())))
+func (self Instance) GetIds() [][]RID.Any { //gd:RDUniform.get_ids
+	return [][]RID.Any(gd.ArrayAs[[][]RID.Any](gd.InternalArray(class(self).GetIds())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

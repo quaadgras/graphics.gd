@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2i"
@@ -25,6 +26,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 ImporterMesh is a type of [Resource] analogous to [ArrayMesh]. It contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials.
@@ -85,7 +87,7 @@ The [param flags] argument is the bitwise or of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 func (self Instance) AddSurface(primitive gdclass.MeshPrimitiveType, arrays []any) { //gd:ImporterMesh.add_surface
-	class(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), [1][1]gdclass.Material{}[0], gd.NewString(""), gd.Int(0))
+	class(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), Dictionary.Nil, [1][1]gdclass.Material{}[0], gd.NewString(""), gd.Int(0))
 }
 
 /*
@@ -305,12 +307,12 @@ The [param flags] argument is the bitwise or of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 //go:nosplit
-func (self class) AddSurface(primitive gdclass.MeshPrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods gd.Dictionary, material [1]gdclass.Material, name gd.String, flags gd.Int) { //gd:ImporterMesh.add_surface
+func (self class) AddSurface(primitive gdclass.MeshPrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods Dictionary.Any, material [1]gdclass.Material, name gd.String, flags gd.Int) { //gd:ImporterMesh.add_surface
 	var frame = callframe.New()
 	callframe.Arg(frame, primitive)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(blend_shapes)))
-	callframe.Arg(frame, pointers.Get(lods))
+	callframe.Arg(frame, lods)
 	callframe.Arg(frame, pointers.Get(material[0])[0])
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, flags)

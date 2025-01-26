@@ -1,9 +1,15 @@
 package variant
 
-import "reflect"
+import (
+	"reflect"
+)
 
 // As coerces a variant to a specific type.
 func As[T any](variant Any) T {
+	al, ok := any(variant).(T)
+	if ok {
+		return al
+	}
 	ez, ok := variant.Interface().(T)
 	if ok {
 		return ez
@@ -22,6 +28,10 @@ func As[T any](variant Any) T {
 		val.SetString(variant.String())
 	case reflect.Complex64, reflect.Complex128:
 		val.SetComplex(variant.Complex128())
+	case reflect.Interface:
+		if reflect.TypeFor[T]() == reflect.TypeFor[any]() {
+			val.Set(reflect.ValueOf(variant.Interface()))
+		}
 	}
 	return val.Interface().(T)
 }

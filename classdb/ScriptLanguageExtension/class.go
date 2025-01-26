@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/ScriptLanguage"
 
 var _ Object.ID
@@ -23,6 +24,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 type Instance [1]gdclass.ScriptLanguageExtension
 
@@ -314,7 +316,7 @@ func (Instance) _get_built_in_templates(impl func(ptr unsafe.Pointer, obj string
 		defer pointers.End(obj)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj.String())
-		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](ret)))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
 		if !ok {
 			return
@@ -345,12 +347,7 @@ func (Instance) _validate(impl func(ptr unsafe.Pointer, script string, path stri
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, script.String(), path.String(), validate_functions, validate_errors, validate_warnings, validate_safe_lines)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
 	}
 }
 func (Instance) _validate_path(impl func(ptr unsafe.Pointer, path string) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -485,12 +482,7 @@ func (Instance) _complete_code(impl func(ptr unsafe.Pointer, code string, path s
 		defer pointers.End(owner[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, code.String(), path.String(), owner)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
 	}
 }
 func (Instance) _lookup_code(impl func(ptr unsafe.Pointer, code string, symbol string, path string, owner Object.Instance) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -505,12 +497,7 @@ func (Instance) _lookup_code(impl func(ptr unsafe.Pointer, code string, symbol s
 		defer pointers.End(owner[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, code.String(), symbol.String(), path.String(), owner)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
 	}
 }
 func (Instance) _auto_indent_code(impl func(ptr unsafe.Pointer, code string, from_line int, to_line int) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -641,12 +628,7 @@ func (Instance) _debug_get_stack_level_locals(impl func(ptr unsafe.Pointer, leve
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(level), int(max_subitems), int(max_depth))
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
 	}
 }
 func (Instance) _debug_get_stack_level_members(impl func(ptr unsafe.Pointer, level int, max_subitems int, max_depth int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -659,12 +641,7 @@ func (Instance) _debug_get_stack_level_members(impl func(ptr unsafe.Pointer, lev
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(level), int(max_subitems), int(max_depth))
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
 	}
 }
 func (Instance) _debug_get_stack_level_instance(impl func(ptr unsafe.Pointer, level int) unsafe.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -684,12 +661,7 @@ func (Instance) _debug_get_globals(impl func(ptr unsafe.Pointer, max_subitems in
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(max_subitems), int(max_depth))
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
 	}
 }
 func (Instance) _debug_parse_stack_level_expression(impl func(ptr unsafe.Pointer, level int, expression string, max_subitems int, max_depth int) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -716,7 +688,7 @@ func (Instance) _debug_get_current_stack_info(impl func(ptr unsafe.Pointer) []ma
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](ret)))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
 		if !ok {
 			return
@@ -757,7 +729,7 @@ func (Instance) _get_public_functions(impl func(ptr unsafe.Pointer) []map[any]an
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](ret)))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
 		if !ok {
 			return
@@ -769,19 +741,14 @@ func (Instance) _get_public_constants(impl func(ptr unsafe.Pointer) map[any]any)
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
 	}
 }
 func (Instance) _get_public_annotations(impl func(ptr unsafe.Pointer) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](ret)))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
 		if !ok {
 			return
@@ -852,12 +819,7 @@ func (Instance) _get_global_class_name(impl func(ptr unsafe.Pointer, path string
 		defer pointers.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String())
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
 	}
 }
 
@@ -1013,7 +975,7 @@ func (class) _make_template(impl func(ptr unsafe.Pointer, template gd.String, cl
 	}
 }
 
-func (class) _get_built_in_templates(impl func(ptr unsafe.Pointer, obj gd.StringName) Array.Contains[gd.Dictionary]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_built_in_templates(impl func(ptr unsafe.Pointer, obj gd.StringName) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(obj)
@@ -1036,7 +998,7 @@ func (class) _is_using_templates(impl func(ptr unsafe.Pointer) bool) (cb gd.Exte
 	}
 }
 
-func (class) _validate(impl func(ptr unsafe.Pointer, script gd.String, path gd.String, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _validate(impl func(ptr unsafe.Pointer, script gd.String, path gd.String, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var script = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(script)
@@ -1052,12 +1014,7 @@ func (class) _validate(impl func(ptr unsafe.Pointer, script gd.String, path gd.S
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, script, path, validate_functions, validate_errors, validate_warnings, validate_safe_lines)
-		ptr, ok := pointers.End(ret)
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 
@@ -1194,7 +1151,7 @@ func (class) _preferred_file_name_casing(impl func(ptr unsafe.Pointer) gdclass.S
 	}
 }
 
-func (class) _complete_code(impl func(ptr unsafe.Pointer, code gd.String, path gd.String, owner [1]gd.Object) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _complete_code(impl func(ptr unsafe.Pointer, code gd.String, path gd.String, owner [1]gd.Object) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var code = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(code)
@@ -1204,16 +1161,11 @@ func (class) _complete_code(impl func(ptr unsafe.Pointer, code gd.String, path g
 		defer pointers.End(owner[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, code, path, owner)
-		ptr, ok := pointers.End(ret)
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _lookup_code(impl func(ptr unsafe.Pointer, code gd.String, symbol gd.String, path gd.String, owner [1]gd.Object) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _lookup_code(impl func(ptr unsafe.Pointer, code gd.String, symbol gd.String, path gd.String, owner [1]gd.Object) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var code = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(code)
@@ -1225,12 +1177,7 @@ func (class) _lookup_code(impl func(ptr unsafe.Pointer, code gd.String, symbol g
 		defer pointers.End(owner[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, code, symbol, path, owner)
-		ptr, ok := pointers.End(ret)
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 
@@ -1362,7 +1309,7 @@ func (class) _debug_get_stack_level_source(impl func(ptr unsafe.Pointer, level g
 	}
 }
 
-func (class) _debug_get_stack_level_locals(impl func(ptr unsafe.Pointer, level gd.Int, max_subitems gd.Int, max_depth gd.Int) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _debug_get_stack_level_locals(impl func(ptr unsafe.Pointer, level gd.Int, max_subitems gd.Int, max_depth gd.Int) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[gd.Int](p_args, 0)
 
@@ -1372,16 +1319,11 @@ func (class) _debug_get_stack_level_locals(impl func(ptr unsafe.Pointer, level g
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, level, max_subitems, max_depth)
-		ptr, ok := pointers.End(ret)
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _debug_get_stack_level_members(impl func(ptr unsafe.Pointer, level gd.Int, max_subitems gd.Int, max_depth gd.Int) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _debug_get_stack_level_members(impl func(ptr unsafe.Pointer, level gd.Int, max_subitems gd.Int, max_depth gd.Int) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[gd.Int](p_args, 0)
 
@@ -1391,12 +1333,7 @@ func (class) _debug_get_stack_level_members(impl func(ptr unsafe.Pointer, level 
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, level, max_subitems, max_depth)
-		ptr, ok := pointers.End(ret)
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 
@@ -1410,7 +1347,7 @@ func (class) _debug_get_stack_level_instance(impl func(ptr unsafe.Pointer, level
 	}
 }
 
-func (class) _debug_get_globals(impl func(ptr unsafe.Pointer, max_subitems gd.Int, max_depth gd.Int) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _debug_get_globals(impl func(ptr unsafe.Pointer, max_subitems gd.Int, max_depth gd.Int) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var max_subitems = gd.UnsafeGet[gd.Int](p_args, 0)
 
@@ -1418,12 +1355,7 @@ func (class) _debug_get_globals(impl func(ptr unsafe.Pointer, max_subitems gd.In
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, max_subitems, max_depth)
-		ptr, ok := pointers.End(ret)
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 
@@ -1448,7 +1380,7 @@ func (class) _debug_parse_stack_level_expression(impl func(ptr unsafe.Pointer, l
 	}
 }
 
-func (class) _debug_get_current_stack_info(impl func(ptr unsafe.Pointer) Array.Contains[gd.Dictionary]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _debug_get_current_stack_info(impl func(ptr unsafe.Pointer) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -1493,7 +1425,7 @@ func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) gd.PackedS
 	}
 }
 
-func (class) _get_public_functions(impl func(ptr unsafe.Pointer) Array.Contains[gd.Dictionary]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_public_functions(impl func(ptr unsafe.Pointer) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -1506,20 +1438,15 @@ func (class) _get_public_functions(impl func(ptr unsafe.Pointer) Array.Contains[
 	}
 }
 
-func (class) _get_public_constants(impl func(ptr unsafe.Pointer) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_public_constants(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _get_public_annotations(impl func(ptr unsafe.Pointer) Array.Contains[gd.Dictionary]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_public_annotations(impl func(ptr unsafe.Pointer) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -1596,18 +1523,13 @@ func (class) _handles_global_class_type(impl func(ptr unsafe.Pointer, atype gd.S
 	}
 }
 
-func (class) _get_global_class_name(impl func(ptr unsafe.Pointer, path gd.String) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_global_class_name(impl func(ptr unsafe.Pointer, path gd.String) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path)
-		ptr, ok := pointers.End(ret)
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 

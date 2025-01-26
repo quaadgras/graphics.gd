@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/TextEdit"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -27,6 +28,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 CodeEdit is a specialized [TextEdit] designed for editing plain text code files. It has many features commonly found in code editors such as line numbers, line folding, code completion, indent management, and string/comment management.
@@ -96,11 +98,11 @@ Both [param candidates] and the return is a [Array] of [Dictionary], see [method
 */
 func (Instance) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, candidates []map[any]any) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var candidates = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		var candidates = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalArray(candidates))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gd.ArrayAs[[]map[any]any](gd.InternalArray(candidates)))
-		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](ret)))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
 		if !ok {
 			return
@@ -521,7 +523,7 @@ Gets the completion option at [param index]. The return [Dictionary] has the fol
 [code]default_value[/code]: Value of the symbol.
 */
 func (self Instance) GetCodeCompletionOption(index int) map[any]any { //gd:CodeEdit.get_code_completion_option
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetCodeCompletionOption(gd.Int(index))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetCodeCompletionOption(gd.Int(index))))
 }
 
 /*
@@ -779,11 +781,11 @@ func (self Instance) SetAutoBraceCompletionHighlightMatching(value bool) {
 }
 
 func (self Instance) AutoBraceCompletionPairs() map[any]any {
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetAutoBraceCompletionPairs()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetAutoBraceCompletionPairs()))
 }
 
 func (self Instance) SetAutoBraceCompletionPairs(value map[any]any) {
-	class(self).SetAutoBraceCompletionPairs(gd.NewVariant(value).Interface().(gd.Dictionary))
+	class(self).SetAutoBraceCompletionPairs(gd.DictionaryFromMap(value))
 }
 
 /*
@@ -814,9 +816,9 @@ func (class) _request_code_completion(impl func(ptr unsafe.Pointer, force bool))
 Override this method to define what items in [param candidates] should be displayed.
 Both [param candidates] and the return is a [Array] of [Dictionary], see [method get_code_completion_option] for [Dictionary] content.
 */
-func (class) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, candidates Array.Contains[gd.Dictionary]) Array.Contains[gd.Dictionary]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, candidates Array.Contains[Dictionary.Any]) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var candidates = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		var candidates = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalArray(candidates))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, candidates)
@@ -1005,20 +1007,20 @@ func (self class) AddAutoBraceCompletionPair(start_key gd.String, end_key gd.Str
 }
 
 //go:nosplit
-func (self class) SetAutoBraceCompletionPairs(pairs gd.Dictionary) { //gd:CodeEdit.set_auto_brace_completion_pairs
+func (self class) SetAutoBraceCompletionPairs(pairs Dictionary.Any) { //gd:CodeEdit.set_auto_brace_completion_pairs
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(pairs))
+	callframe.Arg(frame, pairs)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_auto_brace_completion_pairs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAutoBraceCompletionPairs() gd.Dictionary { //gd:CodeEdit.get_auto_brace_completion_pairs
+func (self class) GetAutoBraceCompletionPairs() Dictionary.Any { //gd:CodeEdit.get_auto_brace_completion_pairs
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_auto_brace_completion_pairs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -1858,11 +1860,11 @@ func (self class) UpdateCodeCompletionOptions(force bool) { //gd:CodeEdit.update
 Gets all completion options, see [method get_code_completion_option] for return content.
 */
 //go:nosplit
-func (self class) GetCodeCompletionOptions() Array.Contains[gd.Dictionary] { //gd:CodeEdit.get_code_completion_options
+func (self class) GetCodeCompletionOptions() Array.Contains[Dictionary.Any] { //gd:CodeEdit.get_code_completion_options
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_options, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1877,12 +1879,12 @@ Gets the completion option at [param index]. The return [Dictionary] has the fol
 [code]default_value[/code]: Value of the symbol.
 */
 //go:nosplit
-func (self class) GetCodeCompletionOption(index gd.Int) gd.Dictionary { //gd:CodeEdit.get_code_completion_option
+func (self class) GetCodeCompletionOption(index gd.Int) Dictionary.Any { //gd:CodeEdit.get_code_completion_option
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_option, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

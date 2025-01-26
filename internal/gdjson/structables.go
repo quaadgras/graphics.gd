@@ -4,14 +4,10 @@ import (
 	"net/netip"
 	"reflect"
 
-	"graphics.gd/classdb/Resource"
-	gd "graphics.gd/internal"
-	"graphics.gd/internal/gdclass"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Float"
-	"graphics.gd/variant/Object"
-	SignalType "graphics.gd/variant/Signal"
+	"graphics.gd/variant/RID"
 	"graphics.gd/variant/Vector2"
 	"graphics.gd/variant/Vector2i"
 	"graphics.gd/variant/Vector3"
@@ -35,7 +31,7 @@ type SignalInfo struct { // FIXME
 }
 
 type CompletionInfo struct {
-	Kind         gdclass.CodeEditCodeCompletionKind
+	Kind         any //gdclass.CodeEditCodeCompletionKind
 	DisplayText  string
 	InsertText   string
 	FontColor    Color.RGBA
@@ -132,8 +128,8 @@ type ResponseError struct {
 }
 
 type Pipe struct {
-	Stdio  [1]gdclass.FileAccess
-	Stderr [1]gdclass.FileAccess
+	Stdio  any //[1]gdclass.FileAccess
+	Stderr any //[1]gdclass.FileAccess
 	PID    int
 }
 
@@ -145,39 +141,39 @@ type MemoryInfo struct {
 }
 
 type PhysicsDirectSpaceState2D_Intersection struct {
-	Collider   gd.Object
-	ColliderID Object.ID
+	Collider   any
+	ColliderID int64 //Object.ID
 	Normal     Vector2.XY
 	Position   Vector2.XY
-	RID        Resource.ID
+	RID        RID.Any
 	Shape      int
 }
 
 type PhysicsDirectSpaceState2D_RestInfo struct {
-	ColliderID     Object.ID
+	ColliderID     int64
 	LinearVelocity Vector2.XY
 	Normal         Vector2.XY
 	Point          Vector2.XY
-	RID            Resource.ID
+	RID            RID.Any
 	Shape          int
 }
 
 type PhysicsDirectSpaceState3D_Intersection struct {
-	Collider   gd.Object
-	ColliderID Object.ID
+	Collider   any
+	ColliderID int64
 	Normal     Vector3.XYZ
 	Position   Vector3.XYZ
 	FaceIndex  int
-	RID        Resource.ID
+	RID        RID.Any
 	Shape      int
 }
 
 type PhysicsDirectSpaceState3D_RestInfo struct {
-	ColliderID     Object.ID
+	ColliderID     int64
 	LinearVelocity Vector3.XYZ
 	Normal         Vector3.XYZ
 	Point          Vector3.XYZ
-	RID            Resource.ID
+	RID            RID.Any
 	Shape          int
 }
 
@@ -217,8 +213,8 @@ type RangeConfig struct {
 }
 
 type Conn struct {
-	Connection [1]gdclass.WebRTCPeerConnection
-	Channels   [][1]gdclass.WebRTCDataChannel
+	Connection any //[1]gdclass.WebRTCPeerConnection
+	Channels   any //[][1]gdclass.WebRTCDataChannel
 	Connected  bool
 }
 
@@ -267,7 +263,7 @@ type LocalInterface struct {
 }
 
 type SignalConnection struct {
-	Signal   SignalType.Any
+	Signal   any //SignalType.Any
 	Callable Callable.Function
 	//Flags    Signal.ConnectFlags
 }
@@ -275,9 +271,9 @@ type SignalConnection struct {
 type GlobalClass struct {
 	Base     string
 	Class    string
-	Icon     Resource.Path
+	Icon     string
 	Language string
-	Path     Resource.Path
+	Path     string
 }
 
 var Structables = map[string]reflect.Type{

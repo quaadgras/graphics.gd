@@ -42,7 +42,10 @@ func As[P Proxy[T], T any](array Contains[T], alloc func() (P, complex128)) (P, 
 			proxy, state := alloc()
 			proxy.Resize(state, view.Len(array.state))
 			for i := 0; i < view.Len(array.state); i++ {
-				proxy.SetIndex(state, i, any(view.Index(array.state, i)).(T))
+				proxy.SetIndex(state, i, variant.As[T](view.Index(array.state, i)))
+			}
+			if view.IsReadOnly(array.state) {
+				proxy.MakeReadOnly(state)
 			}
 			view.pass(any(proxy).(Proxy[variant.Any]), state)
 			return proxy, state
@@ -53,6 +56,9 @@ func As[P Proxy[T], T any](array Contains[T], alloc func() (P, complex128)) (P, 
 	proxy.Resize(state, local.Len(array.state))
 	for i := 0; i < local.Len(array.state); i++ {
 		proxy.SetIndex(state, i, local.Index(array.state, i))
+	}
+	if local.IsReadOnly(array.state) {
+		proxy.MakeReadOnly(state)
 	}
 	local.slice = nil
 	local.proxy = proxy

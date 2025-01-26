@@ -13,6 +13,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -23,6 +24,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Provides access to metadata stored for every available class.
@@ -104,7 +106,7 @@ Returns the [param signal] data of [param class] or its ancestry. The returned v
 */
 func ClassGetSignal(class_ string, signal string) map[any]any { //gd:ClassDB.class_get_signal
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[any, any](class(self).ClassGetSignal(gd.NewStringName(class_), gd.NewStringName(signal))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ClassGetSignal(gd.NewStringName(class_), gd.NewStringName(signal))))
 }
 
 /*
@@ -371,13 +373,13 @@ func (self class) ClassHasSignal(class_ gd.StringName, signal gd.StringName) boo
 Returns the [param signal] data of [param class] or its ancestry. The returned value is a [Dictionary] with the following keys: [code]args[/code], [code]default_args[/code], [code]flags[/code], [code]id[/code], [code]name[/code], [code]return: (class_name, hint, hint_string, name, type, usage)[/code].
 */
 //go:nosplit
-func (self class) ClassGetSignal(class_ gd.StringName, signal gd.StringName) gd.Dictionary { //gd:ClassDB.class_get_signal
+func (self class) ClassGetSignal(class_ gd.StringName, signal gd.StringName) Dictionary.Any { //gd:ClassDB.class_get_signal
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(signal))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_signal, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -386,13 +388,13 @@ func (self class) ClassGetSignal(class_ gd.StringName, signal gd.StringName) gd.
 Returns an array with all the signals of [param class] or its ancestry if [param no_inheritance] is [code]false[/code]. Every element of the array is a [Dictionary] as described in [method class_get_signal].
 */
 //go:nosplit
-func (self class) ClassGetSignalList(class_ gd.StringName, no_inheritance bool) Array.Contains[gd.Dictionary] { //gd:ClassDB.class_get_signal_list
+func (self class) ClassGetSignalList(class_ gd.StringName, no_inheritance bool) Array.Contains[Dictionary.Any] { //gd:ClassDB.class_get_signal_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_signal_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -401,13 +403,13 @@ func (self class) ClassGetSignalList(class_ gd.StringName, no_inheritance bool) 
 Returns an array with all the properties of [param class] or its ancestry if [param no_inheritance] is [code]false[/code].
 */
 //go:nosplit
-func (self class) ClassGetPropertyList(class_ gd.StringName, no_inheritance bool) Array.Contains[gd.Dictionary] { //gd:ClassDB.class_get_property_list
+func (self class) ClassGetPropertyList(class_ gd.StringName, no_inheritance bool) Array.Contains[Dictionary.Any] { //gd:ClassDB.class_get_property_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -495,13 +497,13 @@ Returns an array with all the methods of [param class] or its ancestry if [param
 [b]Note:[/b] In exported release builds the debug info is not available, so the returned dictionaries will contain only method names.
 */
 //go:nosplit
-func (self class) ClassGetMethodList(class_ gd.StringName, no_inheritance bool) Array.Contains[gd.Dictionary] { //gd:ClassDB.class_get_method_list
+func (self class) ClassGetMethodList(class_ gd.StringName, no_inheritance bool) Array.Contains[Dictionary.Any] { //gd:ClassDB.class_get_method_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_method_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

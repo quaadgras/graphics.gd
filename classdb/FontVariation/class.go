@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
@@ -26,6 +27,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Provides OpenType variations, simulated bold / slant, and additional font settings like OpenType features and extra spacing.
@@ -92,11 +94,11 @@ func (self Instance) SetBaseFont(value [1]gdclass.Font) {
 }
 
 func (self Instance) VariationOpentype() map[any]any {
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetVariationOpentype()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetVariationOpentype()))
 }
 
 func (self Instance) SetVariationOpentype(value map[any]any) {
-	class(self).SetVariationOpentype(gd.NewVariant(value).Interface().(gd.Dictionary))
+	class(self).SetVariationOpentype(gd.DictionaryFromMap(value))
 }
 
 func (self Instance) VariationFaceIndex() int {
@@ -124,7 +126,7 @@ func (self Instance) SetVariationTransform(value Transform2D.OriginXY) {
 }
 
 func (self Instance) SetOpentypeFeatures(value map[any]any) {
-	class(self).SetOpentypeFeatures(gd.NewVariant(value).Interface().(gd.Dictionary))
+	class(self).SetOpentypeFeatures(gd.DictionaryFromMap(value))
 }
 
 func (self Instance) SetSpacingGlyph(value int) {
@@ -171,20 +173,20 @@ func (self class) GetBaseFont() [1]gdclass.Font { //gd:FontVariation.get_base_fo
 }
 
 //go:nosplit
-func (self class) SetVariationOpentype(coords gd.Dictionary) { //gd:FontVariation.set_variation_opentype
+func (self class) SetVariationOpentype(coords Dictionary.Any) { //gd:FontVariation.set_variation_opentype
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(coords))
+	callframe.Arg(frame, coords)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_variation_opentype, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetVariationOpentype() gd.Dictionary { //gd:FontVariation.get_variation_opentype
+func (self class) GetVariationOpentype() Dictionary.Any { //gd:FontVariation.get_variation_opentype
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_opentype, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -247,9 +249,9 @@ func (self class) GetVariationTransform() gd.Transform2D { //gd:FontVariation.ge
 }
 
 //go:nosplit
-func (self class) SetOpentypeFeatures(features gd.Dictionary) { //gd:FontVariation.set_opentype_features
+func (self class) SetOpentypeFeatures(features Dictionary.Any) { //gd:FontVariation.set_opentype_features
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(features))
+	callframe.Arg(frame, features)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_opentype_features, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

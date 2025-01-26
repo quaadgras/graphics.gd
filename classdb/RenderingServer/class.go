@@ -13,6 +13,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Transform3D"
@@ -36,6 +37,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 The rendering server is the API backend for everything visible. The whole scene system mounts on it to display. The rendering server is completely opaque: the internals are entirely implementation-specific and cannot be accessed.
@@ -354,7 +356,7 @@ func MaterialSetNextPass(material RID.Material, next_material RID.Material) { //
 }
 func MeshCreateFromSurfaces(surfaces []map[any]any) RID.Mesh { //gd:RenderingServer.mesh_create_from_surfaces
 	once.Do(singleton)
-	return RID.Mesh(class(self).MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](surfaces), gd.Int(0)))
+	return RID.Mesh(class(self).MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](surfaces), gd.Int(0)))
 }
 
 /*
@@ -409,11 +411,11 @@ func MeshSurfaceGetFormatSkinStride(format gdclass.RenderingServerArrayFormat, v
 }
 func MeshAddSurface(mesh RID.Mesh, surface map[any]any) { //gd:RenderingServer.mesh_add_surface
 	once.Do(singleton)
-	class(self).MeshAddSurface(gd.RID(mesh), gd.NewVariant(surface).Interface().(gd.Dictionary))
+	class(self).MeshAddSurface(gd.RID(mesh), gd.DictionaryFromMap(surface))
 }
 func MeshAddSurfaceFromArrays(mesh RID.Mesh, primitive gdclass.RenderingServerPrimitiveType, arrays []any) { //gd:RenderingServer.mesh_add_surface_from_arrays
 	once.Do(singleton)
-	class(self).MeshAddSurfaceFromArrays(gd.RID(mesh), primitive, gd.EngineArrayFromSlice(arrays), Array.Nil, gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), 0)
+	class(self).MeshAddSurfaceFromArrays(gd.RID(mesh), primitive, gd.EngineArrayFromSlice(arrays), Array.Nil, Dictionary.Nil, 0)
 }
 
 /*
@@ -457,7 +459,7 @@ func MeshSurfaceGetMaterial(mesh RID.Mesh, surface int) RID.Material { //gd:Rend
 }
 func MeshGetSurface(mesh RID.Mesh, surface int) map[any]any { //gd:RenderingServer.mesh_get_surface
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[any, any](class(self).MeshGetSurface(gd.RID(mesh), gd.Int(surface))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).MeshGetSurface(gd.RID(mesh), gd.Int(surface))))
 }
 
 /*
@@ -4442,12 +4444,12 @@ func (self class) ShaderGetCode(shader gd.RID) gd.String { //gd:RenderingServer.
 Returns the parameters of a shader.
 */
 //go:nosplit
-func (self class) GetShaderParameterList(shader gd.RID) Array.Contains[gd.Dictionary] { //gd:RenderingServer.get_shader_parameter_list
+func (self class) GetShaderParameterList(shader gd.RID) Array.Contains[Dictionary.Any] { //gd:RenderingServer.get_shader_parameter_list
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_shader_parameter_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4584,7 +4586,7 @@ func (self class) MaterialSetNextPass(material gd.RID, next_material gd.RID) { /
 }
 
 //go:nosplit
-func (self class) MeshCreateFromSurfaces(surfaces Array.Contains[gd.Dictionary], blend_shape_count gd.Int) gd.RID { //gd:RenderingServer.mesh_create_from_surfaces
+func (self class) MeshCreateFromSurfaces(surfaces Array.Contains[Dictionary.Any], blend_shape_count gd.Int) gd.RID { //gd:RenderingServer.mesh_create_from_surfaces
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(surfaces)))
 	callframe.Arg(frame, blend_shape_count)
@@ -4688,23 +4690,23 @@ func (self class) MeshSurfaceGetFormatSkinStride(format gdclass.RenderingServerA
 }
 
 //go:nosplit
-func (self class) MeshAddSurface(mesh gd.RID, surface gd.Dictionary) { //gd:RenderingServer.mesh_add_surface
+func (self class) MeshAddSurface(mesh gd.RID, surface Dictionary.Any) { //gd:RenderingServer.mesh_add_surface
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
-	callframe.Arg(frame, pointers.Get(surface))
+	callframe.Arg(frame, surface)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_add_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) MeshAddSurfaceFromArrays(mesh gd.RID, primitive gdclass.RenderingServerPrimitiveType, arrays Array.Any, blend_shapes Array.Any, lods gd.Dictionary, compress_format gdclass.RenderingServerArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
+func (self class) MeshAddSurfaceFromArrays(mesh gd.RID, primitive gdclass.RenderingServerPrimitiveType, arrays Array.Any, blend_shapes Array.Any, lods Dictionary.Any, compress_format gdclass.RenderingServerArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, primitive)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(blend_shapes)))
-	callframe.Arg(frame, pointers.Get(lods))
+	callframe.Arg(frame, lods)
 	callframe.Arg(frame, compress_format)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_add_surface_from_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4782,13 +4784,13 @@ func (self class) MeshSurfaceGetMaterial(mesh gd.RID, surface gd.Int) gd.RID { /
 }
 
 //go:nosplit
-func (self class) MeshGetSurface(mesh gd.RID, surface gd.Int) gd.Dictionary { //gd:RenderingServer.mesh_get_surface
+func (self class) MeshGetSurface(mesh gd.RID, surface gd.Int) Dictionary.Any { //gd:RenderingServer.mesh_get_surface
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, surface)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_get_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -9047,12 +9049,12 @@ func (self class) InstanceGeometryGetShaderParameterDefaultValue(instance gd.RID
 Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified 3D geometry instance. The returned dictionary is in PropertyInfo format, with the keys [code]name[/code], [code]class_name[/code], [code]type[/code], [code]hint[/code], [code]hint_string[/code] and [code]usage[/code]. Equivalent to [method GeometryInstance3D.get_instance_shader_parameter].
 */
 //go:nosplit
-func (self class) InstanceGeometryGetShaderParameterList(instance gd.RID) Array.Contains[gd.Dictionary] { //gd:RenderingServer.instance_geometry_get_shader_parameter_list
+func (self class) InstanceGeometryGetShaderParameterList(instance gd.RID) Array.Contains[Dictionary.Any] { //gd:RenderingServer.instance_geometry_get_shader_parameter_list
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

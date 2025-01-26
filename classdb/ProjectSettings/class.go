@@ -13,6 +13,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -23,6 +24,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Stores variables that can be accessed from everywhere. Use [method get_setting], [method set_setting] or [method has_setting] to access them. Variables stored in [code]project.godot[/code] are also loaded into [ProjectSettings], making this object very useful for reading custom game configuration options.
@@ -194,7 +196,7 @@ ProjectSettings.AddPropertyInfo(propertyInfo);
 */
 func AddPropertyInfo(hint map[any]any) { //gd:ProjectSettings.add_property_info
 	once.Do(singleton)
-	class(self).AddPropertyInfo(gd.NewVariant(hint).Interface().(gd.Dictionary))
+	class(self).AddPropertyInfo(gd.DictionaryFromMap(hint))
 }
 
 /*
@@ -384,11 +386,11 @@ Returns an [Array] of registered global classes. Each global class is represente
 [b]Note:[/b] Both the script and the icon paths are local to the project filesystem, i.e. they start with [code]res://[/code].
 */
 //go:nosplit
-func (self class) GetGlobalClassList() Array.Contains[gd.Dictionary] { //gd:ProjectSettings.get_global_class_list
+func (self class) GetGlobalClassList() Array.Contains[Dictionary.Any] { //gd:ProjectSettings.get_global_class_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_get_global_class_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -494,9 +496,9 @@ ProjectSettings.AddPropertyInfo(propertyInfo);
 [/codeblocks]
 */
 //go:nosplit
-func (self class) AddPropertyInfo(hint gd.Dictionary) { //gd:ProjectSettings.add_property_info
+func (self class) AddPropertyInfo(hint Dictionary.Any) { //gd:ProjectSettings.add_property_info
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(hint))
+	callframe.Arg(frame, hint)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_add_property_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

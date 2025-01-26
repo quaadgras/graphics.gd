@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
@@ -25,6 +26,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Represents a physics shape as defined by the [code]OMI_physics_shape[/code] or [code]OMI_collider[/code] GLTF extensions. This class is an intermediary between the GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
@@ -74,14 +76,14 @@ Creates a new GLTFPhysicsShape instance by parsing the given [Dictionary].
 */
 func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_dictionary
 	self := Instance{}
-	return [1]gdclass.GLTFPhysicsShape(class(self).FromDictionary(gd.NewVariant(dictionary).Interface().(gd.Dictionary)))
+	return [1]gdclass.GLTFPhysicsShape(class(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
 }
 
 /*
 Serializes this GLTFPhysicsShape instance into a [Dictionary] in the format defined by [code]OMI_physics_shape[/code].
 */
 func (self Instance) ToDictionary() map[any]any { //gd:GLTFPhysicsShape.to_dictionary
-	return map[any]any(gd.DictionaryAs[any, any](class(self).ToDictionary()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ToDictionary()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -219,9 +221,9 @@ func (self class) ToResource(cache_shapes bool) [1]gdclass.Shape3D { //gd:GLTFPh
 Creates a new GLTFPhysicsShape instance by parsing the given [Dictionary].
 */
 //go:nosplit
-func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_dictionary
+func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_dictionary
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dictionary))
+	callframe.Arg(frame, dictionary)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_from_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret.Get())}
@@ -233,11 +235,11 @@ func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFPhysic
 Serializes this GLTFPhysicsShape instance into a [Dictionary] in the format defined by [code]OMI_physics_shape[/code].
 */
 //go:nosplit
-func (self class) ToDictionary() gd.Dictionary { //gd:GLTFPhysicsShape.to_dictionary
+func (self class) ToDictionary() Dictionary.Any { //gd:GLTFPhysicsShape.to_dictionary
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_to_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

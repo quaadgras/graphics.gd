@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -28,6 +29,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 [GraphEdit] provides tools for creation, manipulation, and display of various graphs. Its main purpose in the engine is to power the visual programming systems, such as visual shaders, but it is also available for use in user projects.
@@ -270,7 +272,7 @@ var connection = get_closest_connection_at_point(mouse_event.get_position())
 [/codeblocks]
 */
 func (self Instance) GetClosestConnectionAtPoint(point Vector2.XY) map[any]any { //gd:GraphEdit.get_closest_connection_at_point
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GetClosestConnectionAtPoint(gd.Vector2(point), gd.Float(4.0))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetClosestConnectionAtPoint(gd.Vector2(point), gd.Float(4.0))))
 }
 
 /*
@@ -790,11 +792,11 @@ func (self class) SetConnectionActivity(from_node gd.StringName, from_port gd.In
 Returns an [Array] containing the list of connections. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
 //go:nosplit
-func (self class) GetConnectionList() Array.Contains[gd.Dictionary] { //gd:GraphEdit.get_connection_list
+func (self class) GetConnectionList() Array.Contains[Dictionary.Any] { //gd:GraphEdit.get_connection_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connection_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -810,13 +812,13 @@ var connection = get_closest_connection_at_point(mouse_event.get_position())
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetClosestConnectionAtPoint(point gd.Vector2, max_distance gd.Float) gd.Dictionary { //gd:GraphEdit.get_closest_connection_at_point
+func (self class) GetClosestConnectionAtPoint(point gd.Vector2, max_distance gd.Float) Dictionary.Any { //gd:GraphEdit.get_closest_connection_at_point
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, max_distance)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_closest_connection_at_point, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -825,12 +827,12 @@ func (self class) GetClosestConnectionAtPoint(point gd.Vector2, max_distance gd.
 Returns an [Array] containing the list of connections that intersect with the given [Rect2]. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
 //go:nosplit
-func (self class) GetConnectionsIntersectingWithRect(rect gd.Rect2) Array.Contains[gd.Dictionary] { //gd:GraphEdit.get_connections_intersecting_with_rect
+func (self class) GetConnectionsIntersectingWithRect(rect gd.Rect2) Array.Contains[Dictionary.Any] { //gd:GraphEdit.get_connections_intersecting_with_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connections_intersecting_with_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

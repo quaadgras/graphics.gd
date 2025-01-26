@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -22,6 +23,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 [EditorSceneFormatImporter] allows to define an importer script for a third-party 3D format.
@@ -87,10 +89,10 @@ func (Instance) _import_scene(impl func(ptr unsafe.Pointer, path string, flags i
 		defer pointers.End(path)
 		var flags = gd.UnsafeGet[gd.Int](p_args, 1)
 
-		var options = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(options)
+		var options = gd.UnsafeGet[Dictionary.Any](p_args, 2)
+
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, path.String(), int(flags), gd.DictionaryAs[any, any](options))
+		ret := impl(self, path.String(), int(flags), gd.DictionaryAs[map[any]any](options))
 		ptr, ok := pointers.End(ret[0])
 
 		if !ok {
@@ -166,14 +168,14 @@ func (class) _get_extensions(impl func(ptr unsafe.Pointer) gd.PackedStringArray)
 	}
 }
 
-func (class) _import_scene(impl func(ptr unsafe.Pointer, path gd.String, flags gd.Int, options gd.Dictionary) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _import_scene(impl func(ptr unsafe.Pointer, path gd.String, flags gd.Int, options Dictionary.Any) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
 		var flags = gd.UnsafeGet[gd.Int](p_args, 1)
 
-		var options = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(options)
+		var options = gd.UnsafeGet[Dictionary.Any](p_args, 2)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, flags, options)
 		ptr, ok := pointers.End(ret[0])

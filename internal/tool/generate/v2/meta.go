@@ -109,7 +109,7 @@ func importsVariant(class gdjson.Class, identifier, s string) iter.Seq[string] {
 				return
 			}
 			yield("graphics.gd/variant/RID")
-		case "Dictionary", "Signal":
+		case "Signal":
 			//return "graphics.gd/variant/" + s
 			return
 		case "PackedVector2Array":
@@ -171,10 +171,12 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		"PackedFloat64Array", "PackedVector2Array", "PackedVector3Array", "PackedVector4Array", "PackedColorArray", "PackedByteArray",
 		"Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
 		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath", "RID",
-		"Signal", "Dictionary":
+		"Signal":
 		return maybeInternal(gdType)
 	case "Array":
 		return "Array.Any"
+	case "Dictionary":
+		return "Dictionary.Any"
 	case "Callable":
 		return "Callable.Function"
 	case "Variant":

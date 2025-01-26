@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Node"
 
 var _ Object.ID
@@ -23,6 +24,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 Plugins are used by the editor to extend functionality. The most common types of plugins are those which edit a given node or resource type, import plugins and export plugins. See also [EditorScript] to add functions to the editor.
@@ -754,12 +756,7 @@ func (Instance) _get_state(impl func(ptr unsafe.Pointer) map[any]any) (cb gd.Ext
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
 	}
 }
 
@@ -776,10 +773,10 @@ func _set_state(data):
 */
 func (Instance) _set_state(impl func(ptr unsafe.Pointer, state map[any]any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var state = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(state)
+		var state = gd.UnsafeGet[Dictionary.Any](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, gd.DictionaryAs[any, any](state))
+		impl(self, gd.DictionaryAs[map[any]any](state))
 	}
 }
 
@@ -1712,16 +1709,11 @@ func _get_state():
 
 [/codeblock]
 */
-func (class) _get_state(impl func(ptr unsafe.Pointer) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_state(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
-
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 
@@ -1736,10 +1728,10 @@ func _set_state(data):
 
 [/codeblock]
 */
-func (class) _set_state(impl func(ptr unsafe.Pointer, state gd.Dictionary)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_state(impl func(ptr unsafe.Pointer, state Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var state = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(state)
+		var state = gd.UnsafeGet[Dictionary.Any](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, state)
 	}

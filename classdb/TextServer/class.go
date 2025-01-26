@@ -12,6 +12,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
@@ -30,6 +31,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 [TextServer] is the API backend for managing fonts and rendering text.
@@ -215,7 +217,7 @@ func (self Instance) FontGetName(font_rid RID.Font) string { //gd:TextServer.fon
 Returns [Dictionary] with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
 */
 func (self Instance) FontGetOtNameStrings(font_rid RID.Font) map[any]any { //gd:TextServer.font_get_ot_name_strings
-	return map[any]any(gd.DictionaryAs[any, any](class(self).FontGetOtNameStrings(gd.RID(font_rid))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).FontGetOtNameStrings(gd.RID(font_rid))))
 }
 
 /*
@@ -492,14 +494,14 @@ func (self Instance) FontGetTransform(font_rid RID.Font) Transform2D.OriginXY { 
 Sets variation coordinates for the specified font cache entry. See [method font_supported_variation_list] for more info.
 */
 func (self Instance) FontSetVariationCoordinates(font_rid RID.Font, variation_coordinates map[any]any) { //gd:TextServer.font_set_variation_coordinates
-	class(self).FontSetVariationCoordinates(gd.RID(font_rid), gd.NewVariant(variation_coordinates).Interface().(gd.Dictionary))
+	class(self).FontSetVariationCoordinates(gd.RID(font_rid), gd.DictionaryFromMap(variation_coordinates))
 }
 
 /*
 Returns variation coordinates for the specified font cache entry. See [method font_supported_variation_list] for more info.
 */
 func (self Instance) FontGetVariationCoordinates(font_rid RID.Font) map[any]any { //gd:TextServer.font_get_variation_coordinates
-	return map[any]any(gd.DictionaryAs[any, any](class(self).FontGetVariationCoordinates(gd.RID(font_rid))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).FontGetVariationCoordinates(gd.RID(font_rid))))
 }
 
 /*
@@ -776,7 +778,7 @@ Returns outline contours of the glyph as a [Dictionary] with the following conte
 [code]orientation[/code]    - [bool], contour orientation. If [code]true[/code], clockwise contours must be filled.
 */
 func (self Instance) FontGetGlyphContours(font RID.Font, size int, index int) map[any]any { //gd:TextServer.font_get_glyph_contours
-	return map[any]any(gd.DictionaryAs[any, any](class(self).FontGetGlyphContours(gd.RID(font), gd.Int(size), gd.Int(index))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).FontGetGlyphContours(gd.RID(font), gd.Int(size), gd.Int(index))))
 }
 
 /*
@@ -948,28 +950,28 @@ func (self Instance) FontGetScriptSupportOverrides(font_rid RID.Font) []string {
 Sets font OpenType feature set override.
 */
 func (self Instance) FontSetOpentypeFeatureOverrides(font_rid RID.Font, overrides map[any]any) { //gd:TextServer.font_set_opentype_feature_overrides
-	class(self).FontSetOpentypeFeatureOverrides(gd.RID(font_rid), gd.NewVariant(overrides).Interface().(gd.Dictionary))
+	class(self).FontSetOpentypeFeatureOverrides(gd.RID(font_rid), gd.DictionaryFromMap(overrides))
 }
 
 /*
 Returns font OpenType feature set override.
 */
 func (self Instance) FontGetOpentypeFeatureOverrides(font_rid RID.Font) map[any]any { //gd:TextServer.font_get_opentype_feature_overrides
-	return map[any]any(gd.DictionaryAs[any, any](class(self).FontGetOpentypeFeatureOverrides(gd.RID(font_rid))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).FontGetOpentypeFeatureOverrides(gd.RID(font_rid))))
 }
 
 /*
 Returns the dictionary of the supported OpenType features.
 */
 func (self Instance) FontSupportedFeatureList(font_rid RID.Font) map[any]any { //gd:TextServer.font_supported_feature_list
-	return map[any]any(gd.DictionaryAs[any, any](class(self).FontSupportedFeatureList(gd.RID(font_rid))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).FontSupportedFeatureList(gd.RID(font_rid))))
 }
 
 /*
 Returns the dictionary of the supported OpenType variation coordinates.
 */
 func (self Instance) FontSupportedVariationList(font_rid RID.Font) map[any]any { //gd:TextServer.font_supported_variation_list
-	return map[any]any(gd.DictionaryAs[any, any](class(self).FontSupportedVariationList(gd.RID(font_rid))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).FontSupportedVariationList(gd.RID(font_rid))))
 }
 
 /*
@@ -1137,7 +1139,7 @@ func (self Instance) ShapedTextGetSpacing(shaped RID.TextBuffer, spacing gdclass
 Adds text span and font to draw it to the text buffer.
 */
 func (self Instance) ShapedTextAddString(shaped RID.TextBuffer, text string, fonts []RID.TextBuffer, size int) bool { //gd:TextServer.shaped_text_add_string
-	return bool(class(self).ShapedTextAddString(gd.RID(shaped), gd.NewString(text), gd.ArrayFromSlice[Array.Contains[gd.RID]](fonts), gd.Int(size), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
+	return bool(class(self).ShapedTextAddString(gd.RID(shaped), gd.NewString(text), gd.ArrayFromSlice[Array.Contains[gd.RID]](fonts), gd.Int(size), Dictionary.Nil, gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
 }
 
 /*
@@ -1172,7 +1174,7 @@ func (self Instance) ShapedGetSpanMeta(shaped RID.TextBuffer, index int) any { /
 Changes text span font, font size, and OpenType features, without changing the text.
 */
 func (self Instance) ShapedSetSpanUpdateFont(shaped RID.TextBuffer, index int, fonts [][]RID.Font, size int) { //gd:TextServer.shaped_set_span_update_font
-	class(self).ShapedSetSpanUpdateFont(gd.RID(shaped), gd.Int(index), gd.ArrayFromSlice[Array.Contains[gd.RID]](fonts), gd.Int(size), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary))
+	class(self).ShapedSetSpanUpdateFont(gd.RID(shaped), gd.Int(index), gd.ArrayFromSlice[Array.Contains[gd.RID]](fonts), gd.Int(size), Dictionary.Nil)
 }
 
 /*
@@ -1385,7 +1387,7 @@ func (self Instance) ShapedTextGetUnderlineThickness(shaped RID.TextBuffer) Floa
 Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
 */
 func (self Instance) ShapedTextGetCarets(shaped RID.TextBuffer, position int) map[any]any { //gd:TextServer.shaped_text_get_carets
-	return map[any]any(gd.DictionaryAs[any, any](class(self).ShapedTextGetCarets(gd.RID(shaped), gd.Int(position))))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ShapedTextGetCarets(gd.RID(shaped), gd.Int(position))))
 }
 
 /*
@@ -1930,12 +1932,12 @@ func (self class) FontGetName(font_rid gd.RID) gd.String { //gd:TextServer.font_
 Returns [Dictionary] with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
 */
 //go:nosplit
-func (self class) FontGetOtNameStrings(font_rid gd.RID) gd.Dictionary { //gd:TextServer.font_get_ot_name_strings
+func (self class) FontGetOtNameStrings(font_rid gd.RID) Dictionary.Any { //gd:TextServer.font_get_ot_name_strings
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_ot_name_strings, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -2463,10 +2465,10 @@ func (self class) FontGetTransform(font_rid gd.RID) gd.Transform2D { //gd:TextSe
 Sets variation coordinates for the specified font cache entry. See [method font_supported_variation_list] for more info.
 */
 //go:nosplit
-func (self class) FontSetVariationCoordinates(font_rid gd.RID, variation_coordinates gd.Dictionary) { //gd:TextServer.font_set_variation_coordinates
+func (self class) FontSetVariationCoordinates(font_rid gd.RID, variation_coordinates Dictionary.Any) { //gd:TextServer.font_set_variation_coordinates
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, pointers.Get(variation_coordinates))
+	callframe.Arg(frame, variation_coordinates)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_set_variation_coordinates, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2476,12 +2478,12 @@ func (self class) FontSetVariationCoordinates(font_rid gd.RID, variation_coordin
 Returns variation coordinates for the specified font cache entry. See [method font_supported_variation_list] for more info.
 */
 //go:nosplit
-func (self class) FontGetVariationCoordinates(font_rid gd.RID) gd.Dictionary { //gd:TextServer.font_get_variation_coordinates
+func (self class) FontGetVariationCoordinates(font_rid gd.RID) Dictionary.Any { //gd:TextServer.font_get_variation_coordinates
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_variation_coordinates, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -3045,14 +3047,14 @@ Returns outline contours of the glyph as a [Dictionary] with the following conte
 [code]orientation[/code]    - [bool], contour orientation. If [code]true[/code], clockwise contours must be filled.
 */
 //go:nosplit
-func (self class) FontGetGlyphContours(font gd.RID, size gd.Int, index gd.Int) gd.Dictionary { //gd:TextServer.font_get_glyph_contours
+func (self class) FontGetGlyphContours(font gd.RID, size gd.Int, index gd.Int) Dictionary.Any { //gd:TextServer.font_get_glyph_contours
 	var frame = callframe.New()
 	callframe.Arg(frame, font)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_glyph_contours, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -3406,10 +3408,10 @@ func (self class) FontGetScriptSupportOverrides(font_rid gd.RID) gd.PackedString
 Sets font OpenType feature set override.
 */
 //go:nosplit
-func (self class) FontSetOpentypeFeatureOverrides(font_rid gd.RID, overrides gd.Dictionary) { //gd:TextServer.font_set_opentype_feature_overrides
+func (self class) FontSetOpentypeFeatureOverrides(font_rid gd.RID, overrides Dictionary.Any) { //gd:TextServer.font_set_opentype_feature_overrides
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, pointers.Get(overrides))
+	callframe.Arg(frame, overrides)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_set_opentype_feature_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3419,12 +3421,12 @@ func (self class) FontSetOpentypeFeatureOverrides(font_rid gd.RID, overrides gd.
 Returns font OpenType feature set override.
 */
 //go:nosplit
-func (self class) FontGetOpentypeFeatureOverrides(font_rid gd.RID) gd.Dictionary { //gd:TextServer.font_get_opentype_feature_overrides
+func (self class) FontGetOpentypeFeatureOverrides(font_rid gd.RID) Dictionary.Any { //gd:TextServer.font_get_opentype_feature_overrides
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_opentype_feature_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -3433,12 +3435,12 @@ func (self class) FontGetOpentypeFeatureOverrides(font_rid gd.RID) gd.Dictionary
 Returns the dictionary of the supported OpenType features.
 */
 //go:nosplit
-func (self class) FontSupportedFeatureList(font_rid gd.RID) gd.Dictionary { //gd:TextServer.font_supported_feature_list
+func (self class) FontSupportedFeatureList(font_rid gd.RID) Dictionary.Any { //gd:TextServer.font_supported_feature_list
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_supported_feature_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -3447,12 +3449,12 @@ func (self class) FontSupportedFeatureList(font_rid gd.RID) gd.Dictionary { //gd
 Returns the dictionary of the supported OpenType variation coordinates.
 */
 //go:nosplit
-func (self class) FontSupportedVariationList(font_rid gd.RID) gd.Dictionary { //gd:TextServer.font_supported_variation_list
+func (self class) FontSupportedVariationList(font_rid gd.RID) Dictionary.Any { //gd:TextServer.font_supported_variation_list
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_supported_variation_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -3769,13 +3771,13 @@ func (self class) ShapedTextGetSpacing(shaped gd.RID, spacing gdclass.TextServer
 Adds text span and font to draw it to the text buffer.
 */
 //go:nosplit
-func (self class) ShapedTextAddString(shaped gd.RID, text gd.String, fonts Array.Contains[gd.RID], size gd.Int, opentype_features gd.Dictionary, language gd.String, meta gd.Variant) bool { //gd:TextServer.shaped_text_add_string
+func (self class) ShapedTextAddString(shaped gd.RID, text gd.String, fonts Array.Contains[gd.RID], size gd.Int, opentype_features Dictionary.Any, language gd.String, meta gd.Variant) bool { //gd:TextServer.shaped_text_add_string
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, pointers.Get(text))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(fonts)))
 	callframe.Arg(frame, size)
-	callframe.Arg(frame, pointers.Get(opentype_features))
+	callframe.Arg(frame, opentype_features)
 	callframe.Arg(frame, pointers.Get(language))
 	callframe.Arg(frame, pointers.Get(meta))
 	var r_ret = callframe.Ret[bool](frame)
@@ -3855,13 +3857,13 @@ func (self class) ShapedGetSpanMeta(shaped gd.RID, index gd.Int) gd.Variant { //
 Changes text span font, font size, and OpenType features, without changing the text.
 */
 //go:nosplit
-func (self class) ShapedSetSpanUpdateFont(shaped gd.RID, index gd.Int, fonts Array.Contains[gd.RID], size gd.Int, opentype_features gd.Dictionary) { //gd:TextServer.shaped_set_span_update_font
+func (self class) ShapedSetSpanUpdateFont(shaped gd.RID, index gd.Int, fonts Array.Contains[gd.RID], size gd.Int, opentype_features Dictionary.Any) { //gd:TextServer.shaped_set_span_update_font
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(fonts)))
 	callframe.Arg(frame, size)
-	callframe.Arg(frame, pointers.Get(opentype_features))
+	callframe.Arg(frame, opentype_features)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_set_span_update_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3975,12 +3977,12 @@ func (self class) ShapedTextHasVisibleChars(shaped gd.RID) bool { //gd:TextServe
 Returns an array of glyphs in the visual order.
 */
 //go:nosplit
-func (self class) ShapedTextGetGlyphs(shaped gd.RID) Array.Contains[gd.Dictionary] { //gd:TextServer.shaped_text_get_glyphs
+func (self class) ShapedTextGetGlyphs(shaped gd.RID) Array.Contains[Dictionary.Any] { //gd:TextServer.shaped_text_get_glyphs
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_glyphs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3989,12 +3991,12 @@ func (self class) ShapedTextGetGlyphs(shaped gd.RID) Array.Contains[gd.Dictionar
 Returns text glyphs in the logical order.
 */
 //go:nosplit
-func (self class) ShapedTextSortLogical(shaped gd.RID) Array.Contains[gd.Dictionary] { //gd:TextServer.shaped_text_sort_logical
+func (self class) ShapedTextSortLogical(shaped gd.RID) Array.Contains[Dictionary.Any] { //gd:TextServer.shaped_text_sort_logical
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_sort_logical, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4110,12 +4112,12 @@ func (self class) ShapedTextGetEllipsisPos(shaped gd.RID) gd.Int { //gd:TextServ
 Returns array of the glyphs in the ellipsis.
 */
 //go:nosplit
-func (self class) ShapedTextGetEllipsisGlyphs(shaped gd.RID) Array.Contains[gd.Dictionary] { //gd:TextServer.shaped_text_get_ellipsis_glyphs
+func (self class) ShapedTextGetEllipsisGlyphs(shaped gd.RID) Array.Contains[Dictionary.Any] { //gd:TextServer.shaped_text_get_ellipsis_glyphs
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_ellipsis_glyphs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4297,13 +4299,13 @@ func (self class) ShapedTextGetUnderlineThickness(shaped gd.RID) gd.Float { //gd
 Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
 */
 //go:nosplit
-func (self class) ShapedTextGetCarets(shaped gd.RID, position gd.Int) gd.Dictionary { //gd:TextServer.shaped_text_get_carets
+func (self class) ShapedTextGetCarets(shaped gd.RID, position gd.Int) Dictionary.Any { //gd:TextServer.shaped_text_get_carets
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, position)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

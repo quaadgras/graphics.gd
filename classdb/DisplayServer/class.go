@@ -13,6 +13,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Rect2"
@@ -31,6 +32,7 @@ var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
+var _ Dictionary.Any
 
 /*
 [DisplayServer] handles everything related to window management. It is separated from [OS] as a single operating system may support multiple display servers.
@@ -625,7 +627,7 @@ Returns Dictionary of supported system menu IDs and names.
 */
 func GlobalMenuGetSystemMenuRoots() map[any]any { //gd:DisplayServer.global_menu_get_system_menu_roots
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[any, any](class(self).GlobalMenuGetSystemMenuRoots()))
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GlobalMenuGetSystemMenuRoots()))
 }
 
 /*
@@ -1666,7 +1668,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 */
 func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, options []map[any]any, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any)) error { //gd:DisplayServer.file_dialog_with_options_show
 	once.Do(singleton)
-	return error(gd.ToError(class(self).FileDialogWithOptionsShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(root), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](options), Callable.New(callback))))
+	return error(gd.ToError(class(self).FileDialogWithOptionsShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(root), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback))))
 }
 
 /*
@@ -2864,11 +2866,11 @@ Returns Dictionary of supported system menu IDs and names.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetSystemMenuRoots() gd.Dictionary { //gd:DisplayServer.global_menu_get_system_menu_roots
+func (self class) GlobalMenuGetSystemMenuRoots() Dictionary.Any { //gd:DisplayServer.global_menu_get_system_menu_roots
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	var r_ret = callframe.Ret[Dictionary.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_system_menu_roots, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Dictionary](r_ret.Get())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -2914,11 +2916,11 @@ Note that Godot depends on system libraries for text-to-speech functionality. Th
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsGetVoices() Array.Contains[gd.Dictionary] { //gd:DisplayServer.tts_get_voices
+func (self class) TtsGetVoices() Array.Contains[Dictionary.Any] { //gd:DisplayServer.tts_get_voices
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_get_voices, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4469,7 +4471,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogWithOptionsShow(title gd.String, current_directory gd.String, root gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, options Array.Contains[gd.Dictionary], callback Callable.Function) gd.Error { //gd:DisplayServer.file_dialog_with_options_show
+func (self class) FileDialogWithOptionsShow(title gd.String, current_directory gd.String, root gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, options Array.Contains[Dictionary.Any], callback Callable.Function) gd.Error { //gd:DisplayServer.file_dialog_with_options_show
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(current_directory))
