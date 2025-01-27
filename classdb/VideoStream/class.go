@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Base resource type for all video streams. Classes that derive from [VideoStream] can all be used as resource types to play back videos in [VideoStreamPlayer].
@@ -96,7 +98,7 @@ func (self Instance) File() string {
 }
 
 func (self Instance) SetFile(value string) {
-	class(self).SetFile(gd.NewString(value))
+	class(self).SetFile(String.New(value))
 }
 
 /*
@@ -116,20 +118,20 @@ func (class) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.Vide
 }
 
 //go:nosplit
-func (self class) SetFile(file gd.String) { //gd:VideoStream.set_file
+func (self class) SetFile(file String.Readable) { //gd:VideoStream.set_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(file))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStream.Bind_set_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetFile() gd.String { //gd:VideoStream.get_file
+func (self class) GetFile() String.Readable { //gd:VideoStream.get_file
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStream.Bind_get_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -13,7 +13,7 @@ import (
 )
 
 type packable interface {
-	~byte | ~Color.RGBA | ~float32 | ~float64 | ~int32 | ~int64 | ~string | ~Vector2.XY | ~Vector3.XYZ | ~Vector4.XYZW | gd.String
+	~byte | ~Color.RGBA | ~float32 | ~float64 | ~int32 | ~int64 | ~string | ~Vector2.XY | ~Vector3.XYZ | ~Vector4.XYZW
 }
 
 type proxiable interface {

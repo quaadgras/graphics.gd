@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Turning on the option [b]Load As Placeholder[/b] for an instantiated scene in the editor causes it to be replaced by an [InstancePlaceholder] when running the game, this will not replace the node in the editor. This makes it possible to delay actually loading the scene until calling [method create_instance]. This is useful to avoid loading large scenes all at once by loading parts of it selectively.
@@ -118,11 +120,11 @@ func (self class) CreateInstance(replace bool, custom_scene [1]gdclass.PackedSce
 Gets the path to the [PackedScene] resource file that is loaded by default when calling [method create_instance]. Not thread-safe. Use [method Object.call_deferred] if calling from a thread.
 */
 //go:nosplit
-func (self class) GetInstancePath() gd.String { //gd:InstancePlaceholder.get_instance_path
+func (self class) GetInstancePath() String.Readable { //gd:InstancePlaceholder.get_instance_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InstancePlaceholder.Bind_get_instance_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A class stored as a resource. A script extends the functionality of all objects that instantiate it.
@@ -188,7 +190,7 @@ func (self Instance) SourceCode() string {
 }
 
 func (self Instance) SetSourceCode(value string) {
-	class(self).SetSourceCode(gd.NewString(value))
+	class(self).SetSourceCode(String.New(value))
 }
 
 /*
@@ -233,19 +235,19 @@ func (self class) HasSourceCode() bool { //gd:Script.has_source_code
 }
 
 //go:nosplit
-func (self class) GetSourceCode() gd.String { //gd:Script.get_source_code
+func (self class) GetSourceCode() String.Readable { //gd:Script.get_source_code
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_source_code, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetSourceCode(source gd.String) { //gd:Script.set_source_code
+func (self class) SetSourceCode(source String.Readable) { //gd:Script.set_source_code
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(source))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(source)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_set_source_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The [ArrayMesh] is used to construct a [Mesh] by specifying the attributes as arrays.
@@ -184,14 +186,14 @@ func (self Instance) SurfaceGetPrimitiveType(surf_idx int) gdclass.MeshPrimitive
 Returns the index of the first surface with this name held within this [ArrayMesh]. If none are found, -1 is returned.
 */
 func (self Instance) SurfaceFindByName(name string) int { //gd:ArrayMesh.surface_find_by_name
-	return int(int(class(self).SurfaceFindByName(gd.NewString(name))))
+	return int(int(class(self).SurfaceFindByName(String.New(name))))
 }
 
 /*
 Sets a name for a given surface.
 */
 func (self Instance) SurfaceSetName(surf_idx int, name string) { //gd:ArrayMesh.surface_set_name
-	class(self).SurfaceSetName(gd.Int(surf_idx), gd.NewString(name))
+	class(self).SurfaceSetName(gd.Int(surf_idx), String.New(name))
 }
 
 /*
@@ -466,9 +468,9 @@ func (self class) SurfaceGetPrimitiveType(surf_idx gd.Int) gdclass.MeshPrimitive
 Returns the index of the first surface with this name held within this [ArrayMesh]. If none are found, -1 is returned.
 */
 //go:nosplit
-func (self class) SurfaceFindByName(name gd.String) gd.Int { //gd:ArrayMesh.surface_find_by_name
+func (self class) SurfaceFindByName(name String.Readable) gd.Int { //gd:ArrayMesh.surface_find_by_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_find_by_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -480,10 +482,10 @@ func (self class) SurfaceFindByName(name gd.String) gd.Int { //gd:ArrayMesh.surf
 Sets a name for a given surface.
 */
 //go:nosplit
-func (self class) SurfaceSetName(surf_idx gd.Int, name gd.String) { //gd:ArrayMesh.surface_set_name
+func (self class) SurfaceSetName(surf_idx gd.Int, name String.Readable) { //gd:ArrayMesh.surface_set_name
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_set_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -493,12 +495,12 @@ func (self class) SurfaceSetName(surf_idx gd.Int, name gd.String) { //gd:ArrayMe
 Gets the name assigned to this surface.
 */
 //go:nosplit
-func (self class) SurfaceGetName(surf_idx gd.Int) gd.String { //gd:ArrayMesh.surface_get_name
+func (self class) SurfaceGetName(surf_idx gd.Int) String.Readable { //gd:ArrayMesh.surface_get_name
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

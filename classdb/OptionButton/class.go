@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Button"
 import "graphics.gd/classdb/BaseButton"
 import "graphics.gd/classdb/Control"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [OptionButton] is a type of button that brings up a dropdown with selectable items when pressed. The item selected becomes the "current" item and is displayed as the button text.
@@ -52,21 +54,21 @@ type Any interface {
 Adds an item, with text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.
 */
 func (self Instance) AddItem(label string) { //gd:OptionButton.add_item
-	class(self).AddItem(gd.NewString(label), gd.Int(-1))
+	class(self).AddItem(String.New(label), gd.Int(-1))
 }
 
 /*
 Adds an item, with a [param texture] icon, text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.
 */
 func (self Instance) AddIconItem(texture [1]gdclass.Texture2D, label string) { //gd:OptionButton.add_icon_item
-	class(self).AddIconItem(texture, gd.NewString(label), gd.Int(-1))
+	class(self).AddIconItem(texture, String.New(label), gd.Int(-1))
 }
 
 /*
 Sets the text of the item at index [param idx].
 */
 func (self Instance) SetItemText(idx int, text string) { //gd:OptionButton.set_item_text
-	class(self).SetItemText(gd.Int(idx), gd.NewString(text))
+	class(self).SetItemText(gd.Int(idx), String.New(text))
 }
 
 /*
@@ -102,7 +104,7 @@ func (self Instance) SetItemMetadata(idx int, metadata any) { //gd:OptionButton.
 Sets the tooltip of the item at index [param idx].
 */
 func (self Instance) SetItemTooltip(idx int, tooltip string) { //gd:OptionButton.set_item_tooltip
-	class(self).SetItemTooltip(gd.Int(idx), gd.NewString(tooltip))
+	class(self).SetItemTooltip(gd.Int(idx), String.New(tooltip))
 }
 
 /*
@@ -165,7 +167,7 @@ func (self Instance) IsItemSeparator(idx int) bool { //gd:OptionButton.is_item_s
 Adds a separator to the list of items. Separators help to group items, and can optionally be given a [param text] header. A separator also gets an index assigned, and is appended at the end of the item list.
 */
 func (self Instance) AddSeparator() { //gd:OptionButton.add_separator
-	class(self).AddSeparator(gd.NewString(""))
+	class(self).AddSeparator(String.New(""))
 }
 
 /*
@@ -291,9 +293,9 @@ func (self Instance) SetItemCount(value int) {
 Adds an item, with text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.
 */
 //go:nosplit
-func (self class) AddItem(label gd.String, id gd.Int) { //gd:OptionButton.add_item
+func (self class) AddItem(label String.Readable, id gd.Int) { //gd:OptionButton.add_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_add_item, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -304,10 +306,10 @@ func (self class) AddItem(label gd.String, id gd.Int) { //gd:OptionButton.add_it
 Adds an item, with a [param texture] icon, text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.
 */
 //go:nosplit
-func (self class) AddIconItem(texture [1]gdclass.Texture2D, label gd.String, id gd.Int) { //gd:OptionButton.add_icon_item
+func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readable, id gd.Int) { //gd:OptionButton.add_icon_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_add_icon_item, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -318,10 +320,10 @@ func (self class) AddIconItem(texture [1]gdclass.Texture2D, label gd.String, id 
 Sets the text of the item at index [param idx].
 */
 //go:nosplit
-func (self class) SetItemText(idx gd.Int, text gd.String) { //gd:OptionButton.set_item_text
+func (self class) SetItemText(idx gd.Int, text String.Readable) { //gd:OptionButton.set_item_text
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_set_item_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -384,10 +386,10 @@ func (self class) SetItemMetadata(idx gd.Int, metadata gd.Variant) { //gd:Option
 Sets the tooltip of the item at index [param idx].
 */
 //go:nosplit
-func (self class) SetItemTooltip(idx gd.Int, tooltip gd.String) { //gd:OptionButton.set_item_tooltip
+func (self class) SetItemTooltip(idx gd.Int, tooltip String.Readable) { //gd:OptionButton.set_item_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(tooltip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_set_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -397,12 +399,12 @@ func (self class) SetItemTooltip(idx gd.Int, tooltip gd.String) { //gd:OptionBut
 Returns the text of the item at index [param idx].
 */
 //go:nosplit
-func (self class) GetItemText(idx gd.Int) gd.String { //gd:OptionButton.get_item_text
+func (self class) GetItemText(idx gd.Int) String.Readable { //gd:OptionButton.get_item_text
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_get_item_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -467,12 +469,12 @@ func (self class) GetItemMetadata(idx gd.Int) gd.Variant { //gd:OptionButton.get
 Returns the tooltip of the item at index [param idx].
 */
 //go:nosplit
-func (self class) GetItemTooltip(idx gd.Int) gd.String { //gd:OptionButton.get_item_tooltip
+func (self class) GetItemTooltip(idx gd.Int) String.Readable { //gd:OptionButton.get_item_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_get_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -509,9 +511,9 @@ func (self class) IsItemSeparator(idx gd.Int) bool { //gd:OptionButton.is_item_s
 Adds a separator to the list of items. Separators help to group items, and can optionally be given a [param text] header. A separator also gets an index assigned, and is appended at the end of the item list.
 */
 //go:nosplit
-func (self class) AddSeparator(text gd.String) { //gd:OptionButton.add_separator
+func (self class) AddSeparator(text String.Readable) { //gd:OptionButton.add_separator
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_add_separator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

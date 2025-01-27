@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector3"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A 3D trimesh shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D].

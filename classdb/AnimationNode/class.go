@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/NodePath"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Base resource for [AnimationTree] nodes. In general, it's not used directly, but you can create custom ones with custom blending formulas.
@@ -200,7 +202,7 @@ func (Instance) _get_caption(impl func(ptr unsafe.Pointer) string) (cb gd.Extens
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -224,7 +226,7 @@ func (Instance) _has_filter(impl func(ptr unsafe.Pointer) bool) (cb gd.Extension
 Adds an input to the animation node. This is only useful for animation nodes created for use in an [AnimationNodeBlendTree]. If the addition fails, returns [code]false[/code].
 */
 func (self Instance) AddInput(name string) bool { //gd:AnimationNode.add_input
-	return bool(class(self).AddInput(gd.NewString(name)))
+	return bool(class(self).AddInput(String.New(name)))
 }
 
 /*
@@ -238,7 +240,7 @@ func (self Instance) RemoveInput(index int) { //gd:AnimationNode.remove_input
 Sets the name of the input at the given [param input] index. If the setting fails, returns [code]false[/code].
 */
 func (self Instance) SetInputName(input int, name string) bool { //gd:AnimationNode.set_input_name
-	return bool(class(self).SetInputName(gd.Int(input), gd.NewString(name)))
+	return bool(class(self).SetInputName(gd.Int(input), String.New(name)))
 }
 
 /*
@@ -259,7 +261,7 @@ func (self Instance) GetInputCount() int { //gd:AnimationNode.get_input_count
 Returns the input index which corresponds to [param name]. If not found, returns [code]-1[/code].
 */
 func (self Instance) FindInput(name string) int { //gd:AnimationNode.find_input
-	return int(int(class(self).FindInput(gd.NewString(name))))
+	return int(int(class(self).FindInput(String.New(name))))
 }
 
 /*
@@ -444,11 +446,11 @@ func (class) _process(impl func(ptr unsafe.Pointer, time gd.Float, seek bool, is
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to override the text caption for this animation node.
 */
-func (class) _get_caption(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_caption(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -472,9 +474,9 @@ func (class) _has_filter(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionCla
 Adds an input to the animation node. This is only useful for animation nodes created for use in an [AnimationNodeBlendTree]. If the addition fails, returns [code]false[/code].
 */
 //go:nosplit
-func (self class) AddInput(name gd.String) bool { //gd:AnimationNode.add_input
+func (self class) AddInput(name String.Readable) bool { //gd:AnimationNode.add_input
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_add_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -498,10 +500,10 @@ func (self class) RemoveInput(index gd.Int) { //gd:AnimationNode.remove_input
 Sets the name of the input at the given [param input] index. If the setting fails, returns [code]false[/code].
 */
 //go:nosplit
-func (self class) SetInputName(input gd.Int, name gd.String) bool { //gd:AnimationNode.set_input_name
+func (self class) SetInputName(input gd.Int, name String.Readable) bool { //gd:AnimationNode.set_input_name
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_set_input_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -513,12 +515,12 @@ func (self class) SetInputName(input gd.Int, name gd.String) bool { //gd:Animati
 Gets the name of an input by index.
 */
 //go:nosplit
-func (self class) GetInputName(input gd.Int) gd.String { //gd:AnimationNode.get_input_name
+func (self class) GetInputName(input gd.Int) String.Readable { //gd:AnimationNode.get_input_name
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_get_input_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -540,9 +542,9 @@ func (self class) GetInputCount() gd.Int { //gd:AnimationNode.get_input_count
 Returns the input index which corresponds to [param name]. If not found, returns [code]-1[/code].
 */
 //go:nosplit
-func (self class) FindInput(name gd.String) gd.Int { //gd:AnimationNode.find_input
+func (self class) FindInput(name String.Readable) gd.Int { //gd:AnimationNode.find_input
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_find_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

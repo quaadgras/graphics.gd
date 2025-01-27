@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Quaternion"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The OpenXR interface allows Godot to interact with OpenXR runtimes and make it possible to create XR experiences and games.
@@ -57,14 +59,14 @@ func (self Instance) IsFoveationSupported() bool { //gd:OpenXRInterface.is_fovea
 Returns [code]true[/code] if the given action set is active.
 */
 func (self Instance) IsActionSetActive(name string) bool { //gd:OpenXRInterface.is_action_set_active
-	return bool(class(self).IsActionSetActive(gd.NewString(name)))
+	return bool(class(self).IsActionSetActive(String.New(name)))
 }
 
 /*
 Sets the given action set as active or inactive.
 */
 func (self Instance) SetActionSetActive(name string, active bool) { //gd:OpenXRInterface.set_action_set_active
-	class(self).SetActionSetActive(gd.NewString(name), active)
+	class(self).SetActionSetActive(String.New(name), active)
 }
 
 /*
@@ -329,9 +331,9 @@ func (self class) SetFoveationDynamic(foveation_dynamic bool) { //gd:OpenXRInter
 Returns [code]true[/code] if the given action set is active.
 */
 //go:nosplit
-func (self class) IsActionSetActive(name gd.String) bool { //gd:OpenXRInterface.is_action_set_active
+func (self class) IsActionSetActive(name String.Readable) bool { //gd:OpenXRInterface.is_action_set_active
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_action_set_active, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -343,9 +345,9 @@ func (self class) IsActionSetActive(name gd.String) bool { //gd:OpenXRInterface.
 Sets the given action set as active or inactive.
 */
 //go:nosplit
-func (self class) SetActionSetActive(name gd.String, active bool) { //gd:OpenXRInterface.set_action_set_active
+func (self class) SetActionSetActive(name String.Readable, active bool) { //gd:OpenXRInterface.set_action_set_active
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, active)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_action_set_active, self.AsObject(), frame.Array(0), r_ret.Addr())

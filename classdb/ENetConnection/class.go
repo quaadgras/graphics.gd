@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 ENet's purpose is to provide a relatively thin, simple and robust network communication layer on top of UDP (User Datagram Protocol).
@@ -46,7 +48,7 @@ Creates an ENetHost bound to the given [param bind_address] and [param bind_port
 [b]Note:[/b] It is necessary to create a host in both client and server in order to establish a connection.
 */
 func (self Instance) CreateHostBound(bind_address string, bind_port int) error { //gd:ENetConnection.create_host_bound
-	return error(gd.ToError(class(self).CreateHostBound(gd.NewString(bind_address), gd.Int(bind_port), gd.Int(32), gd.Int(0), gd.Int(0), gd.Int(0))))
+	return error(gd.ToError(class(self).CreateHostBound(String.New(bind_address), gd.Int(bind_port), gd.Int(32), gd.Int(0), gd.Int(0), gd.Int(0))))
 }
 
 /*
@@ -70,7 +72,7 @@ Initiates a connection to a foreign [param address] using the specified [param p
 [b]Note:[/b] You must call either [method create_host] or [method create_host_bound] on both ends before calling this method.
 */
 func (self Instance) ConnectToHost(address string, port int) [1]gdclass.ENetPacketPeer { //gd:ENetConnection.connect_to_host
-	return [1]gdclass.ENetPacketPeer(class(self).ConnectToHost(gd.NewString(address), gd.Int(port), gd.Int(0), gd.Int(0)))
+	return [1]gdclass.ENetPacketPeer(class(self).ConnectToHost(String.New(address), gd.Int(port), gd.Int(0), gd.Int(0)))
 }
 
 /*
@@ -130,7 +132,7 @@ func (self Instance) DtlsServerSetup(server_options [1]gdclass.TLSOptions) error
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet clients. Call this before [method connect_to_host] to have ENet connect using DTLS validating the server certificate against [param hostname]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) DtlsClientSetup(hostname string) error { //gd:ENetConnection.dtls_client_setup
-	return error(gd.ToError(class(self).DtlsClientSetup(gd.NewString(hostname), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(class(self).DtlsClientSetup(String.New(hostname), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*
@@ -176,7 +178,7 @@ This is useful as it serves to establish entries in NAT routing tables on all de
 This requires forward knowledge of a prospective client's address and communication port as seen by the public internet - after any NAT devices have handled their connection request. This information can be obtained by a [url=https://en.wikipedia.org/wiki/STUN]STUN[/url] service, and must be handed off to your host by an entity that is not the prospective client. This will never work for a client behind a Symmetric NAT due to the nature of the Symmetric NAT routing algorithm, as their IP and Port cannot be known beforehand.
 */
 func (self Instance) SocketSend(destination_address string, destination_port int, packet []byte) { //gd:ENetConnection.socket_send
-	class(self).SocketSend(gd.NewString(destination_address), gd.Int(destination_port), gd.NewPackedByteSlice(packet))
+	class(self).SocketSend(String.New(destination_address), gd.Int(destination_port), gd.NewPackedByteSlice(packet))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -203,9 +205,9 @@ Creates an ENetHost bound to the given [param bind_address] and [param bind_port
 [b]Note:[/b] It is necessary to create a host in both client and server in order to establish a connection.
 */
 //go:nosplit
-func (self class) CreateHostBound(bind_address gd.String, bind_port gd.Int, max_peers gd.Int, max_channels gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int) gd.Error { //gd:ENetConnection.create_host_bound
+func (self class) CreateHostBound(bind_address String.Readable, bind_port gd.Int, max_peers gd.Int, max_channels gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int) gd.Error { //gd:ENetConnection.create_host_bound
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bind_address))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bind_address)))
 	callframe.Arg(frame, bind_port)
 	callframe.Arg(frame, max_peers)
 	callframe.Arg(frame, max_channels)
@@ -253,9 +255,9 @@ Initiates a connection to a foreign [param address] using the specified [param p
 [b]Note:[/b] You must call either [method create_host] or [method create_host_bound] on both ends before calling this method.
 */
 //go:nosplit
-func (self class) ConnectToHost(address gd.String, port gd.Int, channels gd.Int, data gd.Int) [1]gdclass.ENetPacketPeer { //gd:ENetConnection.connect_to_host
+func (self class) ConnectToHost(address String.Readable, port gd.Int, channels gd.Int, data gd.Int) [1]gdclass.ENetPacketPeer { //gd:ENetConnection.connect_to_host
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(address))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(address)))
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, channels)
 	callframe.Arg(frame, data)
@@ -364,9 +366,9 @@ func (self class) DtlsServerSetup(server_options [1]gdclass.TLSOptions) gd.Error
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet clients. Call this before [method connect_to_host] to have ENet connect using DTLS validating the server certificate against [param hostname]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 //go:nosplit
-func (self class) DtlsClientSetup(hostname gd.String, client_options [1]gdclass.TLSOptions) gd.Error { //gd:ENetConnection.dtls_client_setup
+func (self class) DtlsClientSetup(hostname String.Readable, client_options [1]gdclass.TLSOptions) gd.Error { //gd:ENetConnection.dtls_client_setup
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(hostname))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(hostname)))
 	callframe.Arg(frame, pointers.Get(client_options[0])[0])
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_dtls_client_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -448,9 +450,9 @@ This is useful as it serves to establish entries in NAT routing tables on all de
 This requires forward knowledge of a prospective client's address and communication port as seen by the public internet - after any NAT devices have handled their connection request. This information can be obtained by a [url=https://en.wikipedia.org/wiki/STUN]STUN[/url] service, and must be handed off to your host by an entity that is not the prospective client. This will never work for a client behind a Symmetric NAT due to the nature of the Symmetric NAT routing algorithm, as their IP and Port cannot be known beforehand.
 */
 //go:nosplit
-func (self class) SocketSend(destination_address gd.String, destination_port gd.Int, packet gd.PackedByteArray) { //gd:ENetConnection.socket_send
+func (self class) SocketSend(destination_address String.Readable, destination_port gd.Int, packet gd.PackedByteArray) { //gd:ENetConnection.socket_send
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(destination_address))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(destination_address)))
 	callframe.Arg(frame, destination_port)
 	callframe.Arg(frame, pointers.Get(packet))
 	var r_ret = callframe.Nil

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Rect2"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A [Viewport] creates a different view into the screen, or a sub-view inside another viewport. Child 2D nodes will display on it, and child Camera3D 3D nodes will render on it too.
@@ -110,7 +112,7 @@ func (self Instance) GetViewportRid() RID.Viewport { //gd:Viewport.get_viewport_
 Helper method which calls the [code]set_text()[/code] method on the currently focused [Control], provided that it is defined (e.g. if the focused Control is [Button] or [LineEdit]).
 */
 func (self Instance) PushTextInput(text string) { //gd:Viewport.push_text_input
-	class(self).PushTextInput(gd.NewString(text))
+	class(self).PushTextInput(String.New(text))
 }
 
 /*
@@ -1045,9 +1047,9 @@ func (self class) GetViewportRid() gd.RID { //gd:Viewport.get_viewport_rid
 Helper method which calls the [code]set_text()[/code] method on the currently focused [Control], provided that it is defined (e.g. if the focused Control is [Button] or [LineEdit]).
 */
 //go:nosplit
-func (self class) PushTextInput(text gd.String) { //gd:Viewport.push_text_input
+func (self class) PushTextInput(text String.Readable) { //gd:Viewport.push_text_input
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_push_text_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

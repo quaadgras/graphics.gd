@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This node can be bound to a specific pose of a [XRPositionalTracker] and will automatically have its [member Node3D.transform] updated by the [XRServer]. Nodes of this type must be added as children of the [XROrigin3D] node.
@@ -73,7 +75,7 @@ Triggers a haptic pulse on a device associated with this interface.
 [param delay_sec] is a delay in seconds before the pulse is given.
 */
 func (self Instance) TriggerHapticPulse(action_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) { //gd:XRNode3D.trigger_haptic_pulse
-	class(self).TriggerHapticPulse(gd.NewString(action_name), gd.Float(frequency), gd.Float(amplitude), gd.Float(duration_sec), gd.Float(delay_sec))
+	class(self).TriggerHapticPulse(String.New(action_name), gd.Float(frequency), gd.Float(amplitude), gd.Float(duration_sec), gd.Float(delay_sec))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -223,9 +225,9 @@ Triggers a haptic pulse on a device associated with this interface.
 [param delay_sec] is a delay in seconds before the pulse is given.
 */
 //go:nosplit
-func (self class) TriggerHapticPulse(action_name gd.String, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float) { //gd:XRNode3D.trigger_haptic_pulse
+func (self class) TriggerHapticPulse(action_name String.Readable, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float) { //gd:XRNode3D.trigger_haptic_pulse
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(action_name)))
 	callframe.Arg(frame, frequency)
 	callframe.Arg(frame, amplitude)
 	callframe.Arg(frame, duration_sec)

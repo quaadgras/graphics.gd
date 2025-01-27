@@ -5,11 +5,11 @@ package gd_test
 import (
 	"testing"
 
-	"graphics.gd/variant/String"
+	gd "graphics.gd/internal"
 )
 
 func BenchmarkMethodBindPointerCall(B *testing.B) {
-	s := String.New("Hello, World!")
+	s := gd.NewString("Hello, World!")
 	for i := 0; i < B.N; i++ {
 		_ = s.Length()
 	}

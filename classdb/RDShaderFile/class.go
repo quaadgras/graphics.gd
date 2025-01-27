@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Compiled shader file in SPIR-V form.
@@ -87,7 +89,7 @@ func (self Instance) BaseError() string {
 }
 
 func (self Instance) SetBaseError(value string) {
-	class(self).SetBaseError(gd.NewString(value))
+	class(self).SetBaseError(String.New(value))
 }
 
 /*
@@ -131,20 +133,20 @@ func (self class) GetVersionList() Array.Contains[gd.StringName] { //gd:RDShader
 }
 
 //go:nosplit
-func (self class) SetBaseError(error gd.String) { //gd:RDShaderFile.set_base_error
+func (self class) SetBaseError(error String.Readable) { //gd:RDShaderFile.set_base_error
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(error))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(error)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_set_base_error, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetBaseError() gd.String { //gd:RDShaderFile.get_base_error
+func (self class) GetBaseError() String.Readable { //gd:RDShaderFile.get_base_error
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_get_base_error, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

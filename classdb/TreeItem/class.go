@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A single item of a [Tree] control. It can contain other [TreeItem]s as children, which allows it to create a hierarchy. It can also contain text and buttons. [TreeItem] is not a [Node], it is internal to the [Tree].
@@ -114,7 +116,7 @@ func (self Instance) PropagateCheck(column int) { //gd:TreeItem.propagate_check
 Sets the given column's text value.
 */
 func (self Instance) SetText(column int, text string) { //gd:TreeItem.set_text
-	class(self).SetText(gd.Int(column), gd.NewString(text))
+	class(self).SetText(gd.Int(column), String.New(text))
 }
 
 /*
@@ -198,7 +200,7 @@ func (self Instance) GetStructuredTextBidiOverrideOptions(column int) []any { //
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 func (self Instance) SetLanguage(column int, language string) { //gd:TreeItem.set_language
-	class(self).SetLanguage(gd.Int(column), gd.NewString(language))
+	class(self).SetLanguage(gd.Int(column), String.New(language))
 }
 
 /*
@@ -212,7 +214,7 @@ func (self Instance) GetLanguage(column int) string { //gd:TreeItem.get_language
 Sets a string to be shown after a column's value (for example, a unit abbreviation).
 */
 func (self Instance) SetSuffix(column int, text string) { //gd:TreeItem.set_suffix
-	class(self).SetSuffix(gd.Int(column), gd.NewString(text))
+	class(self).SetSuffix(gd.Int(column), String.New(text))
 }
 
 /*
@@ -510,7 +512,7 @@ func (self Instance) IsCustomSetAsButton(column int) bool { //gd:TreeItem.is_cus
 Adds a button with [Texture2D] [param button] at column [param column]. The [param id] is used to identify the button in the according [signal Tree.button_clicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [method get_button_count] immediately before this method. Optionally, the button can be [param disabled] and have a [param tooltip_text].
 */
 func (self Instance) AddButton(column int, button [1]gdclass.Texture2D) { //gd:TreeItem.add_button
-	class(self).AddButton(gd.Int(column), button, gd.Int(-1), false, gd.NewString(""))
+	class(self).AddButton(gd.Int(column), button, gd.Int(-1), false, String.New(""))
 }
 
 /*
@@ -559,7 +561,7 @@ func (self Instance) GetButton(column int, button_index int) [1]gdclass.Texture2
 Sets the tooltip text for the button at index [param button_index] in the given [param column].
 */
 func (self Instance) SetButtonTooltipText(column int, button_index int, tooltip string) { //gd:TreeItem.set_button_tooltip_text
-	class(self).SetButtonTooltipText(gd.Int(column), gd.Int(button_index), gd.NewString(tooltip))
+	class(self).SetButtonTooltipText(gd.Int(column), gd.Int(button_index), String.New(tooltip))
 }
 
 /*
@@ -601,7 +603,7 @@ func (self Instance) IsButtonDisabled(column int, button_index int) bool { //gd:
 Sets the given column's tooltip text.
 */
 func (self Instance) SetTooltipText(column int, tooltip string) { //gd:TreeItem.set_tooltip_text
-	class(self).SetTooltipText(gd.Int(column), gd.NewString(tooltip))
+	class(self).SetTooltipText(gd.Int(column), String.New(tooltip))
 }
 
 /*
@@ -951,10 +953,10 @@ func (self class) PropagateCheck(column gd.Int, emit_signal bool) { //gd:TreeIte
 Sets the given column's text value.
 */
 //go:nosplit
-func (self class) SetText(column gd.Int, text gd.String) { //gd:TreeItem.set_text
+func (self class) SetText(column gd.Int, text String.Readable) { //gd:TreeItem.set_text
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -964,12 +966,12 @@ func (self class) SetText(column gd.Int, text gd.String) { //gd:TreeItem.set_tex
 Returns the given column's text.
 */
 //go:nosplit
-func (self class) GetText(column gd.Int) gd.String { //gd:TreeItem.get_text
+func (self class) GetText(column gd.Int) String.Readable { //gd:TreeItem.get_text
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1113,10 +1115,10 @@ func (self class) GetStructuredTextBidiOverrideOptions(column gd.Int) Array.Any 
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 //go:nosplit
-func (self class) SetLanguage(column gd.Int, language gd.String) { //gd:TreeItem.set_language
+func (self class) SetLanguage(column gd.Int, language String.Readable) { //gd:TreeItem.set_language
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1126,12 +1128,12 @@ func (self class) SetLanguage(column gd.Int, language gd.String) { //gd:TreeItem
 Returns item's text language code.
 */
 //go:nosplit
-func (self class) GetLanguage(column gd.Int) gd.String { //gd:TreeItem.get_language
+func (self class) GetLanguage(column gd.Int) String.Readable { //gd:TreeItem.get_language
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1140,10 +1142,10 @@ func (self class) GetLanguage(column gd.Int) gd.String { //gd:TreeItem.get_langu
 Sets a string to be shown after a column's value (for example, a unit abbreviation).
 */
 //go:nosplit
-func (self class) SetSuffix(column gd.Int, text gd.String) { //gd:TreeItem.set_suffix
+func (self class) SetSuffix(column gd.Int, text String.Readable) { //gd:TreeItem.set_suffix
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_suffix, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1153,12 +1155,12 @@ func (self class) SetSuffix(column gd.Int, text gd.String) { //gd:TreeItem.set_s
 Gets the suffix string shown after the column value.
 */
 //go:nosplit
-func (self class) GetSuffix(column gd.Int) gd.String { //gd:TreeItem.get_suffix
+func (self class) GetSuffix(column gd.Int) String.Readable { //gd:TreeItem.get_suffix
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_suffix, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1763,13 +1765,13 @@ func (self class) IsCustomSetAsButton(column gd.Int) bool { //gd:TreeItem.is_cus
 Adds a button with [Texture2D] [param button] at column [param column]. The [param id] is used to identify the button in the according [signal Tree.button_clicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [method get_button_count] immediately before this method. Optionally, the button can be [param disabled] and have a [param tooltip_text].
 */
 //go:nosplit
-func (self class) AddButton(column gd.Int, button [1]gdclass.Texture2D, id gd.Int, disabled bool, tooltip_text gd.String) { //gd:TreeItem.add_button
+func (self class) AddButton(column gd.Int, button [1]gdclass.Texture2D, id gd.Int, disabled bool, tooltip_text String.Readable) { //gd:TreeItem.add_button
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(button[0])[0])
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, disabled)
-	callframe.Arg(frame, pointers.Get(tooltip_text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip_text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_add_button, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1793,13 +1795,13 @@ func (self class) GetButtonCount(column gd.Int) gd.Int { //gd:TreeItem.get_butto
 Returns the tooltip text for the button at index [param button_index] in column [param column].
 */
 //go:nosplit
-func (self class) GetButtonTooltipText(column gd.Int, button_index gd.Int) gd.String { //gd:TreeItem.get_button_tooltip_text
+func (self class) GetButtonTooltipText(column gd.Int, button_index gd.Int) String.Readable { //gd:TreeItem.get_button_tooltip_text
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1868,11 +1870,11 @@ func (self class) GetButton(column gd.Int, button_index gd.Int) [1]gdclass.Textu
 Sets the tooltip text for the button at index [param button_index] in the given [param column].
 */
 //go:nosplit
-func (self class) SetButtonTooltipText(column gd.Int, button_index gd.Int, tooltip gd.String) { //gd:TreeItem.set_button_tooltip_text
+func (self class) SetButtonTooltipText(column gd.Int, button_index gd.Int, tooltip String.Readable) { //gd:TreeItem.set_button_tooltip_text
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
-	callframe.Arg(frame, pointers.Get(tooltip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_button_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1952,10 +1954,10 @@ func (self class) IsButtonDisabled(column gd.Int, button_index gd.Int) bool { //
 Sets the given column's tooltip text.
 */
 //go:nosplit
-func (self class) SetTooltipText(column gd.Int, tooltip gd.String) { //gd:TreeItem.set_tooltip_text
+func (self class) SetTooltipText(column gd.Int, tooltip String.Readable) { //gd:TreeItem.set_tooltip_text
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	callframe.Arg(frame, pointers.Get(tooltip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1965,12 +1967,12 @@ func (self class) SetTooltipText(column gd.Int, tooltip gd.String) { //gd:TreeIt
 Returns the given column's tooltip text.
 */
 //go:nosplit
-func (self class) GetTooltipText(column gd.Int) gd.String { //gd:TreeItem.get_tooltip_text
+func (self class) GetTooltipText(column gd.Int) String.Readable { //gd:TreeItem.get_tooltip_text
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

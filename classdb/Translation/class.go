@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [Translation]s are resources that can be loaded and unloaded on demand. They map a collection of strings to their individual translations, and they also provide convenience methods for pluralization.
@@ -188,7 +190,7 @@ func (self Instance) Locale() string {
 }
 
 func (self Instance) SetLocale(value string) {
-	class(self).SetLocale(gd.NewString(value))
+	class(self).SetLocale(String.New(value))
 }
 
 /*
@@ -236,20 +238,20 @@ func (class) _get_message(impl func(ptr unsafe.Pointer, src_message gd.StringNam
 }
 
 //go:nosplit
-func (self class) SetLocale(locale gd.String) { //gd:Translation.set_locale
+func (self class) SetLocale(locale String.Readable) { //gd:Translation.set_locale
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(locale))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(locale)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_set_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetLocale() gd.String { //gd:Translation.get_locale
+func (self class) GetLocale() String.Readable { //gd:Translation.get_locale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

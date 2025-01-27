@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Provides data transformation and encoding utility functions.
@@ -55,7 +57,7 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 */
 func Base64ToVariant(base64_str string) any { //gd:Marshalls.base64_to_variant
 	once.Do(singleton)
-	return any(class(self).Base64ToVariant(gd.NewString(base64_str), false).Interface())
+	return any(class(self).Base64ToVariant(String.New(base64_str), false).Interface())
 }
 
 /*
@@ -71,7 +73,7 @@ Returns a decoded [PackedByteArray] corresponding to the Base64-encoded string [
 */
 func Base64ToRaw(base64_str string) []byte { //gd:Marshalls.base64_to_raw
 	once.Do(singleton)
-	return []byte(class(self).Base64ToRaw(gd.NewString(base64_str)).Bytes())
+	return []byte(class(self).Base64ToRaw(String.New(base64_str)).Bytes())
 }
 
 /*
@@ -79,7 +81,7 @@ Returns a Base64-encoded string of the UTF-8 string [param utf8_str].
 */
 func Utf8ToBase64(utf8_str string) string { //gd:Marshalls.utf8_to_base64
 	once.Do(singleton)
-	return string(class(self).Utf8ToBase64(gd.NewString(utf8_str)).String())
+	return string(class(self).Utf8ToBase64(String.New(utf8_str)).String())
 }
 
 /*
@@ -87,7 +89,7 @@ Returns a decoded string corresponding to the Base64-encoded string [param base6
 */
 func Base64ToUtf8(base64_str string) string { //gd:Marshalls.base64_to_utf8
 	once.Do(singleton)
-	return string(class(self).Base64ToUtf8(gd.NewString(base64_str)).String())
+	return string(class(self).Base64ToUtf8(String.New(base64_str)).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -105,13 +107,13 @@ Returns a Base64-encoded string of the [Variant] [param variant]. If [param full
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
 //go:nosplit
-func (self class) VariantToBase64(variant gd.Variant, full_objects bool) gd.String { //gd:Marshalls.variant_to_base64
+func (self class) VariantToBase64(variant gd.Variant, full_objects bool) String.Readable { //gd:Marshalls.variant_to_base64
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variant))
 	callframe.Arg(frame, full_objects)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_variant_to_base64, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -122,9 +124,9 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 //go:nosplit
-func (self class) Base64ToVariant(base64_str gd.String, allow_objects bool) gd.Variant { //gd:Marshalls.base64_to_variant
+func (self class) Base64ToVariant(base64_str String.Readable, allow_objects bool) gd.Variant { //gd:Marshalls.base64_to_variant
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(base64_str))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(base64_str)))
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_base64_to_variant, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -137,12 +139,12 @@ func (self class) Base64ToVariant(base64_str gd.String, allow_objects bool) gd.V
 Returns a Base64-encoded string of a given [PackedByteArray].
 */
 //go:nosplit
-func (self class) RawToBase64(array gd.PackedByteArray) gd.String { //gd:Marshalls.raw_to_base64
+func (self class) RawToBase64(array gd.PackedByteArray) String.Readable { //gd:Marshalls.raw_to_base64
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_raw_to_base64, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -151,9 +153,9 @@ func (self class) RawToBase64(array gd.PackedByteArray) gd.String { //gd:Marshal
 Returns a decoded [PackedByteArray] corresponding to the Base64-encoded string [param base64_str].
 */
 //go:nosplit
-func (self class) Base64ToRaw(base64_str gd.String) gd.PackedByteArray { //gd:Marshalls.base64_to_raw
+func (self class) Base64ToRaw(base64_str String.Readable) gd.PackedByteArray { //gd:Marshalls.base64_to_raw
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(base64_str))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(base64_str)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_base64_to_raw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
@@ -165,12 +167,12 @@ func (self class) Base64ToRaw(base64_str gd.String) gd.PackedByteArray { //gd:Ma
 Returns a Base64-encoded string of the UTF-8 string [param utf8_str].
 */
 //go:nosplit
-func (self class) Utf8ToBase64(utf8_str gd.String) gd.String { //gd:Marshalls.utf8_to_base64
+func (self class) Utf8ToBase64(utf8_str String.Readable) String.Readable { //gd:Marshalls.utf8_to_base64
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(utf8_str))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(utf8_str)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_utf8_to_base64, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -179,12 +181,12 @@ func (self class) Utf8ToBase64(utf8_str gd.String) gd.String { //gd:Marshalls.ut
 Returns a decoded string corresponding to the Base64-encoded string [param base64_str].
 */
 //go:nosplit
-func (self class) Base64ToUtf8(base64_str gd.String) gd.String { //gd:Marshalls.base64_to_utf8
+func (self class) Base64ToUtf8(base64_str String.Readable) String.Readable { //gd:Marshalls.base64_to_utf8
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(base64_str))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(base64_str)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_base64_to_utf8, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

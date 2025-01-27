@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/Resource"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Gives access to input variables (built-ins) available for the shader. See the shading reference for the list of available built-ins for each shader type (check [code]Tutorials[/code] section for link).
@@ -73,24 +75,24 @@ func (self Instance) InputName() string {
 }
 
 func (self Instance) SetInputName(value string) {
-	class(self).SetInputName(gd.NewString(value))
+	class(self).SetInputName(String.New(value))
 }
 
 //go:nosplit
-func (self class) SetInputName(name gd.String) { //gd:VisualShaderNodeInput.set_input_name
+func (self class) SetInputName(name String.Readable) { //gd:VisualShaderNodeInput.set_input_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeInput.Bind_set_input_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetInputName() gd.String { //gd:VisualShaderNodeInput.get_input_name
+func (self class) GetInputName() String.Readable { //gd:VisualShaderNodeInput.get_input_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeInput.Bind_get_input_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -99,11 +101,11 @@ func (self class) GetInputName() gd.String { //gd:VisualShaderNodeInput.get_inpu
 Returns a translated name of the current constant in the Godot Shader Language. E.g. [code]"ALBEDO"[/code] if the [member input_name] equal to [code]"albedo"[/code].
 */
 //go:nosplit
-func (self class) GetInputRealName() gd.String { //gd:VisualShaderNodeInput.get_input_real_name
+func (self class) GetInputRealName() String.Readable { //gd:VisualShaderNodeInput.get_input_real_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeInput.Bind_get_input_real_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

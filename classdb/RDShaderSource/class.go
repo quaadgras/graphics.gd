@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Shader source code in text form.
@@ -65,7 +67,7 @@ func (self Instance) SourceVertex() string {
 }
 
 func (self Instance) SetSourceVertex(value string) {
-	class(self).SetStageSource(0, gd.NewString(value))
+	class(self).SetStageSource(0, String.New(value))
 }
 
 func (self Instance) SourceFragment() string {
@@ -73,7 +75,7 @@ func (self Instance) SourceFragment() string {
 }
 
 func (self Instance) SetSourceFragment(value string) {
-	class(self).SetStageSource(1, gd.NewString(value))
+	class(self).SetStageSource(1, String.New(value))
 }
 
 func (self Instance) SourceTesselationControl() string {
@@ -81,7 +83,7 @@ func (self Instance) SourceTesselationControl() string {
 }
 
 func (self Instance) SetSourceTesselationControl(value string) {
-	class(self).SetStageSource(2, gd.NewString(value))
+	class(self).SetStageSource(2, String.New(value))
 }
 
 func (self Instance) SourceTesselationEvaluation() string {
@@ -89,7 +91,7 @@ func (self Instance) SourceTesselationEvaluation() string {
 }
 
 func (self Instance) SetSourceTesselationEvaluation(value string) {
-	class(self).SetStageSource(3, gd.NewString(value))
+	class(self).SetStageSource(3, String.New(value))
 }
 
 func (self Instance) SourceCompute() string {
@@ -97,7 +99,7 @@ func (self Instance) SourceCompute() string {
 }
 
 func (self Instance) SetSourceCompute(value string) {
-	class(self).SetStageSource(4, gd.NewString(value))
+	class(self).SetStageSource(4, String.New(value))
 }
 
 func (self Instance) Language() gdclass.RenderingDeviceShaderLanguage {
@@ -112,10 +114,10 @@ func (self Instance) SetLanguage(value gdclass.RenderingDeviceShaderLanguage) {
 Sets [param source] code for the specified shader [param stage]. Equivalent to setting one of [member source_compute], [member source_fragment], [member source_tesselation_control], [member source_tesselation_evaluation] or [member source_vertex].
 */
 //go:nosplit
-func (self class) SetStageSource(stage gdclass.RenderingDeviceShaderStage, source gd.String) { //gd:RDShaderSource.set_stage_source
+func (self class) SetStageSource(stage gdclass.RenderingDeviceShaderStage, source String.Readable) { //gd:RDShaderSource.set_stage_source
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
-	callframe.Arg(frame, pointers.Get(source))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(source)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_set_stage_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -125,12 +127,12 @@ func (self class) SetStageSource(stage gdclass.RenderingDeviceShaderStage, sourc
 Returns source code for the specified shader [param stage]. Equivalent to getting one of [member source_compute], [member source_fragment], [member source_tesselation_control], [member source_tesselation_evaluation] or [member source_vertex].
 */
 //go:nosplit
-func (self class) GetStageSource(stage gdclass.RenderingDeviceShaderStage) gd.String { //gd:RDShaderSource.get_stage_source
+func (self class) GetStageSource(stage gdclass.RenderingDeviceShaderStage) String.Readable { //gd:RDShaderSource.get_stage_source
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_get_stage_source, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

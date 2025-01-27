@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The [PCKPacker] is used to create packages that can be loaded into a running project using [method ProjectSettings.load_resource_pack].
@@ -59,14 +61,14 @@ type Any interface {
 Creates a new PCK file with the name [param pck_name]. The [code].pck[/code] file extension isn't added automatically, so it should be part of [param pck_name] (even though it's not required).
 */
 func (self Instance) PckStart(pck_name string) error { //gd:PCKPacker.pck_start
-	return error(gd.ToError(class(self).PckStart(gd.NewString(pck_name), gd.Int(32), gd.NewString("0000000000000000000000000000000000000000000000000000000000000000"), false)))
+	return error(gd.ToError(class(self).PckStart(String.New(pck_name), gd.Int(32), String.New("0000000000000000000000000000000000000000000000000000000000000000"), false)))
 }
 
 /*
 Adds the [param source_path] file to the current PCK package at the [param pck_path] internal path (should start with [code]res://[/code]).
 */
 func (self Instance) AddFile(pck_path string, source_path string) error { //gd:PCKPacker.add_file
-	return error(gd.ToError(class(self).AddFile(gd.NewString(pck_path), gd.NewString(source_path), false)))
+	return error(gd.ToError(class(self).AddFile(String.New(pck_path), String.New(source_path), false)))
 }
 
 /*
@@ -99,11 +101,11 @@ func New() Instance {
 Creates a new PCK file with the name [param pck_name]. The [code].pck[/code] file extension isn't added automatically, so it should be part of [param pck_name] (even though it's not required).
 */
 //go:nosplit
-func (self class) PckStart(pck_name gd.String, alignment gd.Int, key gd.String, encrypt_directory bool) gd.Error { //gd:PCKPacker.pck_start
+func (self class) PckStart(pck_name String.Readable, alignment gd.Int, key String.Readable, encrypt_directory bool) gd.Error { //gd:PCKPacker.pck_start
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(pck_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(pck_name)))
 	callframe.Arg(frame, alignment)
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
 	callframe.Arg(frame, encrypt_directory)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_pck_start, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -116,10 +118,10 @@ func (self class) PckStart(pck_name gd.String, alignment gd.Int, key gd.String, 
 Adds the [param source_path] file to the current PCK package at the [param pck_path] internal path (should start with [code]res://[/code]).
 */
 //go:nosplit
-func (self class) AddFile(pck_path gd.String, source_path gd.String, encrypt bool) gd.Error { //gd:PCKPacker.add_file
+func (self class) AddFile(pck_path String.Readable, source_path String.Readable, encrypt bool) gd.Error { //gd:PCKPacker.add_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(pck_path))
-	callframe.Arg(frame, pointers.Get(source_path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(pck_path)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(source_path)))
 	callframe.Arg(frame, encrypt)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_add_file, self.AsObject(), frame.Array(0), r_ret.Addr())

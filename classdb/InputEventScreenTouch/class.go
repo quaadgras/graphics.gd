@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/InputEventFromWindow"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Resource"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Stores information about multi-touch press/release input events. Supports touch press, touch release and [member index] for multi-touch count and order.

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/Resource"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Varying values are shader variables that can be passed between shader functions, e.g. from Vertex shader to Fragment shader.
@@ -66,7 +68,7 @@ func (self Instance) VaryingName() string {
 }
 
 func (self Instance) SetVaryingName(value string) {
-	class(self).SetVaryingName(gd.NewString(value))
+	class(self).SetVaryingName(String.New(value))
 }
 
 func (self Instance) VaryingType() gdclass.VisualShaderVaryingType {
@@ -78,20 +80,20 @@ func (self Instance) SetVaryingType(value gdclass.VisualShaderVaryingType) {
 }
 
 //go:nosplit
-func (self class) SetVaryingName(name gd.String) { //gd:VisualShaderNodeVarying.set_varying_name
+func (self class) SetVaryingName(name String.Readable) { //gd:VisualShaderNodeVarying.set_varying_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVarying.Bind_set_varying_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetVaryingName() gd.String { //gd:VisualShaderNodeVarying.get_varying_name
+func (self class) GetVaryingName() String.Readable { //gd:VisualShaderNodeVarying.get_varying_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVarying.Bind_get_varying_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

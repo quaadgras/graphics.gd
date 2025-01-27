@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 An editor feature profile can be used to disable specific features of the Godot editor. When disabled, the features won't appear in the editor, which makes the editor less cluttered. This is useful in education settings to reduce confusion or when working in a team. For example, artists and level designers could use a feature profile that disables the script editor to avoid accidentally making changes to files they aren't supposed to edit.
@@ -109,7 +111,7 @@ Saves the editor feature profile to a file in JSON format. It can then be import
 [b]Note:[/b] Feature profiles created via the user interface are saved in the [code]feature_profiles[/code] directory, as a file with the [code].profile[/code] extension. The editor configuration folder can be found by using [method EditorPaths.get_config_dir].
 */
 func (self Instance) SaveToFile(path string) error { //gd:EditorFeatureProfile.save_to_file
-	return error(gd.ToError(class(self).SaveToFile(gd.NewString(path))))
+	return error(gd.ToError(class(self).SaveToFile(String.New(path))))
 }
 
 /*
@@ -117,7 +119,7 @@ Loads an editor feature profile from a file. The file must follow the JSON forma
 [b]Note:[/b] Feature profiles created via the user interface are loaded from the [code]feature_profiles[/code] directory, as a file with the [code].profile[/code] extension. The editor configuration folder can be found by using [method EditorPaths.get_config_dir].
 */
 func (self Instance) LoadFromFile(path string) error { //gd:EditorFeatureProfile.load_from_file
-	return error(gd.ToError(class(self).LoadFromFile(gd.NewString(path))))
+	return error(gd.ToError(class(self).LoadFromFile(String.New(path))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -253,12 +255,12 @@ func (self class) IsFeatureDisabled(feature gdclass.EditorFeatureProfileFeature)
 Returns the specified [param feature]'s human-readable name.
 */
 //go:nosplit
-func (self class) GetFeatureName(feature gdclass.EditorFeatureProfileFeature) gd.String { //gd:EditorFeatureProfile.get_feature_name
+func (self class) GetFeatureName(feature gdclass.EditorFeatureProfileFeature) String.Readable { //gd:EditorFeatureProfile.get_feature_name
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_get_feature_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -268,9 +270,9 @@ Saves the editor feature profile to a file in JSON format. It can then be import
 [b]Note:[/b] Feature profiles created via the user interface are saved in the [code]feature_profiles[/code] directory, as a file with the [code].profile[/code] extension. The editor configuration folder can be found by using [method EditorPaths.get_config_dir].
 */
 //go:nosplit
-func (self class) SaveToFile(path gd.String) gd.Error { //gd:EditorFeatureProfile.save_to_file
+func (self class) SaveToFile(path String.Readable) gd.Error { //gd:EditorFeatureProfile.save_to_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_save_to_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -283,9 +285,9 @@ Loads an editor feature profile from a file. The file must follow the JSON forma
 [b]Note:[/b] Feature profiles created via the user interface are loaded from the [code]feature_profiles[/code] directory, as a file with the [code].profile[/code] extension. The editor configuration folder can be found by using [method EditorPaths.get_config_dir].
 */
 //go:nosplit
-func (self class) LoadFromFile(path gd.String) gd.Error { //gd:EditorFeatureProfile.load_from_file
+func (self class) LoadFromFile(path String.Readable) gd.Error { //gd:EditorFeatureProfile.load_from_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

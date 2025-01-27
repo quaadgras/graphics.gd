@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The [Input] singleton handles key presses, mouse buttons and movement, gamepads, and input actions. Actions and their events can be set in the [b]Input Map[/b] tab in [b]Project > Project Settings[/b], or with the [InputMap] class.
@@ -171,7 +173,7 @@ Adds a new mapping entry (in SDL2 format) to the mapping database. Optionally up
 */
 func AddJoyMapping(mapping string) { //gd:Input.add_joy_mapping
 	once.Do(singleton)
-	class(self).AddJoyMapping(gd.NewString(mapping), false)
+	class(self).AddJoyMapping(String.New(mapping), false)
 }
 
 /*
@@ -179,7 +181,7 @@ Removes all mappings from the internal database that match the given GUID.
 */
 func RemoveJoyMapping(guid string) { //gd:Input.remove_joy_mapping
 	once.Do(singleton)
-	class(self).RemoveJoyMapping(gd.NewString(guid))
+	class(self).RemoveJoyMapping(String.New(guid))
 }
 
 /*
@@ -740,9 +742,9 @@ func (self class) GetVector(negative_x gd.StringName, positive_x gd.StringName, 
 Adds a new mapping entry (in SDL2 format) to the mapping database. Optionally update already connected devices.
 */
 //go:nosplit
-func (self class) AddJoyMapping(mapping gd.String, update_existing bool) { //gd:Input.add_joy_mapping
+func (self class) AddJoyMapping(mapping String.Readable, update_existing bool) { //gd:Input.add_joy_mapping
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(mapping))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(mapping)))
 	callframe.Arg(frame, update_existing)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_add_joy_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -753,9 +755,9 @@ func (self class) AddJoyMapping(mapping gd.String, update_existing bool) { //gd:
 Removes all mappings from the internal database that match the given GUID.
 */
 //go:nosplit
-func (self class) RemoveJoyMapping(guid gd.String) { //gd:Input.remove_joy_mapping
+func (self class) RemoveJoyMapping(guid String.Readable) { //gd:Input.remove_joy_mapping
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(guid))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(guid)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_remove_joy_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -794,12 +796,12 @@ func (self class) GetJoyAxis(device gd.Int, axis JoyAxis) gd.Float { //gd:Input.
 Returns the name of the joypad at the specified device index, e.g. [code]PS4 Controller[/code]. Godot uses the [url=https://github.com/gabomdq/SDL_GameControllerDB]SDL2 game controller database[/url] to determine gamepad names.
 */
 //go:nosplit
-func (self class) GetJoyName(device gd.Int) gd.String { //gd:Input.get_joy_name
+func (self class) GetJoyName(device gd.Int) String.Readable { //gd:Input.get_joy_name
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -808,12 +810,12 @@ func (self class) GetJoyName(device gd.Int) gd.String { //gd:Input.get_joy_name
 Returns an SDL2-compatible device GUID on platforms that use gamepad remapping, e.g. [code]030000004c050000c405000000010000[/code]. Returns [code]"Default Gamepad"[/code] otherwise. Godot uses the [url=https://github.com/gabomdq/SDL_GameControllerDB]SDL2 game controller database[/url] to determine gamepad names and mappings based on this GUID.
 */
 //go:nosplit
-func (self class) GetJoyGuid(device gd.Int) gd.String { //gd:Input.get_joy_guid
+func (self class) GetJoyGuid(device gd.Int) String.Readable { //gd:Input.get_joy_guid
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_guid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

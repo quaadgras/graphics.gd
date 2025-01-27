@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Godot can record videos with non-real-time simulation. Like the [code]--fixed-fps[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url], this forces the reported [code]delta[/code] in [method Node._process] functions to be identical across frames, regardless of how long it actually took to render the frame. This can be used to record high-quality videos with perfect frame pacing regardless of your hardware's capabilities.
@@ -123,8 +125,8 @@ func _handles_file(path):
 */
 func (Instance) _handles_file(impl func(ptr unsafe.Pointer, path string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String())
 		gd.UnsafeSet(p_back, ret)
@@ -140,8 +142,8 @@ func (Instance) _write_begin(impl func(ptr unsafe.Pointer, movie_size Vector2i.X
 
 		var fps = gd.UnsafeGet[gd.Int](p_args, 1)
 
-		var base_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(base_path)
+		var base_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalString(base_path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, movie_size, int(fps), base_path.String())
 		gd.UnsafeSet(p_back, ret)
@@ -235,10 +237,10 @@ func _handles_file(path):
 
 [/codeblock]
 */
-func (class) _handles_file(impl func(ptr unsafe.Pointer, path gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _handles_file(impl func(ptr unsafe.Pointer, path String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path)
 		gd.UnsafeSet(p_back, ret)
@@ -248,14 +250,14 @@ func (class) _handles_file(impl func(ptr unsafe.Pointer, path gd.String) bool) (
 /*
 Called once before the engine starts writing video and audio data. [param movie_size] is the width and height of the video to save. [param fps] is the number of frames per second specified in the project settings or using the [code]--fixed-fps <fps>[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
 */
-func (class) _write_begin(impl func(ptr unsafe.Pointer, movie_size gd.Vector2i, fps gd.Int, base_path gd.String) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _write_begin(impl func(ptr unsafe.Pointer, movie_size gd.Vector2i, fps gd.Int, base_path String.Readable) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var movie_size = gd.UnsafeGet[gd.Vector2i](p_args, 0)
 
 		var fps = gd.UnsafeGet[gd.Int](p_args, 1)
 
-		var base_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(base_path)
+		var base_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalString(base_path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, movie_size, fps, base_path)
 		gd.UnsafeSet(p_back, ret)

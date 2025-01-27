@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Range"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [SpinBox] is a numerical input text field. It allows entering integers and floating-point numbers.
@@ -129,7 +131,7 @@ func (self Instance) Prefix() string {
 }
 
 func (self Instance) SetPrefix(value string) {
-	class(self).SetPrefix(gd.NewString(value))
+	class(self).SetPrefix(String.New(value))
 }
 
 func (self Instance) Suffix() string {
@@ -137,7 +139,7 @@ func (self Instance) Suffix() string {
 }
 
 func (self Instance) SetSuffix(value string) {
-	class(self).SetSuffix(gd.NewString(value))
+	class(self).SetSuffix(String.New(value))
 }
 
 func (self Instance) CustomArrowStep() Float.X {
@@ -176,39 +178,39 @@ func (self class) GetHorizontalAlignment() HorizontalAlignment { //gd:SpinBox.ge
 }
 
 //go:nosplit
-func (self class) SetSuffix(suffix gd.String) { //gd:SpinBox.set_suffix
+func (self class) SetSuffix(suffix String.Readable) { //gd:SpinBox.set_suffix
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(suffix))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(suffix)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_set_suffix, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSuffix() gd.String { //gd:SpinBox.get_suffix
+func (self class) GetSuffix() String.Readable { //gd:SpinBox.get_suffix
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_suffix, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetPrefix(prefix gd.String) { //gd:SpinBox.set_prefix
+func (self class) SetPrefix(prefix String.Readable) { //gd:SpinBox.set_prefix
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(prefix))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(prefix)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_set_prefix, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPrefix() gd.String { //gd:SpinBox.get_prefix
+func (self class) GetPrefix() String.Readable { //gd:SpinBox.get_prefix
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_prefix, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

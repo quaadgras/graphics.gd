@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A control used to show a set of internal [TreeItem]s in a hierarchical structure. The tree items can be selected, expanded and collapsed. The tree can have multiple columns with custom controls like [LineEdit]s, buttons and popups. It can be useful for structured displays and interactions.
@@ -308,7 +310,7 @@ func (self Instance) EnsureCursorIsVisible() { //gd:Tree.ensure_cursor_is_visibl
 Sets the title of a column.
 */
 func (self Instance) SetColumnTitle(column int, title string) { //gd:Tree.set_column_title
-	class(self).SetColumnTitle(gd.Int(column), gd.NewString(title))
+	class(self).SetColumnTitle(gd.Int(column), String.New(title))
 }
 
 /*
@@ -350,7 +352,7 @@ func (self Instance) GetColumnTitleDirection(column int) gdclass.ControlTextDire
 Sets language code of column title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 func (self Instance) SetColumnTitleLanguage(column int, language string) { //gd:Tree.set_column_title_language
-	class(self).SetColumnTitleLanguage(gd.Int(column), gd.NewString(language))
+	class(self).SetColumnTitleLanguage(gd.Int(column), String.New(language))
 }
 
 /*
@@ -961,10 +963,10 @@ func (self class) AreColumnTitlesVisible() bool { //gd:Tree.are_column_titles_vi
 Sets the title of a column.
 */
 //go:nosplit
-func (self class) SetColumnTitle(column gd.Int, title gd.String) { //gd:Tree.set_column_title
+func (self class) SetColumnTitle(column gd.Int, title String.Readable) { //gd:Tree.set_column_title
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	callframe.Arg(frame, pointers.Get(title))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_set_column_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -974,12 +976,12 @@ func (self class) SetColumnTitle(column gd.Int, title gd.String) { //gd:Tree.set
 Returns the column's title.
 */
 //go:nosplit
-func (self class) GetColumnTitle(column gd.Int) gd.String { //gd:Tree.get_column_title
+func (self class) GetColumnTitle(column gd.Int) String.Readable { //gd:Tree.get_column_title
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_column_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1042,10 +1044,10 @@ func (self class) GetColumnTitleDirection(column gd.Int) gdclass.ControlTextDire
 Sets language code of column title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 //go:nosplit
-func (self class) SetColumnTitleLanguage(column gd.Int, language gd.String) { //gd:Tree.set_column_title_language
+func (self class) SetColumnTitleLanguage(column gd.Int, language String.Readable) { //gd:Tree.set_column_title_language
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_set_column_title_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1055,12 +1057,12 @@ func (self class) SetColumnTitleLanguage(column gd.Int, language gd.String) { //
 Returns column title language code.
 */
 //go:nosplit
-func (self class) GetColumnTitleLanguage(column gd.Int) gd.String { //gd:Tree.get_column_title_language
+func (self class) GetColumnTitleLanguage(column gd.Int) String.Readable { //gd:Tree.get_column_title_language
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_column_title_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

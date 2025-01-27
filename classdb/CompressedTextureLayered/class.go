@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/TextureLayered"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Resource"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Base class for [CompressedTexture2DArray] and [CompressedTexture3D]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. See also [TextureLayered].
@@ -67,16 +69,16 @@ func (self Instance) LoadPath() string {
 }
 
 func (self Instance) SetLoadPath(value string) {
-	class(self).Load(gd.NewString(value))
+	class(self).Load(String.New(value))
 }
 
 /*
 Loads the texture at [param path].
 */
 //go:nosplit
-func (self class) Load(path gd.String) gd.Error { //gd:CompressedTextureLayered.load
+func (self class) Load(path String.Readable) gd.Error { //gd:CompressedTextureLayered.load
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CompressedTextureLayered.Bind_load, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -85,11 +87,11 @@ func (self class) Load(path gd.String) gd.Error { //gd:CompressedTextureLayered.
 }
 
 //go:nosplit
-func (self class) GetLoadPath() gd.String { //gd:CompressedTextureLayered.get_load_path
+func (self class) GetLoadPath() String.Readable { //gd:CompressedTextureLayered.get_load_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CompressedTextureLayered.Bind_get_load_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

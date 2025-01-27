@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/classdb/PacketPeer"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A MultiplayerPeer implementation that should be passed to [member MultiplayerAPI.multiplayer_peer] after being initialized as either a client, server, or mesh. Events can then be handled by connecting to [MultiplayerAPI] signals. See [ENetConnection] for more information on the ENet library wrapper.
@@ -54,7 +56,7 @@ func (self Instance) CreateServer(port int) error { //gd:ENetMultiplayerPeer.cre
 Create client that connects to a server at [param address] using specified [param port]. The given address needs to be either a fully qualified domain name (e.g. [code]"www.example.com"[/code]) or an IP address in IPv4 or IPv6 format (e.g. [code]"192.168.1.1"[/code]). The [param port] is the port the server is listening on. The [param channel_count] parameter can be used to specify the number of ENet channels allocated for the connection. The [param in_bandwidth] and [param out_bandwidth] parameters can be used to limit the incoming and outgoing bandwidth to the given number of bytes per second. The default of 0 means unlimited bandwidth. Note that ENet will strategically drop packets on specific sides of a connection between peers to ensure the peer's bandwidth is not overwhelmed. The bandwidth parameters also determine the window size of a connection which limits the amount of reliable packets that may be in transit at any given time. Returns [constant OK] if a client was created, [constant ERR_ALREADY_IN_USE] if this ENetMultiplayerPeer instance already has an open connection (in which case you need to call [method MultiplayerPeer.close] first) or [constant ERR_CANT_CREATE] if the client could not be created. If [param local_port] is specified, the client will also listen to the given port; this is useful for some NAT traversal techniques.
 */
 func (self Instance) CreateClient(address string, port int) error { //gd:ENetMultiplayerPeer.create_client
-	return error(gd.ToError(class(self).CreateClient(gd.NewString(address), gd.Int(port), gd.Int(0), gd.Int(0), gd.Int(0), gd.Int(0))))
+	return error(gd.ToError(class(self).CreateClient(String.New(address), gd.Int(port), gd.Int(0), gd.Int(0), gd.Int(0), gd.Int(0))))
 }
 
 /*
@@ -76,7 +78,7 @@ func (self Instance) AddMeshPeer(peer_id int, host [1]gdclass.ENetConnection) er
 The IP used when creating a server. This is set to the wildcard [code]"*"[/code] by default, which binds to all available interfaces. The given IP needs to be in IPv4 or IPv6 address format, for example: [code]"192.168.1.1"[/code].
 */
 func (self Instance) SetBindIp(ip string) { //gd:ENetMultiplayerPeer.set_bind_ip
-	class(self).SetBindIp(gd.NewString(ip))
+	class(self).SetBindIp(String.New(ip))
 }
 
 /*
@@ -131,9 +133,9 @@ func (self class) CreateServer(port gd.Int, max_clients gd.Int, max_channels gd.
 Create client that connects to a server at [param address] using specified [param port]. The given address needs to be either a fully qualified domain name (e.g. [code]"www.example.com"[/code]) or an IP address in IPv4 or IPv6 format (e.g. [code]"192.168.1.1"[/code]). The [param port] is the port the server is listening on. The [param channel_count] parameter can be used to specify the number of ENet channels allocated for the connection. The [param in_bandwidth] and [param out_bandwidth] parameters can be used to limit the incoming and outgoing bandwidth to the given number of bytes per second. The default of 0 means unlimited bandwidth. Note that ENet will strategically drop packets on specific sides of a connection between peers to ensure the peer's bandwidth is not overwhelmed. The bandwidth parameters also determine the window size of a connection which limits the amount of reliable packets that may be in transit at any given time. Returns [constant OK] if a client was created, [constant ERR_ALREADY_IN_USE] if this ENetMultiplayerPeer instance already has an open connection (in which case you need to call [method MultiplayerPeer.close] first) or [constant ERR_CANT_CREATE] if the client could not be created. If [param local_port] is specified, the client will also listen to the given port; this is useful for some NAT traversal techniques.
 */
 //go:nosplit
-func (self class) CreateClient(address gd.String, port gd.Int, channel_count gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int, local_port gd.Int) gd.Error { //gd:ENetMultiplayerPeer.create_client
+func (self class) CreateClient(address String.Readable, port gd.Int, channel_count gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int, local_port gd.Int) gd.Error { //gd:ENetMultiplayerPeer.create_client
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(address))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(address)))
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, channel_count)
 	callframe.Arg(frame, in_bandwidth)
@@ -180,9 +182,9 @@ func (self class) AddMeshPeer(peer_id gd.Int, host [1]gdclass.ENetConnection) gd
 The IP used when creating a server. This is set to the wildcard [code]"*"[/code] by default, which binds to all available interfaces. The given IP needs to be in IPv4 or IPv6 address format, for example: [code]"192.168.1.1"[/code].
 */
 //go:nosplit
-func (self class) SetBindIp(ip gd.String) { //gd:ENetMultiplayerPeer.set_bind_ip
+func (self class) SetBindIp(ip String.Readable) { //gd:ENetMultiplayerPeer.set_bind_ip
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(ip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(ip)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_set_bind_ip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

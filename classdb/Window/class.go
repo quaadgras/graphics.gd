@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Viewport"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
@@ -33,6 +34,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A node that creates a window. The window can either be a native system window or embedded inside another [Window] (see [member Viewport.gui_embed_subwindows]).
@@ -630,7 +632,7 @@ func (self Instance) Title() string {
 }
 
 func (self Instance) SetTitle(value string) {
-	class(self).SetTitle(gd.NewString(value))
+	class(self).SetTitle(String.New(value))
 }
 
 func (self Instance) InitialPosition() gdclass.WindowWindowInitialPosition {
@@ -885,20 +887,20 @@ func (class) _get_contents_minimum_size(impl func(ptr unsafe.Pointer) gd.Vector2
 }
 
 //go:nosplit
-func (self class) SetTitle(title gd.String) { //gd:Window.set_title
+func (self class) SetTitle(title String.Readable) { //gd:Window.set_title
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(title))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTitle() gd.String { //gd:Window.get_title
+func (self class) GetTitle() String.Readable { //gd:Window.get_title
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

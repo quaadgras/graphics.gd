@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 TLSOptions abstracts the configuration options for the [StreamPeerTLS] and [PacketPeerDTLS] classes.
@@ -60,7 +62,7 @@ You can specify a custom [param trusted_chain] of certification authorities (the
 */
 func Client() [1]gdclass.TLSOptions { //gd:TLSOptions.client
 	self := Instance{}
-	return [1]gdclass.TLSOptions(class(self).Client([1][1]gdclass.X509Certificate{}[0], gd.NewString("")))
+	return [1]gdclass.TLSOptions(class(self).Client([1][1]gdclass.X509Certificate{}[0], String.New("")))
 }
 
 /*
@@ -148,10 +150,10 @@ You can specify a custom [param trusted_chain] of certification authorities (the
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
 //go:nosplit
-func (self class) Client(trusted_chain [1]gdclass.X509Certificate, common_name_override gd.String) [1]gdclass.TLSOptions { //gd:TLSOptions.client
+func (self class) Client(trusted_chain [1]gdclass.X509Certificate, common_name_override String.Readable) [1]gdclass.TLSOptions { //gd:TLSOptions.client
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(trusted_chain[0])[0])
-	callframe.Arg(frame, pointers.Get(common_name_override))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(common_name_override)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_client, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TLSOptions{gd.PointerWithOwnershipTransferredToGo[gdclass.TLSOptions](r_ret.Get())}
@@ -220,11 +222,11 @@ func (self class) IsUnsafeClient() bool { //gd:TLSOptions.is_unsafe_client
 Returns the common name (domain name) override specified when creating with [method TLSOptions.client].
 */
 //go:nosplit
-func (self class) GetCommonNameOverride() gd.String { //gd:TLSOptions.get_common_name_override
+func (self class) GetCommonNameOverride() String.Readable { //gd:TLSOptions.get_common_name_override
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_common_name_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

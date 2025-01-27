@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/TextServer"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
@@ -34,6 +35,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 External [TextServer] implementations should inherit from this class.
@@ -1099,7 +1101,7 @@ func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.Extension
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -1153,8 +1155,8 @@ Loads optional TextServer database (e.g. ICU break iterators and dictionaries).
 */
 func (Instance) _load_support_data(impl func(ptr unsafe.Pointer, filename string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var filename = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(filename)
+		var filename = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(filename))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, filename.String())
 		gd.UnsafeSet(p_back, ret)
@@ -1169,7 +1171,7 @@ func (Instance) _get_support_data_filename(impl func(ptr unsafe.Pointer) string)
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -1186,7 +1188,7 @@ func (Instance) _get_support_data_info(impl func(ptr unsafe.Pointer) string) (cb
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -1201,8 +1203,8 @@ Saves optional TextServer database (e.g. ICU break iterators and dictionaries) t
 */
 func (Instance) _save_support_data(impl func(ptr unsafe.Pointer, filename string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var filename = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(filename)
+		var filename = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(filename))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, filename.String())
 		gd.UnsafeSet(p_back, ret)
@@ -1215,8 +1217,8 @@ Returns [code]true[/code] if locale is right-to-left.
 */
 func (Instance) _is_locale_right_to_left(impl func(ptr unsafe.Pointer, locale string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var locale = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(locale)
+		var locale = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(locale))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, locale.String())
 		gd.UnsafeSet(p_back, ret)
@@ -1229,8 +1231,8 @@ Converts readable feature, variation, script, or language name to OpenType tag.
 */
 func (Instance) _name_to_tag(impl func(ptr unsafe.Pointer, name string) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(name)
+		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name.String())
 		gd.UnsafeSet(p_back, gd.Int(ret))
@@ -1247,7 +1249,7 @@ func (Instance) _tag_to_name(impl func(ptr unsafe.Pointer, tag int) string) (cb 
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(tag))
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -1394,8 +1396,8 @@ func (Instance) _font_set_name(impl func(ptr unsafe.Pointer, font_rid RID.Any, n
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(name)
+		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, name.String())
 	}
@@ -1411,7 +1413,7 @@ func (Instance) _font_get_name(impl func(ptr unsafe.Pointer, font_rid RID.Any) s
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -1447,8 +1449,8 @@ func (Instance) _font_set_style_name(impl func(ptr unsafe.Pointer, font_rid RID.
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var name_style = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(name_style)
+		var name_style = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(name_style))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, name_style.String())
 	}
@@ -1464,7 +1466,7 @@ func (Instance) _font_get_style_name(impl func(ptr unsafe.Pointer, font_rid RID.
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -2857,7 +2859,7 @@ func (Instance) _font_get_supported_chars(impl func(ptr unsafe.Pointer, font_rid
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -2958,8 +2960,8 @@ func (Instance) _font_is_language_supported(impl func(ptr unsafe.Pointer, font_r
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, language.String())
 		gd.UnsafeSet(p_back, ret)
@@ -2974,8 +2976,8 @@ func (Instance) _font_set_language_support_override(impl func(ptr unsafe.Pointer
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		var supported = gd.UnsafeGet[bool](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2991,8 +2993,8 @@ func (Instance) _font_get_language_support_override(impl func(ptr unsafe.Pointer
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, language.String())
 		gd.UnsafeSet(p_back, ret)
@@ -3007,8 +3009,8 @@ func (Instance) _font_remove_language_support_override(impl func(ptr unsafe.Poin
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, language.String())
 	}
@@ -3041,8 +3043,8 @@ func (Instance) _font_is_script_supported(impl func(ptr unsafe.Pointer, font_rid
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var script = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(script)
+		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(script))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, script.String())
 		gd.UnsafeSet(p_back, ret)
@@ -3057,8 +3059,8 @@ func (Instance) _font_set_script_support_override(impl func(ptr unsafe.Pointer, 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var script = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(script)
+		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(script))
 		var supported = gd.UnsafeGet[bool](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3074,8 +3076,8 @@ func (Instance) _font_get_script_support_override(impl func(ptr unsafe.Pointer, 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var script = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(script)
+		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(script))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, script.String())
 		gd.UnsafeSet(p_back, ret)
@@ -3090,8 +3092,8 @@ func (Instance) _font_remove_script_support_override(impl func(ptr unsafe.Pointe
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var script = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(script)
+		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(script))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, script.String())
 	}
@@ -3345,8 +3347,8 @@ func (Instance) _shaped_text_set_custom_punctuation(impl func(ptr unsafe.Pointer
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var punct = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(punct)
+		var punct = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(punct))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shaped, punct.String())
 	}
@@ -3362,7 +3364,7 @@ func (Instance) _shaped_text_get_custom_punctuation(impl func(ptr unsafe.Pointer
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -3528,16 +3530,16 @@ func (Instance) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped RID
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(text)
+		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(text))
 		var fonts = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalArray(fonts))
 		var size = gd.UnsafeGet[gd.Int](p_args, 3)
 
 		var opentype_features = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
 		defer pointers.End(gd.InternalDictionary(opentype_features))
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 5))
-		defer pointers.End(language)
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 5))))
+		defer pointers.End(gd.InternalString(language))
 		var meta = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 6))
 		defer pointers.End(meta)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -4384,13 +4386,13 @@ Converts a number from the Western Arabic (0..9) to the numeral systems used in 
 */
 func (Instance) _format_number(impl func(ptr unsafe.Pointer, number string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var number = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(number)
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var number = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(number))
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, number.String(), language.String())
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -4405,13 +4407,13 @@ Converts [param number] from the numeral systems used in [param language] to Wes
 */
 func (Instance) _parse_number(impl func(ptr unsafe.Pointer, number string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var number = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(number)
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var number = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(number))
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, number.String(), language.String())
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -4426,11 +4428,11 @@ Returns percent sign used in the [param language].
 */
 func (Instance) _percent_sign(impl func(ptr unsafe.Pointer, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(language)
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, language.String())
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -4445,11 +4447,11 @@ Strips diacritics from the string.
 */
 func (Instance) _strip_diacritics(impl func(ptr unsafe.Pointer, s string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s.String())
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -4464,8 +4466,8 @@ Returns [code]true[/code] if [param string] is a valid identifier.
 */
 func (Instance) _is_valid_identifier(impl func(ptr unsafe.Pointer, s string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s.String())
 		gd.UnsafeSet(p_back, ret)
@@ -4487,10 +4489,10 @@ Returns an array of the word break boundaries. Elements in the returned array ar
 */
 func (Instance) _string_get_word_breaks(impl func(ptr unsafe.Pointer, s string, language string, chars_per_line int) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		var chars_per_line = gd.UnsafeGet[gd.Int](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -4510,10 +4512,10 @@ Returns array of the composite character boundaries.
 */
 func (Instance) _string_get_character_breaks(impl func(ptr unsafe.Pointer, s string, language string) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s.String(), language.String())
 		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
@@ -4531,8 +4533,8 @@ Returns index of the first string in [param dict] which is visually confusable w
 */
 func (Instance) _is_confusable(impl func(ptr unsafe.Pointer, s string, dict []string) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
 		var dict = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
 		defer pointers.End(dict)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -4547,8 +4549,8 @@ Returns [code]true[/code] if [param string] is likely to be an attempt at confus
 */
 func (Instance) _spoof_check(impl func(ptr unsafe.Pointer, s string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s.String())
 		gd.UnsafeSet(p_back, ret)
@@ -4561,13 +4563,13 @@ Returns the string converted to uppercase.
 */
 func (Instance) _string_to_upper(impl func(ptr unsafe.Pointer, s string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s.String(), language.String())
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -4582,13 +4584,13 @@ Returns the string converted to lowercase.
 */
 func (Instance) _string_to_lower(impl func(ptr unsafe.Pointer, s string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s.String(), language.String())
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -4603,13 +4605,13 @@ Returns the string converted to title case.
 */
 func (Instance) _string_to_title(impl func(ptr unsafe.Pointer, s string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s.String(), language.String())
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -4628,8 +4630,8 @@ func (Instance) _parse_structured_text(impl func(ptr unsafe.Pointer, parser_type
 
 		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalArray(args))
-		var text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(text)
+		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalString(text))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parser_type, gd.ArrayAs[[]any](gd.InternalArray(args)), text.String())
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Vector3i]](ret)))
@@ -4689,11 +4691,11 @@ func (class) _has_feature(impl func(ptr unsafe.Pointer, feature gdclass.TextServ
 [b]Required.[/b]
 Returns the name of the server interface.
 */
-func (class) _get_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_name(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -4745,10 +4747,10 @@ func (class) _has(impl func(ptr unsafe.Pointer, rid gd.RID) bool) (cb gd.Extensi
 [b]Optional.[/b]
 Loads optional TextServer database (e.g. ICU break iterators and dictionaries).
 */
-func (class) _load_support_data(impl func(ptr unsafe.Pointer, filename gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _load_support_data(impl func(ptr unsafe.Pointer, filename String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var filename = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(filename)
+		var filename = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(filename))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, filename)
 		gd.UnsafeSet(p_back, ret)
@@ -4759,11 +4761,11 @@ func (class) _load_support_data(impl func(ptr unsafe.Pointer, filename gd.String
 [b]Optional.[/b]
 Returns default TextServer database (e.g. ICU break iterators and dictionaries) filename.
 */
-func (class) _get_support_data_filename(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_support_data_filename(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -4776,11 +4778,11 @@ func (class) _get_support_data_filename(impl func(ptr unsafe.Pointer) gd.String)
 [b]Optional.[/b]
 Returns TextServer database (e.g. ICU break iterators and dictionaries) description.
 */
-func (class) _get_support_data_info(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_support_data_info(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -4793,10 +4795,10 @@ func (class) _get_support_data_info(impl func(ptr unsafe.Pointer) gd.String) (cb
 [b]Optional.[/b]
 Saves optional TextServer database (e.g. ICU break iterators and dictionaries) to the file.
 */
-func (class) _save_support_data(impl func(ptr unsafe.Pointer, filename gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _save_support_data(impl func(ptr unsafe.Pointer, filename String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var filename = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(filename)
+		var filename = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(filename))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, filename)
 		gd.UnsafeSet(p_back, ret)
@@ -4807,10 +4809,10 @@ func (class) _save_support_data(impl func(ptr unsafe.Pointer, filename gd.String
 [b]Required.[/b]
 Returns [code]true[/code] if locale is right-to-left.
 */
-func (class) _is_locale_right_to_left(impl func(ptr unsafe.Pointer, locale gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_locale_right_to_left(impl func(ptr unsafe.Pointer, locale String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var locale = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(locale)
+		var locale = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(locale))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, locale)
 		gd.UnsafeSet(p_back, ret)
@@ -4821,10 +4823,10 @@ func (class) _is_locale_right_to_left(impl func(ptr unsafe.Pointer, locale gd.St
 [b]Optional.[/b]
 Converts readable feature, variation, script, or language name to OpenType tag.
 */
-func (class) _name_to_tag(impl func(ptr unsafe.Pointer, name gd.String) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _name_to_tag(impl func(ptr unsafe.Pointer, name String.Readable) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(name)
+		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name)
 		gd.UnsafeSet(p_back, ret)
@@ -4835,13 +4837,13 @@ func (class) _name_to_tag(impl func(ptr unsafe.Pointer, name gd.String) gd.Int) 
 [b]Optional.[/b]
 Converts OpenType tag to readable feature, variation, script, or language name.
 */
-func (class) _tag_to_name(impl func(ptr unsafe.Pointer, tag gd.Int) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _tag_to_name(impl func(ptr unsafe.Pointer, tag gd.Int) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var tag = gd.UnsafeGet[gd.Int](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, tag)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -4984,12 +4986,12 @@ func (class) _font_get_style(impl func(ptr unsafe.Pointer, font_rid gd.RID) gdcl
 [b]Optional.[/b]
 Sets the font family name.
 */
-func (class) _font_set_name(impl func(ptr unsafe.Pointer, font_rid gd.RID, name gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_name(impl func(ptr unsafe.Pointer, font_rid gd.RID, name String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(name)
+		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, name)
 	}
@@ -4999,13 +5001,13 @@ func (class) _font_set_name(impl func(ptr unsafe.Pointer, font_rid gd.RID, name 
 [b]Optional.[/b]
 Returns font family name.
 */
-func (class) _font_get_name(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_name(impl func(ptr unsafe.Pointer, font_rid gd.RID) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -5037,12 +5039,12 @@ func (class) _font_get_ot_name_strings(impl func(ptr unsafe.Pointer, font_rid gd
 [b]Optional.[/b]
 Sets the font style name.
 */
-func (class) _font_set_style_name(impl func(ptr unsafe.Pointer, font_rid gd.RID, name_style gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_style_name(impl func(ptr unsafe.Pointer, font_rid gd.RID, name_style String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var name_style = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(name_style)
+		var name_style = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(name_style))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, name_style)
 	}
@@ -5052,13 +5054,13 @@ func (class) _font_set_style_name(impl func(ptr unsafe.Pointer, font_rid gd.RID,
 [b]Optional.[/b]
 Returns font style name.
 */
-func (class) _font_get_style_name(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_style_name(impl func(ptr unsafe.Pointer, font_rid gd.RID) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -6445,13 +6447,13 @@ func (class) _font_has_char(impl func(ptr unsafe.Pointer, font_rid gd.RID, char 
 [b]Required.[/b]
 Returns a string containing all the characters available in the font.
 */
-func (class) _font_get_supported_chars(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_supported_chars(impl func(ptr unsafe.Pointer, font_rid gd.RID) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -6548,12 +6550,12 @@ func (class) _font_draw_glyph_outline(impl func(ptr unsafe.Pointer, font_rid gd.
 [b]Optional.[/b]
 Returns [code]true[/code], if font supports given language ([url=https://en.wikipedia.org/wiki/ISO_639-1]ISO 639[/url] code).
 */
-func (class) _font_is_language_supported(impl func(ptr unsafe.Pointer, font_rid gd.RID, language gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_is_language_supported(impl func(ptr unsafe.Pointer, font_rid gd.RID, language String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, language)
 		gd.UnsafeSet(p_back, ret)
@@ -6564,12 +6566,12 @@ func (class) _font_is_language_supported(impl func(ptr unsafe.Pointer, font_rid 
 [b]Optional.[/b]
 Adds override for [method _font_is_language_supported].
 */
-func (class) _font_set_language_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, language gd.String, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_language_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, language String.Readable, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		var supported = gd.UnsafeGet[bool](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -6581,12 +6583,12 @@ func (class) _font_set_language_support_override(impl func(ptr unsafe.Pointer, f
 [b]Optional.[/b]
 Returns [code]true[/code] if support override is enabled for the [param language].
 */
-func (class) _font_get_language_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, language gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_language_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, language String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, language)
 		gd.UnsafeSet(p_back, ret)
@@ -6597,12 +6599,12 @@ func (class) _font_get_language_support_override(impl func(ptr unsafe.Pointer, f
 [b]Optional.[/b]
 Remove language support override.
 */
-func (class) _font_remove_language_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, language gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_remove_language_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, language String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, language)
 	}
@@ -6631,12 +6633,12 @@ func (class) _font_get_language_support_overrides(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns [code]true[/code], if font supports given script (ISO 15924 code).
 */
-func (class) _font_is_script_supported(impl func(ptr unsafe.Pointer, font_rid gd.RID, script gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_is_script_supported(impl func(ptr unsafe.Pointer, font_rid gd.RID, script String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var script = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(script)
+		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(script))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, script)
 		gd.UnsafeSet(p_back, ret)
@@ -6647,12 +6649,12 @@ func (class) _font_is_script_supported(impl func(ptr unsafe.Pointer, font_rid gd
 [b]Optional.[/b]
 Adds override for [method _font_is_script_supported].
 */
-func (class) _font_set_script_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, script gd.String, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_script_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, script String.Readable, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var script = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(script)
+		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(script))
 		var supported = gd.UnsafeGet[bool](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -6664,12 +6666,12 @@ func (class) _font_set_script_support_override(impl func(ptr unsafe.Pointer, fon
 [b]Optional.[/b]
 Returns [code]true[/code] if support override is enabled for the [param script].
 */
-func (class) _font_get_script_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, script gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_script_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, script String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var script = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(script)
+		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(script))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, script)
 		gd.UnsafeSet(p_back, ret)
@@ -6680,12 +6682,12 @@ func (class) _font_get_script_support_override(impl func(ptr unsafe.Pointer, fon
 [b]Optional.[/b]
 Removes script support override.
 */
-func (class) _font_remove_script_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, script gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_remove_script_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, script String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var script = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(script)
+		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(script))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, script)
 	}
@@ -6935,12 +6937,12 @@ func (class) _shaped_text_set_bidi_override(impl func(ptr unsafe.Pointer, shaped
 [b]Optional.[/b]
 Sets custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
-func (class) _shaped_text_set_custom_punctuation(impl func(ptr unsafe.Pointer, shaped gd.RID, punct gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_set_custom_punctuation(impl func(ptr unsafe.Pointer, shaped gd.RID, punct String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var punct = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(punct)
+		var punct = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(punct))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shaped, punct)
 	}
@@ -6950,13 +6952,13 @@ func (class) _shaped_text_set_custom_punctuation(impl func(ptr unsafe.Pointer, s
 [b]Optional.[/b]
 Returns custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
-func (class) _shaped_text_get_custom_punctuation(impl func(ptr unsafe.Pointer, shaped gd.RID) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_custom_punctuation(impl func(ptr unsafe.Pointer, shaped gd.RID) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -7118,20 +7120,20 @@ func (class) _shaped_text_get_spacing(impl func(ptr unsafe.Pointer, shaped gd.RI
 [b]Required.[/b]
 Adds text span and font to draw it to the text buffer.
 */
-func (class) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped gd.RID, text gd.String, fonts Array.Contains[gd.RID], size gd.Int, opentype_features Dictionary.Any, language gd.String, meta gd.Variant) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped gd.RID, text String.Readable, fonts Array.Contains[gd.RID], size gd.Int, opentype_features Dictionary.Any, language String.Readable, meta gd.Variant) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(text)
+		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(text))
 		var fonts = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalArray(fonts))
 		var size = gd.UnsafeGet[gd.Int](p_args, 3)
 
 		var opentype_features = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
 		defer pointers.End(gd.InternalDictionary(opentype_features))
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 5))
-		defer pointers.End(language)
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 5))))
+		defer pointers.End(gd.InternalString(language))
 		var meta = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 6))
 		defer pointers.End(meta)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -7976,15 +7978,15 @@ func (class) _shaped_text_closest_character_pos(impl func(ptr unsafe.Pointer, sh
 [b]Optional.[/b]
 Converts a number from the Western Arabic (0..9) to the numeral systems used in [param language].
 */
-func (class) _format_number(impl func(ptr unsafe.Pointer, number gd.String, language gd.String) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _format_number(impl func(ptr unsafe.Pointer, number String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var number = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(number)
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var number = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(number))
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, number, language)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -7997,15 +7999,15 @@ func (class) _format_number(impl func(ptr unsafe.Pointer, number gd.String, lang
 [b]Optional.[/b]
 Converts [param number] from the numeral systems used in [param language] to Western Arabic (0..9).
 */
-func (class) _parse_number(impl func(ptr unsafe.Pointer, number gd.String, language gd.String) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_number(impl func(ptr unsafe.Pointer, number String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var number = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(number)
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var number = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(number))
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, number, language)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -8018,13 +8020,13 @@ func (class) _parse_number(impl func(ptr unsafe.Pointer, number gd.String, langu
 [b]Optional.[/b]
 Returns percent sign used in the [param language].
 */
-func (class) _percent_sign(impl func(ptr unsafe.Pointer, language gd.String) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _percent_sign(impl func(ptr unsafe.Pointer, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(language)
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, language)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -8037,13 +8039,13 @@ func (class) _percent_sign(impl func(ptr unsafe.Pointer, language gd.String) gd.
 [b]Optional.[/b]
 Strips diacritics from the string.
 */
-func (class) _strip_diacritics(impl func(ptr unsafe.Pointer, s gd.String) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _strip_diacritics(impl func(ptr unsafe.Pointer, s String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -8056,10 +8058,10 @@ func (class) _strip_diacritics(impl func(ptr unsafe.Pointer, s gd.String) gd.Str
 [b]Optional.[/b]
 Returns [code]true[/code] if [param string] is a valid identifier.
 */
-func (class) _is_valid_identifier(impl func(ptr unsafe.Pointer, s gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_valid_identifier(impl func(ptr unsafe.Pointer, s String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s)
 		gd.UnsafeSet(p_back, ret)
@@ -8080,12 +8082,12 @@ func (class) _is_valid_letter(impl func(ptr unsafe.Pointer, unicode gd.Int) bool
 [b]Optional.[/b]
 Returns an array of the word break boundaries. Elements in the returned array are the offsets of the start and end of words. Therefore the length of the array is always even.
 */
-func (class) _string_get_word_breaks(impl func(ptr unsafe.Pointer, s gd.String, language gd.String, chars_per_line gd.Int) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _string_get_word_breaks(impl func(ptr unsafe.Pointer, s String.Readable, language String.Readable, chars_per_line gd.Int) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		var chars_per_line = gd.UnsafeGet[gd.Int](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -8103,12 +8105,12 @@ func (class) _string_get_word_breaks(impl func(ptr unsafe.Pointer, s gd.String, 
 [b]Optional.[/b]
 Returns array of the composite character boundaries.
 */
-func (class) _string_get_character_breaks(impl func(ptr unsafe.Pointer, s gd.String, language gd.String) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _string_get_character_breaks(impl func(ptr unsafe.Pointer, s String.Readable, language String.Readable) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s, language)
 		ptr, ok := pointers.End(ret)
@@ -8124,10 +8126,10 @@ func (class) _string_get_character_breaks(impl func(ptr unsafe.Pointer, s gd.Str
 [b]Optional.[/b]
 Returns index of the first string in [param dict] which is visually confusable with the [param string], or [code]-1[/code] if none is found.
 */
-func (class) _is_confusable(impl func(ptr unsafe.Pointer, s gd.String, dict gd.PackedStringArray) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_confusable(impl func(ptr unsafe.Pointer, s String.Readable, dict gd.PackedStringArray) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
 		var dict = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
 		defer pointers.End(dict)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -8140,10 +8142,10 @@ func (class) _is_confusable(impl func(ptr unsafe.Pointer, s gd.String, dict gd.P
 [b]Optional.[/b]
 Returns [code]true[/code] if [param string] is likely to be an attempt at confusing the reader.
 */
-func (class) _spoof_check(impl func(ptr unsafe.Pointer, s gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _spoof_check(impl func(ptr unsafe.Pointer, s String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s)
 		gd.UnsafeSet(p_back, ret)
@@ -8154,15 +8156,15 @@ func (class) _spoof_check(impl func(ptr unsafe.Pointer, s gd.String) bool) (cb g
 [b]Optional.[/b]
 Returns the string converted to uppercase.
 */
-func (class) _string_to_upper(impl func(ptr unsafe.Pointer, s gd.String, language gd.String) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _string_to_upper(impl func(ptr unsafe.Pointer, s String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s, language)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -8175,15 +8177,15 @@ func (class) _string_to_upper(impl func(ptr unsafe.Pointer, s gd.String, languag
 [b]Optional.[/b]
 Returns the string converted to lowercase.
 */
-func (class) _string_to_lower(impl func(ptr unsafe.Pointer, s gd.String, language gd.String) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _string_to_lower(impl func(ptr unsafe.Pointer, s String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s, language)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -8196,15 +8198,15 @@ func (class) _string_to_lower(impl func(ptr unsafe.Pointer, s gd.String, languag
 [b]Optional.[/b]
 Returns the string converted to title case.
 */
-func (class) _string_to_title(impl func(ptr unsafe.Pointer, s gd.String, language gd.String) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _string_to_title(impl func(ptr unsafe.Pointer, s String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var s = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(s)
-		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(language)
+		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(s))
+		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s, language)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -8217,14 +8219,14 @@ func (class) _string_to_title(impl func(ptr unsafe.Pointer, s gd.String, languag
 [b]Optional.[/b]
 Default implementation of the BiDi algorithm override function. See [enum TextServer.StructuredTextParser] for more info.
 */
-func (class) _parse_structured_text(impl func(ptr unsafe.Pointer, parser_type gdclass.TextServerStructuredTextParser, args Array.Any, text gd.String) Array.Contains[gd.Vector3i]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_structured_text(impl func(ptr unsafe.Pointer, parser_type gdclass.TextServerStructuredTextParser, args Array.Any, text String.Readable) Array.Contains[gd.Vector3i]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var parser_type = gd.UnsafeGet[gdclass.TextServerStructuredTextParser](p_args, 0)
 
 		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalArray(args))
-		var text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(text)
+		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalString(text))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parser_type, args, text)
 		ptr, ok := pointers.End(gd.InternalArray(ret))

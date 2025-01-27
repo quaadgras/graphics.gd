@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Rect2"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Abstraction over [TextServer] for handling a single line of text.
@@ -62,7 +64,7 @@ func (self Instance) SetBidiOverride(override []any) { //gd:TextLine.set_bidi_ov
 Adds text span and font to draw it.
 */
 func (self Instance) AddString(text string, font [1]gdclass.Font, font_size int) bool { //gd:TextLine.add_string
-	return bool(class(self).AddString(gd.NewString(text), font, gd.Int(font_size), gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
+	return bool(class(self).AddString(String.New(text), font, gd.Int(font_size), String.New(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
 }
 
 /*
@@ -258,7 +260,7 @@ func (self Instance) EllipsisChar() string {
 }
 
 func (self Instance) SetEllipsisChar(value string) {
-	class(self).SetEllipsisChar(gd.NewString(value))
+	class(self).SetEllipsisChar(String.New(value))
 }
 
 /*
@@ -365,12 +367,12 @@ func (self class) SetBidiOverride(override Array.Any) { //gd:TextLine.set_bidi_o
 Adds text span and font to draw it.
 */
 //go:nosplit
-func (self class) AddString(text gd.String, font [1]gdclass.Font, font_size gd.Int, language gd.String, meta gd.Variant) bool { //gd:TextLine.add_string
+func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_size gd.Int, language String.Readable, meta gd.Variant) bool { //gd:TextLine.add_string
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, font_size)
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	callframe.Arg(frame, pointers.Get(meta))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_add_string, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -503,20 +505,20 @@ func (self class) GetTextOverrunBehavior() gdclass.TextServerOverrunBehavior { /
 }
 
 //go:nosplit
-func (self class) SetEllipsisChar(char gd.String) { //gd:TextLine.set_ellipsis_char
+func (self class) SetEllipsisChar(char String.Readable) { //gd:TextLine.set_ellipsis_char
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(char))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(char)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_ellipsis_char, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetEllipsisChar() gd.String { //gd:TextLine.get_ellipsis_char
+func (self class) GetEllipsisChar() String.Readable { //gd:TextLine.get_ellipsis_char
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_ellipsis_char, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

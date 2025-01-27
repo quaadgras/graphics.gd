@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This object is the base of all XR trackers.
@@ -80,7 +82,7 @@ func (self Instance) Description() string {
 }
 
 func (self Instance) SetDescription(value string) {
-	class(self).SetTrackerDesc(gd.NewString(value))
+	class(self).SetTrackerDesc(String.New(value))
 }
 
 //go:nosplit
@@ -122,19 +124,19 @@ func (self class) SetTrackerName(name gd.StringName) { //gd:XRTracker.set_tracke
 }
 
 //go:nosplit
-func (self class) GetTrackerDesc() gd.String { //gd:XRTracker.get_tracker_desc
+func (self class) GetTrackerDesc() String.Readable { //gd:XRTracker.get_tracker_desc
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRTracker.Bind_get_tracker_desc, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetTrackerDesc(description gd.String) { //gd:XRTracker.set_tracker_desc
+func (self class) SetTrackerDesc(description String.Readable) { //gd:XRTracker.set_tracker_desc
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(description))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(description)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRTracker.Bind_set_tracker_desc, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [EditorExportPlugin]s are automatically invoked whenever the user exports the project. Their most common use is to determine what files are being included in the exported project. For each plugin, [method _export_begin] is called at the beginning of the export process and then [method _export_file] is called for each exported file.
@@ -202,10 +204,10 @@ Calling [method skip] inside this callback will make the file not included in th
 */
 func (Instance) _export_file(impl func(ptr unsafe.Pointer, path string, atype string, features []string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(path)
-		var atype = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(atype)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
+		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(atype))
 		var features = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 2))
 		defer pointers.End(features)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -222,8 +224,8 @@ func (Instance) _export_begin(impl func(ptr unsafe.Pointer, features []string, i
 		defer pointers.End(features)
 		var is_debug = gd.UnsafeGet[bool](p_args, 1)
 
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[gd.Int](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -268,8 +270,8 @@ func (Instance) _customize_resource(impl func(ptr unsafe.Pointer, resource [1]gd
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(resource[0])
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, path.String())
 		ptr, ok := pointers.End(ret[0])
@@ -307,8 +309,8 @@ func (Instance) _customize_scene(impl func(ptr unsafe.Pointer, scene [1]gdclass.
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(scene[0])
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, scene, path.String())
 		ptr, ok := pointers.End(ret[0])
@@ -436,11 +438,11 @@ func (Instance) _get_export_option_warning(impl func(ptr unsafe.Pointer, platfor
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(platform[0])
-		var option = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(option)
+		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(option))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, option.String())
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -478,7 +480,7 @@ func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.Extension
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -584,7 +586,7 @@ func (Instance) _get_android_manifest_activity_element_contents(impl func(ptr un
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -606,7 +608,7 @@ func (Instance) _get_android_manifest_application_element_contents(impl func(ptr
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -628,7 +630,7 @@ func (Instance) _get_android_manifest_element_contents(impl func(ptr unsafe.Poin
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -643,14 +645,14 @@ Adds a shared object or a directory containing only shared objects with the give
 In case of a directory code-sign will error if you place non code object in directory.
 */
 func (self Instance) AddSharedObject(path string, tags []string, target string) { //gd:EditorExportPlugin.add_shared_object
-	class(self).AddSharedObject(gd.NewString(path), gd.NewPackedStringSlice(tags), gd.NewString(target))
+	class(self).AddSharedObject(String.New(path), gd.NewPackedStringSlice(tags), String.New(target))
 }
 
 /*
 Adds a static lib from the given [param path] to the iOS project.
 */
 func (self Instance) AddIosProjectStaticLib(path string) { //gd:EditorExportPlugin.add_ios_project_static_lib
-	class(self).AddIosProjectStaticLib(gd.NewString(path))
+	class(self).AddIosProjectStaticLib(String.New(path))
 }
 
 /*
@@ -659,14 +661,14 @@ When called inside [method _export_file] and [param remap] is [code]true[/code],
 [param file] will not be imported, so consider using [method _customize_resource] to remap imported resources.
 */
 func (self Instance) AddFile(path string, file []byte, remap bool) { //gd:EditorExportPlugin.add_file
-	class(self).AddFile(gd.NewString(path), gd.NewPackedByteSlice(file), remap)
+	class(self).AddFile(String.New(path), gd.NewPackedByteSlice(file), remap)
 }
 
 /*
 Adds a static library (*.a) or dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode project.
 */
 func (self Instance) AddIosFramework(path string) { //gd:EditorExportPlugin.add_ios_framework
-	class(self).AddIosFramework(gd.NewString(path))
+	class(self).AddIosFramework(String.New(path))
 }
 
 /*
@@ -675,35 +677,35 @@ Adds a dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode pr
 [b]Note:[/b] This method should not be used for System libraries as they are already present on the device.
 */
 func (self Instance) AddIosEmbeddedFramework(path string) { //gd:EditorExportPlugin.add_ios_embedded_framework
-	class(self).AddIosEmbeddedFramework(gd.NewString(path))
+	class(self).AddIosEmbeddedFramework(String.New(path))
 }
 
 /*
 Adds content for iOS Property List files.
 */
 func (self Instance) AddIosPlistContent(plist_content string) { //gd:EditorExportPlugin.add_ios_plist_content
-	class(self).AddIosPlistContent(gd.NewString(plist_content))
+	class(self).AddIosPlistContent(String.New(plist_content))
 }
 
 /*
 Adds linker flags for the iOS export.
 */
 func (self Instance) AddIosLinkerFlags(flags string) { //gd:EditorExportPlugin.add_ios_linker_flags
-	class(self).AddIosLinkerFlags(gd.NewString(flags))
+	class(self).AddIosLinkerFlags(String.New(flags))
 }
 
 /*
 Adds an iOS bundle file from the given [param path] to the exported project.
 */
 func (self Instance) AddIosBundleFile(path string) { //gd:EditorExportPlugin.add_ios_bundle_file
-	class(self).AddIosBundleFile(gd.NewString(path))
+	class(self).AddIosBundleFile(String.New(path))
 }
 
 /*
 Adds a C++ code to the iOS export. The final code is created from the code appended by each active export plugin.
 */
 func (self Instance) AddIosCppCode(code string) { //gd:EditorExportPlugin.add_ios_cpp_code
-	class(self).AddIosCppCode(gd.NewString(code))
+	class(self).AddIosCppCode(String.New(code))
 }
 
 /*
@@ -711,7 +713,7 @@ Adds file or directory matching [param path] to [code]PlugIns[/code] directory o
 [b]Note:[/b] This is useful only for macOS exports.
 */
 func (self Instance) AddMacosPluginFile(path string) { //gd:EditorExportPlugin.add_macos_plugin_file
-	class(self).AddMacosPluginFile(gd.NewString(path))
+	class(self).AddMacosPluginFile(String.New(path))
 }
 
 /*
@@ -751,12 +753,12 @@ func New() Instance {
 Virtual method to be overridden by the user. Called for each exported file before [method _customize_resource] and [method _customize_scene]. The arguments can be used to identify the file. [param path] is the path of the file, [param type] is the [Resource] represented by the file (e.g. [PackedScene]), and [param features] is the list of features for the export.
 Calling [method skip] inside this callback will make the file not included in the export.
 */
-func (class) _export_file(impl func(ptr unsafe.Pointer, path gd.String, atype gd.String, features gd.PackedStringArray)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _export_file(impl func(ptr unsafe.Pointer, path String.Readable, atype String.Readable, features gd.PackedStringArray)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(path)
-		var atype = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(atype)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
+		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(atype))
 		var features = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 2))
 		defer pointers.End(features)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -767,14 +769,14 @@ func (class) _export_file(impl func(ptr unsafe.Pointer, path gd.String, atype gd
 /*
 Virtual method to be overridden by the user. It is called when the export starts and provides all information about the export. [param features] is the list of features for the export, [param is_debug] is [code]true[/code] for debug builds, [param path] is the target path for the exported project. [param flags] is only used when running a runnable profile, e.g. when using native run on Android.
 */
-func (class) _export_begin(impl func(ptr unsafe.Pointer, features gd.PackedStringArray, is_debug bool, path gd.String, flags gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _export_begin(impl func(ptr unsafe.Pointer, features gd.PackedStringArray, is_debug bool, path String.Readable, flags gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var features = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0))
 		defer pointers.End(features)
 		var is_debug = gd.UnsafeGet[bool](p_args, 1)
 
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[gd.Int](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -814,13 +816,13 @@ Customize a resource. If changes are made to it, return the same or a new resour
 The [i]path[/i] argument is only used when customizing an actual file, otherwise this means that this resource is part of another one and it will be empty.
 Implementing this method is required if [method _begin_customize_resources] returns [code]true[/code].
 */
-func (class) _customize_resource(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path gd.String) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _customize_resource(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path String.Readable) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(resource[0])
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, path)
 		ptr, ok := pointers.End(ret[0])
@@ -853,13 +855,13 @@ func (class) _begin_customize_scenes(impl func(ptr unsafe.Pointer, platform [1]g
 Customize a scene. If changes are made to it, return the same or a new scene. Otherwise, return [code]null[/code]. If a new scene is returned, it is up to you to dispose of the old one.
 Implementing this method is required if [method _begin_customize_scenes] returns [code]true[/code].
 */
-func (class) _customize_scene(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node, path gd.String) [1]gdclass.Node) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _customize_scene(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node, path String.Readable) [1]gdclass.Node) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(scene[0])
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, scene, path)
 		ptr, ok := pointers.End(ret[0])
@@ -982,16 +984,16 @@ func (class) _should_update_export_options(impl func(ptr unsafe.Pointer, platfor
 Check the requirements for the given [param option] and return a non-empty warning string if they are not met.
 [b]Note:[/b] Use [method get_option] to check the value of the export options.
 */
-func (class) _get_export_option_warning(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, option gd.String) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_export_option_warning(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, option String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(platform[0])
-		var option = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(option)
+		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(option))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, option)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1025,11 +1027,11 @@ func (class) _get_export_features(impl func(ptr unsafe.Pointer, platform [1]gdcl
 Return the name identifier of this plugin (for future identification by the exporter). The plugins are sorted by name before exporting.
 Implementing this method is required.
 */
-func (class) _get_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_name(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1126,7 +1128,7 @@ func (class) _get_android_libraries(impl func(ptr unsafe.Pointer, platform [1]gd
 Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]activity[/code] element in the generated Android manifest.
 [b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
 */
-func (class) _get_android_manifest_activity_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_android_manifest_activity_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -1135,7 +1137,7 @@ func (class) _get_android_manifest_activity_element_contents(impl func(ptr unsaf
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1148,7 +1150,7 @@ func (class) _get_android_manifest_activity_element_contents(impl func(ptr unsaf
 Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]application[/code] element in the generated Android manifest.
 [b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
 */
-func (class) _get_android_manifest_application_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_android_manifest_application_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -1157,7 +1159,7 @@ func (class) _get_android_manifest_application_element_contents(impl func(ptr un
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1170,7 +1172,7 @@ func (class) _get_android_manifest_application_element_contents(impl func(ptr un
 Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]manifest[/code] element in the generated Android manifest.
 [b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
 */
-func (class) _get_android_manifest_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_android_manifest_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -1179,7 +1181,7 @@ func (class) _get_android_manifest_element_contents(impl func(ptr unsafe.Pointer
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1194,11 +1196,11 @@ Adds a shared object or a directory containing only shared objects with the give
 In case of a directory code-sign will error if you place non code object in directory.
 */
 //go:nosplit
-func (self class) AddSharedObject(path gd.String, tags gd.PackedStringArray, target gd.String) { //gd:EditorExportPlugin.add_shared_object
+func (self class) AddSharedObject(path String.Readable, tags gd.PackedStringArray, target String.Readable) { //gd:EditorExportPlugin.add_shared_object
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(tags))
-	callframe.Arg(frame, pointers.Get(target))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(target)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_shared_object, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1208,9 +1210,9 @@ func (self class) AddSharedObject(path gd.String, tags gd.PackedStringArray, tar
 Adds a static lib from the given [param path] to the iOS project.
 */
 //go:nosplit
-func (self class) AddIosProjectStaticLib(path gd.String) { //gd:EditorExportPlugin.add_ios_project_static_lib
+func (self class) AddIosProjectStaticLib(path String.Readable) { //gd:EditorExportPlugin.add_ios_project_static_lib
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_project_static_lib, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1222,9 +1224,9 @@ When called inside [method _export_file] and [param remap] is [code]true[/code],
 [param file] will not be imported, so consider using [method _customize_resource] to remap imported resources.
 */
 //go:nosplit
-func (self class) AddFile(path gd.String, file gd.PackedByteArray, remap bool) { //gd:EditorExportPlugin.add_file
+func (self class) AddFile(path String.Readable, file gd.PackedByteArray, remap bool) { //gd:EditorExportPlugin.add_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(file))
 	callframe.Arg(frame, remap)
 	var r_ret = callframe.Nil
@@ -1236,9 +1238,9 @@ func (self class) AddFile(path gd.String, file gd.PackedByteArray, remap bool) {
 Adds a static library (*.a) or dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode project.
 */
 //go:nosplit
-func (self class) AddIosFramework(path gd.String) { //gd:EditorExportPlugin.add_ios_framework
+func (self class) AddIosFramework(path String.Readable) { //gd:EditorExportPlugin.add_ios_framework
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_framework, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1250,9 +1252,9 @@ Adds a dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode pr
 [b]Note:[/b] This method should not be used for System libraries as they are already present on the device.
 */
 //go:nosplit
-func (self class) AddIosEmbeddedFramework(path gd.String) { //gd:EditorExportPlugin.add_ios_embedded_framework
+func (self class) AddIosEmbeddedFramework(path String.Readable) { //gd:EditorExportPlugin.add_ios_embedded_framework
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_embedded_framework, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1262,9 +1264,9 @@ func (self class) AddIosEmbeddedFramework(path gd.String) { //gd:EditorExportPlu
 Adds content for iOS Property List files.
 */
 //go:nosplit
-func (self class) AddIosPlistContent(plist_content gd.String) { //gd:EditorExportPlugin.add_ios_plist_content
+func (self class) AddIosPlistContent(plist_content String.Readable) { //gd:EditorExportPlugin.add_ios_plist_content
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(plist_content))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(plist_content)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_plist_content, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1274,9 +1276,9 @@ func (self class) AddIosPlistContent(plist_content gd.String) { //gd:EditorExpor
 Adds linker flags for the iOS export.
 */
 //go:nosplit
-func (self class) AddIosLinkerFlags(flags gd.String) { //gd:EditorExportPlugin.add_ios_linker_flags
+func (self class) AddIosLinkerFlags(flags String.Readable) { //gd:EditorExportPlugin.add_ios_linker_flags
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(flags))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(flags)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_linker_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1286,9 +1288,9 @@ func (self class) AddIosLinkerFlags(flags gd.String) { //gd:EditorExportPlugin.a
 Adds an iOS bundle file from the given [param path] to the exported project.
 */
 //go:nosplit
-func (self class) AddIosBundleFile(path gd.String) { //gd:EditorExportPlugin.add_ios_bundle_file
+func (self class) AddIosBundleFile(path String.Readable) { //gd:EditorExportPlugin.add_ios_bundle_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_bundle_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1298,9 +1300,9 @@ func (self class) AddIosBundleFile(path gd.String) { //gd:EditorExportPlugin.add
 Adds a C++ code to the iOS export. The final code is created from the code appended by each active export plugin.
 */
 //go:nosplit
-func (self class) AddIosCppCode(code gd.String) { //gd:EditorExportPlugin.add_ios_cpp_code
+func (self class) AddIosCppCode(code String.Readable) { //gd:EditorExportPlugin.add_ios_cpp_code
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(code))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(code)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_cpp_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1311,9 +1313,9 @@ Adds file or directory matching [param path] to [code]PlugIns[/code] directory o
 [b]Note:[/b] This is useful only for macOS exports.
 */
 //go:nosplit
-func (self class) AddMacosPluginFile(path gd.String) { //gd:EditorExportPlugin.add_macos_plugin_file
+func (self class) AddMacosPluginFile(path String.Readable) { //gd:EditorExportPlugin.add_macos_plugin_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_macos_plugin_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

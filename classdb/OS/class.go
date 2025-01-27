@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The [OS] class wraps the most common functionalities for communicating with the host operating system, such as the video driver, delays, environment variables, execution of binaries, command line, etc.
@@ -89,7 +91,7 @@ Displays a modal dialog box using the host platform's implementation. The engine
 */
 func Alert(text string) { //gd:OS.alert
 	once.Do(singleton)
-	class(self).Alert(gd.NewString(text), gd.NewString("Alert!"))
+	class(self).Alert(String.New(text), String.New("Alert!"))
 }
 
 /*
@@ -98,7 +100,7 @@ Crashes the engine (or the editor if called within a [code]@tool[/code] script).
 */
 func Crash(message string) { //gd:OS.crash
 	once.Do(singleton)
-	class(self).Crash(gd.NewString(message))
+	class(self).Crash(String.New(message))
 }
 
 /*
@@ -135,7 +137,7 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 */
 func GetSystemFontPath(font_name string) string { //gd:OS.get_system_font_path
 	once.Do(singleton)
-	return string(class(self).GetSystemFontPath(gd.NewString(font_name), gd.Int(400), gd.Int(100), false).String())
+	return string(class(self).GetSystemFontPath(String.New(font_name), gd.Int(400), gd.Int(100), false).String())
 }
 
 /*
@@ -147,7 +149,7 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 */
 func GetSystemFontPathForText(font_name string, text string) []string { //gd:OS.get_system_font_path_for_text
 	once.Do(singleton)
-	return []string(class(self).GetSystemFontPathForText(gd.NewString(font_name), gd.NewString(text), gd.NewString(""), gd.NewString(""), gd.Int(400), gd.Int(100), false).Strings())
+	return []string(class(self).GetSystemFontPathForText(String.New(font_name), String.New(text), String.New(""), String.New(""), gd.Int(400), gd.Int(100), false).Strings())
 }
 
 /*
@@ -206,7 +208,7 @@ OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
 */
 func Execute(path string, arguments []string) int { //gd:OS.execute
 	once.Do(singleton)
-	return int(int(class(self).Execute(gd.NewString(path), gd.NewPackedStringSlice(arguments), Array.Nil, false, false)))
+	return int(int(class(self).Execute(String.New(path), gd.NewPackedStringSlice(arguments), Array.Nil, false, false)))
 }
 
 /*
@@ -223,7 +225,7 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 */
 func ExecuteWithPipe(path string, arguments []string) Pipe { //gd:OS.execute_with_pipe
 	once.Do(singleton)
-	return Pipe(gd.DictionaryAs[Pipe](class(self).ExecuteWithPipe(gd.NewString(path), gd.NewPackedStringSlice(arguments))))
+	return Pipe(gd.DictionaryAs[Pipe](class(self).ExecuteWithPipe(String.New(path), gd.NewPackedStringSlice(arguments))))
 }
 
 /*
@@ -245,7 +247,7 @@ See [method execute] if you wish to run an external command and retrieve the res
 */
 func CreateProcess(path string, arguments []string) int { //gd:OS.create_process
 	once.Do(singleton)
-	return int(int(class(self).CreateProcess(gd.NewString(path), gd.NewPackedStringSlice(arguments), false)))
+	return int(int(class(self).CreateProcess(String.New(path), gd.NewPackedStringSlice(arguments), false)))
 }
 
 /*
@@ -280,7 +282,7 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 */
 func ShellOpen(uri string) error { //gd:OS.shell_open
 	once.Do(singleton)
-	return error(gd.ToError(class(self).ShellOpen(gd.NewString(uri))))
+	return error(gd.ToError(class(self).ShellOpen(String.New(uri))))
 }
 
 /*
@@ -291,7 +293,7 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 */
 func ShellShowInFileManager(file_or_dir_path string) error { //gd:OS.shell_show_in_file_manager
 	once.Do(singleton)
-	return error(gd.ToError(class(self).ShellShowInFileManager(gd.NewString(file_or_dir_path), true)))
+	return error(gd.ToError(class(self).ShellShowInFileManager(String.New(file_or_dir_path), true)))
 }
 
 /*
@@ -329,7 +331,7 @@ Returns [code]true[/code] if the environment variable with the name [param varia
 */
 func HasEnvironment(variable string) bool { //gd:OS.has_environment
 	once.Do(singleton)
-	return bool(class(self).HasEnvironment(gd.NewString(variable)))
+	return bool(class(self).HasEnvironment(String.New(variable)))
 }
 
 /*
@@ -339,7 +341,7 @@ Returns the value of the given environment variable, or an empty string if [para
 */
 func GetEnvironment(variable string) string { //gd:OS.get_environment
 	once.Do(singleton)
-	return string(class(self).GetEnvironment(gd.NewString(variable)).String())
+	return string(class(self).GetEnvironment(String.New(variable)).String())
 }
 
 /*
@@ -348,7 +350,7 @@ Sets the value of the environment variable [param variable] to [param value]. Th
 */
 func SetEnvironment(variable string, value string) { //gd:OS.set_environment
 	once.Do(singleton)
-	class(self).SetEnvironment(gd.NewString(variable), gd.NewString(value))
+	class(self).SetEnvironment(String.New(variable), String.New(value))
 }
 
 /*
@@ -357,7 +359,7 @@ Removes the given environment variable from the current environment, if it exist
 */
 func UnsetEnvironment(variable string) { //gd:OS.unset_environment
 	once.Do(singleton)
-	class(self).UnsetEnvironment(gd.NewString(variable))
+	class(self).UnsetEnvironment(String.New(variable))
 }
 
 /*
@@ -676,7 +678,7 @@ OS.MoveToTrash(ProjectSettings.GlobalizePath(fileToRemove));
 */
 func MoveToTrash(path string) error { //gd:OS.move_to_trash
 	once.Do(singleton)
-	return error(gd.ToError(class(self).MoveToTrash(gd.NewString(path))))
+	return error(gd.ToError(class(self).MoveToTrash(String.New(path))))
 }
 
 /*
@@ -807,7 +809,7 @@ See also [method get_keycode_string].
 */
 func FindKeycodeFromString(s string) Key { //gd:OS.find_keycode_from_string
 	once.Do(singleton)
-	return Key(class(self).FindKeycodeFromString(gd.NewString(s)))
+	return Key(class(self).FindKeycodeFromString(String.New(s)))
 }
 
 /*
@@ -824,7 +826,7 @@ Assigns the given name to the current thread. Returns [constant ERR_UNAVAILABLE]
 */
 func SetThreadName(name string) error { //gd:OS.set_thread_name
 	once.Do(singleton)
-	return error(gd.ToError(class(self).SetThreadName(gd.NewString(name))))
+	return error(gd.ToError(class(self).SetThreadName(String.New(name))))
 }
 
 /*
@@ -852,7 +854,7 @@ Returns [code]true[/code] if the feature for the given feature tag is supported 
 */
 func HasFeature(tag_name string) bool { //gd:OS.has_feature
 	once.Do(singleton)
-	return bool(class(self).HasFeature(gd.NewString(tag_name)))
+	return bool(class(self).HasFeature(String.New(tag_name)))
 }
 
 /*
@@ -870,7 +872,7 @@ Requests permission from the OS for the given [param name]. Returns [code]true[/
 */
 func RequestPermission(name string) bool { //gd:OS.request_permission
 	once.Do(singleton)
-	return bool(class(self).RequestPermission(gd.NewString(name)))
+	return bool(class(self).RequestPermission(String.New(name)))
 }
 
 /*
@@ -952,11 +954,11 @@ func (self class) GetEntropy(size gd.Int) gd.PackedByteArray { //gd:OS.get_entro
 Returns the list of certification authorities trusted by the operating system as a string of concatenated certificates in PEM format.
 */
 //go:nosplit
-func (self class) GetSystemCaCertificates() gd.String { //gd:OS.get_system_ca_certificates
+func (self class) GetSystemCaCertificates() String.Readable { //gd:OS.get_system_ca_certificates
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_ca_certificates, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1003,10 +1005,10 @@ func (self class) CloseMidiInputs() { //gd:OS.close_midi_inputs
 Displays a modal dialog box using the host platform's implementation. The engine execution is blocked until the dialog is closed.
 */
 //go:nosplit
-func (self class) Alert(text gd.String, title gd.String) { //gd:OS.alert
+func (self class) Alert(text String.Readable, title String.Readable) { //gd:OS.alert
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
-	callframe.Arg(frame, pointers.Get(title))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_alert, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1017,9 +1019,9 @@ Crashes the engine (or the editor if called within a [code]@tool[/code] script).
 [b]Note:[/b] This method should [i]only[/i] be used for testing the system's crash handler, not for any other purpose. For general error reporting, use (in order of preference) [method @GDScript.assert], [method @GlobalScope.push_error], or [method alert].
 */
 //go:nosplit
-func (self class) Crash(message gd.String) { //gd:OS.crash
+func (self class) Crash(message String.Readable) { //gd:OS.crash
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(message))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(message)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_crash, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1100,11 +1102,11 @@ Returns the full name of the CPU model on the host machine (e.g. [code]"Intel(R)
 [b]Note:[/b] This method is only implemented on Windows, macOS, Linux and iOS. On Android and Web, [method get_processor_name] returns an empty string.
 */
 //go:nosplit
-func (self class) GetProcessorName() gd.String { //gd:OS.get_processor_name
+func (self class) GetProcessorName() String.Readable { //gd:OS.get_processor_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_processor_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1130,15 +1132,15 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) GetSystemFontPath(font_name gd.String, weight gd.Int, stretch gd.Int, italic bool) gd.String { //gd:OS.get_system_font_path
+func (self class) GetSystemFontPath(font_name String.Readable, weight gd.Int, stretch gd.Int, italic bool) String.Readable { //gd:OS.get_system_font_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(font_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(font_name)))
 	callframe.Arg(frame, weight)
 	callframe.Arg(frame, stretch)
 	callframe.Arg(frame, italic)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_font_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1151,12 +1153,12 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) GetSystemFontPathForText(font_name gd.String, text gd.String, locale gd.String, script gd.String, weight gd.Int, stretch gd.Int, italic bool) gd.PackedStringArray { //gd:OS.get_system_font_path_for_text
+func (self class) GetSystemFontPathForText(font_name String.Readable, text String.Readable, locale String.Readable, script String.Readable, weight gd.Int, stretch gd.Int, italic bool) gd.PackedStringArray { //gd:OS.get_system_font_path_for_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(font_name))
-	callframe.Arg(frame, pointers.Get(text))
-	callframe.Arg(frame, pointers.Get(locale))
-	callframe.Arg(frame, pointers.Get(script))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(font_name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(locale)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(script)))
 	callframe.Arg(frame, weight)
 	callframe.Arg(frame, stretch)
 	callframe.Arg(frame, italic)
@@ -1172,11 +1174,11 @@ Returns the file path to the current engine executable.
 [b]Note:[/b] On macOS, if you want to launch another instance of Godot, always use [method create_instance] instead of relying on the executable path.
 */
 //go:nosplit
-func (self class) GetExecutablePath() gd.String { //gd:OS.get_executable_path
+func (self class) GetExecutablePath() String.Readable { //gd:OS.get_executable_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_executable_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1187,11 +1189,11 @@ Reads a user input string from the standard input (usually the terminal). This o
 [b]Note:[/b] On exported Windows builds, run the console wrapper executable to access the terminal. Otherwise, the standard input will not work correctly. If you need a single executable with console support, use a custom build compiled with the [code]windows_subsystem=console[/code] flag.
 */
 //go:nosplit
-func (self class) ReadStringFromStdin() gd.String { //gd:OS.read_string_from_stdin
+func (self class) ReadStringFromStdin() String.Readable { //gd:OS.read_string_from_stdin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_read_string_from_stdin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1232,9 +1234,9 @@ OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
 [b]Note:[/b] On Android, system commands such as [code]dumpsys[/code] can only be run on a rooted device.
 */
 //go:nosplit
-func (self class) Execute(path gd.String, arguments gd.PackedStringArray, output Array.Any, read_stderr bool, open_console bool) gd.Int { //gd:OS.execute
+func (self class) Execute(path String.Readable, arguments gd.PackedStringArray, output Array.Any, read_stderr bool, open_console bool) gd.Int { //gd:OS.execute
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(arguments))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(output)))
 	callframe.Arg(frame, read_stderr)
@@ -1259,9 +1261,9 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
 //go:nosplit
-func (self class) ExecuteWithPipe(path gd.String, arguments gd.PackedStringArray) Dictionary.Any { //gd:OS.execute_with_pipe
+func (self class) ExecuteWithPipe(path String.Readable, arguments gd.PackedStringArray) Dictionary.Any { //gd:OS.execute_with_pipe
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(arguments))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_execute_with_pipe, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1288,9 +1290,9 @@ See [method execute] if you wish to run an external command and retrieve the res
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
 //go:nosplit
-func (self class) CreateProcess(path gd.String, arguments gd.PackedStringArray, open_console bool) gd.Int { //gd:OS.create_process
+func (self class) CreateProcess(path String.Readable, arguments gd.PackedStringArray, open_console bool) gd.Int { //gd:OS.create_process
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(arguments))
 	callframe.Arg(frame, open_console)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1343,9 +1345,9 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) ShellOpen(uri gd.String) gd.Error { //gd:OS.shell_open
+func (self class) ShellOpen(uri String.Readable) gd.Error { //gd:OS.shell_open
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(uri))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(uri)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_shell_open, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1360,9 +1362,9 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 [b]Note:[/b] This method is currently only implemented on Windows and macOS. On other platforms, it will fallback to [method shell_open] with a directory path of [param file_or_dir_path] prefixed with [code]file://[/code].
 */
 //go:nosplit
-func (self class) ShellShowInFileManager(file_or_dir_path gd.String, open_folder bool) gd.Error { //gd:OS.shell_show_in_file_manager
+func (self class) ShellShowInFileManager(file_or_dir_path String.Readable, open_folder bool) gd.Error { //gd:OS.shell_show_in_file_manager
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(file_or_dir_path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(file_or_dir_path)))
 	callframe.Arg(frame, open_folder)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_shell_show_in_file_manager, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1422,9 +1424,9 @@ Returns [code]true[/code] if the environment variable with the name [param varia
 [b]Note:[/b] Double-check the casing of [param variable]. Environment variable names are case-sensitive on all platforms except Windows.
 */
 //go:nosplit
-func (self class) HasEnvironment(variable gd.String) bool { //gd:OS.has_environment
+func (self class) HasEnvironment(variable String.Readable) bool { //gd:OS.has_environment
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(variable))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(variable)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_has_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1438,12 +1440,12 @@ Returns the value of the given environment variable, or an empty string if [para
 [b]Note:[/b] On macOS, applications do not have access to shell environment variables.
 */
 //go:nosplit
-func (self class) GetEnvironment(variable gd.String) gd.String { //gd:OS.get_environment
+func (self class) GetEnvironment(variable String.Readable) String.Readable { //gd:OS.get_environment
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(variable))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(variable)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1453,10 +1455,10 @@ Sets the value of the environment variable [param variable] to [param value]. Th
 [b]Note:[/b] Environment variable names are case-sensitive on all platforms except Windows. The [param variable] name cannot be empty or include the [code]=[/code] character. On Windows, there is a 32767 characters limit for the combined length of [param variable], [param value], and the [code]=[/code] and null terminator characters that will be registered in the environment block.
 */
 //go:nosplit
-func (self class) SetEnvironment(variable gd.String, value gd.String) { //gd:OS.set_environment
+func (self class) SetEnvironment(variable String.Readable, value String.Readable) { //gd:OS.set_environment
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(variable))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(variable)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1467,9 +1469,9 @@ Removes the given environment variable from the current environment, if it exist
 [b]Note:[/b] Environment variable names are case-sensitive on all platforms except Windows.
 */
 //go:nosplit
-func (self class) UnsetEnvironment(variable gd.String) { //gd:OS.unset_environment
+func (self class) UnsetEnvironment(variable String.Readable) { //gd:OS.unset_environment
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(variable))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(variable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_unset_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1532,11 +1534,11 @@ switch (OS.GetName())
 [b]Note:[/b] On Web platforms, it is still possible to determine the host platform's OS with feature tags. See [method has_feature].
 */
 //go:nosplit
-func (self class) GetName() gd.String { //gd:OS.get_name
+func (self class) GetName() String.Readable { //gd:OS.get_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1548,11 +1550,11 @@ Returns the same value as [method get_name] for other platforms.
 [b]Note:[/b] This method is not supported on the Web platform. It returns an empty string.
 */
 //go:nosplit
-func (self class) GetDistributionName() gd.String { //gd:OS.get_distribution_name
+func (self class) GetDistributionName() String.Readable { //gd:OS.get_distribution_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_distribution_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1566,11 +1568,11 @@ Returns the exact production and build version of the operating system. This is 
 [b]Note:[/b] This method is not supported on the Web platform. It returns an empty string.
 */
 //go:nosplit
-func (self class) GetVersion() gd.String { //gd:OS.get_version
+func (self class) GetVersion() String.Readable { //gd:OS.get_version
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1740,11 +1742,11 @@ Returns the host OS locale as a [String] of the form [code]language_Script_COUNT
 If you want only the language code and not the fully specified locale from the OS, you can use [method get_locale_language].
 */
 //go:nosplit
-func (self class) GetLocale() gd.String { //gd:OS.get_locale
+func (self class) GetLocale() String.Readable { //gd:OS.get_locale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1754,11 +1756,11 @@ Returns the host OS locale's 2 or 3-letter [url=https://en.wikipedia.org/wiki/Li
 This can be used to narrow down fully specified locale strings to only the "common" language code, when you don't need the additional information about country code or variants. For example, for a French Canadian user with [code]fr_CA[/code] locale, this would return [code]fr[/code].
 */
 //go:nosplit
-func (self class) GetLocaleLanguage() gd.String { //gd:OS.get_locale_language
+func (self class) GetLocaleLanguage() String.Readable { //gd:OS.get_locale_language
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_locale_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1768,11 +1770,11 @@ Returns the model name of the current device.
 [b]Note:[/b] This method is implemented on Android and iOS. Returns [code]"GenericDevice"[/code] on unsupported platforms.
 */
 //go:nosplit
-func (self class) GetModelName() gd.String { //gd:OS.get_model_name
+func (self class) GetModelName() String.Readable { //gd:OS.get_model_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_model_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1880,9 +1882,9 @@ OS.MoveToTrash(ProjectSettings.GlobalizePath(fileToRemove));
 [b]Note:[/b] If the user has disabled the recycle bin on their system, the file will be permanently deleted instead.
 */
 //go:nosplit
-func (self class) MoveToTrash(path gd.String) gd.Error { //gd:OS.move_to_trash
+func (self class) MoveToTrash(path String.Readable) gd.Error { //gd:OS.move_to_trash
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_move_to_trash, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1901,11 +1903,11 @@ If the project name is empty, [code][project_name][/code] falls back to [code][u
 Not to be confused with [method get_data_dir], which returns the [i]global[/i] (non-project-specific) user home directory.
 */
 //go:nosplit
-func (self class) GetUserDataDir() gd.String { //gd:OS.get_user_data_dir
+func (self class) GetUserDataDir() String.Readable { //gd:OS.get_user_data_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_user_data_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1916,13 +1918,13 @@ Returns the path to commonly used folders across different platforms, as defined
 [b]Note:[/b] Shared storage is implemented on Android and allows to differentiate between app specific and shared directories, if [param shared_storage] is [code]true[/code]. Shared directories have additional restrictions on Android.
 */
 //go:nosplit
-func (self class) GetSystemDir(dir gdclass.OSSystemDir, shared_storage bool) gd.String { //gd:OS.get_system_dir
+func (self class) GetSystemDir(dir gdclass.OSSystemDir, shared_storage bool) String.Readable { //gd:OS.get_system_dir
 	var frame = callframe.New()
 	callframe.Arg(frame, dir)
 	callframe.Arg(frame, shared_storage)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1933,11 +1935,11 @@ On the Linux/BSD platform, this path can be overridden by setting the [code]XDG_
 Not to be confused with [method get_user_data_dir], which returns the [i]project-specific[/i] user data path.
 */
 //go:nosplit
-func (self class) GetConfigDir() gd.String { //gd:OS.get_config_dir
+func (self class) GetConfigDir() String.Readable { //gd:OS.get_config_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_config_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1948,11 +1950,11 @@ On the Linux/BSD platform, this path can be overridden by setting the [code]XDG_
 Not to be confused with [method get_user_data_dir], which returns the [i]project-specific[/i] user data path.
 */
 //go:nosplit
-func (self class) GetDataDir() gd.String { //gd:OS.get_data_dir
+func (self class) GetDataDir() String.Readable { //gd:OS.get_data_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_data_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1963,11 +1965,11 @@ On the Linux/BSD platform, this path can be overridden by setting the [code]XDG_
 Not to be confused with [method get_user_data_dir], which returns the [i]project-specific[/i] user data path.
 */
 //go:nosplit
-func (self class) GetCacheDir() gd.String { //gd:OS.get_cache_dir
+func (self class) GetCacheDir() String.Readable { //gd:OS.get_cache_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cache_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1978,11 +1980,11 @@ Returns a string that is unique to the device.
 [b]Note:[/b] On Web, returns an empty string and generates an error, as this method cannot be implemented for security reasons.
 */
 //go:nosplit
-func (self class) GetUniqueId() gd.String { //gd:OS.get_unique_id
+func (self class) GetUniqueId() String.Readable { //gd:OS.get_unique_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2004,12 +2006,12 @@ GD.Print(OS.GetKeycodeString((Key)KeyModifierMask.MaskShift | Key.Tab)); // Prin
 See also [method find_keycode_from_string], [member InputEventKey.keycode], and [method InputEventKey.get_keycode_with_modifiers].
 */
 //go:nosplit
-func (self class) GetKeycodeString(code Key) gd.String { //gd:OS.get_keycode_string
+func (self class) GetKeycodeString(code Key) String.Readable { //gd:OS.get_keycode_string
 	var frame = callframe.New()
 	callframe.Arg(frame, code)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_keycode_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2061,9 +2063,9 @@ GD.Print(OS.FindKeycodeFromString("Unknown"));   // Prints None (Key.None)
 See also [method get_keycode_string].
 */
 //go:nosplit
-func (self class) FindKeycodeFromString(s gd.String) Key { //gd:OS.find_keycode_from_string
+func (self class) FindKeycodeFromString(s String.Readable) Key { //gd:OS.find_keycode_from_string
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(s))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
 	var r_ret = callframe.Ret[Key](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_find_keycode_from_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2088,9 +2090,9 @@ func (self class) SetUseFileAccessSaveAndSwap(enabled bool) { //gd:OS.set_use_fi
 Assigns the given name to the current thread. Returns [constant ERR_UNAVAILABLE] if unavailable on the current platform.
 */
 //go:nosplit
-func (self class) SetThreadName(name gd.String) gd.Error { //gd:OS.set_thread_name
+func (self class) SetThreadName(name String.Readable) gd.Error { //gd:OS.set_thread_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_thread_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2132,9 +2134,9 @@ Returns [code]true[/code] if the feature for the given feature tag is supported 
 [b]Note:[/b] On the Web platform, one of the following additional tags is defined to indicate the host platform: [code]web_android[/code], [code]web_ios[/code], [code]web_linuxbsd[/code], [code]web_macos[/code], or [code]web_windows[/code].
 */
 //go:nosplit
-func (self class) HasFeature(tag_name gd.String) bool { //gd:OS.has_feature
+func (self class) HasFeature(tag_name String.Readable) bool { //gd:OS.has_feature
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(tag_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tag_name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_has_feature, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2161,9 +2163,9 @@ Requests permission from the OS for the given [param name]. Returns [code]true[/
 [b]Note:[/b] This method is currently only implemented on Android, to specifically request permission for [code]"RECORD_AUDIO"[/code] by [code]AudioDriverOpenSL[/code].
 */
 //go:nosplit
-func (self class) RequestPermission(name gd.String) bool { //gd:OS.request_permission
+func (self class) RequestPermission(name String.Readable) bool { //gd:OS.request_permission
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_request_permission, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2758,14 +2760,14 @@ const (
 	KeySection Key = 167
 )
 
-type Pipe struct {
-	Stdio  [1]gdclass.FileAccess `gd:"stdio"`
-	Stderr [1]gdclass.FileAccess `gd:"stderr"`
-	PID    int                   `gd:"pid"`
-}
 type MemoryInfo struct {
 	Physical  int `gd:"physical"`
 	Free      int `gd:"free"`
 	Available int `gd:"available"`
 	Stack     int `gd:"stack"`
+}
+type Pipe struct {
+	Stdio  [1]gdclass.FileAccess `gd:"stdio"`
+	Stderr [1]gdclass.FileAccess `gd:"stderr"`
+	PID    int                   `gd:"pid"`
 }

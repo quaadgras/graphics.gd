@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Plugins are used by the editor to extend functionality. The most common types of plugins are those which edit a given node or resource type, import plugins and export plugins. See also [EditorScript] to add functions to the editor.
@@ -613,7 +615,7 @@ func (Instance) _get_plugin_name(impl func(ptr unsafe.Pointer) string) (cb gd.Ex
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -828,11 +830,11 @@ func _get_unsaved_status(for_scene):
 */
 func (Instance) _get_unsaved_status(impl func(ptr unsafe.Pointer, for_scene string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var for_scene = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(for_scene)
+		var for_scene = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(for_scene))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_scene.String())
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -965,7 +967,7 @@ Adds a control to the bottom panel (together with Output, Debug, Animation, etc)
 Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the bottom panel's visibility. See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
 */
 func (self Instance) AddControlToBottomPanel(control [1]gdclass.Control, title string) [1]gdclass.Button { //gd:EditorPlugin.add_control_to_bottom_panel
-	return [1]gdclass.Button(class(self).AddControlToBottomPanel(control, gd.NewString(title), [1][1]gdclass.Shortcut{}[0]))
+	return [1]gdclass.Button(class(self).AddControlToBottomPanel(control, String.New(title), [1][1]gdclass.Shortcut{}[0]))
 }
 
 /*
@@ -1010,21 +1012,21 @@ func (self Instance) SetDockTabIcon(control [1]gdclass.Control, icon [1]gdclass.
 Adds a custom menu item to [b]Project > Tools[/b] named [param name]. When clicked, the provided [param callable] will be called.
 */
 func (self Instance) AddToolMenuItem(name string, callable func()) { //gd:EditorPlugin.add_tool_menu_item
-	class(self).AddToolMenuItem(gd.NewString(name), Callable.New(callable))
+	class(self).AddToolMenuItem(String.New(name), Callable.New(callable))
 }
 
 /*
 Adds a custom [PopupMenu] submenu under [b]Project > Tools >[/b] [param name]. Use [method remove_tool_menu_item] on plugin clean up to remove the menu.
 */
 func (self Instance) AddToolSubmenuItem(name string, submenu [1]gdclass.PopupMenu) { //gd:EditorPlugin.add_tool_submenu_item
-	class(self).AddToolSubmenuItem(gd.NewString(name), submenu)
+	class(self).AddToolSubmenuItem(String.New(name), submenu)
 }
 
 /*
 Removes a menu [param name] from [b]Project > Tools[/b].
 */
 func (self Instance) RemoveToolMenuItem(name string) { //gd:EditorPlugin.remove_tool_menu_item
-	class(self).RemoveToolMenuItem(gd.NewString(name))
+	class(self).RemoveToolMenuItem(String.New(name))
 }
 
 /*
@@ -1043,28 +1045,28 @@ During run-time, this will be a simple object with a script so this function doe
 [b]Note:[/b] Custom types added this way are not true classes. They are just a helper to create a node with specific script.
 */
 func (self Instance) AddCustomType(atype string, base string, script [1]gdclass.Script, icon [1]gdclass.Texture2D) { //gd:EditorPlugin.add_custom_type
-	class(self).AddCustomType(gd.NewString(atype), gd.NewString(base), script, icon)
+	class(self).AddCustomType(String.New(atype), String.New(base), script, icon)
 }
 
 /*
 Removes a custom type added by [method add_custom_type].
 */
 func (self Instance) RemoveCustomType(atype string) { //gd:EditorPlugin.remove_custom_type
-	class(self).RemoveCustomType(gd.NewString(atype))
+	class(self).RemoveCustomType(String.New(atype))
 }
 
 /*
 Adds a script at [param path] to the Autoload list as [param name].
 */
 func (self Instance) AddAutoloadSingleton(name string, path string) { //gd:EditorPlugin.add_autoload_singleton
-	class(self).AddAutoloadSingleton(gd.NewString(name), gd.NewString(path))
+	class(self).AddAutoloadSingleton(String.New(name), String.New(path))
 }
 
 /*
 Removes an Autoload [param name] from the list.
 */
 func (self Instance) RemoveAutoloadSingleton(name string) { //gd:EditorPlugin.remove_autoload_singleton
-	class(self).RemoveAutoloadSingleton(gd.NewString(name))
+	class(self).RemoveAutoloadSingleton(String.New(name))
 }
 
 /*
@@ -1571,11 +1573,11 @@ func (class) _forward_3d_force_draw_over_viewport(impl func(ptr unsafe.Pointer, 
 Override this method in your plugin to provide the name of the plugin when displayed in the Godot editor.
 For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
 */
-func (class) _get_plugin_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_plugin_name(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1788,13 +1790,13 @@ func _get_unsaved_status(for_scene):
 
 [/codeblock]
 */
-func (class) _get_unsaved_status(impl func(ptr unsafe.Pointer, for_scene gd.String) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_unsaved_status(impl func(ptr unsafe.Pointer, for_scene String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var for_scene = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(for_scene)
+		var for_scene = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(for_scene))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_scene)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1933,10 +1935,10 @@ Adds a control to the bottom panel (together with Output, Debug, Animation, etc)
 Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the bottom panel's visibility. See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
 */
 //go:nosplit
-func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title gd.String, shortcut [1]gdclass.Shortcut) [1]gdclass.Button { //gd:EditorPlugin.add_control_to_bottom_panel
+func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title String.Readable, shortcut [1]gdclass.Shortcut) [1]gdclass.Button { //gd:EditorPlugin.add_control_to_bottom_panel
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
-	callframe.Arg(frame, pointers.Get(title))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2016,9 +2018,9 @@ func (self class) SetDockTabIcon(control [1]gdclass.Control, icon [1]gdclass.Tex
 Adds a custom menu item to [b]Project > Tools[/b] named [param name]. When clicked, the provided [param callable] will be called.
 */
 //go:nosplit
-func (self class) AddToolMenuItem(name gd.String, callable Callable.Function) { //gd:EditorPlugin.add_tool_menu_item
+func (self class) AddToolMenuItem(name String.Readable, callable Callable.Function) { //gd:EditorPlugin.add_tool_menu_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_tool_menu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2029,9 +2031,9 @@ func (self class) AddToolMenuItem(name gd.String, callable Callable.Function) { 
 Adds a custom [PopupMenu] submenu under [b]Project > Tools >[/b] [param name]. Use [method remove_tool_menu_item] on plugin clean up to remove the menu.
 */
 //go:nosplit
-func (self class) AddToolSubmenuItem(name gd.String, submenu [1]gdclass.PopupMenu) { //gd:EditorPlugin.add_tool_submenu_item
+func (self class) AddToolSubmenuItem(name String.Readable, submenu [1]gdclass.PopupMenu) { //gd:EditorPlugin.add_tool_submenu_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()[0]))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_tool_submenu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2042,9 +2044,9 @@ func (self class) AddToolSubmenuItem(name gd.String, submenu [1]gdclass.PopupMen
 Removes a menu [param name] from [b]Project > Tools[/b].
 */
 //go:nosplit
-func (self class) RemoveToolMenuItem(name gd.String) { //gd:EditorPlugin.remove_tool_menu_item
+func (self class) RemoveToolMenuItem(name String.Readable) { //gd:EditorPlugin.remove_tool_menu_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_tool_menu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2072,10 +2074,10 @@ During run-time, this will be a simple object with a script so this function doe
 [b]Note:[/b] Custom types added this way are not true classes. They are just a helper to create a node with specific script.
 */
 //go:nosplit
-func (self class) AddCustomType(atype gd.String, base gd.String, script [1]gdclass.Script, icon [1]gdclass.Texture2D) { //gd:EditorPlugin.add_custom_type
+func (self class) AddCustomType(atype String.Readable, base String.Readable, script [1]gdclass.Script, icon [1]gdclass.Texture2D) { //gd:EditorPlugin.add_custom_type
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(atype))
-	callframe.Arg(frame, pointers.Get(base))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(atype)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(base)))
 	callframe.Arg(frame, pointers.Get(script[0])[0])
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	var r_ret = callframe.Nil
@@ -2087,9 +2089,9 @@ func (self class) AddCustomType(atype gd.String, base gd.String, script [1]gdcla
 Removes a custom type added by [method add_custom_type].
 */
 //go:nosplit
-func (self class) RemoveCustomType(atype gd.String) { //gd:EditorPlugin.remove_custom_type
+func (self class) RemoveCustomType(atype String.Readable) { //gd:EditorPlugin.remove_custom_type
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(atype))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(atype)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_custom_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2099,10 +2101,10 @@ func (self class) RemoveCustomType(atype gd.String) { //gd:EditorPlugin.remove_c
 Adds a script at [param path] to the Autoload list as [param name].
 */
 //go:nosplit
-func (self class) AddAutoloadSingleton(name gd.String, path gd.String) { //gd:EditorPlugin.add_autoload_singleton
+func (self class) AddAutoloadSingleton(name String.Readable, path String.Readable) { //gd:EditorPlugin.add_autoload_singleton
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_autoload_singleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2112,9 +2114,9 @@ func (self class) AddAutoloadSingleton(name gd.String, path gd.String) { //gd:Ed
 Removes an Autoload [param name] from the list.
 */
 //go:nosplit
-func (self class) RemoveAutoloadSingleton(name gd.String) { //gd:EditorPlugin.remove_autoload_singleton
+func (self class) RemoveAutoloadSingleton(name String.Readable) { //gd:EditorPlugin.remove_autoload_singleton
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_autoload_singleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2499,11 +2501,11 @@ func (self class) RemoveDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) {
 Provide the version of the plugin declared in the [code]plugin.cfg[/code] config file.
 */
 //go:nosplit
-func (self class) GetPluginVersion() gd.String { //gd:EditorPlugin.get_plugin_version
+func (self class) GetPluginVersion() String.Readable { //gd:EditorPlugin.get_plugin_version
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_plugin_version, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Arranges child controls into a tabbed view, creating a tab for each one. The active tab's corresponding control is made visible, while all other child controls are hidden. Ignores non-control children.
@@ -100,7 +102,7 @@ func (self Instance) GetTabControl(tab_idx int) [1]gdclass.Control { //gd:TabCon
 Sets a custom title for the tab at index [param tab_idx] (tab titles default to the name of the indexed child node). Set it back to the child's name to make the tab default to it again.
 */
 func (self Instance) SetTabTitle(tab_idx int, title string) { //gd:TabContainer.set_tab_title
-	class(self).SetTabTitle(gd.Int(tab_idx), gd.NewString(title))
+	class(self).SetTabTitle(gd.Int(tab_idx), String.New(title))
 }
 
 /*
@@ -115,7 +117,7 @@ Sets a custom tooltip text for tab at index [param tab_idx].
 [b]Note:[/b] By default, if the [param tooltip] is empty and the tab text is truncated (not all characters fit into the tab), the title will be displayed as a tooltip. To hide the tooltip, assign [code]" "[/code] as the [param tooltip] text.
 */
 func (self Instance) SetTabTooltip(tab_idx int, tooltip string) { //gd:TabContainer.set_tab_tooltip
-	class(self).SetTabTooltip(gd.Int(tab_idx), gd.NewString(tooltip))
+	class(self).SetTabTooltip(gd.Int(tab_idx), String.New(tooltip))
 }
 
 /*
@@ -555,10 +557,10 @@ func (self class) IsAllTabsInFront() bool { //gd:TabContainer.is_all_tabs_in_fro
 Sets a custom title for the tab at index [param tab_idx] (tab titles default to the name of the indexed child node). Set it back to the child's name to make the tab default to it again.
 */
 //go:nosplit
-func (self class) SetTabTitle(tab_idx gd.Int, title gd.String) { //gd:TabContainer.set_tab_title
+func (self class) SetTabTitle(tab_idx gd.Int, title String.Readable) { //gd:TabContainer.set_tab_title
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, pointers.Get(title))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_set_tab_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -568,12 +570,12 @@ func (self class) SetTabTitle(tab_idx gd.Int, title gd.String) { //gd:TabContain
 Returns the title of the tab at index [param tab_idx]. Tab titles default to the name of the indexed child node, but this can be overridden with [method set_tab_title].
 */
 //go:nosplit
-func (self class) GetTabTitle(tab_idx gd.Int) gd.String { //gd:TabContainer.get_tab_title
+func (self class) GetTabTitle(tab_idx gd.Int) String.Readable { //gd:TabContainer.get_tab_title
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_tab_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -583,10 +585,10 @@ Sets a custom tooltip text for tab at index [param tab_idx].
 [b]Note:[/b] By default, if the [param tooltip] is empty and the tab text is truncated (not all characters fit into the tab), the title will be displayed as a tooltip. To hide the tooltip, assign [code]" "[/code] as the [param tooltip] text.
 */
 //go:nosplit
-func (self class) SetTabTooltip(tab_idx gd.Int, tooltip gd.String) { //gd:TabContainer.set_tab_tooltip
+func (self class) SetTabTooltip(tab_idx gd.Int, tooltip String.Readable) { //gd:TabContainer.set_tab_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, pointers.Get(tooltip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_set_tab_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -596,12 +598,12 @@ func (self class) SetTabTooltip(tab_idx gd.Int, tooltip gd.String) { //gd:TabCon
 Returns the tooltip text of the tab at index [param tab_idx].
 */
 //go:nosplit
-func (self class) GetTabTooltip(tab_idx gd.Int) gd.String { //gd:TabContainer.get_tab_tooltip
+func (self class) GetTabTooltip(tab_idx gd.Int) String.Readable { //gd:TabContainer.get_tab_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_tab_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

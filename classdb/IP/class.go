@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "net/netip"
 
 var _ Object.ID
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 IP contains support functions for the Internet Protocol (IP). TCP/IP support is in different classes (see [StreamPeerTCP] and [TCPServer]). IP provides DNS hostname resolution support, both blocking and threaded.
@@ -45,7 +47,7 @@ Returns a given hostname's IPv4 or IPv6 address when resolved (blocking-type met
 */
 func ResolveHostname(host string) string { //gd:IP.resolve_hostname
 	once.Do(singleton)
-	return string(class(self).ResolveHostname(gd.NewString(host), 3).String())
+	return string(class(self).ResolveHostname(String.New(host), 3).String())
 }
 
 /*
@@ -53,7 +55,7 @@ Resolves a given hostname in a blocking way. Addresses are returned as an [Array
 */
 func ResolveHostnameAddresses(host string) []string { //gd:IP.resolve_hostname_addresses
 	once.Do(singleton)
-	return []string(class(self).ResolveHostnameAddresses(gd.NewString(host), 3).Strings())
+	return []string(class(self).ResolveHostnameAddresses(String.New(host), 3).Strings())
 }
 
 /*
@@ -61,7 +63,7 @@ Creates a queue item to resolve a hostname to an IPv4 or IPv6 address depending 
 */
 func ResolveHostnameQueueItem(host string) int { //gd:IP.resolve_hostname_queue_item
 	once.Do(singleton)
-	return int(int(class(self).ResolveHostnameQueueItem(gd.NewString(host), 3)))
+	return int(int(class(self).ResolveHostnameQueueItem(String.New(host), 3)))
 }
 
 /*
@@ -128,7 +130,7 @@ Removes all of a [param hostname]'s cached references. If no [param hostname] is
 */
 func ClearCache() { //gd:IP.clear_cache
 	once.Do(singleton)
-	class(self).ClearCache(gd.NewString(""))
+	class(self).ClearCache(String.New(""))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -145,13 +147,13 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Returns a given hostname's IPv4 or IPv6 address when resolved (blocking-type method). The address type returned depends on the [enum Type] constant given as [param ip_type].
 */
 //go:nosplit
-func (self class) ResolveHostname(host gd.String, ip_type gdclass.IPType) gd.String { //gd:IP.resolve_hostname
+func (self class) ResolveHostname(host String.Readable, ip_type gdclass.IPType) String.Readable { //gd:IP.resolve_hostname
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(host))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, ip_type)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -160,9 +162,9 @@ func (self class) ResolveHostname(host gd.String, ip_type gdclass.IPType) gd.Str
 Resolves a given hostname in a blocking way. Addresses are returned as an [Array] of IPv4 or IPv6 addresses depending on [param ip_type].
 */
 //go:nosplit
-func (self class) ResolveHostnameAddresses(host gd.String, ip_type gdclass.IPType) gd.PackedStringArray { //gd:IP.resolve_hostname_addresses
+func (self class) ResolveHostnameAddresses(host String.Readable, ip_type gdclass.IPType) gd.PackedStringArray { //gd:IP.resolve_hostname_addresses
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(host))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, ip_type)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname_addresses, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -175,9 +177,9 @@ func (self class) ResolveHostnameAddresses(host gd.String, ip_type gdclass.IPTyp
 Creates a queue item to resolve a hostname to an IPv4 or IPv6 address depending on the [enum Type] constant given as [param ip_type]. Returns the queue ID if successful, or [constant RESOLVER_INVALID_ID] on error.
 */
 //go:nosplit
-func (self class) ResolveHostnameQueueItem(host gd.String, ip_type gdclass.IPType) gd.Int { //gd:IP.resolve_hostname_queue_item
+func (self class) ResolveHostnameQueueItem(host String.Readable, ip_type gdclass.IPType) gd.Int { //gd:IP.resolve_hostname_queue_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(host))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, ip_type)
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname_queue_item, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -204,12 +206,12 @@ func (self class) GetResolveItemStatus(id gd.Int) gdclass.IPResolverStatus { //g
 Returns a queued hostname's IP address, given its queue [param id]. Returns an empty string on error or if resolution hasn't happened yet (see [method get_resolve_item_status]).
 */
 //go:nosplit
-func (self class) GetResolveItemAddress(id gd.Int) gd.String { //gd:IP.get_resolve_item_address
+func (self class) GetResolveItemAddress(id gd.Int) String.Readable { //gd:IP.get_resolve_item_address
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_resolve_item_address, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -279,9 +281,9 @@ func (self class) GetLocalInterfaces() Array.Contains[Dictionary.Any] { //gd:IP.
 Removes all of a [param hostname]'s cached references. If no [param hostname] is given, all cached IP addresses are removed.
 */
 //go:nosplit
-func (self class) ClearCache(hostname gd.String) { //gd:IP.clear_cache
+func (self class) ClearCache(hostname String.Readable) { //gd:IP.clear_cache
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(hostname))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(hostname)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_clear_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/Window"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The [ScriptCreateDialog] creates script files according to a given template for a given scripting language. The standard use is to configure its fields prior to calling one of the [method Window.popup] methods.
@@ -71,7 +73,7 @@ type Any interface {
 Prefills required fields to configure the ScriptCreateDialog for use.
 */
 func (self Instance) Config(inherits string, path string) { //gd:ScriptCreateDialog.config
-	class(self).Config(gd.NewString(inherits), gd.NewString(path), true, true)
+	class(self).Config(String.New(inherits), String.New(path), true, true)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -96,10 +98,10 @@ func New() Instance {
 Prefills required fields to configure the ScriptCreateDialog for use.
 */
 //go:nosplit
-func (self class) Config(inherits gd.String, path gd.String, built_in_enabled bool, load_enabled bool) { //gd:ScriptCreateDialog.config
+func (self class) Config(inherits String.Readable, path String.Readable, built_in_enabled bool, load_enabled bool) { //gd:ScriptCreateDialog.config
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(inherits))
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(inherits)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, built_in_enabled)
 	callframe.Arg(frame, load_enabled)
 	var r_ret = callframe.Nil

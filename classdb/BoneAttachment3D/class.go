@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/NodePath"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This node selects a bone in a [Skeleton3D] and attaches to it. This means that the [BoneAttachment3D] node will either dynamically copy or override the 3D transform of the selected bone.
@@ -101,7 +103,7 @@ func (self Instance) BoneName() string {
 }
 
 func (self Instance) SetBoneName(value string) {
-	class(self).SetBoneName(gd.NewString(value))
+	class(self).SetBoneName(String.New(value))
 }
 
 func (self Instance) BoneIdx() int {
@@ -121,20 +123,20 @@ func (self Instance) SetOverridePose(value bool) {
 }
 
 //go:nosplit
-func (self class) SetBoneName(bone_name gd.String) { //gd:BoneAttachment3D.set_bone_name
+func (self class) SetBoneName(bone_name String.Readable) { //gd:BoneAttachment3D.set_bone_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bone_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bone_name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneAttachment3D.Bind_set_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetBoneName() gd.String { //gd:BoneAttachment3D.get_bone_name
+func (self class) GetBoneName() String.Readable { //gd:BoneAttachment3D.get_bone_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneAttachment3D.Bind_get_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

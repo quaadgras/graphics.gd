@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Action sets in OpenXR define a collection of actions that can be activated in unison. This allows games to easily change between different states that require different inputs or need to reinterpret inputs. For instance we could have an action set that is active when a menu is open, an action set that is active when the player is freely walking around and an action set that is active when the player is controlling a vehicle.
@@ -87,7 +89,7 @@ func (self Instance) LocalizedName() string {
 }
 
 func (self Instance) SetLocalizedName(value string) {
-	class(self).SetLocalizedName(gd.NewString(value))
+	class(self).SetLocalizedName(String.New(value))
 }
 
 func (self Instance) Priority() int {
@@ -107,20 +109,20 @@ func (self Instance) SetActions(value []any) {
 }
 
 //go:nosplit
-func (self class) SetLocalizedName(localized_name gd.String) { //gd:OpenXRActionSet.set_localized_name
+func (self class) SetLocalizedName(localized_name String.Readable) { //gd:OpenXRActionSet.set_localized_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(localized_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(localized_name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionSet.Bind_set_localized_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetLocalizedName() gd.String { //gd:OpenXRActionSet.get_localized_name
+func (self class) GetLocalizedName() String.Readable { //gd:OpenXRActionSet.get_localized_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionSet.Bind_get_localized_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

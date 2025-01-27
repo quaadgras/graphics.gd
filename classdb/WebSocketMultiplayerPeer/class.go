@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/classdb/PacketPeer"
 import "graphics.gd/variant/Float"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Base class for WebSocket server and client, allowing them to be used as multiplayer peer for the [MultiplayerAPI].
@@ -49,14 +51,14 @@ Starts a new multiplayer client connecting to the given [param url]. TLS certifi
 [b]Note:[/b] It is recommended to specify the scheme part of the URL, i.e. the [param url] should start with either [code]ws://[/code] or [code]wss://[/code].
 */
 func (self Instance) CreateClient(url string) error { //gd:WebSocketMultiplayerPeer.create_client
-	return error(gd.ToError(class(self).CreateClient(gd.NewString(url), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(class(self).CreateClient(String.New(url), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*
 Starts a new multiplayer server listening on the given [param port]. You can optionally specify a [param bind_address], and provide valid [param tls_server_options] to use TLS. See [method TLSOptions.server].
 */
 func (self Instance) CreateServer(port int) error { //gd:WebSocketMultiplayerPeer.create_server
-	return error(gd.ToError(class(self).CreateServer(gd.Int(port), gd.NewString("*"), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(class(self).CreateServer(gd.Int(port), String.New("*"), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*
@@ -152,9 +154,9 @@ Starts a new multiplayer client connecting to the given [param url]. TLS certifi
 [b]Note:[/b] It is recommended to specify the scheme part of the URL, i.e. the [param url] should start with either [code]ws://[/code] or [code]wss://[/code].
 */
 //go:nosplit
-func (self class) CreateClient(url gd.String, tls_client_options [1]gdclass.TLSOptions) gd.Error { //gd:WebSocketMultiplayerPeer.create_client
+func (self class) CreateClient(url String.Readable, tls_client_options [1]gdclass.TLSOptions) gd.Error { //gd:WebSocketMultiplayerPeer.create_client
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(url))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
 	callframe.Arg(frame, pointers.Get(tls_client_options[0])[0])
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_create_client, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -167,10 +169,10 @@ func (self class) CreateClient(url gd.String, tls_client_options [1]gdclass.TLSO
 Starts a new multiplayer server listening on the given [param port]. You can optionally specify a [param bind_address], and provide valid [param tls_server_options] to use TLS. See [method TLSOptions.server].
 */
 //go:nosplit
-func (self class) CreateServer(port gd.Int, bind_address gd.String, tls_server_options [1]gdclass.TLSOptions) gd.Error { //gd:WebSocketMultiplayerPeer.create_server
+func (self class) CreateServer(port gd.Int, bind_address String.Readable, tls_server_options [1]gdclass.TLSOptions) gd.Error { //gd:WebSocketMultiplayerPeer.create_server
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
-	callframe.Arg(frame, pointers.Get(bind_address))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bind_address)))
 	callframe.Arg(frame, pointers.Get(tls_server_options[0])[0])
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_create_server, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -197,12 +199,12 @@ func (self class) GetPeer(peer_id gd.Int) [1]gdclass.WebSocketPeer { //gd:WebSoc
 Returns the IP address of the given peer.
 */
 //go:nosplit
-func (self class) GetPeerAddress(id gd.Int) gd.String { //gd:WebSocketMultiplayerPeer.get_peer_address
+func (self class) GetPeerAddress(id gd.Int) String.Readable { //gd:WebSocketMultiplayerPeer.get_peer_address
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_get_peer_address, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

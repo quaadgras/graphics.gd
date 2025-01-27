@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/ResourceImporter"
 import "graphics.gd/variant/Float"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [EditorImportPlugin]s provide a way to extend the editor's resource import functionality. Use them to import resources from custom files or to provide alternatives to the editor's existing importers.
@@ -251,7 +253,7 @@ func (Instance) _get_importer_name(impl func(ptr unsafe.Pointer) string) (cb gd.
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -267,7 +269,7 @@ func (Instance) _get_visible_name(impl func(ptr unsafe.Pointer) string) (cb gd.E
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -296,7 +298,7 @@ func (Instance) _get_preset_name(impl func(ptr unsafe.Pointer, preset_index int)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(preset_index))
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -326,8 +328,8 @@ Gets the options and default values for the preset at this index. Returns an Arr
 */
 func (Instance) _get_import_options(impl func(ptr unsafe.Pointer, path string, preset_index int) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
 		var preset_index = gd.UnsafeGet[gd.Int](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -348,7 +350,7 @@ func (Instance) _get_save_extension(impl func(ptr unsafe.Pointer) string) (cb gd
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -364,7 +366,7 @@ func (Instance) _get_resource_type(impl func(ptr unsafe.Pointer) string) (cb gd.
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -427,8 +429,8 @@ Returns [code]true[/code] to make all options always visible.
 */
 func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string, option_name string, options map[any]any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
 		var option_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(option_name)
 		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
@@ -445,15 +447,15 @@ This method must be overridden to do the actual importing work. See this class' 
 */
 func (Instance) _import(impl func(ptr unsafe.Pointer, source_file string, save_path string, options map[any]any, platform_variants []string, gen_files []string) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var source_file = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(source_file)
-		var save_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(save_path)
+		var source_file = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(source_file))
+		var save_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(save_path))
 		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(options))
-		var platform_variants = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
+		var platform_variants = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
 		defer pointers.End(gd.InternalArray(platform_variants))
-		var gen_files = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
+		var gen_files = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
 		defer pointers.End(gd.InternalArray(gen_files))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, source_file.String(), save_path.String(), gd.DictionaryAs[map[any]any](options), gd.ArrayAs[[]string](gd.InternalArray(platform_variants)), gd.ArrayAs[[]string](gd.InternalArray(gen_files)))
@@ -477,7 +479,7 @@ func (Instance) _can_import_threaded(impl func(ptr unsafe.Pointer) bool) (cb gd.
 This function can only be called during the [method _import] callback and it allows manually importing resources from it. This is useful when the imported file generates external resources that require importing (as example, images). Custom parameters for the ".import" file can be passed via the [param custom_options]. Additionally, in cases where multiple importers can handle a file, the [param custom_importer] can be specified to force a specific one. This function performs a resource import and returns immediately with a success or error code. [param generator_parameters] defines optional extra metadata which will be stored as [code skip-lint]generator_parameters[/code] in the [code]remap[/code] section of the [code].import[/code] file, for example to store a md5 hash of the source data.
 */
 func (self Instance) AppendImportExternalResource(path string) error { //gd:EditorImportPlugin.append_import_external_resource
-	return error(gd.ToError(class(self).AppendImportExternalResource(gd.NewString(path), Dictionary.Nil, gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))))
+	return error(gd.ToError(class(self).AppendImportExternalResource(String.New(path), Dictionary.Nil, String.New(""), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -502,11 +504,11 @@ func New() Instance {
 /*
 Gets the unique name of the importer.
 */
-func (class) _get_importer_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_importer_name(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -518,11 +520,11 @@ func (class) _get_importer_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.
 /*
 Gets the name to display in the import window. You should choose this name as a continuation to "Import as", e.g. "Import as Special Mesh".
 */
-func (class) _get_visible_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_visible_name(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -545,13 +547,13 @@ func (class) _get_preset_count(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.Exte
 /*
 Gets the name of the options preset at this index.
 */
-func (class) _get_preset_name(impl func(ptr unsafe.Pointer, preset_index gd.Int) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_preset_name(impl func(ptr unsafe.Pointer, preset_index gd.Int) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset_index = gd.UnsafeGet[gd.Int](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset_index)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -579,10 +581,10 @@ func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) gd.PackedS
 /*
 Gets the options and default values for the preset at this index. Returns an Array of Dictionaries with the following keys: [code]name[/code], [code]default_value[/code], [code]property_hint[/code] (optional), [code]hint_string[/code] (optional), [code]usage[/code] (optional).
 */
-func (class) _get_import_options(impl func(ptr unsafe.Pointer, path gd.String, preset_index gd.Int) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_import_options(impl func(ptr unsafe.Pointer, path String.Readable, preset_index gd.Int) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
 		var preset_index = gd.UnsafeGet[gd.Int](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -599,11 +601,11 @@ func (class) _get_import_options(impl func(ptr unsafe.Pointer, path gd.String, p
 /*
 Gets the extension used to save this resource in the [code].godot/imported[/code] directory (see [member ProjectSettings.application/config/use_hidden_project_data_directory]).
 */
-func (class) _get_save_extension(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_save_extension(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -615,11 +617,11 @@ func (class) _get_save_extension(impl func(ptr unsafe.Pointer) gd.String) (cb gd
 /*
 Gets the Godot resource type associated with this loader. e.g. [code]"Mesh"[/code] or [code]"Animation"[/code].
 */
-func (class) _get_resource_type(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_resource_type(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -680,10 +682,10 @@ public void _GetOptionVisibility(string option, Godot.Collections.Dictionary opt
 [/codeblocks]
 Returns [code]true[/code] to make all options always visible.
 */
-func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path gd.String, option_name gd.StringName, options Dictionary.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path String.Readable, option_name gd.StringName, options Dictionary.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
 		var option_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(option_name)
 		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
@@ -698,17 +700,17 @@ func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path gd.String
 Imports [param source_file] into [param save_path] with the import [param options] specified. The [param platform_variants] and [param gen_files] arrays will be modified by this function.
 This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
 */
-func (class) _import(impl func(ptr unsafe.Pointer, source_file gd.String, save_path gd.String, options Dictionary.Any, platform_variants Array.Contains[gd.String], gen_files Array.Contains[gd.String]) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _import(impl func(ptr unsafe.Pointer, source_file String.Readable, save_path String.Readable, options Dictionary.Any, platform_variants Array.Contains[String.Readable], gen_files Array.Contains[String.Readable]) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var source_file = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(source_file)
-		var save_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(save_path)
+		var source_file = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(source_file))
+		var save_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(save_path))
 		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(options))
-		var platform_variants = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
+		var platform_variants = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
 		defer pointers.End(gd.InternalArray(platform_variants))
-		var gen_files = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
+		var gen_files = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
 		defer pointers.End(gd.InternalArray(gen_files))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, source_file, save_path, options, platform_variants, gen_files)
@@ -732,11 +734,11 @@ func (class) _can_import_threaded(impl func(ptr unsafe.Pointer) bool) (cb gd.Ext
 This function can only be called during the [method _import] callback and it allows manually importing resources from it. This is useful when the imported file generates external resources that require importing (as example, images). Custom parameters for the ".import" file can be passed via the [param custom_options]. Additionally, in cases where multiple importers can handle a file, the [param custom_importer] can be specified to force a specific one. This function performs a resource import and returns immediately with a success or error code. [param generator_parameters] defines optional extra metadata which will be stored as [code skip-lint]generator_parameters[/code] in the [code]remap[/code] section of the [code].import[/code] file, for example to store a md5 hash of the source data.
 */
 //go:nosplit
-func (self class) AppendImportExternalResource(path gd.String, custom_options Dictionary.Any, custom_importer gd.String, generator_parameters gd.Variant) gd.Error { //gd:EditorImportPlugin.append_import_external_resource
+func (self class) AppendImportExternalResource(path String.Readable, custom_options Dictionary.Any, custom_importer String.Readable, generator_parameters gd.Variant) gd.Error { //gd:EditorImportPlugin.append_import_external_resource
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(custom_options)))
-	callframe.Arg(frame, pointers.Get(custom_importer))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(custom_importer)))
 	callframe.Arg(frame, pointers.Get(generator_parameters))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorImportPlugin.Bind_append_import_external_resource, self.AsObject(), frame.Array(0), r_ret.Addr())

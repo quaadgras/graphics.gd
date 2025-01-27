@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Plane"
@@ -33,6 +34,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The [SurfaceTool] is used to construct a [Mesh] by specifying vertex attributes individually. It can be used to construct a [Mesh] from a script. All properties except indices need to be added before calling [method add_vertex]. For example, to add vertex colors and UVs:
@@ -286,7 +288,7 @@ func (self Instance) CreateFromArrays(arrays []any) { //gd:SurfaceTool.create_fr
 Creates a vertex array from the specified blend shape of an existing [Mesh]. This can be used to extract a specific pose from a blend shape.
 */
 func (self Instance) CreateFromBlendShape(existing [1]gdclass.Mesh, surface int, blend_shape string) { //gd:SurfaceTool.create_from_blend_shape
-	class(self).CreateFromBlendShape(existing, gd.Int(surface), gd.NewString(blend_shape))
+	class(self).CreateFromBlendShape(existing, gd.Int(surface), String.New(blend_shape))
 }
 
 /*
@@ -705,11 +707,11 @@ func (self class) CreateFromArrays(arrays Array.Any, primitive_type gdclass.Mesh
 Creates a vertex array from the specified blend shape of an existing [Mesh]. This can be used to extract a specific pose from a blend shape.
 */
 //go:nosplit
-func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface gd.Int, blend_shape gd.String) { //gd:SurfaceTool.create_from_blend_shape
+func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface gd.Int, blend_shape String.Readable) { //gd:SurfaceTool.create_from_blend_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, surface)
-	callframe.Arg(frame, pointers.Get(blend_shape))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(blend_shape)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_create_from_blend_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

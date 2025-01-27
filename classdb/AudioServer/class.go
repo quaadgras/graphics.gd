@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [AudioServer] is a low-level server interface for audio access. It is in charge of creating sample data (playable audio) as well as its playback via a voice interface.
@@ -69,7 +71,7 @@ Sets the name of the bus at index [param bus_idx] to [param name].
 */
 func SetBusName(bus_idx int, name string) { //gd:AudioServer.set_bus_name
 	once.Do(singleton)
-	class(self).SetBusName(gd.Int(bus_idx), gd.NewString(name))
+	class(self).SetBusName(gd.Int(bus_idx), String.New(name))
 }
 
 /*
@@ -397,7 +399,7 @@ func OutputDevice() string {
 }
 
 func SetOutputDevice(value string) {
-	class(self).SetOutputDevice(gd.NewString(value))
+	class(self).SetOutputDevice(String.New(value))
 }
 
 func InputDevice() string {
@@ -405,7 +407,7 @@ func InputDevice() string {
 }
 
 func SetInputDevice(value string) {
-	class(self).SetInputDevice(gd.NewString(value))
+	class(self).SetInputDevice(String.New(value))
 }
 
 func PlaybackSpeedScale() Float.X {
@@ -476,10 +478,10 @@ func (self class) MoveBus(index gd.Int, to_index gd.Int) { //gd:AudioServer.move
 Sets the name of the bus at index [param bus_idx] to [param name].
 */
 //go:nosplit
-func (self class) SetBusName(bus_idx gd.Int, name gd.String) { //gd:AudioServer.set_bus_name
+func (self class) SetBusName(bus_idx gd.Int, name String.Readable) { //gd:AudioServer.set_bus_name
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -489,12 +491,12 @@ func (self class) SetBusName(bus_idx gd.Int, name gd.String) { //gd:AudioServer.
 Returns the name of the bus with the index [param bus_idx].
 */
 //go:nosplit
-func (self class) GetBusName(bus_idx gd.Int) gd.String { //gd:AudioServer.get_bus_name
+func (self class) GetBusName(bus_idx gd.Int) String.Readable { //gd:AudioServer.get_bus_name
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -889,19 +891,19 @@ func (self class) GetOutputDeviceList() gd.PackedStringArray { //gd:AudioServer.
 }
 
 //go:nosplit
-func (self class) GetOutputDevice() gd.String { //gd:AudioServer.get_output_device
+func (self class) GetOutputDevice() String.Readable { //gd:AudioServer.get_output_device
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_output_device, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetOutputDevice(name gd.String) { //gd:AudioServer.set_output_device
+func (self class) SetOutputDevice(name String.Readable) { //gd:AudioServer.set_output_device
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_output_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -962,19 +964,19 @@ func (self class) GetInputDeviceList() gd.PackedStringArray { //gd:AudioServer.g
 }
 
 //go:nosplit
-func (self class) GetInputDevice() gd.String { //gd:AudioServer.get_input_device
+func (self class) GetInputDevice() String.Readable { //gd:AudioServer.get_input_device
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_input_device, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetInputDevice(name gd.String) { //gd:AudioServer.set_input_device
+func (self class) SetInputDevice(name String.Readable) { //gd:AudioServer.set_input_device
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_input_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

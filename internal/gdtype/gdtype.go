@@ -69,6 +69,8 @@ func (name Name) ConvertToSimple(val string) string {
 			return "Dictionary.Nil"
 		}
 		return fmt.Sprintf("gd.DictionaryFromMap(%v)", val)
+	case "String.Readable":
+		return fmt.Sprintf("String.New(%v)", val)
 	case "gd.RID":
 		return fmt.Sprintf("gd.RID(%v)", val)
 	case "gd.String":
@@ -130,7 +132,7 @@ func (name Name) ConvertToGo(val string, simple string) string {
 		return fmt.Sprintf("gd.ArrayAs[%s](gd.InternalArray(%s))", simple, val)
 	}
 	switch name {
-	case "gd.String", "gd.StringName", "gd.NodePath":
+	case "gd.String", "gd.StringName", "gd.NodePath", "String.Readable":
 		return fmt.Sprintf("%v.String()", val)
 	case "gd.Error":
 		return fmt.Sprintf("gd.ToError(%v)", val)
@@ -165,6 +167,8 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 	switch name {
 	case "Array.Any":
 		return fmt.Sprintf("Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](%s)))", val)
+	case "String.Readable":
+		return fmt.Sprintf("String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](%s)))", val)
 	case "Dictionary.Any":
 		return fmt.Sprintf("Dictionary.Through(gd.DictionaryProxy[variant.Any,variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](%s)))", val)
 	case "[1]gd.Object":
@@ -196,6 +200,8 @@ func (name Name) EndPointer(val string) string {
 	switch name {
 	case "Array.Any":
 		return fmt.Sprintf("pointers.End(gd.InternalArray(%v))", val)
+	case "String.Readable":
+		return fmt.Sprintf("pointers.End(gd.InternalString(%v))", val)
 	case "Dictionary.Any":
 		return fmt.Sprintf("pointers.End(gd.InternalDictionary(%v))", val)
 	case "Callable.Function":
@@ -218,6 +224,8 @@ func (name Name) LoadOntoCallFrame(val string) string {
 	switch name {
 	case "Array.Any":
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalArray(%v)))\n", val)
+	case "String.Readable":
+		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalString(%v)))\n", val)
 	case "Dictionary.Any":
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalDictionary(%v)))\n", val)
 	case "Callable.Function":
@@ -242,7 +250,7 @@ func (name Name) IsPointer() (string, bool) {
 	}
 	switch t {
 	case "String", "StringName", "NodePath",
-		"Dictionary.Any", "Array.Any":
+		"Dictionary.Any", "Array.Any", "String.Readable":
 		return "[1]gd.EnginePointer", true
 	case "Signal":
 		return "[2]uint64", true

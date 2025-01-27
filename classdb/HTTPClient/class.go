@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Hyper-text transfer protocol client (sometimes called "User Agent"). Used to make HTTP requests to download web content, upload files and other data or to communicate with various services, among other use cases.
@@ -54,7 +56,7 @@ Connects to a host. This needs to be done before any requests are sent.
 If no [param port] is specified (or [code]-1[/code] is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional [param tls_options] parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) ConnectToHost(host string) error { //gd:HTTPClient.connect_to_host
-	return error(gd.ToError(class(self).ConnectToHost(gd.NewString(host), gd.Int(-1), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(class(self).ConnectToHost(String.New(host), gd.Int(-1), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*
@@ -64,7 +66,7 @@ Headers are HTTP request headers. For available HTTP methods, see [enum Method].
 Sends the body data raw, as a byte array and does not encode it in any way.
 */
 func (self Instance) RequestRaw(method gdclass.HTTPClientMethod, url string, headers []string, body []byte) error { //gd:HTTPClient.request_raw
-	return error(gd.ToError(class(self).RequestRaw(method, gd.NewString(url), gd.NewPackedStringSlice(headers), gd.NewPackedByteSlice(body))))
+	return error(gd.ToError(class(self).RequestRaw(method, String.New(url), gd.NewPackedStringSlice(headers), gd.NewPackedByteSlice(body))))
 }
 
 /*
@@ -89,7 +91,7 @@ var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", heade
 [b]Note:[/b] The [param body] parameter is ignored if [param method] is [constant HTTPClient.METHOD_GET]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [method String.uri_encode] for an example.
 */
 func (self Instance) Request(method gdclass.HTTPClientMethod, url string, headers []string) error { //gd:HTTPClient.request
-	return error(gd.ToError(class(self).Request(method, gd.NewString(url), gd.NewPackedStringSlice(headers), gd.NewString(""))))
+	return error(gd.ToError(class(self).Request(method, String.New(url), gd.NewPackedStringSlice(headers), String.New(""))))
 }
 
 /*
@@ -178,7 +180,7 @@ Sets the proxy server for HTTP requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Instance) SetHttpProxy(host string, port int) { //gd:HTTPClient.set_http_proxy
-	class(self).SetHttpProxy(gd.NewString(host), gd.Int(port))
+	class(self).SetHttpProxy(String.New(host), gd.Int(port))
 }
 
 /*
@@ -186,7 +188,7 @@ Sets the proxy server for HTTPS requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Instance) SetHttpsProxy(host string, port int) { //gd:HTTPClient.set_https_proxy
-	class(self).SetHttpsProxy(gd.NewString(host), gd.Int(port))
+	class(self).SetHttpsProxy(String.New(host), gd.Int(port))
 }
 
 /*
@@ -276,9 +278,9 @@ Connects to a host. This needs to be done before any requests are sent.
 If no [param port] is specified (or [code]-1[/code] is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional [param tls_options] parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 //go:nosplit
-func (self class) ConnectToHost(host gd.String, port gd.Int, tls_options [1]gdclass.TLSOptions) gd.Error { //gd:HTTPClient.connect_to_host
+func (self class) ConnectToHost(host String.Readable, port gd.Int, tls_options [1]gdclass.TLSOptions) gd.Error { //gd:HTTPClient.connect_to_host
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(host))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(tls_options[0])[0])
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -314,10 +316,10 @@ Headers are HTTP request headers. For available HTTP methods, see [enum Method].
 Sends the body data raw, as a byte array and does not encode it in any way.
 */
 //go:nosplit
-func (self class) RequestRaw(method gdclass.HTTPClientMethod, url gd.String, headers gd.PackedStringArray, body gd.PackedByteArray) gd.Error { //gd:HTTPClient.request_raw
+func (self class) RequestRaw(method gdclass.HTTPClientMethod, url String.Readable, headers gd.PackedStringArray, body gd.PackedByteArray) gd.Error { //gd:HTTPClient.request_raw
 	var frame = callframe.New()
 	callframe.Arg(frame, method)
-	callframe.Arg(frame, pointers.Get(url))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
 	callframe.Arg(frame, pointers.Get(headers))
 	callframe.Arg(frame, pointers.Get(body))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -349,12 +351,12 @@ var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", heade
 [b]Note:[/b] The [param body] parameter is ignored if [param method] is [constant HTTPClient.METHOD_GET]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [method String.uri_encode] for an example.
 */
 //go:nosplit
-func (self class) Request(method gdclass.HTTPClientMethod, url gd.String, headers gd.PackedStringArray, body gd.String) gd.Error { //gd:HTTPClient.request
+func (self class) Request(method gdclass.HTTPClientMethod, url String.Readable, headers gd.PackedStringArray, body String.Readable) gd.Error { //gd:HTTPClient.request
 	var frame = callframe.New()
 	callframe.Arg(frame, method)
-	callframe.Arg(frame, pointers.Get(url))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
 	callframe.Arg(frame, pointers.Get(headers))
-	callframe.Arg(frame, pointers.Get(body))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(body)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_request, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -542,9 +544,9 @@ Sets the proxy server for HTTP requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
-func (self class) SetHttpProxy(host gd.String, port gd.Int) { //gd:HTTPClient.set_http_proxy
+func (self class) SetHttpProxy(host String.Readable, port gd.Int) { //gd:HTTPClient.set_http_proxy
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(host))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, port)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_http_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -556,9 +558,9 @@ Sets the proxy server for HTTPS requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
-func (self class) SetHttpsProxy(host gd.String, port gd.Int) { //gd:HTTPClient.set_https_proxy
+func (self class) SetHttpsProxy(host String.Readable, port gd.Int) { //gd:HTTPClient.set_https_proxy
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(host))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, port)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_https_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -599,12 +601,12 @@ string queryString = httpClient.QueryStringFromDict(fields);
 [/codeblocks]
 */
 //go:nosplit
-func (self class) QueryStringFromDict(fields Dictionary.Any) gd.String { //gd:HTTPClient.query_string_from_dict
+func (self class) QueryStringFromDict(fields Dictionary.Any) String.Readable { //gd:HTTPClient.query_string_from_dict
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(fields)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_query_string_from_dict, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

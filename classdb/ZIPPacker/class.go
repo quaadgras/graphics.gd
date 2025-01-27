@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This class implements a writer that allows storing the multiple blobs in a zip archive.
@@ -60,7 +62,7 @@ Opens a zip file for writing at the given path using the specified write mode.
 This must be called before everything else.
 */
 func (self Instance) Open(path string) error { //gd:ZIPPacker.open
-	return error(gd.ToError(class(self).Open(gd.NewString(path), 0)))
+	return error(gd.ToError(class(self).Open(String.New(path), 0)))
 }
 
 /*
@@ -68,7 +70,7 @@ Starts writing to a file within the archive. Only one file can be written at the
 Must be called after [method open].
 */
 func (self Instance) StartFile(path string) error { //gd:ZIPPacker.start_file
-	return error(gd.ToError(class(self).StartFile(gd.NewString(path))))
+	return error(gd.ToError(class(self).StartFile(String.New(path))))
 }
 
 /*
@@ -118,9 +120,9 @@ Opens a zip file for writing at the given path using the specified write mode.
 This must be called before everything else.
 */
 //go:nosplit
-func (self class) Open(path gd.String, append gdclass.ZIPPackerZipAppend) gd.Error { //gd:ZIPPacker.open
+func (self class) Open(path String.Readable, append gdclass.ZIPPackerZipAppend) gd.Error { //gd:ZIPPacker.open
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, append)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPPacker.Bind_open, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -134,9 +136,9 @@ Starts writing to a file within the archive. Only one file can be written at the
 Must be called after [method open].
 */
 //go:nosplit
-func (self class) StartFile(path gd.String) gd.Error { //gd:ZIPPacker.start_file
+func (self class) StartFile(path String.Readable) gd.Error { //gd:ZIPPacker.start_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPPacker.Bind_start_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

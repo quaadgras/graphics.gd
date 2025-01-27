@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Color"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A TileSet is a library of tiles for a [TileMap]. A TileSet handles a list of [TileSetSource], each of them storing a set of tiles.
@@ -308,7 +310,7 @@ func (self Instance) RemoveTerrain(terrain_set int, terrain_index int) { //gd:Ti
 Sets a terrain's name.
 */
 func (self Instance) SetTerrainName(terrain_set int, terrain_index int, name string) { //gd:TileSet.set_terrain_name
-	class(self).SetTerrainName(gd.Int(terrain_set), gd.Int(terrain_index), gd.NewString(name))
+	class(self).SetTerrainName(gd.Int(terrain_set), gd.Int(terrain_index), String.New(name))
 }
 
 /*
@@ -422,14 +424,14 @@ func (self Instance) RemoveCustomDataLayer(layer_index int) { //gd:TileSet.remov
 Returns the index of the custom data layer identified by the given name.
 */
 func (self Instance) GetCustomDataLayerByName(layer_name string) int { //gd:TileSet.get_custom_data_layer_by_name
-	return int(int(class(self).GetCustomDataLayerByName(gd.NewString(layer_name))))
+	return int(int(class(self).GetCustomDataLayerByName(String.New(layer_name))))
 }
 
 /*
 Sets the name of the custom data layer identified by the given index. Names are identifiers of the layer therefore if the name is already taken it will fail and raise an error.
 */
 func (self Instance) SetCustomDataLayerName(layer_index int, layer_name string) { //gd:TileSet.set_custom_data_layer_name
-	class(self).SetCustomDataLayerName(gd.Int(layer_index), gd.NewString(layer_name))
+	class(self).SetCustomDataLayerName(gd.Int(layer_index), String.New(layer_name))
 }
 
 /*
@@ -1233,11 +1235,11 @@ func (self class) RemoveTerrain(terrain_set gd.Int, terrain_index gd.Int) { //gd
 Sets a terrain's name.
 */
 //go:nosplit
-func (self class) SetTerrainName(terrain_set gd.Int, terrain_index gd.Int, name gd.String) { //gd:TileSet.set_terrain_name
+func (self class) SetTerrainName(terrain_set gd.Int, terrain_index gd.Int, name String.Readable) { //gd:TileSet.set_terrain_name
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain_index)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_terrain_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1247,13 +1249,13 @@ func (self class) SetTerrainName(terrain_set gd.Int, terrain_index gd.Int, name 
 Returns a terrain's name.
 */
 //go:nosplit
-func (self class) GetTerrainName(terrain_set gd.Int, terrain_index gd.Int) gd.String { //gd:TileSet.get_terrain_name
+func (self class) GetTerrainName(terrain_set gd.Int, terrain_index gd.Int) String.Readable { //gd:TileSet.get_terrain_name
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_terrain_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1449,9 +1451,9 @@ func (self class) RemoveCustomDataLayer(layer_index gd.Int) { //gd:TileSet.remov
 Returns the index of the custom data layer identified by the given name.
 */
 //go:nosplit
-func (self class) GetCustomDataLayerByName(layer_name gd.String) gd.Int { //gd:TileSet.get_custom_data_layer_by_name
+func (self class) GetCustomDataLayerByName(layer_name String.Readable) gd.Int { //gd:TileSet.get_custom_data_layer_by_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(layer_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(layer_name)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_custom_data_layer_by_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1463,10 +1465,10 @@ func (self class) GetCustomDataLayerByName(layer_name gd.String) gd.Int { //gd:T
 Sets the name of the custom data layer identified by the given index. Names are identifiers of the layer therefore if the name is already taken it will fail and raise an error.
 */
 //go:nosplit
-func (self class) SetCustomDataLayerName(layer_index gd.Int, layer_name gd.String) { //gd:TileSet.set_custom_data_layer_name
+func (self class) SetCustomDataLayerName(layer_index gd.Int, layer_name String.Readable) { //gd:TileSet.set_custom_data_layer_name
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
-	callframe.Arg(frame, pointers.Get(layer_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(layer_name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_custom_data_layer_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1476,12 +1478,12 @@ func (self class) SetCustomDataLayerName(layer_index gd.Int, layer_name gd.Strin
 Returns the name of the custom data layer identified by the given index.
 */
 //go:nosplit
-func (self class) GetCustomDataLayerName(layer_index gd.Int) gd.String { //gd:TileSet.get_custom_data_layer_name
+func (self class) GetCustomDataLayerName(layer_index gd.Int) String.Readable { //gd:TileSet.get_custom_data_layer_name
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_custom_data_layer_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

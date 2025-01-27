@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 StreamPeer is an abstract base class mostly used for stream-based protocols (such as TCP). It provides an API for sending and receiving data through streams as raw data or strings.
@@ -160,7 +162,7 @@ PutData("Hello World".ToAsciiBuffer());
 [/codeblocks]
 */
 func (self Instance) PutString(value string) { //gd:StreamPeer.put_string
-	class(self).PutString(gd.NewString(value))
+	class(self).PutString(String.New(value))
 }
 
 /*
@@ -176,7 +178,7 @@ PutData("Hello World".ToUtf8Buffer());
 [/codeblocks]
 */
 func (self Instance) PutUtf8String(value string) { //gd:StreamPeer.put_utf8_string
-	class(self).PutUtf8String(gd.NewString(value))
+	class(self).PutUtf8String(String.New(value))
 }
 
 /*
@@ -528,9 +530,9 @@ PutData("Hello World".ToAsciiBuffer());
 [/codeblocks]
 */
 //go:nosplit
-func (self class) PutString(value gd.String) { //gd:StreamPeer.put_string
+func (self class) PutString(value String.Readable) { //gd:StreamPeer.put_string
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_put_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -549,9 +551,9 @@ PutData("Hello World".ToUtf8Buffer());
 [/codeblocks]
 */
 //go:nosplit
-func (self class) PutUtf8String(value gd.String) { //gd:StreamPeer.put_utf8_string
+func (self class) PutUtf8String(value String.Readable) { //gd:StreamPeer.put_utf8_string
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_put_utf8_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -705,12 +707,12 @@ func (self class) GetDouble() gd.Float { //gd:StreamPeer.get_double
 Gets an ASCII string with byte-length [param bytes] from the stream. If [param bytes] is negative (default) the length will be read from the stream using the reverse process of [method put_string].
 */
 //go:nosplit
-func (self class) GetString(bytes gd.Int) gd.String { //gd:StreamPeer.get_string
+func (self class) GetString(bytes gd.Int) String.Readable { //gd:StreamPeer.get_string
 	var frame = callframe.New()
 	callframe.Arg(frame, bytes)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -719,12 +721,12 @@ func (self class) GetString(bytes gd.Int) gd.String { //gd:StreamPeer.get_string
 Gets a UTF-8 string with byte-length [param bytes] from the stream (this decodes the string sent as UTF-8). If [param bytes] is negative (default) the length will be read from the stream using the reverse process of [method put_utf8_string].
 */
 //go:nosplit
-func (self class) GetUtf8String(bytes gd.Int) gd.String { //gd:StreamPeer.get_utf8_string
+func (self class) GetUtf8String(bytes gd.Int) String.Readable { //gd:StreamPeer.get_utf8_string
 	var frame = callframe.New()
 	callframe.Arg(frame, bytes)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_utf8_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

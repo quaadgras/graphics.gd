@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A simple server that opens a UDP socket and returns connected [PacketPeerUDP] upon receiving new packets. See also [method PacketPeerUDP.connect_to_host].
@@ -170,7 +172,7 @@ type Any interface {
 Starts the server by opening a UDP socket listening on the given [param port]. You can optionally specify a [param bind_address] to only listen for packets sent to that address. See also [method PacketPeerUDP.bind].
 */
 func (self Instance) Listen(port int) error { //gd:UDPServer.listen
-	return error(gd.ToError(class(self).Listen(gd.Int(port), gd.NewString("*"))))
+	return error(gd.ToError(class(self).Listen(gd.Int(port), String.New("*"))))
 }
 
 /*
@@ -246,10 +248,10 @@ func (self Instance) SetMaxPendingConnections(value int) {
 Starts the server by opening a UDP socket listening on the given [param port]. You can optionally specify a [param bind_address] to only listen for packets sent to that address. See also [method PacketPeerUDP.bind].
 */
 //go:nosplit
-func (self class) Listen(port gd.Int, bind_address gd.String) gd.Error { //gd:UDPServer.listen
+func (self class) Listen(port gd.Int, bind_address String.Readable) gd.Error { //gd:UDPServer.listen
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
-	callframe.Arg(frame, pointers.Get(bind_address))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bind_address)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_listen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

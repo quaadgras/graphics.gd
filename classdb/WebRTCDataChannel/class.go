@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/PacketPeer"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 type Instance [1]gdclass.WebRTCDataChannel
 
@@ -225,11 +227,11 @@ func (self class) GetReadyState() gdclass.WebRTCDataChannelChannelState { //gd:W
 Returns the label assigned to this channel during creation.
 */
 //go:nosplit
-func (self class) GetLabel() gd.String { //gd:WebRTCDataChannel.get_label
+func (self class) GetLabel() String.Readable { //gd:WebRTCDataChannel.get_label
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_get_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -293,11 +295,11 @@ func (self class) GetMaxRetransmits() gd.Int { //gd:WebRTCDataChannel.get_max_re
 Returns the sub-protocol assigned to this channel during creation. An empty string if not specified.
 */
 //go:nosplit
-func (self class) GetProtocol() gd.String { //gd:WebRTCDataChannel.get_protocol
+func (self class) GetProtocol() String.Readable { //gd:WebRTCDataChannel.get_protocol
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_get_protocol, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

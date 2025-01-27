@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Range"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This [Control] node is used in the editor's Inspector dock to allow editing of numeric values. Can be used with [EditorInspectorPlugin] to recreate the same behavior.
@@ -68,7 +70,7 @@ func (self Instance) Label() string {
 }
 
 func (self Instance) SetLabel(value string) {
-	class(self).SetLabel(gd.NewString(value))
+	class(self).SetLabel(String.New(value))
 }
 
 func (self Instance) Suffix() string {
@@ -76,7 +78,7 @@ func (self Instance) Suffix() string {
 }
 
 func (self Instance) SetSuffix(value string) {
-	class(self).SetSuffix(gd.NewString(value))
+	class(self).SetSuffix(String.New(value))
 }
 
 func (self Instance) ReadOnly() bool {
@@ -104,39 +106,39 @@ func (self Instance) SetHideSlider(value bool) {
 }
 
 //go:nosplit
-func (self class) SetLabel(label gd.String) { //gd:EditorSpinSlider.set_label
+func (self class) SetLabel(label String.Readable) { //gd:EditorSpinSlider.set_label
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_set_label, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetLabel() gd.String { //gd:EditorSpinSlider.get_label
+func (self class) GetLabel() String.Readable { //gd:EditorSpinSlider.get_label
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_get_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetSuffix(suffix gd.String) { //gd:EditorSpinSlider.set_suffix
+func (self class) SetSuffix(suffix String.Readable) { //gd:EditorSpinSlider.set_suffix
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(suffix))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(suffix)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_set_suffix, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSuffix() gd.String { //gd:EditorSpinSlider.get_suffix
+func (self class) GetSuffix() String.Readable { //gd:EditorSpinSlider.get_suffix
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_get_suffix, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

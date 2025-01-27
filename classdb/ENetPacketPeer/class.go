@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/PacketPeer"
 import "graphics.gd/variant/Float"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A PacketPeer implementation representing a peer of an [ENetConnection].
@@ -296,11 +298,11 @@ func (self class) SetTimeout(timeout gd.Int, timeout_min gd.Int, timeout_max gd.
 Returns the IP address of this peer.
 */
 //go:nosplit
-func (self class) GetRemoteAddress() gd.String { //gd:ENetPacketPeer.get_remote_address
+func (self class) GetRemoteAddress() String.Readable { //gd:ENetPacketPeer.get_remote_address
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_remote_address, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

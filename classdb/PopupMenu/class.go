@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Popup"
 import "graphics.gd/classdb/Window"
 import "graphics.gd/classdb/Viewport"
@@ -32,6 +33,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [PopupMenu] is a modal window used to display a list of options. Useful for toolbars and context menus.
@@ -72,7 +74,7 @@ An [param id] can optionally be provided, as well as an accelerator ([param acce
 [b]Note:[/b] The provided [param id] is used only in [signal id_pressed] and [signal id_focused] signals. It's not related to the [code]index[/code] arguments in e.g. [method set_item_checked].
 */
 func (self Instance) AddItem(label string) { //gd:PopupMenu.add_item
-	class(self).AddItem(gd.NewString(label), gd.Int(-1), 0)
+	class(self).AddItem(String.New(label), gd.Int(-1), 0)
 }
 
 /*
@@ -80,7 +82,7 @@ Adds a new item with text [param label] and icon [param texture].
 An [param id] can optionally be provided, as well as an accelerator ([param accel]). If no [param id] is provided, one will be created from the index. If no [param accel] is provided, then the default value of 0 (corresponding to [constant @GlobalScope.KEY_NONE]) will be assigned to the item (which means it won't have any accelerator). See [method get_item_accelerator] for more info on accelerators.
 */
 func (self Instance) AddIconItem(texture [1]gdclass.Texture2D, label string) { //gd:PopupMenu.add_icon_item
-	class(self).AddIconItem(texture, gd.NewString(label), gd.Int(-1), 0)
+	class(self).AddIconItem(texture, String.New(label), gd.Int(-1), 0)
 }
 
 /*
@@ -89,7 +91,7 @@ An [param id] can optionally be provided, as well as an accelerator ([param acce
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
 func (self Instance) AddCheckItem(label string) { //gd:PopupMenu.add_check_item
-	class(self).AddCheckItem(gd.NewString(label), gd.Int(-1), 0)
+	class(self).AddCheckItem(String.New(label), gd.Int(-1), 0)
 }
 
 /*
@@ -98,7 +100,7 @@ An [param id] can optionally be provided, as well as an accelerator ([param acce
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
 func (self Instance) AddIconCheckItem(texture [1]gdclass.Texture2D, label string) { //gd:PopupMenu.add_icon_check_item
-	class(self).AddIconCheckItem(texture, gd.NewString(label), gd.Int(-1), 0)
+	class(self).AddIconCheckItem(texture, String.New(label), gd.Int(-1), 0)
 }
 
 /*
@@ -107,14 +109,14 @@ An [param id] can optionally be provided, as well as an accelerator ([param acce
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
 func (self Instance) AddRadioCheckItem(label string) { //gd:PopupMenu.add_radio_check_item
-	class(self).AddRadioCheckItem(gd.NewString(label), gd.Int(-1), 0)
+	class(self).AddRadioCheckItem(String.New(label), gd.Int(-1), 0)
 }
 
 /*
 Same as [method add_icon_check_item], but uses a radio check button.
 */
 func (self Instance) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label string) { //gd:PopupMenu.add_icon_radio_check_item
-	class(self).AddIconRadioCheckItem(texture, gd.NewString(label), gd.Int(-1), 0)
+	class(self).AddIconRadioCheckItem(texture, String.New(label), gd.Int(-1), 0)
 }
 
 /*
@@ -142,7 +144,7 @@ func _ready():
 [/codeblock]
 */
 func (self Instance) AddMultistateItem(label string, max_states int) { //gd:PopupMenu.add_multistate_item
-	class(self).AddMultistateItem(gd.NewString(label), gd.Int(max_states), gd.Int(0), gd.Int(-1), 0)
+	class(self).AddMultistateItem(String.New(label), gd.Int(max_states), gd.Int(0), gd.Int(-1), 0)
 }
 
 /*
@@ -202,7 +204,7 @@ Adds an item that will act as a submenu of the parent [PopupMenu] node when clic
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 */
 func (self Instance) AddSubmenuItem(label string, submenu string) { //gd:PopupMenu.add_submenu_item
-	class(self).AddSubmenuItem(gd.NewString(label), gd.NewString(submenu), gd.Int(-1))
+	class(self).AddSubmenuItem(String.New(label), String.New(submenu), gd.Int(-1))
 }
 
 /*
@@ -211,14 +213,14 @@ Adds an item that will act as a submenu of the parent [PopupMenu] node when clic
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 */
 func (self Instance) AddSubmenuNodeItem(label string, submenu [1]gdclass.PopupMenu) { //gd:PopupMenu.add_submenu_node_item
-	class(self).AddSubmenuNodeItem(gd.NewString(label), submenu, gd.Int(-1))
+	class(self).AddSubmenuNodeItem(String.New(label), submenu, gd.Int(-1))
 }
 
 /*
 Sets the text of the item at the given [param index].
 */
 func (self Instance) SetItemText(index int, text string) { //gd:PopupMenu.set_item_text
-	class(self).SetItemText(gd.Int(index), gd.NewString(text))
+	class(self).SetItemText(gd.Int(index), String.New(text))
 }
 
 /*
@@ -232,7 +234,7 @@ func (self Instance) SetItemTextDirection(index int, direction gdclass.ControlTe
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 func (self Instance) SetItemLanguage(index int, language string) { //gd:PopupMenu.set_item_language
-	class(self).SetItemLanguage(gd.Int(index), gd.NewString(language))
+	class(self).SetItemLanguage(gd.Int(index), String.New(language))
 }
 
 /*
@@ -296,7 +298,7 @@ func (self Instance) SetItemDisabled(index int, disabled bool) { //gd:PopupMenu.
 Sets the submenu of the item at the given [param index]. The submenu is the name of a child [PopupMenu] node that would be shown when the item is clicked.
 */
 func (self Instance) SetItemSubmenu(index int, submenu string) { //gd:PopupMenu.set_item_submenu
-	class(self).SetItemSubmenu(gd.Int(index), gd.NewString(submenu))
+	class(self).SetItemSubmenu(gd.Int(index), String.New(submenu))
 }
 
 /*
@@ -332,7 +334,7 @@ func (self Instance) SetItemAsRadioCheckable(index int, enable bool) { //gd:Popu
 Sets the [String] tooltip of the item at the given [param index].
 */
 func (self Instance) SetItemTooltip(index int, tooltip string) { //gd:PopupMenu.set_item_tooltip
-	class(self).SetItemTooltip(gd.Int(index), gd.NewString(tooltip))
+	class(self).SetItemTooltip(gd.Int(index), String.New(tooltip))
 }
 
 /*
@@ -583,7 +585,7 @@ Adds a separator between items. Separators also occupy an index, which you can s
 A [param label] can optionally be provided, which will appear at the center of the separator.
 */
 func (self Instance) AddSeparator() { //gd:PopupMenu.add_separator
-	class(self).AddSeparator(gd.NewString(""), gd.Int(-1))
+	class(self).AddSeparator(String.New(""), gd.Int(-1))
 }
 
 /*
@@ -737,9 +739,9 @@ An [param id] can optionally be provided, as well as an accelerator ([param acce
 [b]Note:[/b] The provided [param id] is used only in [signal id_pressed] and [signal id_focused] signals. It's not related to the [code]index[/code] arguments in e.g. [method set_item_checked].
 */
 //go:nosplit
-func (self class) AddItem(label gd.String, id gd.Int, accel Key) { //gd:PopupMenu.add_item
+func (self class) AddItem(label String.Readable, id gd.Int, accel Key) { //gd:PopupMenu.add_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, accel)
 	var r_ret = callframe.Nil
@@ -752,10 +754,10 @@ Adds a new item with text [param label] and icon [param texture].
 An [param id] can optionally be provided, as well as an accelerator ([param accel]). If no [param id] is provided, one will be created from the index. If no [param accel] is provided, then the default value of 0 (corresponding to [constant @GlobalScope.KEY_NONE]) will be assigned to the item (which means it won't have any accelerator). See [method get_item_accelerator] for more info on accelerators.
 */
 //go:nosplit
-func (self class) AddIconItem(texture [1]gdclass.Texture2D, label gd.String, id gd.Int, accel Key) { //gd:PopupMenu.add_icon_item
+func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readable, id gd.Int, accel Key) { //gd:PopupMenu.add_icon_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, accel)
 	var r_ret = callframe.Nil
@@ -769,9 +771,9 @@ An [param id] can optionally be provided, as well as an accelerator ([param acce
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
 //go:nosplit
-func (self class) AddCheckItem(label gd.String, id gd.Int, accel Key) { //gd:PopupMenu.add_check_item
+func (self class) AddCheckItem(label String.Readable, id gd.Int, accel Key) { //gd:PopupMenu.add_check_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, accel)
 	var r_ret = callframe.Nil
@@ -785,10 +787,10 @@ An [param id] can optionally be provided, as well as an accelerator ([param acce
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
 //go:nosplit
-func (self class) AddIconCheckItem(texture [1]gdclass.Texture2D, label gd.String, id gd.Int, accel Key) { //gd:PopupMenu.add_icon_check_item
+func (self class) AddIconCheckItem(texture [1]gdclass.Texture2D, label String.Readable, id gd.Int, accel Key) { //gd:PopupMenu.add_icon_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, accel)
 	var r_ret = callframe.Nil
@@ -802,9 +804,9 @@ An [param id] can optionally be provided, as well as an accelerator ([param acce
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
 //go:nosplit
-func (self class) AddRadioCheckItem(label gd.String, id gd.Int, accel Key) { //gd:PopupMenu.add_radio_check_item
+func (self class) AddRadioCheckItem(label String.Readable, id gd.Int, accel Key) { //gd:PopupMenu.add_radio_check_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, accel)
 	var r_ret = callframe.Nil
@@ -816,10 +818,10 @@ func (self class) AddRadioCheckItem(label gd.String, id gd.Int, accel Key) { //g
 Same as [method add_icon_check_item], but uses a radio check button.
 */
 //go:nosplit
-func (self class) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label gd.String, id gd.Int, accel Key) { //gd:PopupMenu.add_icon_radio_check_item
+func (self class) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label String.Readable, id gd.Int, accel Key) { //gd:PopupMenu.add_icon_radio_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, accel)
 	var r_ret = callframe.Nil
@@ -850,9 +852,9 @@ func _ready():
 [/codeblock]
 */
 //go:nosplit
-func (self class) AddMultistateItem(label gd.String, max_states gd.Int, default_state gd.Int, id gd.Int, accel Key) { //gd:PopupMenu.add_multistate_item
+func (self class) AddMultistateItem(label String.Readable, max_states gd.Int, default_state gd.Int, id gd.Int, accel Key) { //gd:PopupMenu.add_multistate_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, max_states)
 	callframe.Arg(frame, default_state)
 	callframe.Arg(frame, id)
@@ -966,10 +968,10 @@ Adds an item that will act as a submenu of the parent [PopupMenu] node when clic
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 */
 //go:nosplit
-func (self class) AddSubmenuItem(label gd.String, submenu gd.String, id gd.Int) { //gd:PopupMenu.add_submenu_item
+func (self class) AddSubmenuItem(label String.Readable, submenu String.Readable, id gd.Int) { //gd:PopupMenu.add_submenu_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(submenu))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(submenu)))
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_add_submenu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -982,9 +984,9 @@ Adds an item that will act as a submenu of the parent [PopupMenu] node when clic
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 */
 //go:nosplit
-func (self class) AddSubmenuNodeItem(label gd.String, submenu [1]gdclass.PopupMenu, id gd.Int) { //gd:PopupMenu.add_submenu_node_item
+func (self class) AddSubmenuNodeItem(label String.Readable, submenu [1]gdclass.PopupMenu, id gd.Int) { //gd:PopupMenu.add_submenu_node_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()[0]))
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
@@ -996,10 +998,10 @@ func (self class) AddSubmenuNodeItem(label gd.String, submenu [1]gdclass.PopupMe
 Sets the text of the item at the given [param index].
 */
 //go:nosplit
-func (self class) SetItemText(index gd.Int, text gd.String) { //gd:PopupMenu.set_item_text
+func (self class) SetItemText(index gd.Int, text String.Readable) { //gd:PopupMenu.set_item_text
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_set_item_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1022,10 +1024,10 @@ func (self class) SetItemTextDirection(index gd.Int, direction gdclass.ControlTe
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 //go:nosplit
-func (self class) SetItemLanguage(index gd.Int, language gd.String) { //gd:PopupMenu.set_item_language
+func (self class) SetItemLanguage(index gd.Int, language String.Readable) { //gd:PopupMenu.set_item_language
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_set_item_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1140,10 +1142,10 @@ func (self class) SetItemDisabled(index gd.Int, disabled bool) { //gd:PopupMenu.
 Sets the submenu of the item at the given [param index]. The submenu is the name of a child [PopupMenu] node that would be shown when the item is clicked.
 */
 //go:nosplit
-func (self class) SetItemSubmenu(index gd.Int, submenu gd.String) { //gd:PopupMenu.set_item_submenu
+func (self class) SetItemSubmenu(index gd.Int, submenu String.Readable) { //gd:PopupMenu.set_item_submenu
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	callframe.Arg(frame, pointers.Get(submenu))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(submenu)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_set_item_submenu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1206,10 +1208,10 @@ func (self class) SetItemAsRadioCheckable(index gd.Int, enable bool) { //gd:Popu
 Sets the [String] tooltip of the item at the given [param index].
 */
 //go:nosplit
-func (self class) SetItemTooltip(index gd.Int, tooltip gd.String) { //gd:PopupMenu.set_item_tooltip
+func (self class) SetItemTooltip(index gd.Int, tooltip String.Readable) { //gd:PopupMenu.set_item_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	callframe.Arg(frame, pointers.Get(tooltip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_set_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1309,12 +1311,12 @@ func (self class) ToggleItemMultistate(index gd.Int) { //gd:PopupMenu.toggle_ite
 Returns the text of the item at the given [param index].
 */
 //go:nosplit
-func (self class) GetItemText(index gd.Int) gd.String { //gd:PopupMenu.get_item_text
+func (self class) GetItemText(index gd.Int) String.Readable { //gd:PopupMenu.get_item_text
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_get_item_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1337,12 +1339,12 @@ func (self class) GetItemTextDirection(index gd.Int) gdclass.ControlTextDirectio
 Returns item's text language code.
 */
 //go:nosplit
-func (self class) GetItemLanguage(index gd.Int) gd.String { //gd:PopupMenu.get_item_language
+func (self class) GetItemLanguage(index gd.Int) String.Readable { //gd:PopupMenu.get_item_language
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_get_item_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1478,12 +1480,12 @@ func (self class) IsItemDisabled(index gd.Int) bool { //gd:PopupMenu.is_item_dis
 Returns the submenu name of the item at the given [param index]. See [method add_submenu_item] for more info on how to add a submenu.
 */
 //go:nosplit
-func (self class) GetItemSubmenu(index gd.Int) gd.String { //gd:PopupMenu.get_item_submenu
+func (self class) GetItemSubmenu(index gd.Int) String.Readable { //gd:PopupMenu.get_item_submenu
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_get_item_submenu, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1564,12 +1566,12 @@ func (self class) IsItemShortcutDisabled(index gd.Int) bool { //gd:PopupMenu.is_
 Returns the tooltip associated with the item at the given [param index].
 */
 //go:nosplit
-func (self class) GetItemTooltip(index gd.Int) gd.String { //gd:PopupMenu.get_item_tooltip
+func (self class) GetItemTooltip(index gd.Int) String.Readable { //gd:PopupMenu.get_item_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_get_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1705,9 +1707,9 @@ Adds a separator between items. Separators also occupy an index, which you can s
 A [param label] can optionally be provided, which will appear at the center of the separator.
 */
 //go:nosplit
-func (self class) AddSeparator(label gd.String, id gd.Int) { //gd:PopupMenu.add_separator
+func (self class) AddSeparator(label String.Readable, id gd.Int) { //gd:PopupMenu.add_separator
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_add_separator, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/XRTracker"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 An instance of this object represents a device that is tracked, such as a controller or anchor point. HMDs aren't represented here as they are handled internally.
@@ -113,7 +115,7 @@ func (self Instance) Profile() string {
 }
 
 func (self Instance) SetProfile(value string) {
-	class(self).SetTrackerProfile(gd.NewString(value))
+	class(self).SetTrackerProfile(String.New(value))
 }
 
 func (self Instance) Hand() gdclass.XRPositionalTrackerTrackerHand {
@@ -125,19 +127,19 @@ func (self Instance) SetHand(value gdclass.XRPositionalTrackerTrackerHand) {
 }
 
 //go:nosplit
-func (self class) GetTrackerProfile() gd.String { //gd:XRPositionalTracker.get_tracker_profile
+func (self class) GetTrackerProfile() String.Readable { //gd:XRPositionalTracker.get_tracker_profile
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetTrackerProfile(profile gd.String) { //gd:XRPositionalTracker.set_tracker_profile
+func (self class) SetTrackerProfile(profile String.Readable) { //gd:XRPositionalTracker.set_tracker_profile
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(profile))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(profile)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_tracker_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

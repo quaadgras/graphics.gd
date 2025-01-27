@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Shader"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This class provides a graph-like visual editor for creating a [Shader]. Although [VisualShader]s do not require coding, they share the same logic with script shaders. They use [VisualShaderNode]s that can be connected to each other to control the flow of the shader. The visual shader graph is converted to a script shader behind the scenes.
@@ -166,21 +168,21 @@ func (self Instance) DetachNodeFromFrame(atype gdclass.VisualShaderType, id int)
 Adds a new varying value node to the shader.
 */
 func (self Instance) AddVarying(name string, mode gdclass.VisualShaderVaryingMode, atype gdclass.VisualShaderVaryingType) { //gd:VisualShader.add_varying
-	class(self).AddVarying(gd.NewString(name), mode, atype)
+	class(self).AddVarying(String.New(name), mode, atype)
 }
 
 /*
 Removes a varying value node with the given [param name]. Prints an error if a node with this name is not found.
 */
 func (self Instance) RemoveVarying(name string) { //gd:VisualShader.remove_varying
-	class(self).RemoveVarying(gd.NewString(name))
+	class(self).RemoveVarying(String.New(name))
 }
 
 /*
 Returns [code]true[/code] if the shader has a varying with the given [param name].
 */
 func (self Instance) HasVarying(name string) bool { //gd:VisualShader.has_varying
-	return bool(class(self).HasVarying(gd.NewString(name)))
+	return bool(class(self).HasVarying(String.New(name)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -486,9 +488,9 @@ func (self class) DetachNodeFromFrame(atype gdclass.VisualShaderType, id gd.Int)
 Adds a new varying value node to the shader.
 */
 //go:nosplit
-func (self class) AddVarying(name gd.String, mode gdclass.VisualShaderVaryingMode, atype gdclass.VisualShaderVaryingType) { //gd:VisualShader.add_varying
+func (self class) AddVarying(name String.Readable, mode gdclass.VisualShaderVaryingMode, atype gdclass.VisualShaderVaryingType) { //gd:VisualShader.add_varying
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -500,9 +502,9 @@ func (self class) AddVarying(name gd.String, mode gdclass.VisualShaderVaryingMod
 Removes a varying value node with the given [param name]. Prints an error if a node with this name is not found.
 */
 //go:nosplit
-func (self class) RemoveVarying(name gd.String) { //gd:VisualShader.remove_varying
+func (self class) RemoveVarying(name String.Readable) { //gd:VisualShader.remove_varying
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShader.Bind_remove_varying, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -512,9 +514,9 @@ func (self class) RemoveVarying(name gd.String) { //gd:VisualShader.remove_varyi
 Returns [code]true[/code] if the shader has a varying with the given [param name].
 */
 //go:nosplit
-func (self class) HasVarying(name gd.String) bool { //gd:VisualShader.has_varying
+func (self class) HasVarying(name String.Readable) bool { //gd:VisualShader.has_varying
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShader.Bind_has_varying, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/NodePath"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Nodes are Godot's building blocks. They can be assigned as the child of another node, resulting in a tree arrangement. A given node can contain any number of nodes as children with the requirement that all siblings (direct children of a node) should have unique names.
@@ -472,7 +474,7 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] To find all descendant nodes matching a pattern or a class type, see [method find_children].
 */
 func (self Instance) FindChild(pattern string) [1]gdclass.Node { //gd:Node.find_child
-	return [1]gdclass.Node(class(self).FindChild(gd.NewString(pattern), true, true))
+	return [1]gdclass.Node(class(self).FindChild(String.New(pattern), true, true))
 }
 
 /*
@@ -484,7 +486,7 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] To find a single descendant node matching a pattern, see [method find_child].
 */
 func (self Instance) FindChildren(pattern string) [][1]gdclass.Node { //gd:Node.find_children
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).FindChildren(gd.NewString(pattern), gd.NewString(""), true, true))))
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).FindChildren(String.New(pattern), String.New(""), true, true))))
 }
 
 /*
@@ -492,7 +494,7 @@ Finds the first ancestor of this node whose [member name] matches [param pattern
 [b]Note:[/b] As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [method get_node] with unique names (see [member unique_name_in_owner]).
 */
 func (self Instance) FindParent(pattern string) [1]gdclass.Node { //gd:Node.find_parent
-	return [1]gdclass.Node(class(self).FindParent(gd.NewString(pattern)))
+	return [1]gdclass.Node(class(self).FindParent(String.New(pattern)))
 }
 
 /*
@@ -1092,7 +1094,7 @@ If [method Object.can_translate_messages] is [code]false[/code], or no translati
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
 */
 func (self Instance) Atr(message string) string { //gd:Node.atr
-	return string(class(self).Atr(gd.NewString(message), gd.NewStringName("")).String())
+	return string(class(self).Atr(String.New(message), gd.NewStringName("")).String())
 }
 
 /*
@@ -1104,7 +1106,7 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 [b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [method atr].
 */
 func (self Instance) AtrN(message string, plural_message string, n int) string { //gd:Node.atr_n
-	return string(class(self).AtrN(gd.NewString(message), gd.NewStringName(plural_message), gd.Int(n), gd.NewStringName("")).String())
+	return string(class(self).AtrN(String.New(message), gd.NewStringName(plural_message), gd.Int(n), gd.NewStringName("")).String())
 }
 
 /*
@@ -1165,7 +1167,7 @@ func (self Instance) Name() string {
 }
 
 func (self Instance) SetName(value string) {
-	class(self).SetName(gd.NewString(value))
+	class(self).SetName(String.New(value))
 }
 
 func (self Instance) UniqueNameInOwner() bool {
@@ -1181,7 +1183,7 @@ func (self Instance) SceneFilePath() string {
 }
 
 func (self Instance) SetSceneFilePath(value string) {
-	class(self).SetSceneFilePath(gd.NewString(value))
+	class(self).SetSceneFilePath(String.New(value))
 }
 
 func (self Instance) Owner() [1]gdclass.Node {
@@ -1265,7 +1267,7 @@ func (self Instance) EditorDescription() string {
 }
 
 func (self Instance) SetEditorDescription(value string) {
-	class(self).SetEditorDescription(gd.NewString(value))
+	class(self).SetEditorDescription(String.New(value))
 }
 
 /*
@@ -1464,9 +1466,9 @@ func (self class) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) 
 }
 
 //go:nosplit
-func (self class) SetName(name gd.String) { //gd:Node.set_name
+func (self class) SetName(name String.Readable) { //gd:Node.set_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1692,9 +1694,9 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] To find all descendant nodes matching a pattern or a class type, see [method find_children].
 */
 //go:nosplit
-func (self class) FindChild(pattern gd.String, recursive bool, owned bool) [1]gdclass.Node { //gd:Node.find_child
+func (self class) FindChild(pattern String.Readable, recursive bool, owned bool) [1]gdclass.Node { //gd:Node.find_child
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(pattern))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(pattern)))
 	callframe.Arg(frame, recursive)
 	callframe.Arg(frame, owned)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1713,10 +1715,10 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] To find a single descendant node matching a pattern, see [method find_child].
 */
 //go:nosplit
-func (self class) FindChildren(pattern gd.String, atype gd.String, recursive bool, owned bool) Array.Contains[[1]gdclass.Node] { //gd:Node.find_children
+func (self class) FindChildren(pattern String.Readable, atype String.Readable, recursive bool, owned bool) Array.Contains[[1]gdclass.Node] { //gd:Node.find_children
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(pattern))
-	callframe.Arg(frame, pointers.Get(atype))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(pattern)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(atype)))
 	callframe.Arg(frame, recursive)
 	callframe.Arg(frame, owned)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1731,9 +1733,9 @@ Finds the first ancestor of this node whose [member name] matches [param pattern
 [b]Note:[/b] As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [method get_node] with unique names (see [member unique_name_in_owner]).
 */
 //go:nosplit
-func (self class) FindParent(pattern gd.String) [1]gdclass.Node { //gd:Node.find_parent
+func (self class) FindParent(pattern String.Readable) [1]gdclass.Node { //gd:Node.find_parent
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(pattern))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(pattern)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
@@ -2067,11 +2069,11 @@ TheGame/SplashScreen/Camera2D
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetTreeString() gd.String { //gd:Node.get_tree_string
+func (self class) GetTreeString() String.Readable { //gd:Node.get_tree_string
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2089,30 +2091,30 @@ May print, for example:
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetTreeStringPretty() gd.String { //gd:Node.get_tree_string_pretty
+func (self class) GetTreeStringPretty() String.Readable { //gd:Node.get_tree_string_pretty
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree_string_pretty, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetSceneFilePath(scene_file_path gd.String) { //gd:Node.set_scene_file_path
+func (self class) SetSceneFilePath(scene_file_path String.Readable) { //gd:Node.set_scene_file_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(scene_file_path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(scene_file_path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_scene_file_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSceneFilePath() gd.String { //gd:Node.get_scene_file_path
+func (self class) GetSceneFilePath() String.Readable { //gd:Node.get_scene_file_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_scene_file_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2885,20 +2887,20 @@ func (self class) RpcConfig(method gd.StringName, config gd.Variant) { //gd:Node
 }
 
 //go:nosplit
-func (self class) SetEditorDescription(editor_description gd.String) { //gd:Node.set_editor_description
+func (self class) SetEditorDescription(editor_description String.Readable) { //gd:Node.set_editor_description
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(editor_description))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(editor_description)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_editor_description, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetEditorDescription() gd.String { //gd:Node.get_editor_description
+func (self class) GetEditorDescription() String.Readable { //gd:Node.get_editor_description
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_editor_description, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2929,13 +2931,13 @@ If [method Object.can_translate_messages] is [code]false[/code], or no translati
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
 */
 //go:nosplit
-func (self class) Atr(message gd.String, context gd.StringName) gd.String { //gd:Node.atr
+func (self class) Atr(message String.Readable, context gd.StringName) String.Readable { //gd:Node.atr
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(message))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(message)))
 	callframe.Arg(frame, pointers.Get(context))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_atr, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2949,15 +2951,15 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 [b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [method atr].
 */
 //go:nosplit
-func (self class) AtrN(message gd.String, plural_message gd.StringName, n gd.Int, context gd.StringName) gd.String { //gd:Node.atr_n
+func (self class) AtrN(message String.Readable, plural_message gd.StringName, n gd.Int, context gd.StringName) String.Readable { //gd:Node.atr_n
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(message))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(message)))
 	callframe.Arg(frame, pointers.Get(plural_message))
 	callframe.Arg(frame, n)
 	callframe.Arg(frame, pointers.Get(context))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_atr_n, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

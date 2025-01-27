@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Provides direct access to a physics space in the [PhysicsServer3D]. It's used mainly to do queries against objects and areas residing in a given space.
@@ -277,23 +279,6 @@ func init() {
 	})
 }
 
-type PhysicsDirectSpaceState3D_Intersection struct {
-	Collider   Object.Instance `gd:"collider"`
-	ColliderID Object.ID       `gd:"collider_id"`
-	Normal     struct {
-		X float32
-		Y float32
-		Z float32
-	} `gd:"normal"`
-	Position struct {
-		X float32
-		Y float32
-		Z float32
-	} `gd:"position"`
-	FaceIndex int     `gd:"face_index"`
-	RID       RID.Any `gd:"rid"`
-	Shape     int     `gd:"shape"`
-}
 type PhysicsDirectSpaceState3D_RestInfo struct {
 	ColliderID     Object.ID `gd:"collider_id"`
 	LinearVelocity struct {
@@ -313,4 +298,21 @@ type PhysicsDirectSpaceState3D_RestInfo struct {
 	} `gd:"point"`
 	RID   RID.Any `gd:"rid"`
 	Shape int     `gd:"shape"`
+}
+type PhysicsDirectSpaceState3D_Intersection struct {
+	Collider   Object.Instance `gd:"collider"`
+	ColliderID Object.ID       `gd:"collider_id"`
+	Normal     struct {
+		X float32
+		Y float32
+		Z float32
+	} `gd:"normal"`
+	Position struct {
+		X float32
+		Y float32
+		Z float32
+	} `gd:"position"`
+	FaceIndex int     `gd:"face_index"`
+	RID       RID.Any `gd:"rid"`
+	Shape     int     `gd:"shape"`
 }

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
@@ -33,6 +34,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [FontFile] contains a set of glyphs to represent Unicode characters imported from a font file, as well as a cache of rasterized glyphs, and a set of fallback [Font]s to use.
@@ -73,7 +75,7 @@ Loads an AngelCode BMFont (.fnt, .font) bitmap font from file [param path].
 [b]Warning:[/b] This method should only be used in the editor or in cases when you need to load external fonts at run-time, such as fonts located at the [code]user://[/code] directory.
 */
 func (self Instance) LoadBitmapFont(path string) error { //gd:FontFile.load_bitmap_font
-	return error(gd.ToError(class(self).LoadBitmapFont(gd.NewString(path))))
+	return error(gd.ToError(class(self).LoadBitmapFont(String.New(path))))
 }
 
 /*
@@ -81,7 +83,7 @@ Loads a TrueType (.ttf), OpenType (.otf), WOFF (.woff), WOFF2 (.woff2) or Type 1
 [b]Warning:[/b] This method should only be used in the editor or in cases when you need to load external fonts at run-time, such as fonts located at the [code]user://[/code] directory.
 */
 func (self Instance) LoadDynamicFont(path string) error { //gd:FontFile.load_dynamic_font
-	return error(gd.ToError(class(self).LoadDynamicFont(gd.NewString(path))))
+	return error(gd.ToError(class(self).LoadDynamicFont(String.New(path))))
 }
 
 /*
@@ -479,21 +481,21 @@ func (self Instance) RenderGlyph(cache_index int, size Vector2i.XY, index int) {
 Adds override for [method Font.is_language_supported].
 */
 func (self Instance) SetLanguageSupportOverride(language string, supported bool) { //gd:FontFile.set_language_support_override
-	class(self).SetLanguageSupportOverride(gd.NewString(language), supported)
+	class(self).SetLanguageSupportOverride(String.New(language), supported)
 }
 
 /*
 Returns [code]true[/code] if support override is enabled for the [param language].
 */
 func (self Instance) GetLanguageSupportOverride(language string) bool { //gd:FontFile.get_language_support_override
-	return bool(class(self).GetLanguageSupportOverride(gd.NewString(language)))
+	return bool(class(self).GetLanguageSupportOverride(String.New(language)))
 }
 
 /*
 Remove language support override.
 */
 func (self Instance) RemoveLanguageSupportOverride(language string) { //gd:FontFile.remove_language_support_override
-	class(self).RemoveLanguageSupportOverride(gd.NewString(language))
+	class(self).RemoveLanguageSupportOverride(String.New(language))
 }
 
 /*
@@ -507,21 +509,21 @@ func (self Instance) GetLanguageSupportOverrides() []string { //gd:FontFile.get_
 Adds override for [method Font.is_script_supported].
 */
 func (self Instance) SetScriptSupportOverride(script string, supported bool) { //gd:FontFile.set_script_support_override
-	class(self).SetScriptSupportOverride(gd.NewString(script), supported)
+	class(self).SetScriptSupportOverride(String.New(script), supported)
 }
 
 /*
 Returns [code]true[/code] if support override is enabled for the [param script].
 */
 func (self Instance) GetScriptSupportOverride(script string) bool { //gd:FontFile.get_script_support_override
-	return bool(class(self).GetScriptSupportOverride(gd.NewString(script)))
+	return bool(class(self).GetScriptSupportOverride(String.New(script)))
 }
 
 /*
 Removes script support override.
 */
 func (self Instance) RemoveScriptSupportOverride(script string) { //gd:FontFile.remove_script_support_override
-	class(self).RemoveScriptSupportOverride(gd.NewString(script))
+	class(self).RemoveScriptSupportOverride(String.New(script))
 }
 
 /*
@@ -597,11 +599,11 @@ func (self Instance) SetAntialiasing(value gdclass.TextServerFontAntialiasing) {
 }
 
 func (self Instance) SetFontName(value string) {
-	class(self).SetFontName(gd.NewString(value))
+	class(self).SetFontName(String.New(value))
 }
 
 func (self Instance) SetStyleName(value string) {
-	class(self).SetFontStyleName(gd.NewString(value))
+	class(self).SetFontStyleName(String.New(value))
 }
 
 func (self Instance) SetFontStyle(value gdclass.TextServerFontStyle) {
@@ -709,9 +711,9 @@ Loads an AngelCode BMFont (.fnt, .font) bitmap font from file [param path].
 [b]Warning:[/b] This method should only be used in the editor or in cases when you need to load external fonts at run-time, such as fonts located at the [code]user://[/code] directory.
 */
 //go:nosplit
-func (self class) LoadBitmapFont(path gd.String) gd.Error { //gd:FontFile.load_bitmap_font
+func (self class) LoadBitmapFont(path String.Readable) gd.Error { //gd:FontFile.load_bitmap_font
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_load_bitmap_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -724,9 +726,9 @@ Loads a TrueType (.ttf), OpenType (.otf), WOFF (.woff), WOFF2 (.woff2) or Type 1
 [b]Warning:[/b] This method should only be used in the editor or in cases when you need to load external fonts at run-time, such as fonts located at the [code]user://[/code] directory.
 */
 //go:nosplit
-func (self class) LoadDynamicFont(path gd.String) gd.Error { //gd:FontFile.load_dynamic_font
+func (self class) LoadDynamicFont(path String.Readable) gd.Error { //gd:FontFile.load_dynamic_font
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_load_dynamic_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -754,18 +756,18 @@ func (self class) GetData() gd.PackedByteArray { //gd:FontFile.get_data
 }
 
 //go:nosplit
-func (self class) SetFontName(name gd.String) { //gd:FontFile.set_font_name
+func (self class) SetFontName(name String.Readable) { //gd:FontFile.set_font_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_font_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) SetFontStyleName(name gd.String) { //gd:FontFile.set_font_style_name
+func (self class) SetFontStyleName(name String.Readable) { //gd:FontFile.set_font_style_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_font_style_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1842,9 +1844,9 @@ func (self class) RenderGlyph(cache_index gd.Int, size gd.Vector2i, index gd.Int
 Adds override for [method Font.is_language_supported].
 */
 //go:nosplit
-func (self class) SetLanguageSupportOverride(language gd.String, supported bool) { //gd:FontFile.set_language_support_override
+func (self class) SetLanguageSupportOverride(language String.Readable, supported bool) { //gd:FontFile.set_language_support_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	callframe.Arg(frame, supported)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_language_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1855,9 +1857,9 @@ func (self class) SetLanguageSupportOverride(language gd.String, supported bool)
 Returns [code]true[/code] if support override is enabled for the [param language].
 */
 //go:nosplit
-func (self class) GetLanguageSupportOverride(language gd.String) bool { //gd:FontFile.get_language_support_override
+func (self class) GetLanguageSupportOverride(language String.Readable) bool { //gd:FontFile.get_language_support_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_language_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1869,9 +1871,9 @@ func (self class) GetLanguageSupportOverride(language gd.String) bool { //gd:Fon
 Remove language support override.
 */
 //go:nosplit
-func (self class) RemoveLanguageSupportOverride(language gd.String) { //gd:FontFile.remove_language_support_override
+func (self class) RemoveLanguageSupportOverride(language String.Readable) { //gd:FontFile.remove_language_support_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_remove_language_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1894,9 +1896,9 @@ func (self class) GetLanguageSupportOverrides() gd.PackedStringArray { //gd:Font
 Adds override for [method Font.is_script_supported].
 */
 //go:nosplit
-func (self class) SetScriptSupportOverride(script gd.String, supported bool) { //gd:FontFile.set_script_support_override
+func (self class) SetScriptSupportOverride(script String.Readable, supported bool) { //gd:FontFile.set_script_support_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(script))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(script)))
 	callframe.Arg(frame, supported)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_script_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1907,9 +1909,9 @@ func (self class) SetScriptSupportOverride(script gd.String, supported bool) { /
 Returns [code]true[/code] if support override is enabled for the [param script].
 */
 //go:nosplit
-func (self class) GetScriptSupportOverride(script gd.String) bool { //gd:FontFile.get_script_support_override
+func (self class) GetScriptSupportOverride(script String.Readable) bool { //gd:FontFile.get_script_support_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(script))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(script)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_script_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1921,9 +1923,9 @@ func (self class) GetScriptSupportOverride(script gd.String) bool { //gd:FontFil
 Removes script support override.
 */
 //go:nosplit
-func (self class) RemoveScriptSupportOverride(script gd.String) { //gd:FontFile.remove_script_support_override
+func (self class) RemoveScriptSupportOverride(script String.Readable) { //gd:FontFile.remove_script_support_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(script))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(script)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_remove_script_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

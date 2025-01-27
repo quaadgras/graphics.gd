@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/Window"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [FileDialog] is a preset dialog used to choose files and directories in the filesystem. It supports filter masks. [FileDialog] automatically sets its window title according to the [member file_mode]. If you want to use a custom title, disable this by setting [member mode_overrides_title] to [code]false[/code].
@@ -58,7 +60,7 @@ A [param filter] should be of the form [code]"filename.extension"[/code], where 
 For example, a [param filter] of [code]"*.png, *.jpg"[/code] and a [param description] of [code]"Images"[/code] results in filter text "Images (*.png, *.jpg)".
 */
 func (self Instance) AddFilter(filter string) { //gd:FileDialog.add_filter
-	class(self).AddFilter(gd.NewString(filter), gd.NewString(""))
+	class(self).AddFilter(String.New(filter), String.New(""))
 }
 
 /*
@@ -86,7 +88,7 @@ func (self Instance) GetOptionDefault(option int) int { //gd:FileDialog.get_opti
 Sets the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) SetOptionName(option int, name string) { //gd:FileDialog.set_option_name
-	class(self).SetOptionName(gd.Int(option), gd.NewString(name))
+	class(self).SetOptionName(gd.Int(option), String.New(name))
 }
 
 /*
@@ -108,7 +110,7 @@ Adds an additional [OptionButton] to the file dialog. If [param values] is empty
 [param default_value_index] should be an index of the value in the [param values]. If [param values] is empty it should be either [code]1[/code] (checked), or [code]0[/code] (unchecked).
 */
 func (self Instance) AddOption(name string, values []string, default_value_index int) { //gd:FileDialog.add_option
-	class(self).AddOption(gd.NewString(name), gd.NewPackedStringSlice(values), gd.Int(default_value_index))
+	class(self).AddOption(String.New(name), gd.NewPackedStringSlice(values), gd.Int(default_value_index))
 }
 
 /*
@@ -197,7 +199,7 @@ func (self Instance) RootSubfolder() string {
 }
 
 func (self Instance) SetRootSubfolder(value string) {
-	class(self).SetRootSubfolder(gd.NewString(value))
+	class(self).SetRootSubfolder(String.New(value))
 }
 
 func (self Instance) Filters() []string {
@@ -237,7 +239,7 @@ func (self Instance) CurrentDir() string {
 }
 
 func (self Instance) SetCurrentDir(value string) {
-	class(self).SetCurrentDir(gd.NewString(value))
+	class(self).SetCurrentDir(String.New(value))
 }
 
 func (self Instance) CurrentFile() string {
@@ -245,7 +247,7 @@ func (self Instance) CurrentFile() string {
 }
 
 func (self Instance) SetCurrentFile(value string) {
-	class(self).SetCurrentFile(gd.NewString(value))
+	class(self).SetCurrentFile(String.New(value))
 }
 
 func (self Instance) CurrentPath() string {
@@ -253,7 +255,7 @@ func (self Instance) CurrentPath() string {
 }
 
 func (self Instance) SetCurrentPath(value string) {
-	class(self).SetCurrentPath(gd.NewString(value))
+	class(self).SetCurrentPath(String.New(value))
 }
 
 /*
@@ -273,10 +275,10 @@ A [param filter] should be of the form [code]"filename.extension"[/code], where 
 For example, a [param filter] of [code]"*.png, *.jpg"[/code] and a [param description] of [code]"Images"[/code] results in filter text "Images (*.png, *.jpg)".
 */
 //go:nosplit
-func (self class) AddFilter(filter gd.String, description gd.String) { //gd:FileDialog.add_filter
+func (self class) AddFilter(filter String.Readable, description String.Readable) { //gd:FileDialog.add_filter
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(filter))
-	callframe.Arg(frame, pointers.Get(description))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(filter)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(description)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_add_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -305,12 +307,12 @@ func (self class) GetFilters() gd.PackedStringArray { //gd:FileDialog.get_filter
 Returns the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) GetOptionName(option gd.Int) gd.String { //gd:FileDialog.get_option_name
+func (self class) GetOptionName(option gd.Int) String.Readable { //gd:FileDialog.get_option_name
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -347,10 +349,10 @@ func (self class) GetOptionDefault(option gd.Int) gd.Int { //gd:FileDialog.get_o
 Sets the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) SetOptionName(option gd.Int, name gd.String) { //gd:FileDialog.set_option_name
+func (self class) SetOptionName(option gd.Int, name String.Readable) { //gd:FileDialog.set_option_name
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_option_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -406,9 +408,9 @@ Adds an additional [OptionButton] to the file dialog. If [param values] is empty
 [param default_value_index] should be an index of the value in the [param values]. If [param values] is empty it should be either [code]1[/code] (checked), or [code]0[/code] (unchecked).
 */
 //go:nosplit
-func (self class) AddOption(name gd.String, values gd.PackedStringArray, default_value_index gd.Int) { //gd:FileDialog.add_option
+func (self class) AddOption(name String.Readable, values gd.PackedStringArray, default_value_index gd.Int) { //gd:FileDialog.add_option
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, pointers.Get(values))
 	callframe.Arg(frame, default_value_index)
 	var r_ret = callframe.Nil
@@ -430,57 +432,57 @@ func (self class) GetSelectedOptions() Dictionary.Any { //gd:FileDialog.get_sele
 }
 
 //go:nosplit
-func (self class) GetCurrentDir() gd.String { //gd:FileDialog.get_current_dir
+func (self class) GetCurrentDir() String.Readable { //gd:FileDialog.get_current_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) GetCurrentFile() gd.String { //gd:FileDialog.get_current_file
+func (self class) GetCurrentFile() String.Readable { //gd:FileDialog.get_current_file
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) GetCurrentPath() gd.String { //gd:FileDialog.get_current_path
+func (self class) GetCurrentPath() String.Readable { //gd:FileDialog.get_current_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetCurrentDir(dir gd.String) { //gd:FileDialog.set_current_dir
+func (self class) SetCurrentDir(dir String.Readable) { //gd:FileDialog.set_current_dir
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dir))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(dir)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_current_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) SetCurrentFile(file gd.String) { //gd:FileDialog.set_current_file
+func (self class) SetCurrentFile(file String.Readable) { //gd:FileDialog.set_current_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(file))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_current_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) SetCurrentPath(path gd.String) { //gd:FileDialog.set_current_path
+func (self class) SetCurrentPath(path String.Readable) { //gd:FileDialog.set_current_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_current_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -573,20 +575,20 @@ func (self class) GetAccess() gdclass.FileDialogAccess { //gd:FileDialog.get_acc
 }
 
 //go:nosplit
-func (self class) SetRootSubfolder(dir gd.String) { //gd:FileDialog.set_root_subfolder
+func (self class) SetRootSubfolder(dir String.Readable) { //gd:FileDialog.set_root_subfolder
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dir))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(dir)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_root_subfolder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetRootSubfolder() gd.String { //gd:FileDialog.get_root_subfolder
+func (self class) GetRootSubfolder() String.Readable { //gd:FileDialog.get_root_subfolder
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_root_subfolder, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

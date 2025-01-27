@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [EditorDebuggerPlugin] provides functions related to the editor side of the debugger.
@@ -130,8 +132,8 @@ Override this method to enable receiving messages from the debugger. If [param c
 */
 func (Instance) _has_capture(impl func(ptr unsafe.Pointer, capture string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var capture = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(capture)
+		var capture = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(capture))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, capture.String())
 		gd.UnsafeSet(p_back, ret)
@@ -143,8 +145,8 @@ Override this method to process incoming messages. The [param session_id] is the
 */
 func (Instance) _capture(impl func(ptr unsafe.Pointer, message string, data []any, session_id int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var message = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(message)
+		var message = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(message))
 		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalArray(data))
 		var session_id = gd.UnsafeGet[gd.Int](p_args, 2)
@@ -246,10 +248,10 @@ func (class) _setup_session(impl func(ptr unsafe.Pointer, session_id gd.Int)) (c
 /*
 Override this method to enable receiving messages from the debugger. If [param capture] is "my_message" then messages starting with "my_message:" will be passes to the [method _capture] method.
 */
-func (class) _has_capture(impl func(ptr unsafe.Pointer, capture gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _has_capture(impl func(ptr unsafe.Pointer, capture String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var capture = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(capture)
+		var capture = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(capture))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, capture)
 		gd.UnsafeSet(p_back, ret)
@@ -259,10 +261,10 @@ func (class) _has_capture(impl func(ptr unsafe.Pointer, capture gd.String) bool)
 /*
 Override this method to process incoming messages. The [param session_id] is the ID of the [EditorDebuggerSession] that received the message (which you can retrieve via [method get_session]).
 */
-func (class) _capture(impl func(ptr unsafe.Pointer, message gd.String, data Array.Any, session_id gd.Int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _capture(impl func(ptr unsafe.Pointer, message String.Readable, data Array.Any, session_id gd.Int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var message = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(message)
+		var message = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(message))
 		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalArray(data))
 		var session_id = gd.UnsafeGet[gd.Int](p_args, 2)

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/Window"
 import "graphics.gd/classdb/Viewport"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A dialog used for confirmation of actions. This window is similar to [AcceptDialog], but pressing its Cancel button can have a different outcome from pressing the OK button. The order of the two buttons varies depending on the host OS.
@@ -84,7 +86,7 @@ func (self Instance) CancelButtonText() string {
 }
 
 func (self Instance) SetCancelButtonText(value string) {
-	class(self).SetCancelButtonText(gd.NewString(value))
+	class(self).SetCancelButtonText(String.New(value))
 }
 
 /*
@@ -102,20 +104,20 @@ func (self class) GetCancelButton() [1]gdclass.Button { //gd:ConfirmationDialog.
 }
 
 //go:nosplit
-func (self class) SetCancelButtonText(text gd.String) { //gd:ConfirmationDialog.set_cancel_button_text
+func (self class) SetCancelButtonText(text String.Readable) { //gd:ConfirmationDialog.set_cancel_button_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfirmationDialog.Bind_set_cancel_button_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetCancelButtonText() gd.String { //gd:ConfirmationDialog.get_cancel_button_text
+func (self class) GetCancelButtonText() String.Readable { //gd:ConfirmationDialog.get_cancel_button_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfirmationDialog.Bind_get_cancel_button_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

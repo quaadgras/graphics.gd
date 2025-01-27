@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/NodePath"
 
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [EditorInterface] gives you control over Godot editor's window. It allows customizing the window, saving and (re-)loading scenes, rendering mesh previews, inspecting and editing resources and objects, and provides access to [EditorSettings], [EditorFileSystem], [EditorResourcePreview], [ScriptEditor], the editor viewport, and information about scenes.
@@ -121,7 +123,7 @@ Sets the enabled status of a plugin. The plugin name is the same as its director
 */
 func SetPluginEnabled(plugin string, enabled bool) { //gd:EditorInterface.set_plugin_enabled
 	once.Do(singleton)
-	class(self).SetPluginEnabled(gd.NewString(plugin), enabled)
+	class(self).SetPluginEnabled(String.New(plugin), enabled)
 }
 
 /*
@@ -129,7 +131,7 @@ Returns [code]true[/code] if the specified [param plugin] is enabled. The plugin
 */
 func IsPluginEnabled(plugin string) bool { //gd:EditorInterface.is_plugin_enabled
 	once.Do(singleton)
-	return bool(class(self).IsPluginEnabled(gd.NewString(plugin)))
+	return bool(class(self).IsPluginEnabled(String.New(plugin)))
 }
 
 /*
@@ -190,7 +192,7 @@ Sets the editor's current main screen to the one specified in [param name]. [par
 */
 func SetMainScreenEditor(name string) { //gd:EditorInterface.set_main_screen_editor
 	once.Do(singleton)
-	class(self).SetMainScreenEditor(gd.NewString(name))
+	class(self).SetMainScreenEditor(String.New(name))
 }
 
 /*
@@ -266,7 +268,7 @@ A feature profile can be created programmatically using the [EditorFeatureProfil
 */
 func SetCurrentFeatureProfile(profile_name string) { //gd:EditorInterface.set_current_feature_profile
 	once.Do(singleton)
-	class(self).SetCurrentFeatureProfile(gd.NewString(profile_name))
+	class(self).SetCurrentFeatureProfile(String.New(profile_name))
 }
 
 /*
@@ -329,7 +331,7 @@ Selects the file, with the path provided by [param file], in the FileSystem dock
 */
 func SelectFile(file string) { //gd:EditorInterface.select_file
 	once.Do(singleton)
-	class(self).SelectFile(gd.NewString(file))
+	class(self).SelectFile(String.New(file))
 }
 
 /*
@@ -370,7 +372,7 @@ Shows the given property on the given [param object] in the editor's Inspector d
 */
 func InspectObject(obj Object.Instance) { //gd:EditorInterface.inspect_object
 	once.Do(singleton)
-	class(self).InspectObject(obj, gd.NewString(""), false)
+	class(self).InspectObject(obj, String.New(""), false)
 }
 
 /*
@@ -402,7 +404,7 @@ Opens the scene at the given path.
 */
 func OpenSceneFromPath(scene_filepath string) { //gd:EditorInterface.open_scene_from_path
 	once.Do(singleton)
-	class(self).OpenSceneFromPath(gd.NewString(scene_filepath))
+	class(self).OpenSceneFromPath(String.New(scene_filepath))
 }
 
 /*
@@ -410,7 +412,7 @@ Reloads the scene at the given path.
 */
 func ReloadSceneFromPath(scene_filepath string) { //gd:EditorInterface.reload_scene_from_path
 	once.Do(singleton)
-	class(self).ReloadSceneFromPath(gd.NewString(scene_filepath))
+	class(self).ReloadSceneFromPath(String.New(scene_filepath))
 }
 
 /*
@@ -442,7 +444,7 @@ Saves the currently active scene as a file at [param path].
 */
 func SaveSceneAs(path string) { //gd:EditorInterface.save_scene_as
 	once.Do(singleton)
-	class(self).SaveSceneAs(gd.NewString(path), true)
+	class(self).SaveSceneAs(String.New(path), true)
 }
 
 /*
@@ -482,7 +484,7 @@ Plays the scene specified by its filepath.
 */
 func PlayCustomScene(scene_filepath string) { //gd:EditorInterface.play_custom_scene
 	once.Do(singleton)
-	class(self).PlayCustomScene(gd.NewString(scene_filepath))
+	class(self).PlayCustomScene(String.New(scene_filepath))
 }
 
 /*
@@ -645,9 +647,9 @@ func (self class) MakeMeshPreviews(meshes Array.Contains[[1]gdclass.Mesh], previ
 Sets the enabled status of a plugin. The plugin name is the same as its directory name.
 */
 //go:nosplit
-func (self class) SetPluginEnabled(plugin gd.String, enabled bool) { //gd:EditorInterface.set_plugin_enabled
+func (self class) SetPluginEnabled(plugin String.Readable, enabled bool) { //gd:EditorInterface.set_plugin_enabled
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(plugin))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(plugin)))
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_set_plugin_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -658,9 +660,9 @@ func (self class) SetPluginEnabled(plugin gd.String, enabled bool) { //gd:Editor
 Returns [code]true[/code] if the specified [param plugin] is enabled. The plugin name is the same as its directory name.
 */
 //go:nosplit
-func (self class) IsPluginEnabled(plugin gd.String) bool { //gd:EditorInterface.is_plugin_enabled
+func (self class) IsPluginEnabled(plugin String.Readable) bool { //gd:EditorInterface.is_plugin_enabled
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(plugin))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(plugin)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_is_plugin_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -756,9 +758,9 @@ func (self class) GetEditorViewport3d(idx gd.Int) [1]gdclass.SubViewport { //gd:
 Sets the editor's current main screen to the one specified in [param name]. [param name] must match the title of the tab in question exactly (e.g. [code]2D[/code], [code]3D[/code], [code skip-lint]Script[/code], or [code]AssetLib[/code] for default tabs).
 */
 //go:nosplit
-func (self class) SetMainScreenEditor(name gd.String) { //gd:EditorInterface.set_main_screen_editor
+func (self class) SetMainScreenEditor(name String.Readable) { //gd:EditorInterface.set_main_screen_editor
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_set_main_screen_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -876,11 +878,11 @@ In order to get a reference to the [EditorFeatureProfile], you must load the fea
 [b]Note:[/b] Feature profiles created via the user interface are loaded from the [code]feature_profiles[/code] directory, as a file with the [code].profile[/code] extension. The editor configuration folder can be found by using [method EditorPaths.get_config_dir].
 */
 //go:nosplit
-func (self class) GetCurrentFeatureProfile() gd.String { //gd:EditorInterface.get_current_feature_profile
+func (self class) GetCurrentFeatureProfile() String.Readable { //gd:EditorInterface.get_current_feature_profile
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_current_feature_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -891,9 +893,9 @@ A feature profile can be created programmatically using the [EditorFeatureProfil
 [b]Note:[/b] The feature profile that gets activated must be located in the [code]feature_profiles[/code] directory, as a file with the [code].profile[/code] extension. If a profile could not be found, an error occurs. The editor configuration folder can be found by using [method EditorPaths.get_config_dir].
 */
 //go:nosplit
-func (self class) SetCurrentFeatureProfile(profile_name gd.String) { //gd:EditorInterface.set_current_feature_profile
+func (self class) SetCurrentFeatureProfile(profile_name String.Readable) { //gd:EditorInterface.set_current_feature_profile
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(profile_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(profile_name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_set_current_feature_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -968,9 +970,9 @@ func (self class) GetFileSystemDock() [1]gdclass.FileSystemDock { //gd:EditorInt
 Selects the file, with the path provided by [param file], in the FileSystem dock.
 */
 //go:nosplit
-func (self class) SelectFile(file gd.String) { //gd:EditorInterface.select_file
+func (self class) SelectFile(file String.Readable) { //gd:EditorInterface.select_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(file))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_select_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -993,11 +995,11 @@ func (self class) GetSelectedPaths() gd.PackedStringArray { //gd:EditorInterface
 Returns the current path being viewed in the [FileSystemDock].
 */
 //go:nosplit
-func (self class) GetCurrentPath() gd.String { //gd:EditorInterface.get_current_path
+func (self class) GetCurrentPath() String.Readable { //gd:EditorInterface.get_current_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_current_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1006,11 +1008,11 @@ func (self class) GetCurrentPath() gd.String { //gd:EditorInterface.get_current_
 Returns the current directory being viewed in the [FileSystemDock]. If a file is selected, its base directory will be returned using [method String.get_base_dir] instead.
 */
 //go:nosplit
-func (self class) GetCurrentDirectory() gd.String { //gd:EditorInterface.get_current_directory
+func (self class) GetCurrentDirectory() String.Readable { //gd:EditorInterface.get_current_directory
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_current_directory, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1033,10 +1035,10 @@ func (self class) GetInspector() [1]gdclass.EditorInspector { //gd:EditorInterfa
 Shows the given property on the given [param object] in the editor's Inspector dock. If [param inspector_only] is [code]true[/code], plugins will not attempt to edit [param object].
 */
 //go:nosplit
-func (self class) InspectObject(obj [1]gd.Object, for_property gd.String, inspector_only bool) { //gd:EditorInterface.inspect_object
+func (self class) InspectObject(obj [1]gd.Object, for_property String.Readable, inspector_only bool) { //gd:EditorInterface.inspect_object
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
-	callframe.Arg(frame, pointers.Get(for_property))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(for_property)))
 	callframe.Arg(frame, inspector_only)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_inspect_object, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1086,9 +1088,9 @@ func (self class) EditScript(script [1]gdclass.Script, line gd.Int, column gd.In
 Opens the scene at the given path.
 */
 //go:nosplit
-func (self class) OpenSceneFromPath(scene_filepath gd.String) { //gd:EditorInterface.open_scene_from_path
+func (self class) OpenSceneFromPath(scene_filepath String.Readable) { //gd:EditorInterface.open_scene_from_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(scene_filepath))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(scene_filepath)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_open_scene_from_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1098,9 +1100,9 @@ func (self class) OpenSceneFromPath(scene_filepath gd.String) { //gd:EditorInter
 Reloads the scene at the given path.
 */
 //go:nosplit
-func (self class) ReloadSceneFromPath(scene_filepath gd.String) { //gd:EditorInterface.reload_scene_from_path
+func (self class) ReloadSceneFromPath(scene_filepath String.Readable) { //gd:EditorInterface.reload_scene_from_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(scene_filepath))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(scene_filepath)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_reload_scene_from_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1149,9 +1151,9 @@ func (self class) SaveScene() gd.Error { //gd:EditorInterface.save_scene
 Saves the currently active scene as a file at [param path].
 */
 //go:nosplit
-func (self class) SaveSceneAs(path gd.String, with_preview bool) { //gd:EditorInterface.save_scene_as
+func (self class) SaveSceneAs(path String.Readable, with_preview bool) { //gd:EditorInterface.save_scene_as
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, with_preview)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_save_scene_as, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1206,9 +1208,9 @@ func (self class) PlayCurrentScene() { //gd:EditorInterface.play_current_scene
 Plays the scene specified by its filepath.
 */
 //go:nosplit
-func (self class) PlayCustomScene(scene_filepath gd.String) { //gd:EditorInterface.play_custom_scene
+func (self class) PlayCustomScene(scene_filepath String.Readable) { //gd:EditorInterface.play_custom_scene
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(scene_filepath))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(scene_filepath)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_play_custom_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1242,11 +1244,11 @@ func (self class) IsPlayingScene() bool { //gd:EditorInterface.is_playing_scene
 Returns the name of the scene that is being played. If no scene is currently being played, returns an empty string.
 */
 //go:nosplit
-func (self class) GetPlayingScene() gd.String { //gd:EditorInterface.get_playing_scene
+func (self class) GetPlayingScene() String.Readable { //gd:EditorInterface.get_playing_scene
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_playing_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

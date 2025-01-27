@@ -14,7 +14,7 @@ func TestStrings(t *testing.T) {
 	if str.String() != "Hello, World!" {
 		t.Fail()
 	}
-	str.Append(String.New(" from Go!"))
+	str = String.Append(str, String.New(" from Go!"))
 	if str.String() != "Hello, World! from Go!" {
 		t.Fail()
 	}

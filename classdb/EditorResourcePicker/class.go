@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/HBoxContainer"
 import "graphics.gd/classdb/BoxContainer"
 import "graphics.gd/classdb/Container"
@@ -32,6 +33,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This [Control] node is used in the editor's Inspector dock to allow editing of [Resource] type properties. It provides options for creating, loading, saving and converting resources. Can be used with [EditorInspectorPlugin] to recreate the same behavior.
@@ -129,7 +131,7 @@ func (self Instance) BaseType() string {
 }
 
 func (self Instance) SetBaseType(value string) {
-	class(self).SetBaseType(gd.NewString(value))
+	class(self).SetBaseType(String.New(value))
 }
 
 func (self Instance) EditedResource() [1]gdclass.Resource {
@@ -183,20 +185,20 @@ func (class) _handle_menu_selected(impl func(ptr unsafe.Pointer, id gd.Int) bool
 }
 
 //go:nosplit
-func (self class) SetBaseType(base_type gd.String) { //gd:EditorResourcePicker.set_base_type
+func (self class) SetBaseType(base_type String.Readable) { //gd:EditorResourcePicker.set_base_type
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(base_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(base_type)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePicker.Bind_set_base_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetBaseType() gd.String { //gd:EditorResourcePicker.get_base_type
+func (self class) GetBaseType() String.Readable { //gd:EditorResourcePicker.get_base_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePicker.Bind_get_base_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

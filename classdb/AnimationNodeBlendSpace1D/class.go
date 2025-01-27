@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/AnimationRootNode"
 import "graphics.gd/classdb/AnimationNode"
 import "graphics.gd/classdb/Resource"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A resource used by [AnimationNodeBlendTree].
@@ -143,7 +145,7 @@ func (self Instance) ValueLabel() string {
 }
 
 func (self Instance) SetValueLabel(value string) {
-	class(self).SetValueLabel(gd.NewString(value))
+	class(self).SetValueLabel(String.New(value))
 }
 
 func (self Instance) BlendMode() gdclass.AnimationNodeBlendSpace1DBlendMode {
@@ -313,20 +315,20 @@ func (self class) GetSnap() gd.Float { //gd:AnimationNodeBlendSpace1D.get_snap
 }
 
 //go:nosplit
-func (self class) SetValueLabel(text gd.String) { //gd:AnimationNodeBlendSpace1D.set_value_label
+func (self class) SetValueLabel(text String.Readable) { //gd:AnimationNodeBlendSpace1D.set_value_label
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace1D.Bind_set_value_label, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetValueLabel() gd.String { //gd:AnimationNodeBlendSpace1D.get_value_label
+func (self class) GetValueLabel() String.Readable { //gd:AnimationNodeBlendSpace1D.get_value_label
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace1D.Bind_get_value_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -154,8 +154,6 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		return maybeInternal("Float")
 	case "bool", "Bool":
 		return "bool"
-	case "String":
-		return maybeInternal("String")
 	case "StringName":
 		return maybeInternal("StringName")
 	case "enum::GDExtension.InitializationLevel":
@@ -172,6 +170,8 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		return "Array.Any"
 	case "Dictionary":
 		return "Dictionary.Any"
+	case "String":
+		return "String.Readable"
 	case "Callable":
 		return "Callable.Function"
 	case "Variant":

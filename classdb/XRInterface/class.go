@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This class needs to be implemented to make an AR or VR platform available to Godot and these should be implemented as C++ modules or GDExtension modules. Part of the interface is exposed to GDScript so you can detect, enable and configure an AR or VR platform.
@@ -124,7 +126,7 @@ Triggers a haptic pulse on a device associated with this interface.
 [param delay_sec] is a delay in seconds before the pulse is given.
 */
 func (self Instance) TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) { //gd:XRInterface.trigger_haptic_pulse
-	class(self).TriggerHapticPulse(gd.NewString(action_name), gd.NewStringName(tracker_name), gd.Float(frequency), gd.Float(amplitude), gd.Float(duration_sec), gd.Float(delay_sec))
+	class(self).TriggerHapticPulse(String.New(action_name), gd.NewStringName(tracker_name), gd.Float(frequency), gd.Float(amplitude), gd.Float(duration_sec), gd.Float(delay_sec))
 }
 
 /*
@@ -400,9 +402,9 @@ Triggers a haptic pulse on a device associated with this interface.
 [param delay_sec] is a delay in seconds before the pulse is given.
 */
 //go:nosplit
-func (self class) TriggerHapticPulse(action_name gd.String, tracker_name gd.StringName, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float) { //gd:XRInterface.trigger_haptic_pulse
+func (self class) TriggerHapticPulse(action_name String.Readable, tracker_name gd.StringName, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float) { //gd:XRInterface.trigger_haptic_pulse
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(action_name)))
 	callframe.Arg(frame, pointers.Get(tracker_name))
 	callframe.Arg(frame, frequency)
 	callframe.Arg(frame, amplitude)

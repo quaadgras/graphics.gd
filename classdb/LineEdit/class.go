@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [LineEdit] provides an input field for editing a single line of text. It features many built-in shortcuts that are always available ([kbd]Ctrl[/kbd] here maps to [kbd]Cmd[/kbd] on macOS):
@@ -146,7 +148,7 @@ func (self Instance) GetScrollOffset() Float.X { //gd:LineEdit.get_scroll_offset
 Inserts [param text] at the caret. If the resulting value is longer than [member max_length], nothing happens.
 */
 func (self Instance) InsertTextAtCaret(text string) { //gd:LineEdit.insert_text_at_caret
-	class(self).InsertTextAtCaret(gd.NewString(text))
+	class(self).InsertTextAtCaret(String.New(text))
 }
 
 /*
@@ -253,7 +255,7 @@ func (self Instance) Text() string {
 }
 
 func (self Instance) SetText(value string) {
-	class(self).SetText(gd.NewString(value))
+	class(self).SetText(String.New(value))
 }
 
 func (self Instance) PlaceholderText() string {
@@ -261,7 +263,7 @@ func (self Instance) PlaceholderText() string {
 }
 
 func (self Instance) SetPlaceholderText(value string) {
-	class(self).SetPlaceholder(gd.NewString(value))
+	class(self).SetPlaceholder(String.New(value))
 }
 
 func (self Instance) Alignment() HorizontalAlignment {
@@ -453,7 +455,7 @@ func (self Instance) SecretCharacter() string {
 }
 
 func (self Instance) SetSecretCharacter(value string) {
-	class(self).SetSecretCharacter(gd.NewString(value))
+	class(self).SetSecretCharacter(String.New(value))
 }
 
 func (self Instance) TextDirection() gdclass.ControlTextDirection {
@@ -469,7 +471,7 @@ func (self Instance) Language() string {
 }
 
 func (self Instance) SetLanguage(value string) {
-	class(self).SetLanguage(gd.NewString(value))
+	class(self).SetLanguage(String.New(value))
 }
 
 func (self Instance) StructuredTextBidiOverride() gdclass.TextServerStructuredTextParser {
@@ -584,11 +586,11 @@ func (self class) HasSelection() bool { //gd:LineEdit.has_selection
 Returns the text inside the selection.
 */
 //go:nosplit
-func (self class) GetSelectedText() gd.String { //gd:LineEdit.get_selected_text
+func (self class) GetSelectedText() String.Readable { //gd:LineEdit.get_selected_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_selected_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -620,20 +622,20 @@ func (self class) GetSelectionToColumn() gd.Int { //gd:LineEdit.get_selection_to
 }
 
 //go:nosplit
-func (self class) SetText(text gd.String) { //gd:LineEdit.set_text
+func (self class) SetText(text String.Readable) { //gd:LineEdit.set_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetText() gd.String { //gd:LineEdit.get_text
+func (self class) GetText() String.Readable { //gd:LineEdit.get_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -677,20 +679,20 @@ func (self class) GetTextDirection() gdclass.ControlTextDirection { //gd:LineEdi
 }
 
 //go:nosplit
-func (self class) SetLanguage(language gd.String) { //gd:LineEdit.set_language
+func (self class) SetLanguage(language String.Readable) { //gd:LineEdit.set_language
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetLanguage() gd.String { //gd:LineEdit.get_language
+func (self class) GetLanguage() String.Readable { //gd:LineEdit.get_language
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -734,20 +736,20 @@ func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:LineEd
 }
 
 //go:nosplit
-func (self class) SetPlaceholder(text gd.String) { //gd:LineEdit.set_placeholder
+func (self class) SetPlaceholder(text String.Readable) { //gd:LineEdit.set_placeholder
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPlaceholder() gd.String { //gd:LineEdit.get_placeholder
+func (self class) GetPlaceholder() String.Readable { //gd:LineEdit.get_placeholder
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -902,9 +904,9 @@ func (self class) GetMaxLength() gd.Int { //gd:LineEdit.get_max_length
 Inserts [param text] at the caret. If the resulting value is longer than [member max_length], nothing happens.
 */
 //go:nosplit
-func (self class) InsertTextAtCaret(text gd.String) { //gd:LineEdit.insert_text_at_caret
+func (self class) InsertTextAtCaret(text String.Readable) { //gd:LineEdit.insert_text_at_caret
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_insert_text_at_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -973,20 +975,20 @@ func (self class) IsSecret() bool { //gd:LineEdit.is_secret
 }
 
 //go:nosplit
-func (self class) SetSecretCharacter(character gd.String) { //gd:LineEdit.set_secret_character
+func (self class) SetSecretCharacter(character String.Readable) { //gd:LineEdit.set_secret_character
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(character))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(character)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_secret_character, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSecretCharacter() gd.String { //gd:LineEdit.get_secret_character
+func (self class) GetSecretCharacter() String.Readable { //gd:LineEdit.get_secret_character
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_secret_character, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

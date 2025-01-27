@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
@@ -34,6 +35,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Base class for all UI-related nodes. [Control] features a bounding rectangle that defines its extents, an anchor position relative to its parent control or the current viewport, and offsets relative to the anchor. The offsets update automatically when the node, any of its parents, or the screen size change.
@@ -245,8 +247,8 @@ func (Instance) _structured_text_parser(impl func(ptr unsafe.Pointer, args []any
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalArray(args))
-		var text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(text)
+		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(text))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gd.ArrayAs[[]any](gd.InternalArray(args)), text.String())
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Vector3i]](ret)))
@@ -281,7 +283,7 @@ func (Instance) _get_tooltip(impl func(ptr unsafe.Pointer, at_position Vector2.X
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -456,8 +458,8 @@ public override Control _MakeCustomTooltip(string forText)
 */
 func (Instance) _make_custom_tooltip(impl func(ptr unsafe.Pointer, for_text string) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var for_text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(for_text)
+		var for_text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(for_text))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_text.String())
 		ptr, ok := pointers.End(ret[0])
@@ -1382,7 +1384,7 @@ func (self Instance) TooltipText() string {
 }
 
 func (self Instance) SetTooltipText(value string) {
-	class(self).SetTooltipText(gd.NewString(value))
+	class(self).SetTooltipText(String.New(value))
 }
 
 func (self Instance) FocusNeighborLeft() NodePath.String {
@@ -1508,12 +1510,12 @@ func (class) _has_point(impl func(ptr unsafe.Pointer, point gd.Vector2) bool) (c
 User defined BiDi algorithm override function.
 Returns an [Array] of [Vector3i] text ranges and text base directions, in the left-to-right order. Ranges should cover full source [param text] without overlaps. BiDi algorithm will be used on each range separately.
 */
-func (class) _structured_text_parser(impl func(ptr unsafe.Pointer, args Array.Any, text gd.String) Array.Contains[gd.Vector3i]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _structured_text_parser(impl func(ptr unsafe.Pointer, args Array.Any, text String.Readable) Array.Contains[gd.Vector3i]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalArray(args))
-		var text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(text)
+		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(text))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, args, text)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
@@ -1542,13 +1544,13 @@ func (class) _get_minimum_size(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.
 Virtual method to be implemented by the user. Returns the tooltip text for the position [param at_position] in control's local coordinates, which will typically appear when the cursor is resting over this control. See [method get_tooltip].
 [b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
 */
-func (class) _get_tooltip(impl func(ptr unsafe.Pointer, at_position gd.Vector2) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_tooltip(impl func(ptr unsafe.Pointer, at_position gd.Vector2) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1721,10 +1723,10 @@ public override Control _MakeCustomTooltip(string forText)
 [/csharp]
 [/codeblocks]
 */
-func (class) _make_custom_tooltip(impl func(ptr unsafe.Pointer, for_text gd.String) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _make_custom_tooltip(impl func(ptr unsafe.Pointer, for_text String.Readable) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var for_text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(for_text)
+		var for_text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(for_text))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_text)
 		ptr, ok := pointers.End(ret[0])
@@ -3034,20 +3036,20 @@ func (self class) GetVGrowDirection() gdclass.ControlGrowDirection { //gd:Contro
 }
 
 //go:nosplit
-func (self class) SetTooltipText(hint gd.String) { //gd:Control.set_tooltip_text
+func (self class) SetTooltipText(hint String.Readable) { //gd:Control.set_tooltip_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(hint))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(hint)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_set_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTooltipText() gd.String { //gd:Control.get_tooltip_text
+func (self class) GetTooltipText() String.Readable { //gd:Control.get_tooltip_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3058,12 +3060,12 @@ This method can be overridden to customize its behavior. See [method _get_toolti
 [b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
 */
 //go:nosplit
-func (self class) GetTooltip(at_position gd.Vector2) gd.String { //gd:Control.get_tooltip
+func (self class) GetTooltip(at_position gd.Vector2) String.Readable { //gd:Control.get_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, at_position)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

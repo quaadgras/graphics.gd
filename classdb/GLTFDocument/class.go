@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 GLTFDocument supports reading data from a glTF file, buffer, or Godot scene. This data can then be written to the filesystem, buffer, or used to create a Godot scene.
@@ -49,7 +51,7 @@ Takes a path to a GLTF file and imports the data at that file path to the given 
 [b]Note:[/b] The [param base_path] tells [method append_from_file] where to find dependencies and can be empty.
 */
 func (self Instance) AppendFromFile(path string, state [1]gdclass.GLTFState) error { //gd:GLTFDocument.append_from_file
-	return error(gd.ToError(class(self).AppendFromFile(gd.NewString(path), state, gd.Int(0), gd.NewString(""))))
+	return error(gd.ToError(class(self).AppendFromFile(String.New(path), state, gd.Int(0), String.New(""))))
 }
 
 /*
@@ -57,7 +59,7 @@ Takes a [PackedByteArray] defining a GLTF and imports the data to the given [GLT
 [b]Note:[/b] The [param base_path] tells [method append_from_buffer] where to find dependencies and can be empty.
 */
 func (self Instance) AppendFromBuffer(bytes []byte, base_path string, state [1]gdclass.GLTFState) error { //gd:GLTFDocument.append_from_buffer
-	return error(gd.ToError(class(self).AppendFromBuffer(gd.NewPackedByteSlice(bytes), gd.NewString(base_path), state, gd.Int(0))))
+	return error(gd.ToError(class(self).AppendFromBuffer(gd.NewPackedByteSlice(bytes), String.New(base_path), state, gd.Int(0))))
 }
 
 /*
@@ -87,7 +89,7 @@ Takes a [GLTFState] object through the [param state] parameter and writes a glTF
 [b]Note:[/b] The extension of the glTF file determines if it is a .glb binary file or a .gltf text file.
 */
 func (self Instance) WriteToFilesystem(state [1]gdclass.GLTFState, path string) error { //gd:GLTFDocument.write_to_filesystem
-	return error(gd.ToError(class(self).WriteToFilesystem(state, gd.NewString(path))))
+	return error(gd.ToError(class(self).WriteToFilesystem(state, String.New(path))))
 }
 
 /*
@@ -131,7 +133,7 @@ func (self Instance) ImageFormat() string {
 }
 
 func (self Instance) SetImageFormat(value string) {
-	class(self).SetImageFormat(gd.NewString(value))
+	class(self).SetImageFormat(String.New(value))
 }
 
 func (self Instance) LossyQuality() Float.X {
@@ -151,20 +153,20 @@ func (self Instance) SetRootNodeMode(value gdclass.GLTFDocumentRootNodeMode) {
 }
 
 //go:nosplit
-func (self class) SetImageFormat(image_format gd.String) { //gd:GLTFDocument.set_image_format
+func (self class) SetImageFormat(image_format String.Readable) { //gd:GLTFDocument.set_image_format
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(image_format))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(image_format)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_set_image_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetImageFormat() gd.String { //gd:GLTFDocument.get_image_format
+func (self class) GetImageFormat() String.Readable { //gd:GLTFDocument.get_image_format
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_get_image_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -212,12 +214,12 @@ Takes a path to a GLTF file and imports the data at that file path to the given 
 [b]Note:[/b] The [param base_path] tells [method append_from_file] where to find dependencies and can be empty.
 */
 //go:nosplit
-func (self class) AppendFromFile(path gd.String, state [1]gdclass.GLTFState, flags gd.Int, base_path gd.String) gd.Error { //gd:GLTFDocument.append_from_file
+func (self class) AppendFromFile(path String.Readable, state [1]gdclass.GLTFState, flags gd.Int, base_path String.Readable) gd.Error { //gd:GLTFDocument.append_from_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(state[0])[0])
 	callframe.Arg(frame, flags)
-	callframe.Arg(frame, pointers.Get(base_path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(base_path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_append_from_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -230,10 +232,10 @@ Takes a [PackedByteArray] defining a GLTF and imports the data to the given [GLT
 [b]Note:[/b] The [param base_path] tells [method append_from_buffer] where to find dependencies and can be empty.
 */
 //go:nosplit
-func (self class) AppendFromBuffer(bytes gd.PackedByteArray, base_path gd.String, state [1]gdclass.GLTFState, flags gd.Int) gd.Error { //gd:GLTFDocument.append_from_buffer
+func (self class) AppendFromBuffer(bytes gd.PackedByteArray, base_path String.Readable, state [1]gdclass.GLTFState, flags gd.Int) gd.Error { //gd:GLTFDocument.append_from_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bytes))
-	callframe.Arg(frame, pointers.Get(base_path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(base_path)))
 	callframe.Arg(frame, pointers.Get(state[0])[0])
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -296,10 +298,10 @@ Takes a [GLTFState] object through the [param state] parameter and writes a glTF
 [b]Note:[/b] The extension of the glTF file determines if it is a .glb binary file or a .gltf text file.
 */
 //go:nosplit
-func (self class) WriteToFilesystem(state [1]gdclass.GLTFState, path gd.String) gd.Error { //gd:GLTFDocument.write_to_filesystem
+func (self class) WriteToFilesystem(state [1]gdclass.GLTFState, path String.Readable) gd.Error { //gd:GLTFDocument.write_to_filesystem
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(state[0])[0])
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_write_to_filesystem, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

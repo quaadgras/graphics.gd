@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/Resource"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Creating a reference to a [VisualShaderNodeParameter] allows you to reuse this parameter in different shaders or shader stages easily.
@@ -66,24 +68,24 @@ func (self Instance) ParameterName() string {
 }
 
 func (self Instance) SetParameterName(value string) {
-	class(self).SetParameterName(gd.NewString(value))
+	class(self).SetParameterName(String.New(value))
 }
 
 //go:nosplit
-func (self class) SetParameterName(name gd.String) { //gd:VisualShaderNodeParameterRef.set_parameter_name
+func (self class) SetParameterName(name String.Readable) { //gd:VisualShaderNodeParameterRef.set_parameter_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParameterRef.Bind_set_parameter_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetParameterName() gd.String { //gd:VisualShaderNodeParameterRef.get_parameter_name
+func (self class) GetParameterName() String.Readable { //gd:VisualShaderNodeParameterRef.get_parameter_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParameterRef.Bind_get_parameter_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

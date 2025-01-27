@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/PanelContainer"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Godot editor's script editor.
@@ -101,7 +103,7 @@ func (self Instance) GetOpenScripts() [][1]gdclass.Script { //gd:ScriptEditor.ge
 Opens the script create dialog. The script will extend [param base_name]. The file extension can be omitted from [param base_path]. It will be added based on the selected scripting language.
 */
 func (self Instance) OpenScriptCreateDialog(base_name string, base_path string) { //gd:ScriptEditor.open_script_create_dialog
-	class(self).OpenScriptCreateDialog(gd.NewString(base_name), gd.NewString(base_path))
+	class(self).OpenScriptCreateDialog(String.New(base_name), String.New(base_path))
 }
 
 /*
@@ -130,7 +132,7 @@ class_theme_item:GraphNode:panel_selected
 [/codeblock]
 */
 func (self Instance) GotoHelp(topic string) { //gd:ScriptEditor.goto_help
-	class(self).GotoHelp(gd.NewString(topic))
+	class(self).GotoHelp(String.New(topic))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -245,10 +247,10 @@ func (self class) GetOpenScripts() Array.Contains[[1]gdclass.Script] { //gd:Scri
 Opens the script create dialog. The script will extend [param base_name]. The file extension can be omitted from [param base_path]. It will be added based on the selected scripting language.
 */
 //go:nosplit
-func (self class) OpenScriptCreateDialog(base_name gd.String, base_path gd.String) { //gd:ScriptEditor.open_script_create_dialog
+func (self class) OpenScriptCreateDialog(base_name String.Readable, base_path String.Readable) { //gd:ScriptEditor.open_script_create_dialog
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(base_name))
-	callframe.Arg(frame, pointers.Get(base_path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(base_name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(base_path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_open_script_create_dialog, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -280,9 +282,9 @@ class_theme_item:GraphNode:panel_selected
 [/codeblock]
 */
 //go:nosplit
-func (self class) GotoHelp(topic gd.String) { //gd:ScriptEditor.goto_help
+func (self class) GotoHelp(topic String.Readable) { //gd:ScriptEditor.goto_help
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(topic))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(topic)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_goto_help, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

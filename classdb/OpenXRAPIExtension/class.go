@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [OpenXRAPIExtension] makes OpenXR available for GDExtension. It provides the OpenXR API to GDExtension through the [method get_instance_proc_addr] method, and the OpenXR instance through [method get_instance].
@@ -74,7 +76,7 @@ func (self Instance) TransformFromPose(pose unsafe.Pointer) Transform3D.BasisOri
 Returns [code]true[/code] if the provided [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] (cast to an integer) is successful. Otherwise returns [code]false[/code] and prints the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] converted to a string, with the specified additional information.
 */
 func (self Instance) XrResult(result int, format string, args []any) bool { //gd:OpenXRAPIExtension.xr_result
-	return bool(class(self).XrResult(gd.Int(result), gd.NewString(format), gd.EngineArrayFromSlice(args)))
+	return bool(class(self).XrResult(gd.Int(result), String.New(format), gd.EngineArrayFromSlice(args)))
 }
 
 /*
@@ -90,7 +92,7 @@ Returns the function pointer of the OpenXR function with the specified name, cas
 [b]Note:[/b] [code]openxr/util.h[/code] contains utility macros for acquiring OpenXR functions, e.g. [code]GDEXTENSION_INIT_XR_FUNC_V(xrCreateAction)[/code].
 */
 func (self Instance) GetInstanceProcAddr(name string) int { //gd:OpenXRAPIExtension.get_instance_proc_addr
-	return int(int(class(self).GetInstanceProcAddr(gd.NewString(name))))
+	return int(int(class(self).GetInstanceProcAddr(String.New(name))))
 }
 
 /*
@@ -260,10 +262,10 @@ func (self class) TransformFromPose(pose unsafe.Pointer) gd.Transform3D { //gd:O
 Returns [code]true[/code] if the provided [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] (cast to an integer) is successful. Otherwise returns [code]false[/code] and prints the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] converted to a string, with the specified additional information.
 */
 //go:nosplit
-func (self class) XrResult(result gd.Int, format gd.String, args Array.Any) bool { //gd:OpenXRAPIExtension.xr_result
+func (self class) XrResult(result gd.Int, format String.Readable, args Array.Any) bool { //gd:OpenXRAPIExtension.xr_result
 	var frame = callframe.New()
 	callframe.Arg(frame, result)
-	callframe.Arg(frame, pointers.Get(format))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(format)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_xr_result, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -291,9 +293,9 @@ Returns the function pointer of the OpenXR function with the specified name, cas
 [b]Note:[/b] [code]openxr/util.h[/code] contains utility macros for acquiring OpenXR functions, e.g. [code]GDEXTENSION_INIT_XR_FUNC_V(xrCreateAction)[/code].
 */
 //go:nosplit
-func (self class) GetInstanceProcAddr(name gd.String) gd.Int { //gd:OpenXRAPIExtension.get_instance_proc_addr
+func (self class) GetInstanceProcAddr(name String.Readable) gd.Int { //gd:OpenXRAPIExtension.get_instance_proc_addr
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_instance_proc_addr, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -305,12 +307,12 @@ func (self class) GetInstanceProcAddr(name gd.String) gd.Int { //gd:OpenXRAPIExt
 Returns an error string for the given [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url].
 */
 //go:nosplit
-func (self class) GetErrorString(result gd.Int) gd.String { //gd:OpenXRAPIExtension.get_error_string
+func (self class) GetErrorString(result gd.Int) String.Readable { //gd:OpenXRAPIExtension.get_error_string
 	var frame = callframe.New()
 	callframe.Arg(frame, result)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_error_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -319,12 +321,12 @@ func (self class) GetErrorString(result gd.Int) gd.String { //gd:OpenXRAPIExtens
 Returns the name of the specified swapchain format.
 */
 //go:nosplit
-func (self class) GetSwapchainFormatName(swapchain_format gd.Int) gd.String { //gd:OpenXRAPIExtension.get_swapchain_format_name
+func (self class) GetSwapchainFormatName(swapchain_format gd.Int) String.Readable { //gd:OpenXRAPIExtension.get_swapchain_format_name
 	var frame = callframe.New()
 	callframe.Arg(frame, swapchain_format)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_swapchain_format_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

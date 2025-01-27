@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Stores variables that can be accessed from everywhere. Use [method get_setting], [method set_setting] or [method has_setting] to access them. Variables stored in [code]project.godot[/code] are also loaded into [ProjectSettings], making this object very useful for reading custom game configuration options.
@@ -47,7 +49,7 @@ Returns [code]true[/code] if a configuration value is present.
 */
 func HasSetting(name string) bool { //gd:ProjectSettings.has_setting
 	once.Do(singleton)
-	return bool(class(self).HasSetting(gd.NewString(name)))
+	return bool(class(self).HasSetting(String.New(name)))
 }
 
 /*
@@ -65,7 +67,7 @@ This can also be used to erase custom project settings. To do this change the se
 */
 func SetSetting(name string, value any) { //gd:ProjectSettings.set_setting
 	once.Do(singleton)
-	class(self).SetSetting(gd.NewString(name), gd.NewVariant(value))
+	class(self).SetSetting(String.New(name), gd.NewVariant(value))
 }
 
 /*
@@ -85,7 +87,7 @@ GD.Print(ProjectSettings.GetSetting("application/config/custom_description", "No
 */
 func GetSetting(name string) any { //gd:ProjectSettings.get_setting
 	once.Do(singleton)
-	return any(class(self).GetSetting(gd.NewString(name), gd.NewVariant(gd.NewVariant(([1]any{}[0])))).Interface())
+	return any(class(self).GetSetting(String.New(name), gd.NewVariant(gd.NewVariant(([1]any{}[0])))).Interface())
 }
 
 /*
@@ -126,7 +128,7 @@ Sets the order of a configuration value (influences when saved to the config fil
 */
 func SetOrder(name string, position int) { //gd:ProjectSettings.set_order
 	once.Do(singleton)
-	class(self).SetOrder(gd.NewString(name), gd.Int(position))
+	class(self).SetOrder(String.New(name), gd.Int(position))
 }
 
 /*
@@ -134,7 +136,7 @@ Returns the order of a configuration value (influences when saved to the config 
 */
 func GetOrder(name string) int { //gd:ProjectSettings.get_order
 	once.Do(singleton)
-	return int(int(class(self).GetOrder(gd.NewString(name))))
+	return int(int(class(self).GetOrder(String.New(name))))
 }
 
 /*
@@ -142,7 +144,7 @@ Sets the specified setting's initial value. This is the value the setting revert
 */
 func SetInitialValue(name string, value any) { //gd:ProjectSettings.set_initial_value
 	once.Do(singleton)
-	class(self).SetInitialValue(gd.NewString(name), gd.NewVariant(value))
+	class(self).SetInitialValue(String.New(name), gd.NewVariant(value))
 }
 
 /*
@@ -150,7 +152,7 @@ Defines if the specified setting is considered basic or advanced. Basic settings
 */
 func SetAsBasic(name string, basic bool) { //gd:ProjectSettings.set_as_basic
 	once.Do(singleton)
-	class(self).SetAsBasic(gd.NewString(name), basic)
+	class(self).SetAsBasic(String.New(name), basic)
 }
 
 /*
@@ -158,7 +160,7 @@ Defines if the specified setting is considered internal. An internal setting won
 */
 func SetAsInternal(name string, internal_ bool) { //gd:ProjectSettings.set_as_internal
 	once.Do(singleton)
-	class(self).SetAsInternal(gd.NewString(name), internal_)
+	class(self).SetAsInternal(String.New(name), internal_)
 }
 
 /*
@@ -207,7 +209,7 @@ Sets whether a setting requires restarting the editor to properly take effect.
 */
 func SetRestartIfChanged(name string, restart bool) { //gd:ProjectSettings.set_restart_if_changed
 	once.Do(singleton)
-	class(self).SetRestartIfChanged(gd.NewString(name), restart)
+	class(self).SetRestartIfChanged(String.New(name), restart)
 }
 
 /*
@@ -215,7 +217,7 @@ Clears the whole configuration (not recommended, may break things).
 */
 func Clear(name string) { //gd:ProjectSettings.clear
 	once.Do(singleton)
-	class(self).Clear(gd.NewString(name))
+	class(self).Clear(String.New(name))
 }
 
 /*
@@ -223,7 +225,7 @@ Returns the localized path (starting with [code]res://[/code]) corresponding to 
 */
 func LocalizePath(path string) string { //gd:ProjectSettings.localize_path
 	once.Do(singleton)
-	return string(class(self).LocalizePath(gd.NewString(path)).String())
+	return string(class(self).LocalizePath(String.New(path)).String())
 }
 
 /*
@@ -249,7 +251,7 @@ else:
 */
 func GlobalizePath(path string) string { //gd:ProjectSettings.globalize_path
 	once.Do(singleton)
-	return string(class(self).GlobalizePath(gd.NewString(path)).String())
+	return string(class(self).GlobalizePath(String.New(path)).String())
 }
 
 /*
@@ -268,7 +270,7 @@ Loads the contents of the .pck or .zip file specified by [param pack] into the r
 */
 func LoadResourcePack(pack string) bool { //gd:ProjectSettings.load_resource_pack
 	once.Do(singleton)
-	return bool(class(self).LoadResourcePack(gd.NewString(pack), true, gd.Int(0)))
+	return bool(class(self).LoadResourcePack(String.New(pack), true, gd.Int(0)))
 }
 
 /*
@@ -276,7 +278,7 @@ Saves the configuration to a custom file. The file extension must be [code].godo
 */
 func SaveCustom(file string) error { //gd:ProjectSettings.save_custom
 	once.Do(singleton)
-	return error(gd.ToError(class(self).SaveCustom(gd.NewString(file))))
+	return error(gd.ToError(class(self).SaveCustom(String.New(file))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -293,9 +295,9 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Returns [code]true[/code] if a configuration value is present.
 */
 //go:nosplit
-func (self class) HasSetting(name gd.String) bool { //gd:ProjectSettings.has_setting
+func (self class) HasSetting(name String.Readable) bool { //gd:ProjectSettings.has_setting
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_has_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -317,9 +319,9 @@ ProjectSettings.SetSetting("application/config/name", "Example");
 This can also be used to erase custom project settings. To do this change the setting value to [code]null[/code].
 */
 //go:nosplit
-func (self class) SetSetting(name gd.String, value gd.Variant) { //gd:ProjectSettings.set_setting
+func (self class) SetSetting(name String.Readable, value gd.Variant) { //gd:ProjectSettings.set_setting
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_set_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -342,9 +344,9 @@ GD.Print(ProjectSettings.GetSetting("application/config/custom_description", "No
 [b]Note:[/b] This method doesn't take potential feature overrides into account automatically. Use [method get_setting_with_override] to handle seamlessly.
 */
 //go:nosplit
-func (self class) GetSetting(name gd.String, default_value gd.Variant) gd.Variant { //gd:ProjectSettings.get_setting
+func (self class) GetSetting(name String.Readable, default_value gd.Variant) gd.Variant { //gd:ProjectSettings.get_setting
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, pointers.Get(default_value))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_get_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -401,9 +403,9 @@ func (self class) GetGlobalClassList() Array.Contains[Dictionary.Any] { //gd:Pro
 Sets the order of a configuration value (influences when saved to the config file).
 */
 //go:nosplit
-func (self class) SetOrder(name gd.String, position gd.Int) { //gd:ProjectSettings.set_order
+func (self class) SetOrder(name String.Readable, position gd.Int) { //gd:ProjectSettings.set_order
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_set_order, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -414,9 +416,9 @@ func (self class) SetOrder(name gd.String, position gd.Int) { //gd:ProjectSettin
 Returns the order of a configuration value (influences when saved to the config file).
 */
 //go:nosplit
-func (self class) GetOrder(name gd.String) gd.Int { //gd:ProjectSettings.get_order
+func (self class) GetOrder(name String.Readable) gd.Int { //gd:ProjectSettings.get_order
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_get_order, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -428,9 +430,9 @@ func (self class) GetOrder(name gd.String) gd.Int { //gd:ProjectSettings.get_ord
 Sets the specified setting's initial value. This is the value the setting reverts to.
 */
 //go:nosplit
-func (self class) SetInitialValue(name gd.String, value gd.Variant) { //gd:ProjectSettings.set_initial_value
+func (self class) SetInitialValue(name String.Readable, value gd.Variant) { //gd:ProjectSettings.set_initial_value
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_set_initial_value, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -441,9 +443,9 @@ func (self class) SetInitialValue(name gd.String, value gd.Variant) { //gd:Proje
 Defines if the specified setting is considered basic or advanced. Basic settings will always be shown in the project settings. Advanced settings will only be shown if the user enables the "Advanced Settings" option.
 */
 //go:nosplit
-func (self class) SetAsBasic(name gd.String, basic bool) { //gd:ProjectSettings.set_as_basic
+func (self class) SetAsBasic(name String.Readable, basic bool) { //gd:ProjectSettings.set_as_basic
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, basic)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_set_as_basic, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -454,9 +456,9 @@ func (self class) SetAsBasic(name gd.String, basic bool) { //gd:ProjectSettings.
 Defines if the specified setting is considered internal. An internal setting won't show up in the Project Settings dialog. This is mostly useful for addons that need to store their own internal settings without exposing them directly to the user.
 */
 //go:nosplit
-func (self class) SetAsInternal(name gd.String, internal_ bool) { //gd:ProjectSettings.set_as_internal
+func (self class) SetAsInternal(name String.Readable, internal_ bool) { //gd:ProjectSettings.set_as_internal
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, internal_)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_set_as_internal, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -511,9 +513,9 @@ Sets whether a setting requires restarting the editor to properly take effect.
 [b]Note:[/b] This is just a hint to display to the user that the editor must be restarted for changes to take effect. Enabling [method set_restart_if_changed] does [i]not[/i] delay the setting being set when changed.
 */
 //go:nosplit
-func (self class) SetRestartIfChanged(name gd.String, restart bool) { //gd:ProjectSettings.set_restart_if_changed
+func (self class) SetRestartIfChanged(name String.Readable, restart bool) { //gd:ProjectSettings.set_restart_if_changed
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, restart)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_set_restart_if_changed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -524,9 +526,9 @@ func (self class) SetRestartIfChanged(name gd.String, restart bool) { //gd:Proje
 Clears the whole configuration (not recommended, may break things).
 */
 //go:nosplit
-func (self class) Clear(name gd.String) { //gd:ProjectSettings.clear
+func (self class) Clear(name String.Readable) { //gd:ProjectSettings.clear
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -536,12 +538,12 @@ func (self class) Clear(name gd.String) { //gd:ProjectSettings.clear
 Returns the localized path (starting with [code]res://[/code]) corresponding to the absolute, native OS [param path]. See also [method globalize_path].
 */
 //go:nosplit
-func (self class) LocalizePath(path gd.String) gd.String { //gd:ProjectSettings.localize_path
+func (self class) LocalizePath(path String.Readable) String.Readable { //gd:ProjectSettings.localize_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_localize_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -564,12 +566,12 @@ else:
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalizePath(path gd.String) gd.String { //gd:ProjectSettings.globalize_path
+func (self class) GlobalizePath(path String.Readable) String.Readable { //gd:ProjectSettings.globalize_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_globalize_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -594,9 +596,9 @@ Loads the contents of the .pck or .zip file specified by [param pack] into the r
 [b]Note:[/b] The optional [param offset] parameter can be used to specify the offset in bytes to the start of the resource pack. This is only supported for .pck files.
 */
 //go:nosplit
-func (self class) LoadResourcePack(pack gd.String, replace_files bool, offset gd.Int) bool { //gd:ProjectSettings.load_resource_pack
+func (self class) LoadResourcePack(pack String.Readable, replace_files bool, offset gd.Int) bool { //gd:ProjectSettings.load_resource_pack
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(pack))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(pack)))
 	callframe.Arg(frame, replace_files)
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Ret[bool](frame)
@@ -610,9 +612,9 @@ func (self class) LoadResourcePack(pack gd.String, replace_files bool, offset gd
 Saves the configuration to a custom file. The file extension must be [code].godot[/code] (to save in text-based [ConfigFile] format) or [code].binary[/code] (to save in binary format). You can also save [code]override.cfg[/code] file, which is also text, but can be used in exported projects unlike other formats.
 */
 //go:nosplit
-func (self class) SaveCustom(file gd.String) gd.Error { //gd:ProjectSettings.save_custom
+func (self class) SaveCustom(file String.Readable) gd.Error { //gd:ProjectSettings.save_custom
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(file))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_save_custom, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

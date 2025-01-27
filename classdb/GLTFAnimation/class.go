@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 type Instance [1]gdclass.GLTFAnimation
 
@@ -78,7 +80,7 @@ func (self Instance) OriginalName() string {
 }
 
 func (self Instance) SetOriginalName(value string) {
-	class(self).SetOriginalName(gd.NewString(value))
+	class(self).SetOriginalName(String.New(value))
 }
 
 func (self Instance) Loop() bool {
@@ -90,19 +92,19 @@ func (self Instance) SetLoop(value bool) {
 }
 
 //go:nosplit
-func (self class) GetOriginalName() gd.String { //gd:GLTFAnimation.get_original_name
+func (self class) GetOriginalName() String.Readable { //gd:GLTFAnimation.get_original_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAnimation.Bind_get_original_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetOriginalName(original_name gd.String) { //gd:GLTFAnimation.set_original_name
+func (self class) SetOriginalName(original_name String.Readable) { //gd:GLTFAnimation.set_original_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(original_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(original_name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAnimation.Bind_set_original_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

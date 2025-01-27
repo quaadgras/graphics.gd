@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Contains all nodes and resources of a GLTF file. This is used by [GLTFDocument] as data storage, which allows [GLTFDocument] and all [GLTFDocumentExtension] classes to remain stateless.
@@ -47,7 +49,7 @@ type Any interface {
 Appends an extension to the list of extensions used by this GLTF file during serialization. If [param required] is true, the extension will also be added to the list of required extensions. Do not run this in [method GLTFDocumentExtension._export_post], as that stage is too late to add extensions. The final list is sorted alphabetically.
 */
 func (self Instance) AddUsedExtension(extension_name string, required bool) { //gd:GLTFState.add_used_extension
-	class(self).AddUsedExtension(gd.NewString(extension_name), required)
+	class(self).AddUsedExtension(String.New(extension_name), required)
 }
 
 /*
@@ -151,7 +153,7 @@ func (self Instance) Copyright() string {
 }
 
 func (self Instance) SetCopyright(value string) {
-	class(self).SetCopyright(gd.NewString(value))
+	class(self).SetCopyright(String.New(value))
 }
 
 func (self Instance) GlbData() []byte {
@@ -223,7 +225,7 @@ func (self Instance) SceneName() string {
 }
 
 func (self Instance) SetSceneName(value string) {
-	class(self).SetSceneName(gd.NewString(value))
+	class(self).SetSceneName(String.New(value))
 }
 
 func (self Instance) BasePath() string {
@@ -231,7 +233,7 @@ func (self Instance) BasePath() string {
 }
 
 func (self Instance) SetBasePath(value string) {
-	class(self).SetBasePath(gd.NewString(value))
+	class(self).SetBasePath(String.New(value))
 }
 
 func (self Instance) Filename() string {
@@ -239,7 +241,7 @@ func (self Instance) Filename() string {
 }
 
 func (self Instance) SetFilename(value string) {
-	class(self).SetFilename(gd.NewString(value))
+	class(self).SetFilename(String.New(value))
 }
 
 func (self Instance) RootNodes() []int32 {
@@ -303,7 +305,7 @@ func (self Instance) UniqueNames() []string {
 }
 
 func (self Instance) SetUniqueNames(value []string) {
-	class(self).SetUniqueNames(gd.ArrayFromSlice[Array.Contains[gd.String]](value))
+	class(self).SetUniqueNames(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 }
 
 func (self Instance) UniqueAnimationNames() []string {
@@ -311,7 +313,7 @@ func (self Instance) UniqueAnimationNames() []string {
 }
 
 func (self Instance) SetUniqueAnimationNames(value []string) {
-	class(self).SetUniqueAnimationNames(gd.ArrayFromSlice[Array.Contains[gd.String]](value))
+	class(self).SetUniqueAnimationNames(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 }
 
 func (self Instance) Skeletons() [][1]gdclass.GLTFSkeleton {
@@ -366,9 +368,9 @@ func (self Instance) SetBakeFps(value Float.X) {
 Appends an extension to the list of extensions used by this GLTF file during serialization. If [param required] is true, the extension will also be added to the list of required extensions. Do not run this in [method GLTFDocumentExtension._export_post], as that stage is too late to add extensions. The final list is sorted alphabetically.
 */
 //go:nosplit
-func (self class) AddUsedExtension(extension_name gd.String, required bool) { //gd:GLTFState.add_used_extension
+func (self class) AddUsedExtension(extension_name String.Readable, required bool) { //gd:GLTFState.add_used_extension
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(extension_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(extension_name)))
 	callframe.Arg(frame, required)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_add_used_extension, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -448,19 +450,19 @@ func (self class) SetMinorVersion(minor_version gd.Int) { //gd:GLTFState.set_min
 }
 
 //go:nosplit
-func (self class) GetCopyright() gd.String { //gd:GLTFState.get_copyright
+func (self class) GetCopyright() String.Readable { //gd:GLTFState.get_copyright
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_copyright, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetCopyright(copyright gd.String) { //gd:GLTFState.set_copyright
+func (self class) SetCopyright(copyright String.Readable) { //gd:GLTFState.set_copyright
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(copyright))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(copyright)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_copyright, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -659,57 +661,57 @@ func (self class) SetMaterials(materials Array.Contains[[1]gdclass.Material]) { 
 }
 
 //go:nosplit
-func (self class) GetSceneName() gd.String { //gd:GLTFState.get_scene_name
+func (self class) GetSceneName() String.Readable { //gd:GLTFState.get_scene_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_scene_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetSceneName(scene_name gd.String) { //gd:GLTFState.set_scene_name
+func (self class) SetSceneName(scene_name String.Readable) { //gd:GLTFState.set_scene_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(scene_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(scene_name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_scene_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetBasePath() gd.String { //gd:GLTFState.get_base_path
+func (self class) GetBasePath() String.Readable { //gd:GLTFState.get_base_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_base_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetBasePath(base_path gd.String) { //gd:GLTFState.set_base_path
+func (self class) SetBasePath(base_path String.Readable) { //gd:GLTFState.set_base_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(base_path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(base_path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_base_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetFilename() gd.String { //gd:GLTFState.get_filename
+func (self class) GetFilename() String.Readable { //gd:GLTFState.get_filename
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_filename, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetFilename(filename gd.String) { //gd:GLTFState.set_filename
+func (self class) SetFilename(filename String.Readable) { //gd:GLTFState.set_filename
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(filename))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_filename, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -882,11 +884,11 @@ func (self class) SetLights(lights Array.Contains[[1]gdclass.GLTFLight]) { //gd:
 Returns an array of unique node names. This is used in both the import process and export process.
 */
 //go:nosplit
-func (self class) GetUniqueNames() Array.Contains[gd.String] { //gd:GLTFState.get_unique_names
+func (self class) GetUniqueNames() Array.Contains[String.Readable] { //gd:GLTFState.get_unique_names
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_unique_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -895,7 +897,7 @@ func (self class) GetUniqueNames() Array.Contains[gd.String] { //gd:GLTFState.ge
 Sets the unique node names in the state. This is used in both the import process and export process.
 */
 //go:nosplit
-func (self class) SetUniqueNames(unique_names Array.Contains[gd.String]) { //gd:GLTFState.set_unique_names
+func (self class) SetUniqueNames(unique_names Array.Contains[String.Readable]) { //gd:GLTFState.set_unique_names
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(unique_names)))
 	var r_ret = callframe.Nil
@@ -907,11 +909,11 @@ func (self class) SetUniqueNames(unique_names Array.Contains[gd.String]) { //gd:
 Returns an array of unique animation names. This is only used during the import process.
 */
 //go:nosplit
-func (self class) GetUniqueAnimationNames() Array.Contains[gd.String] { //gd:GLTFState.get_unique_animation_names
+func (self class) GetUniqueAnimationNames() Array.Contains[String.Readable] { //gd:GLTFState.get_unique_animation_names
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_unique_animation_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -920,7 +922,7 @@ func (self class) GetUniqueAnimationNames() Array.Contains[gd.String] { //gd:GLT
 Sets the unique animation names in the state. This is only used during the import process.
 */
 //go:nosplit
-func (self class) SetUniqueAnimationNames(unique_animation_names Array.Contains[gd.String]) { //gd:GLTFState.set_unique_animation_names
+func (self class) SetUniqueAnimationNames(unique_animation_names Array.Contains[String.Readable]) { //gd:GLTFState.set_unique_animation_names
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(unique_animation_names)))
 	var r_ret = callframe.Nil

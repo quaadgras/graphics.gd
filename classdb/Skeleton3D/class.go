@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Transform3D"
@@ -32,6 +33,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [Skeleton3D] provides an interface for managing a hierarchy of bones, including pose, rest and animation (see [Animation]). It can also use ragdoll physics.
@@ -53,14 +55,14 @@ Adds a new bone with the given name. Returns the new bone's index, or [code]-1[/
 [b]Note:[/b] Bone names should be unique, non empty, and cannot include the [code]:[/code] and [code]/[/code] characters.
 */
 func (self Instance) AddBone(name string) int { //gd:Skeleton3D.add_bone
-	return int(int(class(self).AddBone(gd.NewString(name))))
+	return int(int(class(self).AddBone(String.New(name))))
 }
 
 /*
 Returns the bone index that matches [param name] as its name. Returns [code]-1[/code] if no bone with this name exists.
 */
 func (self Instance) FindBone(name string) int { //gd:Skeleton3D.find_bone
-	return int(int(class(self).FindBone(gd.NewString(name))))
+	return int(int(class(self).FindBone(String.New(name))))
 }
 
 /*
@@ -74,7 +76,7 @@ func (self Instance) GetBoneName(bone_idx int) string { //gd:Skeleton3D.get_bone
 Sets the bone name, [param name], for the bone at [param bone_idx].
 */
 func (self Instance) SetBoneName(bone_idx int, name string) { //gd:Skeleton3D.set_bone_name
-	class(self).SetBoneName(gd.Int(bone_idx), gd.NewString(name))
+	class(self).SetBoneName(gd.Int(bone_idx), String.New(name))
 }
 
 /*
@@ -414,9 +416,9 @@ Adds a new bone with the given name. Returns the new bone's index, or [code]-1[/
 [b]Note:[/b] Bone names should be unique, non empty, and cannot include the [code]:[/code] and [code]/[/code] characters.
 */
 //go:nosplit
-func (self class) AddBone(name gd.String) gd.Int { //gd:Skeleton3D.add_bone
+func (self class) AddBone(name String.Readable) gd.Int { //gd:Skeleton3D.add_bone
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_add_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -428,9 +430,9 @@ func (self class) AddBone(name gd.String) gd.Int { //gd:Skeleton3D.add_bone
 Returns the bone index that matches [param name] as its name. Returns [code]-1[/code] if no bone with this name exists.
 */
 //go:nosplit
-func (self class) FindBone(name gd.String) gd.Int { //gd:Skeleton3D.find_bone
+func (self class) FindBone(name String.Readable) gd.Int { //gd:Skeleton3D.find_bone
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_find_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -442,12 +444,12 @@ func (self class) FindBone(name gd.String) gd.Int { //gd:Skeleton3D.find_bone
 Returns the name of the bone at index [param bone_idx].
 */
 //go:nosplit
-func (self class) GetBoneName(bone_idx gd.Int) gd.String { //gd:Skeleton3D.get_bone_name
+func (self class) GetBoneName(bone_idx gd.Int) String.Readable { //gd:Skeleton3D.get_bone_name
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -456,10 +458,10 @@ func (self class) GetBoneName(bone_idx gd.Int) gd.String { //gd:Skeleton3D.get_b
 Sets the bone name, [param name], for the bone at [param bone_idx].
 */
 //go:nosplit
-func (self class) SetBoneName(bone_idx gd.Int, name gd.String) { //gd:Skeleton3D.set_bone_name
+func (self class) SetBoneName(bone_idx gd.Int, name String.Readable) { //gd:Skeleton3D.set_bone_name
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

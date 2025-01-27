@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 OpenXR uses an action system similar to Godots Input map system to bind inputs and outputs on various types of XR controllers to named actions. OpenXR specifies more detail on these inputs and outputs than Godot supports.
@@ -54,7 +56,7 @@ func (self Instance) GetActionSetCount() int { //gd:OpenXRActionMap.get_action_s
 Retrieve an action set by name.
 */
 func (self Instance) FindActionSet(name string) [1]gdclass.OpenXRActionSet { //gd:OpenXRActionMap.find_action_set
-	return [1]gdclass.OpenXRActionSet(class(self).FindActionSet(gd.NewString(name)))
+	return [1]gdclass.OpenXRActionSet(class(self).FindActionSet(String.New(name)))
 }
 
 /*
@@ -89,7 +91,7 @@ func (self Instance) GetInteractionProfileCount() int { //gd:OpenXRActionMap.get
 Find an interaction profile by its name (path).
 */
 func (self Instance) FindInteractionProfile(name string) [1]gdclass.OpenXRInteractionProfile { //gd:OpenXRActionMap.find_interaction_profile
-	return [1]gdclass.OpenXRInteractionProfile(class(self).FindInteractionProfile(gd.NewString(name)))
+	return [1]gdclass.OpenXRInteractionProfile(class(self).FindInteractionProfile(String.New(name)))
 }
 
 /*
@@ -191,9 +193,9 @@ func (self class) GetActionSetCount() gd.Int { //gd:OpenXRActionMap.get_action_s
 Retrieve an action set by name.
 */
 //go:nosplit
-func (self class) FindActionSet(name gd.String) [1]gdclass.OpenXRActionSet { //gd:OpenXRActionMap.find_action_set
+func (self class) FindActionSet(name String.Readable) [1]gdclass.OpenXRActionSet { //gd:OpenXRActionMap.find_action_set
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_find_action_set, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionSet](r_ret.Get())}
@@ -275,9 +277,9 @@ func (self class) GetInteractionProfileCount() gd.Int { //gd:OpenXRActionMap.get
 Find an interaction profile by its name (path).
 */
 //go:nosplit
-func (self class) FindInteractionProfile(name gd.String) [1]gdclass.OpenXRInteractionProfile { //gd:OpenXRActionMap.find_interaction_profile
+func (self class) FindInteractionProfile(name String.Readable) [1]gdclass.OpenXRInteractionProfile { //gd:OpenXRActionMap.find_interaction_profile
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_find_interaction_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.OpenXRInteractionProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRInteractionProfile](r_ret.Get())}

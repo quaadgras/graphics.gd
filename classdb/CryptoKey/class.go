@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The CryptoKey class represents a cryptographic key. Keys can be loaded and saved like any other [Resource].
@@ -47,7 +49,7 @@ Saves a key to the given [param path]. If [param public_only] is [code]true[/cod
 [b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
 */
 func (self Instance) Save(path string) error { //gd:CryptoKey.save
-	return error(gd.ToError(class(self).Save(gd.NewString(path), false)))
+	return error(gd.ToError(class(self).Save(String.New(path), false)))
 }
 
 /*
@@ -55,7 +57,7 @@ Loads a key from [param path]. If [param public_only] is [code]true[/code], only
 [b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
 */
 func (self Instance) Load(path string) error { //gd:CryptoKey.load
-	return error(gd.ToError(class(self).Load(gd.NewString(path), false)))
+	return error(gd.ToError(class(self).Load(String.New(path), false)))
 }
 
 /*
@@ -76,7 +78,7 @@ func (self Instance) SaveToString() string { //gd:CryptoKey.save_to_string
 Loads a key from the given [param string_key]. If [param public_only] is [code]true[/code], only the public key will be loaded.
 */
 func (self Instance) LoadFromString(string_key string) error { //gd:CryptoKey.load_from_string
-	return error(gd.ToError(class(self).LoadFromString(gd.NewString(string_key), false)))
+	return error(gd.ToError(class(self).LoadFromString(String.New(string_key), false)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -103,9 +105,9 @@ Saves a key to the given [param path]. If [param public_only] is [code]true[/cod
 [b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
 */
 //go:nosplit
-func (self class) Save(path gd.String, public_only bool) gd.Error { //gd:CryptoKey.save
+func (self class) Save(path String.Readable, public_only bool) gd.Error { //gd:CryptoKey.save
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, public_only)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_save, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -119,9 +121,9 @@ Loads a key from [param path]. If [param public_only] is [code]true[/code], only
 [b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
 */
 //go:nosplit
-func (self class) Load(path gd.String, public_only bool) gd.Error { //gd:CryptoKey.load
+func (self class) Load(path String.Readable, public_only bool) gd.Error { //gd:CryptoKey.load
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, public_only)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_load, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -147,12 +149,12 @@ func (self class) IsPublicOnly() bool { //gd:CryptoKey.is_public_only
 Returns a string containing the key in PEM format. If [param public_only] is [code]true[/code], only the public key will be included.
 */
 //go:nosplit
-func (self class) SaveToString(public_only bool) gd.String { //gd:CryptoKey.save_to_string
+func (self class) SaveToString(public_only bool) String.Readable { //gd:CryptoKey.save_to_string
 	var frame = callframe.New()
 	callframe.Arg(frame, public_only)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_save_to_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -161,9 +163,9 @@ func (self class) SaveToString(public_only bool) gd.String { //gd:CryptoKey.save
 Loads a key from the given [param string_key]. If [param public_only] is [code]true[/code], only the public key will be loaded.
 */
 //go:nosplit
-func (self class) LoadFromString(string_key gd.String, public_only bool) gd.Error { //gd:CryptoKey.load_from_string
+func (self class) LoadFromString(string_key String.Readable, public_only bool) gd.Error { //gd:CryptoKey.load_from_string
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(string_key))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(string_key)))
 	callframe.Arg(frame, public_only)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_load_from_string, self.AsObject(), frame.Array(0), r_ret.Addr())

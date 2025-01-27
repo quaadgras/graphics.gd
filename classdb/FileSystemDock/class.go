@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/VBoxContainer"
 import "graphics.gd/classdb/BoxContainer"
 import "graphics.gd/classdb/Container"
@@ -32,6 +33,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This class is available only in [EditorPlugin]s and can't be instantiated. You can access it using [method EditorInterface.get_file_system_dock].
@@ -51,7 +53,7 @@ type Any interface {
 Sets the given [param path] as currently selected, ensuring that the selected file/directory is visible.
 */
 func (self Instance) NavigateToPath(path string) { //gd:FileSystemDock.navigate_to_path
-	class(self).NavigateToPath(gd.NewString(path))
+	class(self).NavigateToPath(String.New(path))
 }
 
 /*
@@ -90,9 +92,9 @@ func New() Instance {
 Sets the given [param path] as currently selected, ensuring that the selected file/directory is visible.
 */
 //go:nosplit
-func (self class) NavigateToPath(path gd.String) { //gd:FileSystemDock.navigate_to_path
+func (self class) NavigateToPath(path String.Readable) { //gd:FileSystemDock.navigate_to_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileSystemDock.Bind_navigate_to_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

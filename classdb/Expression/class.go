@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 An expression can be made of any arithmetic operation, built-in math function call, method call of a passed instance, or built-in type construction call.
@@ -93,7 +95,7 @@ Parses the expression and returns an [enum Error] code.
 You can optionally specify names of variables that may appear in the expression with [param input_names], so that you can bind them when it gets executed.
 */
 func (self Instance) Parse(expression string) error { //gd:Expression.parse
-	return error(gd.ToError(class(self).Parse(gd.NewString(expression), gd.NewPackedStringSlice([1][]string{}[0]))))
+	return error(gd.ToError(class(self).Parse(String.New(expression), gd.NewPackedStringSlice([1][]string{}[0]))))
 }
 
 /*
@@ -142,9 +144,9 @@ Parses the expression and returns an [enum Error] code.
 You can optionally specify names of variables that may appear in the expression with [param input_names], so that you can bind them when it gets executed.
 */
 //go:nosplit
-func (self class) Parse(expression gd.String, input_names gd.PackedStringArray) gd.Error { //gd:Expression.parse
+func (self class) Parse(expression String.Readable, input_names gd.PackedStringArray) gd.Error { //gd:Expression.parse
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(expression))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(expression)))
 	callframe.Arg(frame, pointers.Get(input_names))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -188,11 +190,11 @@ func (self class) HasExecuteFailed() bool { //gd:Expression.has_execute_failed
 Returns the error text if [method parse] or [method execute] has failed.
 */
 //go:nosplit
-func (self class) GetErrorText() gd.String { //gd:Expression.get_error_text
+func (self class) GetErrorText() String.Readable { //gd:Expression.get_error_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_get_error_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

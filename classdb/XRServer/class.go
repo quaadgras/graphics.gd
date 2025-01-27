@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform3D"
 
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The AR/VR server is the heart of our Advanced and Virtual Reality solution and handles all the processing.
@@ -123,7 +125,7 @@ Finds an interface by its [param name]. For example, if your project uses capabi
 */
 func FindInterface(name string) [1]gdclass.XRInterface { //gd:XRServer.find_interface
 	once.Do(singleton)
-	return [1]gdclass.XRInterface(class(self).FindInterface(gd.NewString(name)))
+	return [1]gdclass.XRInterface(class(self).FindInterface(String.New(name)))
 }
 
 /*
@@ -353,9 +355,9 @@ func (self class) GetInterfaces() Array.Contains[Dictionary.Any] { //gd:XRServer
 Finds an interface by its [param name]. For example, if your project uses capabilities of an AR/VR platform, you can find the interface for that platform by name and initialize it.
 */
 //go:nosplit
-func (self class) FindInterface(name gd.String) [1]gdclass.XRInterface { //gd:XRServer.find_interface
+func (self class) FindInterface(name String.Readable) [1]gdclass.XRInterface { //gd:XRServer.find_interface
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_find_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret.Get())}

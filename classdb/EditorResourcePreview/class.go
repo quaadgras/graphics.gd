@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This node is used to generate previews for resources or files.
@@ -47,7 +49,7 @@ Queue a resource file located at [param path] for preview. Once the preview is r
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
 func (self Instance) QueueResourcePreview(path string, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_resource_preview
-	class(self).QueueResourcePreview(gd.NewString(path), receiver, gd.NewStringName(receiver_func), gd.NewVariant(userdata))
+	class(self).QueueResourcePreview(String.New(path), receiver, gd.NewStringName(receiver_func), gd.NewVariant(userdata))
 }
 
 /*
@@ -76,7 +78,7 @@ func (self Instance) RemovePreviewGenerator(generator [1]gdclass.EditorResourceP
 Check if the resource changed, if so, it will be invalidated and the corresponding signal emitted.
 */
 func (self Instance) CheckForInvalidation(path string) { //gd:EditorResourcePreview.check_for_invalidation
-	class(self).CheckForInvalidation(gd.NewString(path))
+	class(self).CheckForInvalidation(String.New(path))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -102,9 +104,9 @@ Queue a resource file located at [param path] for preview. Once the preview is r
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
 //go:nosplit
-func (self class) QueueResourcePreview(path gd.String, receiver [1]gd.Object, receiver_func gd.StringName, userdata gd.Variant) { //gd:EditorResourcePreview.queue_resource_preview
+func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Object, receiver_func gd.StringName, userdata gd.Variant) { //gd:EditorResourcePreview.queue_resource_preview
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(receiver_func))
 	callframe.Arg(frame, pointers.Get(userdata))
@@ -157,9 +159,9 @@ func (self class) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePrev
 Check if the resource changed, if so, it will be invalidated and the corresponding signal emitted.
 */
 //go:nosplit
-func (self class) CheckForInvalidation(path gd.String) { //gd:EditorResourcePreview.check_for_invalidation
+func (self class) CheckForInvalidation(path String.Readable) { //gd:EditorResourcePreview.check_for_invalidation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePreview.Bind_check_for_invalidation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

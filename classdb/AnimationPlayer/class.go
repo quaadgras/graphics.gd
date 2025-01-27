@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/AnimationMixer"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 An animation player is used for general-purpose playback of animations. It contains a dictionary of [AnimationLibrary] resources and custom blend times between animation transitions.
@@ -236,7 +238,7 @@ func (self Instance) CurrentAnimation() string {
 }
 
 func (self Instance) SetCurrentAnimation(value string) {
-	class(self).SetCurrentAnimation(gd.NewString(value))
+	class(self).SetCurrentAnimation(String.New(value))
 }
 
 func (self Instance) AssignedAnimation() string {
@@ -244,7 +246,7 @@ func (self Instance) AssignedAnimation() string {
 }
 
 func (self Instance) SetAssignedAnimation(value string) {
-	class(self).SetAssignedAnimation(gd.NewString(value))
+	class(self).SetAssignedAnimation(String.New(value))
 }
 
 func (self Instance) Autoplay() string {
@@ -252,7 +254,7 @@ func (self Instance) Autoplay() string {
 }
 
 func (self Instance) SetAutoplay(value string) {
-	class(self).SetAutoplay(gd.NewString(value))
+	class(self).SetAutoplay(String.New(value))
 }
 
 func (self Instance) CurrentAnimationLength() Float.X {
@@ -568,39 +570,39 @@ func (self class) IsPlaying() bool { //gd:AnimationPlayer.is_playing
 }
 
 //go:nosplit
-func (self class) SetCurrentAnimation(animation gd.String) { //gd:AnimationPlayer.set_current_animation
+func (self class) SetCurrentAnimation(animation String.Readable) { //gd:AnimationPlayer.set_current_animation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(animation))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(animation)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_current_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetCurrentAnimation() gd.String { //gd:AnimationPlayer.get_current_animation
+func (self class) GetCurrentAnimation() String.Readable { //gd:AnimationPlayer.get_current_animation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetAssignedAnimation(animation gd.String) { //gd:AnimationPlayer.set_assigned_animation
+func (self class) SetAssignedAnimation(animation String.Readable) { //gd:AnimationPlayer.set_assigned_animation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(animation))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(animation)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_assigned_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAssignedAnimation() gd.String { //gd:AnimationPlayer.get_assigned_animation
+func (self class) GetAssignedAnimation() String.Readable { //gd:AnimationPlayer.get_assigned_animation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_assigned_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -676,20 +678,20 @@ func (self class) GetPlayingSpeed() gd.Float { //gd:AnimationPlayer.get_playing_
 }
 
 //go:nosplit
-func (self class) SetAutoplay(name gd.String) { //gd:AnimationPlayer.set_autoplay
+func (self class) SetAutoplay(name String.Readable) { //gd:AnimationPlayer.set_autoplay
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_autoplay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAutoplay() gd.String { //gd:AnimationPlayer.get_autoplay
+func (self class) GetAutoplay() String.Readable { //gd:AnimationPlayer.get_autoplay
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_autoplay, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

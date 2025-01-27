@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/Window"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Object that holds all the available Commands and their shortcuts text. These Commands can be accessed through [b]Editor > Command Palette[/b] menu.
@@ -69,7 +71,7 @@ Adds a custom command to EditorCommandPalette.
 - [param shortcut_text]: [String] (Shortcut text of the [b]Command[/b] if available.)
 */
 func (self Instance) AddCommand(command_name string, key_name string, binded_callable func()) { //gd:EditorCommandPalette.add_command
-	class(self).AddCommand(gd.NewString(command_name), gd.NewString(key_name), Callable.New(binded_callable), gd.NewString("None"))
+	class(self).AddCommand(String.New(command_name), String.New(key_name), Callable.New(binded_callable), String.New("None"))
 }
 
 /*
@@ -77,7 +79,7 @@ Removes the custom command from EditorCommandPalette.
 - [param key_name]: [String] (Name of the key for a particular [b]Command[/b].)
 */
 func (self Instance) RemoveCommand(key_name string) { //gd:EditorCommandPalette.remove_command
-	class(self).RemoveCommand(gd.NewString(key_name))
+	class(self).RemoveCommand(String.New(key_name))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -106,12 +108,12 @@ Adds a custom command to EditorCommandPalette.
 - [param shortcut_text]: [String] (Shortcut text of the [b]Command[/b] if available.)
 */
 //go:nosplit
-func (self class) AddCommand(command_name gd.String, key_name gd.String, binded_callable Callable.Function, shortcut_text gd.String) { //gd:EditorCommandPalette.add_command
+func (self class) AddCommand(command_name String.Readable, key_name String.Readable, binded_callable Callable.Function, shortcut_text String.Readable) { //gd:EditorCommandPalette.add_command
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(command_name))
-	callframe.Arg(frame, pointers.Get(key_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(command_name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(key_name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(binded_callable)))
-	callframe.Arg(frame, pointers.Get(shortcut_text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(shortcut_text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorCommandPalette.Bind_add_command, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -122,9 +124,9 @@ Removes the custom command from EditorCommandPalette.
 - [param key_name]: [String] (Name of the key for a particular [b]Command[/b].)
 */
 //go:nosplit
-func (self class) RemoveCommand(key_name gd.String) { //gd:EditorCommandPalette.remove_command
+func (self class) RemoveCommand(key_name String.Readable) { //gd:EditorCommandPalette.remove_command
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(key_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(key_name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorCommandPalette.Bind_remove_command, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

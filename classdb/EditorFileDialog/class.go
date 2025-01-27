@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/Window"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [EditorFileDialog] is an enhanced version of [FileDialog] available only to editor plugins. Additional features include list of favorited/recent files and the ability to see files as thumbnails grid instead of list.
@@ -58,7 +60,7 @@ A [param filter] should be of the form [code]"filename.extension"[/code], where 
 For example, a [param filter] of [code]"*.tscn, *.scn"[/code] and a [param description] of [code]"Scenes"[/code] results in filter text "Scenes (*.tscn, *.scn)".
 */
 func (self Instance) AddFilter(filter string) { //gd:EditorFileDialog.add_filter
-	class(self).AddFilter(gd.NewString(filter), gd.NewString(""))
+	class(self).AddFilter(String.New(filter), String.New(""))
 }
 
 /*
@@ -86,7 +88,7 @@ func (self Instance) GetOptionDefault(option int) int { //gd:EditorFileDialog.ge
 Sets the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) SetOptionName(option int, name string) { //gd:EditorFileDialog.set_option_name
-	class(self).SetOptionName(gd.Int(option), gd.NewString(name))
+	class(self).SetOptionName(gd.Int(option), String.New(name))
 }
 
 /*
@@ -108,7 +110,7 @@ Adds an additional [OptionButton] to the file dialog. If [param values] is empty
 [param default_value_index] should be an index of the value in the [param values]. If [param values] is empty it should be either [code]1[/code] (checked), or [code]0[/code] (unchecked).
 */
 func (self Instance) AddOption(name string, values []string, default_value_index int) { //gd:EditorFileDialog.add_option
-	class(self).AddOption(gd.NewString(name), gd.NewPackedStringSlice(values), gd.Int(default_value_index))
+	class(self).AddOption(String.New(name), gd.NewPackedStringSlice(values), gd.Int(default_value_index))
 }
 
 /*
@@ -138,7 +140,7 @@ func (self Instance) GetLineEdit() [1]gdclass.LineEdit { //gd:EditorFileDialog.g
 Adds the given [param menu] to the side of the file dialog with the given [param title] text on top. Only one side menu is allowed.
 */
 func (self Instance) AddSideMenu(menu [1]gdclass.Control) { //gd:EditorFileDialog.add_side_menu
-	class(self).AddSideMenu(menu, gd.NewString(""))
+	class(self).AddSideMenu(menu, String.New(""))
 }
 
 /*
@@ -202,7 +204,7 @@ func (self Instance) CurrentDir() string {
 }
 
 func (self Instance) SetCurrentDir(value string) {
-	class(self).SetCurrentDir(gd.NewString(value))
+	class(self).SetCurrentDir(String.New(value))
 }
 
 func (self Instance) CurrentFile() string {
@@ -210,7 +212,7 @@ func (self Instance) CurrentFile() string {
 }
 
 func (self Instance) SetCurrentFile(value string) {
-	class(self).SetCurrentFile(gd.NewString(value))
+	class(self).SetCurrentFile(String.New(value))
 }
 
 func (self Instance) CurrentPath() string {
@@ -218,7 +220,7 @@ func (self Instance) CurrentPath() string {
 }
 
 func (self Instance) SetCurrentPath(value string) {
-	class(self).SetCurrentPath(gd.NewString(value))
+	class(self).SetCurrentPath(String.New(value))
 }
 
 func (self Instance) Filters() []string {
@@ -270,10 +272,10 @@ A [param filter] should be of the form [code]"filename.extension"[/code], where 
 For example, a [param filter] of [code]"*.tscn, *.scn"[/code] and a [param description] of [code]"Scenes"[/code] results in filter text "Scenes (*.tscn, *.scn)".
 */
 //go:nosplit
-func (self class) AddFilter(filter gd.String, description gd.String) { //gd:EditorFileDialog.add_filter
+func (self class) AddFilter(filter String.Readable, description String.Readable) { //gd:EditorFileDialog.add_filter
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(filter))
-	callframe.Arg(frame, pointers.Get(description))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(filter)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(description)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_add_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -302,12 +304,12 @@ func (self class) GetFilters() gd.PackedStringArray { //gd:EditorFileDialog.get_
 Returns the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) GetOptionName(option gd.Int) gd.String { //gd:EditorFileDialog.get_option_name
+func (self class) GetOptionName(option gd.Int) String.Readable { //gd:EditorFileDialog.get_option_name
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_option_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -344,10 +346,10 @@ func (self class) GetOptionDefault(option gd.Int) gd.Int { //gd:EditorFileDialog
 Sets the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) SetOptionName(option gd.Int, name gd.String) { //gd:EditorFileDialog.set_option_name
+func (self class) SetOptionName(option gd.Int, name String.Readable) { //gd:EditorFileDialog.set_option_name
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_set_option_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -403,9 +405,9 @@ Adds an additional [OptionButton] to the file dialog. If [param values] is empty
 [param default_value_index] should be an index of the value in the [param values]. If [param values] is empty it should be either [code]1[/code] (checked), or [code]0[/code] (unchecked).
 */
 //go:nosplit
-func (self class) AddOption(name gd.String, values gd.PackedStringArray, default_value_index gd.Int) { //gd:EditorFileDialog.add_option
+func (self class) AddOption(name String.Readable, values gd.PackedStringArray, default_value_index gd.Int) { //gd:EditorFileDialog.add_option
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, pointers.Get(values))
 	callframe.Arg(frame, default_value_index)
 	var r_ret = callframe.Nil
@@ -427,57 +429,57 @@ func (self class) GetSelectedOptions() Dictionary.Any { //gd:EditorFileDialog.ge
 }
 
 //go:nosplit
-func (self class) GetCurrentDir() gd.String { //gd:EditorFileDialog.get_current_dir
+func (self class) GetCurrentDir() String.Readable { //gd:EditorFileDialog.get_current_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_current_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) GetCurrentFile() gd.String { //gd:EditorFileDialog.get_current_file
+func (self class) GetCurrentFile() String.Readable { //gd:EditorFileDialog.get_current_file
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_current_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) GetCurrentPath() gd.String { //gd:EditorFileDialog.get_current_path
+func (self class) GetCurrentPath() String.Readable { //gd:EditorFileDialog.get_current_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_current_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetCurrentDir(dir gd.String) { //gd:EditorFileDialog.set_current_dir
+func (self class) SetCurrentDir(dir String.Readable) { //gd:EditorFileDialog.set_current_dir
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dir))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(dir)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_set_current_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) SetCurrentFile(file gd.String) { //gd:EditorFileDialog.set_current_file
+func (self class) SetCurrentFile(file String.Readable) { //gd:EditorFileDialog.set_current_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(file))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_set_current_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) SetCurrentPath(path gd.String) { //gd:EditorFileDialog.set_current_path
+func (self class) SetCurrentPath(path String.Readable) { //gd:EditorFileDialog.set_current_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_set_current_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -610,10 +612,10 @@ func (self class) IsOverwriteWarningDisabled() bool { //gd:EditorFileDialog.is_o
 Adds the given [param menu] to the side of the file dialog with the given [param title] text on top. Only one side menu is allowed.
 */
 //go:nosplit
-func (self class) AddSideMenu(menu [1]gdclass.Control, title gd.String) { //gd:EditorFileDialog.add_side_menu
+func (self class) AddSideMenu(menu [1]gdclass.Control, title String.Readable) { //gd:EditorFileDialog.add_side_menu
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(menu[0].AsObject()[0]))
-	callframe.Arg(frame, pointers.Get(title))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_add_side_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

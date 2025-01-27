@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/PacketPeer"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 UDP packet peer. Can be used to send raw UDP packets as well as [Variant]s.
@@ -49,7 +51,7 @@ If [param bind_address] is set to [code]"0.0.0.0"[/code] (for IPv4) or [code]"::
 If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[/code], [code]"::1"[/code], etc.), the peer will only be bound to the interface with that address (or fail if no interface with the given address exists).
 */
 func (self Instance) Bind(port int) error { //gd:PacketPeerUDP.bind
-	return error(gd.ToError(class(self).Bind(gd.Int(port), gd.NewString("*"), gd.Int(65536))))
+	return error(gd.ToError(class(self).Bind(gd.Int(port), String.New("*"), gd.Int(65536))))
 }
 
 /*
@@ -113,7 +115,7 @@ Calling this method connects this UDP peer to the given [param host]/[param port
 [b]Note:[/b] Connecting to the remote peer does not help to protect from malicious attacks like IP spoofing, etc. Think about using an encryption technique like TLS or DTLS if you feel like your application is transferring sensitive information.
 */
 func (self Instance) ConnectToHost(host string, port int) error { //gd:PacketPeerUDP.connect_to_host
-	return error(gd.ToError(class(self).ConnectToHost(gd.NewString(host), gd.Int(port))))
+	return error(gd.ToError(class(self).ConnectToHost(String.New(host), gd.Int(port))))
 }
 
 /*
@@ -149,7 +151,7 @@ Sets the destination address and port for sending packets and variables. A hostn
 [b]Note:[/b] [method set_broadcast_enabled] must be enabled before sending packets to a broadcast address (e.g. [code]255.255.255.255[/code]).
 */
 func (self Instance) SetDestAddress(host string, port int) error { //gd:PacketPeerUDP.set_dest_address
-	return error(gd.ToError(class(self).SetDestAddress(gd.NewString(host), gd.Int(port))))
+	return error(gd.ToError(class(self).SetDestAddress(String.New(host), gd.Int(port))))
 }
 
 /*
@@ -166,14 +168,14 @@ You can join the same multicast group with multiple interfaces. Use [method IP.g
 [b]Note:[/b] Some Android devices might require the [code]CHANGE_WIFI_MULTICAST_STATE[/code] permission for multicast to work.
 */
 func (self Instance) JoinMulticastGroup(multicast_address string, interface_name string) error { //gd:PacketPeerUDP.join_multicast_group
-	return error(gd.ToError(class(self).JoinMulticastGroup(gd.NewString(multicast_address), gd.NewString(interface_name))))
+	return error(gd.ToError(class(self).JoinMulticastGroup(String.New(multicast_address), String.New(interface_name))))
 }
 
 /*
 Removes the interface identified by [param interface_name] from the multicast group specified by [param multicast_address].
 */
 func (self Instance) LeaveMulticastGroup(multicast_address string, interface_name string) error { //gd:PacketPeerUDP.leave_multicast_group
-	return error(gd.ToError(class(self).LeaveMulticastGroup(gd.NewString(multicast_address), gd.NewString(interface_name))))
+	return error(gd.ToError(class(self).LeaveMulticastGroup(String.New(multicast_address), String.New(interface_name))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -202,10 +204,10 @@ If [param bind_address] is set to [code]"0.0.0.0"[/code] (for IPv4) or [code]"::
 If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[/code], [code]"::1"[/code], etc.), the peer will only be bound to the interface with that address (or fail if no interface with the given address exists).
 */
 //go:nosplit
-func (self class) Bind(port gd.Int, bind_address gd.String, recv_buf_size gd.Int) gd.Error { //gd:PacketPeerUDP.bind
+func (self class) Bind(port gd.Int, bind_address String.Readable, recv_buf_size gd.Int) gd.Error { //gd:PacketPeerUDP.bind
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
-	callframe.Arg(frame, pointers.Get(bind_address))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bind_address)))
 	callframe.Arg(frame, recv_buf_size)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerUDP.Bind_bind, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -287,9 +289,9 @@ Calling this method connects this UDP peer to the given [param host]/[param port
 [b]Note:[/b] Connecting to the remote peer does not help to protect from malicious attacks like IP spoofing, etc. Think about using an encryption technique like TLS or DTLS if you feel like your application is transferring sensitive information.
 */
 //go:nosplit
-func (self class) ConnectToHost(host gd.String, port gd.Int) gd.Error { //gd:PacketPeerUDP.connect_to_host
+func (self class) ConnectToHost(host String.Readable, port gd.Int) gd.Error { //gd:PacketPeerUDP.connect_to_host
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(host))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, port)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerUDP.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -315,11 +317,11 @@ func (self class) IsSocketConnected() bool { //gd:PacketPeerUDP.is_socket_connec
 Returns the IP of the remote peer that sent the last packet(that was received with [method PacketPeer.get_packet] or [method PacketPeer.get_var]).
 */
 //go:nosplit
-func (self class) GetPacketIp() gd.String { //gd:PacketPeerUDP.get_packet_ip
+func (self class) GetPacketIp() String.Readable { //gd:PacketPeerUDP.get_packet_ip
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerUDP.Bind_get_packet_ip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -355,9 +357,9 @@ Sets the destination address and port for sending packets and variables. A hostn
 [b]Note:[/b] [method set_broadcast_enabled] must be enabled before sending packets to a broadcast address (e.g. [code]255.255.255.255[/code]).
 */
 //go:nosplit
-func (self class) SetDestAddress(host gd.String, port gd.Int) gd.Error { //gd:PacketPeerUDP.set_dest_address
+func (self class) SetDestAddress(host String.Readable, port gd.Int) gd.Error { //gd:PacketPeerUDP.set_dest_address
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(host))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, port)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerUDP.Bind_set_dest_address, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -385,10 +387,10 @@ You can join the same multicast group with multiple interfaces. Use [method IP.g
 [b]Note:[/b] Some Android devices might require the [code]CHANGE_WIFI_MULTICAST_STATE[/code] permission for multicast to work.
 */
 //go:nosplit
-func (self class) JoinMulticastGroup(multicast_address gd.String, interface_name gd.String) gd.Error { //gd:PacketPeerUDP.join_multicast_group
+func (self class) JoinMulticastGroup(multicast_address String.Readable, interface_name String.Readable) gd.Error { //gd:PacketPeerUDP.join_multicast_group
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(multicast_address))
-	callframe.Arg(frame, pointers.Get(interface_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(multicast_address)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(interface_name)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerUDP.Bind_join_multicast_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -400,10 +402,10 @@ func (self class) JoinMulticastGroup(multicast_address gd.String, interface_name
 Removes the interface identified by [param interface_name] from the multicast group specified by [param multicast_address].
 */
 //go:nosplit
-func (self class) LeaveMulticastGroup(multicast_address gd.String, interface_name gd.String) gd.Error { //gd:PacketPeerUDP.leave_multicast_group
+func (self class) LeaveMulticastGroup(multicast_address String.Readable, interface_name String.Readable) gd.Error { //gd:PacketPeerUDP.leave_multicast_group
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(multicast_address))
-	callframe.Arg(frame, pointers.Get(interface_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(multicast_address)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(interface_name)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerUDP.Bind_leave_multicast_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [TileData] object represents a single tile in a [TileSet]. It is usually edited using the tileset editor, but it can be modified at runtime using [method TileMap._tile_data_runtime_update].
@@ -197,14 +199,14 @@ func (self Instance) GetNavigationPolygon(layer_id int) [1]gdclass.NavigationPol
 Sets the tile's custom data value for the TileSet custom data layer with name [param layer_name].
 */
 func (self Instance) SetCustomData(layer_name string, value any) { //gd:TileData.set_custom_data
-	class(self).SetCustomData(gd.NewString(layer_name), gd.NewVariant(value))
+	class(self).SetCustomData(String.New(layer_name), gd.NewVariant(value))
 }
 
 /*
 Returns the custom data value for custom data layer named [param layer_name].
 */
 func (self Instance) GetCustomData(layer_name string) any { //gd:TileData.get_custom_data
-	return any(class(self).GetCustomData(gd.NewString(layer_name)).Interface())
+	return any(class(self).GetCustomData(String.New(layer_name)).Interface())
 }
 
 /*
@@ -836,9 +838,9 @@ func (self class) GetProbability() gd.Float { //gd:TileData.get_probability
 Sets the tile's custom data value for the TileSet custom data layer with name [param layer_name].
 */
 //go:nosplit
-func (self class) SetCustomData(layer_name gd.String, value gd.Variant) { //gd:TileData.set_custom_data
+func (self class) SetCustomData(layer_name String.Readable, value gd.Variant) { //gd:TileData.set_custom_data
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(layer_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(layer_name)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_set_custom_data, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -849,9 +851,9 @@ func (self class) SetCustomData(layer_name gd.String, value gd.Variant) { //gd:T
 Returns the custom data value for custom data layer named [param layer_name].
 */
 //go:nosplit
-func (self class) GetCustomData(layer_name gd.String) gd.Variant { //gd:TileData.get_custom_data
+func (self class) GetCustomData(layer_name String.Readable) gd.Variant { //gd:TileData.get_custom_data
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(layer_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(layer_name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_custom_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Shortcuts are commonly used for interacting with a [Control] element from an [InputEvent] (also known as hotkeys).
@@ -140,11 +142,11 @@ func (self class) MatchesEvent(event [1]gdclass.InputEvent) bool { //gd:Shortcut
 Returns the shortcut's first valid [InputEvent] as a [String].
 */
 //go:nosplit
-func (self class) GetAsText() gd.String { //gd:Shortcut.get_as_text
+func (self class) GetAsText() String.Readable { //gd:Shortcut.get_as_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shortcut.Bind_get_as_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

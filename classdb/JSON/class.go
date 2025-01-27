@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The [JSON] class enables all data types to be converted to and from a JSON string. This is useful for serializing data, e.g. to save to a file or send over the network.
@@ -120,7 +122,7 @@ The [param indent] parameter controls if and how something is indented; its cont
 */
 func Stringify(data any) string { //gd:JSON.stringify
 	self := Instance{}
-	return string(class(self).Stringify(gd.NewVariant(data), gd.NewString(""), true, false).String())
+	return string(class(self).Stringify(gd.NewVariant(data), String.New(""), true, false).String())
 }
 
 /*
@@ -128,7 +130,7 @@ Attempts to parse the [param json_string] provided and returns the parsed data. 
 */
 func ParseString(json_string string) any { //gd:JSON.parse_string
 	self := Instance{}
-	return any(class(self).ParseString(gd.NewString(json_string)).Interface())
+	return any(class(self).ParseString(String.New(json_string)).Interface())
 }
 
 /*
@@ -138,7 +140,7 @@ Non-static variant of [method parse_string], if you want custom error handling.
 The optional [param keep_text] argument instructs the parser to keep a copy of the original text. This text can be obtained later by using the [method get_parsed_text] function and is used when saving the resource (instead of generating new text from [member data]).
 */
 func (self Instance) Parse(json_text string) error { //gd:JSON.parse
-	return error(gd.ToError(class(self).Parse(gd.NewString(json_text), false)))
+	return error(gd.ToError(class(self).Parse(String.New(json_text), false)))
 }
 
 /*
@@ -233,15 +235,15 @@ The [param indent] parameter controls if and how something is indented; its cont
 [/codeblock]
 */
 //go:nosplit
-func (self class) Stringify(data gd.Variant, indent gd.String, sort_keys bool, full_precision bool) gd.String { //gd:JSON.stringify
+func (self class) Stringify(data gd.Variant, indent String.Readable, sort_keys bool, full_precision bool) String.Readable { //gd:JSON.stringify
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
-	callframe.Arg(frame, pointers.Get(indent))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(indent)))
 	callframe.Arg(frame, sort_keys)
 	callframe.Arg(frame, full_precision)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_stringify, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -250,9 +252,9 @@ func (self class) Stringify(data gd.Variant, indent gd.String, sort_keys bool, f
 Attempts to parse the [param json_string] provided and returns the parsed data. Returns [code]null[/code] if parse failed.
 */
 //go:nosplit
-func (self class) ParseString(json_string gd.String) gd.Variant { //gd:JSON.parse_string
+func (self class) ParseString(json_string String.Readable) gd.Variant { //gd:JSON.parse_string
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(json_string))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(json_string)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_parse_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
@@ -267,9 +269,9 @@ Non-static variant of [method parse_string], if you want custom error handling.
 The optional [param keep_text] argument instructs the parser to keep a copy of the original text. This text can be obtained later by using the [method get_parsed_text] function and is used when saving the resource (instead of generating new text from [member data]).
 */
 //go:nosplit
-func (self class) Parse(json_text gd.String, keep_text bool) gd.Error { //gd:JSON.parse
+func (self class) Parse(json_text String.Readable, keep_text bool) gd.Error { //gd:JSON.parse
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(json_text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(json_text)))
 	callframe.Arg(frame, keep_text)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -301,11 +303,11 @@ func (self class) SetData(data gd.Variant) { //gd:JSON.set_data
 Return the text parsed by [method parse] (requires passing [code]keep_text[/code] to [method parse]).
 */
 //go:nosplit
-func (self class) GetParsedText() gd.String { //gd:JSON.get_parsed_text
+func (self class) GetParsedText() String.Readable { //gd:JSON.get_parsed_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_parsed_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -327,11 +329,11 @@ func (self class) GetErrorLine() gd.Int { //gd:JSON.get_error_line
 Returns an empty string if the last call to [method parse] was successful, or the error message if it failed.
 */
 //go:nosplit
-func (self class) GetErrorMessage() gd.String { //gd:JSON.get_error_message
+func (self class) GetErrorMessage() String.Readable { //gd:JSON.get_error_message
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_error_message, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

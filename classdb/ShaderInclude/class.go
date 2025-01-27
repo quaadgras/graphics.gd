@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A shader include file, saved with the [code].gdshaderinc[/code] extension. This class allows you to define a custom shader snippet that can be included in a [Shader] by using the preprocessor directive [code]#include[/code], followed by the file path (e.g. [code]#include "res://shader_lib.gdshaderinc"[/code]). The snippet doesn't have to be a valid shader on its own.
@@ -65,24 +67,24 @@ func (self Instance) Code() string {
 }
 
 func (self Instance) SetCode(value string) {
-	class(self).SetCode(gd.NewString(value))
+	class(self).SetCode(String.New(value))
 }
 
 //go:nosplit
-func (self class) SetCode(code gd.String) { //gd:ShaderInclude.set_code
+func (self class) SetCode(code String.Readable) { //gd:ShaderInclude.set_code
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(code))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(code)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderInclude.Bind_set_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetCode() gd.String { //gd:ShaderInclude.get_code
+func (self class) GetCode() String.Readable { //gd:ShaderInclude.get_code
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderInclude.Bind_get_code, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

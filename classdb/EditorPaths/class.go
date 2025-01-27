@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This editor-only singleton returns OS-specific paths to various data folders and files. It can be used in editor plugins to ensure files are saved in the correct location on each operating system.
@@ -134,11 +136,11 @@ Returns the absolute path to the user's data folder. This folder should be used 
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetDataDir() gd.String { //gd:EditorPaths.get_data_dir
+func (self class) GetDataDir() String.Readable { //gd:EditorPaths.get_data_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_data_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -153,11 +155,11 @@ Returns the absolute path to the user's configuration folder. This folder should
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetConfigDir() gd.String { //gd:EditorPaths.get_config_dir
+func (self class) GetConfigDir() String.Readable { //gd:EditorPaths.get_config_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_config_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -172,11 +174,11 @@ Returns the absolute path to the user's cache folder. This folder should be used
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetCacheDir() gd.String { //gd:EditorPaths.get_cache_dir
+func (self class) GetCacheDir() String.Readable { //gd:EditorPaths.get_cache_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_cache_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -202,11 +204,11 @@ func (self class) IsSelfContained() bool { //gd:EditorPaths.is_self_contained
 Returns the absolute path to the self-contained file that makes the current Godot editor instance be considered as self-contained. Returns an empty string if the current Godot editor instance isn't self-contained. See also [method is_self_contained].
 */
 //go:nosplit
-func (self class) GetSelfContainedFile() gd.String { //gd:EditorPaths.get_self_contained_file
+func (self class) GetSelfContainedFile() String.Readable { //gd:EditorPaths.get_self_contained_file
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_self_contained_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -215,11 +217,11 @@ func (self class) GetSelfContainedFile() gd.String { //gd:EditorPaths.get_self_c
 Returns the project-specific editor settings path. Projects all have a unique subdirectory inside the settings path where project-specific editor settings are saved.
 */
 //go:nosplit
-func (self class) GetProjectSettingsDir() gd.String { //gd:EditorPaths.get_project_settings_dir
+func (self class) GetProjectSettingsDir() String.Readable { //gd:EditorPaths.get_project_settings_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_project_settings_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

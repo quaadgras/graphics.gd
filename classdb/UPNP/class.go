@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This class can be used to discover compatible [UPNPDevice]s on the local network and execute commands on them, like managing port mappings (for port forwarding/NAT traversal) and querying the local and remote network IP address. Note that methods on this class are synchronous and block the calling thread.
@@ -149,7 +151,7 @@ Filters for IGD (InternetGatewayDevice) type devices by default, as those manage
 See [enum UPNPResult] for possible return values.
 */
 func (self Instance) Discover() int { //gd:UPNP.discover
-	return int(int(class(self).Discover(gd.Int(2000), gd.Int(2), gd.NewString("InternetGatewayDevice"))))
+	return int(int(class(self).Discover(gd.Int(2000), gd.Int(2), String.New("InternetGatewayDevice"))))
 }
 
 /*
@@ -168,14 +170,14 @@ The mapping's lease [param duration] can be limited by specifying a duration in 
 See [enum UPNPResult] for possible return values.
 */
 func (self Instance) AddPortMapping(port int) int { //gd:UPNP.add_port_mapping
-	return int(int(class(self).AddPortMapping(gd.Int(port), gd.Int(0), gd.NewString(""), gd.NewString("UDP"), gd.Int(0))))
+	return int(int(class(self).AddPortMapping(gd.Int(port), gd.Int(0), String.New(""), String.New("UDP"), gd.Int(0))))
 }
 
 /*
 Deletes the port mapping for the given port and protocol combination on the default gateway (see [method get_gateway]) if one exists. [param port] must be a valid port between 1 and 65535, [param proto] can be either [code]"TCP"[/code] or [code]"UDP"[/code]. May be refused for mappings pointing to addresses other than this one, for well-known ports (below 1024), or for mappings not added via UPnP. See [enum UPNPResult] for possible return values.
 */
 func (self Instance) DeletePortMapping(port int) int { //gd:UPNP.delete_port_mapping
-	return int(int(class(self).DeletePortMapping(gd.Int(port), gd.NewString("UDP"))))
+	return int(int(class(self).DeletePortMapping(gd.Int(port), String.New("UDP"))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -202,7 +204,7 @@ func (self Instance) DiscoverMulticastIf() string {
 }
 
 func (self Instance) SetDiscoverMulticastIf(value string) {
-	class(self).SetDiscoverMulticastIf(gd.NewString(value))
+	class(self).SetDiscoverMulticastIf(String.New(value))
 }
 
 func (self Instance) DiscoverLocalPort() int {
@@ -315,11 +317,11 @@ Filters for IGD (InternetGatewayDevice) type devices by default, as those manage
 See [enum UPNPResult] for possible return values.
 */
 //go:nosplit
-func (self class) Discover(timeout gd.Int, ttl gd.Int, device_filter gd.String) gd.Int { //gd:UPNP.discover
+func (self class) Discover(timeout gd.Int, ttl gd.Int, device_filter String.Readable) gd.Int { //gd:UPNP.discover
 	var frame = callframe.New()
 	callframe.Arg(frame, timeout)
 	callframe.Arg(frame, ttl)
-	callframe.Arg(frame, pointers.Get(device_filter))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(device_filter)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_discover, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -331,11 +333,11 @@ func (self class) Discover(timeout gd.Int, ttl gd.Int, device_filter gd.String) 
 Returns the external [IP] address of the default gateway (see [method get_gateway]) as string. Returns an empty string on error.
 */
 //go:nosplit
-func (self class) QueryExternalAddress() gd.String { //gd:UPNP.query_external_address
+func (self class) QueryExternalAddress() String.Readable { //gd:UPNP.query_external_address
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_query_external_address, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -349,12 +351,12 @@ The mapping's lease [param duration] can be limited by specifying a duration in 
 See [enum UPNPResult] for possible return values.
 */
 //go:nosplit
-func (self class) AddPortMapping(port gd.Int, port_internal gd.Int, desc gd.String, proto gd.String, duration gd.Int) gd.Int { //gd:UPNP.add_port_mapping
+func (self class) AddPortMapping(port gd.Int, port_internal gd.Int, desc String.Readable, proto String.Readable, duration gd.Int) gd.Int { //gd:UPNP.add_port_mapping
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, port_internal)
-	callframe.Arg(frame, pointers.Get(desc))
-	callframe.Arg(frame, pointers.Get(proto))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(desc)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(proto)))
 	callframe.Arg(frame, duration)
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_add_port_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -367,10 +369,10 @@ func (self class) AddPortMapping(port gd.Int, port_internal gd.Int, desc gd.Stri
 Deletes the port mapping for the given port and protocol combination on the default gateway (see [method get_gateway]) if one exists. [param port] must be a valid port between 1 and 65535, [param proto] can be either [code]"TCP"[/code] or [code]"UDP"[/code]. May be refused for mappings pointing to addresses other than this one, for well-known ports (below 1024), or for mappings not added via UPnP. See [enum UPNPResult] for possible return values.
 */
 //go:nosplit
-func (self class) DeletePortMapping(port gd.Int, proto gd.String) gd.Int { //gd:UPNP.delete_port_mapping
+func (self class) DeletePortMapping(port gd.Int, proto String.Readable) gd.Int { //gd:UPNP.delete_port_mapping
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
-	callframe.Arg(frame, pointers.Get(proto))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(proto)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_delete_port_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -379,20 +381,20 @@ func (self class) DeletePortMapping(port gd.Int, proto gd.String) gd.Int { //gd:
 }
 
 //go:nosplit
-func (self class) SetDiscoverMulticastIf(m_if gd.String) { //gd:UPNP.set_discover_multicast_if
+func (self class) SetDiscoverMulticastIf(m_if String.Readable) { //gd:UPNP.set_discover_multicast_if
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(m_if))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(m_if)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_set_discover_multicast_if, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetDiscoverMulticastIf() gd.String { //gd:UPNP.get_discover_multicast_if
+func (self class) GetDiscoverMulticastIf() String.Readable { //gd:UPNP.get_discover_multicast_if
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_discover_multicast_if, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

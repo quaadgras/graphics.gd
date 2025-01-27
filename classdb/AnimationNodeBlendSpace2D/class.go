@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/AnimationRootNode"
 import "graphics.gd/classdb/AnimationNode"
 import "graphics.gd/classdb/Resource"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A resource used by [AnimationNodeBlendTree].
@@ -179,7 +181,7 @@ func (self Instance) XLabel() string {
 }
 
 func (self Instance) SetXLabel(value string) {
-	class(self).SetXLabel(gd.NewString(value))
+	class(self).SetXLabel(String.New(value))
 }
 
 func (self Instance) YLabel() string {
@@ -187,7 +189,7 @@ func (self Instance) YLabel() string {
 }
 
 func (self Instance) SetYLabel(value string) {
-	class(self).SetYLabel(gd.NewString(value))
+	class(self).SetYLabel(String.New(value))
 }
 
 func (self Instance) BlendMode() gdclass.AnimationNodeBlendSpace2DBlendMode {
@@ -412,39 +414,39 @@ func (self class) GetSnap() gd.Vector2 { //gd:AnimationNodeBlendSpace2D.get_snap
 }
 
 //go:nosplit
-func (self class) SetXLabel(text gd.String) { //gd:AnimationNodeBlendSpace2D.set_x_label
+func (self class) SetXLabel(text String.Readable) { //gd:AnimationNodeBlendSpace2D.set_x_label
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_x_label, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetXLabel() gd.String { //gd:AnimationNodeBlendSpace2D.get_x_label
+func (self class) GetXLabel() String.Readable { //gd:AnimationNodeBlendSpace2D.get_x_label
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_x_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetYLabel(text gd.String) { //gd:AnimationNodeBlendSpace2D.set_y_label
+func (self class) SetYLabel(text String.Readable) { //gd:AnimationNodeBlendSpace2D.set_y_label
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_y_label, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetYLabel() gd.String { //gd:AnimationNodeBlendSpace2D.get_y_label
+func (self class) GetYLabel() String.Readable { //gd:AnimationNodeBlendSpace2D.get_y_label
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_y_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

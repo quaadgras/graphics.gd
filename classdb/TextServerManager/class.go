@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [TextServerManager] is the API backend for loading, enumerating, and switching [TextServer]s.
@@ -85,7 +87,7 @@ Finds an interface by its [param name].
 */
 func FindInterface(name string) [1]gdclass.TextServer { //gd:TextServerManager.find_interface
 	once.Do(singleton)
-	return [1]gdclass.TextServer(class(self).FindInterface(gd.NewString(name)))
+	return [1]gdclass.TextServer(class(self).FindInterface(String.New(name)))
 }
 
 /*
@@ -182,9 +184,9 @@ func (self class) GetInterfaces() Array.Contains[Dictionary.Any] { //gd:TextServ
 Finds an interface by its [param name].
 */
 //go:nosplit
-func (self class) FindInterface(name gd.String) [1]gdclass.TextServer { //gd:TextServerManager.find_interface
+func (self class) FindInterface(name String.Readable) [1]gdclass.TextServer { //gd:TextServerManager.find_interface
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_find_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret.Get())}

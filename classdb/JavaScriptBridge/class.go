@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The JavaScriptBridge singleton is implemented only in the Web export. It's used to access the browser's JavaScript context. This allows interaction with embedding pages or calling third-party JavaScript APIs.
@@ -46,7 +48,7 @@ If [param use_global_execution_context] is [code]true[/code], the code will be e
 */
 func Eval(code string) any { //gd:JavaScriptBridge.eval
 	once.Do(singleton)
-	return any(class(self).Eval(gd.NewString(code), false).Interface())
+	return any(class(self).Eval(String.New(code), false).Interface())
 }
 
 /*
@@ -54,7 +56,7 @@ Returns an interface to a JavaScript object that can be used by scripts. The [pa
 */
 func GetInterface(intf string) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.get_interface
 	once.Do(singleton)
-	return [1]gdclass.JavaScriptObject(class(self).GetInterface(gd.NewString(intf)))
+	return [1]gdclass.JavaScriptObject(class(self).GetInterface(String.New(intf)))
 }
 
 /*
@@ -73,7 +75,7 @@ Prompts the user to download a file containing the specified [param buffer]. The
 */
 func DownloadBuffer(buffer []byte, name string) { //gd:JavaScriptBridge.download_buffer
 	once.Do(singleton)
-	class(self).DownloadBuffer(gd.NewPackedByteSlice(buffer), gd.NewString(name), gd.NewString("application/octet-stream"))
+	class(self).DownloadBuffer(gd.NewPackedByteSlice(buffer), String.New(name), String.New("application/octet-stream"))
 }
 
 /*
@@ -119,9 +121,9 @@ Execute the string [param code] as JavaScript code within the browser window. Th
 If [param use_global_execution_context] is [code]true[/code], the code will be evaluated in the global execution context. Otherwise, it is evaluated in the execution context of a function within the engine's runtime environment.
 */
 //go:nosplit
-func (self class) Eval(code gd.String, use_global_execution_context bool) gd.Variant { //gd:JavaScriptBridge.eval
+func (self class) Eval(code String.Readable, use_global_execution_context bool) gd.Variant { //gd:JavaScriptBridge.eval
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(code))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(code)))
 	callframe.Arg(frame, use_global_execution_context)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_eval, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -134,9 +136,9 @@ func (self class) Eval(code gd.String, use_global_execution_context bool) gd.Var
 Returns an interface to a JavaScript object that can be used by scripts. The [param interface] must be a valid property of the JavaScript [code]window[/code]. The callback must accept a single [Array] argument, which will contain the JavaScript [code]arguments[/code]. See [JavaScriptObject] for usage.
 */
 //go:nosplit
-func (self class) GetInterface(intf gd.String) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.get_interface
+func (self class) GetInterface(intf String.Readable) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.get_interface
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(intf))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(intf)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_get_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.JavaScriptObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaScriptObject](r_ret.Get())}
@@ -165,11 +167,11 @@ Prompts the user to download a file containing the specified [param buffer]. The
 [b]Note:[/b] Browsers might ask the user for permission or block the download if multiple download requests are made in a quick succession.
 */
 //go:nosplit
-func (self class) DownloadBuffer(buffer gd.PackedByteArray, name gd.String, mime gd.String) { //gd:JavaScriptBridge.download_buffer
+func (self class) DownloadBuffer(buffer gd.PackedByteArray, name String.Readable, mime String.Readable) { //gd:JavaScriptBridge.download_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(mime))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(mime)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_download_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Represents a physics shape as defined by the [code]OMI_physics_shape[/code] or [code]OMI_collider[/code] GLTF extensions. This class is an intermediary between the GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
@@ -112,7 +114,7 @@ func (self Instance) ShapeType() string {
 }
 
 func (self Instance) SetShapeType(value string) {
-	class(self).SetShapeType(gd.NewString(value))
+	class(self).SetShapeType(String.New(value))
 }
 
 func (self Instance) Size() Vector3.XYZ {
@@ -247,19 +249,19 @@ func (self class) ToDictionary() Dictionary.Any { //gd:GLTFPhysicsShape.to_dicti
 }
 
 //go:nosplit
-func (self class) GetShapeType() gd.String { //gd:GLTFPhysicsShape.get_shape_type
+func (self class) GetShapeType() String.Readable { //gd:GLTFPhysicsShape.get_shape_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_get_shape_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetShapeType(shape_type gd.String) { //gd:GLTFPhysicsShape.set_shape_type
+func (self class) SetShapeType(shape_type String.Readable) { //gd:GLTFPhysicsShape.set_shape_type
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(shape_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(shape_type)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_set_shape_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

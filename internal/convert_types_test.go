@@ -74,7 +74,7 @@ func (c Converter) Complex64() complex64   { return 2 + 2i }
 func (c Converter) Complex128() complex128 { return 2 + 2i }
 
 func (c Converter) Float() gd.Float                      { return 2.2 }
-func (c Converter) String() String.Advanced              { return String.New("testing") }
+func (c Converter) String() String.Readable              { return String.New("testing") }
 func (c Converter) Vector2() Vector2.XY                  { return Vector2.New(1, 2) }
 func (c Converter) Vector2i() Vector2i.XY                { return Vector2i.New(1, 2) }
 func (c Converter) Rect2() Rect2.PositionSize            { return Rect2.New(1, 2, 3, 4) }
@@ -158,7 +158,7 @@ func (c Converter) ValidComplex64(f complex64) bool   { return f == c.Complex64(
 func (c Converter) ValidComplex128(f complex128) bool { return f == c.Complex128() }
 
 func (c Converter) ValidFloat(f gd.Float) bool                      { return f == c.Float() }
-func (c Converter) ValidString(s String.Advanced) bool              { return s.String() == c.String().String() }
+func (c Converter) ValidString(s String.Readable) bool              { return s.String() == c.String().String() }
 func (c Converter) ValidVector2(v Vector2.XY) bool                  { return v == c.Vector2() }
 func (c Converter) ValidVector2i(v Vector2i.XY) bool                { return v == c.Vector2i() }
 func (c Converter) ValidRect2(r Rect2.PositionSize) bool            { return r == c.Rect2() }

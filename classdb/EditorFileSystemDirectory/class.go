@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A more generalized, low-level variation of the directory concept.
@@ -128,14 +130,14 @@ func (self Instance) GetParent() [1]gdclass.EditorFileSystemDirectory { //gd:Edi
 Returns the index of the file with name [param name] or [code]-1[/code] if not found.
 */
 func (self Instance) FindFileIndex(name string) int { //gd:EditorFileSystemDirectory.find_file_index
-	return int(int(class(self).FindFileIndex(gd.NewString(name))))
+	return int(int(class(self).FindFileIndex(String.New(name))))
 }
 
 /*
 Returns the index of the directory with name [param name] or [code]-1[/code] if not found.
 */
 func (self Instance) FindDirIndex(name string) int { //gd:EditorFileSystemDirectory.find_dir_index
-	return int(int(class(self).FindDirIndex(gd.NewString(name))))
+	return int(int(class(self).FindDirIndex(String.New(name))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -200,12 +202,12 @@ func (self class) GetFileCount() gd.Int { //gd:EditorFileSystemDirectory.get_fil
 Returns the name of the file at index [param idx].
 */
 //go:nosplit
-func (self class) GetFile(idx gd.Int) gd.String { //gd:EditorFileSystemDirectory.get_file
+func (self class) GetFile(idx gd.Int) String.Readable { //gd:EditorFileSystemDirectory.get_file
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -214,12 +216,12 @@ func (self class) GetFile(idx gd.Int) gd.String { //gd:EditorFileSystemDirectory
 Returns the path to the file at index [param idx].
 */
 //go:nosplit
-func (self class) GetFilePath(idx gd.Int) gd.String { //gd:EditorFileSystemDirectory.get_file_path
+func (self class) GetFilePath(idx gd.Int) String.Readable { //gd:EditorFileSystemDirectory.get_file_path
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_file_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -242,12 +244,12 @@ func (self class) GetFileType(idx gd.Int) gd.StringName { //gd:EditorFileSystemD
 Returns the name of the script class defined in the file at index [param idx]. If the file doesn't define a script class using the [code]class_name[/code] syntax, this will return an empty string.
 */
 //go:nosplit
-func (self class) GetFileScriptClassName(idx gd.Int) gd.String { //gd:EditorFileSystemDirectory.get_file_script_class_name
+func (self class) GetFileScriptClassName(idx gd.Int) String.Readable { //gd:EditorFileSystemDirectory.get_file_script_class_name
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_file_script_class_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -256,12 +258,12 @@ func (self class) GetFileScriptClassName(idx gd.Int) gd.String { //gd:EditorFile
 Returns the base class of the script class defined in the file at index [param idx]. If the file doesn't define a script class using the [code]class_name[/code] syntax, this will return an empty string.
 */
 //go:nosplit
-func (self class) GetFileScriptClassExtends(idx gd.Int) gd.String { //gd:EditorFileSystemDirectory.get_file_script_class_extends
+func (self class) GetFileScriptClassExtends(idx gd.Int) String.Readable { //gd:EditorFileSystemDirectory.get_file_script_class_extends
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_file_script_class_extends, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -284,11 +286,11 @@ func (self class) GetFileImportIsValid(idx gd.Int) bool { //gd:EditorFileSystemD
 Returns the name of this directory.
 */
 //go:nosplit
-func (self class) GetName() gd.String { //gd:EditorFileSystemDirectory.get_name
+func (self class) GetName() String.Readable { //gd:EditorFileSystemDirectory.get_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -297,11 +299,11 @@ func (self class) GetName() gd.String { //gd:EditorFileSystemDirectory.get_name
 Returns the path to this directory.
 */
 //go:nosplit
-func (self class) GetPath() gd.String { //gd:EditorFileSystemDirectory.get_path
+func (self class) GetPath() String.Readable { //gd:EditorFileSystemDirectory.get_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -323,9 +325,9 @@ func (self class) GetParent() [1]gdclass.EditorFileSystemDirectory { //gd:Editor
 Returns the index of the file with name [param name] or [code]-1[/code] if not found.
 */
 //go:nosplit
-func (self class) FindFileIndex(name gd.String) gd.Int { //gd:EditorFileSystemDirectory.find_file_index
+func (self class) FindFileIndex(name String.Readable) gd.Int { //gd:EditorFileSystemDirectory.find_file_index
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_find_file_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -337,9 +339,9 @@ func (self class) FindFileIndex(name gd.String) gd.Int { //gd:EditorFileSystemDi
 Returns the index of the directory with name [param name] or [code]-1[/code] if not found.
 */
 //go:nosplit
-func (self class) FindDirIndex(name gd.String) gd.Int { //gd:EditorFileSystemDirectory.find_dir_index
+func (self class) FindDirIndex(name String.Readable) gd.Int { //gd:EditorFileSystemDirectory.find_dir_index
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_find_dir_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

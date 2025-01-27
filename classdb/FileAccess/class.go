@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This class can be used to permanently store data in the user device's file system and to read from it. This is useful for store game save data or player configuration files.
@@ -84,7 +86,7 @@ Returns [code]null[/code] if opening the file failed. You can use [method get_op
 */
 func Open(path string, flags gdclass.FileAccessModeFlags) [1]gdclass.FileAccess { //gd:FileAccess.open
 	self := Instance{}
-	return [1]gdclass.FileAccess(class(self).Open(gd.NewString(path), flags))
+	return [1]gdclass.FileAccess(class(self).Open(String.New(path), flags))
 }
 
 /*
@@ -94,7 +96,7 @@ Returns [code]null[/code] if opening the file failed. You can use [method get_op
 */
 func OpenEncrypted(path string, mode_flags gdclass.FileAccessModeFlags, key []byte) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
 	self := Instance{}
-	return [1]gdclass.FileAccess(class(self).OpenEncrypted(gd.NewString(path), mode_flags, gd.NewPackedByteSlice(key)))
+	return [1]gdclass.FileAccess(class(self).OpenEncrypted(String.New(path), mode_flags, gd.NewPackedByteSlice(key)))
 }
 
 /*
@@ -103,7 +105,7 @@ Returns [code]null[/code] if opening the file failed. You can use [method get_op
 */
 func OpenEncryptedWithPass(path string, mode_flags gdclass.FileAccessModeFlags, pass string) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted_with_pass
 	self := Instance{}
-	return [1]gdclass.FileAccess(class(self).OpenEncryptedWithPass(gd.NewString(path), mode_flags, gd.NewString(pass)))
+	return [1]gdclass.FileAccess(class(self).OpenEncryptedWithPass(String.New(path), mode_flags, String.New(pass)))
 }
 
 /*
@@ -113,7 +115,7 @@ Returns [code]null[/code] if opening the file failed. You can use [method get_op
 */
 func OpenCompressed(path string, mode_flags gdclass.FileAccessModeFlags) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
 	self := Instance{}
-	return [1]gdclass.FileAccess(class(self).OpenCompressed(gd.NewString(path), mode_flags, 0))
+	return [1]gdclass.FileAccess(class(self).OpenCompressed(String.New(path), mode_flags, 0))
 }
 
 /*
@@ -130,7 +132,7 @@ Returns an empty [PackedByteArray] if an error occurred while opening the file. 
 */
 func GetFileAsBytes(path string) []byte { //gd:FileAccess.get_file_as_bytes
 	self := Instance{}
-	return []byte(class(self).GetFileAsBytes(gd.NewString(path)).Bytes())
+	return []byte(class(self).GetFileAsBytes(String.New(path)).Bytes())
 }
 
 /*
@@ -139,7 +141,7 @@ Returns an empty [String] if an error occurred while opening the file. You can u
 */
 func GetFileAsString(path string) string { //gd:FileAccess.get_file_as_string
 	self := Instance{}
-	return string(class(self).GetFileAsString(gd.NewString(path)).String())
+	return string(class(self).GetFileAsString(String.New(path)).String())
 }
 
 /*
@@ -307,7 +309,7 @@ Alice,"I thought you'd reply with ""Hello, world""."
 Note how the second line can omit the enclosing quotes as it does not include the delimiter. However it [i]could[/i] very well use quotes, it was only written without for demonstration purposes. The third line must use [code]""[/code] for each quotation mark that needs to be interpreted as such instead of the end of a text value.
 */
 func (self Instance) GetCsvLine() []string { //gd:FileAccess.get_csv_line
-	return []string(class(self).GetCsvLine(gd.NewString(",")).Strings())
+	return []string(class(self).GetCsvLine(String.New(",")).Strings())
 }
 
 /*
@@ -323,7 +325,7 @@ Returns an MD5 String representing the file at the given path or an empty [Strin
 */
 func GetMd5(path string) string { //gd:FileAccess.get_md5
 	self := Instance{}
-	return string(class(self).GetMd5(gd.NewString(path)).String())
+	return string(class(self).GetMd5(String.New(path)).String())
 }
 
 /*
@@ -331,7 +333,7 @@ Returns an SHA-256 [String] representing the file at the given path or an empty 
 */
 func GetSha256(path string) string { //gd:FileAccess.get_sha256
 	self := Instance{}
-	return string(class(self).GetSha256(gd.NewString(path)).String())
+	return string(class(self).GetSha256(String.New(path)).String())
 }
 
 /*
@@ -454,7 +456,7 @@ func (self Instance) StoreBuffer(buffer []byte) { //gd:FileAccess.store_buffer
 Appends [param line] to the file followed by a line return character ([code]\n[/code]), encoding the text as UTF-8.
 */
 func (self Instance) StoreLine(line string) { //gd:FileAccess.store_line
-	class(self).StoreLine(gd.NewString(line))
+	class(self).StoreLine(String.New(line))
 }
 
 /*
@@ -462,7 +464,7 @@ Store the given [PackedStringArray] in the file as a line formatted in the CSV (
 Text will be encoded as UTF-8.
 */
 func (self Instance) StoreCsvLine(values []string) { //gd:FileAccess.store_csv_line
-	class(self).StoreCsvLine(gd.NewPackedStringSlice(values), gd.NewString(","))
+	class(self).StoreCsvLine(gd.NewPackedStringSlice(values), String.New(","))
 }
 
 /*
@@ -470,7 +472,7 @@ Appends [param string] to the file without a line return, encoding the text as U
 [b]Note:[/b] This method is intended to be used to write text files. The string is stored as a UTF-8 encoded buffer without string length or terminating zero, which means that it can't be loaded back easily. If you want to store a retrievable string in a binary file, consider using [method store_pascal_string] instead. For retrieving strings from a text file, you can use [code]get_buffer(length).get_string_from_utf8()[/code] (if you know the length) or [method get_as_text].
 */
 func (self Instance) StoreString(s string) { //gd:FileAccess.store_string
-	class(self).StoreString(gd.NewString(s))
+	class(self).StoreString(String.New(s))
 }
 
 /*
@@ -487,7 +489,7 @@ Stores the given [String] as a line in the file in Pascal format (i.e. also stor
 Text will be encoded as UTF-8.
 */
 func (self Instance) StorePascalString(s string) { //gd:FileAccess.store_pascal_string
-	class(self).StorePascalString(gd.NewString(s))
+	class(self).StorePascalString(String.New(s))
 }
 
 /*
@@ -513,7 +515,7 @@ For a non-static, relative equivalent, use [method DirAccess.file_exists].
 */
 func FileExists(path string) bool { //gd:FileAccess.file_exists
 	self := Instance{}
-	return bool(class(self).FileExists(gd.NewString(path)))
+	return bool(class(self).FileExists(String.New(path)))
 }
 
 /*
@@ -521,7 +523,7 @@ Returns the last time the [param file] was modified in Unix timestamp format, or
 */
 func GetModifiedTime(file string) int { //gd:FileAccess.get_modified_time
 	self := Instance{}
-	return int(int(class(self).GetModifiedTime(gd.NewString(file))))
+	return int(int(class(self).GetModifiedTime(String.New(file))))
 }
 
 /*
@@ -530,7 +532,7 @@ Returns file UNIX permissions.
 */
 func GetUnixPermissions(file string) gdclass.FileAccessUnixPermissionFlags { //gd:FileAccess.get_unix_permissions
 	self := Instance{}
-	return gdclass.FileAccessUnixPermissionFlags(class(self).GetUnixPermissions(gd.NewString(file)))
+	return gdclass.FileAccessUnixPermissionFlags(class(self).GetUnixPermissions(String.New(file)))
 }
 
 /*
@@ -539,7 +541,7 @@ Sets file UNIX permissions.
 */
 func SetUnixPermissions(file string, permissions gdclass.FileAccessUnixPermissionFlags) error { //gd:FileAccess.set_unix_permissions
 	self := Instance{}
-	return error(gd.ToError(class(self).SetUnixPermissions(gd.NewString(file), permissions)))
+	return error(gd.ToError(class(self).SetUnixPermissions(String.New(file), permissions)))
 }
 
 /*
@@ -548,7 +550,7 @@ Returns [code]true[/code], if file [code]hidden[/code] attribute is set.
 */
 func GetHiddenAttribute(file string) bool { //gd:FileAccess.get_hidden_attribute
 	self := Instance{}
-	return bool(class(self).GetHiddenAttribute(gd.NewString(file)))
+	return bool(class(self).GetHiddenAttribute(String.New(file)))
 }
 
 /*
@@ -557,7 +559,7 @@ Sets file [b]hidden[/b] attribute.
 */
 func SetHiddenAttribute(file string, hidden bool) error { //gd:FileAccess.set_hidden_attribute
 	self := Instance{}
-	return error(gd.ToError(class(self).SetHiddenAttribute(gd.NewString(file), hidden)))
+	return error(gd.ToError(class(self).SetHiddenAttribute(String.New(file), hidden)))
 }
 
 /*
@@ -566,7 +568,7 @@ Sets file [b]read only[/b] attribute.
 */
 func SetReadOnlyAttribute(file string, ro bool) error { //gd:FileAccess.set_read_only_attribute
 	self := Instance{}
-	return error(gd.ToError(class(self).SetReadOnlyAttribute(gd.NewString(file), ro)))
+	return error(gd.ToError(class(self).SetReadOnlyAttribute(String.New(file), ro)))
 }
 
 /*
@@ -575,7 +577,7 @@ Returns [code]true[/code], if file [code]read only[/code] attribute is set.
 */
 func GetReadOnlyAttribute(file string) bool { //gd:FileAccess.get_read_only_attribute
 	self := Instance{}
-	return bool(class(self).GetReadOnlyAttribute(gd.NewString(file)))
+	return bool(class(self).GetReadOnlyAttribute(String.New(file)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -610,9 +612,9 @@ Creates a new [FileAccess] object and opens the file for writing or reading, dep
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
 //go:nosplit
-func (self class) Open(path gd.String, flags gdclass.FileAccessModeFlags) [1]gdclass.FileAccess { //gd:FileAccess.open
+func (self class) Open(path String.Readable, flags gdclass.FileAccessModeFlags) [1]gdclass.FileAccess { //gd:FileAccess.open
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -627,9 +629,9 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
 //go:nosplit
-func (self class) OpenEncrypted(path gd.String, mode_flags gdclass.FileAccessModeFlags, key gd.PackedByteArray) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
+func (self class) OpenEncrypted(path String.Readable, mode_flags gdclass.FileAccessModeFlags, key gd.PackedByteArray) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, mode_flags)
 	callframe.Arg(frame, pointers.Get(key))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -644,11 +646,11 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
 //go:nosplit
-func (self class) OpenEncryptedWithPass(path gd.String, mode_flags gdclass.FileAccessModeFlags, pass gd.String) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted_with_pass
+func (self class) OpenEncryptedWithPass(path String.Readable, mode_flags gdclass.FileAccessModeFlags, pass String.Readable) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted_with_pass
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, mode_flags)
-	callframe.Arg(frame, pointers.Get(pass))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(pass)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open_encrypted_with_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret.Get())}
@@ -662,9 +664,9 @@ Creates a new [FileAccess] object and opens a compressed file for reading or wri
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
 //go:nosplit
-func (self class) OpenCompressed(path gd.String, mode_flags gdclass.FileAccessModeFlags, compression_mode gdclass.FileAccessCompressionMode) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
+func (self class) OpenCompressed(path String.Readable, mode_flags gdclass.FileAccessModeFlags, compression_mode gdclass.FileAccessCompressionMode) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, mode_flags)
 	callframe.Arg(frame, compression_mode)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -692,9 +694,9 @@ Returns the whole [param path] file contents as a [PackedByteArray] without any 
 Returns an empty [PackedByteArray] if an error occurred while opening the file. You can use [method get_open_error] to check the error that occurred.
 */
 //go:nosplit
-func (self class) GetFileAsBytes(path gd.String) gd.PackedByteArray { //gd:FileAccess.get_file_as_bytes
+func (self class) GetFileAsBytes(path String.Readable) gd.PackedByteArray { //gd:FileAccess.get_file_as_bytes
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_file_as_bytes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
@@ -707,12 +709,12 @@ Returns the whole [param path] file contents as a [String]. Text is interpreted 
 Returns an empty [String] if an error occurred while opening the file. You can use [method get_open_error] to check the error that occurred.
 */
 //go:nosplit
-func (self class) GetFileAsString(path gd.String) gd.String { //gd:FileAccess.get_file_as_string
+func (self class) GetFileAsString(path String.Readable) String.Readable { //gd:FileAccess.get_file_as_string
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_file_as_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -747,11 +749,11 @@ func (self class) Flush() { //gd:FileAccess.flush
 Returns the path as a [String] for the current open file.
 */
 //go:nosplit
-func (self class) GetPath() gd.String { //gd:FileAccess.get_path
+func (self class) GetPath() String.Readable { //gd:FileAccess.get_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -760,11 +762,11 @@ func (self class) GetPath() gd.String { //gd:FileAccess.get_path
 Returns the absolute path as a [String] for the current open file.
 */
 //go:nosplit
-func (self class) GetPathAbsolute() gd.String { //gd:FileAccess.get_path_absolute
+func (self class) GetPathAbsolute() String.Readable { //gd:FileAccess.get_path_absolute
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_path_absolute, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -969,11 +971,11 @@ Returns the next line of the file as a [String]. The returned string doesn't inc
 Text is interpreted as being UTF-8 encoded.
 */
 //go:nosplit
-func (self class) GetLine() gd.String { //gd:FileAccess.get_line
+func (self class) GetLine() String.Readable { //gd:FileAccess.get_line
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -990,9 +992,9 @@ Alice,"I thought you'd reply with ""Hello, world""."
 Note how the second line can omit the enclosing quotes as it does not include the delimiter. However it [i]could[/i] very well use quotes, it was only written without for demonstration purposes. The third line must use [code]""[/code] for each quotation mark that needs to be interpreted as such instead of the end of a text value.
 */
 //go:nosplit
-func (self class) GetCsvLine(delim gd.String) gd.PackedStringArray { //gd:FileAccess.get_csv_line
+func (self class) GetCsvLine(delim String.Readable) gd.PackedStringArray { //gd:FileAccess.get_csv_line
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(delim))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(delim)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_csv_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
@@ -1005,12 +1007,12 @@ Returns the whole file as a [String]. Text is interpreted as being UTF-8 encoded
 If [param skip_cr] is [code]true[/code], carriage return characters ([code]\r[/code], CR) will be ignored when parsing the UTF-8, so that only line feed characters ([code]\n[/code], LF) represent a new line (Unix convention).
 */
 //go:nosplit
-func (self class) GetAsText(skip_cr bool) gd.String { //gd:FileAccess.get_as_text
+func (self class) GetAsText(skip_cr bool) String.Readable { //gd:FileAccess.get_as_text
 	var frame = callframe.New()
 	callframe.Arg(frame, skip_cr)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_as_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1019,12 +1021,12 @@ func (self class) GetAsText(skip_cr bool) gd.String { //gd:FileAccess.get_as_tex
 Returns an MD5 String representing the file at the given path or an empty [String] on failure.
 */
 //go:nosplit
-func (self class) GetMd5(path gd.String) gd.String { //gd:FileAccess.get_md5
+func (self class) GetMd5(path String.Readable) String.Readable { //gd:FileAccess.get_md5
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_md5, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1033,12 +1035,12 @@ func (self class) GetMd5(path gd.String) gd.String { //gd:FileAccess.get_md5
 Returns an SHA-256 [String] representing the file at the given path or an empty [String] on failure.
 */
 //go:nosplit
-func (self class) GetSha256(path gd.String) gd.String { //gd:FileAccess.get_sha256
+func (self class) GetSha256(path String.Readable) String.Readable { //gd:FileAccess.get_sha256
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_sha256, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1230,9 +1232,9 @@ func (self class) StoreBuffer(buffer gd.PackedByteArray) { //gd:FileAccess.store
 Appends [param line] to the file followed by a line return character ([code]\n[/code]), encoding the text as UTF-8.
 */
 //go:nosplit
-func (self class) StoreLine(line gd.String) { //gd:FileAccess.store_line
+func (self class) StoreLine(line String.Readable) { //gd:FileAccess.store_line
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(line))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(line)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1243,10 +1245,10 @@ Store the given [PackedStringArray] in the file as a line formatted in the CSV (
 Text will be encoded as UTF-8.
 */
 //go:nosplit
-func (self class) StoreCsvLine(values gd.PackedStringArray, delim gd.String) { //gd:FileAccess.store_csv_line
+func (self class) StoreCsvLine(values gd.PackedStringArray, delim String.Readable) { //gd:FileAccess.store_csv_line
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(values))
-	callframe.Arg(frame, pointers.Get(delim))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(delim)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_csv_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1257,9 +1259,9 @@ Appends [param string] to the file without a line return, encoding the text as U
 [b]Note:[/b] This method is intended to be used to write text files. The string is stored as a UTF-8 encoded buffer without string length or terminating zero, which means that it can't be loaded back easily. If you want to store a retrievable string in a binary file, consider using [method store_pascal_string] instead. For retrieving strings from a text file, you can use [code]get_buffer(length).get_string_from_utf8()[/code] (if you know the length) or [method get_as_text].
 */
 //go:nosplit
-func (self class) StoreString(s gd.String) { //gd:FileAccess.store_string
+func (self class) StoreString(s String.Readable) { //gd:FileAccess.store_string
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(s))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1285,9 +1287,9 @@ Stores the given [String] as a line in the file in Pascal format (i.e. also stor
 Text will be encoded as UTF-8.
 */
 //go:nosplit
-func (self class) StorePascalString(s gd.String) { //gd:FileAccess.store_pascal_string
+func (self class) StorePascalString(s String.Readable) { //gd:FileAccess.store_pascal_string
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(s))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_pascal_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1298,11 +1300,11 @@ Returns a [String] saved in Pascal format from the file.
 Text is interpreted as being UTF-8 encoded.
 */
 //go:nosplit
-func (self class) GetPascalString() gd.String { //gd:FileAccess.get_pascal_string
+func (self class) GetPascalString() String.Readable { //gd:FileAccess.get_pascal_string
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_pascal_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1325,9 +1327,9 @@ Returns [code]true[/code] if the file exists in the given path.
 For a non-static, relative equivalent, use [method DirAccess.file_exists].
 */
 //go:nosplit
-func (self class) FileExists(path gd.String) bool { //gd:FileAccess.file_exists
+func (self class) FileExists(path String.Readable) bool { //gd:FileAccess.file_exists
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_file_exists, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1339,9 +1341,9 @@ func (self class) FileExists(path gd.String) bool { //gd:FileAccess.file_exists
 Returns the last time the [param file] was modified in Unix timestamp format, or [code]0[/code] on error. This Unix timestamp can be converted to another format using the [Time] singleton.
 */
 //go:nosplit
-func (self class) GetModifiedTime(file gd.String) gd.Int { //gd:FileAccess.get_modified_time
+func (self class) GetModifiedTime(file String.Readable) gd.Int { //gd:FileAccess.get_modified_time
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(file))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_modified_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1354,9 +1356,9 @@ Returns file UNIX permissions.
 [b]Note:[/b] This method is implemented on iOS, Linux/BSD, and macOS.
 */
 //go:nosplit
-func (self class) GetUnixPermissions(file gd.String) gdclass.FileAccessUnixPermissionFlags { //gd:FileAccess.get_unix_permissions
+func (self class) GetUnixPermissions(file String.Readable) gdclass.FileAccessUnixPermissionFlags { //gd:FileAccess.get_unix_permissions
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(file))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	var r_ret = callframe.Ret[gdclass.FileAccessUnixPermissionFlags](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_unix_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1369,9 +1371,9 @@ Sets file UNIX permissions.
 [b]Note:[/b] This method is implemented on iOS, Linux/BSD, and macOS.
 */
 //go:nosplit
-func (self class) SetUnixPermissions(file gd.String, permissions gdclass.FileAccessUnixPermissionFlags) gd.Error { //gd:FileAccess.set_unix_permissions
+func (self class) SetUnixPermissions(file String.Readable, permissions gdclass.FileAccessUnixPermissionFlags) gd.Error { //gd:FileAccess.set_unix_permissions
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(file))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	callframe.Arg(frame, permissions)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_set_unix_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1385,9 +1387,9 @@ Returns [code]true[/code], if file [code]hidden[/code] attribute is set.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
-func (self class) GetHiddenAttribute(file gd.String) bool { //gd:FileAccess.get_hidden_attribute
+func (self class) GetHiddenAttribute(file String.Readable) bool { //gd:FileAccess.get_hidden_attribute
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(file))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_hidden_attribute, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1400,9 +1402,9 @@ Sets file [b]hidden[/b] attribute.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
-func (self class) SetHiddenAttribute(file gd.String, hidden bool) gd.Error { //gd:FileAccess.set_hidden_attribute
+func (self class) SetHiddenAttribute(file String.Readable, hidden bool) gd.Error { //gd:FileAccess.set_hidden_attribute
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(file))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	callframe.Arg(frame, hidden)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_set_hidden_attribute, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1416,9 +1418,9 @@ Sets file [b]read only[/b] attribute.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
-func (self class) SetReadOnlyAttribute(file gd.String, ro bool) gd.Error { //gd:FileAccess.set_read_only_attribute
+func (self class) SetReadOnlyAttribute(file String.Readable, ro bool) gd.Error { //gd:FileAccess.set_read_only_attribute
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(file))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	callframe.Arg(frame, ro)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_set_read_only_attribute, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1432,9 +1434,9 @@ Returns [code]true[/code], if file [code]read only[/code] attribute is set.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
-func (self class) GetReadOnlyAttribute(file gd.String) bool { //gd:FileAccess.get_read_only_attribute
+func (self class) GetReadOnlyAttribute(file String.Readable) bool { //gd:FileAccess.get_read_only_attribute
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(file))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_read_only_attribute, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

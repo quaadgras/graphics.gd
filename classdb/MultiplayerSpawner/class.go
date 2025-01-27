@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/NodePath"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Spawnable scenes can be configured in the editor or through code (see [method add_spawnable_scene]).
@@ -48,7 +50,7 @@ type Any interface {
 Adds a scene path to spawnable scenes, making it automatically replicated from the multiplayer authority to other peers when added as children of the node pointed by [member spawn_path].
 */
 func (self Instance) AddSpawnableScene(path string) { //gd:MultiplayerSpawner.add_spawnable_scene
-	class(self).AddSpawnableScene(gd.NewString(path))
+	class(self).AddSpawnableScene(String.New(path))
 }
 
 /*
@@ -126,9 +128,9 @@ func (self Instance) SetSpawnFunction(value Callable.Function) {
 Adds a scene path to spawnable scenes, making it automatically replicated from the multiplayer authority to other peers when added as children of the node pointed by [member spawn_path].
 */
 //go:nosplit
-func (self class) AddSpawnableScene(path gd.String) { //gd:MultiplayerSpawner.add_spawnable_scene
+func (self class) AddSpawnableScene(path String.Readable) { //gd:MultiplayerSpawner.add_spawnable_scene
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_add_spawnable_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -151,12 +153,12 @@ func (self class) GetSpawnableSceneCount() gd.Int { //gd:MultiplayerSpawner.get_
 Returns the spawnable scene path by index.
 */
 //go:nosplit
-func (self class) GetSpawnableScene(index gd.Int) gd.String { //gd:MultiplayerSpawner.get_spawnable_scene
+func (self class) GetSpawnableScene(index gd.Int) String.Readable { //gd:MultiplayerSpawner.get_spawnable_scene
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawnable_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

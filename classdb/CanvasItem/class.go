@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2"
@@ -32,6 +33,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Abstract base class for everything in 2D space. Canvas items are laid out in a tree; children inherit and extend their parent's transform. [CanvasItem] is extended by [Control] for GUI-related nodes, and by [Node2D] for 2D game objects.
@@ -300,42 +302,42 @@ DrawString(defaultFont, new Vector2(64, 64), "Hello world", HORIZONTAL_ALIGNMENT
 See also [method Font.draw_string].
 */
 func (self Instance) DrawString(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_string
-	class(self).DrawString(font, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Color(gd.Color{1, 1, 1, 1}), 3, 0, 0)
+	class(self).DrawString(font, gd.Vector2(pos), String.New(text), 0, gd.Float(-1), gd.Int(16), gd.Color(gd.Color{1, 1, 1, 1}), 3, 0, 0)
 }
 
 /*
 Breaks [param text] into lines and draws it using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 func (self Instance) DrawMultilineString(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_multiline_string
-	class(self).DrawMultilineString(font, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
+	class(self).DrawMultilineString(font, gd.Vector2(pos), String.New(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
 }
 
 /*
 Draws [param text] outline using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 func (self Instance) DrawStringOutline(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_string_outline
-	class(self).DrawStringOutline(font, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 0, 0)
+	class(self).DrawStringOutline(font, gd.Vector2(pos), String.New(text), 0, gd.Float(-1), gd.Int(16), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 0, 0)
 }
 
 /*
 Breaks [param text] to the lines and draws text outline using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 func (self Instance) DrawMultilineStringOutline(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_multiline_string_outline
-	class(self).DrawMultilineStringOutline(font, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
+	class(self).DrawMultilineStringOutline(font, gd.Vector2(pos), String.New(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
 }
 
 /*
 Draws a string first character using a custom font.
 */
 func (self Instance) DrawChar(font [1]gdclass.Font, pos Vector2.XY, char string) { //gd:CanvasItem.draw_char
-	class(self).DrawChar(font, gd.Vector2(pos), gd.NewString(char), gd.Int(16), gd.Color(gd.Color{1, 1, 1, 1}))
+	class(self).DrawChar(font, gd.Vector2(pos), String.New(char), gd.Int(16), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a string first character outline using a custom font.
 */
 func (self Instance) DrawCharOutline(font [1]gdclass.Font, pos Vector2.XY, char string) { //gd:CanvasItem.draw_char_outline
-	class(self).DrawCharOutline(font, gd.Vector2(pos), gd.NewString(char), gd.Int(16), gd.Int(-1), gd.Color(gd.Color{1, 1, 1, 1}))
+	class(self).DrawCharOutline(font, gd.Vector2(pos), String.New(char), gd.Int(16), gd.Int(-1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
@@ -1259,11 +1261,11 @@ DrawString(defaultFont, new Vector2(64, 64), "Hello world", HORIZONTAL_ALIGNMENT
 See also [method Font.draw_string].
 */
 //go:nosplit
-func (self class) DrawString(font [1]gdclass.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, modulate gd.Color, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string
+func (self class) DrawString(font [1]gdclass.Font, pos gd.Vector2, text String.Readable, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, modulate gd.Color, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, alignment)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, font_size)
@@ -1280,11 +1282,11 @@ func (self class) DrawString(font [1]gdclass.Font, pos gd.Vector2, text gd.Strin
 Breaks [param text] into lines and draws it using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 //go:nosplit
-func (self class) DrawMultilineString(font [1]gdclass.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, modulate gd.Color, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string
+func (self class) DrawMultilineString(font [1]gdclass.Font, pos gd.Vector2, text String.Readable, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, modulate gd.Color, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, alignment)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, font_size)
@@ -1303,11 +1305,11 @@ func (self class) DrawMultilineString(font [1]gdclass.Font, pos gd.Vector2, text
 Draws [param text] outline using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 //go:nosplit
-func (self class) DrawStringOutline(font [1]gdclass.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, size gd.Int, modulate gd.Color, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string_outline
+func (self class) DrawStringOutline(font [1]gdclass.Font, pos gd.Vector2, text String.Readable, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, size gd.Int, modulate gd.Color, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, alignment)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, font_size)
@@ -1325,11 +1327,11 @@ func (self class) DrawStringOutline(font [1]gdclass.Font, pos gd.Vector2, text g
 Breaks [param text] to the lines and draws text outline using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 //go:nosplit
-func (self class) DrawMultilineStringOutline(font [1]gdclass.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, size gd.Int, modulate gd.Color, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string_outline
+func (self class) DrawMultilineStringOutline(font [1]gdclass.Font, pos gd.Vector2, text String.Readable, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, size gd.Int, modulate gd.Color, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, alignment)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, font_size)
@@ -1349,11 +1351,11 @@ func (self class) DrawMultilineStringOutline(font [1]gdclass.Font, pos gd.Vector
 Draws a string first character using a custom font.
 */
 //go:nosplit
-func (self class) DrawChar(font [1]gdclass.Font, pos gd.Vector2, char gd.String, font_size gd.Int, modulate gd.Color) { //gd:CanvasItem.draw_char
+func (self class) DrawChar(font [1]gdclass.Font, pos gd.Vector2, char String.Readable, font_size gd.Int, modulate gd.Color) { //gd:CanvasItem.draw_char
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
-	callframe.Arg(frame, pointers.Get(char))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(char)))
 	callframe.Arg(frame, font_size)
 	callframe.Arg(frame, modulate)
 	var r_ret = callframe.Nil
@@ -1365,11 +1367,11 @@ func (self class) DrawChar(font [1]gdclass.Font, pos gd.Vector2, char gd.String,
 Draws a string first character outline using a custom font.
 */
 //go:nosplit
-func (self class) DrawCharOutline(font [1]gdclass.Font, pos gd.Vector2, char gd.String, font_size gd.Int, size gd.Int, modulate gd.Color) { //gd:CanvasItem.draw_char_outline
+func (self class) DrawCharOutline(font [1]gdclass.Font, pos gd.Vector2, char String.Readable, font_size gd.Int, size gd.Int, modulate gd.Color) { //gd:CanvasItem.draw_char_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
-	callframe.Arg(frame, pointers.Get(char))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(char)))
 	callframe.Arg(frame, font_size)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, modulate)

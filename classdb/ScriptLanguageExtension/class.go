@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/ScriptLanguage"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 type Instance [1]gdclass.ScriptLanguageExtension
 
@@ -193,7 +195,7 @@ func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.Extension
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -211,7 +213,7 @@ func (Instance) _get_type(impl func(ptr unsafe.Pointer) string) (cb gd.Extension
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -223,7 +225,7 @@ func (Instance) _get_extension(impl func(ptr unsafe.Pointer) string) (cb gd.Exte
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -251,8 +253,8 @@ func (Instance) _get_reserved_words(impl func(ptr unsafe.Pointer) []string) (cb 
 }
 func (Instance) _is_control_flow_keyword(impl func(ptr unsafe.Pointer, keyword string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var keyword = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(keyword)
+		var keyword = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(keyword))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, keyword.String())
 		gd.UnsafeSet(p_back, ret)
@@ -296,12 +298,12 @@ func (Instance) _get_string_delimiters(impl func(ptr unsafe.Pointer) []string) (
 }
 func (Instance) _make_template(impl func(ptr unsafe.Pointer, template string, class_name string, base_class_name string) [1]gdclass.Script) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var template = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(template)
-		var class_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(class_name)
-		var base_class_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(base_class_name)
+		var template = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(template))
+		var class_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(class_name))
+		var base_class_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalString(base_class_name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, template.String(), class_name.String(), base_class_name.String())
 		ptr, ok := pointers.End(ret[0])
@@ -335,10 +337,10 @@ func (Instance) _is_using_templates(impl func(ptr unsafe.Pointer) bool) (cb gd.E
 }
 func (Instance) _validate(impl func(ptr unsafe.Pointer, script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var script = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(script)
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(path)
+		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(script))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(path))
 		var validate_functions = gd.UnsafeGet[bool](p_args, 2)
 
 		var validate_errors = gd.UnsafeGet[bool](p_args, 3)
@@ -359,11 +361,11 @@ func (Instance) _validate(impl func(ptr unsafe.Pointer, script string, path stri
 }
 func (Instance) _validate_path(impl func(ptr unsafe.Pointer, path string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String())
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -417,10 +419,10 @@ Returns the line where the function is defined in the code, or [code]-1[/code] i
 */
 func (Instance) _find_function(impl func(ptr unsafe.Pointer, function string, code string) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var function = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(function)
-		var code = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(code)
+		var function = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(function))
+		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(code))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, function.String(), code.String())
 		gd.UnsafeSet(p_back, gd.Int(ret))
@@ -428,15 +430,15 @@ func (Instance) _find_function(impl func(ptr unsafe.Pointer, function string, co
 }
 func (Instance) _make_function(impl func(ptr unsafe.Pointer, class_name string, function_name string, function_args []string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var class_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(class_name)
-		var function_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(function_name)
+		var class_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(class_name))
+		var function_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(function_name))
 		var function_args = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 2))
 		defer pointers.End(function_args)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, class_name.String(), function_name.String(), function_args.Strings())
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -481,10 +483,10 @@ func (Instance) _preferred_file_name_casing(impl func(ptr unsafe.Pointer) gdclas
 }
 func (Instance) _complete_code(impl func(ptr unsafe.Pointer, code string, path string, owner Object.Instance) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var code = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(code)
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(path)
+		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(code))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(path))
 		var owner = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
 		defer pointers.End(owner[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -499,12 +501,12 @@ func (Instance) _complete_code(impl func(ptr unsafe.Pointer, code string, path s
 }
 func (Instance) _lookup_code(impl func(ptr unsafe.Pointer, code string, symbol string, path string, owner Object.Instance) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var code = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(code)
-		var symbol = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(symbol)
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(path)
+		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(code))
+		var symbol = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(symbol))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalString(path))
 		var owner = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 3))})}
 		defer pointers.End(owner[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -519,15 +521,15 @@ func (Instance) _lookup_code(impl func(ptr unsafe.Pointer, code string, symbol s
 }
 func (Instance) _auto_indent_code(impl func(ptr unsafe.Pointer, code string, from_line int, to_line int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var code = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(code)
+		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(code))
 		var from_line = gd.UnsafeGet[gd.Int](p_args, 1)
 
 		var to_line = gd.UnsafeGet[gd.Int](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, code.String(), int(from_line), int(to_line))
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -579,7 +581,7 @@ func (Instance) _debug_get_error(impl func(ptr unsafe.Pointer) string) (cb gd.Ex
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -609,7 +611,7 @@ func (Instance) _debug_get_stack_level_function(impl func(ptr unsafe.Pointer, le
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(level))
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -627,7 +629,7 @@ func (Instance) _debug_get_stack_level_source(impl func(ptr unsafe.Pointer, leve
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(level))
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -700,15 +702,15 @@ func (Instance) _debug_parse_stack_level_expression(impl func(ptr unsafe.Pointer
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[gd.Int](p_args, 0)
 
-		var expression = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(expression)
+		var expression = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(expression))
 		var max_subitems = gd.UnsafeGet[gd.Int](p_args, 2)
 
 		var max_depth = gd.UnsafeGet[gd.Int](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(level), expression.String(), int(max_subitems), int(max_depth))
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -843,8 +845,8 @@ func (Instance) _frame(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallV
 }
 func (Instance) _handles_global_class_type(impl func(ptr unsafe.Pointer, atype string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var atype = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(atype)
+		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(atype))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype.String())
 		gd.UnsafeSet(p_back, ret)
@@ -852,8 +854,8 @@ func (Instance) _handles_global_class_type(impl func(ptr unsafe.Pointer, atype s
 }
 func (Instance) _get_global_class_name(impl func(ptr unsafe.Pointer, path string) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String())
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
@@ -883,11 +885,11 @@ func New() Instance {
 	return casted
 }
 
-func (class) _get_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_name(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -903,11 +905,11 @@ func (class) _init(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtu
 	}
 }
 
-func (class) _get_type(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_type(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -916,11 +918,11 @@ func (class) _get_type(impl func(ptr unsafe.Pointer) gd.String) (cb gd.Extension
 	}
 }
 
-func (class) _get_extension(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_extension(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -949,10 +951,10 @@ func (class) _get_reserved_words(impl func(ptr unsafe.Pointer) gd.PackedStringAr
 	}
 }
 
-func (class) _is_control_flow_keyword(impl func(ptr unsafe.Pointer, keyword gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_control_flow_keyword(impl func(ptr unsafe.Pointer, keyword String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var keyword = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(keyword)
+		var keyword = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(keyword))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, keyword)
 		gd.UnsafeSet(p_back, ret)
@@ -998,14 +1000,14 @@ func (class) _get_string_delimiters(impl func(ptr unsafe.Pointer) gd.PackedStrin
 	}
 }
 
-func (class) _make_template(impl func(ptr unsafe.Pointer, template gd.String, class_name gd.String, base_class_name gd.String) [1]gdclass.Script) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _make_template(impl func(ptr unsafe.Pointer, template String.Readable, class_name String.Readable, base_class_name String.Readable) [1]gdclass.Script) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var template = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(template)
-		var class_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(class_name)
-		var base_class_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(base_class_name)
+		var template = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(template))
+		var class_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(class_name))
+		var base_class_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalString(base_class_name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, template, class_name, base_class_name)
 		ptr, ok := pointers.End(ret[0])
@@ -1040,12 +1042,12 @@ func (class) _is_using_templates(impl func(ptr unsafe.Pointer) bool) (cb gd.Exte
 	}
 }
 
-func (class) _validate(impl func(ptr unsafe.Pointer, script gd.String, path gd.String, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _validate(impl func(ptr unsafe.Pointer, script String.Readable, path String.Readable, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var script = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(script)
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(path)
+		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(script))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(path))
 		var validate_functions = gd.UnsafeGet[bool](p_args, 2)
 
 		var validate_errors = gd.UnsafeGet[bool](p_args, 3)
@@ -1065,13 +1067,13 @@ func (class) _validate(impl func(ptr unsafe.Pointer, script gd.String, path gd.S
 	}
 }
 
-func (class) _validate_path(impl func(ptr unsafe.Pointer, path gd.String) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _validate_path(impl func(ptr unsafe.Pointer, path String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1128,29 +1130,29 @@ func (class) _can_inherit_from_file(impl func(ptr unsafe.Pointer) bool) (cb gd.E
 /*
 Returns the line where the function is defined in the code, or [code]-1[/code] if the function is not present.
 */
-func (class) _find_function(impl func(ptr unsafe.Pointer, function gd.String, code gd.String) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _find_function(impl func(ptr unsafe.Pointer, function String.Readable, code String.Readable) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var function = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(function)
-		var code = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(code)
+		var function = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(function))
+		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(code))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, function, code)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _make_function(impl func(ptr unsafe.Pointer, class_name gd.String, function_name gd.String, function_args gd.PackedStringArray) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _make_function(impl func(ptr unsafe.Pointer, class_name String.Readable, function_name String.Readable, function_args gd.PackedStringArray) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var class_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(class_name)
-		var function_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(function_name)
+		var class_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(class_name))
+		var function_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(function_name))
 		var function_args = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 2))
 		defer pointers.End(function_args)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, class_name, function_name, function_args)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1198,12 +1200,12 @@ func (class) _preferred_file_name_casing(impl func(ptr unsafe.Pointer) gdclass.S
 	}
 }
 
-func (class) _complete_code(impl func(ptr unsafe.Pointer, code gd.String, path gd.String, owner [1]gd.Object) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _complete_code(impl func(ptr unsafe.Pointer, code String.Readable, path String.Readable, owner [1]gd.Object) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var code = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(code)
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(path)
+		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(code))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(path))
 		var owner = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
 		defer pointers.End(owner[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1217,14 +1219,14 @@ func (class) _complete_code(impl func(ptr unsafe.Pointer, code gd.String, path g
 	}
 }
 
-func (class) _lookup_code(impl func(ptr unsafe.Pointer, code gd.String, symbol gd.String, path gd.String, owner [1]gd.Object) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _lookup_code(impl func(ptr unsafe.Pointer, code String.Readable, symbol String.Readable, path String.Readable, owner [1]gd.Object) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var code = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(code)
-		var symbol = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(symbol)
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(path)
+		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(code))
+		var symbol = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(symbol))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalString(path))
 		var owner = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 3))})}
 		defer pointers.End(owner[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1238,17 +1240,17 @@ func (class) _lookup_code(impl func(ptr unsafe.Pointer, code gd.String, symbol g
 	}
 }
 
-func (class) _auto_indent_code(impl func(ptr unsafe.Pointer, code gd.String, from_line gd.Int, to_line gd.Int) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _auto_indent_code(impl func(ptr unsafe.Pointer, code String.Readable, from_line gd.Int, to_line gd.Int) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var code = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(code)
+		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(code))
 		var from_line = gd.UnsafeGet[gd.Int](p_args, 1)
 
 		var to_line = gd.UnsafeGet[gd.Int](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, code, from_line, to_line)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1302,11 +1304,11 @@ func (class) _thread_exit(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCa
 	}
 }
 
-func (class) _debug_get_error(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _debug_get_error(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1333,13 +1335,13 @@ func (class) _debug_get_stack_level_line(impl func(ptr unsafe.Pointer, level gd.
 	}
 }
 
-func (class) _debug_get_stack_level_function(impl func(ptr unsafe.Pointer, level gd.Int) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _debug_get_stack_level_function(impl func(ptr unsafe.Pointer, level gd.Int) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[gd.Int](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, level)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1351,13 +1353,13 @@ func (class) _debug_get_stack_level_function(impl func(ptr unsafe.Pointer, level
 /*
 Returns the source associated with a given debug stack position.
 */
-func (class) _debug_get_stack_level_source(impl func(ptr unsafe.Pointer, level gd.Int) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _debug_get_stack_level_source(impl func(ptr unsafe.Pointer, level gd.Int) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[gd.Int](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, level)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1431,19 +1433,19 @@ func (class) _debug_get_globals(impl func(ptr unsafe.Pointer, max_subitems gd.In
 	}
 }
 
-func (class) _debug_parse_stack_level_expression(impl func(ptr unsafe.Pointer, level gd.Int, expression gd.String, max_subitems gd.Int, max_depth gd.Int) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _debug_parse_stack_level_expression(impl func(ptr unsafe.Pointer, level gd.Int, expression String.Readable, max_subitems gd.Int, max_depth gd.Int) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[gd.Int](p_args, 0)
 
-		var expression = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(expression)
+		var expression = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(expression))
 		var max_subitems = gd.UnsafeGet[gd.Int](p_args, 2)
 
 		var max_depth = gd.UnsafeGet[gd.Int](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, level, expression, max_subitems, max_depth)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -1590,20 +1592,20 @@ func (class) _frame(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirt
 	}
 }
 
-func (class) _handles_global_class_type(impl func(ptr unsafe.Pointer, atype gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _handles_global_class_type(impl func(ptr unsafe.Pointer, atype String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var atype = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(atype)
+		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(atype))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _get_global_class_name(impl func(ptr unsafe.Pointer, path gd.String) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_global_class_name(impl func(ptr unsafe.Pointer, path String.Readable) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))

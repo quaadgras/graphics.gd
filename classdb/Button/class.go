@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/BaseButton"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [Button] is the standard themed button. It can contain text and an icon, and it will display them according to the current [Theme].
@@ -102,7 +104,7 @@ func (self Instance) Text() string {
 }
 
 func (self Instance) SetText(value string) {
-	class(self).SetText(gd.NewString(value))
+	class(self).SetText(String.New(value))
 }
 
 func (self Instance) Icon() [1]gdclass.Texture2D {
@@ -190,24 +192,24 @@ func (self Instance) Language() string {
 }
 
 func (self Instance) SetLanguage(value string) {
-	class(self).SetLanguage(gd.NewString(value))
+	class(self).SetLanguage(String.New(value))
 }
 
 //go:nosplit
-func (self class) SetText(text gd.String) { //gd:Button.set_text
+func (self class) SetText(text String.Readable) { //gd:Button.set_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetText() gd.String { //gd:Button.get_text
+func (self class) GetText() String.Readable { //gd:Button.get_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -270,20 +272,20 @@ func (self class) GetTextDirection() gdclass.ControlTextDirection { //gd:Button.
 }
 
 //go:nosplit
-func (self class) SetLanguage(language gd.String) { //gd:Button.set_language
+func (self class) SetLanguage(language String.Readable) { //gd:Button.set_language
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetLanguage() gd.String { //gd:Button.get_language
+func (self class) GetLanguage() String.Readable { //gd:Button.get_language
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

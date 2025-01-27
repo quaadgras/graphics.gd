@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [EditorUndoRedoManager] is a manager for [UndoRedo] objects associated with edited scenes. Each scene has its own undo history and [EditorUndoRedoManager] ensures that each action performed in the editor gets associated with a proper scene. For actions not related to scenes ([ProjectSettings] edits, external resources, etc.), a separate global history is used.
@@ -54,7 +56,7 @@ If [param custom_context] object is provided, it will be used for deducing targe
 The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
 func (self Instance) CreateAction(name string) { //gd:EditorUndoRedoManager.create_action
-	class(self).CreateAction(gd.NewString(name), 0, [1]Object.Instance{}[0], false)
+	class(self).CreateAction(String.New(name), 0, [1]Object.Instance{}[0], false)
 }
 
 /*
@@ -150,9 +152,9 @@ If [param custom_context] object is provided, it will be used for deducing targe
 The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
 //go:nosplit
-func (self class) CreateAction(name gd.String, merge_mode gdclass.UndoRedoMergeMode, custom_context [1]gd.Object, backward_undo_ops bool) { //gd:EditorUndoRedoManager.create_action
+func (self class) CreateAction(name String.Readable, merge_mode gdclass.UndoRedoMergeMode, custom_context [1]gd.Object, backward_undo_ops bool) { //gd:EditorUndoRedoManager.create_action
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, merge_mode)
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(custom_context[0].AsObject()[0]))
 	callframe.Arg(frame, backward_undo_ops)

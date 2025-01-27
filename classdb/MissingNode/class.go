@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This is an internal editor class intended for keeping data of nodes of unknown type (most likely this type was supplied by an extension that is no longer loaded). It can't be manually instantiated or placed in a scene.
@@ -65,7 +67,7 @@ func (self Instance) OriginalClass() string {
 }
 
 func (self Instance) SetOriginalClass(value string) {
-	class(self).SetOriginalClass(gd.NewString(value))
+	class(self).SetOriginalClass(String.New(value))
 }
 
 func (self Instance) OriginalScene() string {
@@ -73,7 +75,7 @@ func (self Instance) OriginalScene() string {
 }
 
 func (self Instance) SetOriginalScene(value string) {
-	class(self).SetOriginalScene(gd.NewString(value))
+	class(self).SetOriginalScene(String.New(value))
 }
 
 func (self Instance) RecordingProperties() bool {
@@ -85,39 +87,39 @@ func (self Instance) SetRecordingProperties(value bool) {
 }
 
 //go:nosplit
-func (self class) SetOriginalClass(name gd.String) { //gd:MissingNode.set_original_class
+func (self class) SetOriginalClass(name String.Readable) { //gd:MissingNode.set_original_class
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MissingNode.Bind_set_original_class, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetOriginalClass() gd.String { //gd:MissingNode.get_original_class
+func (self class) GetOriginalClass() String.Readable { //gd:MissingNode.get_original_class
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MissingNode.Bind_get_original_class, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetOriginalScene(name gd.String) { //gd:MissingNode.set_original_scene
+func (self class) SetOriginalScene(name String.Readable) { //gd:MissingNode.set_original_scene
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MissingNode.Bind_set_original_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetOriginalScene() gd.String { //gd:MissingNode.get_original_scene
+func (self class) GetOriginalScene() String.Readable { //gd:MissingNode.get_original_scene
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MissingNode.Bind_get_original_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

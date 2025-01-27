@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/GraphElement"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -32,6 +33,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 GraphFrame is a special [GraphElement] to which other [GraphElement]s can be attached. It can be configured to automatically resize to enclose all attached [GraphElement]s. If the frame is moved, all the attached [GraphElement]s inside it will be moved as well.
@@ -78,7 +80,7 @@ func (self Instance) Title() string {
 }
 
 func (self Instance) SetTitle(value string) {
-	class(self).SetTitle(gd.NewString(value))
+	class(self).SetTitle(String.New(value))
 }
 
 func (self Instance) AutoshrinkEnabled() bool {
@@ -122,20 +124,20 @@ func (self Instance) SetTintColor(value Color.RGBA) {
 }
 
 //go:nosplit
-func (self class) SetTitle(title gd.String) { //gd:GraphFrame.set_title
+func (self class) SetTitle(title String.Readable) { //gd:GraphFrame.set_title
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(title))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_set_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTitle() gd.String { //gd:GraphFrame.get_title
+func (self class) GetTitle() String.Readable { //gd:GraphFrame.get_title
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_get_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

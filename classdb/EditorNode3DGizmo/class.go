@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node3DGizmo"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Plane"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Gizmo that is used for providing custom visualization and editing (handles and subgizmos) for [Node3D] objects. Can be overridden to create custom gizmos, but for simple gizmos creating a [EditorNode3DGizmoPlugin] is usually recommended.
@@ -129,7 +131,7 @@ func (Instance) _get_handle_name(impl func(ptr unsafe.Pointer, id int, secondary
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(id), secondary)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -432,7 +434,7 @@ func (class) _redraw(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVir
 Override this method to return the name of an edited handle (handles must have been previously added by [method add_handles]). Handles can be named for reference to the user when editing.
 The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method add_handles] for more information).
 */
-func (class) _get_handle_name(impl func(ptr unsafe.Pointer, id gd.Int, secondary bool) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_handle_name(impl func(ptr unsafe.Pointer, id gd.Int, secondary bool) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
 
@@ -440,7 +442,7 @@ func (class) _get_handle_name(impl func(ptr unsafe.Pointer, id gd.Int, secondary
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, id, secondary)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return

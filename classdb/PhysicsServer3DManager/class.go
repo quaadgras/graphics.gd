@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [PhysicsServer3DManager] is the API for registering [PhysicsServer3D] implementations and for setting the default implementation.
@@ -45,7 +47,7 @@ Register a [PhysicsServer3D] implementation by passing a [param name] and a [Cal
 */
 func RegisterServer(name string, create_callback func() [1]gdclass.PhysicsServer3D) { //gd:PhysicsServer3DManager.register_server
 	once.Do(singleton)
-	class(self).RegisterServer(gd.NewString(name), Callable.New(create_callback))
+	class(self).RegisterServer(String.New(name), Callable.New(create_callback))
 }
 
 /*
@@ -53,7 +55,7 @@ Set the default [PhysicsServer3D] implementation to the one identified by [param
 */
 func SetDefaultServer(name string, priority int) { //gd:PhysicsServer3DManager.set_default_server
 	once.Do(singleton)
-	class(self).SetDefaultServer(gd.NewString(name), gd.Int(priority))
+	class(self).SetDefaultServer(String.New(name), gd.Int(priority))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -70,9 +72,9 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Register a [PhysicsServer3D] implementation by passing a [param name] and a [Callable] that returns a [PhysicsServer3D] object.
 */
 //go:nosplit
-func (self class) RegisterServer(name gd.String, create_callback Callable.Function) { //gd:PhysicsServer3DManager.register_server
+func (self class) RegisterServer(name String.Readable, create_callback Callable.Function) { //gd:PhysicsServer3DManager.register_server
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(create_callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3DManager.Bind_register_server, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -83,9 +85,9 @@ func (self class) RegisterServer(name gd.String, create_callback Callable.Functi
 Set the default [PhysicsServer3D] implementation to the one identified by [param name], if [param priority] is greater than the priority of the current default implementation.
 */
 //go:nosplit
-func (self class) SetDefaultServer(name gd.String, priority gd.Int) { //gd:PhysicsServer3DManager.set_default_server
+func (self class) SetDefaultServer(name String.Readable, priority gd.Int) { //gd:PhysicsServer3DManager.set_default_server
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3DManager.Bind_set_default_server, self.AsObject(), frame.Array(0), r_ret.Addr())

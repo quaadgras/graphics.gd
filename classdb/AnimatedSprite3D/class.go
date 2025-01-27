@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/SpriteBase3D"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/VisualInstance3D"
@@ -32,6 +33,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [AnimatedSprite3D] is similar to the [Sprite3D] node, except it carries multiple textures as animation [member sprite_frames]. Animations are created using a [SpriteFrames] resource, which allows you to import image files (or a folder containing said files) to provide the animation frames for the sprite. The [SpriteFrames] resource can be configured in the editor via the SpriteFrames bottom panel.
@@ -149,7 +151,7 @@ func (self Instance) Autoplay() string {
 }
 
 func (self Instance) SetAutoplay(value string) {
-	class(self).SetAutoplay(gd.NewString(value))
+	class(self).SetAutoplay(String.New(value))
 }
 
 func (self Instance) Frame() int {
@@ -215,20 +217,20 @@ func (self class) GetAnimation() gd.StringName { //gd:AnimatedSprite3D.get_anima
 }
 
 //go:nosplit
-func (self class) SetAutoplay(name gd.String) { //gd:AnimatedSprite3D.set_autoplay
+func (self class) SetAutoplay(name String.Readable) { //gd:AnimatedSprite3D.set_autoplay
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_autoplay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAutoplay() gd.String { //gd:AnimatedSprite3D.get_autoplay
+func (self class) GetAutoplay() String.Readable { //gd:AnimatedSprite3D.get_autoplay
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_autoplay, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

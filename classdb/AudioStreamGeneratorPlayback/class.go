@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/AudioStreamPlaybackResampled"
 import "graphics.gd/classdb/AudioStreamPlayback"
 import "graphics.gd/variant/Vector2"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This class is meant to be used with [AudioStreamGenerator] to play back the generated audio in real-time.

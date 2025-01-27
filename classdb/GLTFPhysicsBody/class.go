@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Represents a physics body as an intermediary between the [code]OMI_physics_body[/code] GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
@@ -99,7 +101,7 @@ func (self Instance) BodyType() string {
 }
 
 func (self Instance) SetBodyType(value string) {
-	class(self).SetBodyType(gd.NewString(value))
+	class(self).SetBodyType(String.New(value))
 }
 
 func (self Instance) Mass() Float.X {
@@ -213,19 +215,19 @@ func (self class) ToDictionary() Dictionary.Any { //gd:GLTFPhysicsBody.to_dictio
 }
 
 //go:nosplit
-func (self class) GetBodyType() gd.String { //gd:GLTFPhysicsBody.get_body_type
+func (self class) GetBodyType() String.Readable { //gd:GLTFPhysicsBody.get_body_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_body_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetBodyType(body_type gd.String) { //gd:GLTFPhysicsBody.set_body_type
+func (self class) SetBodyType(body_type String.Readable) { //gd:GLTFPhysicsBody.set_body_type
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(body_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(body_type)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_body_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

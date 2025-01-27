@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This binding resource binds an [OpenXRAction] to inputs or outputs. As most controllers have left hand and right versions that are handled by the same interaction profile we can specify multiple bindings. For instance an action "Fire" could be bound to both "/user/hand/left/input/trigger" and "/user/hand/right/input/trigger".
@@ -52,21 +54,21 @@ func (self Instance) GetPathCount() int { //gd:OpenXRIPBinding.get_path_count
 Returns [code]true[/code] if this input/output path is part of this binding.
 */
 func (self Instance) HasPath(path string) bool { //gd:OpenXRIPBinding.has_path
-	return bool(class(self).HasPath(gd.NewString(path)))
+	return bool(class(self).HasPath(String.New(path)))
 }
 
 /*
 Add an input/output path to this binding.
 */
 func (self Instance) AddPath(path string) { //gd:OpenXRIPBinding.add_path
-	class(self).AddPath(gd.NewString(path))
+	class(self).AddPath(String.New(path))
 }
 
 /*
 Removes this input/output path from this binding.
 */
 func (self Instance) RemovePath(path string) { //gd:OpenXRIPBinding.remove_path
-	class(self).RemovePath(gd.NewString(path))
+	class(self).RemovePath(String.New(path))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -159,9 +161,9 @@ func (self class) GetPaths() gd.PackedStringArray { //gd:OpenXRIPBinding.get_pat
 Returns [code]true[/code] if this input/output path is part of this binding.
 */
 //go:nosplit
-func (self class) HasPath(path gd.String) bool { //gd:OpenXRIPBinding.has_path
+func (self class) HasPath(path String.Readable) bool { //gd:OpenXRIPBinding.has_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_has_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -173,9 +175,9 @@ func (self class) HasPath(path gd.String) bool { //gd:OpenXRIPBinding.has_path
 Add an input/output path to this binding.
 */
 //go:nosplit
-func (self class) AddPath(path gd.String) { //gd:OpenXRIPBinding.add_path
+func (self class) AddPath(path String.Readable) { //gd:OpenXRIPBinding.add_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_add_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -185,9 +187,9 @@ func (self class) AddPath(path gd.String) { //gd:OpenXRIPBinding.add_path
 Removes this input/output path from this binding.
 */
 //go:nosplit
-func (self class) RemovePath(path gd.String) { //gd:OpenXRIPBinding.remove_path
+func (self class) RemovePath(path String.Readable) { //gd:OpenXRIPBinding.remove_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_remove_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/VisualShaderNodeGroupBase"
 import "graphics.gd/classdb/VisualShaderNodeResizableBase"
 import "graphics.gd/classdb/VisualShaderNode"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Custom Godot Shading Language expression, with a custom number of input and output ports.
@@ -69,24 +71,24 @@ func (self Instance) Expression() string {
 }
 
 func (self Instance) SetExpression(value string) {
-	class(self).SetExpression(gd.NewString(value))
+	class(self).SetExpression(String.New(value))
 }
 
 //go:nosplit
-func (self class) SetExpression(expression gd.String) { //gd:VisualShaderNodeExpression.set_expression
+func (self class) SetExpression(expression String.Readable) { //gd:VisualShaderNodeExpression.set_expression
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(expression))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(expression)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeExpression.Bind_set_expression, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetExpression() gd.String { //gd:VisualShaderNodeExpression.get_expression
+func (self class) GetExpression() String.Readable { //gd:VisualShaderNodeExpression.get_expression
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeExpression.Bind_get_expression, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

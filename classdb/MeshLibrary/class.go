@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A library of meshes. Contains a list of [Mesh] resources, each with a name and ID. Each item can also include collision and navigation shapes. This resource is used in [GridMap].
@@ -55,7 +57,7 @@ Sets the item's name.
 This name is shown in the editor. It can also be used to look up the item later using [method find_item_by_name].
 */
 func (self Instance) SetItemName(id int, name string) { //gd:MeshLibrary.set_item_name
-	class(self).SetItemName(gd.Int(id), gd.NewString(name))
+	class(self).SetItemName(gd.Int(id), String.New(name))
 }
 
 /*
@@ -176,7 +178,7 @@ func (self Instance) RemoveItem(id int) { //gd:MeshLibrary.remove_item
 Returns the first item with the given name, or [code]-1[/code] if no item is found.
 */
 func (self Instance) FindItemByName(name string) int { //gd:MeshLibrary.find_item_by_name
-	return int(int(class(self).FindItemByName(gd.NewString(name))))
+	return int(int(class(self).FindItemByName(String.New(name))))
 }
 
 /*
@@ -237,10 +239,10 @@ Sets the item's name.
 This name is shown in the editor. It can also be used to look up the item later using [method find_item_by_name].
 */
 //go:nosplit
-func (self class) SetItemName(id gd.Int, name gd.String) { //gd:MeshLibrary.set_item_name
+func (self class) SetItemName(id gd.Int, name String.Readable) { //gd:MeshLibrary.set_item_name
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_set_item_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -342,12 +344,12 @@ func (self class) SetItemPreview(id gd.Int, texture [1]gdclass.Texture2D) { //gd
 Returns the item's name.
 */
 //go:nosplit
-func (self class) GetItemName(id gd.Int) gd.String { //gd:MeshLibrary.get_item_name
+func (self class) GetItemName(id gd.Int) String.Readable { //gd:MeshLibrary.get_item_name
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -467,9 +469,9 @@ func (self class) RemoveItem(id gd.Int) { //gd:MeshLibrary.remove_item
 Returns the first item with the given name, or [code]-1[/code] if no item is found.
 */
 //go:nosplit
-func (self class) FindItemByName(name gd.String) gd.Int { //gd:MeshLibrary.find_item_by_name
+func (self class) FindItemByName(name String.Readable) gd.Int { //gd:MeshLibrary.find_item_by_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_find_item_by_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2i"
@@ -33,6 +34,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [TextServer] is the API backend for managing fonts and rendering text.
@@ -83,7 +85,7 @@ Loads optional TextServer database (e.g. ICU break iterators and dictionaries).
 [b]Note:[/b] This function should be called before any other TextServer functions used, otherwise it won't have any effect.
 */
 func (self Instance) LoadSupportData(filename string) bool { //gd:TextServer.load_support_data
-	return bool(class(self).LoadSupportData(gd.NewString(filename)))
+	return bool(class(self).LoadSupportData(String.New(filename)))
 }
 
 /*
@@ -105,21 +107,21 @@ Saves optional TextServer database (e.g. ICU break iterators and dictionaries) t
 [b]Note:[/b] This function is used by during project export, to include TextServer database.
 */
 func (self Instance) SaveSupportData(filename string) bool { //gd:TextServer.save_support_data
-	return bool(class(self).SaveSupportData(gd.NewString(filename)))
+	return bool(class(self).SaveSupportData(String.New(filename)))
 }
 
 /*
 Returns [code]true[/code] if locale is right-to-left.
 */
 func (self Instance) IsLocaleRightToLeft(locale string) bool { //gd:TextServer.is_locale_right_to_left
-	return bool(class(self).IsLocaleRightToLeft(gd.NewString(locale)))
+	return bool(class(self).IsLocaleRightToLeft(String.New(locale)))
 }
 
 /*
 Converts readable feature, variation, script, or language name to OpenType tag.
 */
 func (self Instance) NameToTag(name string) int { //gd:TextServer.name_to_tag
-	return int(int(class(self).NameToTag(gd.NewString(name))))
+	return int(int(class(self).NameToTag(String.New(name))))
 }
 
 /*
@@ -204,7 +206,7 @@ func (self Instance) FontGetStyle(font_rid RID.Font) gdclass.TextServerFontStyle
 Sets the font family name.
 */
 func (self Instance) FontSetName(font_rid RID.Font, name string) { //gd:TextServer.font_set_name
-	class(self).FontSetName(gd.RID(font_rid), gd.NewString(name))
+	class(self).FontSetName(gd.RID(font_rid), String.New(name))
 }
 
 /*
@@ -225,7 +227,7 @@ func (self Instance) FontGetOtNameStrings(font_rid RID.Font) map[string]string {
 Sets the font style name.
 */
 func (self Instance) FontSetStyleName(font_rid RID.Font, name string) { //gd:TextServer.font_set_style_name
-	class(self).FontSetStyleName(gd.RID(font_rid), gd.NewString(name))
+	class(self).FontSetStyleName(gd.RID(font_rid), String.New(name))
 }
 
 /*
@@ -881,28 +883,28 @@ func (self Instance) FontDrawGlyphOutline(font_rid RID.Font, canvas RID.Canvas, 
 Returns [code]true[/code], if font supports given language ([url=https://en.wikipedia.org/wiki/ISO_639-1]ISO 639[/url] code).
 */
 func (self Instance) FontIsLanguageSupported(font_rid RID.Font, language string) bool { //gd:TextServer.font_is_language_supported
-	return bool(class(self).FontIsLanguageSupported(gd.RID(font_rid), gd.NewString(language)))
+	return bool(class(self).FontIsLanguageSupported(gd.RID(font_rid), String.New(language)))
 }
 
 /*
 Adds override for [method font_is_language_supported].
 */
 func (self Instance) FontSetLanguageSupportOverride(font_rid RID.Font, language string, supported bool) { //gd:TextServer.font_set_language_support_override
-	class(self).FontSetLanguageSupportOverride(gd.RID(font_rid), gd.NewString(language), supported)
+	class(self).FontSetLanguageSupportOverride(gd.RID(font_rid), String.New(language), supported)
 }
 
 /*
 Returns [code]true[/code] if support override is enabled for the [param language].
 */
 func (self Instance) FontGetLanguageSupportOverride(font_rid RID.Font, language string) bool { //gd:TextServer.font_get_language_support_override
-	return bool(class(self).FontGetLanguageSupportOverride(gd.RID(font_rid), gd.NewString(language)))
+	return bool(class(self).FontGetLanguageSupportOverride(gd.RID(font_rid), String.New(language)))
 }
 
 /*
 Remove language support override.
 */
 func (self Instance) FontRemoveLanguageSupportOverride(font_rid RID.Font, language string) { //gd:TextServer.font_remove_language_support_override
-	class(self).FontRemoveLanguageSupportOverride(gd.RID(font_rid), gd.NewString(language))
+	class(self).FontRemoveLanguageSupportOverride(gd.RID(font_rid), String.New(language))
 }
 
 /*
@@ -916,28 +918,28 @@ func (self Instance) FontGetLanguageSupportOverrides(font_rid RID.Font) []string
 Returns [code]true[/code], if font supports given script (ISO 15924 code).
 */
 func (self Instance) FontIsScriptSupported(font_rid RID.Font, script string) bool { //gd:TextServer.font_is_script_supported
-	return bool(class(self).FontIsScriptSupported(gd.RID(font_rid), gd.NewString(script)))
+	return bool(class(self).FontIsScriptSupported(gd.RID(font_rid), String.New(script)))
 }
 
 /*
 Adds override for [method font_is_script_supported].
 */
 func (self Instance) FontSetScriptSupportOverride(font_rid RID.Font, script string, supported bool) { //gd:TextServer.font_set_script_support_override
-	class(self).FontSetScriptSupportOverride(gd.RID(font_rid), gd.NewString(script), supported)
+	class(self).FontSetScriptSupportOverride(gd.RID(font_rid), String.New(script), supported)
 }
 
 /*
 Returns [code]true[/code] if support override is enabled for the [param script].
 */
 func (self Instance) FontGetScriptSupportOverride(font_rid RID.Font, script string) bool { //gd:TextServer.font_get_script_support_override
-	return bool(class(self).FontGetScriptSupportOverride(gd.RID(font_rid), gd.NewString(script)))
+	return bool(class(self).FontGetScriptSupportOverride(gd.RID(font_rid), String.New(script)))
 }
 
 /*
 Removes script support override.
 */
 func (self Instance) FontRemoveScriptSupportOverride(font_rid RID.Font, script string) { //gd:TextServer.font_remove_script_support_override
-	class(self).FontRemoveScriptSupportOverride(gd.RID(font_rid), gd.NewString(script))
+	class(self).FontRemoveScriptSupportOverride(gd.RID(font_rid), String.New(script))
 }
 
 /*
@@ -1054,7 +1056,7 @@ func (self Instance) ShapedTextSetBidiOverride(shaped RID.TextBuffer, override [
 Sets custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
 func (self Instance) ShapedTextSetCustomPunctuation(shaped RID.TextBuffer, punct string) { //gd:TextServer.shaped_text_set_custom_punctuation
-	class(self).ShapedTextSetCustomPunctuation(gd.RID(shaped), gd.NewString(punct))
+	class(self).ShapedTextSetCustomPunctuation(gd.RID(shaped), String.New(punct))
 }
 
 /*
@@ -1140,7 +1142,7 @@ func (self Instance) ShapedTextGetSpacing(shaped RID.TextBuffer, spacing gdclass
 Adds text span and font to draw it to the text buffer.
 */
 func (self Instance) ShapedTextAddString(shaped RID.TextBuffer, text string, fonts []RID.TextBuffer, size int) bool { //gd:TextServer.shaped_text_add_string
-	return bool(class(self).ShapedTextAddString(gd.RID(shaped), gd.NewString(text), gd.ArrayFromSlice[Array.Contains[gd.RID]](fonts), gd.Int(size), Dictionary.Nil, gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
+	return bool(class(self).ShapedTextAddString(gd.RID(shaped), String.New(text), gd.ArrayFromSlice[Array.Contains[gd.RID]](fonts), gd.Int(size), Dictionary.Nil, String.New(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
 }
 
 /*
@@ -1514,21 +1516,21 @@ Converts a number from the Western Arabic (0..9) to the numeral systems used in 
 If [param language] is omitted, the active locale will be used.
 */
 func (self Instance) FormatNumber(number string) string { //gd:TextServer.format_number
-	return string(class(self).FormatNumber(gd.NewString(number), gd.NewString("")).String())
+	return string(class(self).FormatNumber(String.New(number), String.New("")).String())
 }
 
 /*
 Converts [param number] from the numeral systems used in [param language] to Western Arabic (0..9).
 */
 func (self Instance) ParseNumber(number string) string { //gd:TextServer.parse_number
-	return string(class(self).ParseNumber(gd.NewString(number), gd.NewString("")).String())
+	return string(class(self).ParseNumber(String.New(number), String.New("")).String())
 }
 
 /*
 Returns percent sign used in the [param language].
 */
 func (self Instance) PercentSign() string { //gd:TextServer.percent_sign
-	return string(class(self).PercentSign(gd.NewString("")).String())
+	return string(class(self).PercentSign(String.New("")).String())
 }
 
 /*
@@ -1542,7 +1544,7 @@ print(ts.string_get_word_breaks("The Godot Engine, 4", "en", 10)) # Prints [0, 9
 [/codeblock]
 */
 func (self Instance) StringGetWordBreaks(s string) []int32 { //gd:TextServer.string_get_word_breaks
-	return []int32(class(self).StringGetWordBreaks(gd.NewString(s), gd.NewString(""), gd.Int(0)).AsSlice())
+	return []int32(class(self).StringGetWordBreaks(String.New(s), String.New(""), gd.Int(0)).AsSlice())
 }
 
 /*
@@ -1553,7 +1555,7 @@ print(ts.string_get_word_breaks("Test ❤️‍🔥 Test")) # Prints [1, 2, 3, 4
 [/codeblock]
 */
 func (self Instance) StringGetCharacterBreaks(s string) []int32 { //gd:TextServer.string_get_character_breaks
-	return []int32(class(self).StringGetCharacterBreaks(gd.NewString(s), gd.NewString("")).AsSlice())
+	return []int32(class(self).StringGetCharacterBreaks(String.New(s), String.New("")).AsSlice())
 }
 
 /*
@@ -1562,7 +1564,7 @@ Returns index of the first string in [param dict] which is visually confusable w
 [b]Note:[/b] Always returns [code]-1[/code] if the server does not support the [constant FEATURE_UNICODE_SECURITY] feature.
 */
 func (self Instance) IsConfusable(s string, dict []string) int { //gd:TextServer.is_confusable
-	return int(int(class(self).IsConfusable(gd.NewString(s), gd.NewPackedStringSlice(dict))))
+	return int(int(class(self).IsConfusable(String.New(s), gd.NewPackedStringSlice(dict))))
 }
 
 /*
@@ -1570,7 +1572,7 @@ Returns [code]true[/code] if [param string] is likely to be an attempt at confus
 [b]Note:[/b] Always returns [code]false[/code] if the server does not support the [constant FEATURE_UNICODE_SECURITY] feature.
 */
 func (self Instance) SpoofCheck(s string) bool { //gd:TextServer.spoof_check
-	return bool(class(self).SpoofCheck(gd.NewString(s)))
+	return bool(class(self).SpoofCheck(String.New(s)))
 }
 
 /*
@@ -1578,7 +1580,7 @@ Strips diacritics from the string.
 [b]Note:[/b] The result may be longer or shorter than the original.
 */
 func (self Instance) StripDiacritics(s string) string { //gd:TextServer.strip_diacritics
-	return string(class(self).StripDiacritics(gd.NewString(s)).String())
+	return string(class(self).StripDiacritics(String.New(s)).String())
 }
 
 /*
@@ -1593,7 +1595,7 @@ If the [constant FEATURE_UNICODE_IDENTIFIERS] feature is not supported, a valid 
 - May contain Unicode characters of class XID_Continue in the other positions.
 */
 func (self Instance) IsValidIdentifier(s string) bool { //gd:TextServer.is_valid_identifier
-	return bool(class(self).IsValidIdentifier(gd.NewString(s)))
+	return bool(class(self).IsValidIdentifier(String.New(s)))
 }
 
 /*
@@ -1609,7 +1611,7 @@ Returns the string converted to uppercase.
 [b]Note:[/b] The result may be longer or shorter than the original.
 */
 func (self Instance) StringToUpper(s string) string { //gd:TextServer.string_to_upper
-	return string(class(self).StringToUpper(gd.NewString(s), gd.NewString("")).String())
+	return string(class(self).StringToUpper(String.New(s), String.New("")).String())
 }
 
 /*
@@ -1618,7 +1620,7 @@ Returns the string converted to lowercase.
 [b]Note:[/b] The result may be longer or shorter than the original.
 */
 func (self Instance) StringToLower(s string) string { //gd:TextServer.string_to_lower
-	return string(class(self).StringToLower(gd.NewString(s), gd.NewString("")).String())
+	return string(class(self).StringToLower(String.New(s), String.New("")).String())
 }
 
 /*
@@ -1627,14 +1629,14 @@ Returns the string converted to title case.
 [b]Note:[/b] The result may be longer or shorter than the original.
 */
 func (self Instance) StringToTitle(s string) string { //gd:TextServer.string_to_title
-	return string(class(self).StringToTitle(gd.NewString(s), gd.NewString("")).String())
+	return string(class(self).StringToTitle(String.New(s), String.New("")).String())
 }
 
 /*
 Default implementation of the BiDi algorithm override function. See [enum StructuredTextParser] for more info.
 */
 func (self Instance) ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args []any, text string) []Vector3i.XYZ { //gd:TextServer.parse_structured_text
-	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(class(self).ParseStructuredText(parser_type, gd.EngineArrayFromSlice(args), gd.NewString(text)))))
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(class(self).ParseStructuredText(parser_type, gd.EngineArrayFromSlice(args), String.New(text)))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -1674,11 +1676,11 @@ func (self class) HasFeature(feature gdclass.TextServerFeature) bool { //gd:Text
 Returns the name of the server interface.
 */
 //go:nosplit
-func (self class) GetName() gd.String { //gd:TextServer.get_name
+func (self class) GetName() String.Readable { //gd:TextServer.get_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1701,9 +1703,9 @@ Loads optional TextServer database (e.g. ICU break iterators and dictionaries).
 [b]Note:[/b] This function should be called before any other TextServer functions used, otherwise it won't have any effect.
 */
 //go:nosplit
-func (self class) LoadSupportData(filename gd.String) bool { //gd:TextServer.load_support_data
+func (self class) LoadSupportData(filename String.Readable) bool { //gd:TextServer.load_support_data
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(filename))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_load_support_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1715,11 +1717,11 @@ func (self class) LoadSupportData(filename gd.String) bool { //gd:TextServer.loa
 Returns default TextServer database (e.g. ICU break iterators and dictionaries) filename.
 */
 //go:nosplit
-func (self class) GetSupportDataFilename() gd.String { //gd:TextServer.get_support_data_filename
+func (self class) GetSupportDataFilename() String.Readable { //gd:TextServer.get_support_data_filename
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_get_support_data_filename, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1728,11 +1730,11 @@ func (self class) GetSupportDataFilename() gd.String { //gd:TextServer.get_suppo
 Returns TextServer database (e.g. ICU break iterators and dictionaries) description.
 */
 //go:nosplit
-func (self class) GetSupportDataInfo() gd.String { //gd:TextServer.get_support_data_info
+func (self class) GetSupportDataInfo() String.Readable { //gd:TextServer.get_support_data_info
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_get_support_data_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1742,9 +1744,9 @@ Saves optional TextServer database (e.g. ICU break iterators and dictionaries) t
 [b]Note:[/b] This function is used by during project export, to include TextServer database.
 */
 //go:nosplit
-func (self class) SaveSupportData(filename gd.String) bool { //gd:TextServer.save_support_data
+func (self class) SaveSupportData(filename String.Readable) bool { //gd:TextServer.save_support_data
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(filename))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_save_support_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1756,9 +1758,9 @@ func (self class) SaveSupportData(filename gd.String) bool { //gd:TextServer.sav
 Returns [code]true[/code] if locale is right-to-left.
 */
 //go:nosplit
-func (self class) IsLocaleRightToLeft(locale gd.String) bool { //gd:TextServer.is_locale_right_to_left
+func (self class) IsLocaleRightToLeft(locale String.Readable) bool { //gd:TextServer.is_locale_right_to_left
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(locale))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(locale)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_is_locale_right_to_left, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1770,9 +1772,9 @@ func (self class) IsLocaleRightToLeft(locale gd.String) bool { //gd:TextServer.i
 Converts readable feature, variation, script, or language name to OpenType tag.
 */
 //go:nosplit
-func (self class) NameToTag(name gd.String) gd.Int { //gd:TextServer.name_to_tag
+func (self class) NameToTag(name String.Readable) gd.Int { //gd:TextServer.name_to_tag
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_name_to_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1784,12 +1786,12 @@ func (self class) NameToTag(name gd.String) gd.Int { //gd:TextServer.name_to_tag
 Converts OpenType tag to readable feature, variation, script, or language name.
 */
 //go:nosplit
-func (self class) TagToName(tag gd.Int) gd.String { //gd:TextServer.tag_to_name
+func (self class) TagToName(tag gd.Int) String.Readable { //gd:TextServer.tag_to_name
 	var frame = callframe.New()
 	callframe.Arg(frame, tag)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_tag_to_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1933,10 +1935,10 @@ func (self class) FontGetStyle(font_rid gd.RID) gdclass.TextServerFontStyle { //
 Sets the font family name.
 */
 //go:nosplit
-func (self class) FontSetName(font_rid gd.RID, name gd.String) { //gd:TextServer.font_set_name
+func (self class) FontSetName(font_rid gd.RID, name String.Readable) { //gd:TextServer.font_set_name
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_set_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1946,12 +1948,12 @@ func (self class) FontSetName(font_rid gd.RID, name gd.String) { //gd:TextServer
 Returns font family name.
 */
 //go:nosplit
-func (self class) FontGetName(font_rid gd.RID) gd.String { //gd:TextServer.font_get_name
+func (self class) FontGetName(font_rid gd.RID) String.Readable { //gd:TextServer.font_get_name
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1974,10 +1976,10 @@ func (self class) FontGetOtNameStrings(font_rid gd.RID) Dictionary.Any { //gd:Te
 Sets the font style name.
 */
 //go:nosplit
-func (self class) FontSetStyleName(font_rid gd.RID, name gd.String) { //gd:TextServer.font_set_style_name
+func (self class) FontSetStyleName(font_rid gd.RID, name String.Readable) { //gd:TextServer.font_set_style_name
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_set_style_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1987,12 +1989,12 @@ func (self class) FontSetStyleName(font_rid gd.RID, name gd.String) { //gd:TextS
 Returns font style name.
 */
 //go:nosplit
-func (self class) FontGetStyleName(font_rid gd.RID) gd.String { //gd:TextServer.font_get_style_name
+func (self class) FontGetStyleName(font_rid gd.RID) String.Readable { //gd:TextServer.font_get_style_name
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_style_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3212,12 +3214,12 @@ func (self class) FontHasChar(font_rid gd.RID, char gd.Int) bool { //gd:TextServ
 Returns a string containing all the characters available in the font.
 */
 //go:nosplit
-func (self class) FontGetSupportedChars(font_rid gd.RID) gd.String { //gd:TextServer.font_get_supported_chars
+func (self class) FontGetSupportedChars(font_rid gd.RID) String.Readable { //gd:TextServer.font_get_supported_chars
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_supported_chars, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3294,10 +3296,10 @@ func (self class) FontDrawGlyphOutline(font_rid gd.RID, canvas gd.RID, size gd.I
 Returns [code]true[/code], if font supports given language ([url=https://en.wikipedia.org/wiki/ISO_639-1]ISO 639[/url] code).
 */
 //go:nosplit
-func (self class) FontIsLanguageSupported(font_rid gd.RID, language gd.String) bool { //gd:TextServer.font_is_language_supported
+func (self class) FontIsLanguageSupported(font_rid gd.RID, language String.Readable) bool { //gd:TextServer.font_is_language_supported
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_is_language_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -3309,10 +3311,10 @@ func (self class) FontIsLanguageSupported(font_rid gd.RID, language gd.String) b
 Adds override for [method font_is_language_supported].
 */
 //go:nosplit
-func (self class) FontSetLanguageSupportOverride(font_rid gd.RID, language gd.String, supported bool) { //gd:TextServer.font_set_language_support_override
+func (self class) FontSetLanguageSupportOverride(font_rid gd.RID, language String.Readable, supported bool) { //gd:TextServer.font_set_language_support_override
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	callframe.Arg(frame, supported)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_set_language_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3323,10 +3325,10 @@ func (self class) FontSetLanguageSupportOverride(font_rid gd.RID, language gd.St
 Returns [code]true[/code] if support override is enabled for the [param language].
 */
 //go:nosplit
-func (self class) FontGetLanguageSupportOverride(font_rid gd.RID, language gd.String) bool { //gd:TextServer.font_get_language_support_override
+func (self class) FontGetLanguageSupportOverride(font_rid gd.RID, language String.Readable) bool { //gd:TextServer.font_get_language_support_override
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_language_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -3338,10 +3340,10 @@ func (self class) FontGetLanguageSupportOverride(font_rid gd.RID, language gd.St
 Remove language support override.
 */
 //go:nosplit
-func (self class) FontRemoveLanguageSupportOverride(font_rid gd.RID, language gd.String) { //gd:TextServer.font_remove_language_support_override
+func (self class) FontRemoveLanguageSupportOverride(font_rid gd.RID, language String.Readable) { //gd:TextServer.font_remove_language_support_override
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_remove_language_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3365,10 +3367,10 @@ func (self class) FontGetLanguageSupportOverrides(font_rid gd.RID) gd.PackedStri
 Returns [code]true[/code], if font supports given script (ISO 15924 code).
 */
 //go:nosplit
-func (self class) FontIsScriptSupported(font_rid gd.RID, script gd.String) bool { //gd:TextServer.font_is_script_supported
+func (self class) FontIsScriptSupported(font_rid gd.RID, script String.Readable) bool { //gd:TextServer.font_is_script_supported
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, pointers.Get(script))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(script)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_is_script_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -3380,10 +3382,10 @@ func (self class) FontIsScriptSupported(font_rid gd.RID, script gd.String) bool 
 Adds override for [method font_is_script_supported].
 */
 //go:nosplit
-func (self class) FontSetScriptSupportOverride(font_rid gd.RID, script gd.String, supported bool) { //gd:TextServer.font_set_script_support_override
+func (self class) FontSetScriptSupportOverride(font_rid gd.RID, script String.Readable, supported bool) { //gd:TextServer.font_set_script_support_override
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, pointers.Get(script))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(script)))
 	callframe.Arg(frame, supported)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_set_script_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3394,10 +3396,10 @@ func (self class) FontSetScriptSupportOverride(font_rid gd.RID, script gd.String
 Returns [code]true[/code] if support override is enabled for the [param script].
 */
 //go:nosplit
-func (self class) FontGetScriptSupportOverride(font_rid gd.RID, script gd.String) bool { //gd:TextServer.font_get_script_support_override
+func (self class) FontGetScriptSupportOverride(font_rid gd.RID, script String.Readable) bool { //gd:TextServer.font_get_script_support_override
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, pointers.Get(script))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(script)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_script_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -3409,10 +3411,10 @@ func (self class) FontGetScriptSupportOverride(font_rid gd.RID, script gd.String
 Removes script support override.
 */
 //go:nosplit
-func (self class) FontRemoveScriptSupportOverride(font_rid gd.RID, script gd.String) { //gd:TextServer.font_remove_script_support_override
+func (self class) FontRemoveScriptSupportOverride(font_rid gd.RID, script String.Readable) { //gd:TextServer.font_remove_script_support_override
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, pointers.Get(script))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(script)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_remove_script_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3633,10 +3635,10 @@ func (self class) ShapedTextSetBidiOverride(shaped gd.RID, override Array.Any) {
 Sets custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
 //go:nosplit
-func (self class) ShapedTextSetCustomPunctuation(shaped gd.RID, punct gd.String) { //gd:TextServer.shaped_text_set_custom_punctuation
+func (self class) ShapedTextSetCustomPunctuation(shaped gd.RID, punct String.Readable) { //gd:TextServer.shaped_text_set_custom_punctuation
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	callframe.Arg(frame, pointers.Get(punct))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(punct)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_set_custom_punctuation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3646,12 +3648,12 @@ func (self class) ShapedTextSetCustomPunctuation(shaped gd.RID, punct gd.String)
 Returns custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
 //go:nosplit
-func (self class) ShapedTextGetCustomPunctuation(shaped gd.RID) gd.String { //gd:TextServer.shaped_text_get_custom_punctuation
+func (self class) ShapedTextGetCustomPunctuation(shaped gd.RID) String.Readable { //gd:TextServer.shaped_text_get_custom_punctuation
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_custom_punctuation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3799,14 +3801,14 @@ func (self class) ShapedTextGetSpacing(shaped gd.RID, spacing gdclass.TextServer
 Adds text span and font to draw it to the text buffer.
 */
 //go:nosplit
-func (self class) ShapedTextAddString(shaped gd.RID, text gd.String, fonts Array.Contains[gd.RID], size gd.Int, opentype_features Dictionary.Any, language gd.String, meta gd.Variant) bool { //gd:TextServer.shaped_text_add_string
+func (self class) ShapedTextAddString(shaped gd.RID, text String.Readable, fonts Array.Contains[gd.RID], size gd.Int, opentype_features Dictionary.Any, language String.Readable, meta gd.Variant) bool { //gd:TextServer.shaped_text_add_string
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(fonts)))
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(opentype_features)))
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	callframe.Arg(frame, pointers.Get(meta))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_add_string, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4544,13 +4546,13 @@ Converts a number from the Western Arabic (0..9) to the numeral systems used in 
 If [param language] is omitted, the active locale will be used.
 */
 //go:nosplit
-func (self class) FormatNumber(number gd.String, language gd.String) gd.String { //gd:TextServer.format_number
+func (self class) FormatNumber(number String.Readable, language String.Readable) String.Readable { //gd:TextServer.format_number
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(number))
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(number)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_format_number, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4559,13 +4561,13 @@ func (self class) FormatNumber(number gd.String, language gd.String) gd.String {
 Converts [param number] from the numeral systems used in [param language] to Western Arabic (0..9).
 */
 //go:nosplit
-func (self class) ParseNumber(number gd.String, language gd.String) gd.String { //gd:TextServer.parse_number
+func (self class) ParseNumber(number String.Readable, language String.Readable) String.Readable { //gd:TextServer.parse_number
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(number))
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(number)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_parse_number, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4574,12 +4576,12 @@ func (self class) ParseNumber(number gd.String, language gd.String) gd.String { 
 Returns percent sign used in the [param language].
 */
 //go:nosplit
-func (self class) PercentSign(language gd.String) gd.String { //gd:TextServer.percent_sign
+func (self class) PercentSign(language String.Readable) String.Readable { //gd:TextServer.percent_sign
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_percent_sign, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4595,10 +4597,10 @@ print(ts.string_get_word_breaks("The Godot Engine, 4", "en", 10)) # Prints [0, 9
 [/codeblock]
 */
 //go:nosplit
-func (self class) StringGetWordBreaks(s gd.String, language gd.String, chars_per_line gd.Int) gd.PackedInt32Array { //gd:TextServer.string_get_word_breaks
+func (self class) StringGetWordBreaks(s String.Readable, language String.Readable, chars_per_line gd.Int) gd.PackedInt32Array { //gd:TextServer.string_get_word_breaks
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(s))
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	callframe.Arg(frame, chars_per_line)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_string_get_word_breaks, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4615,10 +4617,10 @@ print(ts.string_get_word_breaks("Test ❤️‍🔥 Test")) # Prints [1, 2, 3, 4
 [/codeblock]
 */
 //go:nosplit
-func (self class) StringGetCharacterBreaks(s gd.String, language gd.String) gd.PackedInt32Array { //gd:TextServer.string_get_character_breaks
+func (self class) StringGetCharacterBreaks(s String.Readable, language String.Readable) gd.PackedInt32Array { //gd:TextServer.string_get_character_breaks
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(s))
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_string_get_character_breaks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
@@ -4632,9 +4634,9 @@ Returns index of the first string in [param dict] which is visually confusable w
 [b]Note:[/b] Always returns [code]-1[/code] if the server does not support the [constant FEATURE_UNICODE_SECURITY] feature.
 */
 //go:nosplit
-func (self class) IsConfusable(s gd.String, dict gd.PackedStringArray) gd.Int { //gd:TextServer.is_confusable
+func (self class) IsConfusable(s String.Readable, dict gd.PackedStringArray) gd.Int { //gd:TextServer.is_confusable
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(s))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
 	callframe.Arg(frame, pointers.Get(dict))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_is_confusable, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4648,9 +4650,9 @@ Returns [code]true[/code] if [param string] is likely to be an attempt at confus
 [b]Note:[/b] Always returns [code]false[/code] if the server does not support the [constant FEATURE_UNICODE_SECURITY] feature.
 */
 //go:nosplit
-func (self class) SpoofCheck(s gd.String) bool { //gd:TextServer.spoof_check
+func (self class) SpoofCheck(s String.Readable) bool { //gd:TextServer.spoof_check
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(s))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_spoof_check, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -4663,12 +4665,12 @@ Strips diacritics from the string.
 [b]Note:[/b] The result may be longer or shorter than the original.
 */
 //go:nosplit
-func (self class) StripDiacritics(s gd.String) gd.String { //gd:TextServer.strip_diacritics
+func (self class) StripDiacritics(s String.Readable) String.Readable { //gd:TextServer.strip_diacritics
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(s))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_strip_diacritics, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4685,9 +4687,9 @@ If the [constant FEATURE_UNICODE_IDENTIFIERS] feature is not supported, a valid 
 - May contain Unicode characters of class XID_Continue in the other positions.
 */
 //go:nosplit
-func (self class) IsValidIdentifier(s gd.String) bool { //gd:TextServer.is_valid_identifier
+func (self class) IsValidIdentifier(s String.Readable) bool { //gd:TextServer.is_valid_identifier
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(s))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_is_valid_identifier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -4715,13 +4717,13 @@ Returns the string converted to uppercase.
 [b]Note:[/b] The result may be longer or shorter than the original.
 */
 //go:nosplit
-func (self class) StringToUpper(s gd.String, language gd.String) gd.String { //gd:TextServer.string_to_upper
+func (self class) StringToUpper(s String.Readable, language String.Readable) String.Readable { //gd:TextServer.string_to_upper
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(s))
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_string_to_upper, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4732,13 +4734,13 @@ Returns the string converted to lowercase.
 [b]Note:[/b] The result may be longer or shorter than the original.
 */
 //go:nosplit
-func (self class) StringToLower(s gd.String, language gd.String) gd.String { //gd:TextServer.string_to_lower
+func (self class) StringToLower(s String.Readable, language String.Readable) String.Readable { //gd:TextServer.string_to_lower
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(s))
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_string_to_lower, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4749,13 +4751,13 @@ Returns the string converted to title case.
 [b]Note:[/b] The result may be longer or shorter than the original.
 */
 //go:nosplit
-func (self class) StringToTitle(s gd.String, language gd.String) gd.String { //gd:TextServer.string_to_title
+func (self class) StringToTitle(s String.Readable, language String.Readable) String.Readable { //gd:TextServer.string_to_title
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(s))
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_string_to_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4764,11 +4766,11 @@ func (self class) StringToTitle(s gd.String, language gd.String) gd.String { //g
 Default implementation of the BiDi algorithm override function. See [enum StructuredTextParser] for more info.
 */
 //go:nosplit
-func (self class) ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args Array.Any, text gd.String) Array.Contains[gd.Vector3i] { //gd:TextServer.parse_structured_text
+func (self class) ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args Array.Any, text String.Readable) Array.Contains[gd.Vector3i] { //gd:TextServer.parse_structured_text
 	var frame = callframe.New()
 	callframe.Arg(frame, parser_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_parse_structured_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Array.Through(gd.ArrayProxy[gd.Vector3i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))

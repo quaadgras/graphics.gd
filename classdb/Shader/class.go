@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A custom shader program implemented in the Godot shading language, saved with the [code].gdshader[/code] extension.
@@ -99,7 +101,7 @@ func (self Instance) Code() string {
 }
 
 func (self Instance) SetCode(value string) {
-	class(self).SetCode(gd.NewString(value))
+	class(self).SetCode(String.New(value))
 }
 
 /*
@@ -116,20 +118,20 @@ func (self class) GetMode() gdclass.ShaderMode { //gd:Shader.get_mode
 }
 
 //go:nosplit
-func (self class) SetCode(code gd.String) { //gd:Shader.set_code
+func (self class) SetCode(code String.Readable) { //gd:Shader.set_code
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(code))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(code)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_set_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetCode() gd.String { //gd:Shader.get_code
+func (self class) GetCode() String.Readable { //gd:Shader.get_code
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_code, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

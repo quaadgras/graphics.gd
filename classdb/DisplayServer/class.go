@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Rect2"
@@ -34,6 +35,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [DisplayServer] handles everything related to window management. It is separated from [OS] as a single operating system may support multiple display servers.
@@ -80,7 +82,7 @@ Registers callables to emit when the menu is respectively about to show or close
 */
 func GlobalMenuSetPopupCallbacks(menu_root string, open_callback func(), close_callback func()) { //gd:DisplayServer.global_menu_set_popup_callbacks
 	once.Do(singleton)
-	class(self).GlobalMenuSetPopupCallbacks(gd.NewString(menu_root), Callable.New(open_callback), Callable.New(close_callback))
+	class(self).GlobalMenuSetPopupCallbacks(String.New(menu_root), Callable.New(open_callback), Callable.New(close_callback))
 }
 
 /*
@@ -98,7 +100,7 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 */
 func GlobalMenuAddSubmenuItem(menu_root string, label string, submenu string) int { //gd:DisplayServer.global_menu_add_submenu_item
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddSubmenuItem(gd.NewString(menu_root), gd.NewString(label), gd.NewString(submenu), gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddSubmenuItem(String.New(menu_root), String.New(label), String.New(submenu), gd.Int(-1))))
 }
 
 /*
@@ -118,7 +120,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddItem(menu_root string, label string) int { //gd:DisplayServer.global_menu_add_item
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddItem(gd.NewString(menu_root), gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddItem(String.New(menu_root), String.New(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -138,7 +140,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddCheckItem(menu_root string, label string) int { //gd:DisplayServer.global_menu_add_check_item
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddCheckItem(gd.NewString(menu_root), gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddCheckItem(String.New(menu_root), String.New(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -158,7 +160,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddIconItem(menu_root string, icon [1]gdclass.Texture2D, label string) int { //gd:DisplayServer.global_menu_add_icon_item
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddIconItem(gd.NewString(menu_root), icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddIconItem(String.New(menu_root), icon, String.New(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -178,7 +180,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddIconCheckItem(menu_root string, icon [1]gdclass.Texture2D, label string) int { //gd:DisplayServer.global_menu_add_icon_check_item
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddIconCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddIconCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -199,7 +201,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddRadioCheckItem(menu_root string, label string) int { //gd:DisplayServer.global_menu_add_radio_check_item
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddRadioCheckItem(gd.NewString(menu_root), gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddRadioCheckItem(String.New(menu_root), String.New(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -220,7 +222,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddIconRadioCheckItem(menu_root string, icon [1]gdclass.Texture2D, label string) int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddIconRadioCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddIconRadioCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -242,7 +244,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddMultistateItem(menu_root string, label string, max_states int, default_state int) int { //gd:DisplayServer.global_menu_add_multistate_item
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddMultistateItem(gd.NewString(menu_root), gd.NewString(label), gd.Int(max_states), gd.Int(default_state), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddMultistateItem(String.New(menu_root), String.New(label), gd.Int(max_states), gd.Int(default_state), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -260,7 +262,7 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 */
 func GlobalMenuAddSeparator(menu_root string) int { //gd:DisplayServer.global_menu_add_separator
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddSeparator(gd.NewString(menu_root), gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddSeparator(String.New(menu_root), gd.Int(-1))))
 }
 
 /*
@@ -269,7 +271,7 @@ Returns the index of the item with the specified [param text]. Indices are autom
 */
 func GlobalMenuGetItemIndexFromText(menu_root string, text string) int { //gd:DisplayServer.global_menu_get_item_index_from_text
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuGetItemIndexFromText(gd.NewString(menu_root), gd.NewString(text))))
+	return int(int(class(self).GlobalMenuGetItemIndexFromText(String.New(menu_root), String.New(text))))
 }
 
 /*
@@ -278,7 +280,7 @@ Returns the index of the item with the specified [param tag]. Indices are automa
 */
 func GlobalMenuGetItemIndexFromTag(menu_root string, tag any) int { //gd:DisplayServer.global_menu_get_item_index_from_tag
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuGetItemIndexFromTag(gd.NewString(menu_root), gd.NewVariant(tag))))
+	return int(int(class(self).GlobalMenuGetItemIndexFromTag(String.New(menu_root), gd.NewVariant(tag))))
 }
 
 /*
@@ -287,7 +289,7 @@ Returns [code]true[/code] if the item at index [param idx] is checked.
 */
 func GlobalMenuIsItemChecked(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_checked
 	once.Do(singleton)
-	return bool(class(self).GlobalMenuIsItemChecked(gd.NewString(menu_root), gd.Int(idx)))
+	return bool(class(self).GlobalMenuIsItemChecked(String.New(menu_root), gd.Int(idx)))
 }
 
 /*
@@ -296,7 +298,7 @@ Returns [code]true[/code] if the item at index [param idx] is checkable in some 
 */
 func GlobalMenuIsItemCheckable(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_checkable
 	once.Do(singleton)
-	return bool(class(self).GlobalMenuIsItemCheckable(gd.NewString(menu_root), gd.Int(idx)))
+	return bool(class(self).GlobalMenuIsItemCheckable(String.New(menu_root), gd.Int(idx)))
 }
 
 /*
@@ -306,7 +308,7 @@ Returns [code]true[/code] if the item at index [param idx] has radio button-styl
 */
 func GlobalMenuIsItemRadioCheckable(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_radio_checkable
 	once.Do(singleton)
-	return bool(class(self).GlobalMenuIsItemRadioCheckable(gd.NewString(menu_root), gd.Int(idx)))
+	return bool(class(self).GlobalMenuIsItemRadioCheckable(String.New(menu_root), gd.Int(idx)))
 }
 
 /*
@@ -315,7 +317,7 @@ Returns the callback of the item at index [param idx].
 */
 func GlobalMenuGetItemCallback(menu_root string, idx int) Callable.Function { //gd:DisplayServer.global_menu_get_item_callback
 	once.Do(singleton)
-	return Callable.Function(class(self).GlobalMenuGetItemCallback(gd.NewString(menu_root), gd.Int(idx)))
+	return Callable.Function(class(self).GlobalMenuGetItemCallback(String.New(menu_root), gd.Int(idx)))
 }
 
 /*
@@ -324,7 +326,7 @@ Returns the callback of the item accelerator at index [param idx].
 */
 func GlobalMenuGetItemKeyCallback(menu_root string, idx int) Callable.Function { //gd:DisplayServer.global_menu_get_item_key_callback
 	once.Do(singleton)
-	return Callable.Function(class(self).GlobalMenuGetItemKeyCallback(gd.NewString(menu_root), gd.Int(idx)))
+	return Callable.Function(class(self).GlobalMenuGetItemKeyCallback(String.New(menu_root), gd.Int(idx)))
 }
 
 /*
@@ -333,7 +335,7 @@ Returns the metadata of the specified item, which might be of any type. You can 
 */
 func GlobalMenuGetItemTag(menu_root string, idx int) any { //gd:DisplayServer.global_menu_get_item_tag
 	once.Do(singleton)
-	return any(class(self).GlobalMenuGetItemTag(gd.NewString(menu_root), gd.Int(idx)).Interface())
+	return any(class(self).GlobalMenuGetItemTag(String.New(menu_root), gd.Int(idx)).Interface())
 }
 
 /*
@@ -342,7 +344,7 @@ Returns the text of the item at index [param idx].
 */
 func GlobalMenuGetItemText(menu_root string, idx int) string { //gd:DisplayServer.global_menu_get_item_text
 	once.Do(singleton)
-	return string(class(self).GlobalMenuGetItemText(gd.NewString(menu_root), gd.Int(idx)).String())
+	return string(class(self).GlobalMenuGetItemText(String.New(menu_root), gd.Int(idx)).String())
 }
 
 /*
@@ -351,7 +353,7 @@ Returns the submenu ID of the item at index [param idx]. See [method global_menu
 */
 func GlobalMenuGetItemSubmenu(menu_root string, idx int) string { //gd:DisplayServer.global_menu_get_item_submenu
 	once.Do(singleton)
-	return string(class(self).GlobalMenuGetItemSubmenu(gd.NewString(menu_root), gd.Int(idx)).String())
+	return string(class(self).GlobalMenuGetItemSubmenu(String.New(menu_root), gd.Int(idx)).String())
 }
 
 /*
@@ -360,7 +362,7 @@ Returns the accelerator of the item at index [param idx]. Accelerators are speci
 */
 func GlobalMenuGetItemAccelerator(menu_root string, idx int) Key { //gd:DisplayServer.global_menu_get_item_accelerator
 	once.Do(singleton)
-	return Key(class(self).GlobalMenuGetItemAccelerator(gd.NewString(menu_root), gd.Int(idx)))
+	return Key(class(self).GlobalMenuGetItemAccelerator(String.New(menu_root), gd.Int(idx)))
 }
 
 /*
@@ -370,7 +372,7 @@ See [method global_menu_set_item_disabled] for more info on how to disable an it
 */
 func GlobalMenuIsItemDisabled(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_disabled
 	once.Do(singleton)
-	return bool(class(self).GlobalMenuIsItemDisabled(gd.NewString(menu_root), gd.Int(idx)))
+	return bool(class(self).GlobalMenuIsItemDisabled(String.New(menu_root), gd.Int(idx)))
 }
 
 /*
@@ -380,7 +382,7 @@ See [method global_menu_set_item_hidden] for more info on how to hide an item.
 */
 func GlobalMenuIsItemHidden(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_hidden
 	once.Do(singleton)
-	return bool(class(self).GlobalMenuIsItemHidden(gd.NewString(menu_root), gd.Int(idx)))
+	return bool(class(self).GlobalMenuIsItemHidden(String.New(menu_root), gd.Int(idx)))
 }
 
 /*
@@ -389,7 +391,7 @@ Returns the tooltip associated with the specified index [param idx].
 */
 func GlobalMenuGetItemTooltip(menu_root string, idx int) string { //gd:DisplayServer.global_menu_get_item_tooltip
 	once.Do(singleton)
-	return string(class(self).GlobalMenuGetItemTooltip(gd.NewString(menu_root), gd.Int(idx)).String())
+	return string(class(self).GlobalMenuGetItemTooltip(String.New(menu_root), gd.Int(idx)).String())
 }
 
 /*
@@ -398,7 +400,7 @@ Returns the state of a multistate item. See [method global_menu_add_multistate_i
 */
 func GlobalMenuGetItemState(menu_root string, idx int) int { //gd:DisplayServer.global_menu_get_item_state
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuGetItemState(gd.NewString(menu_root), gd.Int(idx))))
+	return int(int(class(self).GlobalMenuGetItemState(String.New(menu_root), gd.Int(idx))))
 }
 
 /*
@@ -407,7 +409,7 @@ Returns number of states of a multistate item. See [method global_menu_add_multi
 */
 func GlobalMenuGetItemMaxStates(menu_root string, idx int) int { //gd:DisplayServer.global_menu_get_item_max_states
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuGetItemMaxStates(gd.NewString(menu_root), gd.Int(idx))))
+	return int(int(class(self).GlobalMenuGetItemMaxStates(String.New(menu_root), gd.Int(idx))))
 }
 
 /*
@@ -416,7 +418,7 @@ Returns the icon of the item at index [param idx].
 */
 func GlobalMenuGetItemIcon(menu_root string, idx int) [1]gdclass.Texture2D { //gd:DisplayServer.global_menu_get_item_icon
 	once.Do(singleton)
-	return [1]gdclass.Texture2D(class(self).GlobalMenuGetItemIcon(gd.NewString(menu_root), gd.Int(idx)))
+	return [1]gdclass.Texture2D(class(self).GlobalMenuGetItemIcon(String.New(menu_root), gd.Int(idx)))
 }
 
 /*
@@ -425,7 +427,7 @@ Returns the horizontal offset of the item at the given [param idx].
 */
 func GlobalMenuGetItemIndentationLevel(menu_root string, idx int) int { //gd:DisplayServer.global_menu_get_item_indentation_level
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuGetItemIndentationLevel(gd.NewString(menu_root), gd.Int(idx))))
+	return int(int(class(self).GlobalMenuGetItemIndentationLevel(String.New(menu_root), gd.Int(idx))))
 }
 
 /*
@@ -434,7 +436,7 @@ Sets the checkstate status of the item at index [param idx].
 */
 func GlobalMenuSetItemChecked(menu_root string, idx int, checked bool) { //gd:DisplayServer.global_menu_set_item_checked
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemChecked(gd.NewString(menu_root), gd.Int(idx), checked)
+	class(self).GlobalMenuSetItemChecked(String.New(menu_root), gd.Int(idx), checked)
 }
 
 /*
@@ -443,7 +445,7 @@ Sets whether the item at index [param idx] has a checkbox. If [code]false[/code]
 */
 func GlobalMenuSetItemCheckable(menu_root string, idx int, checkable bool) { //gd:DisplayServer.global_menu_set_item_checkable
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemCheckable(gd.NewString(menu_root), gd.Int(idx), checkable)
+	class(self).GlobalMenuSetItemCheckable(String.New(menu_root), gd.Int(idx), checkable)
 }
 
 /*
@@ -453,7 +455,7 @@ Sets the type of the item at the specified index [param idx] to radio button. If
 */
 func GlobalMenuSetItemRadioCheckable(menu_root string, idx int, checkable bool) { //gd:DisplayServer.global_menu_set_item_radio_checkable
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemRadioCheckable(gd.NewString(menu_root), gd.Int(idx), checkable)
+	class(self).GlobalMenuSetItemRadioCheckable(String.New(menu_root), gd.Int(idx), checkable)
 }
 
 /*
@@ -463,7 +465,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 */
 func GlobalMenuSetItemCallback(menu_root string, idx int, callback func(tag any)) { //gd:DisplayServer.global_menu_set_item_callback
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemCallback(gd.NewString(menu_root), gd.Int(idx), Callable.New(callback))
+	class(self).GlobalMenuSetItemCallback(String.New(menu_root), gd.Int(idx), Callable.New(callback))
 }
 
 /*
@@ -473,7 +475,7 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 */
 func GlobalMenuSetItemHoverCallbacks(menu_root string, idx int, callback func(tag any)) { //gd:DisplayServer.global_menu_set_item_hover_callbacks
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemHoverCallbacks(gd.NewString(menu_root), gd.Int(idx), Callable.New(callback))
+	class(self).GlobalMenuSetItemHoverCallbacks(String.New(menu_root), gd.Int(idx), Callable.New(callback))
 }
 
 /*
@@ -483,7 +485,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 */
 func GlobalMenuSetItemKeyCallback(menu_root string, idx int, key_callback func(tag any)) { //gd:DisplayServer.global_menu_set_item_key_callback
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemKeyCallback(gd.NewString(menu_root), gd.Int(idx), Callable.New(key_callback))
+	class(self).GlobalMenuSetItemKeyCallback(String.New(menu_root), gd.Int(idx), Callable.New(key_callback))
 }
 
 /*
@@ -492,7 +494,7 @@ Sets the metadata of an item, which may be of any type. You can later get it wit
 */
 func GlobalMenuSetItemTag(menu_root string, idx int, tag any) { //gd:DisplayServer.global_menu_set_item_tag
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemTag(gd.NewString(menu_root), gd.Int(idx), gd.NewVariant(tag))
+	class(self).GlobalMenuSetItemTag(String.New(menu_root), gd.Int(idx), gd.NewVariant(tag))
 }
 
 /*
@@ -501,7 +503,7 @@ Sets the text of the item at index [param idx].
 */
 func GlobalMenuSetItemText(menu_root string, idx int, text string) { //gd:DisplayServer.global_menu_set_item_text
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemText(gd.NewString(menu_root), gd.Int(idx), gd.NewString(text))
+	class(self).GlobalMenuSetItemText(String.New(menu_root), gd.Int(idx), String.New(text))
 }
 
 /*
@@ -510,7 +512,7 @@ Sets the submenu of the item at index [param idx]. The submenu is the ID of a gl
 */
 func GlobalMenuSetItemSubmenu(menu_root string, idx int, submenu string) { //gd:DisplayServer.global_menu_set_item_submenu
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemSubmenu(gd.NewString(menu_root), gd.Int(idx), gd.NewString(submenu))
+	class(self).GlobalMenuSetItemSubmenu(String.New(menu_root), gd.Int(idx), String.New(submenu))
 }
 
 /*
@@ -519,7 +521,7 @@ Sets the accelerator of the item at index [param idx]. [param keycode] can be a 
 */
 func GlobalMenuSetItemAccelerator(menu_root string, idx int, keycode Key) { //gd:DisplayServer.global_menu_set_item_accelerator
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemAccelerator(gd.NewString(menu_root), gd.Int(idx), keycode)
+	class(self).GlobalMenuSetItemAccelerator(String.New(menu_root), gd.Int(idx), keycode)
 }
 
 /*
@@ -528,7 +530,7 @@ Enables/disables the item at index [param idx]. When it is disabled, it can't be
 */
 func GlobalMenuSetItemDisabled(menu_root string, idx int, disabled bool) { //gd:DisplayServer.global_menu_set_item_disabled
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemDisabled(gd.NewString(menu_root), gd.Int(idx), disabled)
+	class(self).GlobalMenuSetItemDisabled(String.New(menu_root), gd.Int(idx), disabled)
 }
 
 /*
@@ -537,7 +539,7 @@ Hides/shows the item at index [param idx]. When it is hidden, an item does not a
 */
 func GlobalMenuSetItemHidden(menu_root string, idx int, hidden bool) { //gd:DisplayServer.global_menu_set_item_hidden
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemHidden(gd.NewString(menu_root), gd.Int(idx), hidden)
+	class(self).GlobalMenuSetItemHidden(String.New(menu_root), gd.Int(idx), hidden)
 }
 
 /*
@@ -546,7 +548,7 @@ Sets the [String] tooltip of the item at the specified index [param idx].
 */
 func GlobalMenuSetItemTooltip(menu_root string, idx int, tooltip string) { //gd:DisplayServer.global_menu_set_item_tooltip
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemTooltip(gd.NewString(menu_root), gd.Int(idx), gd.NewString(tooltip))
+	class(self).GlobalMenuSetItemTooltip(String.New(menu_root), gd.Int(idx), String.New(tooltip))
 }
 
 /*
@@ -555,7 +557,7 @@ Sets the state of a multistate item. See [method global_menu_add_multistate_item
 */
 func GlobalMenuSetItemState(menu_root string, idx int, state int) { //gd:DisplayServer.global_menu_set_item_state
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemState(gd.NewString(menu_root), gd.Int(idx), gd.Int(state))
+	class(self).GlobalMenuSetItemState(String.New(menu_root), gd.Int(idx), gd.Int(state))
 }
 
 /*
@@ -564,7 +566,7 @@ Sets number of state of a multistate item. See [method global_menu_add_multistat
 */
 func GlobalMenuSetItemMaxStates(menu_root string, idx int, max_states int) { //gd:DisplayServer.global_menu_set_item_max_states
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemMaxStates(gd.NewString(menu_root), gd.Int(idx), gd.Int(max_states))
+	class(self).GlobalMenuSetItemMaxStates(String.New(menu_root), gd.Int(idx), gd.Int(max_states))
 }
 
 /*
@@ -574,7 +576,7 @@ Replaces the [Texture2D] icon of the specified [param idx].
 */
 func GlobalMenuSetItemIcon(menu_root string, idx int, icon [1]gdclass.Texture2D) { //gd:DisplayServer.global_menu_set_item_icon
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemIcon(gd.NewString(menu_root), gd.Int(idx), icon)
+	class(self).GlobalMenuSetItemIcon(String.New(menu_root), gd.Int(idx), icon)
 }
 
 /*
@@ -583,7 +585,7 @@ Sets the horizontal offset of the item at the given [param idx].
 */
 func GlobalMenuSetItemIndentationLevel(menu_root string, idx int, level int) { //gd:DisplayServer.global_menu_set_item_indentation_level
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemIndentationLevel(gd.NewString(menu_root), gd.Int(idx), gd.Int(level))
+	class(self).GlobalMenuSetItemIndentationLevel(String.New(menu_root), gd.Int(idx), gd.Int(level))
 }
 
 /*
@@ -592,7 +594,7 @@ Returns number of items in the global menu with ID [param menu_root].
 */
 func GlobalMenuGetItemCount(menu_root string) int { //gd:DisplayServer.global_menu_get_item_count
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuGetItemCount(gd.NewString(menu_root))))
+	return int(int(class(self).GlobalMenuGetItemCount(String.New(menu_root))))
 }
 
 /*
@@ -602,7 +604,7 @@ Removes the item at index [param idx] from the global menu [param menu_root].
 */
 func GlobalMenuRemoveItem(menu_root string, idx int) { //gd:DisplayServer.global_menu_remove_item
 	once.Do(singleton)
-	class(self).GlobalMenuRemoveItem(gd.NewString(menu_root), gd.Int(idx))
+	class(self).GlobalMenuRemoveItem(String.New(menu_root), gd.Int(idx))
 }
 
 /*
@@ -619,7 +621,7 @@ Removes all items from the global menu with ID [param menu_root].
 */
 func GlobalMenuClear(menu_root string) { //gd:DisplayServer.global_menu_clear
 	once.Do(singleton)
-	class(self).GlobalMenuClear(gd.NewString(menu_root))
+	class(self).GlobalMenuClear(String.New(menu_root))
 }
 
 /*
@@ -673,7 +675,7 @@ Returns an [PackedStringArray] of voice identifiers for the [param language].
 */
 func TtsGetVoicesForLanguage(language string) []string { //gd:DisplayServer.tts_get_voices_for_language
 	once.Do(singleton)
-	return []string(class(self).TtsGetVoicesForLanguage(gd.NewString(language)).Strings())
+	return []string(class(self).TtsGetVoicesForLanguage(String.New(language)).Strings())
 }
 
 /*
@@ -690,7 +692,7 @@ Adds an utterance to the queue. If [param interrupt] is [code]true[/code], the q
 */
 func TtsSpeak(text string, voice string) { //gd:DisplayServer.tts_speak
 	once.Do(singleton)
-	class(self).TtsSpeak(gd.NewString(text), gd.NewString(voice), gd.Int(50), gd.Float(1.0), gd.Float(1.0), gd.Int(0), false)
+	class(self).TtsSpeak(String.New(text), String.New(voice), gd.Int(50), gd.Float(1.0), gd.Float(1.0), gd.Int(0), false)
 }
 
 /*
@@ -827,7 +829,7 @@ Sets the user's clipboard content to the given string.
 */
 func ClipboardSet(clipboard string) { //gd:DisplayServer.clipboard_set
 	once.Do(singleton)
-	class(self).ClipboardSet(gd.NewString(clipboard))
+	class(self).ClipboardSet(String.New(clipboard))
 }
 
 /*
@@ -869,7 +871,7 @@ Sets the user's [url=https://unix.stackexchange.com/questions/139191/whats-the-d
 */
 func ClipboardSetPrimary(clipboard_primary string) { //gd:DisplayServer.clipboard_set_primary
 	once.Do(singleton)
-	class(self).ClipboardSetPrimary(gd.NewString(clipboard_primary))
+	class(self).ClipboardSetPrimary(String.New(clipboard_primary))
 }
 
 /*
@@ -1152,7 +1154,7 @@ Sets the title of the given window to [param title].
 */
 func WindowSetTitle(title string) { //gd:DisplayServer.window_set_title
 	once.Do(singleton)
-	class(self).WindowSetTitle(gd.NewString(title), gd.Int(0))
+	class(self).WindowSetTitle(String.New(title), gd.Int(0))
 }
 
 /*
@@ -1161,7 +1163,7 @@ Returns the estimated window title bar size (including text and window buttons) 
 */
 func WindowGetTitleSize(title string) Vector2i.XY { //gd:DisplayServer.window_get_title_size
 	once.Do(singleton)
-	return Vector2i.XY(class(self).WindowGetTitleSize(gd.NewString(title), gd.Int(0)))
+	return Vector2i.XY(class(self).WindowGetTitleSize(String.New(title), gd.Int(0)))
 }
 
 /*
@@ -1558,7 +1560,7 @@ Shows the virtual keyboard if the platform has one.
 */
 func VirtualKeyboardShow(existing_text string) { //gd:DisplayServer.virtual_keyboard_show
 	once.Do(singleton)
-	class(self).VirtualKeyboardShow(gd.NewString(existing_text), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), 0, gd.Int(-1), gd.Int(-1), gd.Int(-1))
+	class(self).VirtualKeyboardShow(String.New(existing_text), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), 0, gd.Int(-1), gd.Int(-1), gd.Int(-1))
 }
 
 /*
@@ -1626,7 +1628,7 @@ Shows a text dialog which uses the operating system's native look-and-feel. [par
 */
 func DialogShow(title string, description string, buttons []string, callback func(button int)) error { //gd:DisplayServer.dialog_show
 	once.Do(singleton)
-	return error(gd.ToError(class(self).DialogShow(gd.NewString(title), gd.NewString(description), gd.NewPackedStringSlice(buttons), Callable.New(callback))))
+	return error(gd.ToError(class(self).DialogShow(String.New(title), String.New(description), gd.NewPackedStringSlice(buttons), Callable.New(callback))))
 }
 
 /*
@@ -1635,7 +1637,7 @@ Shows a text input dialog which uses the operating system's native look-and-feel
 */
 func DialogInputText(title string, description string, existing_text string, callback func(text string)) error { //gd:DisplayServer.dialog_input_text
 	once.Do(singleton)
-	return error(gd.ToError(class(self).DialogInputText(gd.NewString(title), gd.NewString(description), gd.NewString(existing_text), Callable.New(callback))))
+	return error(gd.ToError(class(self).DialogInputText(String.New(title), String.New(description), String.New(existing_text), Callable.New(callback))))
 }
 
 /*
@@ -1650,7 +1652,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 */
 func FileDialogShow(title string, current_directory string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int)) error { //gd:DisplayServer.file_dialog_show
 	once.Do(singleton)
-	return error(gd.ToError(class(self).FileDialogShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), Callable.New(callback))))
+	return error(gd.ToError(class(self).FileDialogShow(String.New(title), String.New(current_directory), String.New(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), Callable.New(callback))))
 }
 
 /*
@@ -1669,7 +1671,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 */
 func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, options []FileDialogOption, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any)) error { //gd:DisplayServer.file_dialog_with_options_show
 	once.Do(singleton)
-	return error(gd.ToError(class(self).FileDialogWithOptionsShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(root), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback))))
+	return error(gd.ToError(class(self).FileDialogWithOptionsShow(String.New(title), String.New(current_directory), String.New(root), String.New(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback))))
 }
 
 /*
@@ -1758,7 +1760,7 @@ Sets the window icon (usually displayed in the top-left corner) in the operating
 */
 func SetNativeIcon(filename string) { //gd:DisplayServer.set_native_icon
 	once.Do(singleton)
-	class(self).SetNativeIcon(gd.NewString(filename))
+	class(self).SetNativeIcon(String.New(filename))
 }
 
 /*
@@ -1776,7 +1778,7 @@ Creates a new application status indicator with the specified icon, tooltip, and
 */
 func CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip string, callback func(button MouseButton, click_position Vector2i.XY)) int { //gd:DisplayServer.create_status_indicator
 	once.Do(singleton)
-	return int(int(class(self).CreateStatusIndicator(icon, gd.NewString(tooltip), Callable.New(callback))))
+	return int(int(class(self).CreateStatusIndicator(icon, String.New(tooltip), Callable.New(callback))))
 }
 
 /*
@@ -1794,7 +1796,7 @@ Sets the application status indicator tooltip.
 */
 func StatusIndicatorSetTooltip(id int, tooltip string) { //gd:DisplayServer.status_indicator_set_tooltip
 	once.Do(singleton)
-	class(self).StatusIndicatorSetTooltip(gd.Int(id), gd.NewString(tooltip))
+	class(self).StatusIndicatorSetTooltip(gd.Int(id), String.New(tooltip))
 }
 
 /*
@@ -1871,7 +1873,7 @@ Supported drivers:
 */
 func TabletSetCurrentDriver(name string) { //gd:DisplayServer.tablet_set_current_driver
 	once.Do(singleton)
-	class(self).TabletSetCurrentDriver(gd.NewString(name))
+	class(self).TabletSetCurrentDriver(String.New(name))
 }
 
 /*
@@ -1936,11 +1938,11 @@ Returns the name of the [DisplayServer] currently in use. Most operating systems
 The names of built-in display servers are [code]Windows[/code], [code]macOS[/code], [code]X11[/code] (Linux), [code]Wayland[/code] (Linux), [code]Android[/code], [code]iOS[/code], [code]web[/code] (HTML5), and [code]headless[/code] (when started with the [code]--headless[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url]).
 */
 //go:nosplit
-func (self class) GetName() gd.String { //gd:DisplayServer.get_name
+func (self class) GetName() String.Readable { //gd:DisplayServer.get_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1965,9 +1967,9 @@ func (self class) HelpSetSearchCallbacks(search_callback Callable.Function, acti
 Registers callables to emit when the menu is respectively about to show or closed. Callback methods should have zero arguments.
 */
 //go:nosplit
-func (self class) GlobalMenuSetPopupCallbacks(menu_root gd.String, open_callback Callable.Function, close_callback Callable.Function) { //gd:DisplayServer.global_menu_set_popup_callbacks
+func (self class) GlobalMenuSetPopupCallbacks(menu_root String.Readable, open_callback Callable.Function, close_callback Callable.Function) { //gd:DisplayServer.global_menu_set_popup_callbacks
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(open_callback)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(close_callback)))
 	var r_ret = callframe.Nil
@@ -1989,11 +1991,11 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddSubmenuItem(menu_root gd.String, label gd.String, submenu gd.String, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_submenu_item
+func (self class) GlobalMenuAddSubmenuItem(menu_root String.Readable, label String.Readable, submenu String.Readable, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_submenu_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
-	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(submenu))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(submenu)))
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_submenu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2018,10 +2020,10 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddItem(menu_root gd.String, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_item
+func (self class) GlobalMenuAddItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
@@ -2050,10 +2052,10 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddCheckItem(menu_root gd.String, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_check_item
+func (self class) GlobalMenuAddCheckItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_check_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
@@ -2082,11 +2084,11 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddIconItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_icon_item
+func (self class) GlobalMenuAddIconItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_icon_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
@@ -2115,11 +2117,11 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddIconCheckItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_icon_check_item
+func (self class) GlobalMenuAddIconCheckItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_icon_check_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
@@ -2149,10 +2151,10 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddRadioCheckItem(menu_root gd.String, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_radio_check_item
+func (self class) GlobalMenuAddRadioCheckItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_radio_check_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
@@ -2182,11 +2184,11 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddIconRadioCheckItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
+func (self class) GlobalMenuAddIconRadioCheckItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
@@ -2217,10 +2219,10 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddMultistateItem(menu_root gd.String, label gd.String, max_states gd.Int, default_state gd.Int, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_multistate_item
+func (self class) GlobalMenuAddMultistateItem(menu_root String.Readable, label String.Readable, max_states gd.Int, default_state gd.Int, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_multistate_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, max_states)
 	callframe.Arg(frame, default_state)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
@@ -2249,9 +2251,9 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddSeparator(menu_root gd.String, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_separator
+func (self class) GlobalMenuAddSeparator(menu_root String.Readable, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_separator
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_separator, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2265,10 +2267,10 @@ Returns the index of the item with the specified [param text]. Indices are autom
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemIndexFromText(menu_root gd.String, text gd.String) gd.Int { //gd:DisplayServer.global_menu_get_item_index_from_text
+func (self class) GlobalMenuGetItemIndexFromText(menu_root String.Readable, text String.Readable) gd.Int { //gd:DisplayServer.global_menu_get_item_index_from_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_index_from_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2281,9 +2283,9 @@ Returns the index of the item with the specified [param tag]. Indices are automa
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemIndexFromTag(menu_root gd.String, tag gd.Variant) gd.Int { //gd:DisplayServer.global_menu_get_item_index_from_tag
+func (self class) GlobalMenuGetItemIndexFromTag(menu_root String.Readable, tag gd.Variant) gd.Int { //gd:DisplayServer.global_menu_get_item_index_from_tag
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, pointers.Get(tag))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_index_from_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2297,9 +2299,9 @@ Returns [code]true[/code] if the item at index [param idx] is checked.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuIsItemChecked(menu_root gd.String, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_checked
+func (self class) GlobalMenuIsItemChecked(menu_root String.Readable, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_checked
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_checked, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2313,9 +2315,9 @@ Returns [code]true[/code] if the item at index [param idx] is checkable in some 
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuIsItemCheckable(menu_root gd.String, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_checkable
+func (self class) GlobalMenuIsItemCheckable(menu_root String.Readable, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_checkable
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_checkable, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2330,9 +2332,9 @@ Returns [code]true[/code] if the item at index [param idx] has radio button-styl
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuIsItemRadioCheckable(menu_root gd.String, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_radio_checkable
+func (self class) GlobalMenuIsItemRadioCheckable(menu_root String.Readable, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_radio_checkable
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_radio_checkable, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2346,9 +2348,9 @@ Returns the callback of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemCallback(menu_root gd.String, idx gd.Int) Callable.Function { //gd:DisplayServer.global_menu_get_item_callback
+func (self class) GlobalMenuGetItemCallback(menu_root String.Readable, idx gd.Int) Callable.Function { //gd:DisplayServer.global_menu_get_item_callback
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[2]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2362,9 +2364,9 @@ Returns the callback of the item accelerator at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemKeyCallback(menu_root gd.String, idx gd.Int) Callable.Function { //gd:DisplayServer.global_menu_get_item_key_callback
+func (self class) GlobalMenuGetItemKeyCallback(menu_root String.Readable, idx gd.Int) Callable.Function { //gd:DisplayServer.global_menu_get_item_key_callback
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[2]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2378,9 +2380,9 @@ Returns the metadata of the specified item, which might be of any type. You can 
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemTag(menu_root gd.String, idx gd.Int) gd.Variant { //gd:DisplayServer.global_menu_get_item_tag
+func (self class) GlobalMenuGetItemTag(menu_root String.Readable, idx gd.Int) gd.Variant { //gd:DisplayServer.global_menu_get_item_tag
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2394,13 +2396,13 @@ Returns the text of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemText(menu_root gd.String, idx gd.Int) gd.String { //gd:DisplayServer.global_menu_get_item_text
+func (self class) GlobalMenuGetItemText(menu_root String.Readable, idx gd.Int) String.Readable { //gd:DisplayServer.global_menu_get_item_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2410,13 +2412,13 @@ Returns the submenu ID of the item at index [param idx]. See [method global_menu
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemSubmenu(menu_root gd.String, idx gd.Int) gd.String { //gd:DisplayServer.global_menu_get_item_submenu
+func (self class) GlobalMenuGetItemSubmenu(menu_root String.Readable, idx gd.Int) String.Readable { //gd:DisplayServer.global_menu_get_item_submenu
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_submenu, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2426,9 +2428,9 @@ Returns the accelerator of the item at index [param idx]. Accelerators are speci
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemAccelerator(menu_root gd.String, idx gd.Int) Key { //gd:DisplayServer.global_menu_get_item_accelerator
+func (self class) GlobalMenuGetItemAccelerator(menu_root String.Readable, idx gd.Int) Key { //gd:DisplayServer.global_menu_get_item_accelerator
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[Key](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_accelerator, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2443,9 +2445,9 @@ See [method global_menu_set_item_disabled] for more info on how to disable an it
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuIsItemDisabled(menu_root gd.String, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_disabled
+func (self class) GlobalMenuIsItemDisabled(menu_root String.Readable, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_disabled
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2460,9 +2462,9 @@ See [method global_menu_set_item_hidden] for more info on how to hide an item.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuIsItemHidden(menu_root gd.String, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_hidden
+func (self class) GlobalMenuIsItemHidden(menu_root String.Readable, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_hidden
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_hidden, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2476,13 +2478,13 @@ Returns the tooltip associated with the specified index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemTooltip(menu_root gd.String, idx gd.Int) gd.String { //gd:DisplayServer.global_menu_get_item_tooltip
+func (self class) GlobalMenuGetItemTooltip(menu_root String.Readable, idx gd.Int) String.Readable { //gd:DisplayServer.global_menu_get_item_tooltip
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2492,9 +2494,9 @@ Returns the state of a multistate item. See [method global_menu_add_multistate_i
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemState(menu_root gd.String, idx gd.Int) gd.Int { //gd:DisplayServer.global_menu_get_item_state
+func (self class) GlobalMenuGetItemState(menu_root String.Readable, idx gd.Int) gd.Int { //gd:DisplayServer.global_menu_get_item_state
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_state, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2508,9 +2510,9 @@ Returns number of states of a multistate item. See [method global_menu_add_multi
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemMaxStates(menu_root gd.String, idx gd.Int) gd.Int { //gd:DisplayServer.global_menu_get_item_max_states
+func (self class) GlobalMenuGetItemMaxStates(menu_root String.Readable, idx gd.Int) gd.Int { //gd:DisplayServer.global_menu_get_item_max_states
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_max_states, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2524,9 +2526,9 @@ Returns the icon of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemIcon(menu_root gd.String, idx gd.Int) [1]gdclass.Texture2D { //gd:DisplayServer.global_menu_get_item_icon
+func (self class) GlobalMenuGetItemIcon(menu_root String.Readable, idx gd.Int) [1]gdclass.Texture2D { //gd:DisplayServer.global_menu_get_item_icon
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2540,9 +2542,9 @@ Returns the horizontal offset of the item at the given [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemIndentationLevel(menu_root gd.String, idx gd.Int) gd.Int { //gd:DisplayServer.global_menu_get_item_indentation_level
+func (self class) GlobalMenuGetItemIndentationLevel(menu_root String.Readable, idx gd.Int) gd.Int { //gd:DisplayServer.global_menu_get_item_indentation_level
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_indentation_level, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2556,9 +2558,9 @@ Sets the checkstate status of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemChecked(menu_root gd.String, idx gd.Int, checked bool) { //gd:DisplayServer.global_menu_set_item_checked
+func (self class) GlobalMenuSetItemChecked(menu_root String.Readable, idx gd.Int, checked bool) { //gd:DisplayServer.global_menu_set_item_checked
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, checked)
 	var r_ret = callframe.Nil
@@ -2571,9 +2573,9 @@ Sets whether the item at index [param idx] has a checkbox. If [code]false[/code]
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemCheckable(menu_root gd.String, idx gd.Int, checkable bool) { //gd:DisplayServer.global_menu_set_item_checkable
+func (self class) GlobalMenuSetItemCheckable(menu_root String.Readable, idx gd.Int, checkable bool) { //gd:DisplayServer.global_menu_set_item_checkable
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, checkable)
 	var r_ret = callframe.Nil
@@ -2587,9 +2589,9 @@ Sets the type of the item at the specified index [param idx] to radio button. If
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemRadioCheckable(menu_root gd.String, idx gd.Int, checkable bool) { //gd:DisplayServer.global_menu_set_item_radio_checkable
+func (self class) GlobalMenuSetItemRadioCheckable(menu_root String.Readable, idx gd.Int, checkable bool) { //gd:DisplayServer.global_menu_set_item_radio_checkable
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, checkable)
 	var r_ret = callframe.Nil
@@ -2603,9 +2605,9 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemCallback(menu_root gd.String, idx gd.Int, callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_callback
+func (self class) GlobalMenuSetItemCallback(menu_root String.Readable, idx gd.Int, callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_callback
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
@@ -2619,9 +2621,9 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemHoverCallbacks(menu_root gd.String, idx gd.Int, callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_hover_callbacks
+func (self class) GlobalMenuSetItemHoverCallbacks(menu_root String.Readable, idx gd.Int, callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_hover_callbacks
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
@@ -2635,9 +2637,9 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemKeyCallback(menu_root gd.String, idx gd.Int, key_callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_key_callback
+func (self class) GlobalMenuSetItemKeyCallback(menu_root String.Readable, idx gd.Int, key_callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_key_callback
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	var r_ret = callframe.Nil
@@ -2650,9 +2652,9 @@ Sets the metadata of an item, which may be of any type. You can later get it wit
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemTag(menu_root gd.String, idx gd.Int, tag gd.Variant) { //gd:DisplayServer.global_menu_set_item_tag
+func (self class) GlobalMenuSetItemTag(menu_root String.Readable, idx gd.Int, tag gd.Variant) { //gd:DisplayServer.global_menu_set_item_tag
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(tag))
 	var r_ret = callframe.Nil
@@ -2665,11 +2667,11 @@ Sets the text of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemText(menu_root gd.String, idx gd.Int, text gd.String) { //gd:DisplayServer.global_menu_set_item_text
+func (self class) GlobalMenuSetItemText(menu_root String.Readable, idx gd.Int, text String.Readable) { //gd:DisplayServer.global_menu_set_item_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2680,11 +2682,11 @@ Sets the submenu of the item at index [param idx]. The submenu is the ID of a gl
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemSubmenu(menu_root gd.String, idx gd.Int, submenu gd.String) { //gd:DisplayServer.global_menu_set_item_submenu
+func (self class) GlobalMenuSetItemSubmenu(menu_root String.Readable, idx gd.Int, submenu String.Readable) { //gd:DisplayServer.global_menu_set_item_submenu
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(submenu))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(submenu)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_submenu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2695,9 +2697,9 @@ Sets the accelerator of the item at index [param idx]. [param keycode] can be a 
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemAccelerator(menu_root gd.String, idx gd.Int, keycode Key) { //gd:DisplayServer.global_menu_set_item_accelerator
+func (self class) GlobalMenuSetItemAccelerator(menu_root String.Readable, idx gd.Int, keycode Key) { //gd:DisplayServer.global_menu_set_item_accelerator
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, keycode)
 	var r_ret = callframe.Nil
@@ -2710,9 +2712,9 @@ Enables/disables the item at index [param idx]. When it is disabled, it can't be
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemDisabled(menu_root gd.String, idx gd.Int, disabled bool) { //gd:DisplayServer.global_menu_set_item_disabled
+func (self class) GlobalMenuSetItemDisabled(menu_root String.Readable, idx gd.Int, disabled bool) { //gd:DisplayServer.global_menu_set_item_disabled
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, disabled)
 	var r_ret = callframe.Nil
@@ -2725,9 +2727,9 @@ Hides/shows the item at index [param idx]. When it is hidden, an item does not a
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemHidden(menu_root gd.String, idx gd.Int, hidden bool) { //gd:DisplayServer.global_menu_set_item_hidden
+func (self class) GlobalMenuSetItemHidden(menu_root String.Readable, idx gd.Int, hidden bool) { //gd:DisplayServer.global_menu_set_item_hidden
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, hidden)
 	var r_ret = callframe.Nil
@@ -2740,11 +2742,11 @@ Sets the [String] tooltip of the item at the specified index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemTooltip(menu_root gd.String, idx gd.Int, tooltip gd.String) { //gd:DisplayServer.global_menu_set_item_tooltip
+func (self class) GlobalMenuSetItemTooltip(menu_root String.Readable, idx gd.Int, tooltip String.Readable) { //gd:DisplayServer.global_menu_set_item_tooltip
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(tooltip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2755,9 +2757,9 @@ Sets the state of a multistate item. See [method global_menu_add_multistate_item
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemState(menu_root gd.String, idx gd.Int, state gd.Int) { //gd:DisplayServer.global_menu_set_item_state
+func (self class) GlobalMenuSetItemState(menu_root String.Readable, idx gd.Int, state gd.Int) { //gd:DisplayServer.global_menu_set_item_state
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, state)
 	var r_ret = callframe.Nil
@@ -2770,9 +2772,9 @@ Sets number of state of a multistate item. See [method global_menu_add_multistat
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemMaxStates(menu_root gd.String, idx gd.Int, max_states gd.Int) { //gd:DisplayServer.global_menu_set_item_max_states
+func (self class) GlobalMenuSetItemMaxStates(menu_root String.Readable, idx gd.Int, max_states gd.Int) { //gd:DisplayServer.global_menu_set_item_max_states
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, max_states)
 	var r_ret = callframe.Nil
@@ -2786,9 +2788,9 @@ Replaces the [Texture2D] icon of the specified [param idx].
 [b]Note:[/b] This method is not supported by macOS "_dock" menu items.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemIcon(menu_root gd.String, idx gd.Int, icon [1]gdclass.Texture2D) { //gd:DisplayServer.global_menu_set_item_icon
+func (self class) GlobalMenuSetItemIcon(menu_root String.Readable, idx gd.Int, icon [1]gdclass.Texture2D) { //gd:DisplayServer.global_menu_set_item_icon
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	var r_ret = callframe.Nil
@@ -2801,9 +2803,9 @@ Sets the horizontal offset of the item at the given [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemIndentationLevel(menu_root gd.String, idx gd.Int, level gd.Int) { //gd:DisplayServer.global_menu_set_item_indentation_level
+func (self class) GlobalMenuSetItemIndentationLevel(menu_root String.Readable, idx gd.Int, level gd.Int) { //gd:DisplayServer.global_menu_set_item_indentation_level
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, level)
 	var r_ret = callframe.Nil
@@ -2816,9 +2818,9 @@ Returns number of items in the global menu with ID [param menu_root].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemCount(menu_root gd.String) gd.Int { //gd:DisplayServer.global_menu_get_item_count
+func (self class) GlobalMenuGetItemCount(menu_root String.Readable) gd.Int { //gd:DisplayServer.global_menu_get_item_count
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2832,9 +2834,9 @@ Removes the item at index [param idx] from the global menu [param menu_root].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuRemoveItem(menu_root gd.String, idx gd.Int) { //gd:DisplayServer.global_menu_remove_item
+func (self class) GlobalMenuRemoveItem(menu_root String.Readable, idx gd.Int) { //gd:DisplayServer.global_menu_remove_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_remove_item, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2854,9 +2856,9 @@ Removes all items from the global menu with ID [param menu_root].
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuClear(menu_root gd.String) { //gd:DisplayServer.global_menu_clear
+func (self class) GlobalMenuClear(menu_root String.Readable) { //gd:DisplayServer.global_menu_clear
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu_root))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2932,9 +2934,9 @@ Returns an [PackedStringArray] of voice identifiers for the [param language].
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsGetVoicesForLanguage(language gd.String) gd.PackedStringArray { //gd:DisplayServer.tts_get_voices_for_language
+func (self class) TtsGetVoicesForLanguage(language String.Readable) gd.PackedStringArray { //gd:DisplayServer.tts_get_voices_for_language
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_get_voices_for_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
@@ -2955,10 +2957,10 @@ Adds an utterance to the queue. If [param interrupt] is [code]true[/code], the q
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsSpeak(text gd.String, voice gd.String, volume gd.Int, pitch gd.Float, rate gd.Float, utterance_id gd.Int, interrupt bool) { //gd:DisplayServer.tts_speak
+func (self class) TtsSpeak(text String.Readable, voice String.Readable, volume gd.Int, pitch gd.Float, rate gd.Float, utterance_id gd.Int, interrupt bool) { //gd:DisplayServer.tts_speak
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
-	callframe.Arg(frame, pointers.Get(voice))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(voice)))
 	callframe.Arg(frame, volume)
 	callframe.Arg(frame, pitch)
 	callframe.Arg(frame, rate)
@@ -3163,9 +3165,9 @@ func (self class) MouseGetButtonState() MouseButtonMask { //gd:DisplayServer.mou
 Sets the user's clipboard content to the given string.
 */
 //go:nosplit
-func (self class) ClipboardSet(clipboard gd.String) { //gd:DisplayServer.clipboard_set
+func (self class) ClipboardSet(clipboard String.Readable) { //gd:DisplayServer.clipboard_set
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(clipboard))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(clipboard)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_set, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3175,11 +3177,11 @@ func (self class) ClipboardSet(clipboard gd.String) { //gd:DisplayServer.clipboa
 Returns the user's clipboard as a string if possible.
 */
 //go:nosplit
-func (self class) ClipboardGet() gd.String { //gd:DisplayServer.clipboard_get
+func (self class) ClipboardGet() String.Readable { //gd:DisplayServer.clipboard_get
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_get, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3229,9 +3231,9 @@ Sets the user's [url=https://unix.stackexchange.com/questions/139191/whats-the-d
 [b]Note:[/b] This method is only implemented on Linux (X11/Wayland).
 */
 //go:nosplit
-func (self class) ClipboardSetPrimary(clipboard_primary gd.String) { //gd:DisplayServer.clipboard_set_primary
+func (self class) ClipboardSetPrimary(clipboard_primary String.Readable) { //gd:DisplayServer.clipboard_set_primary
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(clipboard_primary))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(clipboard_primary)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_set_primary, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3242,11 +3244,11 @@ Returns the user's [url=https://unix.stackexchange.com/questions/139191/whats-th
 [b]Note:[/b] This method is only implemented on Linux (X11/Wayland).
 */
 //go:nosplit
-func (self class) ClipboardGetPrimary() gd.String { //gd:DisplayServer.clipboard_get_primary
+func (self class) ClipboardGetPrimary() String.Readable { //gd:DisplayServer.clipboard_get_primary
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_get_primary, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3658,9 +3660,9 @@ Sets the title of the given window to [param title].
 [b]Note:[/b] Avoid changing the window title every frame, as this can cause performance issues on certain window managers. Try to change the window title only a few times per second at most.
 */
 //go:nosplit
-func (self class) WindowSetTitle(title gd.String, window_id gd.Int) { //gd:DisplayServer.window_set_title
+func (self class) WindowSetTitle(title String.Readable, window_id gd.Int) { //gd:DisplayServer.window_set_title
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(title))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_title, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3672,9 +3674,9 @@ Returns the estimated window title bar size (including text and window buttons) 
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) WindowGetTitleSize(title gd.String, window_id gd.Int) gd.Vector2i { //gd:DisplayServer.window_get_title_size
+func (self class) WindowGetTitleSize(title String.Readable, window_id gd.Int) gd.Vector2i { //gd:DisplayServer.window_get_title_size
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(title))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_title_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4270,11 +4272,11 @@ Returns the composition string contained within the [url=https://en.wikipedia.or
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) ImeGetText() gd.String { //gd:DisplayServer.ime_get_text
+func (self class) ImeGetText() String.Readable { //gd:DisplayServer.ime_get_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_ime_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4290,9 +4292,9 @@ Shows the virtual keyboard if the platform has one.
 [b]Note:[/b] This method is implemented on Android, iOS and Web.
 */
 //go:nosplit
-func (self class) VirtualKeyboardShow(existing_text gd.String, position gd.Rect2, atype gdclass.DisplayServerVirtualKeyboardType, max_length gd.Int, cursor_start gd.Int, cursor_end gd.Int) { //gd:DisplayServer.virtual_keyboard_show
+func (self class) VirtualKeyboardShow(existing_text String.Readable, position gd.Rect2, atype gdclass.DisplayServerVirtualKeyboardType, max_length gd.Int, cursor_start gd.Int, cursor_end gd.Int) { //gd:DisplayServer.virtual_keyboard_show
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(existing_text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(existing_text)))
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, max_length)
@@ -4399,10 +4401,10 @@ Shows a text dialog which uses the operating system's native look-and-feel. [par
 [b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG] feature. Supported platforms include macOS and Windows.
 */
 //go:nosplit
-func (self class) DialogShow(title gd.String, description gd.String, buttons gd.PackedStringArray, callback Callable.Function) gd.Error { //gd:DisplayServer.dialog_show
+func (self class) DialogShow(title String.Readable, description String.Readable, buttons gd.PackedStringArray, callback Callable.Function) gd.Error { //gd:DisplayServer.dialog_show
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(title))
-	callframe.Arg(frame, pointers.Get(description))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(description)))
 	callframe.Arg(frame, pointers.Get(buttons))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -4417,11 +4419,11 @@ Shows a text input dialog which uses the operating system's native look-and-feel
 [b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_INPUT] feature. Supported platforms include macOS and Windows.
 */
 //go:nosplit
-func (self class) DialogInputText(title gd.String, description gd.String, existing_text gd.String, callback Callable.Function) gd.Error { //gd:DisplayServer.dialog_input_text
+func (self class) DialogInputText(title String.Readable, description String.Readable, existing_text String.Readable, callback Callable.Function) gd.Error { //gd:DisplayServer.dialog_input_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(title))
-	callframe.Arg(frame, pointers.Get(description))
-	callframe.Arg(frame, pointers.Get(existing_text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(description)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(existing_text)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_dialog_input_text, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4441,11 +4443,11 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogShow(title gd.String, current_directory gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, callback Callable.Function) gd.Error { //gd:DisplayServer.file_dialog_show
+func (self class) FileDialogShow(title String.Readable, current_directory String.Readable, filename String.Readable, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, callback Callable.Function) gd.Error { //gd:DisplayServer.file_dialog_show
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(title))
-	callframe.Arg(frame, pointers.Get(current_directory))
-	callframe.Arg(frame, pointers.Get(filename))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(current_directory)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
 	callframe.Arg(frame, show_hidden)
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, pointers.Get(filters))
@@ -4472,12 +4474,12 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogWithOptionsShow(title gd.String, current_directory gd.String, root gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, options Array.Contains[Dictionary.Any], callback Callable.Function) gd.Error { //gd:DisplayServer.file_dialog_with_options_show
+func (self class) FileDialogWithOptionsShow(title String.Readable, current_directory String.Readable, root String.Readable, filename String.Readable, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, options Array.Contains[Dictionary.Any], callback Callable.Function) gd.Error { //gd:DisplayServer.file_dialog_with_options_show
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(title))
-	callframe.Arg(frame, pointers.Get(current_directory))
-	callframe.Arg(frame, pointers.Get(root))
-	callframe.Arg(frame, pointers.Get(filename))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(current_directory)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(root)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
 	callframe.Arg(frame, show_hidden)
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, pointers.Get(filters))
@@ -4536,12 +4538,12 @@ Returns the ISO-639/BCP-47 language code of the keyboard layout at position [par
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
-func (self class) KeyboardGetLayoutLanguage(index gd.Int) gd.String { //gd:DisplayServer.keyboard_get_layout_language
+func (self class) KeyboardGetLayoutLanguage(index gd.Int) String.Readable { //gd:DisplayServer.keyboard_get_layout_language
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_layout_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4551,12 +4553,12 @@ Returns the localized name of the keyboard layout at position [param index].
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
-func (self class) KeyboardGetLayoutName(index gd.Int) gd.String { //gd:DisplayServer.keyboard_get_layout_name
+func (self class) KeyboardGetLayoutName(index gd.Int) String.Readable { //gd:DisplayServer.keyboard_get_layout_name
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_layout_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4619,9 +4621,9 @@ Sets the window icon (usually displayed in the top-left corner) in the operating
 [b]Note:[/b] Requires support for [constant FEATURE_NATIVE_ICON].
 */
 //go:nosplit
-func (self class) SetNativeIcon(filename gd.String) { //gd:DisplayServer.set_native_icon
+func (self class) SetNativeIcon(filename String.Readable) { //gd:DisplayServer.set_native_icon
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(filename))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_set_native_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -4645,10 +4647,10 @@ Creates a new application status indicator with the specified icon, tooltip, and
 [param callback] should take two arguments: the pressed mouse button (one of the [enum MouseButton] constants) and the click position in screen coordinates (a [Vector2i]).
 */
 //go:nosplit
-func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip gd.String, callback Callable.Function) gd.Int { //gd:DisplayServer.create_status_indicator
+func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip String.Readable, callback Callable.Function) gd.Int { //gd:DisplayServer.create_status_indicator
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	callframe.Arg(frame, pointers.Get(tooltip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_create_status_indicator, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4676,10 +4678,10 @@ Sets the application status indicator tooltip.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) StatusIndicatorSetTooltip(id gd.Int, tooltip gd.String) { //gd:DisplayServer.status_indicator_set_tooltip
+func (self class) StatusIndicatorSetTooltip(id gd.Int, tooltip String.Readable) { //gd:DisplayServer.status_indicator_set_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(tooltip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_status_indicator_set_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -4761,12 +4763,12 @@ Returns the tablet driver name for the given index.
 [b]Note:[/b] This method is implemented only on Windows.
 */
 //go:nosplit
-func (self class) TabletGetDriverName(idx gd.Int) gd.String { //gd:DisplayServer.tablet_get_driver_name
+func (self class) TabletGetDriverName(idx gd.Int) String.Readable { //gd:DisplayServer.tablet_get_driver_name
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tablet_get_driver_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4776,11 +4778,11 @@ Returns current active tablet driver name.
 [b]Note:[/b] This method is implemented only on Windows.
 */
 //go:nosplit
-func (self class) TabletGetCurrentDriver() gd.String { //gd:DisplayServer.tablet_get_current_driver
+func (self class) TabletGetCurrentDriver() String.Readable { //gd:DisplayServer.tablet_get_current_driver
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tablet_get_current_driver, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4794,9 +4796,9 @@ Supported drivers:
 [b]Note:[/b] This method is implemented only on Windows.
 */
 //go:nosplit
-func (self class) TabletSetCurrentDriver(name gd.String) { //gd:DisplayServer.tablet_set_current_driver
+func (self class) TabletSetCurrentDriver(name String.Readable) { //gd:DisplayServer.tablet_set_current_driver
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tablet_set_current_driver, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

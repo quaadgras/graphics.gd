@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A horizontal menu bar that creates a [MenuButton] for each [PopupMenu] child. New items are created by adding [PopupMenu]s to this node.
@@ -68,7 +70,7 @@ func (self Instance) GetMenuCount() int { //gd:MenuBar.get_menu_count
 Sets menu item title.
 */
 func (self Instance) SetMenuTitle(menu int, title string) { //gd:MenuBar.set_menu_title
-	class(self).SetMenuTitle(gd.Int(menu), gd.NewString(title))
+	class(self).SetMenuTitle(gd.Int(menu), String.New(title))
 }
 
 /*
@@ -82,7 +84,7 @@ func (self Instance) GetMenuTitle(menu int) string { //gd:MenuBar.get_menu_title
 Sets menu item tooltip.
 */
 func (self Instance) SetMenuTooltip(menu int, tooltip string) { //gd:MenuBar.set_menu_tooltip
-	class(self).SetMenuTooltip(gd.Int(menu), gd.NewString(tooltip))
+	class(self).SetMenuTooltip(gd.Int(menu), String.New(tooltip))
 }
 
 /*
@@ -190,7 +192,7 @@ func (self Instance) Language() string {
 }
 
 func (self Instance) SetLanguage(value string) {
-	class(self).SetLanguage(gd.NewString(value))
+	class(self).SetLanguage(String.New(value))
 }
 
 //go:nosplit
@@ -289,20 +291,20 @@ func (self class) GetTextDirection() gdclass.ControlTextDirection { //gd:MenuBar
 }
 
 //go:nosplit
-func (self class) SetLanguage(language gd.String) { //gd:MenuBar.set_language
+func (self class) SetLanguage(language String.Readable) { //gd:MenuBar.set_language
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetLanguage() gd.String { //gd:MenuBar.get_language
+func (self class) GetLanguage() String.Readable { //gd:MenuBar.get_language
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -349,10 +351,10 @@ func (self class) GetStartIndex() gd.Int { //gd:MenuBar.get_start_index
 Sets menu item title.
 */
 //go:nosplit
-func (self class) SetMenuTitle(menu gd.Int, title gd.String) { //gd:MenuBar.set_menu_title
+func (self class) SetMenuTitle(menu gd.Int, title String.Readable) { //gd:MenuBar.set_menu_title
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
-	callframe.Arg(frame, pointers.Get(title))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_set_menu_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -362,12 +364,12 @@ func (self class) SetMenuTitle(menu gd.Int, title gd.String) { //gd:MenuBar.set_
 Returns menu item title.
 */
 //go:nosplit
-func (self class) GetMenuTitle(menu gd.Int) gd.String { //gd:MenuBar.get_menu_title
+func (self class) GetMenuTitle(menu gd.Int) String.Readable { //gd:MenuBar.get_menu_title
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_menu_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -376,10 +378,10 @@ func (self class) GetMenuTitle(menu gd.Int) gd.String { //gd:MenuBar.get_menu_ti
 Sets menu item tooltip.
 */
 //go:nosplit
-func (self class) SetMenuTooltip(menu gd.Int, tooltip gd.String) { //gd:MenuBar.set_menu_tooltip
+func (self class) SetMenuTooltip(menu gd.Int, tooltip String.Readable) { //gd:MenuBar.set_menu_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
-	callframe.Arg(frame, pointers.Get(tooltip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_set_menu_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -389,12 +391,12 @@ func (self class) SetMenuTooltip(menu gd.Int, tooltip gd.String) { //gd:MenuBar.
 Returns menu item tooltip.
 */
 //go:nosplit
-func (self class) GetMenuTooltip(menu gd.Int) gd.String { //gd:MenuBar.get_menu_tooltip
+func (self class) GetMenuTooltip(menu gd.Int) String.Readable { //gd:MenuBar.get_menu_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_menu_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

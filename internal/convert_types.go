@@ -9,6 +9,7 @@ import (
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
 	DictionaryType "graphics.gd/variant/Dictionary"
+	StringType "graphics.gd/variant/String"
 	"runtime.link/api/xray"
 )
 
@@ -238,6 +239,16 @@ func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
 			var obj = reflect.New(rtype)
 			obj.Interface().(ArrayType.Pointer).SetAny(value)
 			return obj.Elem(), nil
+		}
+		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
+	case StringType.Readable:
+		if rtype.Kind() == reflect.String {
+			return reflect.ValueOf(value.String()), nil
+		}
+		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
+	case String:
+		if rtype.ConvertibleTo(reflect.TypeFor[StringType.Readable]()) {
+			return reflect.ValueOf(StringType.New(value.String())).Convert(rtype), nil
 		}
 		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 	case DictionaryType.Any:

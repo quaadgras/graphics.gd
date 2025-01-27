@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The engine can save resources when you do it from the editor, or when you use the [ResourceSaver] singleton. This is accomplished thanks to multiple [ResourceFormatSaver]s, each handling its own format and called automatically by the engine.
@@ -81,8 +83,8 @@ func (Instance) _save(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(resource[0])
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[gd.Int](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -96,8 +98,8 @@ Sets a new UID for the resource at the given [param path]. Returns [constant OK]
 */
 func (Instance) _set_uid(impl func(ptr unsafe.Pointer, path string, uid int) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
 		var uid = gd.UnsafeGet[gd.Int](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -148,8 +150,8 @@ func (Instance) _recognize_path(impl func(ptr unsafe.Pointer, resource [1]gdclas
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(resource[0])
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, path.String())
 		gd.UnsafeSet(p_back, ret)
@@ -179,13 +181,13 @@ func New() Instance {
 Saves the given resource object to a file at the target [param path]. [param flags] is a bitmask composed with [enum ResourceSaver.SaverFlags] constants.
 Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
-func (class) _save(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path gd.String, flags gd.Int) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _save(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path String.Readable, flags gd.Int) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(resource[0])
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[gd.Int](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -197,10 +199,10 @@ func (class) _save(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, p
 /*
 Sets a new UID for the resource at the given [param path]. Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
-func (class) _set_uid(impl func(ptr unsafe.Pointer, path gd.String, uid gd.Int) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_uid(impl func(ptr unsafe.Pointer, path String.Readable, uid gd.Int) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
 		var uid = gd.UnsafeGet[gd.Int](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -246,13 +248,13 @@ func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer, resource [
 Returns [code]true[/code] if this saver handles a given save path and [code]false[/code] otherwise.
 If this method is not implemented, the default behavior returns whether the path's extension is within the ones provided by [method _get_recognized_extensions].
 */
-func (class) _recognize_path(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _recognize_path(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(resource[0])
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(path)
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, path)
 		gd.UnsafeSet(p_back, ret)

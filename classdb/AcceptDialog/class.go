@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Window"
 import "graphics.gd/classdb/Viewport"
 import "graphics.gd/classdb/Node"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The default use of [AcceptDialog] is to allow it to only be accepted or closed, with the same result. However, the [signal confirmed] and [signal canceled] signals allow to make the two actions different, and the [method add_button] method allows to add custom buttons and actions.
@@ -65,7 +67,7 @@ If [code]true[/code], [param right] will place the button to the right of any si
 You can use [method remove_button] method to remove a button created with this method from the dialog.
 */
 func (self Instance) AddButton(text string) [1]gdclass.Button { //gd:AcceptDialog.add_button
-	return [1]gdclass.Button(class(self).AddButton(gd.NewString(text), false, gd.NewString("")))
+	return [1]gdclass.Button(class(self).AddButton(String.New(text), false, String.New("")))
 }
 
 /*
@@ -73,7 +75,7 @@ Adds a button with label [param name] and a cancel action to the dialog and retu
 You can use [method remove_button] method to remove a button created with this method from the dialog.
 */
 func (self Instance) AddCancelButton(name string) [1]gdclass.Button { //gd:AcceptDialog.add_cancel_button
-	return [1]gdclass.Button(class(self).AddCancelButton(gd.NewString(name)))
+	return [1]gdclass.Button(class(self).AddCancelButton(String.New(name)))
 }
 
 /*
@@ -113,7 +115,7 @@ func (self Instance) OkButtonText() string {
 }
 
 func (self Instance) SetOkButtonText(value string) {
-	class(self).SetOkButtonText(gd.NewString(value))
+	class(self).SetOkButtonText(String.New(value))
 }
 
 func (self Instance) DialogText() string {
@@ -121,7 +123,7 @@ func (self Instance) DialogText() string {
 }
 
 func (self Instance) SetDialogText(value string) {
-	class(self).SetText(gd.NewString(value))
+	class(self).SetText(String.New(value))
 }
 
 func (self Instance) DialogHideOnOk() bool {
@@ -220,11 +222,11 @@ If [code]true[/code], [param right] will place the button to the right of any si
 You can use [method remove_button] method to remove a button created with this method from the dialog.
 */
 //go:nosplit
-func (self class) AddButton(text gd.String, right bool, action gd.String) [1]gdclass.Button { //gd:AcceptDialog.add_button
+func (self class) AddButton(text String.Readable, right bool, action String.Readable) [1]gdclass.Button { //gd:AcceptDialog.add_button
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, right)
-	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(action)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_add_button, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Button{gd.PointerLifetimeBoundTo[gdclass.Button](self.AsObject(), r_ret.Get())}
@@ -237,9 +239,9 @@ Adds a button with label [param name] and a cancel action to the dialog and retu
 You can use [method remove_button] method to remove a button created with this method from the dialog.
 */
 //go:nosplit
-func (self class) AddCancelButton(name gd.String) [1]gdclass.Button { //gd:AcceptDialog.add_cancel_button
+func (self class) AddCancelButton(name String.Readable) [1]gdclass.Button { //gd:AcceptDialog.add_cancel_button
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_add_cancel_button, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Button{gd.PointerLifetimeBoundTo[gdclass.Button](self.AsObject(), r_ret.Get())}
@@ -272,20 +274,20 @@ func (self class) RegisterTextEnter(line_edit [1]gdclass.LineEdit) { //gd:Accept
 }
 
 //go:nosplit
-func (self class) SetText(text gd.String) { //gd:AcceptDialog.set_text
+func (self class) SetText(text String.Readable) { //gd:AcceptDialog.set_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetText() gd.String { //gd:AcceptDialog.get_text
+func (self class) GetText() String.Readable { //gd:AcceptDialog.get_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -310,20 +312,20 @@ func (self class) HasAutowrap() bool { //gd:AcceptDialog.has_autowrap
 }
 
 //go:nosplit
-func (self class) SetOkButtonText(text gd.String) { //gd:AcceptDialog.set_ok_button_text
+func (self class) SetOkButtonText(text String.Readable) { //gd:AcceptDialog.set_ok_button_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_set_ok_button_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetOkButtonText() gd.String { //gd:AcceptDialog.get_ok_button_text
+func (self class) GetOkButtonText() String.Readable { //gd:AcceptDialog.get_ok_button_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_ok_button_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

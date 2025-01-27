@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 type Instance [1]gdclass.Skin
 
@@ -49,7 +51,7 @@ func (self Instance) AddBind(bone int, pose Transform3D.BasisOrigin) { //gd:Skin
 	class(self).AddBind(gd.Int(bone), gd.Transform3D(pose))
 }
 func (self Instance) AddNamedBind(name string, pose Transform3D.BasisOrigin) { //gd:Skin.add_named_bind
-	class(self).AddNamedBind(gd.NewString(name), gd.Transform3D(pose))
+	class(self).AddNamedBind(String.New(name), gd.Transform3D(pose))
 }
 func (self Instance) SetBindPose(bind_index int, pose Transform3D.BasisOrigin) { //gd:Skin.set_bind_pose
 	class(self).SetBindPose(gd.Int(bind_index), gd.Transform3D(pose))
@@ -122,9 +124,9 @@ func (self class) AddBind(bone gd.Int, pose gd.Transform3D) { //gd:Skin.add_bind
 }
 
 //go:nosplit
-func (self class) AddNamedBind(name gd.String, pose gd.Transform3D) { //gd:Skin.add_named_bind
+func (self class) AddNamedBind(name String.Readable, pose gd.Transform3D) { //gd:Skin.add_named_bind
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, pose)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skin.Bind_add_named_bind, self.AsObject(), frame.Array(0), r_ret.Addr())

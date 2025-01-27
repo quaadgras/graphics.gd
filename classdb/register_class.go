@@ -21,6 +21,7 @@ import (
 	ShaderMaterialClass "graphics.gd/classdb/ShaderMaterial"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Object"
+	"graphics.gd/variant/String"
 	"graphics.gd/variant/StringName"
 
 	gd "graphics.gd/internal"
@@ -169,7 +170,7 @@ func Register[T Class]() {
 		if _, ok := any(super).(interface {
 			AsMainLoop() MainLoopClass.Instance
 		}); ok {
-			main_loop_type := gd.NewString("application/run/main_loop_type")
+			main_loop_type := String.New("application/run/main_loop_type")
 			ProjectSettingsClass.Advanced().SetInitialValue(main_loop_type, gd.NewVariant(className))
 			ProjectSettingsClass.Advanced().SetSetting(main_loop_type, gd.NewVariant(className))
 			isMainLoop = true
@@ -582,7 +583,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		if !field.IsExported() {
 			mode = NodeClass.InternalModeFront
 		}
-		NodeClass.Advanced(class.AsNode()).SetName(gd.NewString(field.Name))
+		NodeClass.Advanced(class.AsNode()).SetName(String.New(field.Name))
 		NodeClass.Advanced(parent).AddChild(class.AsNode(), true, mode)
 		NodeClass.Advanced(class.AsNode()).SetOwner(owner)
 		return

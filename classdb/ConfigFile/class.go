@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This helper class can be used to store [Variant] values on the filesystem using INI-style formatting. The stored values are identified by a section and a key:
@@ -133,28 +135,28 @@ type Any interface {
 Assigns a value to the specified key of the specified section. If either the section or the key do not exist, they are created. Passing a [code]null[/code] value deletes the specified key if it exists, and deletes the section if it ends up empty once the key has been removed.
 */
 func (self Instance) SetValue(section string, key string, value any) { //gd:ConfigFile.set_value
-	class(self).SetValue(gd.NewString(section), gd.NewString(key), gd.NewVariant(value))
+	class(self).SetValue(String.New(section), String.New(key), gd.NewVariant(value))
 }
 
 /*
 Returns the current value for the specified section and key. If either the section or the key do not exist, the method returns the fallback [param default] value. If [param default] is not specified or set to [code]null[/code], an error is also raised.
 */
 func (self Instance) GetValue(section string, key string) any { //gd:ConfigFile.get_value
-	return any(class(self).GetValue(gd.NewString(section), gd.NewString(key), gd.NewVariant(gd.NewVariant(([1]any{}[0])))).Interface())
+	return any(class(self).GetValue(String.New(section), String.New(key), gd.NewVariant(gd.NewVariant(([1]any{}[0])))).Interface())
 }
 
 /*
 Returns [code]true[/code] if the specified section exists.
 */
 func (self Instance) HasSection(section string) bool { //gd:ConfigFile.has_section
-	return bool(class(self).HasSection(gd.NewString(section)))
+	return bool(class(self).HasSection(String.New(section)))
 }
 
 /*
 Returns [code]true[/code] if the specified section-key pair exists.
 */
 func (self Instance) HasSectionKey(section string, key string) bool { //gd:ConfigFile.has_section_key
-	return bool(class(self).HasSectionKey(gd.NewString(section), gd.NewString(key)))
+	return bool(class(self).HasSectionKey(String.New(section), String.New(key)))
 }
 
 /*
@@ -168,21 +170,21 @@ func (self Instance) GetSections() []string { //gd:ConfigFile.get_sections
 Returns an array of all defined key identifiers in the specified section. Raises an error and returns an empty array if the section does not exist.
 */
 func (self Instance) GetSectionKeys(section string) []string { //gd:ConfigFile.get_section_keys
-	return []string(class(self).GetSectionKeys(gd.NewString(section)).Strings())
+	return []string(class(self).GetSectionKeys(String.New(section)).Strings())
 }
 
 /*
 Deletes the specified section along with all the key-value pairs inside. Raises an error if the section does not exist.
 */
 func (self Instance) EraseSection(section string) { //gd:ConfigFile.erase_section
-	class(self).EraseSection(gd.NewString(section))
+	class(self).EraseSection(String.New(section))
 }
 
 /*
 Deletes the specified key in a section. Raises an error if either the section or the key do not exist.
 */
 func (self Instance) EraseSectionKey(section string, key string) { //gd:ConfigFile.erase_section_key
-	class(self).EraseSectionKey(gd.NewString(section), gd.NewString(key))
+	class(self).EraseSectionKey(String.New(section), String.New(key))
 }
 
 /*
@@ -190,7 +192,7 @@ Loads the config file specified as a parameter. The file's contents are parsed a
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) Load(path string) error { //gd:ConfigFile.load
-	return error(gd.ToError(class(self).Load(gd.NewString(path))))
+	return error(gd.ToError(class(self).Load(String.New(path))))
 }
 
 /*
@@ -198,7 +200,7 @@ Parses the passed string as the contents of a config file. The string is parsed 
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) Parse(data string) error { //gd:ConfigFile.parse
-	return error(gd.ToError(class(self).Parse(gd.NewString(data))))
+	return error(gd.ToError(class(self).Parse(String.New(data))))
 }
 
 /*
@@ -206,7 +208,7 @@ Saves the contents of the [ConfigFile] object to the file specified as a paramet
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) Save(path string) error { //gd:ConfigFile.save
-	return error(gd.ToError(class(self).Save(gd.NewString(path))))
+	return error(gd.ToError(class(self).Save(String.New(path))))
 }
 
 /*
@@ -221,7 +223,7 @@ Loads the encrypted config file specified as a parameter, using the provided [pa
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) LoadEncrypted(path string, key []byte) error { //gd:ConfigFile.load_encrypted
-	return error(gd.ToError(class(self).LoadEncrypted(gd.NewString(path), gd.NewPackedByteSlice(key))))
+	return error(gd.ToError(class(self).LoadEncrypted(String.New(path), gd.NewPackedByteSlice(key))))
 }
 
 /*
@@ -229,7 +231,7 @@ Loads the encrypted config file specified as a parameter, using the provided [pa
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) LoadEncryptedPass(path string, password string) error { //gd:ConfigFile.load_encrypted_pass
-	return error(gd.ToError(class(self).LoadEncryptedPass(gd.NewString(path), gd.NewString(password))))
+	return error(gd.ToError(class(self).LoadEncryptedPass(String.New(path), String.New(password))))
 }
 
 /*
@@ -237,7 +239,7 @@ Saves the contents of the [ConfigFile] object to the AES-256 encrypted file spec
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) SaveEncrypted(path string, key []byte) error { //gd:ConfigFile.save_encrypted
-	return error(gd.ToError(class(self).SaveEncrypted(gd.NewString(path), gd.NewPackedByteSlice(key))))
+	return error(gd.ToError(class(self).SaveEncrypted(String.New(path), gd.NewPackedByteSlice(key))))
 }
 
 /*
@@ -245,7 +247,7 @@ Saves the contents of the [ConfigFile] object to the AES-256 encrypted file spec
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) SaveEncryptedPass(path string, password string) error { //gd:ConfigFile.save_encrypted_pass
-	return error(gd.ToError(class(self).SaveEncryptedPass(gd.NewString(path), gd.NewString(password))))
+	return error(gd.ToError(class(self).SaveEncryptedPass(String.New(path), String.New(password))))
 }
 
 /*
@@ -278,10 +280,10 @@ func New() Instance {
 Assigns a value to the specified key of the specified section. If either the section or the key do not exist, they are created. Passing a [code]null[/code] value deletes the specified key if it exists, and deletes the section if it ends up empty once the key has been removed.
 */
 //go:nosplit
-func (self class) SetValue(section gd.String, key gd.String, value gd.Variant) { //gd:ConfigFile.set_value
+func (self class) SetValue(section String.Readable, key String.Readable, value gd.Variant) { //gd:ConfigFile.set_value
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(section))
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_set_value, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -292,10 +294,10 @@ func (self class) SetValue(section gd.String, key gd.String, value gd.Variant) {
 Returns the current value for the specified section and key. If either the section or the key do not exist, the method returns the fallback [param default] value. If [param default] is not specified or set to [code]null[/code], an error is also raised.
 */
 //go:nosplit
-func (self class) GetValue(section gd.String, key gd.String, def gd.Variant) gd.Variant { //gd:ConfigFile.get_value
+func (self class) GetValue(section String.Readable, key String.Readable, def gd.Variant) gd.Variant { //gd:ConfigFile.get_value
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(section))
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
 	callframe.Arg(frame, pointers.Get(def))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_get_value, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -308,9 +310,9 @@ func (self class) GetValue(section gd.String, key gd.String, def gd.Variant) gd.
 Returns [code]true[/code] if the specified section exists.
 */
 //go:nosplit
-func (self class) HasSection(section gd.String) bool { //gd:ConfigFile.has_section
+func (self class) HasSection(section String.Readable) bool { //gd:ConfigFile.has_section
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(section))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_has_section, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -322,10 +324,10 @@ func (self class) HasSection(section gd.String) bool { //gd:ConfigFile.has_secti
 Returns [code]true[/code] if the specified section-key pair exists.
 */
 //go:nosplit
-func (self class) HasSectionKey(section gd.String, key gd.String) bool { //gd:ConfigFile.has_section_key
+func (self class) HasSectionKey(section String.Readable, key String.Readable) bool { //gd:ConfigFile.has_section_key
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(section))
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_has_section_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -350,9 +352,9 @@ func (self class) GetSections() gd.PackedStringArray { //gd:ConfigFile.get_secti
 Returns an array of all defined key identifiers in the specified section. Raises an error and returns an empty array if the section does not exist.
 */
 //go:nosplit
-func (self class) GetSectionKeys(section gd.String) gd.PackedStringArray { //gd:ConfigFile.get_section_keys
+func (self class) GetSectionKeys(section String.Readable) gd.PackedStringArray { //gd:ConfigFile.get_section_keys
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(section))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_get_section_keys, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
@@ -364,9 +366,9 @@ func (self class) GetSectionKeys(section gd.String) gd.PackedStringArray { //gd:
 Deletes the specified section along with all the key-value pairs inside. Raises an error if the section does not exist.
 */
 //go:nosplit
-func (self class) EraseSection(section gd.String) { //gd:ConfigFile.erase_section
+func (self class) EraseSection(section String.Readable) { //gd:ConfigFile.erase_section
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(section))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_erase_section, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -376,10 +378,10 @@ func (self class) EraseSection(section gd.String) { //gd:ConfigFile.erase_sectio
 Deletes the specified key in a section. Raises an error if either the section or the key do not exist.
 */
 //go:nosplit
-func (self class) EraseSectionKey(section gd.String, key gd.String) { //gd:ConfigFile.erase_section_key
+func (self class) EraseSectionKey(section String.Readable, key String.Readable) { //gd:ConfigFile.erase_section_key
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(section))
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_erase_section_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -390,9 +392,9 @@ Loads the config file specified as a parameter. The file's contents are parsed a
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) Load(path gd.String) gd.Error { //gd:ConfigFile.load
+func (self class) Load(path String.Readable) gd.Error { //gd:ConfigFile.load
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -405,9 +407,9 @@ Parses the passed string as the contents of a config file. The string is parsed 
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) Parse(data gd.String) gd.Error { //gd:ConfigFile.parse
+func (self class) Parse(data String.Readable) gd.Error { //gd:ConfigFile.parse
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(data)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -420,9 +422,9 @@ Saves the contents of the [ConfigFile] object to the file specified as a paramet
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) Save(path gd.String) gd.Error { //gd:ConfigFile.save
+func (self class) Save(path String.Readable) gd.Error { //gd:ConfigFile.save
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -434,11 +436,11 @@ func (self class) Save(path gd.String) gd.Error { //gd:ConfigFile.save
 Obtain the text version of this config file (the same text that would be written to a file).
 */
 //go:nosplit
-func (self class) EncodeToText() gd.String { //gd:ConfigFile.encode_to_text
+func (self class) EncodeToText() String.Readable { //gd:ConfigFile.encode_to_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_encode_to_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -448,9 +450,9 @@ Loads the encrypted config file specified as a parameter, using the provided [pa
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) LoadEncrypted(path gd.String, key gd.PackedByteArray) gd.Error { //gd:ConfigFile.load_encrypted
+func (self class) LoadEncrypted(path String.Readable, key gd.PackedByteArray) gd.Error { //gd:ConfigFile.load_encrypted
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(key))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load_encrypted, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -464,10 +466,10 @@ Loads the encrypted config file specified as a parameter, using the provided [pa
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) LoadEncryptedPass(path gd.String, password gd.String) gd.Error { //gd:ConfigFile.load_encrypted_pass
+func (self class) LoadEncryptedPass(path String.Readable, password String.Readable) gd.Error { //gd:ConfigFile.load_encrypted_pass
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
-	callframe.Arg(frame, pointers.Get(password))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(password)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load_encrypted_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -480,9 +482,9 @@ Saves the contents of the [ConfigFile] object to the AES-256 encrypted file spec
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) SaveEncrypted(path gd.String, key gd.PackedByteArray) gd.Error { //gd:ConfigFile.save_encrypted
+func (self class) SaveEncrypted(path String.Readable, key gd.PackedByteArray) gd.Error { //gd:ConfigFile.save_encrypted
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(key))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save_encrypted, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -496,10 +498,10 @@ Saves the contents of the [ConfigFile] object to the AES-256 encrypted file spec
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) SaveEncryptedPass(path gd.String, password gd.String) gd.Error { //gd:ConfigFile.save_encrypted_pass
+func (self class) SaveEncryptedPass(path String.Readable, password String.Readable) gd.Error { //gd:ConfigFile.save_encrypted_pass
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
-	callframe.Arg(frame, pointers.Get(password))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(password)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save_encrypted_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

@@ -14,6 +14,7 @@ import (
 	DictionaryType "graphics.gd/variant/Dictionary"
 	FloatType "graphics.gd/variant/Float"
 	NodePathType "graphics.gd/variant/NodePath"
+	StringType "graphics.gd/variant/String"
 )
 
 // Variant returns a variant from the given value, which must be one of the
@@ -147,6 +148,9 @@ func NewVariant(v any) Variant {
 		case DictionaryType.Interface:
 			var arg = callframe.Arg(frame, pointers.Get(InternalDictionary(val.Any())))
 			Global.variant.FromType[TypeDictionary](ret, arg.Addr())
+		case StringType.Readable:
+			var arg = callframe.Arg(frame, pointers.Get(InternalString(val)))
+			Global.variant.FromType[TypeString](ret, arg.Addr())
 		case CallableType.Function:
 			var arg = callframe.Arg(frame, pointers.Get(InternalCallable(val)))
 			Global.variant.FromType[TypeCallable](ret, arg.Addr())

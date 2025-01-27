@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/VisualShaderNodeResizableBase"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/Resource"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A rectangular frame that can be used to group visual shader nodes together to improve organization.
@@ -84,7 +86,7 @@ func (self Instance) Title() string {
 }
 
 func (self Instance) SetTitle(value string) {
-	class(self).SetTitle(gd.NewString(value))
+	class(self).SetTitle(String.New(value))
 }
 
 func (self Instance) TintColorEnabled() bool {
@@ -120,20 +122,20 @@ func (self Instance) SetAttachedNodes(value []int32) {
 }
 
 //go:nosplit
-func (self class) SetTitle(title gd.String) { //gd:VisualShaderNodeFrame.set_title
+func (self class) SetTitle(title String.Readable) { //gd:VisualShaderNodeFrame.set_title
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(title))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFrame.Bind_set_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTitle() gd.String { //gd:VisualShaderNodeFrame.get_title
+func (self class) GetTitle() String.Readable { //gd:VisualShaderNodeFrame.get_title
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFrame.Bind_get_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [RDShaderSPIRV] represents a [RDShaderFile]'s [url=https://www.khronos.org/spir/]SPIR-V[/url] code for various shader stages, as well as possible compilation error messages. SPIR-V is a low-level intermediate shader representation. This intermediate representation is not used directly by GPUs for rendering, but it can be compiled into binary shaders that GPUs can understand. Unlike compiled shaders, SPIR-V is portable across GPU models and driver versions.
@@ -106,7 +108,7 @@ func (self Instance) CompileErrorVertex() string {
 }
 
 func (self Instance) SetCompileErrorVertex(value string) {
-	class(self).SetStageCompileError(0, gd.NewString(value))
+	class(self).SetStageCompileError(0, String.New(value))
 }
 
 func (self Instance) CompileErrorFragment() string {
@@ -114,7 +116,7 @@ func (self Instance) CompileErrorFragment() string {
 }
 
 func (self Instance) SetCompileErrorFragment(value string) {
-	class(self).SetStageCompileError(1, gd.NewString(value))
+	class(self).SetStageCompileError(1, String.New(value))
 }
 
 func (self Instance) CompileErrorTesselationControl() string {
@@ -122,7 +124,7 @@ func (self Instance) CompileErrorTesselationControl() string {
 }
 
 func (self Instance) SetCompileErrorTesselationControl(value string) {
-	class(self).SetStageCompileError(2, gd.NewString(value))
+	class(self).SetStageCompileError(2, String.New(value))
 }
 
 func (self Instance) CompileErrorTesselationEvaluation() string {
@@ -130,7 +132,7 @@ func (self Instance) CompileErrorTesselationEvaluation() string {
 }
 
 func (self Instance) SetCompileErrorTesselationEvaluation(value string) {
-	class(self).SetStageCompileError(3, gd.NewString(value))
+	class(self).SetStageCompileError(3, String.New(value))
 }
 
 func (self Instance) CompileErrorCompute() string {
@@ -138,7 +140,7 @@ func (self Instance) CompileErrorCompute() string {
 }
 
 func (self Instance) SetCompileErrorCompute(value string) {
-	class(self).SetStageCompileError(4, gd.NewString(value))
+	class(self).SetStageCompileError(4, String.New(value))
 }
 
 /*
@@ -172,10 +174,10 @@ func (self class) GetStageBytecode(stage gdclass.RenderingDeviceShaderStage) gd.
 Sets the compilation error message for the given shader [param stage] to [param compile_error]. Equivalent to setting one of [member compile_error_compute], [member compile_error_fragment], [member compile_error_tesselation_control], [member compile_error_tesselation_evaluation], [member compile_error_vertex].
 */
 //go:nosplit
-func (self class) SetStageCompileError(stage gdclass.RenderingDeviceShaderStage, compile_error gd.String) { //gd:RDShaderSPIRV.set_stage_compile_error
+func (self class) SetStageCompileError(stage gdclass.RenderingDeviceShaderStage, compile_error String.Readable) { //gd:RDShaderSPIRV.set_stage_compile_error
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
-	callframe.Arg(frame, pointers.Get(compile_error))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(compile_error)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSPIRV.Bind_set_stage_compile_error, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -185,12 +187,12 @@ func (self class) SetStageCompileError(stage gdclass.RenderingDeviceShaderStage,
 Returns the compilation error message for the given shader [param stage]. Equivalent to getting one of [member compile_error_compute], [member compile_error_fragment], [member compile_error_tesselation_control], [member compile_error_tesselation_evaluation], [member compile_error_vertex].
 */
 //go:nosplit
-func (self class) GetStageCompileError(stage gdclass.RenderingDeviceShaderStage) gd.String { //gd:RDShaderSPIRV.get_stage_compile_error
+func (self class) GetStageCompileError(stage gdclass.RenderingDeviceShaderStage) String.Readable { //gd:RDShaderSPIRV.get_stage_compile_error
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSPIRV.Bind_get_stage_compile_error, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

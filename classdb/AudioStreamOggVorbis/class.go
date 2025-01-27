@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The AudioStreamOggVorbis class is a specialized [AudioStream] for handling Ogg Vorbis file formats. It offers functionality for loading and playing back Ogg Vorbis files, as well as managing looping and other playback properties. This class is part of the audio stream system, which also supports WAV files through the [AudioStreamWAV] class.
@@ -56,7 +58,7 @@ Creates a new AudioStreamOggVorbis instance from the given file path. The file m
 */
 func LoadFromFile(path string) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_file
 	self := Instance{}
-	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromFile(gd.NewString(path)))
+	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromFile(String.New(path)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -144,9 +146,9 @@ func (self class) LoadFromBuffer(buffer gd.PackedByteArray) [1]gdclass.AudioStre
 Creates a new AudioStreamOggVorbis instance from the given file path. The file must be in Ogg Vorbis format.
 */
 //go:nosplit
-func (self class) LoadFromFile(path gd.String) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_file
+func (self class) LoadFromFile(path String.Readable) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamOggVorbis.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamOggVorbis](r_ret.Get())}

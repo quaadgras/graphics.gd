@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A custom control for editing properties that can be added to the [EditorInspector]. It is added via [EditorInspectorPlugin].
@@ -149,7 +151,7 @@ func (self Instance) Label() string {
 }
 
 func (self Instance) SetLabel(value string) {
-	class(self).SetLabel(gd.NewString(value))
+	class(self).SetLabel(String.New(value))
 }
 
 func (self Instance) ReadOnly() bool {
@@ -219,20 +221,20 @@ func (class) _set_read_only(impl func(ptr unsafe.Pointer, read_only bool)) (cb g
 }
 
 //go:nosplit
-func (self class) SetLabel(text gd.String) { //gd:EditorProperty.set_label
+func (self class) SetLabel(text String.Readable) { //gd:EditorProperty.set_label
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_set_label, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetLabel() gd.String { //gd:EditorProperty.get_label
+func (self class) GetLabel() String.Readable { //gd:EditorProperty.get_label
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_get_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

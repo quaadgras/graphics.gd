@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -33,6 +34,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Node for 2D tile-based maps. Tilemaps use a [TileSet] which contain a list of tiles which are used to create grid-based maps. A TileMap may have several layers, layouting tiles on top of each other.
@@ -165,7 +167,7 @@ Sets a layer's name. This is mostly useful in the editor.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 func (self Instance) SetLayerName(layer int, name string) { //gd:TileMap.set_layer_name
-	class(self).SetLayerName(gd.Int(layer), gd.NewString(name))
+	class(self).SetLayerName(gd.Int(layer), String.New(name))
 }
 
 /*
@@ -738,10 +740,10 @@ Sets a layer's name. This is mostly useful in the editor.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) SetLayerName(layer gd.Int, name gd.String) { //gd:TileMap.set_layer_name
+func (self class) SetLayerName(layer gd.Int, name String.Readable) { //gd:TileMap.set_layer_name
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -752,12 +754,12 @@ Returns a TileMap layer's name.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetLayerName(layer gd.Int) gd.String { //gd:TileMap.get_layer_name
+func (self class) GetLayerName(layer gd.Int) String.Readable { //gd:TileMap.get_layer_name
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -15,6 +15,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 	"unicode"
@@ -28,9 +29,26 @@ import (
 	"graphics.gd/variant/Int"
 )
 
-// Unicode string that may only contain valid unicode characters. Not
-// comparable.
-type Unicode = struct {
+// Readable string containing human-readable characters in an implementation-specific encoding.
+type Readable structure
+
+// String returns a copy of the Readable as a raw string.
+func (utf Readable) String() string {
+	if utf.api == nil {
+		return ""
+	}
+	return utf.api.String(utf.buf)
+}
+
+// Size returns the number of bytes of data stored in the Readable.
+func (utf Readable) Size() int {
+	if utf.api == nil {
+		return 0
+	}
+	return utf.api.Len(utf.buf)
+}
+
+type structure = struct {
 	_   [0]func()
 	buf complex128
 	api API
@@ -39,73 +57,81 @@ type Unicode = struct {
 // Comparable string optimized for use as a key, such that comparisons
 // are efficient.
 type Comparable = struct {
-	ptr *Unicode
+	ptr *Readable
 }
 
-// New returns a new [Unicode] string out of the given value.
-func New(val any) Unicode { //gd:String() str
-	return fromGoString(fmt.Sprint(val))
+func MakeComparable[T Any](s T) Comparable {
+	panic("not implemented")
 }
 
+// New returns a new [Readable] string concatenated from the given values.
+func New(val ...any) Readable { //gd:String() str
+	if len(val) == 1 {
+		switch v := val[0].(type) {
+		case Rune:
+			return fromGoString(string(rune(v)))
+		case string:
+			return fromGoString(v)
+		case Readable:
+			return v
+		case []byte:
+			return fromGoString(string(v))
+		}
+	}
+	return newAs[Readable](val...)
+}
+
+func newAs[T Any](val ...any) T {
+	return As[T](fromGoString(fmt.Sprint(val...))) // FIXME optimise
+}
+
+// API required to implement a [Readable] string.
 type API interface {
-	Len(buf complex128) int
-	Slice(buf complex128, i, j int) (complex128, API)
-	String(buf complex128) string
-	Index(buf complex128, i int) byte
+	Len(complex128) int
+	Slice(complex128, int, int) Readable
+	String(complex128) string
+	Index(complex128, int) byte
+	DecodeRune(complex128) (Rune, int, Readable)
+	AppendRune(complex128, Rune) Readable
+	AppendOther(complex128, API, complex128) Readable
+	AppendString(complex128, string) Readable
 }
 
-type goString struct {
-	ptr *byte
+// Proxy can be used to transform the underlying encoding and implementation of a [Readable]
+// string into a specific type. The alloc function should return a new [Implementation] of
+// the desired type, and the internal state. This may be cached in the existing implementation
+// and, if so, will be passed to the check function so that it can decide whether to reuse
+// the cache or not.
+//
+// The uint64 can be used to avoid unnecessary allocations, such that T can be zero-sized if
+// the implementation does not require more that 64bits of state.
+func Proxy[S Any, T API](s S, reuse func(T, complex128) bool, alloc func() (T, complex128)) (T, complex128) {
+	utf := New(s)
+	if utf.api == nil {
+		return alloc()
+	}
+	already, ok := utf.api.(T)
+	if ok && reuse(already, utf.buf) {
+		return already, utf.buf
+	}
+	b, state := alloc()
+	appended := b.AppendString(state, As[string](s))
+	b, state = appended.api.(T), appended.buf
+	/*for _, c := range Runes(utf) {
+	appended := b.AppendRune(state, c)
+	b, state = appended.api.(T), appended.buf
+	}*/
+	return b, state
 }
 
-func fromGoString(s string) Unicode {
-	header := lencap{
-		len: uint64(len(s)),
-	}
-	buf := *(*complex128)(unsafe.Pointer(&header))
-	return Unicode{
-		buf: buf,
-		api: goString{ptr: unsafe.StringData(s)},
-	}
+func Via(impl API, state complex128) Readable {
+	return Readable{api: impl, buf: state}
 }
 
-type lencap = struct {
-	len, cap uint64
-}
-
-func (s goString) Len(buf complex128) int {
-	header := (*lencap)(unsafe.Pointer(&buf))
-	return int(header.len)
-}
-func (s goString) Slice(buf complex128, i, j int) (complex128, API) {
-	header := (*lencap)(unsafe.Pointer(&buf))
-	if i < 0 || j < 0 || i > int(header.len) || j > int(header.len) {
-		panic("slice bounds out of range")
-	}
-	s.ptr = (*byte)(unsafe.Add(unsafe.Pointer(s.ptr), uintptr(i)))
-	header.len = uint64(j - i)
-	return *(*complex128)(unsafe.Pointer(&header)), s
-}
-func (s goString) String(buf complex128) string {
-	header := (*lencap)(unsafe.Pointer(&buf))
-	return unsafe.String(s.ptr, int(header.len))
-}
-func (s goString) Bytes(buf complex128) []byte {
-	header := (*lencap)(unsafe.Pointer(&buf))
-	result := make([]byte, int(header.len))
-	copy(result, unsafe.String(s.ptr, int(header.len)))
-	return result
-}
-func (s goString) Index(buf complex128, i int) byte {
-	header := (*lencap)(unsafe.Pointer(&buf))
-	if i < 0 || i >= int(header.len) {
-		panic("index out of range")
-	}
-	return *(*byte)(unsafe.Pointer(uintptr(unsafe.Pointer(s.ptr)) + uintptr(i)))
-}
+type Rune rune
 
 type Any interface {
-	~string | ~[]byte | ~Unicode | ~Comparable | unique.Handle[string]
+	~string | ~[]byte | ~structure | ~Comparable | unique.Handle[string] | Rune | []rune
 }
 
 func As[T, S Any](s S) T {
@@ -118,14 +144,39 @@ func As[T, S Any](s S) T {
 	case rtype.Kind() == reflect.Slice && rtype.Elem().Kind() == reflect.Uint8:
 		b := []byte(uni.api.String(uni.buf))
 		return *(*T)(unsafe.Pointer(&b))
-	case rtype.ConvertibleTo(reflect.TypeOf(Unicode{})):
+	case rtype.ConvertibleTo(reflect.TypeOf(Readable{})):
 		u := uni
 		return *(*T)(unsafe.Pointer(&u))
 	case rtype.ConvertibleTo(reflect.TypeOf(Comparable{})):
-		return New(s).Comparable()
+		c := MakeComparable(uni)
+		return *(*T)(unsafe.Pointer(&c))
 	default:
 		panic("unreachable")
 	}
+}
+
+// Append returns a new string with the given string appended to the end.
+func Append[S Any, B Any](a S, b B) S { //gd:String.append
+	s1, s2 := New(a), New(b)
+	if s2.api == nil {
+		return a
+	}
+	if s1.api == nil {
+		s1 = Readable{
+			api: goString{},
+		}
+	}
+	if reflect.TypeOf(s1.api) == reflect.TypeOf(s2.api) {
+		return As[S](s1.api.AppendOther(s1.buf, s2.api, s2.buf))
+	}
+	return As[S](s1.api.AppendString(s1.buf, s2.api.String(s2.buf)))
+}
+
+// Index returns the byte at the given index in the string. If the index is out of range, this
+// function will panic. See also [Slice].
+func Index[S Any](s S, i int) byte {
+	utf := New(s)
+	return utf.api.Index(utf.buf, i)
 }
 
 // HasPrefix returns true if the string begins with the given text. See also [HasSuffix].
@@ -134,7 +185,7 @@ func HasPrefix[S, P Any](s S, prefix P) bool { //gd:String.begins_with
 }
 
 // HasSuffix returns true if the string ends with the given text. See also [HasSuffix].
-func HasSuffix[S Any](s S, suffix S) bool { //gd:String.ends_with
+func HasSuffix[S, B Any](s S, suffix B) bool { //gd:String.ends_with
 	return Length(suffix) <= Length(s) && Comparison(Slice(s, Length(s)-Length(suffix), Length(s)), suffix) == 0
 }
 
@@ -157,12 +208,13 @@ func Bigrams[S Any](s S) iter.Seq[S] { //gd:String.bigrams
 func BinaryToInteger[S Any](s S) int { //gd:String.bin_to_int
 	s = TrimPrefix(s, "0b")
 	var r int
-	for i := 0; i < len(s); i++ {
-		if s[i] == '0' || s[i] == '1' {
-			r = r*2 + int(s[i]-'0')
+	for i := 0; i < Length(s); i++ {
+		b := Index(s, i)
+		if b == '0' || b == '1' {
+			r = r*2 + int(b-'0')
 		}
 	}
-	if strings.HasPrefix(string(s), "-") {
+	if HasPrefix(s, "-") {
 		r = -r
 	}
 	return r
@@ -170,30 +222,107 @@ func BinaryToInteger[S Any](s S) int { //gd:String.bin_to_int
 
 // Escape returns a copy of the string with special characters escaped using the Go language standard.
 func Escape[S Any](s S) S { //gd:String.c_escape String.json_escape String.xml_escape
-	escaped := strconv.QuoteToASCII(string(s))
-	return S(escaped[1 : len(escaped)-1])
+	escaped := strconv.QuoteToASCII(As[string](s))
+	return As[S](escaped[1 : len(escaped)-1])
 }
 
 // Unescape returns a copy of the string with escaped characters replaced by their meanings.
 func Unescape[S Any](s S) S { //gd:String.c_unescape String.xml_unescape
-	unescaped, _ := strconv.Unquote(`"` + string(s) + `"`)
-	return S(unescaped)
+	unescaped, _ := strconv.Unquote(`"` + As[string](s) + `"`)
+	return As[S](unescaped)
+}
+
+// Runes returns a sequence of runes in this string and their indices.
+func Runes[S Any](s S) iter.Seq2[int, Rune] { //gd:String.chars
+	return func(yield func(int, Rune) bool) {
+		utf := New(s)
+		for i := 0; i < utf.api.Len(utf.buf); i++ {
+			r, _, next := utf.api.DecodeRune(utf.buf)
+			if r == utf8.RuneError {
+				break
+			}
+			if !yield(i, r) {
+				return
+			}
+			utf = next
+		}
+	}
+}
+
+// firstRune returns the first rune in the string and its width in bytes.
+func firstRune[S Any](s S) (Rune, bool) {
+	utf := New(s)
+	r, _, _ := utf.api.DecodeRune(utf.buf)
+	return r, r != utf8.RuneError
+}
+
+// Title returns a copy of the string s with all Unicode letters that begin words
+// mapped to their Unicode title case. Is not always reliable in the presence of
+// punctuation.
+func Title[S Any](s S) S {
+	// Use a closure here to remember state.
+	// Hackish but effective. Depends on Map scanning in order and calling
+	// the closure once per rune.
+	var prev Rune = ' '
+	return Map(
+		func(r Rune) Rune {
+			if isSeparator(rune(prev)) {
+				prev = r
+				return Rune(unicode.ToTitle(rune(r)))
+			}
+			prev = r
+			return r
+		},
+		s,
+	)
+}
+
+// Map returns a copy of the string s with all its characters modified
+// according to the mapping function. If mapping returns a negative value, the character is
+// dropped from the string with no replacement.
+func Map[S Any](mapping func(Rune) Rune, s S) S {
+	var (
+		buf Readable = builder()
+	)
+	for i, c := range Runes(s) {
+		r := mapping(c)
+		if r == c || c == utf8.RuneError {
+			continue
+		}
+		width := utf8.RuneLen(rune(c))
+		buf = Append(buf, Slice(s, 0, i))
+		if r >= 0 {
+			buf = Append(buf, Rune(r))
+		}
+		s = Slice(s, i+width, Length(s))
+		break
+	}
+	if buf.api == nil {
+		return s // Fast path for unchanged input
+	}
+	for _, c := range Runes(s) {
+		r := mapping(c)
+		if r >= 0 {
+			buf = Append(buf, New(r))
+		}
+	}
+	return As[S](buf)
 }
 
 // Capitalize changes the appearance of the string: replaces underscores (_) with spaces, adds spaces
 // before uppercase letters in the middle of a word, converts all letters to lowercase, then converts
 // the first one and each one following a space to uppercase.
 func Capitalize[S Any](s S) S { //gd:String.capitalize
-	pieces := strings.Split(string(s), "_")
+	pieces := slices.Collect(Splits(s, "_"))
 	for i, piece := range pieces {
-		for i, r := range piece {
-			if unicode.IsUpper(r) {
-				piece = piece[:i] + " " + piece[i:]
+		for i, r := range Runes(piece) {
+			if unicode.IsUpper(rune(r)) {
+				piece = As[S](New(Slice(piece, 0, i), " ", Slice(piece, i, Length(piece))))
 			}
 		}
-		pieces[i] = strings.Title(strings.ToLower(piece))
+		pieces[i] = Title(ToLower(piece))
 	}
-	return S(strings.Join(pieces, " "))
+	return JoinedWith(" ", pieces...)
 }
 
 // ComparisonIgnoreCasing performs a case-insensitive comparison to another string. Returns -1
@@ -209,7 +338,7 @@ func Capitalize[S Any](s S) S { //gd:String.capitalize
 // also [ComparisonStrict], [ComparisonStrictNaturalPrioritizePeriodsAndUnderscores],
 // and [ComparisonNatural].
 func ComparisonIgnoreCasing[A, B Any](a A, b B) int { //gd:String.nocasecmp_to
-	return strings.Compare(strings.ToUpper(string(a)), strings.ToUpper(string(b)))
+	return strings.Compare(strings.ToUpper(As[string](a)), strings.ToUpper(As[string](b)))
 }
 
 // Comparison performs a case-sensitive comparison to another string. Returns -1 if less than,
@@ -237,7 +366,7 @@ func Comparison[A, B Any](a A, b B) int { //gd:String.casecmp_to
 		} else if i >= Length(b) {
 			return 1
 		}
-		ac, bc := a.Index(i), b.Index(i)
+		ac, bc := Index(a, i), Index(b, i)
 		if ac < bc {
 			return -1
 		} else if ac > bc {
@@ -262,18 +391,16 @@ func Comparison[A, B Any](a A, b B) int { //gd:String.casecmp_to
 // [ComparisonNaturalPrioritizePeriodsAndUnderscores], and [Comparison].
 func ComparisonStrictNatural[S Any](a, b S) int { //gd:String.naturalnocasecmp_to
 	commonPrefix := func(a, b S) int {
-		m := len(a)
-		if n := len(b); n < m {
+		m := Length(a)
+		if n := Length(b); n < m {
 			m = n
 		}
 		if m == 0 {
 			return 0
 		}
-		_ = a[m-1]
-		_ = b[m-1]
 		for i := 0; i < m; i++ {
-			ca := a[i]
-			cb := b[i]
+			ca := Index(a, i)
+			cb := Index(b, i)
 			if (ca >= '0' && ca <= '9') || (cb >= '0' && cb <= '9') || ca != cb {
 				return i
 			}
@@ -281,21 +408,21 @@ func ComparisonStrictNatural[S Any](a, b S) int { //gd:String.naturalnocasecmp_t
 		return m
 	}
 	digits := func(s S) int {
-		for i := 0; i < len(s); i++ {
-			c := s[i]
+		for i := 0; i < Length(s); i++ {
+			c := Index(s, i)
 			if c < '0' || c > '9' {
 				return i
 			}
 		}
-		return len(s)
+		return Length(s)
 	}
 	for {
 		if p := commonPrefix(a, b); p != 0 {
-			a = a[p:]
-			b = b[p:]
+			a = Slice(a, p, Length(a))
+			b = Slice(b, p, Length(b))
 		}
-		if len(a) == 0 {
-			if len(b) != 0 {
+		if Length(a) == 0 {
+			if Length(b) != 0 {
 				return -1
 			}
 			return 1
@@ -303,8 +430,8 @@ func ComparisonStrictNatural[S Any](a, b S) int { //gd:String.naturalnocasecmp_t
 		if ia := digits(a); ia > 0 {
 			if ib := digits(b); ib > 0 {
 				// Both sides have digits.
-				an, aerr := strconv.ParseUint(string(a[:ia]), 10, 64)
-				bn, berr := strconv.ParseUint(string(b[:ib]), 10, 64)
+				an, aerr := strconv.ParseUint(As[string](Slice(a, 0, ia)), 10, 64)
+				bn, berr := strconv.ParseUint(As[string](Slice(b, 0, ib)), 10, 64)
 				if aerr == nil && berr == nil {
 					if an != bn {
 						if an < bn {
@@ -315,15 +442,15 @@ func ComparisonStrictNatural[S Any](a, b S) int { //gd:String.naturalnocasecmp_t
 					// Semantically the same digits, e.g. "00" == "0", "01" == "1". In
 					// this case, only continue processing if there's trailing data on
 					// both sides, otherwise do lexical comparison.
-					if ia != len(a) && ib != len(b) {
-						a = a[ia:]
-						b = b[ib:]
+					if ia != Length(a) && ib != Length(b) {
+						a = Slice(a, ia, Length(a))
+						b = Slice(b, ib, Length(b))
 						continue
 					}
 				}
 			}
 		}
-		return bytes.Compare([]byte(a), []byte(b))
+		return Comparison(a, b)
 	}
 }
 
@@ -342,7 +469,7 @@ func ComparisonStrictNatural[S Any](a, b S) int { //gd:String.naturalnocasecmp_t
 // To get a bool result from a string comparison, use the == operator instead. See also
 // [ComparisonStrictNatural], [ComparisonStrictNaturalPrioritizePeriodsAndUnderscores], and [Comparison].
 func ComparisonNatural[S Any](a, b S) int { //gd:String.naturalcasecmp_to
-	return ComparisonStrictNatural(strings.ToUpper(string(a)), strings.ToUpper(string(b)))
+	return ComparisonStrictNatural(strings.ToUpper(As[string](a)), strings.ToUpper(As[string](b)))
 }
 
 // ComparisonStrictNaturalPrioritizePeriodsAndUnderscores like [ComparisonStrictNatural] but prioritizes strings that begin with periods
@@ -351,8 +478,8 @@ func ComparisonNatural[S Any](a, b S) int { //gd:String.naturalcasecmp_to
 // To get a bool result from a string comparison, use the == operator instead. See also [ComparisonNaturalPrioritizePeriodsAndUnderscores],
 // [ComparisonStrictNatural], and [ComparisonStrict].
 func ComparisonStrictNaturalPrioritizePeriodsAndUnderscores[S Any](a, b S) int { //gd:String.filecasecmp_to
-	aStr := string(a)
-	bStr := string(b)
+	aStr := As[string](a)
+	bStr := As[string](b)
 	for i := 0; i < len(aStr) && i < len(bStr); i++ {
 		if aStr[i] == '_' && bStr[i] != '_' {
 			return -1
@@ -376,8 +503,8 @@ func ComparisonStrictNaturalPrioritizePeriodsAndUnderscores[S Any](a, b S) int {
 // To get a bool result from a string comparison, use the == operator instead. See also [ComparisonStrictNaturalPrioritizePeriodsAndUnderscores],
 // [ComparisonNatural], and [Comparison].
 func ComparisonNaturalPrioritizePeriodsAndUnderscores[S Any](a, b S) int { //gd:String.filenocasecmp_to
-	aStr := string(a)
-	bStr := string(b)
+	aStr := As[string](a)
+	bStr := As[string](b)
 	for i := 0; i < len(aStr) && i < len(bStr); i++ {
 		if aStr[i] == '_' && bStr[i] != '_' {
 			return -1
@@ -404,46 +531,46 @@ func Character[I Int.Any](chr I) string { //gd:String.chr
 // ContainsStrict returns true if the string contains case-sensitive what.
 // If you need to know where what is within the string, use [Find]. See also [Contains].
 func ContainsStrict[S Any](what S, s S) bool { //gd:String.contains
-	return strings.Contains(string(s), string(what))
+	return strings.Contains(As[string](s), As[string](what))
 }
 
 // Contains returns true if the string contains what, ignoring case.
 // If you need to know where what is within the string, use findn. See also [Contains].
 func Contains[S Any](what S, s S) bool { //gd:String.containsn
-	return strings.Contains(strings.ToLower(string(s)), strings.ToLower(string(what)))
+	return strings.Contains(strings.ToLower(As[string](s)), strings.ToLower(As[string](what)))
 }
 
 // CountStrict returns the number of occurrences of the case-sensitive substring.
 func CountStrict[S Any](what S, s S) int { //gd:String.count
-	return strings.Count(string(s), string(what))
+	return strings.Count(As[string](s), As[string](what))
 }
 
 // Count returns the number of occurrences of the substring, ignoring case.
-func Count[D ~string | ~[]byte | rune, S Any](what D, s S) int { //gd:String.countn
-	return strings.Count(strings.ToLower(string(s)), strings.ToLower(string(what)))
+func Count[D Any, S Any](what D, s S) int { //gd:String.countn
+	return strings.Count(strings.ToLower(As[string](s)), strings.ToLower(As[string](what)))
 }
 
 // Dedent returns a copy of the string with indentation (leading tabs and spaces)
 // removed. See also [Indent] to add indentation.
 func Dedent[S Any](s S) S { //gd:String.dedent
-	return S(strings.TrimLeftFunc(string(s), unicode.IsSpace))
+	return As[S](strings.TrimLeftFunc(As[string](s), unicode.IsSpace))
 }
 
 // Erase returns a string with the character erased at position.
 func Erase[S Any, I Int.Any](position I, s S) S { //gd:String.erase
-	return S(string(s[:position]) + string(s[position+1:]))
+	return As[S](As[string](Slice(s, 0, position)) + As[string](Slice(s, position+1, Length(s))))
 }
 
 // FindStrict returns the index of the first case-sensitive occurrence of what in this string
 // or -1 if not found.
 func FindStrict[S Any](what S, s S) int { //gd:String.find
-	return strings.Index(string(s), string(what))
+	return strings.Index(As[string](s), As[string](what))
 }
 
-// Find returns the index of the first occurrence of what in this string, ignoring case.
+// FindIndex returns the index of the first occurrence of what in this string, ignoring case.
 // Returns -1 if not found.
-func Find[S Any](what S, s S) int { //gd:String.findn
-	return strings.Index(strings.ToLower(string(s)), strings.ToLower(string(what)))
+func FindIndex[S, V Any](s S, what V) int { //gd:String.findn
+	return strings.Index(strings.ToLower(As[string](s)), strings.ToLower(As[string](what))) // FIXME slow
 }
 
 // Decimal converts a float to a string representation of a decimal number, with
@@ -486,8 +613,8 @@ func Format[S Any](format S, args ...any) S { //gd:String.format
 	var result strings.Builder
 	var search strings.Builder
 	var braces bool
-	for i := 0; i < len(format); i++ {
-		v := format[i]
+	for i := 0; i < Length(format); i++ {
+		v := Index(format, i)
 		switch v {
 		case '{':
 			braces = true
@@ -527,27 +654,27 @@ func Format[S Any](format S, args ...any) S { //gd:String.format
 			}
 		}
 	}
-	return S(result.String())
+	return As[S](result.String())
 }
 
 // Directory returns the base directory name if the string is a valid file path.
 func Directory[S Any](path S) S { //gd:String.get_base_dir
-	return S(filepath.Dir(string(path)))
+	return As[S](filepath.Dir(As[string](path)))
 }
 
 // FileExtension returns the file extension without the leading period (.) if the string is a
 // valid file name or path. Otherwise, returns an empty string.
 func FileExtension[S Any](path S) S { //gd:String.get_extension
-	ext := filepath.Ext(string(path))
+	ext := filepath.Ext(As[string](path))
 	if ext != "" {
-		return S(ext[1:])
+		return As[S](Slice(ext, 1, Length(ext)))
 	}
-	return S("")
+	return [1]S{}[0]
 }
 
 // FileName returns the file name, including the extension, if the string is a valid file path,
 func FileName[S Any](path S) S { //gd:String.get_file
-	return S(filepath.Base(string(path)))
+	return As[S](filepath.Base(As[string](path)))
 }
 
 // Extract splits the string using a delimiter and returns the substring at index. Returns
@@ -555,24 +682,24 @@ func FileName[S Any](path S) S { //gd:String.get_file
 // element does not exist.
 //
 // This is faster than split, if you only need one substring.
-func Extract[S Any, D ~string | ~[]byte | rune, I Int.Any](s S, delimiter D, index I) S { //gd:String.get_slice String.get_slicec
+func Extract[S Any, D Any, I Int.Any](s S, delimiter D, index I) S { //gd:String.get_slice String.get_slicec
 	var n int
 	var current S
 	for i := 0; i < int(index+1); i++ {
-		next := strings.Index(string(s[n:]), string(delimiter))
+		next := FindIndex(Slice(s, n, Length(s)), delimiter)
 		if next == -1 {
-			return s[n:]
+			return Slice(s, n, Length(s))
 		}
-		current = s[n : n+next]
+		current = Slice(s, n, n+next)
 		n += next + 1
 	}
 	return current
 }
 
 // NumExtractions returns the total number of extractable substrings when the string is split with
-// the given delimiter (see [Split]).
-func NumExtractions[S Any, D ~string | ~[]byte | rune](s S, delimiter D) int { //gd:String.get_slice_count
-	return strings.Count(string(s), string(delimiter)) + 1
+// the given delimiter (see [Splits]).
+func NumExtractions[S Any, D Any](s S, delimiter D) int { //gd:String.get_slice_count
+	return strings.Count(As[string](s), As[string](delimiter)) + 1
 }
 
 // Hash Returns the 32-bit hash value representing the string's contents.
@@ -581,34 +708,34 @@ func NumExtractions[S Any, D ~string | ~[]byte | rune](s S, delimiter D) int { /
 // On the contrary, strings with different hash values are guaranteed to be different.
 func Hash[S Any](s S) uint32 { //gd:String.hash
 	var hashv uint32 = 5381
-	for i := 0; i < len(s); i++ {
-		hashv = ((hashv << 5) + hashv) + uint32(s[i])
+	for i := 0; i < Length(s); i++ {
+		hashv = ((hashv << 5) + hashv) + uint32(Index(s, i))
 	}
 	return hashv
 }
 
 // DecodeHex decodes a hexadecimal string as a []byte.
 func DecodeHex[S Any](s S) S { //gd:String.hex_decode
-	b, err := hex.DecodeString(string(s))
+	b, err := hex.DecodeString(As[string](s))
 	if err != nil {
 		var zero S
 		return zero
 	}
-	return S(b)
+	return As[S](b)
 }
 
 // EncodeHex encodes a []byte as a hexadecimal string.
 func EncodeHex[S Any](s S) S { //gd:String.hex_encode
-	return S(hex.EncodeToString([]byte(s)))
+	return As[S](hex.EncodeToString(As[[]byte](s)))
 }
 
 // HexToInteger Converts the string representing a hexadecimal number into an int. The
 // string may be optionally prefixed with "0x", and an additional - prefix for negative numbers.
 func HexToInteger[S Any](s S) int { //gd:String.hex_to_int
-	if strings.HasPrefix(string(s), "0x") {
-		s = s[2:]
+	if strings.HasPrefix(As[string](s), "0x") {
+		s = Slice(s, 2, Length(s))
 	}
-	i, err := strconv.ParseInt(string(s), 16, 0)
+	i, err := strconv.ParseInt(As[string](s), 16, 0)
 	if err != nil {
 		return 0
 	}
@@ -636,30 +763,30 @@ func HumanReadableSize(size int) string { //gd:String.humanize_size
 //
 // For example, the string can be indented with two tabulations using "\t\t", or four spaces using "    ".
 func Indent[S Any](s, prefix S) S { //gd:String.indent
-	return S(strings.ReplaceAll(string(s), "\n", "\n"+string(prefix)))
+	return As[S](strings.ReplaceAll(As[string](s), "\n", "\n"+As[string](prefix)))
 }
 
 // Insert inserts what at the given position in the string.
 func Insert[S Any](what, s S, position int) S { //gd:String.insert
-	return S(string(s[:position]) + string(what) + string(s[position:]))
+	return As[S](As[string](Slice(s, 0, position)) + As[string](what) + As[string](Slice(s, position, Length(s))))
 }
 
 // IsEmpty returns true if the string's length is 0 (""). See also length.
 func IsEmpty[S Any](s S) bool { //gd:String.is_empty
-	return len(s) == 0
+	return Length(s) == 0
 }
 
 // IsStrictSubsequenceOf returns true if all characters of this string can be found in text in their original order.
 func IsStrictSubsequenceOf[S Any](text, s S) bool { //gd:String.is_subsequence_of
-	if len(s) == 0 {
+	if Length(s) == 0 {
 		return true
 	}
 	n := 0
-	for i := 0; i < len(s); i++ {
-		for n < len(text) && text[n] != s[i] {
+	for i := 0; i < Length(s); i++ {
+		for n < Length(text) && Index(text, n) != Index(s, i) {
 			n++
 		}
-		if n == len(text) {
+		if n == Length(text) {
 			return false
 		}
 		n++
@@ -669,15 +796,15 @@ func IsStrictSubsequenceOf[S Any](text, s S) bool { //gd:String.is_subsequence_o
 
 // IsSubsequenceOf returns true if all characters of this string can be found in text in any order, ignoring case.
 func IsSubsequenceOf[S Any](text, s S) bool { //gd:String.is_subsequence_ofn
-	if len(s) == 0 {
+	if Length(s) == 0 {
 		return true
 	}
 	n := 0
-	for i := 0; i < len(s); i++ {
-		for n < len(text) && unicode.ToLower(rune(text[n])) != unicode.ToLower(rune(s[i])) {
+	for i := 0; i < Length(s); i++ {
+		for n < Length(text) && unicode.ToLower(rune(Index(text, n))) != unicode.ToLower(rune(Index(s, i))) {
 			n++
 		}
-		if n == len(text) {
+		if n == Length(text) {
 			return false
 		}
 		n++
@@ -688,7 +815,7 @@ func IsSubsequenceOf[S Any](text, s S) bool { //gd:String.is_subsequence_ofn
 // IsValidFilename returns true if this string does not contain characters that are not allowed
 // in file names (: / \ ? * " | % < >).
 func IsValidFilename[S Any](s S) bool { //gd:String.is_valid_filename
-	return !strings.ContainsAny(string(s), ":/\\?*\"|%<>")
+	return !strings.ContainsAny(As[string](s), ":/\\?*\"|%<>")
 }
 
 // IsValidFloat returns true if this string represents a valid floating-point number. A valid float
@@ -696,7 +823,7 @@ func IsValidFilename[S Any](s S) bool { //gd:String.is_valid_filename
 // prefixed with a positive (+) or negative (-) sign. Any valid integer is also a valid float
 // (see [IsValidInt]). See also [ToFloat].
 func IsValidFloat[S Any](s S) bool { //gd:String.is_valid_float
-	_, err := strconv.ParseFloat(string(s), 64)
+	_, err := strconv.ParseFloat(As[string](s), 64)
 	return err == nil
 }
 
@@ -704,7 +831,7 @@ func IsValidFloat[S Any](s S) bool { //gd:String.is_valid_float
 // number only contains digits or letters A to F (either uppercase or lowercase), and may be prefixed
 // with a positive (+) or negative (-) sign.
 func IsValidHexNumber[S Any](s S) bool { //gd:String.is_valid_hex_number
-	_, err := strconv.ParseInt(string(s), 16, 0)
+	_, err := strconv.ParseInt(As[string](s), 16, 0)
 	return err == nil
 }
 
@@ -712,10 +839,10 @@ func IsValidHexNumber[S Any](s S) bool { //gd:String.is_valid_hex_number
 // must be a hexadecimal value (see is_valid_hex_number) of either 3, 4, 6 or 8 digits, and may be prefixed
 // by a hash sign (#). Other HTML notations for colors, such as names or hsl(), are not considered valid.
 func IsValidHexColor[S Any](s S) bool { //gd:String.is_valid_html_color
-	if strings.HasPrefix(string(s), "#") {
-		s = s[1:]
+	if strings.HasPrefix(As[string](s), "#") {
+		s = Slice(s, 1, Length(s))
 	}
-	switch len(s) {
+	switch Length(s) {
 	case 3, 4, 6, 8:
 		return IsValidHexNumber(s)
 	default:
@@ -726,14 +853,14 @@ func IsValidHexColor[S Any](s S) bool { //gd:String.is_valid_html_color
 // IsValidIdentifier returns true if this string is a valid identifier. A valid identifier may contain only letters,
 // digits and underscores (_), and the first character may not be a digit.
 func IsValidIdentifier[S Any](s S) bool { //gd:String.is_valid_identifier
-	if len(s) == 0 {
+	if Length(s) == 0 {
 		return false
 	}
-	if unicode.IsDigit(rune(s[0])) {
+	if unicode.IsDigit(rune(Index(s, 0))) {
 		return false
 	}
-	for _, c := range string(s) {
-		if !unicode.IsDigit(c) && !unicode.IsLetter(c) && c != '_' {
+	for _, c := range Runes(s) {
+		if !unicode.IsDigit(rune(c)) && !unicode.IsLetter(rune(c)) && c != '_' {
 			return false
 		}
 	}
@@ -743,64 +870,65 @@ func IsValidIdentifier[S Any](s S) bool { //gd:String.is_valid_identifier
 // IsValidInt returns true if this string represents a valid integer. A valid integer only contains
 // digits, and may be prefixed with a positive (+) or negative (-) sign. See also [ToInt].
 func IsValidInt[S Any](s S) bool { //gd:String.is_valid_int
-	_, err := strconv.ParseInt(string(s), 10, 0)
+	_, err := strconv.ParseInt(As[string](s), 10, 0)
 	return err == nil
 }
 
 // IsValidInternetProtocolAddress returns true if this string represents a well-formatted IPv4 or IPv6 address.
 // This method considers reserved IP addresses such as "0.0.0.0" and "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff" as valid.
 func IsValidInternetProtocolAddress[S Any](s S) bool { //gd:String.is_valid_ip_address
-	_, err := netip.ParseAddr(string(s))
+	_, err := netip.ParseAddr(As[string](s))
 	return err == nil
 }
 
 // JoinedWith returns the concatenation of parts' elements, with each element separated by the string calling this method.
-// This method is the opposite of [Split].
-func JoinedWith[S Any, D ~string | ~[]byte | rune](d D, s ...S) S { //gd:String.join
+// This method is the opposite of [Splits].
+func JoinedWith[S, D Any](d D, s ...S) S { //gd:String.join
 	if len(s) == 0 {
-		return S("")
+		return [1]S{}[0]
 	}
-	var b strings.Builder
-	b.WriteString(fmt.Sprint(s[0]))
+	var b Readable = builder()
+	b = Append(b, New(fmt.Sprint(s[0])))
 	for _, v := range s[1:] {
-		b.WriteString(fmt.Sprint(d))
-		b.WriteString(fmt.Sprint(v))
+		b = Append(b, d)
+		b = Append(b, v)
 	}
-	return S(b.String())
+	return As[S](b)
 }
 
 // First, returns the first n characters from the beginning of the string. If length is
 // negative, strips the last length characters from the string's end.
 func First[S Any, I Int.Any](n I, s S) S { //gd:String.left
 	if n < 0 {
-		return s[:len(s)+int(n)]
+		return Slice(s, 0, Length(s)+int(n))
 	}
-	return s[:int(n)]
+	return Slice(s, 0, n)
 }
 
 // Length returns the number of characters in the string.
 func Length[S Any](s S) int { //gd:String.length
-	return (len(string(s)))
+	utf := New(s)
+	return utf.api.Len(utf.buf)
 }
 
 // PadPrefix formats the string to be at least min_length long by adding characters
 // to the left of the string, if necessary. See also [PadSuffix].
 func PadPrefix[S Any](s S, min_length int) S { //gd:String.lpad
-	return JoinedWith("", S(strings.Repeat(" ", max(0, min_length-len(s)))), s)
+	return JoinedWith("", As[S](strings.Repeat(" ", max(0, min_length-Length(s)))), s)
 }
 
 // StripPrefix removes a set of characters defined in chars from the string's beginning. See also StripSuffix.
 //
 // Note: chars is a cutset. Use [TrimPrefix] to remove a whole prefix string, rather than a set of characters.
 func StripPrefix[S Any, C ~string | ~[]byte](s S, chars C) S { //gd:String.lstrip
-	return S(strings.TrimLeft(string(s), string(chars)))
+	return As[S](strings.TrimLeft(As[string](s), As[string](chars)))
 }
 
 // MatchStrict does a simple expression match (also called "glob" or "globbing"), where * matches zero or more arbitrary
 // characters and ? matches any single character except a period (.). An empty string or empty expression always
 // evaluates to false.
 func MatchStrict[S Any](pattern, text S) bool { //gd:String.match
-	ok, _ := path.Match(string(pattern), string(text))
+	ok, _ := path.Match(As[string](pattern), As[string](text))
 	return ok
 }
 
@@ -809,13 +937,13 @@ func MatchStrict[S Any](pattern, text S) bool { //gd:String.match
 // case-insensitive expression match, where * matches zero or more arbitrary characters and ? matches any single character
 // except a period (.). An empty string or empty expression always evaluates to false.
 func Match[S Any](pattern, text S) bool { //gd:String.matchn
-	ok, _ := path.Match(strings.ToLower(string(pattern)), strings.ToLower(string(text)))
+	ok, _ := path.Match(strings.ToLower(As[string](pattern)), strings.ToLower(As[string](text)))
 	return ok
 }
 
 // MD5 returns the MD5 hash of the string as a byte slice.
 func MD5[S Any](s S) []byte { //gd:String.md5_buffer String.md5_text
-	sum := md5.Sum([]byte(string(s)))
+	sum := md5.Sum([]byte(As[string](s)))
 	return sum[:]
 }
 
@@ -825,10 +953,10 @@ func PadDecimals[S Any](s S, digits int) S { //gd:String.pad_decimals
 	if !IsValidFloat(s) {
 		return s
 	}
-	var result strings.Builder
-	result.WriteString(string(s))
-	result.WriteString(strings.Repeat("0", len(s)-strings.Index(string(s), ".")+digits+1))
-	return S(result.String())
+	var result Readable = builder()
+	result = Append(result, New(s))
+	result = Append(result, New(strings.Repeat("0", Length(s)-FindIndex(s, ".")+digits+1)))
+	return As[S](result)
 }
 
 // PadZeros formats the string representing a number to have an exact number of digits before
@@ -837,15 +965,15 @@ func PadZeros[S Any](s S, digits int) S { //gd:String.pad_zeros
 	if !IsValidFloat(s) {
 		return s
 	}
-	var result strings.Builder
-	result.WriteString(strings.Repeat("0", strings.Index(string(s), ".")-digits))
-	result.WriteString(string(s))
-	return S(result.String())
+	var result Readable = builder()
+	result = Append(result, New(strings.Repeat("0", FindIndex(s, ".")-digits)))
+	result = Append(result, New(s))
+	return As[S](result)
 }
 
 // AddPathElement concatenates file at the end of the string as a subpath, adding / if necessary.
 func AddPathElement[S Any](s S, file S) S { //gd:String.path_join
-	if strings.HasSuffix(string(s), "/") {
+	if HasSuffix(s, "/") {
 		return JoinedWith("", s, file)
 	}
 	return JoinedWith("/", s, file)
@@ -855,95 +983,93 @@ func AddPathElement[S Any](s S, file S) S { //gd:String.path_join
 // Otherwise, returns an empty string.
 func Repeat[S Any](s S, count int) S { //gd:String.repeat
 	if count <= 0 {
-		return S("")
+		return [1]S{}[0]
 	}
-	return S(strings.Repeat(string(s), count))
+	return As[S](strings.Repeat(As[string](s), count))
 }
 
 // ReplaceStrict replaces all occurrences of what inside the string with the given forwhat.
 func ReplaceStrict[S Any](s S, what, forwhat S) S { //gd:String.replace
-	return S(strings.ReplaceAll(string(s), string(what), string(forwhat)))
+	return As[S](strings.Replace(As[string](s), As[string](what), As[string](forwhat), -1))
 }
 
 // Replace replaces all case-insensitive occurrences of what inside the string with the given
 // forwhat.
-func Replace[S Any](s S, old, new S) S { //gd:String.replacen
+func Replace[S Any, T Any](s S, old, new T) S { //gd:String.replacen
 	var n = -1
-	if string(old) == string(new) || n == 0 {
+	if Comparison(old, new) == 0 || n == 0 {
 		return s // avoid allocation
 	}
-
 	// Compute number of replacements.
-	if m := Count(s, old); m == 0 {
+	if m := Count(old, s); m == 0 {
 		return s // avoid allocation
 	} else if n < 0 || m < n {
 		n = m
 	}
-
 	// Apply replacements to buffer.
-	var b strings.Builder
-	b.Grow(len(s) + n*(len(new)-len(old)))
+	var b = builder()
+	//b.Grow(len(s) + n*(len(new)-len(old)))
 	start := 0
 	for i := 0; i < n; i++ {
 		j := start
-		if len(old) == 0 {
+		if Length(old) == 0 {
 			if i > 0 {
-				_, wid := utf8.DecodeRuneInString(string(s[start:]))
+				_, wid := utf8.DecodeRuneInString(As[string](Slice(s, start, Length(s))))
 				j += wid
 			}
 		} else {
-			j += strings.Index(string(s[start:]), string(old))
+			j += FindIndex(Slice(s, start, Length(s)), old)
 		}
-		b.WriteString(string(s[start:j]))
-		b.WriteString(string(new))
-		start = j + len(old)
+		b = Append(b, New(Slice(s, start, j)))
+		b = Append(b, New(new))
+		start = j + Length(old)
 	}
-	b.WriteString(string(s[start:]))
-	return S(b.String())
+	b = Append(b, New(Slice(s, start, Length(s))))
+	return As[S](b)
 }
 
 // Reverse returns the copy of this string in reverse order. This operation works on
 // unicode codepoints, rather than sequences of codepoints, and may break things like
 // compound letters or emojis.
 func Reverse[S Any](s S) S { //gd:String.reverse
-	runes := []rune(string(s))
+	runes := []rune(As[string](s))
 	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
 		runes[i], runes[j] = runes[j], runes[i]
 	}
-	return S(string(runes))
+	return As[S](New(runes))
 }
 
 // FindLastStrict returns the index of the last occurrence of what in this string, or -1 if there are none.
 // This method is the reverse of [FindStrict].
 func FindLastStrict[S Any](s S, what S) int { //gd:String.rfind
-	return strings.LastIndex(string(s), string(what))
+	return strings.LastIndex(As[string](s), As[string](what))
 }
 
 // FindLast returns the index of the last occurrence of what in this string, or -1 if there are none.
 // This method is the reverse of [Find].
-func FindLast[S Any](s S, what S) int { //gd:String.rfindn
-	return strings.LastIndex(strings.ToLower(string(s)), strings.ToLower(string(what)))
+func FindLast[S Any, W Any](s S, what W) int { //gd:String.rfindn
+	return strings.LastIndex(strings.ToLower(As[string](s)), strings.ToLower(As[string](what)))
 }
 
 // Last returns the last length characters from the end of the string. If length is
 // negative, returns the first length characters from the string's beginning.
 func Last[S Any](length int, s S) S { //gd:String.right
 	if length < 0 {
-		return S(string(s)[-length:])
+		return Slice(s, -length, Length(s))
 	}
-	return S(string(s)[len(s)-length:])
+	return Slice(s, Length(s)-length, Length(s))
 }
 
 // PadSuffix formats the string to be at least min_length long, by adding characters to the right of the
 // string, if necessary. See also [PadPrefix].
 func PadSuffix[S Any](s S, min_length int) S { //gd:String.rpad
-	return S(string(s) + strings.Repeat(string(" "), max(0, min_length-len(s))))
+	return As[S](As[string](s) + strings.Repeat(As[string](" "), max(0, min_length-Length(s))))
 }
 
 // ReverseSplit splits the string using a delimiter and returns an array of the substrings, starting from
 // the end of the string. The splits in the returned array appear in the same order as the original string.
 func ReverseSplit[S Any](s S, delimiter S) []S { //gd:String.rsplit
-	split := ExtractAll(delimiter, s)
+	split := slices.Collect(Splits(s, delimiter))
 	for i, j := 0, len(split)-1; i < j; i, j = i+1, j-1 {
 		split[i], split[j] = split[j], split[i]
 	}
@@ -954,41 +1080,41 @@ func ReverseSplit[S Any](s S, delimiter S) []S { //gd:String.rsplit
 //
 // Note: chars is a cutset. Use [TrimSuffix] to remove an entire suffix, rather than a set of characters.
 func StripSuffix[S Any](s S, chars S) S { //gd:String.rstrip
-	return S(strings.TrimRight(string(s), string(chars)))
+	return As[S](strings.TrimRight(As[string](s), As[string](chars)))
 }
 
 // SHA1 returns the SHA-1 hash of the string.
 func SHA1[S Any](s S) S { //gd:String.sha1_buffer String.sha1_text
 	h := sha1.New()
-	h.Write([]byte(string(s)))
-	return S(hex.EncodeToString(h.Sum(nil)))
+	h.Write([]byte(As[string](s)))
+	return As[S](hex.EncodeToString(h.Sum(nil)))
 }
 
 // SHA256 returns the SHA-256 hash of the string.
 func SHA256[S Any](s S) S { //gd:String.sha256_buffer String.sha256_text
 	h := sha256.New()
-	h.Write([]byte(string(s)))
-	return S(hex.EncodeToString(h.Sum(nil)))
+	h.Write([]byte(As[string](s)))
+	return As[S](hex.EncodeToString(h.Sum(nil)))
 }
 
 // Similarity returns the similarity index (Sorensen-Dice coefficient) of this string compared to another.
 // A result of 1.0 means totally similar, while 0.0 means totally dissimilar.
 func Similarity[S Any](a, b S) Float.X { //gd:String.similarity
-	if bytes.Equal([]byte(a), []byte(b)) {
+	if Comparison(a, b) == 0 {
 		return 1.0 // Equal strings are totally similar
 	}
-	if len(a) < 2 || len(b) < 2 {
+	if Length(a) < 2 || Length(b) < 2 {
 		return 0.0 // No way to calculate similarity without a single bigram
 	}
-	src_bigrams := Bigrams(a)
-	tgt_bigrams := Bigrams(b)
+	src_bigrams := slices.Collect(Bigrams(a))
+	tgt_bigrams := slices.Collect(Bigrams(b))
 	src_size := len(src_bigrams)
 	tgt_size := len(tgt_bigrams)
 	var sum = Float.X(src_size + tgt_size)
 	var inter Float.X = 0
 	for i := 0; i < src_size; i++ {
 		for j := 0; j < tgt_size; j++ {
-			if bytes.Equal([]byte(src_bigrams[i]), []byte(tgt_bigrams[j])) {
+			if Comparison(src_bigrams[i], tgt_bigrams[j]) == 0 {
 				inter++
 				break
 			}
@@ -1000,63 +1126,41 @@ func Similarity[S Any](a, b S) Float.X { //gd:String.similarity
 // SimplifyPath converts the string into a canonical path if the string is a valid file path. This
 // is the shortest possible path, without "./", and all the unnecessary ".." and "/".
 func SimplifyPath[S Any](s S) S { //gd:String.simplify_path
-	return S(filepath.Clean(string(s)))
+	return As[S](filepath.Clean(As[string](s)))
 }
 
-// ExtractAll splits the string using a delimiter and returns an array of the substrings. If delimiter
+// Splits returns a sequence of substrings by splitting the string using a delimiter. If the delimiter
 // is an empty string, each substring will be a single character. This method is the opposite of [JoinedWith].
-func ExtractAll[S Any, D ~string | ~[]byte | rune](sep D, s S) []S { //gd:String.split
-	explode := func(s S, n int) []S {
-		l := utf8.RuneCountInString(string(s))
-		if n < 0 || n > l {
-			n = l
+func Splits[S Any, B Any](s S, sep B) iter.Seq[S] { //gd:String.split
+	if Length(sep) == 0 {
+		return func(yield func(S) bool) {
+			for _, char := range As[string](s) {
+				if !yield(As[S](New(string(char)))) {
+					return
+				}
+			}
 		}
-		a := make([]S, n)
-		for i := 0; i < n-1; i++ {
-			_, size := utf8.DecodeRuneInString(string(s))
-			a[i] = s[:size]
-			s = s[size:]
+	}
+	return func(yield func(S) bool) {
+		for {
+			m := FindIndex(s, sep)
+			if m < 0 {
+				yield(s)
+				break
+			}
+			if !yield(Slice(s, 0, m)) {
+				return
+			}
+			s = Slice(s, m+Length(sep), Length(s))
 		}
-		if n > 0 {
-			a[n-1] = s
-		}
-		return a
 	}
-	var n = -1
-	if n == 0 {
-		return nil
-	}
-	if len(string(sep)) == 0 {
-		return explode(s, n)
-	}
-	if n < 0 {
-		n = Count(sep, s) + 1
-	}
-
-	if n > len(s)+1 {
-		n = len(s) + 1
-	}
-	a := make([]S, n)
-	n--
-	i := 0
-	for i < n {
-		m := strings.Index(string(s), string(sep))
-		if m < 0 {
-			break
-		}
-		a[i] = s[:m]
-		s = s[m+len(string(sep)):]
-		i++
-	}
-	a[i] = s
-	return a[:i+1]
 }
 
 // ExtractFloats splits the string into floats by using a delimiter and returns a [Float.X] slice.
-func ExtractFloats[S Any, D ~string | ~[]byte | rune](sep D, s S) []Float.X { //gd:String.split_floats
+func ExtractFloats[S Any, D Any](sep D, s S) []Float.X { //gd:String.split_floats
 	var floats []Float.X
-	for _, val := range ExtractAll(sep, s) {
-		f, _ := strconv.ParseFloat(string(val), 64)
+	for val := range Splits(s, sep) {
+		f, _ := strconv.ParseFloat(As[string](val), 64)
 		floats = append(floats, Float.X(f))
 	}
 	return floats
@@ -1064,21 +1168,21 @@ func ExtractFloats[S Any, D ~string | ~[]byte | rune](sep D, s S) []Float.X { //
 
 // Clean removes all leading and trailing whitespace from the string.
 func Clean[S Any](s S) S { //gd:String.strip_edges
-	return S(strings.TrimSpace(string(s)))
+	return As[S](strings.TrimSpace(As[string](s)))
 }
 
 // StripEscapes strips all escape characters from the string. These include all
 // non-printable control characters of the first page of the ASCII table (values
 // from 0 to 31), such as tabulation (\t) and newline (\n, \r) characters, but not spaces.
 func StripEscapes[S Any](s S) S { //gd:String.strip_escapes
-	return S(regexp.MustCompile(`[\x00-\x1F]`).ReplaceAllString(string(s), ""))
+	return As[S](regexp.MustCompile(`[\x00-\x1F]`).ReplaceAllString(As[string](s), ""))
 }
 
 // ToASCII converts the string to an ASCII/Latin-1 encoded byte slice. This method is slightly
 // faster than [ToUTF8], but replaces all unsupported characters with spaces.
 func ToASCII[S Any](s S) []byte { //gd:String.to_ascii_buffer
 	var buf bytes.Buffer
-	for _, r := range string(s) {
+	for _, r := range As[string](s) {
 		if r > 255 {
 			buf.WriteRune(' ')
 		} else {
@@ -1093,21 +1197,21 @@ func ToASCII[S Any](s S) []byte { //gd:String.to_ascii_buffer
 // in the array. Multibyte sequences will not be interpreted correctly. For parsing user input always use
 // [UTF8]. This is the inverse of [ToASCII].
 func ASCII[S Any](s S) string { //gd:PackedByteArray.get_string_from_ascii
-	return string(s)
+	return As[string](s)
 }
 
 // ToCamelCase returns the string converted to camelCase.
 func ToCamelCase[S Any](s S) S { //gd:String.to_camel_case
-	return S(strings.ReplaceAll(strings.Title(strings.ToLower(string(s))), " ", ""))
+	return As[S](strings.ReplaceAll(strings.Title(strings.ToLower(As[string](s))), " ", ""))
 }
 
 // ToFloat converts the string representing a decimal number into a float. This method stops
 // on the first non-number character, except the first decimal point (.) and the exponent
 // letter (e). See also [IsValidFloat].
 func ToFloat[S Any](s S) Float.X { //gd:String.to_float
-	l := len(string(s))
-	for i := 0; i < len(s); i++ {
-		chr := s[i]
+	l := Length(s)
+	for i := 0; i < l; i++ {
+		chr := Index(s, i)
 		if !unicode.IsDigit(rune(chr)) && chr != '.' && chr != 'e' && chr != 'E' && chr != '-' {
 			if i == 0 {
 				return 0
@@ -1116,11 +1220,11 @@ func ToFloat[S Any](s S) Float.X { //gd:String.to_float
 			break
 		}
 	}
-	if strings.Count(string(s[:l]), ".") > 1 {
-		s = s[:strings.LastIndex(string(s[:l]), ".")]
-		l = len(string(s))
+	if Count(".", Slice(s, 0, l)) > 1 {
+		s = Slice(s, 0, FindLast(Slice(s, 0, l), "."))
+		l = Length(s)
 	}
-	f, _ := strconv.ParseFloat(string(s[:l]), 64)
+	f, _ := strconv.ParseFloat(As[string](Slice(s, 0, l)), 64)
 	return Float.X(f)
 }
 
@@ -1128,11 +1232,11 @@ func ToFloat[S Any](s S) Float.X { //gd:String.to_float
 // non-number character and stops at the first decimal point (.). See also [IsValidInt].
 func ToInt[S Any](s S) int { //gd:String.to_int
 	n := ""
-	for i := 0; i < len(s); i++ {
-		if unicode.IsDigit(rune(s[i])) || s[i] == '-' {
-			n += string(s[i])
+	for i := 0; i < Length(s); i++ {
+		if unicode.IsDigit(rune(Index(s, i))) || Index(s, i) == '-' {
+			n += string(Index(s, i))
 		}
-		if s[i] == '.' {
+		if Index(s, i) == '.' {
 			break
 		}
 	}
@@ -1142,12 +1246,12 @@ func ToInt[S Any](s S) int { //gd:String.to_int
 
 // ToLower converts the string to lowercase.
 func ToLower[S Any](s S) S { //gd:String.to_lower
-	return S(strings.ToLower(string(s)))
+	return As[S](strings.ToLower(As[string](s)))
 }
 
 // ToPascalCase returns the string converted to PascalCase.
 func ToPascalCase[S Any](s S) S { //gd:String.to_pascal_case
-	return S(strings.ReplaceAll(strings.Title(strings.ToLower(string(s))), " ", ""))
+	return As[S](strings.ReplaceAll(Title(strings.ToLower(As[string](s))), " ", ""))
 }
 
 // ToSnakeCase Returns the string converted to snake_case.
@@ -1156,39 +1260,39 @@ func ToPascalCase[S Any](s S) S { //gd:String.to_pascal_case
 func ToSnakeCase[S Any](s S) S { //gd:String.to_snake_case
 	var new_string S
 	var start_index = 0
-	for i := 1; i < len(s); i++ {
-		var is_prev_upper = unicode.IsUpper(rune(s[i-1]))
-		var is_prev_lower = unicode.IsLower(rune(s[i-1]))
-		var is_prev_digit = unicode.IsDigit(rune(s[i-1]))
-		var is_curr_upper = unicode.IsUpper(rune(s[i]))
-		var is_curr_lower = unicode.IsLower(rune(s[i]))
-		var is_curr_digit = unicode.IsDigit(rune(s[i]))
+	for i := 1; i < Length(s); i++ {
+		var is_prev_upper = unicode.IsUpper(rune(Index(s, i-1)))
+		var is_prev_lower = unicode.IsLower(rune(Index(s, i-1)))
+		var is_prev_digit = unicode.IsDigit(rune(Index(s, i-1)))
+		var is_curr_upper = unicode.IsUpper(rune(Index(s, i)))
+		var is_curr_lower = unicode.IsLower(rune(Index(s, i)))
+		var is_curr_digit = unicode.IsDigit(rune(Index(s, i)))
 		var is_next_lower = false
-		if i+1 < len(s) {
-			is_next_lower = unicode.IsLower(rune(s[i+1]))
+		if i+1 < Length(s) {
+			is_next_lower = unicode.IsLower(rune(Index(s, i+1)))
 		}
 		var cond_a = is_prev_lower && is_curr_upper                                     // aA
 		var cond_b = (is_prev_upper || is_prev_digit) && is_curr_upper && is_next_lower // AAa, 2Aa
 		var cond_c = is_prev_digit && is_curr_lower && is_next_lower                    // 2aa
 		var cond_d = (is_prev_upper || is_prev_lower) && is_curr_digit                  // A2, a2
 		if cond_a || cond_b || cond_c || cond_d {
-			new_string = JoinedWith("", new_string, s[start_index:i], S("_"))
+			new_string = JoinedWith("", new_string, Slice(s, start_index, i), As[S](New("_")))
 			start_index = i
 		}
 	}
-	new_string = JoinedWith("", new_string, s[start_index:])
-	return S(strings.Replace(strings.ToLower(string(new_string)), " ", "_", -1))
+	new_string = JoinedWith("", new_string, Slice(s, start_index, Length(s)))
+	return As[S](strings.Replace(strings.ToLower(As[string](new_string)), " ", "_", -1))
 }
 
 // ToUpper returns the string converted to UPPERCASE.
 func ToUpper[S Any](s S) S { //gd:String.to_upper
-	return S(strings.ToUpper(string(s)))
+	return As[S](strings.ToUpper(As[string](s)))
 }
 
 // ToUTF8 converts the string to a UTF-8 encoded byte slice. This method is slightly slower than
 // [ToASCII], but supports all UTF-8 characters. For most cases, prefer using this method.
 func ToUTF8[S Any](s S) []byte { //gd:String.to_utf8_buffer
-	return []byte(string(s))
+	return As[[]byte](s)
 }
 
 // UTF8 converts UTF-8 encoded array to string. Slower than [ASCII] but supports UTF-8 encoded
@@ -1202,8 +1306,8 @@ func UTF8[S Any](s []byte) string { //gd:PackedByteArray.get_string_from_utf8
 // ToUTF16 converts the string to a UTF-16.
 func ToUTF16[S Any](s S) []byte { //gd:String.to_utf16_buffer String.to_wchar_buffer
 	var result bytes.Buffer
-	for _, r := range string(s) {
-		a, b := utf16.EncodeRune(r)
+	for _, r := range Runes(s) {
+		a, b := utf16.EncodeRune(rune(r))
 		result.WriteByte(byte(a))
 		result.WriteByte(byte(b))
 	}
@@ -1223,7 +1327,7 @@ func UTF16[S Any](s []byte) string { //gd:PackedByteArray.get_string_from_utf16 
 // ToUTF32 converts the string to a UTF-32.
 func ToUTF32[S Any](s S) []byte { //gd:String.to_utf32_buffer
 	var UTF = utf32.UTF32(utf32.LittleEndian, utf32.UseBOM).NewEncoder()
-	b, _ := UTF.Bytes([]byte(s))
+	b, _ := UTF.Bytes(As[[]byte](s))
 	return b
 }
 
@@ -1232,7 +1336,7 @@ func ToUTF32[S Any](s S) []byte { //gd:String.to_utf32_buffer
 // the inverse of [ToUTF32].
 func UTF32[S Any](s S) string { //gd:PackedByteArray.get_string_from_utf32
 	var UTF = utf32.UTF32(utf32.LittleEndian, utf32.UseBOM).NewDecoder()
-	b, _ := UTF.String(string(s))
+	b, _ := UTF.String(As[string](s))
 	return b
 }
 
@@ -1246,12 +1350,12 @@ func TrimPrefix[S, P Any](s S, prefix P) S { //gd:String.trim_prefix
 
 // TrimSuffix removes the given suffix from the end of the string, or returns the string unchanged.
 func TrimSuffix[S Any](s S, suffix S) S { //gd:String.trim_suffix
-	return S(strings.TrimSuffix(string(s), string(suffix)))
+	return As[S](strings.TrimSuffix(As[string](s), As[string](suffix)))
 }
 
 // UnicodeAt returns the Unicode code point at the given index in the string.
-func UnicodeAt[S Any](s S, index int) rune { //gd:String.unicode_at
-	for i, r := range string(s) {
+func UnicodeAt[S Any](s S, index int) Rune { //gd:String.unicode_at
+	for i, r := range Runes(s) {
 		if i == index {
 			return r
 		}
@@ -1261,49 +1365,73 @@ func UnicodeAt[S Any](s S, index int) rune { //gd:String.unicode_at
 
 // StripFilename returns a copy of the string with all characters that are not allowed in [IsValidFilename] replaced with underscores.
 func StripFilename[S Any](s S) S { //gd:String.validate_filename
-	var result strings.Builder
-	for _, r := range string(s) {
+	var result = builder()
+	for _, r := range Runes(s) {
 		if IsValidFilename(string(r)) {
-			result.WriteRune(r)
+			result = Append(result, New(r))
 		} else {
-			result.WriteRune('_')
+			result = Append(result, New(Rune('_')))
 		}
 	}
-	return S(result.String())
+	return As[S](result)
 }
 
 // StripNodeName returns a copy of the string with all characters that are not allowed in Node.name (. : @ / " %) replaced with underscores.
 func StripNodeName[S Any](s S) S { //gd:String.validate_node_name
-	return S(strings.Map(func(r rune) rune {
+	return S(Map(func(r Rune) Rune {
 		switch r {
 		case '.', ':', '@', '/', '"', '%':
 			return '_'
 		}
 		return r
-	}, string(s)))
+	}, s))
 }
 
 // StartingFrom returns a slice of the string from the given start index to the end index.
 func StartingFrom[S Any](s S, start int) S { //gd:String.substr
-	return S(string(s)[start:])
+	return Slice(s, start, Length(s))
 }
 
 // Slice returns a slice of the string from the start index to the end index.
-func Slice[S Any](s S, start, end int) S { //gd:String.substrn
+func Slice[S Any, A, B Int.Any](s S, start A, close B) S { //gd:String.substrn
 	uni := New(s)
-	buf, api := uni.api.Slice(uni.buf, start, end)
-	return As[S](Unicode{buf, api})
+	return As[S](uni.api.Slice(uni.buf, int(start), int(close)))
 }
 
 // EncodeURI encodes the string to URL-friendly format. This method is meant to properly
 // encode the parameters in a URL when sending an HTTP request. See also [DecodeURI].
 func EncodeURI[S Any](s S) S { //gd:String.uri_encode
-	return S(url.QueryEscape(string(s)))
+	return As[S](url.QueryEscape(As[string](s)))
 }
 
 // DecodeURI decodes the string from URL-friendly format. This method is meant to properly
 // decode the parameters in a URL when receiving an HTTP request. See also [EncodeURI].
 func DecodeURI[S Any](s S) S { //gd:String.uri_decode
-	decoded, _ := url.QueryUnescape(string(s))
-	return S(decoded)
+	decoded, _ := url.QueryUnescape(As[string](s))
+	return As[S](decoded)
+}
+
+// isSeparator reports whether the rune could mark a word boundary.
+// TODO: update when package unicode captures more of the properties.
+func isSeparator(r rune) bool {
+	// ASCII alphanumerics and underscore are not separators
+	if r <= 0x7F {
+		switch {
+		case '0' <= r && r <= '9':
+			return false
+		case 'a' <= r && r <= 'z':
+			return false
+		case 'A' <= r && r <= 'Z':
+			return false
+		case r == '_':
+			return false
+		}
+		return true
+	}
+	// Letters and digits are not separators
+	if unicode.IsLetter(r) || unicode.IsDigit(r) {
+		return false
+	}
+	// Otherwise, all we can do for now is treat spaces as separators.
+	return unicode.IsSpace(r)
 }

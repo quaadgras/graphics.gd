@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The Crypto class provides access to advanced cryptographic functionalities.
@@ -141,7 +143,7 @@ X509Certificate cert = crypto.GenerateSelfSignedCertificate(key, "CN=mydomain.co
 [/codeblocks]
 */
 func (self Instance) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate
-	return [1]gdclass.X509Certificate(class(self).GenerateSelfSignedCertificate(key, gd.NewString("CN=myserver,O=myorganisation,C=IT"), gd.NewString("20140101000000"), gd.NewString("20340101000000")))
+	return [1]gdclass.X509Certificate(class(self).GenerateSelfSignedCertificate(key, String.New("CN=myserver,O=myorganisation,C=IT"), String.New("20140101000000"), String.New("20340101000000")))
 }
 
 /*
@@ -258,12 +260,12 @@ X509Certificate cert = crypto.GenerateSelfSignedCertificate(key, "CN=mydomain.co
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer_name gd.String, not_before gd.String, not_after gd.String) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate
+func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer_name String.Readable, not_before String.Readable, not_after String.Readable) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key[0])[0])
-	callframe.Arg(frame, pointers.Get(issuer_name))
-	callframe.Arg(frame, pointers.Get(not_before))
-	callframe.Arg(frame, pointers.Get(not_after))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(issuer_name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(not_before)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(not_after)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_self_signed_certificate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.X509Certificate{gd.PointerWithOwnershipTransferredToGo[gdclass.X509Certificate](r_ret.Get())}

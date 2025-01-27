@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/InputEventWithModifiers"
 import "graphics.gd/classdb/InputEventFromWindow"
 import "graphics.gd/classdb/InputEvent"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 An input event for keys on a keyboard. Supports key presses, key releases and [member echo] events. It can also be received in [method Node._unhandled_key_input].
@@ -324,11 +326,11 @@ func (self class) GetKeyLabelWithModifiers() Key { //gd:InputEventKey.get_key_la
 Returns a [String] representation of the event's [member keycode] and modifiers.
 */
 //go:nosplit
-func (self class) AsTextKeycode() gd.String { //gd:InputEventKey.as_text_keycode
+func (self class) AsTextKeycode() String.Readable { //gd:InputEventKey.as_text_keycode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_keycode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -337,11 +339,11 @@ func (self class) AsTextKeycode() gd.String { //gd:InputEventKey.as_text_keycode
 Returns a [String] representation of the event's [member physical_keycode] and modifiers.
 */
 //go:nosplit
-func (self class) AsTextPhysicalKeycode() gd.String { //gd:InputEventKey.as_text_physical_keycode
+func (self class) AsTextPhysicalKeycode() String.Readable { //gd:InputEventKey.as_text_physical_keycode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_physical_keycode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -350,11 +352,11 @@ func (self class) AsTextPhysicalKeycode() gd.String { //gd:InputEventKey.as_text
 Returns a [String] representation of the event's [member key_label] and modifiers.
 */
 //go:nosplit
-func (self class) AsTextKeyLabel() gd.String { //gd:InputEventKey.as_text_key_label
+func (self class) AsTextKeyLabel() String.Readable { //gd:InputEventKey.as_text_key_label
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_key_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -363,11 +365,11 @@ func (self class) AsTextKeyLabel() gd.String { //gd:InputEventKey.as_text_key_la
 Returns a [String] representation of the event's [member location]. This will be a blank string if the event is not specific to a location.
 */
 //go:nosplit
-func (self class) AsTextLocation() gd.String { //gd:InputEventKey.as_text_location
+func (self class) AsTextLocation() String.Readable { //gd:InputEventKey.as_text_location
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_location, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This class cannot be directly instantiated and must be retrieved via a [EditorDebuggerPlugin].
@@ -45,14 +47,14 @@ type Any interface {
 Sends the given [param message] to the attached remote instance, optionally passing additionally [param data]. See [EngineDebugger] for how to retrieve those messages.
 */
 func (self Instance) SendMessage(message string) { //gd:EditorDebuggerSession.send_message
-	class(self).SendMessage(gd.NewString(message), Array.Nil)
+	class(self).SendMessage(String.New(message), Array.Nil)
 }
 
 /*
 Toggle the given [param profiler] on the attached remote instance, optionally passing additionally [param data]. See [EngineProfiler] for more details.
 */
 func (self Instance) ToggleProfiler(profiler string, enable bool) { //gd:EditorDebuggerSession.toggle_profiler
-	class(self).ToggleProfiler(gd.NewString(profiler), enable, Array.Nil)
+	class(self).ToggleProfiler(String.New(profiler), enable, Array.Nil)
 }
 
 /*
@@ -94,7 +96,7 @@ func (self Instance) RemoveSessionTab(control [1]gdclass.Control) { //gd:EditorD
 Enables or disables a specific breakpoint based on [param enabled], updating the Editor Breakpoint Panel accordingly.
 */
 func (self Instance) SetBreakpoint(path string, line int, enabled bool) { //gd:EditorDebuggerSession.set_breakpoint
-	class(self).SetBreakpoint(gd.NewString(path), gd.Int(line), enabled)
+	class(self).SetBreakpoint(String.New(path), gd.Int(line), enabled)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -120,9 +122,9 @@ func New() Instance {
 Sends the given [param message] to the attached remote instance, optionally passing additionally [param data]. See [EngineDebugger] for how to retrieve those messages.
 */
 //go:nosplit
-func (self class) SendMessage(message gd.String, data Array.Any) { //gd:EditorDebuggerSession.send_message
+func (self class) SendMessage(message String.Readable, data Array.Any) { //gd:EditorDebuggerSession.send_message
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(message))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(message)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerSession.Bind_send_message, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -133,9 +135,9 @@ func (self class) SendMessage(message gd.String, data Array.Any) { //gd:EditorDe
 Toggle the given [param profiler] on the attached remote instance, optionally passing additionally [param data]. See [EngineProfiler] for more details.
 */
 //go:nosplit
-func (self class) ToggleProfiler(profiler gd.String, enable bool, data Array.Any) { //gd:EditorDebuggerSession.toggle_profiler
+func (self class) ToggleProfiler(profiler String.Readable, enable bool, data Array.Any) { //gd:EditorDebuggerSession.toggle_profiler
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(profiler))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(profiler)))
 	callframe.Arg(frame, enable)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
 	var r_ret = callframe.Nil
@@ -210,9 +212,9 @@ func (self class) RemoveSessionTab(control [1]gdclass.Control) { //gd:EditorDebu
 Enables or disables a specific breakpoint based on [param enabled], updating the Editor Breakpoint Panel accordingly.
 */
 //go:nosplit
-func (self class) SetBreakpoint(path gd.String, line gd.Int, enabled bool) { //gd:EditorDebuggerSession.set_breakpoint
+func (self class) SetBreakpoint(path String.Readable, line gd.Int, enabled bool) { //gd:EditorDebuggerSession.set_breakpoint
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil

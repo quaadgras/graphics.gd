@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/StreamPeer"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A stream peer that handles TLS connections. This object can be used to connect to a TLS server or accept a single TLS client connection.
@@ -60,7 +62,7 @@ func (self Instance) AcceptStream(stream [1]gdclass.StreamPeer, server_options [
 Connects to a peer using an underlying [StreamPeer] [param stream] and verifying the remote certificate is correctly signed for the given [param common_name]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) ConnectToStream(stream [1]gdclass.StreamPeer, common_name string) error { //gd:StreamPeerTLS.connect_to_stream
-	return error(gd.ToError(class(self).ConnectToStream(stream, gd.NewString(common_name), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(class(self).ConnectToStream(stream, String.New(common_name), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*
@@ -133,10 +135,10 @@ func (self class) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]g
 Connects to a peer using an underlying [StreamPeer] [param stream] and verifying the remote certificate is correctly signed for the given [param common_name]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 //go:nosplit
-func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name gd.String, client_options [1]gdclass.TLSOptions) gd.Error { //gd:StreamPeerTLS.connect_to_stream
+func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name String.Readable, client_options [1]gdclass.TLSOptions) gd.Error { //gd:StreamPeerTLS.connect_to_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
-	callframe.Arg(frame, pointers.Get(common_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(common_name)))
 	callframe.Arg(frame, pointers.Get(client_options[0])[0])
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTLS.Bind_connect_to_stream, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The JavaClassWrapper singleton provides a way for the Godot application to send and receive data through the [url=https://developer.android.com/training/articles/perf-jni]Java Native Interface[/url] (JNI).
@@ -46,7 +48,7 @@ Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type tha
 */
 func Wrap(name string) [1]gdclass.JavaClass { //gd:JavaClassWrapper.wrap
 	once.Do(singleton)
-	return [1]gdclass.JavaClass(class(self).Wrap(gd.NewString(name)))
+	return [1]gdclass.JavaClass(class(self).Wrap(String.New(name)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -64,9 +66,9 @@ Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type tha
 [b]Note:[/b] This method only works on Android. On every other platform, this method does nothing and returns an empty [JavaClass].
 */
 //go:nosplit
-func (self class) Wrap(name gd.String) [1]gdclass.JavaClass { //gd:JavaClassWrapper.wrap
+func (self class) Wrap(name String.Readable) [1]gdclass.JavaClass { //gd:JavaClassWrapper.wrap
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaClassWrapper.Bind_wrap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.JavaClass{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaClass](r_ret.Get())}

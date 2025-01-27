@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 UndoRedo works by registering methods and property changes inside "actions". You can create an action, then provide ways to do and undo this action using function calls and property changes, then commit the action.
@@ -138,7 +140,7 @@ The way actions are merged is dictated by [param merge_mode]. See [enum MergeMod
 The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
 func (self Instance) CreateAction(name string) { //gd:UndoRedo.create_action
-	class(self).CreateAction(gd.NewString(name), 0, false)
+	class(self).CreateAction(String.New(name), 0, false)
 }
 
 /*
@@ -333,9 +335,9 @@ The way actions are merged is dictated by [param merge_mode]. See [enum MergeMod
 The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
 //go:nosplit
-func (self class) CreateAction(name gd.String, merge_mode gdclass.UndoRedoMergeMode, backward_undo_ops bool) { //gd:UndoRedo.create_action
+func (self class) CreateAction(name String.Readable, merge_mode gdclass.UndoRedoMergeMode, backward_undo_ops bool) { //gd:UndoRedo.create_action
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, merge_mode)
 	callframe.Arg(frame, backward_undo_ops)
 	var r_ret = callframe.Nil
@@ -514,12 +516,12 @@ func (self class) GetCurrentAction() gd.Int { //gd:UndoRedo.get_current_action
 Gets the action name from its index.
 */
 //go:nosplit
-func (self class) GetActionName(id gd.Int) gd.String { //gd:UndoRedo.get_action_name
+func (self class) GetActionName(id gd.Int) String.Readable { //gd:UndoRedo.get_action_name
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_action_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -541,11 +543,11 @@ func (self class) ClearHistory(increase_version bool) { //gd:UndoRedo.clear_hist
 Gets the name of the current action, equivalent to [code]get_action_name(get_current_action())[/code].
 */
 //go:nosplit
-func (self class) GetCurrentActionName() gd.String { //gd:UndoRedo.get_current_action_name
+func (self class) GetCurrentActionName() String.Readable { //gd:UndoRedo.get_current_action_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_current_action_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

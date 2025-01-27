@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The X509Certificate class represents an X509 certificate. Certificates can be loaded and saved like any other [Resource].
@@ -46,14 +48,14 @@ type Any interface {
 Saves a certificate to the given [param path] (should be a "*.crt" file).
 */
 func (self Instance) Save(path string) error { //gd:X509Certificate.save
-	return error(gd.ToError(class(self).Save(gd.NewString(path))))
+	return error(gd.ToError(class(self).Save(String.New(path))))
 }
 
 /*
 Loads a certificate from [param path] ("*.crt" file).
 */
 func (self Instance) Load(path string) error { //gd:X509Certificate.load
-	return error(gd.ToError(class(self).Load(gd.NewString(path))))
+	return error(gd.ToError(class(self).Load(String.New(path))))
 }
 
 /*
@@ -67,7 +69,7 @@ func (self Instance) SaveToString() string { //gd:X509Certificate.save_to_string
 Loads a certificate from the given [param string].
 */
 func (self Instance) LoadFromString(s string) error { //gd:X509Certificate.load_from_string
-	return error(gd.ToError(class(self).LoadFromString(gd.NewString(s))))
+	return error(gd.ToError(class(self).LoadFromString(String.New(s))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -93,9 +95,9 @@ func New() Instance {
 Saves a certificate to the given [param path] (should be a "*.crt" file).
 */
 //go:nosplit
-func (self class) Save(path gd.String) gd.Error { //gd:X509Certificate.save
+func (self class) Save(path String.Readable) gd.Error { //gd:X509Certificate.save
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.X509Certificate.Bind_save, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -107,9 +109,9 @@ func (self class) Save(path gd.String) gd.Error { //gd:X509Certificate.save
 Loads a certificate from [param path] ("*.crt" file).
 */
 //go:nosplit
-func (self class) Load(path gd.String) gd.Error { //gd:X509Certificate.load
+func (self class) Load(path String.Readable) gd.Error { //gd:X509Certificate.load
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.X509Certificate.Bind_load, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -121,11 +123,11 @@ func (self class) Load(path gd.String) gd.Error { //gd:X509Certificate.load
 Returns a string representation of the certificate, or an empty string if the certificate is invalid.
 */
 //go:nosplit
-func (self class) SaveToString() gd.String { //gd:X509Certificate.save_to_string
+func (self class) SaveToString() String.Readable { //gd:X509Certificate.save_to_string
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.X509Certificate.Bind_save_to_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -134,9 +136,9 @@ func (self class) SaveToString() gd.String { //gd:X509Certificate.save_to_string
 Loads a certificate from the given [param string].
 */
 //go:nosplit
-func (self class) LoadFromString(s gd.String) gd.Error { //gd:X509Certificate.load_from_string
+func (self class) LoadFromString(s String.Readable) gd.Error { //gd:X509Certificate.load_from_string
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(s))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.X509Certificate.Bind_load_from_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

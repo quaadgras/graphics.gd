@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/WebRTCPeerConnection"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 type Instance [1]gdclass.WebRTCPeerConnectionExtension
 
@@ -105,8 +107,8 @@ func (Instance) _initialize(impl func(ptr unsafe.Pointer, p_config map[any]any) 
 }
 func (Instance) _create_data_channel(impl func(ptr unsafe.Pointer, p_label string, p_config map[any]any) [1]gdclass.WebRTCDataChannel) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_label = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(p_label)
+		var p_label = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(p_label))
 		var p_config = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(p_config))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -128,10 +130,10 @@ func (Instance) _create_offer(impl func(ptr unsafe.Pointer) error) (cb gd.Extens
 }
 func (Instance) _set_remote_description(impl func(ptr unsafe.Pointer, p_type string, p_sdp string) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_type = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(p_type)
-		var p_sdp = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(p_sdp)
+		var p_type = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(p_type))
+		var p_sdp = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(p_sdp))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_type.String(), p_sdp.String())
 		gd.UnsafeSet(p_back, ret)
@@ -139,10 +141,10 @@ func (Instance) _set_remote_description(impl func(ptr unsafe.Pointer, p_type str
 }
 func (Instance) _set_local_description(impl func(ptr unsafe.Pointer, p_type string, p_sdp string) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_type = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(p_type)
-		var p_sdp = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(p_sdp)
+		var p_type = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(p_type))
+		var p_sdp = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(p_sdp))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_type.String(), p_sdp.String())
 		gd.UnsafeSet(p_back, ret)
@@ -150,12 +152,12 @@ func (Instance) _set_local_description(impl func(ptr unsafe.Pointer, p_type stri
 }
 func (Instance) _add_ice_candidate(impl func(ptr unsafe.Pointer, p_sdp_mid_name string, p_sdp_mline_index int, p_sdp_name string) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_sdp_mid_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(p_sdp_mid_name)
+		var p_sdp_mid_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(p_sdp_mid_name))
 		var p_sdp_mline_index = gd.UnsafeGet[gd.Int](p_args, 1)
 
-		var p_sdp_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(p_sdp_name)
+		var p_sdp_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalString(p_sdp_name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_sdp_mid_name.String(), int(p_sdp_mline_index), p_sdp_name.String())
 		gd.UnsafeSet(p_back, ret)
@@ -228,10 +230,10 @@ func (class) _initialize(impl func(ptr unsafe.Pointer, p_config Dictionary.Any) 
 	}
 }
 
-func (class) _create_data_channel(impl func(ptr unsafe.Pointer, p_label gd.String, p_config Dictionary.Any) [1]gdclass.WebRTCDataChannel) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _create_data_channel(impl func(ptr unsafe.Pointer, p_label String.Readable, p_config Dictionary.Any) [1]gdclass.WebRTCDataChannel) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_label = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(p_label)
+		var p_label = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(p_label))
 		var p_config = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(p_config))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -253,38 +255,38 @@ func (class) _create_offer(impl func(ptr unsafe.Pointer) gd.Error) (cb gd.Extens
 	}
 }
 
-func (class) _set_remote_description(impl func(ptr unsafe.Pointer, p_type gd.String, p_sdp gd.String) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_remote_description(impl func(ptr unsafe.Pointer, p_type String.Readable, p_sdp String.Readable) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_type = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(p_type)
-		var p_sdp = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(p_sdp)
+		var p_type = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(p_type))
+		var p_sdp = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(p_sdp))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_type, p_sdp)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _set_local_description(impl func(ptr unsafe.Pointer, p_type gd.String, p_sdp gd.String) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_local_description(impl func(ptr unsafe.Pointer, p_type String.Readable, p_sdp String.Readable) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_type = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(p_type)
-		var p_sdp = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(p_sdp)
+		var p_type = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(p_type))
+		var p_sdp = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(p_sdp))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_type, p_sdp)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _add_ice_candidate(impl func(ptr unsafe.Pointer, p_sdp_mid_name gd.String, p_sdp_mline_index gd.Int, p_sdp_name gd.String) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _add_ice_candidate(impl func(ptr unsafe.Pointer, p_sdp_mid_name String.Readable, p_sdp_mline_index gd.Int, p_sdp_name String.Readable) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_sdp_mid_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(p_sdp_mid_name)
+		var p_sdp_mid_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(p_sdp_mid_name))
 		var p_sdp_mline_index = gd.UnsafeGet[gd.Int](p_args, 1)
 
-		var p_sdp_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(p_sdp_name)
+		var p_sdp_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalString(p_sdp_name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_sdp_mid_name, p_sdp_mline_index, p_sdp_name)
 		gd.UnsafeSet(p_back, ret)

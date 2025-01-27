@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 type Instance [1]gdclass.GLTFSkeleton
 
@@ -88,7 +90,7 @@ func (self Instance) UniqueNames() []string {
 }
 
 func (self Instance) SetUniqueNames(value []string) {
-	class(self).SetUniqueNames(gd.ArrayFromSlice[Array.Contains[gd.String]](value))
+	class(self).SetUniqueNames(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 }
 
 func (self Instance) GodotBoneNode() map[any]any {
@@ -148,17 +150,17 @@ func (self class) GetGodotSkeleton() [1]gdclass.Skeleton3D { //gd:GLTFSkeleton.g
 }
 
 //go:nosplit
-func (self class) GetUniqueNames() Array.Contains[gd.String] { //gd:GLTFSkeleton.get_unique_names
+func (self class) GetUniqueNames() Array.Contains[String.Readable] { //gd:GLTFSkeleton.get_unique_names
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_get_unique_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetUniqueNames(unique_names Array.Contains[gd.String]) { //gd:GLTFSkeleton.set_unique_names
+func (self class) SetUniqueNames(unique_names Array.Contains[String.Readable]) { //gd:GLTFSkeleton.set_unique_names
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(unique_names)))
 	var r_ret = callframe.Nil

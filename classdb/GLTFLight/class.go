@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Represents a light as defined by the [code]KHR_lights_punctual[/code] GLTF extension.
@@ -119,7 +121,7 @@ func (self Instance) LightType() string {
 }
 
 func (self Instance) SetLightType(value string) {
-	class(self).SetLightType(gd.NewString(value))
+	class(self).SetLightType(String.New(value))
 }
 
 func (self Instance) Range() Float.X {
@@ -239,19 +241,19 @@ func (self class) SetIntensity(intensity gd.Float) { //gd:GLTFLight.set_intensit
 }
 
 //go:nosplit
-func (self class) GetLightType() gd.String { //gd:GLTFLight.get_light_type
+func (self class) GetLightType() String.Readable { //gd:GLTFLight.get_light_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_get_light_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetLightType(light_type gd.String) { //gd:GLTFLight.set_light_type
+func (self class) SetLightType(light_type String.Readable) { //gd:GLTFLight.set_light_type
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(light_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(light_type)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_set_light_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

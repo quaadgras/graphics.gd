@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2i"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [RenderingDevice] is an abstraction for working with modern low-level graphics APIs such as Vulkan. Compared to [RenderingServer] (which works with Godot's own rendering subsystems), [RenderingDevice] is much lower-level and allows working more directly with the underlying graphics APIs. [RenderingDevice] is used in Godot to provide support for several modern low-level graphics APIs while reducing the amount of code duplication required. [RenderingDevice] can also be used in your own projects to perform things that are not exposed by [RenderingServer] or high-level nodes, such as using compute shaders.
@@ -301,7 +303,7 @@ Compiles a binary shader from [param spirv_data] and returns the compiled binary
 [param name] is an optional human-readable name that can be given to the compiled shader for organizational purposes.
 */
 func (self Instance) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV) []byte { //gd:RenderingDevice.shader_compile_binary_from_spirv
-	return []byte(class(self).ShaderCompileBinaryFromSpirv(spirv_data, gd.NewString("")).Bytes())
+	return []byte(class(self).ShaderCompileBinaryFromSpirv(spirv_data, String.New("")).Bytes())
 }
 
 /*
@@ -309,7 +311,7 @@ Creates a new shader instance from SPIR-V intermediate code. It can be accessed 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method. See also [method shader_compile_spirv_from_source] and [method shader_create_from_bytecode].
 */
 func (self Instance) ShaderCreateFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV) RID.Shader { //gd:RenderingDevice.shader_create_from_spirv
-	return RID.Shader(class(self).ShaderCreateFromSpirv(spirv_data, gd.NewString("")))
+	return RID.Shader(class(self).ShaderCreateFromSpirv(spirv_data, String.New("")))
 }
 
 /*
@@ -680,7 +682,7 @@ func (self Instance) FreeRid(rid RID.Any) { //gd:RenderingDevice.free_rid
 Creates a timestamp marker with the specified [param name]. This is used for performance reporting with the [method get_captured_timestamp_cpu_time], [method get_captured_timestamp_gpu_time] and [method get_captured_timestamp_name] methods.
 */
 func (self Instance) CaptureTimestamp(name string) { //gd:RenderingDevice.capture_timestamp
-	class(self).CaptureTimestamp(gd.NewString(name))
+	class(self).CaptureTimestamp(String.New(name))
 }
 
 /*
@@ -777,7 +779,7 @@ The following types of resources can be named: texture, sampler, vertex buffer, 
 [b]Note:[/b] Resource names are only set when the engine runs in verbose mode ([method OS.is_stdout_verbose] = [code]true[/code]), or when using an engine build compiled with the [code]dev_mode=yes[/code] SCons option. The graphics driver must also support the [code]VK_EXT_DEBUG_UTILS_EXTENSION_NAME[/code] Vulkan extension for named resources to work.
 */
 func (self Instance) SetResourceName(id RID.Any, name string) { //gd:RenderingDevice.set_resource_name
-	class(self).SetResourceName(gd.RID(id), gd.NewString(name))
+	class(self).SetResourceName(gd.RID(id), String.New(name))
 }
 
 /*
@@ -785,14 +787,14 @@ Create a command buffer debug label region that can be displayed in third-party 
 The [code]VK_EXT_DEBUG_UTILS_EXTENSION_NAME[/code] Vulkan extension must be available and enabled for command buffer debug label region to work. See also [method draw_command_end_label].
 */
 func (self Instance) DrawCommandBeginLabel(name string, color Color.RGBA) { //gd:RenderingDevice.draw_command_begin_label
-	class(self).DrawCommandBeginLabel(gd.NewString(name), gd.Color(color))
+	class(self).DrawCommandBeginLabel(String.New(name), gd.Color(color))
 }
 
 /*
 This method does nothing.
 */
 func (self Instance) DrawCommandInsertLabel(name string, color Color.RGBA) { //gd:RenderingDevice.draw_command_insert_label
-	class(self).DrawCommandInsertLabel(gd.NewString(name), gd.Color(color))
+	class(self).DrawCommandInsertLabel(String.New(name), gd.Color(color))
 }
 
 /*
@@ -1383,10 +1385,10 @@ Compiles a binary shader from [param spirv_data] and returns the compiled binary
 [param name] is an optional human-readable name that can be given to the compiled shader for organizational purposes.
 */
 //go:nosplit
-func (self class) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV, name gd.String) gd.PackedByteArray { //gd:RenderingDevice.shader_compile_binary_from_spirv
+func (self class) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV, name String.Readable) gd.PackedByteArray { //gd:RenderingDevice.shader_compile_binary_from_spirv
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(spirv_data[0])[0])
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_shader_compile_binary_from_spirv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
@@ -1399,10 +1401,10 @@ Creates a new shader instance from SPIR-V intermediate code. It can be accessed 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method. See also [method shader_compile_spirv_from_source] and [method shader_create_from_bytecode].
 */
 //go:nosplit
-func (self class) ShaderCreateFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV, name gd.String) gd.RID { //gd:RenderingDevice.shader_create_from_spirv
+func (self class) ShaderCreateFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV, name String.Readable) gd.RID { //gd:RenderingDevice.shader_create_from_spirv
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(spirv_data[0])[0])
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_shader_create_from_spirv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2108,9 +2110,9 @@ func (self class) FreeRid(rid gd.RID) { //gd:RenderingDevice.free_rid
 Creates a timestamp marker with the specified [param name]. This is used for performance reporting with the [method get_captured_timestamp_cpu_time], [method get_captured_timestamp_gpu_time] and [method get_captured_timestamp_name] methods.
 */
 //go:nosplit
-func (self class) CaptureTimestamp(name gd.String) { //gd:RenderingDevice.capture_timestamp
+func (self class) CaptureTimestamp(name String.Readable) { //gd:RenderingDevice.capture_timestamp
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_capture_timestamp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2174,12 +2176,12 @@ func (self class) GetCapturedTimestampCpuTime(index gd.Int) gd.Int { //gd:Render
 Returns the timestamp's name for the rendering step specified by [param index]. See also [method capture_timestamp].
 */
 //go:nosplit
-func (self class) GetCapturedTimestampName(index gd.Int) gd.String { //gd:RenderingDevice.get_captured_timestamp_name
+func (self class) GetCapturedTimestampName(index gd.Int) String.Readable { //gd:RenderingDevice.get_captured_timestamp_name
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_captured_timestamp_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2280,10 +2282,10 @@ The following types of resources can be named: texture, sampler, vertex buffer, 
 [b]Note:[/b] Resource names are only set when the engine runs in verbose mode ([method OS.is_stdout_verbose] = [code]true[/code]), or when using an engine build compiled with the [code]dev_mode=yes[/code] SCons option. The graphics driver must also support the [code]VK_EXT_DEBUG_UTILS_EXTENSION_NAME[/code] Vulkan extension for named resources to work.
 */
 //go:nosplit
-func (self class) SetResourceName(id gd.RID, name gd.String) { //gd:RenderingDevice.set_resource_name
+func (self class) SetResourceName(id gd.RID, name String.Readable) { //gd:RenderingDevice.set_resource_name
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_set_resource_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2294,9 +2296,9 @@ Create a command buffer debug label region that can be displayed in third-party 
 The [code]VK_EXT_DEBUG_UTILS_EXTENSION_NAME[/code] Vulkan extension must be available and enabled for command buffer debug label region to work. See also [method draw_command_end_label].
 */
 //go:nosplit
-func (self class) DrawCommandBeginLabel(name gd.String, color gd.Color) { //gd:RenderingDevice.draw_command_begin_label
+func (self class) DrawCommandBeginLabel(name String.Readable, color gd.Color) { //gd:RenderingDevice.draw_command_begin_label
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_draw_command_begin_label, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2307,9 +2309,9 @@ func (self class) DrawCommandBeginLabel(name gd.String, color gd.Color) { //gd:R
 This method does nothing.
 */
 //go:nosplit
-func (self class) DrawCommandInsertLabel(name gd.String, color gd.Color) { //gd:RenderingDevice.draw_command_insert_label
+func (self class) DrawCommandInsertLabel(name String.Readable, color gd.Color) { //gd:RenderingDevice.draw_command_insert_label
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_draw_command_insert_label, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2331,11 +2333,11 @@ func (self class) DrawCommandEndLabel() { //gd:RenderingDevice.draw_command_end_
 Returns the vendor of the video adapter (e.g. "NVIDIA Corporation"). Equivalent to [method RenderingServer.get_video_adapter_vendor]. See also [method get_device_name].
 */
 //go:nosplit
-func (self class) GetDeviceVendorName() gd.String { //gd:RenderingDevice.get_device_vendor_name
+func (self class) GetDeviceVendorName() String.Readable { //gd:RenderingDevice.get_device_vendor_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_device_vendor_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2344,11 +2346,11 @@ func (self class) GetDeviceVendorName() gd.String { //gd:RenderingDevice.get_dev
 Returns the name of the video adapter (e.g. "GeForce GTX 1080/PCIe/SSE2"). Equivalent to [method RenderingServer.get_video_adapter_name]. See also [method get_device_vendor_name].
 */
 //go:nosplit
-func (self class) GetDeviceName() gd.String { //gd:RenderingDevice.get_device_name
+func (self class) GetDeviceName() String.Readable { //gd:RenderingDevice.get_device_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_device_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2357,11 +2359,11 @@ func (self class) GetDeviceName() gd.String { //gd:RenderingDevice.get_device_na
 Returns the universally unique identifier for the pipeline cache. This is used to cache shader files on disk, which avoids shader recompilations on subsequent engine runs. This UUID varies depending on the graphics card model, but also the driver version. Therefore, updating graphics drivers will invalidate the shader cache.
 */
 //go:nosplit
-func (self class) GetDevicePipelineCacheUuid() gd.String { //gd:RenderingDevice.get_device_pipeline_cache_uuid
+func (self class) GetDevicePipelineCacheUuid() String.Readable { //gd:RenderingDevice.get_device_pipeline_cache_uuid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_device_pipeline_cache_uuid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

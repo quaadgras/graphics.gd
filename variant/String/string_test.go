@@ -1,6 +1,7 @@
 package String_test
 
 import (
+	"slices"
 	"testing"
 
 	"graphics.gd/internal/gdtests"
@@ -9,7 +10,7 @@ import (
 )
 
 func TestBigrams(t *testing.T) {
-	gdtests.Print(t, `["Ge", "et", "t ", " u", "up", "p!"]`, String.Bigrams("Get up!")) // Prints ["Ge", "et", "t ", " u", "up", "p!"]
+	gdtests.Print(t, `["Ge", "et", "t ", " u", "up", "p!"]`, slices.Collect(String.Bigrams("Get up!"))) // Prints ["Ge", "et", "t ", " u", "up", "p!"]
 }
 
 func TestBinaryToInteger(t *testing.T) {
@@ -34,11 +35,11 @@ func TestCharacter(t *testing.T) {
 	gdtests.Print(t, "🤖", String.Character(129302)) // Prints "🤖" (robot face emoji)
 }
 
-func TestFind(t *testing.T) {
-	gdtests.Print(t, "-1", String.Find("I", "Team"))        // Prints -1
-	gdtests.Print(t, "2", String.Find("t", "Potato"))       // Prints 2
-	gdtests.Print(t, "4", 3+String.Find("t", "Potato"[3:])) // Prints 4
-	gdtests.Print(t, "-1", String.Find("t", "Potato"[5:]))  // Prints -1
+func TestFindIndex(t *testing.T) {
+	gdtests.Print(t, "-1", String.FindIndex("Team", "I"))        // Prints -1
+	gdtests.Print(t, "2", String.FindIndex("Potato", "t"))       // Prints 2
+	gdtests.Print(t, "4", 3+String.FindIndex("Potato"[3:], "t")) // Prints 4
+	gdtests.Print(t, "-1", String.FindIndex("Potato"[5:], "t"))  // Prints -1
 }
 
 func TestFormat(t *testing.T) {
@@ -162,8 +163,8 @@ func TestSimplifypath(t *testing.T) {
 	gdtests.Print(t, "path/file", simple_path) // Prints "path/file"
 }
 
-func TestExtractAll(t *testing.T) {
-	var some_array = String.ExtractAll(",", "One,Two,Three,Four")
+func TestSplits(t *testing.T) {
+	var some_array = slices.Collect(String.Splits("One,Two,Three,Four", ","))
 
 	gdtests.Print(t, "4", len(some_array)) // Prints 4
 	gdtests.Print(t, "One", some_array[0]) // Prints "One"
@@ -210,4 +211,12 @@ func TestToSnakeCase(t *testing.T) {
 	gdtests.That(t, String.ToSnakeCase("Node2D"), "node_2d")                               // Returns "node_2d"
 	gdtests.That(t, String.ToSnakeCase("2nd place"), "2_nd_place")                         // Returns "2_nd_place"
 	gdtests.That(t, String.ToSnakeCase("Texture3DAssetFolder"), "texture_3d_asset_folder") // Returns "texture_3d_asset_folder"
+}
+
+func TestSplit(t *testing.T) {
+	var a = slices.Collect(String.Splits("One,Two,Three,Four", ",")) // a is ["One", "Two", "Three", "Four"]
+
+	gdtests.Print(t, "4", len(a)) // Prints 4
+	gdtests.Print(t, "One", a[0]) // Prints "One"
+	gdtests.Print(t, "Two", a[1]) // Prints "Two"
 }

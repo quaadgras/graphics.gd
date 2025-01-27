@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The Time singleton allows converting time between various formats and also getting time information from the system.
@@ -101,7 +103,7 @@ If [param weekday] is [code]false[/code], then the [code skip-lint]weekday[/code
 */
 func GetDatetimeDictFromDatetimeString(datetime string, weekday bool) Date { //gd:Time.get_datetime_dict_from_datetime_string
 	once.Do(singleton)
-	return Date(gd.DictionaryAs[Date](class(self).GetDatetimeDictFromDatetimeString(gd.NewString(datetime), weekday)))
+	return Date(gd.DictionaryAs[Date](class(self).GetDatetimeDictFromDatetimeString(String.New(datetime), weekday)))
 }
 
 /*
@@ -134,7 +136,7 @@ Converts the given ISO 8601 date and/or time string to a Unix timestamp. The str
 */
 func GetUnixTimeFromDatetimeString(datetime string) int { //gd:Time.get_unix_time_from_datetime_string
 	once.Do(singleton)
-	return int(int(class(self).GetUnixTimeFromDatetimeString(gd.NewString(datetime))))
+	return int(int(class(self).GetUnixTimeFromDatetimeString(String.New(datetime))))
 }
 
 /*
@@ -294,13 +296,13 @@ Converts the given Unix timestamp to an ISO 8601 date and time string (YYYY-MM-D
 If [param use_space] is [code]true[/code], the date and time bits are separated by an empty space character instead of the letter T.
 */
 //go:nosplit
-func (self class) GetDatetimeStringFromUnixTime(unix_time_val gd.Int, use_space bool) gd.String { //gd:Time.get_datetime_string_from_unix_time
+func (self class) GetDatetimeStringFromUnixTime(unix_time_val gd.Int, use_space bool) String.Readable { //gd:Time.get_datetime_string_from_unix_time
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
 	callframe.Arg(frame, use_space)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_string_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -309,12 +311,12 @@ func (self class) GetDatetimeStringFromUnixTime(unix_time_val gd.Int, use_space 
 Converts the given Unix timestamp to an ISO 8601 date string (YYYY-MM-DD).
 */
 //go:nosplit
-func (self class) GetDateStringFromUnixTime(unix_time_val gd.Int) gd.String { //gd:Time.get_date_string_from_unix_time
+func (self class) GetDateStringFromUnixTime(unix_time_val gd.Int) String.Readable { //gd:Time.get_date_string_from_unix_time
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_date_string_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -323,12 +325,12 @@ func (self class) GetDateStringFromUnixTime(unix_time_val gd.Int) gd.String { //
 Converts the given Unix timestamp to an ISO 8601 time string (HH:MM:SS).
 */
 //go:nosplit
-func (self class) GetTimeStringFromUnixTime(unix_time_val gd.Int) gd.String { //gd:Time.get_time_string_from_unix_time
+func (self class) GetTimeStringFromUnixTime(unix_time_val gd.Int) String.Readable { //gd:Time.get_time_string_from_unix_time
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_string_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -339,9 +341,9 @@ If [param weekday] is [code]false[/code], then the [code skip-lint]weekday[/code
 [b]Note:[/b] Any decimal fraction in the time string will be ignored silently.
 */
 //go:nosplit
-func (self class) GetDatetimeDictFromDatetimeString(datetime gd.String, weekday bool) Dictionary.Any { //gd:Time.get_datetime_dict_from_datetime_string
+func (self class) GetDatetimeDictFromDatetimeString(datetime String.Readable, weekday bool) Dictionary.Any { //gd:Time.get_datetime_dict_from_datetime_string
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(datetime))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(datetime)))
 	callframe.Arg(frame, weekday)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_dict_from_datetime_string, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -357,13 +359,13 @@ If the dictionary is empty, [code]0[/code] is returned. If some keys are omitted
 If [param use_space] is [code]true[/code], the date and time bits are separated by an empty space character instead of the letter T.
 */
 //go:nosplit
-func (self class) GetDatetimeStringFromDatetimeDict(datetime Dictionary.Any, use_space bool) gd.String { //gd:Time.get_datetime_string_from_datetime_dict
+func (self class) GetDatetimeStringFromDatetimeDict(datetime Dictionary.Any, use_space bool) String.Readable { //gd:Time.get_datetime_string_from_datetime_dict
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(datetime)))
 	callframe.Arg(frame, use_space)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_string_from_datetime_dict, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -392,9 +394,9 @@ Converts the given ISO 8601 date and/or time string to a Unix timestamp. The str
 [b]Note:[/b] Any decimal fraction in the time string will be ignored silently.
 */
 //go:nosplit
-func (self class) GetUnixTimeFromDatetimeString(datetime gd.String) gd.Int { //gd:Time.get_unix_time_from_datetime_string
+func (self class) GetUnixTimeFromDatetimeString(datetime String.Readable) gd.Int { //gd:Time.get_unix_time_from_datetime_string
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(datetime))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(datetime)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_unix_time_from_datetime_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -406,12 +408,12 @@ func (self class) GetUnixTimeFromDatetimeString(datetime gd.String) gd.Int { //g
 Converts the given timezone offset in minutes to a timezone offset string. For example, -480 returns "-08:00", 345 returns "+05:45", and 0 returns "+00:00".
 */
 //go:nosplit
-func (self class) GetOffsetStringFromOffsetMinutes(offset_minutes gd.Int) gd.String { //gd:Time.get_offset_string_from_offset_minutes
+func (self class) GetOffsetStringFromOffsetMinutes(offset_minutes gd.Int) String.Readable { //gd:Time.get_offset_string_from_offset_minutes
 	var frame = callframe.New()
 	callframe.Arg(frame, offset_minutes)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_offset_string_from_offset_minutes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -466,13 +468,13 @@ The returned values are in the system's local time when [param utc] is [code]fal
 If [param use_space] is [code]true[/code], the date and time bits are separated by an empty space character instead of the letter T.
 */
 //go:nosplit
-func (self class) GetDatetimeStringFromSystem(utc bool, use_space bool) gd.String { //gd:Time.get_datetime_string_from_system
+func (self class) GetDatetimeStringFromSystem(utc bool, use_space bool) String.Readable { //gd:Time.get_datetime_string_from_system
 	var frame = callframe.New()
 	callframe.Arg(frame, utc)
 	callframe.Arg(frame, use_space)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_string_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -482,12 +484,12 @@ Returns the current date as an ISO 8601 date string (YYYY-MM-DD).
 The returned values are in the system's local time when [param utc] is [code]false[/code], otherwise they are in UTC.
 */
 //go:nosplit
-func (self class) GetDateStringFromSystem(utc bool) gd.String { //gd:Time.get_date_string_from_system
+func (self class) GetDateStringFromSystem(utc bool) String.Readable { //gd:Time.get_date_string_from_system
 	var frame = callframe.New()
 	callframe.Arg(frame, utc)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_date_string_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -497,12 +499,12 @@ Returns the current time as an ISO 8601 time string (HH:MM:SS).
 The returned values are in the system's local time when [param utc] is [code]false[/code], otherwise they are in UTC.
 */
 //go:nosplit
-func (self class) GetTimeStringFromSystem(utc bool) gd.String { //gd:Time.get_time_string_from_system
+func (self class) GetTimeStringFromSystem(utc bool) String.Readable { //gd:Time.get_time_string_from_system
 	var frame = callframe.New()
 	callframe.Arg(frame, utc)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_string_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -621,11 +623,6 @@ const (
 	WeekdaySaturday Weekday = 6
 )
 
-type OnTheClock struct {
-	Hour   int `gd:"hour"`
-	Minute int `gd:"minute"`
-	Second int `gd:"second"`
-}
 type Date struct {
 	Year    int `gd:"year"`
 	Month   int `gd:"month"`
@@ -640,4 +637,9 @@ type DateOnly struct {
 	Month   int `gd:"month"`
 	Day     int `gd:"day"`
 	Weekday int `gd:"weekday"`
+}
+type OnTheClock struct {
+	Hour   int `gd:"hour"`
+	Minute int `gd:"minute"`
+	Second int `gd:"second"`
 }

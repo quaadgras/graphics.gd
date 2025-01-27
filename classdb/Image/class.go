@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Rect2i"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Native image datatype. Contains image data which can be converted to an [ImageTexture] and provides commonly used [i]image processing[/i] methods. The maximum width and height for an [Image] are [constant MAX_WIDTH] and [constant MAX_HEIGHT].
@@ -218,7 +220,7 @@ Loads an image from file [param path]. See [url=$DOCS_URL/tutorials/assets_pipel
 See also [ImageTexture] description for usage examples.
 */
 func (self Instance) Load(path string) error { //gd:Image.load
-	return error(gd.ToError(class(self).Load(gd.NewString(path))))
+	return error(gd.ToError(class(self).Load(String.New(path))))
 }
 
 /*
@@ -226,14 +228,14 @@ Creates a new [Image] and loads data from the specified file.
 */
 func LoadFromFile(path string) [1]gdclass.Image { //gd:Image.load_from_file
 	self := Instance{}
-	return [1]gdclass.Image(class(self).LoadFromFile(gd.NewString(path)))
+	return [1]gdclass.Image(class(self).LoadFromFile(String.New(path)))
 }
 
 /*
 Saves the image as a PNG file to the file at [param path].
 */
 func (self Instance) SavePng(path string) error { //gd:Image.save_png
-	return error(gd.ToError(class(self).SavePng(gd.NewString(path))))
+	return error(gd.ToError(class(self).SavePng(String.New(path))))
 }
 
 /*
@@ -248,7 +250,7 @@ Saves the image as a JPEG file to [param path] with the specified [param quality
 [b]Note:[/b] JPEG does not save an alpha channel. If the [Image] contains an alpha channel, the image will still be saved, but the resulting JPEG file won't contain the alpha channel.
 */
 func (self Instance) SaveJpg(path string) error { //gd:Image.save_jpg
-	return error(gd.ToError(class(self).SaveJpg(gd.NewString(path), gd.Float(0.75))))
+	return error(gd.ToError(class(self).SaveJpg(String.New(path), gd.Float(0.75))))
 }
 
 /*
@@ -264,7 +266,7 @@ Saves the image as an EXR file to [param path]. If [param grayscale] is [code]tr
 [b]Note:[/b] The TinyEXR module is disabled in non-editor builds, which means [method save_exr] will return [constant ERR_UNAVAILABLE] when it is called from an exported project.
 */
 func (self Instance) SaveExr(path string) error { //gd:Image.save_exr
-	return error(gd.ToError(class(self).SaveExr(gd.NewString(path), false)))
+	return error(gd.ToError(class(self).SaveExr(String.New(path), false)))
 }
 
 /*
@@ -280,7 +282,7 @@ Saves the image as a WebP (Web Picture) file to the file at [param path]. By def
 [b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 func (self Instance) SaveWebp(path string) error { //gd:Image.save_webp
-	return error(gd.ToError(class(self).SaveWebp(gd.NewString(path), false, gd.Float(0.75))))
+	return error(gd.ToError(class(self).SaveWebp(String.New(path), false, gd.Float(0.75))))
 }
 
 /*
@@ -606,7 +608,7 @@ Loads an image from the string contents of an SVG file ([b].svg[/b]).
 [b]Note:[/b] This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the [code]module_svg_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadSvgFromString(svg_str string) error { //gd:Image.load_svg_from_string
-	return error(gd.ToError(class(self).LoadSvgFromString(gd.NewString(svg_str), gd.Float(1.0))))
+	return error(gd.ToError(class(self).LoadSvgFromString(String.New(svg_str), gd.Float(1.0))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -944,9 +946,9 @@ Loads an image from file [param path]. See [url=$DOCS_URL/tutorials/assets_pipel
 See also [ImageTexture] description for usage examples.
 */
 //go:nosplit
-func (self class) Load(path gd.String) gd.Error { //gd:Image.load
+func (self class) Load(path String.Readable) gd.Error { //gd:Image.load
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -958,9 +960,9 @@ func (self class) Load(path gd.String) gd.Error { //gd:Image.load
 Creates a new [Image] and loads data from the specified file.
 */
 //go:nosplit
-func (self class) LoadFromFile(path gd.String) [1]gdclass.Image { //gd:Image.load_from_file
+func (self class) LoadFromFile(path String.Readable) [1]gdclass.Image { //gd:Image.load_from_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
@@ -972,9 +974,9 @@ func (self class) LoadFromFile(path gd.String) [1]gdclass.Image { //gd:Image.loa
 Saves the image as a PNG file to the file at [param path].
 */
 //go:nosplit
-func (self class) SavePng(path gd.String) gd.Error { //gd:Image.save_png
+func (self class) SavePng(path String.Readable) gd.Error { //gd:Image.save_png
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_png, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1000,9 +1002,9 @@ Saves the image as a JPEG file to [param path] with the specified [param quality
 [b]Note:[/b] JPEG does not save an alpha channel. If the [Image] contains an alpha channel, the image will still be saved, but the resulting JPEG file won't contain the alpha channel.
 */
 //go:nosplit
-func (self class) SaveJpg(path gd.String, quality gd.Float) gd.Error { //gd:Image.save_jpg
+func (self class) SaveJpg(path String.Readable, quality gd.Float) gd.Error { //gd:Image.save_jpg
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_jpg, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1031,9 +1033,9 @@ Saves the image as an EXR file to [param path]. If [param grayscale] is [code]tr
 [b]Note:[/b] The TinyEXR module is disabled in non-editor builds, which means [method save_exr] will return [constant ERR_UNAVAILABLE] when it is called from an exported project.
 */
 //go:nosplit
-func (self class) SaveExr(path gd.String, grayscale bool) gd.Error { //gd:Image.save_exr
+func (self class) SaveExr(path String.Readable, grayscale bool) gd.Error { //gd:Image.save_exr
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, grayscale)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_exr, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1062,9 +1064,9 @@ Saves the image as a WebP (Web Picture) file to the file at [param path]. By def
 [b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 //go:nosplit
-func (self class) SaveWebp(path gd.String, lossy bool, quality gd.Float) gd.Error { //gd:Image.save_webp
+func (self class) SaveWebp(path String.Readable, lossy bool, quality gd.Float) gd.Error { //gd:Image.save_webp
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, lossy)
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -1642,9 +1644,9 @@ Loads an image from the string contents of an SVG file ([b].svg[/b]).
 [b]Note:[/b] This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the [code]module_svg_enabled=no[/code] SCons option.
 */
 //go:nosplit
-func (self class) LoadSvgFromString(svg_str gd.String, scale gd.Float) gd.Error { //gd:Image.load_svg_from_string
+func (self class) LoadSvgFromString(svg_str String.Readable, scale gd.Float) gd.Error { //gd:Image.load_svg_from_string
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(svg_str))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(svg_str)))
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_svg_from_string, self.AsObject(), frame.Array(0), r_ret.Addr())

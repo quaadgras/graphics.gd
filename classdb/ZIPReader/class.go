@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This class implements a reader that can extract the content of individual files inside a zip archive.
@@ -56,7 +58,7 @@ type Any interface {
 Opens the zip archive at the given [param path] and reads its file index.
 */
 func (self Instance) Open(path string) error { //gd:ZIPReader.open
-	return error(gd.ToError(class(self).Open(gd.NewString(path))))
+	return error(gd.ToError(class(self).Open(String.New(path))))
 }
 
 /*
@@ -79,7 +81,7 @@ Loads the whole content of a file in the loaded zip archive into memory and retu
 Must be called after [method open].
 */
 func (self Instance) ReadFile(path string) []byte { //gd:ZIPReader.read_file
-	return []byte(class(self).ReadFile(gd.NewString(path), true).Bytes())
+	return []byte(class(self).ReadFile(String.New(path), true).Bytes())
 }
 
 /*
@@ -87,7 +89,7 @@ Returns [code]true[/code] if the file exists in the loaded zip archive.
 Must be called after [method open].
 */
 func (self Instance) FileExists(path string) bool { //gd:ZIPReader.file_exists
-	return bool(class(self).FileExists(gd.NewString(path), true))
+	return bool(class(self).FileExists(String.New(path), true))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -113,9 +115,9 @@ func New() Instance {
 Opens the zip archive at the given [param path] and reads its file index.
 */
 //go:nosplit
-func (self class) Open(path gd.String) gd.Error { //gd:ZIPReader.open
+func (self class) Open(path String.Readable) gd.Error { //gd:ZIPReader.open
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_open, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -155,9 +157,9 @@ Loads the whole content of a file in the loaded zip archive into memory and retu
 Must be called after [method open].
 */
 //go:nosplit
-func (self class) ReadFile(path gd.String, case_sensitive bool) gd.PackedByteArray { //gd:ZIPReader.read_file
+func (self class) ReadFile(path String.Readable, case_sensitive bool) gd.PackedByteArray { //gd:ZIPReader.read_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, case_sensitive)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_read_file, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -171,9 +173,9 @@ Returns [code]true[/code] if the file exists in the loaded zip archive.
 Must be called after [method open].
 */
 //go:nosplit
-func (self class) FileExists(path gd.String, case_sensitive bool) bool { //gd:ZIPReader.file_exists
+func (self class) FileExists(path String.Readable, case_sensitive bool) bool { //gd:ZIPReader.file_exists
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, case_sensitive)
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_file_exists, self.AsObject(), frame.Array(0), r_ret.Addr())

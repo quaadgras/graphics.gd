@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Transform2D"
@@ -39,6 +40,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The rendering server is the API backend for everything visible. The whole scene system mounts on it to display. The rendering server is completely opaque: the internals are entirely implementation-specific and cannot be accessed.
@@ -194,7 +196,7 @@ func TextureSetSizeOverride(texture RID.Texture, width int, height int) { //gd:R
 }
 func TextureSetPath(texture RID.Texture, path string) { //gd:RenderingServer.texture_set_path
 	once.Do(singleton)
-	class(self).TextureSetPath(gd.RID(texture), gd.NewString(path))
+	class(self).TextureSetPath(gd.RID(texture), String.New(path))
 }
 func TextureGetPath(texture RID.Texture) string { //gd:RenderingServer.texture_get_path
 	once.Do(singleton)
@@ -253,7 +255,7 @@ Sets the shader's source code (which triggers recompilation after being changed)
 */
 func ShaderSetCode(shader RID.Shader, code string) { //gd:RenderingServer.shader_set_code
 	once.Do(singleton)
-	class(self).ShaderSetCode(gd.RID(shader), gd.NewString(code))
+	class(self).ShaderSetCode(gd.RID(shader), String.New(code))
 }
 
 /*
@@ -261,7 +263,7 @@ Sets the path hint for the specified shader. This should generally match the [Sh
 */
 func ShaderSetPathHint(shader RID.Shader, path string) { //gd:RenderingServer.shader_set_path_hint
 	once.Do(singleton)
-	class(self).ShaderSetPathHint(gd.RID(shader), gd.NewString(path))
+	class(self).ShaderSetPathHint(gd.RID(shader), String.New(path))
 }
 
 /*
@@ -3973,7 +3975,7 @@ Returns [code]true[/code] if the OS supports a certain [param feature]. Features
 */
 func HasOsFeature(feature string) bool { //gd:RenderingServer.has_os_feature
 	once.Do(singleton)
-	return bool(class(self).HasOsFeature(gd.NewString(feature)))
+	return bool(class(self).HasOsFeature(String.New(feature)))
 }
 
 /*
@@ -4296,22 +4298,22 @@ func (self class) TextureSetSizeOverride(texture gd.RID, width gd.Int, height gd
 }
 
 //go:nosplit
-func (self class) TextureSetPath(texture gd.RID, path gd.String) { //gd:RenderingServer.texture_set_path
+func (self class) TextureSetPath(texture gd.RID, path String.Readable) { //gd:RenderingServer.texture_set_path
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_set_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) TextureGetPath(texture gd.RID) gd.String { //gd:RenderingServer.texture_get_path
+func (self class) TextureGetPath(texture gd.RID) String.Readable { //gd:RenderingServer.texture_get_path
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4405,10 +4407,10 @@ func (self class) ShaderCreate() gd.RID { //gd:RenderingServer.shader_create
 Sets the shader's source code (which triggers recompilation after being changed).
 */
 //go:nosplit
-func (self class) ShaderSetCode(shader gd.RID, code gd.String) { //gd:RenderingServer.shader_set_code
+func (self class) ShaderSetCode(shader gd.RID, code String.Readable) { //gd:RenderingServer.shader_set_code
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
-	callframe.Arg(frame, pointers.Get(code))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(code)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_set_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -4418,10 +4420,10 @@ func (self class) ShaderSetCode(shader gd.RID, code gd.String) { //gd:RenderingS
 Sets the path hint for the specified shader. This should generally match the [Shader] resource's [member Resource.resource_path].
 */
 //go:nosplit
-func (self class) ShaderSetPathHint(shader gd.RID, path gd.String) { //gd:RenderingServer.shader_set_path_hint
+func (self class) ShaderSetPathHint(shader gd.RID, path String.Readable) { //gd:RenderingServer.shader_set_path_hint
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_set_path_hint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -4431,12 +4433,12 @@ func (self class) ShaderSetPathHint(shader gd.RID, path gd.String) { //gd:Render
 Returns a shader's source code as a string.
 */
 //go:nosplit
-func (self class) ShaderGetCode(shader gd.RID) gd.String { //gd:RenderingServer.shader_get_code
+func (self class) ShaderGetCode(shader gd.RID) String.Readable { //gd:RenderingServer.shader_get_code
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_get_code, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -10600,11 +10602,11 @@ Returns the name of the video adapter (e.g. "GeForce GTX 1080/PCIe/SSE2").
 [b]Note:[/b] On the web platform, some browsers such as Firefox may report a different, fixed GPU name such as "GeForce GTX 980" (regardless of the user's actual GPU model). This is done to make fingerprinting more difficult.
 */
 //go:nosplit
-func (self class) GetVideoAdapterName() gd.String { //gd:RenderingServer.get_video_adapter_name
+func (self class) GetVideoAdapterName() String.Readable { //gd:RenderingServer.get_video_adapter_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -10614,11 +10616,11 @@ Returns the vendor of the video adapter (e.g. "NVIDIA Corporation").
 [b]Note:[/b] When running a headless or server binary, this function returns an empty string.
 */
 //go:nosplit
-func (self class) GetVideoAdapterVendor() gd.String { //gd:RenderingServer.get_video_adapter_vendor
+func (self class) GetVideoAdapterVendor() String.Readable { //gd:RenderingServer.get_video_adapter_vendor
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_vendor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -10642,11 +10644,11 @@ Returns the version of the graphics video adapter [i]currently in use[/i] (e.g. 
 [b]Note:[/b] When running a headless or server binary, this function returns an empty string.
 */
 //go:nosplit
-func (self class) GetVideoAdapterApiVersion() gd.String { //gd:RenderingServer.get_video_adapter_api_version
+func (self class) GetVideoAdapterApiVersion() String.Readable { //gd:RenderingServer.get_video_adapter_api_version
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_api_version, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -10762,9 +10764,9 @@ func (self class) SetDefaultClearColor(color gd.Color) { //gd:RenderingServer.se
 Returns [code]true[/code] if the OS supports a certain [param feature]. Features might be [code]s3tc[/code], [code]etc[/code], and [code]etc2[/code].
 */
 //go:nosplit
-func (self class) HasOsFeature(feature gd.String) bool { //gd:RenderingServer.has_os_feature
+func (self class) HasOsFeature(feature String.Readable) bool { //gd:RenderingServer.has_os_feature
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(feature))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(feature)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_has_os_feature, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

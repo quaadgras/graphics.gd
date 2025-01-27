@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/StreamPeer"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A stream peer that handles TCP connections. This object can be used to connect to TCP servers, or also is returned by a TCP server.
@@ -47,14 +49,14 @@ Opens the TCP socket, and binds it to the specified local address.
 This method is generally not needed, and only used to force the subsequent call to [method connect_to_host] to use the specified [param host] and [param port] as source address. This can be desired in some NAT punchthrough techniques, or when forcing the source network interface.
 */
 func (self Instance) Bind(port int) error { //gd:StreamPeerTCP.bind
-	return error(gd.ToError(class(self).Bind(gd.Int(port), gd.NewString("*"))))
+	return error(gd.ToError(class(self).Bind(gd.Int(port), String.New("*"))))
 }
 
 /*
 Connects to the specified [code]host:port[/code] pair. A hostname will be resolved if valid. Returns [constant OK] on success.
 */
 func (self Instance) ConnectToHost(host string, port int) error { //gd:StreamPeerTCP.connect_to_host
-	return error(gd.ToError(class(self).ConnectToHost(gd.NewString(host), gd.Int(port))))
+	return error(gd.ToError(class(self).ConnectToHost(String.New(host), gd.Int(port))))
 }
 
 /*
@@ -131,10 +133,10 @@ Opens the TCP socket, and binds it to the specified local address.
 This method is generally not needed, and only used to force the subsequent call to [method connect_to_host] to use the specified [param host] and [param port] as source address. This can be desired in some NAT punchthrough techniques, or when forcing the source network interface.
 */
 //go:nosplit
-func (self class) Bind(port gd.Int, host gd.String) gd.Error { //gd:StreamPeerTCP.bind
+func (self class) Bind(port gd.Int, host String.Readable) gd.Error { //gd:StreamPeerTCP.bind
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
-	callframe.Arg(frame, pointers.Get(host))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_bind, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -146,9 +148,9 @@ func (self class) Bind(port gd.Int, host gd.String) gd.Error { //gd:StreamPeerTC
 Connects to the specified [code]host:port[/code] pair. A hostname will be resolved if valid. Returns [constant OK] on success.
 */
 //go:nosplit
-func (self class) ConnectToHost(host gd.String, port gd.Int) gd.Error { //gd:StreamPeerTCP.connect_to_host
+func (self class) ConnectToHost(host String.Readable, port gd.Int) gd.Error { //gd:StreamPeerTCP.connect_to_host
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(host))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, port)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -187,11 +189,11 @@ func (self class) GetStatus() gdclass.StreamPeerTCPStatus { //gd:StreamPeerTCP.g
 Returns the IP of this peer.
 */
 //go:nosplit
-func (self class) GetConnectedHost() gd.String { //gd:StreamPeerTCP.get_connected_host
+func (self class) GetConnectedHost() String.Readable { //gd:StreamPeerTCP.get_connected_host
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_get_connected_host, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

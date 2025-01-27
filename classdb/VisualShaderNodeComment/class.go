@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/VisualShaderNodeFrame"
 import "graphics.gd/classdb/VisualShaderNodeResizableBase"
 import "graphics.gd/classdb/VisualShaderNode"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This node was replaced by [VisualShaderNodeFrame] and only exists to preserve compatibility. In the [VisualShader] editor it behaves exactly like [VisualShaderNodeFrame].
@@ -68,24 +70,24 @@ func (self Instance) Description() string {
 }
 
 func (self Instance) SetDescription(value string) {
-	class(self).SetDescription(gd.NewString(value))
+	class(self).SetDescription(String.New(value))
 }
 
 //go:nosplit
-func (self class) SetDescription(description gd.String) { //gd:VisualShaderNodeComment.set_description
+func (self class) SetDescription(description String.Readable) { //gd:VisualShaderNodeComment.set_description
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(description))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(description)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeComment.Bind_set_description, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetDescription() gd.String { //gd:VisualShaderNodeComment.get_description
+func (self class) GetDescription() String.Readable { //gd:VisualShaderNodeComment.get_description
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeComment.Bind_get_description, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

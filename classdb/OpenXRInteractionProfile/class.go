@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This object stores suggested bindings for an interaction profile. Interaction profiles define the metadata for a tracked XR device such as an XR controller.
@@ -80,7 +82,7 @@ func (self Instance) InteractionProfilePath() string {
 }
 
 func (self Instance) SetInteractionProfilePath(value string) {
-	class(self).SetInteractionProfilePath(gd.NewString(value))
+	class(self).SetInteractionProfilePath(String.New(value))
 }
 
 func (self Instance) Bindings() []any {
@@ -92,20 +94,20 @@ func (self Instance) SetBindings(value []any) {
 }
 
 //go:nosplit
-func (self class) SetInteractionProfilePath(interaction_profile_path gd.String) { //gd:OpenXRInteractionProfile.set_interaction_profile_path
+func (self class) SetInteractionProfilePath(interaction_profile_path String.Readable) { //gd:OpenXRInteractionProfile.set_interaction_profile_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(interaction_profile_path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(interaction_profile_path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfile.Bind_set_interaction_profile_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetInteractionProfilePath() gd.String { //gd:OpenXRInteractionProfile.get_interaction_profile_path
+func (self class) GetInteractionProfilePath() String.Readable { //gd:OpenXRInteractionProfile.get_interaction_profile_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_interaction_profile_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/Resource"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 By inheriting this class you can create a custom [VisualShader] script addon which will be automatically added to the Visual Shader Editor. The [VisualShaderNode]'s behavior is defined by overriding the provided virtual methods.
@@ -167,7 +169,7 @@ func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.Extension
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -184,7 +186,7 @@ func (Instance) _get_description(impl func(ptr unsafe.Pointer) string) (cb gd.Ex
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -201,7 +203,7 @@ func (Instance) _get_category(impl func(ptr unsafe.Pointer) string) (cb gd.Exten
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -258,7 +260,7 @@ func (Instance) _get_input_port_name(impl func(ptr unsafe.Pointer, port int) str
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(port))
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -336,7 +338,7 @@ func (Instance) _get_output_port_name(impl func(ptr unsafe.Pointer, port int) st
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(port))
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -367,7 +369,7 @@ func (Instance) _get_property_name(impl func(ptr unsafe.Pointer, index int) stri
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -418,9 +420,9 @@ Defining this method is [b]required[/b].
 */
 func (Instance) _get_code(impl func(ptr unsafe.Pointer, input_vars []string, output_vars []string, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var input_vars = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		var input_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalArray(input_vars))
-		var output_vars = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		var output_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalArray(output_vars))
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 2)
 
@@ -428,7 +430,7 @@ func (Instance) _get_code(impl func(ptr unsafe.Pointer, input_vars []string, out
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gd.ArrayAs[[]string](gd.InternalArray(input_vars)), gd.ArrayAs[[]string](gd.InternalArray(output_vars)), mode, atype)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -451,7 +453,7 @@ func (Instance) _get_func_code(impl func(ptr unsafe.Pointer, mode gdclass.Shader
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode, atype)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -472,7 +474,7 @@ func (Instance) _get_global_code(impl func(ptr unsafe.Pointer, mode gdclass.Shad
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode)
-		ptr, ok := pointers.End(gd.NewString(ret))
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -539,11 +541,11 @@ func New() Instance {
 Override this method to define the name of the associated custom node in the Visual Shader Editor's members dialog and graph.
 Defining this method is [b]optional[/b], but recommended. If not overridden, the node will be named as "Unnamed".
 */
-func (class) _get_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_name(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -556,11 +558,11 @@ func (class) _get_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.Extension
 Override this method to define the description of the associated custom node in the Visual Shader Editor's members dialog.
 Defining this method is [b]optional[/b].
 */
-func (class) _get_description(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_description(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -573,11 +575,11 @@ func (class) _get_description(impl func(ptr unsafe.Pointer) gd.String) (cb gd.Ex
 Override this method to define the path to the associated custom node in the Visual Shader Editor's members dialog. The path may look like [code]"MyGame/MyFunctions/Noise"[/code].
 Defining this method is [b]optional[/b]. If not overridden, the node will be filed under the "Addons" category.
 */
-func (class) _get_category(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_category(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -628,13 +630,13 @@ func (class) _get_input_port_type(impl func(ptr unsafe.Pointer, port gd.Int) gdc
 Override this method to define the names of input ports of the associated custom node. The names are used both for the input slots in the editor and as identifiers in the shader code, and are passed in the [code]input_vars[/code] array in [method _get_code].
 Defining this method is [b]optional[/b], but recommended. If not overridden, input ports are named as [code]"in" + str(port)[/code].
 */
-func (class) _get_input_port_name(impl func(ptr unsafe.Pointer, port gd.Int) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_input_port_name(impl func(ptr unsafe.Pointer, port gd.Int) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var port = gd.UnsafeGet[gd.Int](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, port)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -706,13 +708,13 @@ func (class) _get_output_port_type(impl func(ptr unsafe.Pointer, port gd.Int) gd
 Override this method to define the names of output ports of the associated custom node. The names are used both for the output slots in the editor and as identifiers in the shader code, and are passed in the [code]output_vars[/code] array in [method _get_code].
 Defining this method is [b]optional[/b], but recommended. If not overridden, output ports are named as [code]"out" + str(port)[/code].
 */
-func (class) _get_output_port_name(impl func(ptr unsafe.Pointer, port gd.Int) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_output_port_name(impl func(ptr unsafe.Pointer, port gd.Int) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var port = gd.UnsafeGet[gd.Int](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, port)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -737,13 +739,13 @@ func (class) _get_property_count(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.Ex
 Override this method to define the names of the property of the associated custom node.
 Defining this method is [b]optional[/b].
 */
-func (class) _get_property_name(impl func(ptr unsafe.Pointer, index gd.Int) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_property_name(impl func(ptr unsafe.Pointer, index gd.Int) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -792,11 +794,11 @@ The output ports can be assigned values in the shader code. For example, [code]r
 You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]) and/or [param type] (see [enum VisualShader.Type]).
 Defining this method is [b]required[/b].
 */
-func (class) _get_code(impl func(ptr unsafe.Pointer, input_vars Array.Contains[gd.String], output_vars Array.Contains[gd.String], mode gdclass.ShaderMode, atype gdclass.VisualShaderType) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_code(impl func(ptr unsafe.Pointer, input_vars Array.Contains[String.Readable], output_vars Array.Contains[String.Readable], mode gdclass.ShaderMode, atype gdclass.VisualShaderType) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var input_vars = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		var input_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalArray(input_vars))
-		var output_vars = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		var output_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalArray(output_vars))
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 2)
 
@@ -804,7 +806,7 @@ func (class) _get_code(impl func(ptr unsafe.Pointer, input_vars Array.Contains[g
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, input_vars, output_vars, mode, atype)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -819,7 +821,7 @@ If there are multiple custom nodes of different types which use this feature the
 You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]) and/or [param type] (see [enum VisualShader.Type]).
 Defining this method is [b]optional[/b].
 */
-func (class) _get_func_code(impl func(ptr unsafe.Pointer, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_func_code(impl func(ptr unsafe.Pointer, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 0)
 
@@ -827,7 +829,7 @@ func (class) _get_func_code(impl func(ptr unsafe.Pointer, mode gdclass.ShaderMod
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode, atype)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -842,13 +844,13 @@ Be careful with this functionality as it can cause name conflicts with other cus
 You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]).
 Defining this method is [b]optional[/b].
 */
-func (class) _get_global_code(impl func(ptr unsafe.Pointer, mode gdclass.ShaderMode) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_global_code(impl func(ptr unsafe.Pointer, mode gdclass.ShaderMode) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return

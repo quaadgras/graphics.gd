@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Float"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 WebXR is an open standard that allows creating VR and AR applications that run in the web browser.
@@ -142,7 +144,7 @@ Possible values come from [url=https://developer.mozilla.org/en-US/docs/Web/API/
 This method returns nothing, instead it emits the [signal session_supported] signal with the result.
 */
 func (self Instance) IsSessionSupported(session_mode string) { //gd:WebXRInterface.is_session_supported
-	class(self).IsSessionSupported(gd.NewString(session_mode))
+	class(self).IsSessionSupported(String.New(session_mode))
 }
 
 /*
@@ -220,7 +222,7 @@ func (self Instance) SessionMode() string {
 }
 
 func (self Instance) SetSessionMode(value string) {
-	class(self).SetSessionMode(gd.NewString(value))
+	class(self).SetSessionMode(String.New(value))
 }
 
 func (self Instance) RequiredFeatures() string {
@@ -228,7 +230,7 @@ func (self Instance) RequiredFeatures() string {
 }
 
 func (self Instance) SetRequiredFeatures(value string) {
-	class(self).SetRequiredFeatures(gd.NewString(value))
+	class(self).SetRequiredFeatures(String.New(value))
 }
 
 func (self Instance) OptionalFeatures() string {
@@ -236,7 +238,7 @@ func (self Instance) OptionalFeatures() string {
 }
 
 func (self Instance) SetOptionalFeatures(value string) {
-	class(self).SetOptionalFeatures(gd.NewString(value))
+	class(self).SetOptionalFeatures(String.New(value))
 }
 
 func (self Instance) RequestedReferenceSpaceTypes() string {
@@ -244,7 +246,7 @@ func (self Instance) RequestedReferenceSpaceTypes() string {
 }
 
 func (self Instance) SetRequestedReferenceSpaceTypes(value string) {
-	class(self).SetRequestedReferenceSpaceTypes(gd.NewString(value))
+	class(self).SetRequestedReferenceSpaceTypes(String.New(value))
 }
 
 func (self Instance) ReferenceSpaceType() string {
@@ -265,106 +267,106 @@ Possible values come from [url=https://developer.mozilla.org/en-US/docs/Web/API/
 This method returns nothing, instead it emits the [signal session_supported] signal with the result.
 */
 //go:nosplit
-func (self class) IsSessionSupported(session_mode gd.String) { //gd:WebXRInterface.is_session_supported
+func (self class) IsSessionSupported(session_mode String.Readable) { //gd:WebXRInterface.is_session_supported
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(session_mode))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(session_mode)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_is_session_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) SetSessionMode(session_mode gd.String) { //gd:WebXRInterface.set_session_mode
+func (self class) SetSessionMode(session_mode String.Readable) { //gd:WebXRInterface.set_session_mode
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(session_mode))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(session_mode)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_set_session_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSessionMode() gd.String { //gd:WebXRInterface.get_session_mode
+func (self class) GetSessionMode() String.Readable { //gd:WebXRInterface.get_session_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_session_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetRequiredFeatures(required_features gd.String) { //gd:WebXRInterface.set_required_features
+func (self class) SetRequiredFeatures(required_features String.Readable) { //gd:WebXRInterface.set_required_features
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(required_features))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(required_features)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_set_required_features, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetRequiredFeatures() gd.String { //gd:WebXRInterface.get_required_features
+func (self class) GetRequiredFeatures() String.Readable { //gd:WebXRInterface.get_required_features
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_required_features, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetOptionalFeatures(optional_features gd.String) { //gd:WebXRInterface.set_optional_features
+func (self class) SetOptionalFeatures(optional_features String.Readable) { //gd:WebXRInterface.set_optional_features
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(optional_features))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(optional_features)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_set_optional_features, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetOptionalFeatures() gd.String { //gd:WebXRInterface.get_optional_features
+func (self class) GetOptionalFeatures() String.Readable { //gd:WebXRInterface.get_optional_features
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_optional_features, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) GetReferenceSpaceType() gd.String { //gd:WebXRInterface.get_reference_space_type
+func (self class) GetReferenceSpaceType() String.Readable { //gd:WebXRInterface.get_reference_space_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_reference_space_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) GetEnabledFeatures() gd.String { //gd:WebXRInterface.get_enabled_features
+func (self class) GetEnabledFeatures() String.Readable { //gd:WebXRInterface.get_enabled_features
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_enabled_features, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetRequestedReferenceSpaceTypes(requested_reference_space_types gd.String) { //gd:WebXRInterface.set_requested_reference_space_types
+func (self class) SetRequestedReferenceSpaceTypes(requested_reference_space_types String.Readable) { //gd:WebXRInterface.set_requested_reference_space_types
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(requested_reference_space_types))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(requested_reference_space_types)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_set_requested_reference_space_types, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetRequestedReferenceSpaceTypes() gd.String { //gd:WebXRInterface.get_requested_reference_space_types
+func (self class) GetRequestedReferenceSpaceTypes() String.Readable { //gd:WebXRInterface.get_requested_reference_space_types
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_requested_reference_space_types, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -421,11 +423,11 @@ func (self class) GetInputSourceTargetRayMode(input_source_id gd.Int) gdclass.We
 }
 
 //go:nosplit
-func (self class) GetVisibilityState() gd.String { //gd:WebXRInterface.get_visibility_state
+func (self class) GetVisibilityState() String.Readable { //gd:WebXRInterface.get_visibility_state
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_visibility_state, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

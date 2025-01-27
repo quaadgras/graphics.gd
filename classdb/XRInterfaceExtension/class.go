@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Vector2"
@@ -33,6 +34,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 External XR interface plugins should inherit from this class.
@@ -475,8 +477,8 @@ Triggers a haptic pulse to be emitted on the specified tracker.
 */
 func (Instance) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var action_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(action_name)
+		var action_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(action_name))
 		var tracker_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(tracker_name)
 		var frequency = gd.UnsafeGet[gd.Float](p_args, 2)
@@ -914,10 +916,10 @@ func (class) _get_tracking_status(impl func(ptr unsafe.Pointer) gdclass.XRInterf
 /*
 Triggers a haptic pulse to be emitted on the specified tracker.
 */
-func (class) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name gd.String, tracker_name gd.StringName, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name String.Readable, tracker_name gd.StringName, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var action_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(action_name)
+		var action_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(action_name))
 		var tracker_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(tracker_name)
 		var frequency = gd.UnsafeGet[gd.Float](p_args, 2)

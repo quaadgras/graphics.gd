@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [EditorInspectorPlugin] allows adding custom property editors to [EditorInspector].
@@ -110,8 +112,8 @@ func (Instance) _parse_category(impl func(ptr unsafe.Pointer, obj Object.Instanc
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
-		var category = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(category)
+		var category = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(category))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, obj, category.String())
 	}
@@ -124,8 +126,8 @@ func (Instance) _parse_group(impl func(ptr unsafe.Pointer, obj Object.Instance, 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
-		var group = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(group)
+		var group = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(group))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, obj, group.String())
 	}
@@ -140,12 +142,12 @@ func (Instance) _parse_property(impl func(ptr unsafe.Pointer, obj Object.Instanc
 		defer pointers.End(obj[0])
 		var atype = gd.UnsafeGet[gd.VariantType](p_args, 1)
 
-		var name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(name)
+		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalString(name))
 		var hint_type = gd.UnsafeGet[PropertyHint](p_args, 3)
 
-		var hint_string = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))
-		defer pointers.End(hint_string)
+		var hint_string = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
+		defer pointers.End(gd.InternalString(hint_string))
 		var usage_flags = gd.UnsafeGet[PropertyUsageFlags](p_args, 5)
 
 		var wide = gd.UnsafeGet[bool](p_args, 6)
@@ -181,14 +183,14 @@ There can be multiple property editors for a property. If [param add_to_end] is 
 [param label] can be used to choose a custom label for the property editor in the inspector. If left empty, the label is computed from the name of the property instead.
 */
 func (self Instance) AddPropertyEditor(property string, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor
-	class(self).AddPropertyEditor(gd.NewString(property), editor, false, gd.NewString(""))
+	class(self).AddPropertyEditor(String.New(property), editor, false, String.New(""))
 }
 
 /*
 Adds an editor that allows modifying multiple properties. The [param editor] control must extend [EditorProperty].
 */
 func (self Instance) AddPropertyEditorForMultipleProperties(label string, properties []string, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
-	class(self).AddPropertyEditorForMultipleProperties(gd.NewString(label), gd.NewPackedStringSlice(properties), editor)
+	class(self).AddPropertyEditorForMultipleProperties(String.New(label), gd.NewPackedStringSlice(properties), editor)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -238,12 +240,12 @@ func (class) _parse_begin(impl func(ptr unsafe.Pointer, obj [1]gd.Object)) (cb g
 /*
 Called to allow adding controls at the beginning of a category in the property list for [param object].
 */
-func (class) _parse_category(impl func(ptr unsafe.Pointer, obj [1]gd.Object, category gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_category(impl func(ptr unsafe.Pointer, obj [1]gd.Object, category String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
-		var category = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(category)
+		var category = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(category))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, obj, category)
 	}
@@ -252,12 +254,12 @@ func (class) _parse_category(impl func(ptr unsafe.Pointer, obj [1]gd.Object, cat
 /*
 Called to allow adding controls at the beginning of a group or a sub-group in the property list for [param object].
 */
-func (class) _parse_group(impl func(ptr unsafe.Pointer, obj [1]gd.Object, group gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_group(impl func(ptr unsafe.Pointer, obj [1]gd.Object, group String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
-		var group = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(group)
+		var group = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(group))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, obj, group)
 	}
@@ -266,18 +268,18 @@ func (class) _parse_group(impl func(ptr unsafe.Pointer, obj [1]gd.Object, group 
 /*
 Called to allow adding property-specific editors to the property list for [param object]. The added editor control must extend [EditorProperty]. Returning [code]true[/code] removes the built-in editor for this property, otherwise allows to insert a custom editor before the built-in one.
 */
-func (class) _parse_property(impl func(ptr unsafe.Pointer, obj [1]gd.Object, atype gd.VariantType, name gd.String, hint_type PropertyHint, hint_string gd.String, usage_flags PropertyUsageFlags, wide bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_property(impl func(ptr unsafe.Pointer, obj [1]gd.Object, atype gd.VariantType, name String.Readable, hint_type PropertyHint, hint_string String.Readable, usage_flags PropertyUsageFlags, wide bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var atype = gd.UnsafeGet[gd.VariantType](p_args, 1)
 
-		var name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(name)
+		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalString(name))
 		var hint_type = gd.UnsafeGet[PropertyHint](p_args, 3)
 
-		var hint_string = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))
-		defer pointers.End(hint_string)
+		var hint_string = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
+		defer pointers.End(gd.InternalString(hint_string))
 		var usage_flags = gd.UnsafeGet[PropertyUsageFlags](p_args, 5)
 
 		var wide = gd.UnsafeGet[bool](p_args, 6)
@@ -318,12 +320,12 @@ There can be multiple property editors for a property. If [param add_to_end] is 
 [param label] can be used to choose a custom label for the property editor in the inspector. If left empty, the label is computed from the name of the property instead.
 */
 //go:nosplit
-func (self class) AddPropertyEditor(property gd.String, editor [1]gdclass.Control, add_to_end bool, label gd.String) { //gd:EditorInspectorPlugin.add_property_editor
+func (self class) AddPropertyEditor(property String.Readable, editor [1]gdclass.Control, add_to_end bool, label String.Readable) { //gd:EditorInspectorPlugin.add_property_editor
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(property)))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()[0]))
 	callframe.Arg(frame, add_to_end)
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspectorPlugin.Bind_add_property_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -333,9 +335,9 @@ func (self class) AddPropertyEditor(property gd.String, editor [1]gdclass.Contro
 Adds an editor that allows modifying multiple properties. The [param editor] control must extend [EditorProperty].
 */
 //go:nosplit
-func (self class) AddPropertyEditorForMultipleProperties(label gd.String, properties gd.PackedStringArray, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
+func (self class) AddPropertyEditorForMultipleProperties(label String.Readable, properties gd.PackedStringArray, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(label))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, pointers.Get(properties))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()[0]))
 	var r_ret = callframe.Nil

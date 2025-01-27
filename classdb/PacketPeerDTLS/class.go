@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/PacketPeer"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This class represents a DTLS peer connection. It can be used to connect to a DTLS server, and is returned by [method DTLSServer.take_connection].
@@ -54,7 +56,7 @@ func (self Instance) Poll() { //gd:PacketPeerDTLS.poll
 Connects a [param packet_peer] beginning the DTLS handshake using the underlying [PacketPeerUDP] which must be connected (see [method PacketPeerUDP.connect_to_host]). You can optionally specify the [param client_options] to be used while verifying the TLS connections. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname string) error { //gd:PacketPeerDTLS.connect_to_peer
-	return error(gd.ToError(class(self).ConnectToPeer(packet_peer, gd.NewString(hostname), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(class(self).ConnectToPeer(packet_peer, String.New(hostname), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*
@@ -105,10 +107,10 @@ func (self class) Poll() { //gd:PacketPeerDTLS.poll
 Connects a [param packet_peer] beginning the DTLS handshake using the underlying [PacketPeerUDP] which must be connected (see [method PacketPeerUDP.connect_to_host]). You can optionally specify the [param client_options] to be used while verifying the TLS connections. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 //go:nosplit
-func (self class) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname gd.String, client_options [1]gdclass.TLSOptions) gd.Error { //gd:PacketPeerDTLS.connect_to_peer
+func (self class) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname String.Readable, client_options [1]gdclass.TLSOptions) gd.Error { //gd:PacketPeerDTLS.connect_to_peer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(packet_peer[0])[0])
-	callframe.Arg(frame, pointers.Get(hostname))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(hostname)))
 	callframe.Arg(frame, pointers.Get(client_options[0])[0])
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_connect_to_peer, self.AsObject(), frame.Array(0), r_ret.Addr())

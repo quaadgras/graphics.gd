@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/MainLoop"
 import "graphics.gd/variant/Float"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 As one of the most important classes, the [SceneTree] manages the hierarchy of nodes in a scene, as well as scenes themselves. Nodes can be added, fetched and removed. The whole scene tree (and thus the current scene) can be paused. Scenes can be loaded, switched and reloaded.
@@ -140,7 +142,7 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 func (self Instance) SetGroupFlags(call_flags int, group string, property string, value any) { //gd:SceneTree.set_group_flags
-	class(self).SetGroupFlags(gd.Int(call_flags), gd.NewStringName(group), gd.NewString(property), gd.NewVariant(value))
+	class(self).SetGroupFlags(gd.Int(call_flags), gd.NewStringName(group), String.New(property), gd.NewVariant(value))
 }
 
 /*
@@ -157,7 +159,7 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 func (self Instance) SetGroup(group string, property string, value any) { //gd:SceneTree.set_group
-	class(self).SetGroup(gd.NewStringName(group), gd.NewString(property), gd.NewVariant(value))
+	class(self).SetGroup(gd.NewStringName(group), String.New(property), gd.NewVariant(value))
 }
 
 /*
@@ -187,7 +189,7 @@ Returns [constant OK] on success, [constant ERR_CANT_OPEN] if the [param path] c
 [b]Note:[/b] See [method change_scene_to_packed] for details on the order of operations.
 */
 func (self Instance) ChangeSceneToFile(path string) error { //gd:SceneTree.change_scene_to_file
-	return error(gd.ToError(class(self).ChangeSceneToFile(gd.NewString(path))))
+	return error(gd.ToError(class(self).ChangeSceneToFile(String.New(path))))
 }
 
 /*
@@ -646,11 +648,11 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self class) SetGroupFlags(call_flags gd.Int, group gd.StringName, property gd.String, value gd.Variant) { //gd:SceneTree.set_group_flags
+func (self class) SetGroupFlags(call_flags gd.Int, group gd.StringName, property String.Readable, value gd.Variant) { //gd:SceneTree.set_group_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, call_flags)
 	callframe.Arg(frame, pointers.Get(group))
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(property)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_set_group_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -677,10 +679,10 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self class) SetGroup(group gd.StringName, property gd.String, value gd.Variant) { //gd:SceneTree.set_group
+func (self class) SetGroup(group gd.StringName, property String.Readable, value gd.Variant) { //gd:SceneTree.set_group
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(group))
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(property)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_set_group, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -754,9 +756,9 @@ Returns [constant OK] on success, [constant ERR_CANT_OPEN] if the [param path] c
 [b]Note:[/b] See [method change_scene_to_packed] for details on the order of operations.
 */
 //go:nosplit
-func (self class) ChangeSceneToFile(path gd.String) gd.Error { //gd:SceneTree.change_scene_to_file
+func (self class) ChangeSceneToFile(path String.Readable) gd.Error { //gd:SceneTree.change_scene_to_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_change_scene_to_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

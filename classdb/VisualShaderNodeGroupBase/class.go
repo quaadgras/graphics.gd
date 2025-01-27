@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/VisualShaderNodeResizableBase"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/Resource"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Currently, has no direct usage, use the derived classes instead.
@@ -47,7 +49,7 @@ type Any interface {
 Defines all input ports using a [String] formatted as a colon-separated list: [code]id,type,name;[/code] (see [method add_input_port]).
 */
 func (self Instance) SetInputs(inputs string) { //gd:VisualShaderNodeGroupBase.set_inputs
-	class(self).SetInputs(gd.NewString(inputs))
+	class(self).SetInputs(String.New(inputs))
 }
 
 /*
@@ -61,7 +63,7 @@ func (self Instance) GetInputs() string { //gd:VisualShaderNodeGroupBase.get_inp
 Defines all output ports using a [String] formatted as a colon-separated list: [code]id,type,name;[/code] (see [method add_output_port]).
 */
 func (self Instance) SetOutputs(outputs string) { //gd:VisualShaderNodeGroupBase.set_outputs
-	class(self).SetOutputs(gd.NewString(outputs))
+	class(self).SetOutputs(String.New(outputs))
 }
 
 /*
@@ -75,14 +77,14 @@ func (self Instance) GetOutputs() string { //gd:VisualShaderNodeGroupBase.get_ou
 Returns [code]true[/code] if the specified port name does not override an existed port name and is valid within the shader.
 */
 func (self Instance) IsValidPortName(name string) bool { //gd:VisualShaderNodeGroupBase.is_valid_port_name
-	return bool(class(self).IsValidPortName(gd.NewString(name)))
+	return bool(class(self).IsValidPortName(String.New(name)))
 }
 
 /*
 Adds an input port with the specified [param type] (see [enum VisualShaderNode.PortType]) and [param name].
 */
 func (self Instance) AddInputPort(id int, atype int, name string) { //gd:VisualShaderNodeGroupBase.add_input_port
-	class(self).AddInputPort(gd.Int(id), gd.Int(atype), gd.NewString(name))
+	class(self).AddInputPort(gd.Int(id), gd.Int(atype), String.New(name))
 }
 
 /*
@@ -117,7 +119,7 @@ func (self Instance) ClearInputPorts() { //gd:VisualShaderNodeGroupBase.clear_in
 Adds an output port with the specified [param type] (see [enum VisualShaderNode.PortType]) and [param name].
 */
 func (self Instance) AddOutputPort(id int, atype int, name string) { //gd:VisualShaderNodeGroupBase.add_output_port
-	class(self).AddOutputPort(gd.Int(id), gd.Int(atype), gd.NewString(name))
+	class(self).AddOutputPort(gd.Int(id), gd.Int(atype), String.New(name))
 }
 
 /*
@@ -152,7 +154,7 @@ func (self Instance) ClearOutputPorts() { //gd:VisualShaderNodeGroupBase.clear_o
 Renames the specified input port.
 */
 func (self Instance) SetInputPortName(id int, name string) { //gd:VisualShaderNodeGroupBase.set_input_port_name
-	class(self).SetInputPortName(gd.Int(id), gd.NewString(name))
+	class(self).SetInputPortName(gd.Int(id), String.New(name))
 }
 
 /*
@@ -166,7 +168,7 @@ func (self Instance) SetInputPortType(id int, atype int) { //gd:VisualShaderNode
 Renames the specified output port.
 */
 func (self Instance) SetOutputPortName(id int, name string) { //gd:VisualShaderNodeGroupBase.set_output_port_name
-	class(self).SetOutputPortName(gd.Int(id), gd.NewString(name))
+	class(self).SetOutputPortName(gd.Int(id), String.New(name))
 }
 
 /*
@@ -213,9 +215,9 @@ func New() Instance {
 Defines all input ports using a [String] formatted as a colon-separated list: [code]id,type,name;[/code] (see [method add_input_port]).
 */
 //go:nosplit
-func (self class) SetInputs(inputs gd.String) { //gd:VisualShaderNodeGroupBase.set_inputs
+func (self class) SetInputs(inputs String.Readable) { //gd:VisualShaderNodeGroupBase.set_inputs
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(inputs))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(inputs)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_set_inputs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -225,11 +227,11 @@ func (self class) SetInputs(inputs gd.String) { //gd:VisualShaderNodeGroupBase.s
 Returns a [String] description of the input ports as a colon-separated list using the format [code]id,type,name;[/code] (see [method add_input_port]).
 */
 //go:nosplit
-func (self class) GetInputs() gd.String { //gd:VisualShaderNodeGroupBase.get_inputs
+func (self class) GetInputs() String.Readable { //gd:VisualShaderNodeGroupBase.get_inputs
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_get_inputs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -238,9 +240,9 @@ func (self class) GetInputs() gd.String { //gd:VisualShaderNodeGroupBase.get_inp
 Defines all output ports using a [String] formatted as a colon-separated list: [code]id,type,name;[/code] (see [method add_output_port]).
 */
 //go:nosplit
-func (self class) SetOutputs(outputs gd.String) { //gd:VisualShaderNodeGroupBase.set_outputs
+func (self class) SetOutputs(outputs String.Readable) { //gd:VisualShaderNodeGroupBase.set_outputs
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(outputs))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(outputs)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_set_outputs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -250,11 +252,11 @@ func (self class) SetOutputs(outputs gd.String) { //gd:VisualShaderNodeGroupBase
 Returns a [String] description of the output ports as a colon-separated list using the format [code]id,type,name;[/code] (see [method add_output_port]).
 */
 //go:nosplit
-func (self class) GetOutputs() gd.String { //gd:VisualShaderNodeGroupBase.get_outputs
+func (self class) GetOutputs() String.Readable { //gd:VisualShaderNodeGroupBase.get_outputs
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_get_outputs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -263,9 +265,9 @@ func (self class) GetOutputs() gd.String { //gd:VisualShaderNodeGroupBase.get_ou
 Returns [code]true[/code] if the specified port name does not override an existed port name and is valid within the shader.
 */
 //go:nosplit
-func (self class) IsValidPortName(name gd.String) bool { //gd:VisualShaderNodeGroupBase.is_valid_port_name
+func (self class) IsValidPortName(name String.Readable) bool { //gd:VisualShaderNodeGroupBase.is_valid_port_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_is_valid_port_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -277,11 +279,11 @@ func (self class) IsValidPortName(name gd.String) bool { //gd:VisualShaderNodeGr
 Adds an input port with the specified [param type] (see [enum VisualShaderNode.PortType]) and [param name].
 */
 //go:nosplit
-func (self class) AddInputPort(id gd.Int, atype gd.Int, name gd.String) { //gd:VisualShaderNodeGroupBase.add_input_port
+func (self class) AddInputPort(id gd.Int, atype gd.Int, name String.Readable) { //gd:VisualShaderNodeGroupBase.add_input_port
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, atype)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_add_input_port, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -341,11 +343,11 @@ func (self class) ClearInputPorts() { //gd:VisualShaderNodeGroupBase.clear_input
 Adds an output port with the specified [param type] (see [enum VisualShaderNode.PortType]) and [param name].
 */
 //go:nosplit
-func (self class) AddOutputPort(id gd.Int, atype gd.Int, name gd.String) { //gd:VisualShaderNodeGroupBase.add_output_port
+func (self class) AddOutputPort(id gd.Int, atype gd.Int, name String.Readable) { //gd:VisualShaderNodeGroupBase.add_output_port
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, atype)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_add_output_port, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -405,10 +407,10 @@ func (self class) ClearOutputPorts() { //gd:VisualShaderNodeGroupBase.clear_outp
 Renames the specified input port.
 */
 //go:nosplit
-func (self class) SetInputPortName(id gd.Int, name gd.String) { //gd:VisualShaderNodeGroupBase.set_input_port_name
+func (self class) SetInputPortName(id gd.Int, name String.Readable) { //gd:VisualShaderNodeGroupBase.set_input_port_name
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_set_input_port_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -431,10 +433,10 @@ func (self class) SetInputPortType(id gd.Int, atype gd.Int) { //gd:VisualShaderN
 Renames the specified output port.
 */
 //go:nosplit
-func (self class) SetOutputPortName(id gd.Int, name gd.String) { //gd:VisualShaderNodeGroupBase.set_output_port_name
+func (self class) SetOutputPortName(id gd.Int, name String.Readable) { //gd:VisualShaderNodeGroupBase.set_output_port_name
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_set_output_port_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/PrimitiveMesh"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Generate an [PrimitiveMesh] from the text.
@@ -71,7 +73,7 @@ func (self Instance) Text() string {
 }
 
 func (self Instance) SetText(value string) {
-	class(self).SetText(gd.NewString(value))
+	class(self).SetText(String.New(value))
 }
 
 func (self Instance) Font() [1]gdclass.Font {
@@ -191,7 +193,7 @@ func (self Instance) Language() string {
 }
 
 func (self Instance) SetLanguage(value string) {
-	class(self).SetLanguage(gd.NewString(value))
+	class(self).SetLanguage(String.New(value))
 }
 
 func (self Instance) StructuredTextBidiOverride() gdclass.TextServerStructuredTextParser {
@@ -249,20 +251,20 @@ func (self class) GetVerticalAlignment() VerticalAlignment { //gd:TextMesh.get_v
 }
 
 //go:nosplit
-func (self class) SetText(text gd.String) { //gd:TextMesh.set_text
+func (self class) SetText(text String.Readable) { //gd:TextMesh.set_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetText() gd.String { //gd:TextMesh.get_text
+func (self class) GetText() String.Readable { //gd:TextMesh.get_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -477,20 +479,20 @@ func (self class) GetTextDirection() gdclass.TextServerDirection { //gd:TextMesh
 }
 
 //go:nosplit
-func (self class) SetLanguage(language gd.String) { //gd:TextMesh.set_language
+func (self class) SetLanguage(language String.Readable) { //gd:TextMesh.set_language
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetLanguage() gd.String { //gd:TextMesh.get_language
+func (self class) GetLanguage() String.Readable { //gd:TextMesh.get_language
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

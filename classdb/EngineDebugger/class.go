@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 [EngineDebugger] handles the communication between the editor and the running game. It is active in the running game. Messages can be sent/received through it. It also manages the profilers.
@@ -133,7 +135,7 @@ Sends a message with given [param message] and [param data] array.
 */
 func SendMessage(message string, data []any) { //gd:EngineDebugger.send_message
 	once.Do(singleton)
-	class(self).SendMessage(gd.NewString(message), gd.EngineArrayFromSlice(data))
+	class(self).SendMessage(String.New(message), gd.EngineArrayFromSlice(data))
 }
 
 /*
@@ -382,9 +384,9 @@ func (self class) LinePoll() { //gd:EngineDebugger.line_poll
 Sends a message with given [param message] and [param data] array.
 */
 //go:nosplit
-func (self class) SendMessage(message gd.String, data Array.Any) { //gd:EngineDebugger.send_message
+func (self class) SendMessage(message String.Readable, data Array.Any) { //gd:EngineDebugger.send_message
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(message))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(message)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EngineDebugger.Bind_send_message, self.AsObject(), frame.Array(0), r_ret.Addr())

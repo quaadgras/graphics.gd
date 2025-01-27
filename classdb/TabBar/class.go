@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -31,6 +32,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A control that provides a horizontal bar with tabs. Similar to [TabContainer] but is only in charge of drawing tabs, not interacting with children.
@@ -70,7 +72,7 @@ func (self Instance) SelectNextAvailable() bool { //gd:TabBar.select_next_availa
 Sets a [param title] for the tab at index [param tab_idx].
 */
 func (self Instance) SetTabTitle(tab_idx int, title string) { //gd:TabBar.set_tab_title
-	class(self).SetTabTitle(gd.Int(tab_idx), gd.NewString(title))
+	class(self).SetTabTitle(gd.Int(tab_idx), String.New(title))
 }
 
 /*
@@ -85,7 +87,7 @@ Sets a [param tooltip] for tab at index [param tab_idx].
 [b]Note:[/b] By default, if the [param tooltip] is empty and the tab text is truncated (not all characters fit into the tab), the title will be displayed as a tooltip. To hide the tooltip, assign [code]" "[/code] as the [param tooltip] text.
 */
 func (self Instance) SetTabTooltip(tab_idx int, tooltip string) { //gd:TabBar.set_tab_tooltip
-	class(self).SetTabTooltip(gd.Int(tab_idx), gd.NewString(tooltip))
+	class(self).SetTabTooltip(gd.Int(tab_idx), String.New(tooltip))
 }
 
 /*
@@ -113,7 +115,7 @@ func (self Instance) GetTabTextDirection(tab_idx int) gdclass.ControlTextDirecti
 Sets language code of tab title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 func (self Instance) SetTabLanguage(tab_idx int, language string) { //gd:TabBar.set_tab_language
-	class(self).SetTabLanguage(gd.Int(tab_idx), gd.NewString(language))
+	class(self).SetTabLanguage(gd.Int(tab_idx), String.New(language))
 }
 
 /*
@@ -218,7 +220,7 @@ func (self Instance) RemoveTab(tab_idx int) { //gd:TabBar.remove_tab
 Adds a new tab.
 */
 func (self Instance) AddTab() { //gd:TabBar.add_tab
-	class(self).AddTab(gd.NewString(""), [1][1]gdclass.Texture2D{}[0])
+	class(self).AddTab(String.New(""), [1][1]gdclass.Texture2D{}[0])
 }
 
 /*
@@ -465,10 +467,10 @@ func (self class) SelectNextAvailable() bool { //gd:TabBar.select_next_available
 Sets a [param title] for the tab at index [param tab_idx].
 */
 //go:nosplit
-func (self class) SetTabTitle(tab_idx gd.Int, title gd.String) { //gd:TabBar.set_tab_title
+func (self class) SetTabTitle(tab_idx gd.Int, title String.Readable) { //gd:TabBar.set_tab_title
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, pointers.Get(title))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -478,12 +480,12 @@ func (self class) SetTabTitle(tab_idx gd.Int, title gd.String) { //gd:TabBar.set
 Returns the title of the tab at index [param tab_idx].
 */
 //go:nosplit
-func (self class) GetTabTitle(tab_idx gd.Int) gd.String { //gd:TabBar.get_tab_title
+func (self class) GetTabTitle(tab_idx gd.Int) String.Readable { //gd:TabBar.get_tab_title
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -493,10 +495,10 @@ Sets a [param tooltip] for tab at index [param tab_idx].
 [b]Note:[/b] By default, if the [param tooltip] is empty and the tab text is truncated (not all characters fit into the tab), the title will be displayed as a tooltip. To hide the tooltip, assign [code]" "[/code] as the [param tooltip] text.
 */
 //go:nosplit
-func (self class) SetTabTooltip(tab_idx gd.Int, tooltip gd.String) { //gd:TabBar.set_tab_tooltip
+func (self class) SetTabTooltip(tab_idx gd.Int, tooltip String.Readable) { //gd:TabBar.set_tab_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, pointers.Get(tooltip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -506,12 +508,12 @@ func (self class) SetTabTooltip(tab_idx gd.Int, tooltip gd.String) { //gd:TabBar
 Returns the tooltip text of the tab at index [param tab_idx].
 */
 //go:nosplit
-func (self class) GetTabTooltip(tab_idx gd.Int) gd.String { //gd:TabBar.get_tab_tooltip
+func (self class) GetTabTooltip(tab_idx gd.Int) String.Readable { //gd:TabBar.get_tab_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -547,10 +549,10 @@ func (self class) GetTabTextDirection(tab_idx gd.Int) gdclass.ControlTextDirecti
 Sets language code of tab title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 //go:nosplit
-func (self class) SetTabLanguage(tab_idx gd.Int, language gd.String) { //gd:TabBar.set_tab_language
+func (self class) SetTabLanguage(tab_idx gd.Int, language String.Readable) { //gd:TabBar.set_tab_language
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -560,12 +562,12 @@ func (self class) SetTabLanguage(tab_idx gd.Int, language gd.String) { //gd:TabB
 Returns tab title language code.
 */
 //go:nosplit
-func (self class) GetTabLanguage(tab_idx gd.Int) gd.String { //gd:TabBar.get_tab_language
+func (self class) GetTabLanguage(tab_idx gd.Int) String.Readable { //gd:TabBar.get_tab_language
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -748,9 +750,9 @@ func (self class) RemoveTab(tab_idx gd.Int) { //gd:TabBar.remove_tab
 Adds a new tab.
 */
 //go:nosplit
-func (self class) AddTab(title gd.String, icon [1]gdclass.Texture2D) { //gd:TabBar.add_tab
+func (self class) AddTab(title String.Readable, icon [1]gdclass.Texture2D) { //gd:TabBar.add_tab
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(title))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_add_tab, self.AsObject(), frame.Array(0), r_ret.Addr())

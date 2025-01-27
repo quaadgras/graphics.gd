@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A singleton for saving resource types to the filesystem.
@@ -48,7 +50,7 @@ Returns [constant OK] on success.
 */
 func Save(resource [1]gdclass.Resource) error { //gd:ResourceSaver.save
 	once.Do(singleton)
-	return error(gd.ToError(class(self).Save(resource, gd.NewString(""), 0)))
+	return error(gd.ToError(class(self).Save(resource, String.New(""), 0)))
 }
 
 /*
@@ -93,10 +95,10 @@ Returns [constant OK] on success.
 [b]Note:[/b] When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
 */
 //go:nosplit
-func (self class) Save(resource [1]gdclass.Resource, path gd.String, flags gdclass.ResourceSaverSaverFlags) gd.Error { //gd:ResourceSaver.save
+func (self class) Save(resource [1]gdclass.Resource, path String.Readable, flags gdclass.ResourceSaverSaverFlags) gd.Error { //gd:ResourceSaver.save
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(resource[0])[0])
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_save, self.AsObject(), frame.Array(0), r_ret.Addr())

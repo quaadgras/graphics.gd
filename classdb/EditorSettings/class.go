@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Object that holds the project-independent editor settings. These settings are generally visible in the [b]Editor > Editor Settings[/b] menu.
@@ -66,28 +68,28 @@ type Any interface {
 Returns [code]true[/code] if the setting specified by [param name] exists, [code]false[/code] otherwise.
 */
 func (self Instance) HasSetting(name string) bool { //gd:EditorSettings.has_setting
-	return bool(class(self).HasSetting(gd.NewString(name)))
+	return bool(class(self).HasSetting(String.New(name)))
 }
 
 /*
 Sets the [param value] of the setting specified by [param name]. This is equivalent to using [method Object.set] on the EditorSettings instance.
 */
 func (self Instance) SetSetting(name string, value any) { //gd:EditorSettings.set_setting
-	class(self).SetSetting(gd.NewString(name), gd.NewVariant(value))
+	class(self).SetSetting(String.New(name), gd.NewVariant(value))
 }
 
 /*
 Returns the value of the setting specified by [param name]. This is equivalent to using [method Object.get] on the EditorSettings instance.
 */
 func (self Instance) GetSetting(name string) any { //gd:EditorSettings.get_setting
-	return any(class(self).GetSetting(gd.NewString(name)).Interface())
+	return any(class(self).GetSetting(String.New(name)).Interface())
 }
 
 /*
 Erases the setting whose name is specified by [param property].
 */
 func (self Instance) Erase(property string) { //gd:EditorSettings.erase
-	class(self).Erase(gd.NewString(property))
+	class(self).Erase(String.New(property))
 }
 
 /*
@@ -142,14 +144,14 @@ func (self Instance) AddPropertyInfo(info PropertyInfo) { //gd:EditorSettings.ad
 Sets project-specific metadata with the [param section], [param key] and [param data] specified. This metadata is stored outside the project folder and therefore won't be checked into version control. See also [method get_project_metadata].
 */
 func (self Instance) SetProjectMetadata(section string, key string, data any) { //gd:EditorSettings.set_project_metadata
-	class(self).SetProjectMetadata(gd.NewString(section), gd.NewString(key), gd.NewVariant(data))
+	class(self).SetProjectMetadata(String.New(section), String.New(key), gd.NewVariant(data))
 }
 
 /*
 Returns project-specific metadata for the [param section] and [param key] specified. If the metadata doesn't exist, [param default] will be returned instead. See also [method set_project_metadata].
 */
 func (self Instance) GetProjectMetadata(section string, key string) any { //gd:EditorSettings.get_project_metadata
-	return any(class(self).GetProjectMetadata(gd.NewString(section), gd.NewString(key), gd.NewVariant(gd.NewVariant(([1]any{}[0])))).Interface())
+	return any(class(self).GetProjectMetadata(String.New(section), String.New(key), gd.NewVariant(gd.NewVariant(([1]any{}[0])))).Interface())
 }
 
 /*
@@ -184,14 +186,14 @@ func (self Instance) GetRecentDirs() []string { //gd:EditorSettings.get_recent_d
 Overrides the built-in editor action [param name] with the input actions defined in [param actions_list].
 */
 func (self Instance) SetBuiltinActionOverride(name string, actions_list [][1]gdclass.InputEvent) { //gd:EditorSettings.set_builtin_action_override
-	class(self).SetBuiltinActionOverride(gd.NewString(name), gd.ArrayFromSlice[Array.Contains[[1]gdclass.InputEvent]](actions_list))
+	class(self).SetBuiltinActionOverride(String.New(name), gd.ArrayFromSlice[Array.Contains[[1]gdclass.InputEvent]](actions_list))
 }
 
 /*
 Checks if any settings with the prefix [param setting_prefix] exist in the set of changed settings. See also [method get_changed_settings].
 */
 func (self Instance) CheckChangedSettingsInGroup(setting_prefix string) bool { //gd:EditorSettings.check_changed_settings_in_group
-	return bool(class(self).CheckChangedSettingsInGroup(gd.NewString(setting_prefix)))
+	return bool(class(self).CheckChangedSettingsInGroup(String.New(setting_prefix)))
 }
 
 /*
@@ -205,7 +207,7 @@ func (self Instance) GetChangedSettings() []string { //gd:EditorSettings.get_cha
 Marks the passed editor setting as being changed, see [method get_changed_settings]. Only settings which exist (see [method has_setting]) will be accepted.
 */
 func (self Instance) MarkSettingChanged(setting string) { //gd:EditorSettings.mark_setting_changed
-	class(self).MarkSettingChanged(gd.NewString(setting))
+	class(self).MarkSettingChanged(String.New(setting))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -231,9 +233,9 @@ func New() Instance {
 Returns [code]true[/code] if the setting specified by [param name] exists, [code]false[/code] otherwise.
 */
 //go:nosplit
-func (self class) HasSetting(name gd.String) bool { //gd:EditorSettings.has_setting
+func (self class) HasSetting(name String.Readable) bool { //gd:EditorSettings.has_setting
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_has_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -245,9 +247,9 @@ func (self class) HasSetting(name gd.String) bool { //gd:EditorSettings.has_sett
 Sets the [param value] of the setting specified by [param name]. This is equivalent to using [method Object.set] on the EditorSettings instance.
 */
 //go:nosplit
-func (self class) SetSetting(name gd.String, value gd.Variant) { //gd:EditorSettings.set_setting
+func (self class) SetSetting(name String.Readable, value gd.Variant) { //gd:EditorSettings.set_setting
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_set_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -258,9 +260,9 @@ func (self class) SetSetting(name gd.String, value gd.Variant) { //gd:EditorSett
 Returns the value of the setting specified by [param name]. This is equivalent to using [method Object.get] on the EditorSettings instance.
 */
 //go:nosplit
-func (self class) GetSetting(name gd.String) gd.Variant { //gd:EditorSettings.get_setting
+func (self class) GetSetting(name String.Readable) gd.Variant { //gd:EditorSettings.get_setting
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_get_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
@@ -272,9 +274,9 @@ func (self class) GetSetting(name gd.String) gd.Variant { //gd:EditorSettings.ge
 Erases the setting whose name is specified by [param property].
 */
 //go:nosplit
-func (self class) Erase(property gd.String) { //gd:EditorSettings.erase
+func (self class) Erase(property String.Readable) { //gd:EditorSettings.erase
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(property)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_erase, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -343,10 +345,10 @@ func (self class) AddPropertyInfo(info Dictionary.Any) { //gd:EditorSettings.add
 Sets project-specific metadata with the [param section], [param key] and [param data] specified. This metadata is stored outside the project folder and therefore won't be checked into version control. See also [method get_project_metadata].
 */
 //go:nosplit
-func (self class) SetProjectMetadata(section gd.String, key gd.String, data gd.Variant) { //gd:EditorSettings.set_project_metadata
+func (self class) SetProjectMetadata(section String.Readable, key String.Readable, data gd.Variant) { //gd:EditorSettings.set_project_metadata
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(section))
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_set_project_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -357,10 +359,10 @@ func (self class) SetProjectMetadata(section gd.String, key gd.String, data gd.V
 Returns project-specific metadata for the [param section] and [param key] specified. If the metadata doesn't exist, [param default] will be returned instead. See also [method set_project_metadata].
 */
 //go:nosplit
-func (self class) GetProjectMetadata(section gd.String, key gd.String, def gd.Variant) gd.Variant { //gd:EditorSettings.get_project_metadata
+func (self class) GetProjectMetadata(section String.Readable, key String.Readable, def gd.Variant) gd.Variant { //gd:EditorSettings.get_project_metadata
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(section))
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
 	callframe.Arg(frame, pointers.Get(def))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_get_project_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -423,9 +425,9 @@ func (self class) GetRecentDirs() gd.PackedStringArray { //gd:EditorSettings.get
 Overrides the built-in editor action [param name] with the input actions defined in [param actions_list].
 */
 //go:nosplit
-func (self class) SetBuiltinActionOverride(name gd.String, actions_list Array.Contains[[1]gdclass.InputEvent]) { //gd:EditorSettings.set_builtin_action_override
+func (self class) SetBuiltinActionOverride(name String.Readable, actions_list Array.Contains[[1]gdclass.InputEvent]) { //gd:EditorSettings.set_builtin_action_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(actions_list)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_set_builtin_action_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -436,9 +438,9 @@ func (self class) SetBuiltinActionOverride(name gd.String, actions_list Array.Co
 Checks if any settings with the prefix [param setting_prefix] exist in the set of changed settings. See also [method get_changed_settings].
 */
 //go:nosplit
-func (self class) CheckChangedSettingsInGroup(setting_prefix gd.String) bool { //gd:EditorSettings.check_changed_settings_in_group
+func (self class) CheckChangedSettingsInGroup(setting_prefix String.Readable) bool { //gd:EditorSettings.check_changed_settings_in_group
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(setting_prefix))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(setting_prefix)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_check_changed_settings_in_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -463,9 +465,9 @@ func (self class) GetChangedSettings() gd.PackedStringArray { //gd:EditorSetting
 Marks the passed editor setting as being changed, see [method get_changed_settings]. Only settings which exist (see [method has_setting]) will be accepted.
 */
 //go:nosplit
-func (self class) MarkSettingChanged(setting gd.String) { //gd:EditorSettings.mark_setting_changed
+func (self class) MarkSettingChanged(setting String.Readable) { //gd:EditorSettings.mark_setting_changed
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(setting))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(setting)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_mark_setting_changed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

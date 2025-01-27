@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This object holds information of all resources in the filesystem, their types, etc.
@@ -83,21 +85,21 @@ Add a file in an existing directory, or schedule file information to be updated 
 This will not import the file. To reimport, call [method reimport_files] or [method scan] methods.
 */
 func (self Instance) UpdateFile(path string) { //gd:EditorFileSystem.update_file
-	class(self).UpdateFile(gd.NewString(path))
+	class(self).UpdateFile(String.New(path))
 }
 
 /*
 Returns a view into the filesystem at [param path].
 */
 func (self Instance) GetFilesystemPath(path string) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem_path
-	return [1]gdclass.EditorFileSystemDirectory(class(self).GetFilesystemPath(gd.NewString(path)))
+	return [1]gdclass.EditorFileSystemDirectory(class(self).GetFilesystemPath(String.New(path)))
 }
 
 /*
 Returns the resource type of the file, given the full path. This returns a string such as [code]"Resource"[/code] or [code]"GDScript"[/code], [i]not[/i] a file extension such as [code]".gd"[/code].
 */
 func (self Instance) GetFileType(path string) string { //gd:EditorFileSystem.get_file_type
-	return string(class(self).GetFileType(gd.NewString(path)).String())
+	return string(class(self).GetFileType(String.New(path)).String())
 }
 
 /*
@@ -193,9 +195,9 @@ Add a file in an existing directory, or schedule file information to be updated 
 This will not import the file. To reimport, call [method reimport_files] or [method scan] methods.
 */
 //go:nosplit
-func (self class) UpdateFile(path gd.String) { //gd:EditorFileSystem.update_file
+func (self class) UpdateFile(path String.Readable) { //gd:EditorFileSystem.update_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystem.Bind_update_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -205,9 +207,9 @@ func (self class) UpdateFile(path gd.String) { //gd:EditorFileSystem.update_file
 Returns a view into the filesystem at [param path].
 */
 //go:nosplit
-func (self class) GetFilesystemPath(path gd.String) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem_path
+func (self class) GetFilesystemPath(path String.Readable) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystem.Bind_get_filesystem_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerLifetimeBoundTo[gdclass.EditorFileSystemDirectory](self.AsObject(), r_ret.Get())}
@@ -219,12 +221,12 @@ func (self class) GetFilesystemPath(path gd.String) [1]gdclass.EditorFileSystemD
 Returns the resource type of the file, given the full path. This returns a string such as [code]"Resource"[/code] or [code]"GDScript"[/code], [i]not[/i] a file extension such as [code]".gd"[/code].
 */
 //go:nosplit
-func (self class) GetFileType(path gd.String) gd.String { //gd:EditorFileSystem.get_file_type
+func (self class) GetFileType(path String.Readable) String.Readable { //gd:EditorFileSystem.get_file_type
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystem.Bind_get_file_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

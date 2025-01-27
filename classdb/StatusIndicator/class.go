@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Rect2"
@@ -30,6 +31,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 type Instance [1]gdclass.StatusIndicator
 
@@ -71,7 +73,7 @@ func (self Instance) Tooltip() string {
 }
 
 func (self Instance) SetTooltip(value string) {
-	class(self).SetTooltip(gd.NewString(value))
+	class(self).SetTooltip(String.New(value))
 }
 
 func (self Instance) Icon() [1]gdclass.Texture2D {
@@ -99,20 +101,20 @@ func (self Instance) SetVisible(value bool) {
 }
 
 //go:nosplit
-func (self class) SetTooltip(tooltip gd.String) { //gd:StatusIndicator.set_tooltip
+func (self class) SetTooltip(tooltip String.Readable) { //gd:StatusIndicator.set_tooltip
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(tooltip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StatusIndicator.Bind_set_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTooltip() gd.String { //gd:StatusIndicator.get_tooltip
+func (self class) GetTooltip() String.Readable { //gd:StatusIndicator.get_tooltip
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StatusIndicator.Bind_get_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

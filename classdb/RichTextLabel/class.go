@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -33,6 +34,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A control for displaying text that can contain custom fonts, images, and basic formatting. [RichTextLabel] manages these as an internal tag stack. It also adapts itself to given width/heights.
@@ -62,7 +64,7 @@ func (self Instance) GetParsedText() string { //gd:RichTextLabel.get_parsed_text
 Adds raw non-BBCode-parsed text to the tag stack.
 */
 func (self Instance) AddText(text string) { //gd:RichTextLabel.add_text
-	class(self).AddText(gd.NewString(text))
+	class(self).AddText(String.New(text))
 }
 
 /*
@@ -74,14 +76,14 @@ If [param pad] is set, and the image is smaller than the size specified by [para
 If [param size_in_percent] is set, [param width] and [param height] values are percentages of the control width instead of pixels.
 */
 func (self Instance) AddImage(image [1]gdclass.Texture2D) { //gd:RichTextLabel.add_image
-	class(self).AddImage(image, gd.Int(0), gd.Int(0), gd.Color(gd.Color{1, 1, 1, 1}), 5, gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), false, gd.NewString(""), false)
+	class(self).AddImage(image, gd.Int(0), gd.Int(0), gd.Color(gd.Color{1, 1, 1, 1}), 5, gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), false, String.New(""), false)
 }
 
 /*
 Updates the existing images with the key [param key]. Only properties specified by [param mask] bits are updated. See [method add_image].
 */
 func (self Instance) UpdateImage(key any, mask gdclass.RichTextLabelImageUpdateMask, image [1]gdclass.Texture2D) { //gd:RichTextLabel.update_image
-	class(self).UpdateImage(gd.NewVariant(key), mask, image, gd.Int(0), gd.Int(0), gd.Color(gd.Color{1, 1, 1, 1}), 5, gd.Rect2(gd.NewRect2(0, 0, 0, 0)), false, gd.NewString(""), false)
+	class(self).UpdateImage(gd.NewVariant(key), mask, image, gd.Int(0), gd.Int(0), gd.Color(gd.Color{1, 1, 1, 1}), 5, gd.Rect2(gd.NewRect2(0, 0, 0, 0)), false, String.New(""), false)
 }
 
 /*
@@ -182,7 +184,7 @@ func (self Instance) PushOutlineColor(color Color.RGBA) { //gd:RichTextLabel.pus
 Adds a [code skip-lint][p][/code] tag to the tag stack.
 */
 func (self Instance) PushParagraph(alignment HorizontalAlignment) { //gd:RichTextLabel.push_paragraph
-	class(self).PushParagraph(alignment, 0, gd.NewString(""), 0, 163, gd.NewPackedFloat32Slice([1][]float32{}[0]))
+	class(self).PushParagraph(alignment, 0, String.New(""), 0, 163, gd.NewPackedFloat32Slice([1][]float32{}[0]))
 }
 
 /*
@@ -196,7 +198,7 @@ func (self Instance) PushIndent(level int) { //gd:RichTextLabel.push_indent
 Adds [code skip-lint][ol][/code] or [code skip-lint][ul][/code] tag to the tag stack. Multiplies [param level] by current [member tab_size] to determine new margin length.
 */
 func (self Instance) PushList(level int, atype gdclass.RichTextLabelListType, capitalize bool) { //gd:RichTextLabel.push_list
-	class(self).PushList(gd.Int(level), atype, capitalize, gd.NewString("•"))
+	class(self).PushList(gd.Int(level), atype, capitalize, String.New("•"))
 }
 
 /*
@@ -212,14 +214,14 @@ func (self Instance) PushMeta(data any) { //gd:RichTextLabel.push_meta
 Adds a [code skip-lint][hint][/code] tag to the tag stack. Same as BBCode [code skip-lint][hint=something]{text}[/hint][/code].
 */
 func (self Instance) PushHint(description string) { //gd:RichTextLabel.push_hint
-	class(self).PushHint(gd.NewString(description))
+	class(self).PushHint(String.New(description))
 }
 
 /*
 Adds language code used for text shaping algorithm and Open-Type font features.
 */
 func (self Instance) PushLanguage(language string) { //gd:RichTextLabel.push_language
-	class(self).PushLanguage(gd.NewString(language))
+	class(self).PushLanguage(String.New(language))
 }
 
 /*
@@ -247,7 +249,7 @@ func (self Instance) PushTable(columns int) { //gd:RichTextLabel.push_table
 Adds a [code skip-lint][dropcap][/code] tag to the tag stack. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
 func (self Instance) PushDropcap(s string, font [1]gdclass.Font, size int) { //gd:RichTextLabel.push_dropcap
-	class(self).PushDropcap(gd.NewString(s), font, gd.Int(size), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.Color(gd.Color{1, 1, 1, 1}), gd.Int(0), gd.Color(gd.Color{0, 0, 0, 0}))
+	class(self).PushDropcap(String.New(s), font, gd.Int(size), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.Color(gd.Color{1, 1, 1, 1}), gd.Int(0), gd.Color(gd.Color{0, 0, 0, 0}))
 }
 
 /*
@@ -420,7 +422,7 @@ func (self Instance) Deselect() { //gd:RichTextLabel.deselect
 The assignment version of [method append_text]. Clears the tag stack and inserts the new content.
 */
 func (self Instance) ParseBbcode(bbcode string) { //gd:RichTextLabel.parse_bbcode
-	class(self).ParseBbcode(gd.NewString(bbcode))
+	class(self).ParseBbcode(String.New(bbcode))
 }
 
 /*
@@ -428,7 +430,7 @@ Parses [param bbcode] and adds tags to the tag stack as needed.
 [b]Note:[/b] Using this method, you can't close a tag that was opened in a previous [method append_text] call. This is done to improve performance, especially when updating large RichTextLabels since rebuilding the whole BBCode every time would be slower. If you absolutely need to close a tag in a future method call, append the [member text] instead of using [method append_text].
 */
 func (self Instance) AppendText(bbcode string) { //gd:RichTextLabel.append_text
-	class(self).AppendText(gd.NewString(bbcode))
+	class(self).AppendText(String.New(bbcode))
 }
 
 /*
@@ -659,7 +661,7 @@ func (self Instance) Text() string {
 }
 
 func (self Instance) SetText(value string) {
-	class(self).SetText(gd.NewString(value))
+	class(self).SetText(String.New(value))
 }
 
 func (self Instance) FitContent() bool {
@@ -819,7 +821,7 @@ func (self Instance) Language() string {
 }
 
 func (self Instance) SetLanguage(value string) {
-	class(self).SetLanguage(gd.NewString(value))
+	class(self).SetLanguage(String.New(value))
 }
 
 func (self Instance) StructuredTextBidiOverride() gdclass.TextServerStructuredTextParser {
@@ -842,11 +844,11 @@ func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 Returns the text without BBCode mark-up.
 */
 //go:nosplit
-func (self class) GetParsedText() gd.String { //gd:RichTextLabel.get_parsed_text
+func (self class) GetParsedText() String.Readable { //gd:RichTextLabel.get_parsed_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_parsed_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -855,18 +857,18 @@ func (self class) GetParsedText() gd.String { //gd:RichTextLabel.get_parsed_text
 Adds raw non-BBCode-parsed text to the tag stack.
 */
 //go:nosplit
-func (self class) AddText(text gd.String) { //gd:RichTextLabel.add_text
+func (self class) AddText(text String.Readable) { //gd:RichTextLabel.add_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_add_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) SetText(text gd.String) { //gd:RichTextLabel.set_text
+func (self class) SetText(text String.Readable) { //gd:RichTextLabel.set_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -881,7 +883,7 @@ If [param pad] is set, and the image is smaller than the size specified by [para
 If [param size_in_percent] is set, [param width] and [param height] values are percentages of the control width instead of pixels.
 */
 //go:nosplit
-func (self class) AddImage(image [1]gdclass.Texture2D, width gd.Int, height gd.Int, color gd.Color, inline_align InlineAlignment, region gd.Rect2, key gd.Variant, pad bool, tooltip gd.String, size_in_percent bool) { //gd:RichTextLabel.add_image
+func (self class) AddImage(image [1]gdclass.Texture2D, width gd.Int, height gd.Int, color gd.Color, inline_align InlineAlignment, region gd.Rect2, key gd.Variant, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.add_image
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, width)
@@ -891,7 +893,7 @@ func (self class) AddImage(image [1]gdclass.Texture2D, width gd.Int, height gd.I
 	callframe.Arg(frame, region)
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, pad)
-	callframe.Arg(frame, pointers.Get(tooltip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	callframe.Arg(frame, size_in_percent)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_add_image, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -902,7 +904,7 @@ func (self class) AddImage(image [1]gdclass.Texture2D, width gd.Int, height gd.I
 Updates the existing images with the key [param key]. Only properties specified by [param mask] bits are updated. See [method add_image].
 */
 //go:nosplit
-func (self class) UpdateImage(key gd.Variant, mask gdclass.RichTextLabelImageUpdateMask, image [1]gdclass.Texture2D, width gd.Int, height gd.Int, color gd.Color, inline_align InlineAlignment, region gd.Rect2, pad bool, tooltip gd.String, size_in_percent bool) { //gd:RichTextLabel.update_image
+func (self class) UpdateImage(key gd.Variant, mask gdclass.RichTextLabelImageUpdateMask, image [1]gdclass.Texture2D, width gd.Int, height gd.Int, color gd.Color, inline_align InlineAlignment, region gd.Rect2, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.update_image
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, mask)
@@ -913,7 +915,7 @@ func (self class) UpdateImage(key gd.Variant, mask gdclass.RichTextLabelImageUpd
 	callframe.Arg(frame, inline_align)
 	callframe.Arg(frame, region)
 	callframe.Arg(frame, pad)
-	callframe.Arg(frame, pointers.Get(tooltip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	callframe.Arg(frame, size_in_percent)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_update_image, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1083,11 +1085,11 @@ func (self class) PushOutlineColor(color gd.Color) { //gd:RichTextLabel.push_out
 Adds a [code skip-lint][p][/code] tag to the tag stack.
 */
 //go:nosplit
-func (self class) PushParagraph(alignment HorizontalAlignment, base_direction gdclass.ControlTextDirection, language gd.String, st_parser gdclass.TextServerStructuredTextParser, justification_flags gdclass.TextServerJustificationFlag, tab_stops gd.PackedFloat32Array) { //gd:RichTextLabel.push_paragraph
+func (self class) PushParagraph(alignment HorizontalAlignment, base_direction gdclass.ControlTextDirection, language String.Readable, st_parser gdclass.TextServerStructuredTextParser, justification_flags gdclass.TextServerJustificationFlag, tab_stops gd.PackedFloat32Array) { //gd:RichTextLabel.push_paragraph
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	callframe.Arg(frame, base_direction)
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	callframe.Arg(frame, st_parser)
 	callframe.Arg(frame, justification_flags)
 	callframe.Arg(frame, pointers.Get(tab_stops))
@@ -1112,12 +1114,12 @@ func (self class) PushIndent(level gd.Int) { //gd:RichTextLabel.push_indent
 Adds [code skip-lint][ol][/code] or [code skip-lint][ul][/code] tag to the tag stack. Multiplies [param level] by current [member tab_size] to determine new margin length.
 */
 //go:nosplit
-func (self class) PushList(level gd.Int, atype gdclass.RichTextLabelListType, capitalize bool, bullet gd.String) { //gd:RichTextLabel.push_list
+func (self class) PushList(level gd.Int, atype gdclass.RichTextLabelListType, capitalize bool, bullet String.Readable) { //gd:RichTextLabel.push_list
 	var frame = callframe.New()
 	callframe.Arg(frame, level)
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, capitalize)
-	callframe.Arg(frame, pointers.Get(bullet))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bullet)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1142,9 +1144,9 @@ func (self class) PushMeta(data gd.Variant, underline_mode gdclass.RichTextLabel
 Adds a [code skip-lint][hint][/code] tag to the tag stack. Same as BBCode [code skip-lint][hint=something]{text}[/hint][/code].
 */
 //go:nosplit
-func (self class) PushHint(description gd.String) { //gd:RichTextLabel.push_hint
+func (self class) PushHint(description String.Readable) { //gd:RichTextLabel.push_hint
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(description))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(description)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_hint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1154,9 +1156,9 @@ func (self class) PushHint(description gd.String) { //gd:RichTextLabel.push_hint
 Adds language code used for text shaping algorithm and Open-Type font features.
 */
 //go:nosplit
-func (self class) PushLanguage(language gd.String) { //gd:RichTextLabel.push_language
+func (self class) PushLanguage(language String.Readable) { //gd:RichTextLabel.push_language
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1202,9 +1204,9 @@ func (self class) PushTable(columns gd.Int, inline_align InlineAlignment, align_
 Adds a [code skip-lint][dropcap][/code] tag to the tag stack. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
 //go:nosplit
-func (self class) PushDropcap(s gd.String, font [1]gdclass.Font, size gd.Int, dropcap_margins gd.Rect2, color gd.Color, outline_size gd.Int, outline_color gd.Color) { //gd:RichTextLabel.push_dropcap
+func (self class) PushDropcap(s String.Readable, font [1]gdclass.Font, size gd.Int, dropcap_margins gd.Rect2, color gd.Color, outline_size gd.Int, outline_color gd.Color) { //gd:RichTextLabel.push_dropcap
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(s))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, dropcap_margins)
@@ -1444,20 +1446,20 @@ func (self class) GetTextDirection() gdclass.ControlTextDirection { //gd:RichTex
 }
 
 //go:nosplit
-func (self class) SetLanguage(language gd.String) { //gd:RichTextLabel.set_language
+func (self class) SetLanguage(language String.Readable) { //gd:RichTextLabel.set_language
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetLanguage() gd.String { //gd:RichTextLabel.get_language
+func (self class) GetLanguage() String.Readable { //gd:RichTextLabel.get_language
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1781,11 +1783,11 @@ func (self class) SelectAll() { //gd:RichTextLabel.select_all
 Returns the current selection text. Does not include BBCodes.
 */
 //go:nosplit
-func (self class) GetSelectedText() gd.String { //gd:RichTextLabel.get_selected_text
+func (self class) GetSelectedText() String.Readable { //gd:RichTextLabel.get_selected_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_selected_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1805,9 +1807,9 @@ func (self class) Deselect() { //gd:RichTextLabel.deselect
 The assignment version of [method append_text]. Clears the tag stack and inserts the new content.
 */
 //go:nosplit
-func (self class) ParseBbcode(bbcode gd.String) { //gd:RichTextLabel.parse_bbcode
+func (self class) ParseBbcode(bbcode String.Readable) { //gd:RichTextLabel.parse_bbcode
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bbcode))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bbcode)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_parse_bbcode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1818,20 +1820,20 @@ Parses [param bbcode] and adds tags to the tag stack as needed.
 [b]Note:[/b] Using this method, you can't close a tag that was opened in a previous [method append_text] call. This is done to improve performance, especially when updating large RichTextLabels since rebuilding the whole BBCode every time would be slower. If you absolutely need to close a tag in a future method call, append the [member text] instead of using [method append_text].
 */
 //go:nosplit
-func (self class) AppendText(bbcode gd.String) { //gd:RichTextLabel.append_text
+func (self class) AppendText(bbcode String.Readable) { //gd:RichTextLabel.append_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bbcode))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bbcode)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_append_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetText() gd.String { //gd:RichTextLabel.get_text
+func (self class) GetText() String.Readable { //gd:RichTextLabel.get_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

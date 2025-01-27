@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Resource UIDs (Unique IDentifiers) allow the engine to keep references between resources intact, even if files can renamed or moved. They can be accessed with [code]uid://[/code].
@@ -53,7 +55,7 @@ Extracts the UID value from the given [code]uid://[/code] string.
 */
 func TextToId(text_id string) int { //gd:ResourceUID.text_to_id
 	once.Do(singleton)
-	return int(int(class(self).TextToId(gd.NewString(text_id))))
+	return int(int(class(self).TextToId(String.New(text_id))))
 }
 
 /*
@@ -79,7 +81,7 @@ Fails with an error if the UID already exists, so be sure to check [method has_i
 */
 func AddId(id int, path string) { //gd:ResourceUID.add_id
 	once.Do(singleton)
-	class(self).AddId(gd.Int(id), gd.NewString(path))
+	class(self).AddId(gd.Int(id), String.New(path))
 }
 
 /*
@@ -88,7 +90,7 @@ Fails with an error if the UID does not exist, so be sure to check [method has_i
 */
 func SetId(id int, path string) { //gd:ResourceUID.set_id
 	once.Do(singleton)
-	class(self).SetId(gd.Int(id), gd.NewString(path))
+	class(self).SetId(gd.Int(id), String.New(path))
 }
 
 /*
@@ -123,12 +125,12 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Converts the given UID to a [code]uid://[/code] string value.
 */
 //go:nosplit
-func (self class) IdToText(id gd.Int) gd.String { //gd:ResourceUID.id_to_text
+func (self class) IdToText(id gd.Int) String.Readable { //gd:ResourceUID.id_to_text
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceUID.Bind_id_to_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -137,9 +139,9 @@ func (self class) IdToText(id gd.Int) gd.String { //gd:ResourceUID.id_to_text
 Extracts the UID value from the given [code]uid://[/code] string.
 */
 //go:nosplit
-func (self class) TextToId(text_id gd.String) gd.Int { //gd:ResourceUID.text_to_id
+func (self class) TextToId(text_id String.Readable) gd.Int { //gd:ResourceUID.text_to_id
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text_id))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text_id)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceUID.Bind_text_to_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -180,10 +182,10 @@ Adds a new UID value which is mapped to the given resource path.
 Fails with an error if the UID already exists, so be sure to check [method has_id] beforehand, or use [method set_id] instead.
 */
 //go:nosplit
-func (self class) AddId(id gd.Int, path gd.String) { //gd:ResourceUID.add_id
+func (self class) AddId(id gd.Int, path String.Readable) { //gd:ResourceUID.add_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceUID.Bind_add_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -194,10 +196,10 @@ Updates the resource path of an existing UID.
 Fails with an error if the UID does not exist, so be sure to check [method has_id] beforehand, or use [method add_id] instead.
 */
 //go:nosplit
-func (self class) SetId(id gd.Int, path gd.String) { //gd:ResourceUID.set_id
+func (self class) SetId(id gd.Int, path String.Readable) { //gd:ResourceUID.set_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceUID.Bind_set_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -208,12 +210,12 @@ Returns the path that the given UID value refers to.
 Fails with an error if the UID does not exist, so be sure to check [method has_id] beforehand.
 */
 //go:nosplit
-func (self class) GetIdPath(id gd.Int) gd.String { //gd:ResourceUID.get_id_path
+func (self class) GetIdPath(id gd.Int) String.Readable { //gd:ResourceUID.get_id_path
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceUID.Bind_get_id_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

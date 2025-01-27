@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/ResourceImporter"
 
 var _ Object.ID
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Ogg Vorbis is a lossy audio format, with better audio quality compared to [ResourceImporterMP3] at a given bitrate.
@@ -56,7 +58,7 @@ This method loads audio data from a file into an AudioStreamOggVorbis object. Th
 */
 func LoadFromFile(path string) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_file
 	self := Instance{}
-	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromFile(gd.NewString(path)))
+	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromFile(String.New(path)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -96,9 +98,9 @@ func (self class) LoadFromBuffer(buffer gd.PackedByteArray) [1]gdclass.AudioStre
 This method loads audio data from a file into an AudioStreamOggVorbis object. The file path is provided as a string.
 */
 //go:nosplit
-func (self class) LoadFromFile(path gd.String) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_file
+func (self class) LoadFromFile(path String.Readable) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceImporterOggVorbis.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamOggVorbis](r_ret.Get())}

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -35,6 +36,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A multiline text editor. It also has limited facilities for editing code, such as syntax highlighting support. For more advanced facilities for editing code, see [CodeEdit].
@@ -225,7 +227,7 @@ Sets the text for a specific [param line].
 Carets on the line will attempt to keep their visual x position.
 */
 func (self Instance) SetLine(line int, new_text string) { //gd:TextEdit.set_line
-	class(self).SetLine(gd.Int(line), gd.NewString(new_text))
+	class(self).SetLine(gd.Int(line), String.New(new_text))
 }
 
 /*
@@ -275,7 +277,7 @@ func (self Instance) SwapLines(from_line int, to_line int) { //gd:TextEdit.swap_
 Inserts a new line with [param text] at [param line].
 */
 func (self Instance) InsertLineAt(line int, text string) { //gd:TextEdit.insert_line_at
-	class(self).InsertLineAt(gd.Int(line), gd.NewString(text))
+	class(self).InsertLineAt(gd.Int(line), String.New(text))
 }
 
 /*
@@ -290,7 +292,7 @@ func (self Instance) RemoveLineAt(line int) { //gd:TextEdit.remove_line_at
 Insert the specified text at the caret position.
 */
 func (self Instance) InsertTextAtCaret(text string) { //gd:TextEdit.insert_text_at_caret
-	class(self).InsertTextAtCaret(gd.NewString(text), gd.Int(-1))
+	class(self).InsertTextAtCaret(String.New(text), gd.Int(-1))
 }
 
 /*
@@ -299,7 +301,7 @@ If [param before_selection_begin] is [code]true[/code], carets and selections th
 If [param before_selection_end] is [code]true[/code], selections that end at [param line] and [param column] will be extended to the end of the inserted text. These parameters can be used to insert text inside of or outside of selections.
 */
 func (self Instance) InsertText(text string, line int, column int) { //gd:TextEdit.insert_text
-	class(self).InsertText(gd.NewString(text), gd.Int(line), gd.Int(column), true, false)
+	class(self).InsertText(String.New(text), gd.Int(line), gd.Int(column), true, false)
 }
 
 /*
@@ -454,7 +456,7 @@ func (self Instance) GetSavedVersion() int { //gd:TextEdit.get_saved_version
 Sets the search text. See [method set_search_flags].
 */
 func (self Instance) SetSearchText(search_text string) { //gd:TextEdit.set_search_text
-	class(self).SetSearchText(gd.NewString(search_text))
+	class(self).SetSearchText(String.New(search_text))
 }
 
 /*
@@ -491,7 +493,7 @@ if (result.X != -1)
 [/codeblocks]
 */
 func (self Instance) Search(text string, flags int, from_line int, from_column int) Vector2i.XY { //gd:TextEdit.search
-	return Vector2i.XY(class(self).Search(gd.NewString(text), gd.Int(flags), gd.Int(from_line), gd.Int(from_column)))
+	return Vector2i.XY(class(self).Search(String.New(text), gd.Int(flags), gd.Int(from_line), gd.Int(from_column)))
 }
 
 /*
@@ -1045,7 +1047,7 @@ func (self Instance) GetGutterCount() int { //gd:TextEdit.get_gutter_count
 Sets the name of the gutter.
 */
 func (self Instance) SetGutterName(gutter int, name string) { //gd:TextEdit.set_gutter_name
-	class(self).SetGutterName(gd.Int(gutter), gd.NewString(name))
+	class(self).SetGutterName(gd.Int(gutter), String.New(name))
 }
 
 /*
@@ -1164,7 +1166,7 @@ func (self Instance) GetLineGutterMetadata(line int, gutter int) any { //gd:Text
 Sets the text for [param gutter] on [param line] to [param text]. This only works when the gutter type is [constant GUTTER_TYPE_STRING] (see [method set_gutter_type]).
 */
 func (self Instance) SetLineGutterText(line int, gutter int, text string) { //gd:TextEdit.set_line_gutter_text
-	class(self).SetLineGutterText(gd.Int(line), gd.Int(gutter), gd.NewString(text))
+	class(self).SetLineGutterText(gd.Int(line), gd.Int(gutter), String.New(text))
 }
 
 /*
@@ -1348,7 +1350,7 @@ func (self Instance) Text() string {
 }
 
 func (self Instance) SetText(value string) {
-	class(self).SetText(gd.NewString(value))
+	class(self).SetText(String.New(value))
 }
 
 func (self Instance) PlaceholderText() string {
@@ -1356,7 +1358,7 @@ func (self Instance) PlaceholderText() string {
 }
 
 func (self Instance) SetPlaceholderText(value string) {
-	class(self).SetPlaceholder(gd.NewString(value))
+	class(self).SetPlaceholder(String.New(value))
 }
 
 func (self Instance) Editable() bool {
@@ -1588,7 +1590,7 @@ func (self Instance) CustomWordSeparators() string {
 }
 
 func (self Instance) SetCustomWordSeparators(value string) {
-	class(self).SetCustomWordSeparators(gd.NewString(value))
+	class(self).SetCustomWordSeparators(String.New(value))
 }
 
 func (self Instance) SyntaxHighlighter() [1]gdclass.SyntaxHighlighter {
@@ -1652,7 +1654,7 @@ func (self Instance) Language() string {
 }
 
 func (self Instance) SetLanguage(value string) {
-	class(self).SetLanguage(gd.NewString(value))
+	class(self).SetLanguage(String.New(value))
 }
 
 func (self Instance) StructuredTextBidiOverride() gdclass.TextServerStructuredTextParser {
@@ -1820,20 +1822,20 @@ func (self class) GetTextDirection() gdclass.ControlTextDirection { //gd:TextEdi
 }
 
 //go:nosplit
-func (self class) SetLanguage(language gd.String) { //gd:TextEdit.set_language
+func (self class) SetLanguage(language String.Readable) { //gd:TextEdit.set_language
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetLanguage() gd.String { //gd:TextEdit.get_language
+func (self class) GetLanguage() String.Readable { //gd:TextEdit.get_language
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2033,20 +2035,20 @@ func (self class) Clear() { //gd:TextEdit.clear
 }
 
 //go:nosplit
-func (self class) SetText(text gd.String) { //gd:TextEdit.set_text
+func (self class) SetText(text String.Readable) { //gd:TextEdit.set_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetText() gd.String { //gd:TextEdit.get_text
+func (self class) GetText() String.Readable { //gd:TextEdit.get_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2065,20 +2067,20 @@ func (self class) GetLineCount() gd.Int { //gd:TextEdit.get_line_count
 }
 
 //go:nosplit
-func (self class) SetPlaceholder(text gd.String) { //gd:TextEdit.set_placeholder
+func (self class) SetPlaceholder(text String.Readable) { //gd:TextEdit.set_placeholder
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPlaceholder() gd.String { //gd:TextEdit.get_placeholder
+func (self class) GetPlaceholder() String.Readable { //gd:TextEdit.get_placeholder
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2088,10 +2090,10 @@ Sets the text for a specific [param line].
 Carets on the line will attempt to keep their visual x position.
 */
 //go:nosplit
-func (self class) SetLine(line gd.Int, new_text gd.String) { //gd:TextEdit.set_line
+func (self class) SetLine(line gd.Int, new_text String.Readable) { //gd:TextEdit.set_line
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
-	callframe.Arg(frame, pointers.Get(new_text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(new_text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2101,12 +2103,12 @@ func (self class) SetLine(line gd.Int, new_text gd.String) { //gd:TextEdit.set_l
 Returns the text of a specific line.
 */
 //go:nosplit
-func (self class) GetLine(line gd.Int) gd.String { //gd:TextEdit.get_line
+func (self class) GetLine(line gd.Int) String.Readable { //gd:TextEdit.get_line
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2185,10 +2187,10 @@ func (self class) SwapLines(from_line gd.Int, to_line gd.Int) { //gd:TextEdit.sw
 Inserts a new line with [param text] at [param line].
 */
 //go:nosplit
-func (self class) InsertLineAt(line gd.Int, text gd.String) { //gd:TextEdit.insert_line_at
+func (self class) InsertLineAt(line gd.Int, text String.Readable) { //gd:TextEdit.insert_line_at
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_insert_line_at, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2212,9 +2214,9 @@ func (self class) RemoveLineAt(line gd.Int, move_carets_down bool) { //gd:TextEd
 Insert the specified text at the caret position.
 */
 //go:nosplit
-func (self class) InsertTextAtCaret(text gd.String, caret_index gd.Int) { //gd:TextEdit.insert_text_at_caret
+func (self class) InsertTextAtCaret(text String.Readable, caret_index gd.Int) { //gd:TextEdit.insert_text_at_caret
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_insert_text_at_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2227,9 +2229,9 @@ If [param before_selection_begin] is [code]true[/code], carets and selections th
 If [param before_selection_end] is [code]true[/code], selections that end at [param line] and [param column] will be extended to the end of the inserted text. These parameters can be used to insert text inside of or outside of selections.
 */
 //go:nosplit
-func (self class) InsertText(text gd.String, line gd.Int, column gd.Int, before_selection_begin bool, before_selection_end bool) { //gd:TextEdit.insert_text
+func (self class) InsertText(text String.Readable, line gd.Int, column gd.Int, before_selection_begin bool, before_selection_end bool) { //gd:TextEdit.insert_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, before_selection_begin)
@@ -2504,9 +2506,9 @@ func (self class) GetSavedVersion() gd.Int { //gd:TextEdit.get_saved_version
 Sets the search text. See [method set_search_flags].
 */
 //go:nosplit
-func (self class) SetSearchText(search_text gd.String) { //gd:TextEdit.set_search_text
+func (self class) SetSearchText(search_text String.Readable) { //gd:TextEdit.set_search_text
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(search_text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(search_text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_search_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2547,9 +2549,9 @@ if (result.X != -1)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) Search(text gd.String, flags gd.Int, from_line gd.Int, from_column gd.Int) gd.Vector2i { //gd:TextEdit.search
+func (self class) Search(text String.Readable, flags gd.Int, from_line gd.Int, from_column gd.Int) gd.Vector2i { //gd:TextEdit.search
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, flags)
 	callframe.Arg(frame, from_line)
 	callframe.Arg(frame, from_column)
@@ -2589,12 +2591,12 @@ func (self class) GetLocalMousePos() gd.Vector2 { //gd:TextEdit.get_local_mouse_
 Returns the word at [param position].
 */
 //go:nosplit
-func (self class) GetWordAtPos(position gd.Vector2) gd.String { //gd:TextEdit.get_word_at_pos
+func (self class) GetWordAtPos(position gd.Vector2) String.Readable { //gd:TextEdit.get_word_at_pos
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_word_at_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3103,12 +3105,12 @@ func (self class) GetCaretWrapIndex(caret_index gd.Int) gd.Int { //gd:TextEdit.g
 Returns a [String] text with the word under the caret's location.
 */
 //go:nosplit
-func (self class) GetWordUnderCaret(caret_index gd.Int) gd.String { //gd:TextEdit.get_word_under_caret
+func (self class) GetWordUnderCaret(caret_index gd.Int) String.Readable { //gd:TextEdit.get_word_under_caret
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_word_under_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3152,20 +3154,20 @@ func (self class) IsCustomWordSeparatorsEnabled() bool { //gd:TextEdit.is_custom
 }
 
 //go:nosplit
-func (self class) SetCustomWordSeparators(custom_word_separators gd.String) { //gd:TextEdit.set_custom_word_separators
+func (self class) SetCustomWordSeparators(custom_word_separators String.Readable) { //gd:TextEdit.set_custom_word_separators
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(custom_word_separators))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(custom_word_separators)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_custom_word_separators, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetCustomWordSeparators() gd.String { //gd:TextEdit.get_custom_word_separators
+func (self class) GetCustomWordSeparators() String.Readable { //gd:TextEdit.get_custom_word_separators
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_custom_word_separators, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3334,12 +3336,12 @@ func (self class) HasSelection(caret_index gd.Int) bool { //gd:TextEdit.has_sele
 Returns the text inside the selection of a caret, or all the carets if [param caret_index] is its default value [code]-1[/code].
 */
 //go:nosplit
-func (self class) GetSelectedText(caret_index gd.Int) gd.String { //gd:TextEdit.get_selected_text
+func (self class) GetSelectedText(caret_index gd.Int) String.Readable { //gd:TextEdit.get_selected_text
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selected_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4015,10 +4017,10 @@ func (self class) GetGutterCount() gd.Int { //gd:TextEdit.get_gutter_count
 Sets the name of the gutter.
 */
 //go:nosplit
-func (self class) SetGutterName(gutter gd.Int, name gd.String) { //gd:TextEdit.set_gutter_name
+func (self class) SetGutterName(gutter gd.Int, name String.Readable) { //gd:TextEdit.set_gutter_name
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -4028,12 +4030,12 @@ func (self class) SetGutterName(gutter gd.Int, name gd.String) { //gd:TextEdit.s
 Returns the name of the gutter at the given index.
 */
 //go:nosplit
-func (self class) GetGutterName(gutter gd.Int) gd.String { //gd:TextEdit.get_gutter_name
+func (self class) GetGutterName(gutter gd.Int) String.Readable { //gd:TextEdit.get_gutter_name
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4245,11 +4247,11 @@ func (self class) GetLineGutterMetadata(line gd.Int, gutter gd.Int) gd.Variant {
 Sets the text for [param gutter] on [param line] to [param text]. This only works when the gutter type is [constant GUTTER_TYPE_STRING] (see [method set_gutter_type]).
 */
 //go:nosplit
-func (self class) SetLineGutterText(line gd.Int, gutter gd.Int, text gd.String) { //gd:TextEdit.set_line_gutter_text
+func (self class) SetLineGutterText(line gd.Int, gutter gd.Int, text String.Readable) { //gd:TextEdit.set_line_gutter_text
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -4259,13 +4261,13 @@ func (self class) SetLineGutterText(line gd.Int, gutter gd.Int, text gd.String) 
 Returns the text currently in [param gutter] at [param line]. This only works when the gutter type is [constant GUTTER_TYPE_STRING] (see [method set_gutter_type]).
 */
 //go:nosplit
-func (self class) GetLineGutterText(line gd.Int, gutter gd.Int) gd.String { //gd:TextEdit.get_line_gutter_text
+func (self class) GetLineGutterText(line gd.Int, gutter gd.Int) String.Readable { //gd:TextEdit.get_line_gutter_text
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -34,6 +35,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 This control provides a vertical list of selectable items that may be in a single or in multiple columns, with each item having options for text and an icon. Tooltips are supported and may be different for every item in the list.
@@ -58,7 +60,7 @@ Specify an [param icon], or use [code]null[/code] as the [param icon] for a list
 If selectable is [code]true[/code], the list item will be selectable.
 */
 func (self Instance) AddItem(text string) int { //gd:ItemList.add_item
-	return int(int(class(self).AddItem(gd.NewString(text), [1][1]gdclass.Texture2D{}[0], true)))
+	return int(int(class(self).AddItem(String.New(text), [1][1]gdclass.Texture2D{}[0], true)))
 }
 
 /*
@@ -72,7 +74,7 @@ func (self Instance) AddIconItem(icon [1]gdclass.Texture2D) int { //gd:ItemList.
 Sets text of the item associated with the specified index.
 */
 func (self Instance) SetItemText(idx int, text string) { //gd:ItemList.set_item_text
-	class(self).SetItemText(gd.Int(idx), gd.NewString(text))
+	class(self).SetItemText(gd.Int(idx), String.New(text))
 }
 
 /*
@@ -114,7 +116,7 @@ func (self Instance) GetItemTextDirection(idx int) gdclass.ControlTextDirection 
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 func (self Instance) SetItemLanguage(idx int, language string) { //gd:ItemList.set_item_language
-	class(self).SetItemLanguage(gd.Int(idx), gd.NewString(language))
+	class(self).SetItemLanguage(gd.Int(idx), String.New(language))
 }
 
 /*
@@ -263,7 +265,7 @@ func (self Instance) IsItemTooltipEnabled(idx int) bool { //gd:ItemList.is_item_
 Sets the tooltip hint for the item associated with the specified index.
 */
 func (self Instance) SetItemTooltip(idx int, tooltip string) { //gd:ItemList.set_item_tooltip
-	class(self).SetItemTooltip(gd.Int(idx), gd.NewString(tooltip))
+	class(self).SetItemTooltip(gd.Int(idx), String.New(tooltip))
 }
 
 /*
@@ -511,9 +513,9 @@ Specify an [param icon], or use [code]null[/code] as the [param icon] for a list
 If selectable is [code]true[/code], the list item will be selectable.
 */
 //go:nosplit
-func (self class) AddItem(text gd.String, icon [1]gdclass.Texture2D, selectable bool) gd.Int { //gd:ItemList.add_item
+func (self class) AddItem(text String.Readable, icon [1]gdclass.Texture2D, selectable bool) gd.Int { //gd:ItemList.add_item
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	callframe.Arg(frame, selectable)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -542,10 +544,10 @@ func (self class) AddIconItem(icon [1]gdclass.Texture2D, selectable bool) gd.Int
 Sets text of the item associated with the specified index.
 */
 //go:nosplit
-func (self class) SetItemText(idx gd.Int, text gd.String) { //gd:ItemList.set_item_text
+func (self class) SetItemText(idx gd.Int, text String.Readable) { //gd:ItemList.set_item_text
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(text))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_set_item_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -555,12 +557,12 @@ func (self class) SetItemText(idx gd.Int, text gd.String) { //gd:ItemList.set_it
 Returns the text associated with the specified index.
 */
 //go:nosplit
-func (self class) GetItemText(idx gd.Int) gd.String { //gd:ItemList.get_item_text
+func (self class) GetItemText(idx gd.Int) String.Readable { //gd:ItemList.get_item_text
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -623,10 +625,10 @@ func (self class) GetItemTextDirection(idx gd.Int) gdclass.ControlTextDirection 
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 //go:nosplit
-func (self class) SetItemLanguage(idx gd.Int, language gd.String) { //gd:ItemList.set_item_language
+func (self class) SetItemLanguage(idx gd.Int, language String.Readable) { //gd:ItemList.set_item_language
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(language))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_set_item_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -636,12 +638,12 @@ func (self class) SetItemLanguage(idx gd.Int, language gd.String) { //gd:ItemLis
 Returns item's text language code.
 */
 //go:nosplit
-func (self class) GetItemLanguage(idx gd.Int) gd.String { //gd:ItemList.get_item_language
+func (self class) GetItemLanguage(idx gd.Int) String.Readable { //gd:ItemList.get_item_language
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -910,10 +912,10 @@ func (self class) IsItemTooltipEnabled(idx gd.Int) bool { //gd:ItemList.is_item_
 Sets the tooltip hint for the item associated with the specified index.
 */
 //go:nosplit
-func (self class) SetItemTooltip(idx gd.Int, tooltip gd.String) { //gd:ItemList.set_item_tooltip
+func (self class) SetItemTooltip(idx gd.Int, tooltip String.Readable) { //gd:ItemList.set_item_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(tooltip))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_set_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -923,12 +925,12 @@ func (self class) SetItemTooltip(idx gd.Int, tooltip gd.String) { //gd:ItemList.
 Returns the tooltip hint associated with the specified index.
 */
 //go:nosplit
-func (self class) GetItemTooltip(idx gd.Int) gd.String { //gd:ItemList.get_item_tooltip
+func (self class) GetItemTooltip(idx gd.Int) String.Readable { //gd:ItemList.get_item_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

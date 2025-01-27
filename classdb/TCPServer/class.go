@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A TCP server. Listens to connections on a port and returns a [StreamPeerTCP] when it gets an incoming connection.
@@ -48,7 +50,7 @@ If [param bind_address] is set as [code]"0.0.0.0"[/code] (for IPv4) or [code]"::
 If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[/code], [code]"::1"[/code], etc.), the server will only listen on the interface with that address (or fail if no interface with the given address exists).
 */
 func (self Instance) Listen(port int) error { //gd:TCPServer.listen
-	return error(gd.ToError(class(self).Listen(gd.Int(port), gd.NewString("*"))))
+	return error(gd.ToError(class(self).Listen(gd.Int(port), String.New("*"))))
 }
 
 /*
@@ -112,10 +114,10 @@ If [param bind_address] is set as [code]"0.0.0.0"[/code] (for IPv4) or [code]"::
 If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[/code], [code]"::1"[/code], etc.), the server will only listen on the interface with that address (or fail if no interface with the given address exists).
 */
 //go:nosplit
-func (self class) Listen(port gd.Int, bind_address gd.String) gd.Error { //gd:TCPServer.listen
+func (self class) Listen(port gd.Int, bind_address String.Readable) gd.Error { //gd:TCPServer.listen
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
-	callframe.Arg(frame, pointers.Get(bind_address))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bind_address)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_listen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

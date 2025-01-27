@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2i"
@@ -29,6 +30,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 ImporterMesh is a type of [Resource] analogous to [ArrayMesh]. It contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials.
@@ -48,7 +50,7 @@ type Any interface {
 Adds name for a blend shape that will be added with [method add_surface]. Must be called before surface is added.
 */
 func (self Instance) AddBlendShape(name string) { //gd:ImporterMesh.add_blend_shape
-	class(self).AddBlendShape(gd.NewString(name))
+	class(self).AddBlendShape(String.New(name))
 }
 
 /*
@@ -89,7 +91,7 @@ The [param flags] argument is the bitwise or of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 func (self Instance) AddSurface(primitive gdclass.MeshPrimitiveType, arrays []any) { //gd:ImporterMesh.add_surface
-	class(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), Dictionary.Nil, [1][1]gdclass.Material{}[0], gd.NewString(""), gd.Int(0))
+	class(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), Dictionary.Nil, [1][1]gdclass.Material{}[0], String.New(""), gd.Int(0))
 }
 
 /*
@@ -166,7 +168,7 @@ func (self Instance) GetSurfaceFormat(surface_idx int) int { //gd:ImporterMesh.g
 Sets a name for a given surface.
 */
 func (self Instance) SetSurfaceName(surface_idx int, name string) { //gd:ImporterMesh.set_surface_name
-	class(self).SetSurfaceName(gd.Int(surface_idx), gd.NewString(name))
+	class(self).SetSurfaceName(gd.Int(surface_idx), String.New(name))
 }
 
 /*
@@ -239,9 +241,9 @@ func New() Instance {
 Adds name for a blend shape that will be added with [method add_surface]. Must be called before surface is added.
 */
 //go:nosplit
-func (self class) AddBlendShape(name gd.String) { //gd:ImporterMesh.add_blend_shape
+func (self class) AddBlendShape(name String.Readable) { //gd:ImporterMesh.add_blend_shape
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_add_blend_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -264,12 +266,12 @@ func (self class) GetBlendShapeCount() gd.Int { //gd:ImporterMesh.get_blend_shap
 Returns the name of the blend shape at this index.
 */
 //go:nosplit
-func (self class) GetBlendShapeName(blend_shape_idx gd.Int) gd.String { //gd:ImporterMesh.get_blend_shape_name
+func (self class) GetBlendShapeName(blend_shape_idx gd.Int) String.Readable { //gd:ImporterMesh.get_blend_shape_name
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_shape_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_blend_shape_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -309,14 +311,14 @@ The [param flags] argument is the bitwise or of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 //go:nosplit
-func (self class) AddSurface(primitive gdclass.MeshPrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods Dictionary.Any, material [1]gdclass.Material, name gd.String, flags gd.Int) { //gd:ImporterMesh.add_surface
+func (self class) AddSurface(primitive gdclass.MeshPrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods Dictionary.Any, material [1]gdclass.Material, name String.Readable, flags gd.Int) { //gd:ImporterMesh.add_surface
 	var frame = callframe.New()
 	callframe.Arg(frame, primitive)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(blend_shapes)))
 	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(lods)))
 	callframe.Arg(frame, pointers.Get(material[0])[0])
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_add_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -354,12 +356,12 @@ func (self class) GetSurfacePrimitiveType(surface_idx gd.Int) gdclass.MeshPrimit
 Gets the name assigned to this surface.
 */
 //go:nosplit
-func (self class) GetSurfaceName(surface_idx gd.Int) gd.String { //gd:ImporterMesh.get_surface_name
+func (self class) GetSurfaceName(surface_idx gd.Int) String.Readable { //gd:ImporterMesh.get_surface_name
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_surface_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -469,10 +471,10 @@ func (self class) GetSurfaceFormat(surface_idx gd.Int) gd.Int { //gd:ImporterMes
 Sets a name for a given surface.
 */
 //go:nosplit
-func (self class) SetSurfaceName(surface_idx gd.Int, name gd.String) { //gd:ImporterMesh.set_surface_name
+func (self class) SetSurfaceName(surface_idx gd.Int, name String.Readable) { //gd:ImporterMesh.set_surface_name
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_set_surface_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

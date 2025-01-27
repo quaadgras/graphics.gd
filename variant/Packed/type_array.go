@@ -2,7 +2,6 @@ package Packed
 
 import (
 	"graphics.gd/variant/Color"
-	"graphics.gd/variant/String"
 	"graphics.gd/variant/Vector2"
 	"graphics.gd/variant/Vector3"
 	"graphics.gd/variant/Vector4"
@@ -97,7 +96,7 @@ func (array Int64Array) make(local []int64, proxy gd.PackedInt64Array) Int64Arra
 
 // StringArray is an array specifically designed to hold string. Packs data tightly, so it saves
 // memory for large array sizes.
-type StringArray struct {
+/*type StringArray struct {
 	Array[StringArray, string, gd.String, gd.PackedStringArray, *gd.PackedStringArray]
 }
 
@@ -110,7 +109,7 @@ func (array StringArray) make(local []string, proxy gd.PackedStringArray) String
 	array.local = local
 	array.proxy = proxy
 	return array
-}
+	}*/
 
 // Vector2Array is an array specifically designed to hold Vector2. Packs data tightly, so it saves
 // memory for large array sizes.

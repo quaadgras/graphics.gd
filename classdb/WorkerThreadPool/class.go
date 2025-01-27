@@ -15,6 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -27,6 +28,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 The [WorkerThreadPool] singleton allocates a set of [Thread]s (called worker threads) on project startup and provides methods for offloading tasks to them. This can be used for simple multithreading without having to create [Thread]s.
@@ -88,7 +90,7 @@ Returns a task ID that can be used by other methods.
 */
 func AddTask(action func()) int { //gd:WorkerThreadPool.add_task
 	once.Do(singleton)
-	return int(int(class(self).AddTask(Callable.New(action), false, gd.NewString(""))))
+	return int(int(class(self).AddTask(Callable.New(action), false, String.New(""))))
 }
 
 /*
@@ -119,7 +121,7 @@ Returns a group task ID that can be used by other methods.
 */
 func AddGroupTask(action func(), elements int) int { //gd:WorkerThreadPool.add_group_task
 	once.Do(singleton)
-	return int(int(class(self).AddGroupTask(Callable.New(action), gd.Int(elements), gd.Int(-1), false, gd.NewString(""))))
+	return int(int(class(self).AddGroupTask(Callable.New(action), gd.Int(elements), gd.Int(-1), false, String.New(""))))
 }
 
 /*
@@ -164,11 +166,11 @@ Returns a task ID that can be used by other methods.
 [b]Warning:[/b] Every task must be waited for completion using [method wait_for_task_completion] or [method wait_for_group_task_completion] at some point so that any allocated resources inside the task can be cleaned up.
 */
 //go:nosplit
-func (self class) AddTask(action Callable.Function, high_priority bool, description gd.String) gd.Int { //gd:WorkerThreadPool.add_task
+func (self class) AddTask(action Callable.Function, high_priority bool, description String.Readable) gd.Int { //gd:WorkerThreadPool.add_task
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(action)))
 	callframe.Arg(frame, high_priority)
-	callframe.Arg(frame, pointers.Get(description))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(description)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_add_task, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -215,13 +217,13 @@ Returns a group task ID that can be used by other methods.
 [b]Warning:[/b] Every task must be waited for completion using [method wait_for_task_completion] or [method wait_for_group_task_completion] at some point so that any allocated resources inside the task can be cleaned up.
 */
 //go:nosplit
-func (self class) AddGroupTask(action Callable.Function, elements gd.Int, tasks_needed gd.Int, high_priority bool, description gd.String) gd.Int { //gd:WorkerThreadPool.add_group_task
+func (self class) AddGroupTask(action Callable.Function, elements gd.Int, tasks_needed gd.Int, high_priority bool, description String.Readable) gd.Int { //gd:WorkerThreadPool.add_group_task
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(action)))
 	callframe.Arg(frame, elements)
 	callframe.Arg(frame, tasks_needed)
 	callframe.Arg(frame, high_priority)
-	callframe.Arg(frame, pointers.Get(description))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(description)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_add_group_task, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/classdb/Resource"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 AudioStreamWAV stores sound samples loaded from WAV files. To play the stored sound, use an [AudioStreamPlayer] (for non-positional audio) or [AudioStreamPlayer2D]/[AudioStreamPlayer3D] (for positional audio). The sound can be looped.
@@ -48,7 +50,7 @@ Saves the AudioStreamWAV as a WAV file to [param path]. Samples with IMA ADPCM o
 [b]Note:[/b] A [code].wav[/code] extension is automatically appended to [param path] if it is missing.
 */
 func (self Instance) SaveToWav(path string) error { //gd:AudioStreamWAV.save_to_wav
-	return error(gd.ToError(class(self).SaveToWav(gd.NewString(path))))
+	return error(gd.ToError(class(self).SaveToWav(String.New(path))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -264,9 +266,9 @@ Saves the AudioStreamWAV as a WAV file to [param path]. Samples with IMA ADPCM o
 [b]Note:[/b] A [code].wav[/code] extension is automatically appended to [param path] if it is missing.
 */
 //go:nosplit
-func (self class) SaveToWav(path gd.String) gd.Error { //gd:AudioStreamWAV.save_to_wav
+func (self class) SaveToWav(path String.Readable) gd.Error { //gd:AudioStreamWAV.save_to_wav
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_save_to_wav, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

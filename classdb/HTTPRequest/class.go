@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
 
@@ -28,6 +29,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 A node with the ability to send HTTP requests. Uses [HTTPClient] internally.
@@ -207,7 +209,7 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 [b]Note:[/b] It's recommended to use transport encryption (TLS) and to avoid sending sensitive information (such as login credentials) in HTTP GET URL parameters. Consider using HTTP POST requests or HTTP headers for such information instead.
 */
 func (self Instance) Request(url string) error { //gd:HTTPRequest.request
-	return error(gd.ToError(class(self).Request(gd.NewString(url), gd.NewPackedStringSlice([1][]string{}[0]), 0, gd.NewString(""))))
+	return error(gd.ToError(class(self).Request(String.New(url), gd.NewPackedStringSlice([1][]string{}[0]), 0, String.New(""))))
 }
 
 /*
@@ -215,7 +217,7 @@ Creates request on the underlying [HTTPClient] using a raw array of bytes for th
 Returns [constant OK] if request is successfully created. (Does not imply that the server has responded), [constant ERR_UNCONFIGURED] if not in the tree, [constant ERR_BUSY] if still processing previous request, [constant ERR_INVALID_PARAMETER] if given string is not a valid URL format, or [constant ERR_CANT_CONNECT] if not using thread and the [HTTPClient] cannot connect to host.
 */
 func (self Instance) RequestRaw(url string) error { //gd:HTTPRequest.request_raw
-	return error(gd.ToError(class(self).RequestRaw(gd.NewString(url), gd.NewPackedStringSlice([1][]string{}[0]), 0, gd.NewPackedByteSlice([1][]byte{}[0]))))
+	return error(gd.ToError(class(self).RequestRaw(String.New(url), gd.NewPackedStringSlice([1][]string{}[0]), 0, gd.NewPackedByteSlice([1][]byte{}[0]))))
 }
 
 /*
@@ -259,7 +261,7 @@ Sets the proxy server for HTTP requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Instance) SetHttpProxy(host string, port int) { //gd:HTTPRequest.set_http_proxy
-	class(self).SetHttpProxy(gd.NewString(host), gd.Int(port))
+	class(self).SetHttpProxy(String.New(host), gd.Int(port))
 }
 
 /*
@@ -267,7 +269,7 @@ Sets the proxy server for HTTPS requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Instance) SetHttpsProxy(host string, port int) { //gd:HTTPRequest.set_https_proxy
-	class(self).SetHttpsProxy(gd.NewString(host), gd.Int(port))
+	class(self).SetHttpsProxy(String.New(host), gd.Int(port))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -293,7 +295,7 @@ func (self Instance) DownloadFile() string {
 }
 
 func (self Instance) SetDownloadFile(value string) {
-	class(self).SetDownloadFile(gd.NewString(value))
+	class(self).SetDownloadFile(String.New(value))
 }
 
 func (self Instance) DownloadChunkSize() int {
@@ -351,12 +353,12 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 [b]Note:[/b] It's recommended to use transport encryption (TLS) and to avoid sending sensitive information (such as login credentials) in HTTP GET URL parameters. Consider using HTTP POST requests or HTTP headers for such information instead.
 */
 //go:nosplit
-func (self class) Request(url gd.String, custom_headers gd.PackedStringArray, method gdclass.HTTPClientMethod, request_data gd.String) gd.Error { //gd:HTTPRequest.request
+func (self class) Request(url String.Readable, custom_headers gd.PackedStringArray, method gdclass.HTTPClientMethod, request_data String.Readable) gd.Error { //gd:HTTPRequest.request
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(url))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
 	callframe.Arg(frame, pointers.Get(custom_headers))
 	callframe.Arg(frame, method)
-	callframe.Arg(frame, pointers.Get(request_data))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(request_data)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_request, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -369,9 +371,9 @@ Creates request on the underlying [HTTPClient] using a raw array of bytes for th
 Returns [constant OK] if request is successfully created. (Does not imply that the server has responded), [constant ERR_UNCONFIGURED] if not in the tree, [constant ERR_BUSY] if still processing previous request, [constant ERR_INVALID_PARAMETER] if given string is not a valid URL format, or [constant ERR_CANT_CONNECT] if not using thread and the [HTTPClient] cannot connect to host.
 */
 //go:nosplit
-func (self class) RequestRaw(url gd.String, custom_headers gd.PackedStringArray, method gdclass.HTTPClientMethod, request_data_raw gd.PackedByteArray) gd.Error { //gd:HTTPRequest.request_raw
+func (self class) RequestRaw(url String.Readable, custom_headers gd.PackedStringArray, method gdclass.HTTPClientMethod, request_data_raw gd.PackedByteArray) gd.Error { //gd:HTTPRequest.request_raw
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(url))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
 	callframe.Arg(frame, pointers.Get(custom_headers))
 	callframe.Arg(frame, method)
 	callframe.Arg(frame, pointers.Get(request_data_raw))
@@ -495,20 +497,20 @@ func (self class) GetMaxRedirects() gd.Int { //gd:HTTPRequest.get_max_redirects
 }
 
 //go:nosplit
-func (self class) SetDownloadFile(path gd.String) { //gd:HTTPRequest.set_download_file
+func (self class) SetDownloadFile(path String.Readable) { //gd:HTTPRequest.set_download_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_download_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetDownloadFile() gd.String { //gd:HTTPRequest.get_download_file
+func (self class) GetDownloadFile() String.Readable { //gd:HTTPRequest.get_download_file
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_download_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -583,9 +585,9 @@ Sets the proxy server for HTTP requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
-func (self class) SetHttpProxy(host gd.String, port gd.Int) { //gd:HTTPRequest.set_http_proxy
+func (self class) SetHttpProxy(host String.Readable, port gd.Int) { //gd:HTTPRequest.set_http_proxy
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(host))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, port)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_http_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -597,9 +599,9 @@ Sets the proxy server for HTTPS requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
-func (self class) SetHttpsProxy(host gd.String, port gd.Int) { //gd:HTTPRequest.set_https_proxy
+func (self class) SetHttpsProxy(host String.Readable, port gd.Int) { //gd:HTTPRequest.set_https_proxy
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(host))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, port)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_https_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())

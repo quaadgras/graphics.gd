@@ -14,6 +14,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -26,6 +27,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ String.Readable
 
 /*
 Resource is the base class for all Godot-specific resource types, serving primarily as data containers. Since they inherit from [RefCounted], resources are reference-counted and freed when no longer in use. They can also be nested within other resources, and saved on disk. [PackedScene], one of the most common [Object]s in a Godot project, is also a resource, uniquely capable of storing and instantiating the [Node]s it contains as many times as desired.
@@ -92,7 +94,7 @@ func (Instance) _setup_local_to_scene(impl func(ptr unsafe.Pointer)) (cb gd.Exte
 Sets the [member resource_path] to [param path], potentially overriding an existing cache entry for this path. Further attempts to load an overridden resource by path will instead return this resource.
 */
 func (self Instance) TakeOverPath(path string) { //gd:Resource.take_over_path
-	class(self).TakeOverPath(gd.NewString(path))
+	class(self).TakeOverPath(String.New(path))
 }
 
 /*
@@ -186,7 +188,7 @@ func (self Instance) ResourcePath() string {
 }
 
 func (self Instance) SetResourcePath(value string) {
-	class(self).SetPath(gd.NewString(value))
+	class(self).SetPath(String.New(value))
 }
 
 func (self Instance) ResourceName() string {
@@ -194,7 +196,7 @@ func (self Instance) ResourceName() string {
 }
 
 func (self Instance) SetResourceName(value string) {
-	class(self).SetName(gd.NewString(value))
+	class(self).SetName(String.New(value))
 }
 
 func (self Instance) ResourceSceneUniqueId() string {
@@ -202,7 +204,7 @@ func (self Instance) ResourceSceneUniqueId() string {
 }
 
 func (self Instance) SetResourceSceneUniqueId(value string) {
-	class(self).SetSceneUniqueId(gd.NewString(value))
+	class(self).SetSceneUniqueId(String.New(value))
 }
 
 /*
@@ -227,9 +229,9 @@ func (class) _setup_local_to_scene(impl func(ptr unsafe.Pointer)) (cb gd.Extensi
 }
 
 //go:nosplit
-func (self class) SetPath(path gd.String) { //gd:Resource.set_path
+func (self class) SetPath(path String.Readable) { //gd:Resource.set_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_set_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -239,39 +241,39 @@ func (self class) SetPath(path gd.String) { //gd:Resource.set_path
 Sets the [member resource_path] to [param path], potentially overriding an existing cache entry for this path. Further attempts to load an overridden resource by path will instead return this resource.
 */
 //go:nosplit
-func (self class) TakeOverPath(path gd.String) { //gd:Resource.take_over_path
+func (self class) TakeOverPath(path String.Readable) { //gd:Resource.take_over_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_take_over_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPath() gd.String { //gd:Resource.get_path
+func (self class) GetPath() String.Readable { //gd:Resource.get_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetName(name gd.String) { //gd:Resource.set_name
+func (self class) SetName(name String.Readable) { //gd:Resource.set_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_set_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetName() gd.String { //gd:Resource.get_name
+func (self class) GetName() String.Readable { //gd:Resource.get_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -336,30 +338,30 @@ func (self class) SetupLocalToScene() { //gd:Resource.setup_local_to_scene
 Generates a unique identifier for a resource to be contained inside a [PackedScene], based on the current date, time, and a random value. The returned string is only composed of letters ([code]a[/code] to [code]y[/code]) and numbers ([code]0[/code] to [code]8[/code]). See also [member resource_scene_unique_id].
 */
 //go:nosplit
-func (self class) GenerateSceneUniqueId() gd.String { //gd:Resource.generate_scene_unique_id
+func (self class) GenerateSceneUniqueId() String.Readable { //gd:Resource.generate_scene_unique_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_generate_scene_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetSceneUniqueId(id gd.String) { //gd:Resource.set_scene_unique_id
+func (self class) SetSceneUniqueId(id String.Readable) { //gd:Resource.set_scene_unique_id
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(id))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(id)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_set_scene_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSceneUniqueId() gd.String { //gd:Resource.get_scene_unique_id
+func (self class) GetSceneUniqueId() String.Readable { //gd:Resource.get_scene_unique_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_scene_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.String](r_ret.Get())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
