@@ -149,10 +149,14 @@ To run the go tests for this module `cd internal && gd test`.
 The best way you can contribute to graphics.gd is to **try it**, we need your help to find out
 what's working and what doesn't, so do please let us know of any trouble that you run into!
 
-The next best thing you can do is to help improve the Variant packages, these are general-purpose
+The next best thing you can do to help is improve the Variant packages, these are general-purpose
 packages inspired by the Godot engine's Variant type. Specifically any changes you can make to
 optimise functionality and/or improve test converage of these packages is more than welcome
 (such as specialised assembly routines for vector operations.)
+
+Thirdly, the project needs more tests to ensure that everything is working, the best way you can
+guarantee that graphics.gd won't break on you is to contribute tests that cover the functionality
+you need!
 
 ## See Also
 
