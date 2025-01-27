@@ -49,6 +49,10 @@ func Engine() {
 // Loader starts up the loading and initialization process of the graphics engine.
 // After this function is called, all graphics functions will be available to use.
 // A subsequent call to [Engine] is required to continue to the default main loop.
+//
+// Blocks indefinitely if the editor is running. As such, make sure to register all
+// of your classes before calling this function if you want them to be available in
+// the editor.
 func Loader() {
 	if pause_main != nil {
 		gd.NewCallable(func() {
