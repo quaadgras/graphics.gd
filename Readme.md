@@ -107,6 +107,54 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 * Enum                   -> `//gd:ClassName.EnumName`
 ```
 
+## Variant Type Table
+
+| Engine Type        | Default Convenience Type  | Allocation Efficient Type    |
+|--------------------|---------------------------|------------------------------|
+| Nil                | `nil`                     | `nil`                        |
+| Variant            | `any`                     | `variant.Any`                |
+| bool               | `bool`                    | `bool`                       |
+| int                | `int`                     | `int64`                      |
+| float              | `float`                   | `float64`                    |
+| String             | `string`                  | `String.Readable`            |
+| Vector2            | `Vector2.XY`              | `Vector2.XY`                 |
+| Vector2i           | `Vector2i.XY`             | `Vector2i.XY`                |
+| Rect2              | `Rect2.PositionSize`      | `Rect2.PositionSize`         |
+| Rect2i             | `Rect2i.PositionSize`     | `Rect2i.PositionSize`        |
+| Vector3            | `Vector3.XYZ`             | `Vector3.XYZ`                |
+| Vector3i           | `Vector3i.XYZ`            | `Vector3i.XYZ`               |
+| Transform2D        | `Transform2D`             | `Transform2D`                |
+| Vector4            | `Vector4.XYZW`            | `Vector4.XYZW`               |
+| Vector4i           | `Vector4i.XYZW`           | `Vector4i.XYZW`              |
+| Plane              | `Plane.NormalD`           | `Plane.NormalD`              |
+| Quaternion         | `Quaternion.IJKL`         | `Quaternion.IJKL`            |
+| AABB               | `AABB.PositionSize`       | `AABB.PositionSize`          |
+| Basis              | `Basis.XYZ`               | `Basis.XYZ`                  |
+| Transform3D        | `Transform3D.BasisOrigin` | `Transform3D.BasisOrigin`    |
+| Projection         | `Projection.XYZW`         | `Projection.XYZW`            |
+| Color              | `Color.RGBA`              | `Color.RGBA`                 |
+| StringName         | `string`                  | `String.Name`                |
+| NodePath           | `string`                  | `Path.ToNode`                |
+| Signal             | `chan T`                  | `Signal.Any`                 |
+| RID                | `RID.T`                   | `RID.Any`                    |
+| Object             | `T.Instance`              | `T.Advanced`                 |
+| Callable           | `func(...T) (...T)`       | `Callable.Function`          |
+| Dictionary         | `struct/map[T]T`          | `Dictionary.Any`             |
+| Array              | `[]T`                     | `Array.Contains[T]`          |
+| PackedByteArray    | `[]byte`                  | `Packed.Bytes`               |
+| PackedInt32Array   | `[]int32`                 | `Packed.Array[int32]`        |
+| PackedInt64Array   | `[]int64`                 | `Packed.Array[int64]`        |
+| PackedFloat32Array | `[]float32`               | `Packed.Array[float32]`      |
+| PackedFloat64Array | `[]float64`               | `Packed.Array[float64]`      |
+| PackedStringArray  | `[]string`                | `Packed.Array[string]`       |
+| PackedVector2Array | `[]Vector2.XY`            | `Packed.Array[Vector2.XY]`   |
+| PackedVector3Array | `[]Vector3.XYZ`           | `Packed.Array[Vector3.XYZ]`  |
+| PackedColorArray   | `[]Color.RGBA`            | `Packed.Array[Color.RGBA]`   |
+| PackedVector4Array | `[]Vector4.XYZW`          | `Packed.Array[Vector4.XYZW]` |
+
+
+
+
 ## Performance
 It's feasible to write high performance code using this module, keep to Engine types where possible and avoid
 allocating memory on the heap in frequently called functions. `Advanced` instances are available for each class
