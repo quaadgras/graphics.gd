@@ -2,103 +2,98 @@
 package Signal
 
 import (
-	"sync"
+	"iter"
 
-	"graphics.gd/classdb/Engine"
-	gd "graphics.gd/internal"
+	"graphics.gd/variant"
 	"graphics.gd/variant/Callable"
+	"graphics.gd/variant/String"
 )
 
-// Chan is a multi-producer, multi-consumer channel, when T is a value, it denotes the
-// value being sent on the channel, when T is a function, the results of calling that
-// function are passed on the channel instead.
-type Chan[T any] struct {
-	_ [0]sync.Mutex //nocopy
-
-	owner any
-	topic string
-	funcs []Callable.Function
-	proxy *gd.Signal
+// Any is a multi-producer, multi-consumer channel. Unlike with standard channels, consumers
+// are not guaranteed to be running on a different goroutine, so emitting a signal may or may not
+// be synchronous or asynchronous depending on the underlying [API] implementation. Any number of
+// [variant.Any] values can be sent in a single send operation.
+//
+// Also known as a Pub/Sub and/or message queue.
+type Any struct {
+	state complex128
+	proxy API
 }
 
-type Any = gd.Signal
+// Nil reference value, do not modify.
+var Nil Any
 
-const ErrInvalidParameter = Engine.ErrInvalidParameter
-
-// Attach connects this signal to the specified [Callable.Func]
-// A signal can only be connected once to the same [Callable.Func].
-// If the signal is already connected, returns [ErrInvalidParameter]
-func (c *Chan[T]) Attach(fn Callable.Function) error { //gd:Signal.connect
-	if c.proxy != nil {
-		//return c.proxy.C(fn)
-	}
-	for _, f := range c.funcs {
-		if f == fn {
-			return Engine.ErrInvalidParameter
-		}
-	}
-	c.funcs = append(c.funcs, fn)
-	return nil
+// Consumer represents a connection between a signal and a callable.
+type Consumer struct {
+	Callable Callable.Function `gd:"callable"`
+	Flags    Flags             `gd:"flags"`
 }
 
-// Remove disconnects this signal from the specified [Callable.Func].
-func (c *Chan[T]) Remove(fn Callable.Function) { //gd:Signal.disconnect
-	if c.proxy != nil {
-		//if c.proxy.Has(fn) {
-		//	c.proxy.Remove(fn)
-		//}
-		return
+type Flags int
+
+const (
+	Deferred Flags = 1 << iota // the consumer will be notifed asynchronously.
+	Persist                    // the consumer will be serialized.
+	OneShot                    // the consumer will be removed after the first signal.
+	Weak                       // the consumer can be garbage collected.
+)
+
+// Attach connects this signal to the specified [Callable.Function]
+// A signal can only be connected once to the same [Callable.Function].
+// If the signal is already connected, returns [Error.InvalidParameter]
+func (signal *Any) Attach(consumer Callable.Function, flags ...Flags) error { //gd:Signal.connect
+	var f Flags
+	for _, f := range flags {
+		f |= f
 	}
-	for i, f := range c.funcs {
-		if f == fn {
-			c.funcs = append(c.funcs[:i], c.funcs[i+1:]...)
-			return
-		}
+	if signal.proxy == nil {
+		signal.proxy = &localFirst{}
 	}
+	return signal.proxy.Attach(signal.state, consumer, f)
 }
 
-// Emit emits this signal. All Callables connected to this signal will be triggered.
-func (c *Chan[T]) Emit(signal T) { //gd:Signal.emit
-	if c.proxy != nil {
-		//c.proxy.Emit(signal)
-		return
-	}
-	for _, f := range c.funcs {
-		f.Call()
+// Remove the specified [Callable.Function] from this signal.
+func (signal *Any) Remove(consumer Callable.Function) { //gd:Signal.disconnect
+	if signal.proxy != nil {
+		signal.proxy.Remove(signal.state, consumer)
 	}
 }
 
-// Callables returns a slice of callables for this signal.
-func (c *Chan[T]) Callables() []Callable.Function { //gd:Signal.get_connections
-	if c.proxy != nil {
-		//return c.proxy.Callables()
+// Emit emits this signal. All consumers to this signal will be notified.
+func (signal Any) Emit(values ...variant.Any) { //gd:Signal.emit
+	if signal.proxy != nil {
+		signal.proxy.Emit(signal.state, values...)
 	}
-	return c.funcs
+}
+
+// Consumers returns a sequence on all of the connected consumers.
+func (signal Any) Consumers() iter.Seq[Consumer] { //gd:Signal.get_connections
+	if signal.proxy != nil {
+		return signal.proxy.Consumers(signal.state)
+	}
+	return func(func(Consumer) bool) {}
 }
 
 // Name returns the name of this signal.
-func (c *Chan[T]) Name() string { //gd:Signal.get_name
-	if c.proxy != nil {
-		//return c.proxy.Name()
+func (signal Any) Name() String.Readable { //gd:Signal.get_name
+	if signal.proxy != nil {
+		return signal.proxy.Name(signal.state)
 	}
-	return c.topic
+	return String.New()
 }
 
-// Emitter returns the object that emits this signal.
-func (c *Chan[T]) Emitter() any { //gd:Signal.get_object Signal.get_object_id
-	if c.proxy != nil {
-		//return c.proxy.Emitter()
+// Emitter returns the originater associated with this signal.
+func (signal Any) Emitter() variant.Any { //gd:Signal.get_object Signal.get_object_id
+	if signal.proxy != nil {
+		return signal.proxy.Emitter(signal.state)
 	}
-	return c.owner
+	return variant.Nil
 }
 
 // Has returns true if the specified callable is connected to this signal.
-func (c *Chan[T]) Has(fn Callable.Function) bool { //gd:Signal.is_connected
-	if c.proxy != nil {
-		//return c.proxy.Has(fn)
-	}
-	for _, f := range c.funcs {
-		if f == fn {
+func (signal Any) Has(fn Callable.Function) bool { //gd:Signal.is_connected
+	for c := range signal.Consumers() {
+		if c.Callable == fn {
 			return true
 		}
 	}
@@ -106,34 +101,8 @@ func (c *Chan[T]) Has(fn Callable.Function) bool { //gd:Signal.is_connected
 }
 
 // IsNull returns true if this signal is not connected to any callable.
-func (c *Chan[T]) IsNull() bool { //gd:Signal.is_null
-	return c.owner == nil && c.proxy == nil && len(c.funcs) == 0
-}
-
-// Proxy converts the signal into a proxied signal and returns the proxy.
-func (c *Chan[T]) Proxy(freed bool, alloc func(any, string) gd.Signal) *gd.Signal {
-	if c.proxy != nil {
-		//return c.proxy
-	}
-	if c.IsNull() {
-		return nil
-	}
-	//proxy := alloc(c.owner, c.topic)
-	//for _, f := range c.funcs {
-	//	proxy.Attach(f)
-	//}
-	c.funcs = nil
-	//c.proxy = proxy
-	//return proxy
-	return nil
-}
-
-// Reset clears all connections to this signal.
-func (c *Chan[T]) Reset() {
-	if c.proxy != nil {
-		c.proxy.Free()
-	}
-	*c = Chan[T]{}
+func (signal Any) IsNull() bool { //gd:Signal.is_null
+	return signal == Nil
 }
 
 // Solo value that can be signaled, add this as a field inside a [classdb.Extension]
@@ -144,9 +113,9 @@ type Solo[A any] struct {
 
 // Emit the value to all connected signal handlers. Safe to call from any goroutine.
 func (signal Solo[A]) Emit(a A) {
-	Callable.New(func() {
-		signal.Any.Emit(gd.NewVariant(a))
-	})
+	Callable.Defer(Callable.New(func() {
+		signal.Any.Emit(variant.New(a))
+	}))
 }
 
 // Pair of values that can be signaled, add this as a field inside a [classdb.Extension]
@@ -158,7 +127,7 @@ type Pair[A, B any] struct {
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 func (signal Pair[A, B]) Emit(a A, b B) {
 	Callable.Defer(Callable.New(func() {
-		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b))
+		signal.Any.Emit(variant.New(a), variant.New(b))
 	}))
 }
 
@@ -171,7 +140,7 @@ type Trio[A, B, C any] struct {
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 func (signal Trio[A, B, C]) Emit(a A, b B, c C) {
 	Callable.Defer(Callable.New(func() {
-		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b), gd.NewVariant(c))
+		signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c))
 	}))
 }
 
@@ -184,7 +153,7 @@ type Quad[A, B, C, D any] struct {
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 func (signal Quad[A, B, C, D]) Emit(a A, b B, c C, d D) {
 	Callable.Defer(Callable.New(func() {
-		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b), gd.NewVariant(c), gd.NewVariant(d))
+		signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c), variant.New(d))
 	}))
 }
 
@@ -198,7 +167,7 @@ type Quin[A, B, C, D, E any] struct {
 // This function is safe to call from any goroutine.
 func (signal Quin[A, B, C, D, E]) Emit(a A, b B, c C, d D, e E) {
 	Callable.Defer(Callable.New(func() {
-		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b), gd.NewVariant(c), gd.NewVariant(d), gd.NewVariant(e))
+		signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c), variant.New(d), variant.New(e))
 	}))
 }
 
@@ -212,6 +181,6 @@ type Hexa[A, B, C, D, E, F any] struct {
 // This function is safe to call from any goroutine.
 func (signal Hexa[A, B, C, D, E, F]) Emit(a A, b B, c C, d D, e E, f F) {
 	Callable.Defer(Callable.New(func() {
-		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b), gd.NewVariant(c), gd.NewVariant(d), gd.NewVariant(e), gd.NewVariant(f))
+		signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c), variant.New(d), variant.New(e), variant.New(f))
 	}))
 }

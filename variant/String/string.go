@@ -66,6 +66,9 @@ func MakeComparable[T Any](s T) Comparable {
 
 // New returns a new [Readable] string concatenated from the given values.
 func New(val ...any) Readable { //gd:String() str
+	if len(val) == 0 {
+		return Readable{}
+	}
 	if len(val) == 1 {
 		switch v := val[0].(type) {
 		case Rune:

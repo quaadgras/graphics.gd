@@ -6,6 +6,9 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
+// This package will be replaced with String-variant package based string interning when Go 1.24 is released
+// the goal is to use the new weak pointers to automatically maintain a cross-implementation interning table.
+
 var static = make(map[string]gd.StringName)
 
 func init() {

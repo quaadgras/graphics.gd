@@ -1186,6 +1186,16 @@ const (
 	ErrPrinterOnFire Error = 48
 )
 
+type DonorInfo struct {
+	PlatinumSponsors []string `gd:"platinum_sponsors"`
+	GoldSponsors     []string `gd:"gold_sponsors"`
+	SilverSponsors   []string `gd:"silver_sponsors"`
+	BronzeSponsors   []string `gd:"bronze_sponsors"`
+	MiniSponsors     []string `gd:"mini_sponsors"`
+	GoldDonors       []string `gd:"gold_donors"`
+	SilverDonors     []string `gd:"silver_donors"`
+	BronzeDonors     []string `gd:"bronze_donors"`
+}
 type VersionInfo struct {
 	Major     int    `gd:"major"`
 	Minor     int    `gd:"minor"`
@@ -1211,14 +1221,4 @@ type Part struct {
 	Files     []string `gd:"files"`
 	Copyright []string `gd:"copyright"`
 	License   string   `gd:"license"`
-}
-type DonorInfo struct {
-	PlatinumSponsors []string `gd:"platinum_sponsors"`
-	GoldSponsors     []string `gd:"gold_sponsors"`
-	SilverSponsors   []string `gd:"silver_sponsors"`
-	BronzeSponsors   []string `gd:"bronze_sponsors"`
-	MiniSponsors     []string `gd:"mini_sponsors"`
-	GoldDonors       []string `gd:"gold_donors"`
-	SilverDonors     []string `gd:"silver_donors"`
-	BronzeDonors     []string `gd:"bronze_donors"`
 }

@@ -104,9 +104,6 @@ func importsVariant(class gdjson.Class, identifier, s string) iter.Seq[string] {
 		case "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
 			"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath":
 			yield("graphics.gd/variant/" + s)
-		case "Signal":
-			//return "graphics.gd/variant/" + s
-			return
 		case "PackedVector2Array":
 			yield("graphics.gd/variant/Vector2")
 		case "PackedVector3Array":
@@ -163,9 +160,10 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 	case "PackedStringArray", "PackedInt32Array", "PackedInt64Array", "PackedFloat32Array",
 		"PackedFloat64Array", "PackedVector2Array", "PackedVector3Array", "PackedVector4Array", "PackedColorArray", "PackedByteArray",
 		"Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
-		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath", "RID",
-		"Signal":
+		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath", "RID":
 		return maybeInternal(gdType)
+	case "Signal":
+		return "Signal.Any"
 	case "Array":
 		return "Array.Any"
 	case "Dictionary":
@@ -331,8 +329,6 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 		return "RID.Any"
 	case "ObjectID":
 		return "Object.ID"
-	case "Signal":
-		return "chan []any"
 	case "Dictionary":
 		rtype, ok := gdjson.Structables[lookup]
 		if !ok {

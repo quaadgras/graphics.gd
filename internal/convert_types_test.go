@@ -11,6 +11,7 @@ import (
 	"graphics.gd/classdb/Resource"
 	"graphics.gd/classdb/SceneTree"
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/pointers"
 	"graphics.gd/variant"
 	"graphics.gd/variant/AABB"
 	"graphics.gd/variant/Array"
@@ -103,7 +104,8 @@ func (c Converter) Callable() Callable.Function {
 	})
 }
 func (c Converter) Signal() Signal.Any {
-	return gd.NewSignalOf(c.AsObject(), StringName.New("property_list_changed"))
+	sig := gd.NewSignalOf(c.AsObject(), StringName.New("property_list_changed"))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(sig))
 }
 func (c Converter) Dictionary() Dictionary.Any {
 	var dict = Dictionary.New[string, string]()
@@ -187,7 +189,7 @@ func (c Converter) ValidCallable(cc Callable.Function) bool {
 	return cc.Call().String() == c.Callable().Call().String()
 }
 func (c Converter) ValidSignal(s Signal.Any) bool {
-	return s.GetName().String() == c.Signal().GetName().String()
+	return s.Name().String() == c.Signal().Name().String()
 }
 func (c Converter) ValidDictionary(d Dictionary.Any) bool {
 	return d.Index(variant.New("hello")).Interface().(gd.String).String() == "world"

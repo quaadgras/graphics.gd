@@ -14,6 +14,7 @@ import (
 	DictionaryType "graphics.gd/variant/Dictionary"
 	FloatType "graphics.gd/variant/Float"
 	NodePathType "graphics.gd/variant/NodePath"
+	SignalType "graphics.gd/variant/Signal"
 	StringType "graphics.gd/variant/String"
 )
 
@@ -154,6 +155,9 @@ func NewVariant(v any) Variant {
 		case CallableType.Function:
 			var arg = callframe.Arg(frame, pointers.Get(InternalCallable(val)))
 			Global.variant.FromType[TypeCallable](ret, arg.Addr())
+		case SignalType.Any:
+			var arg = callframe.Arg(frame, pointers.Get(InternalSignal(val)))
+			Global.variant.FromType[TypeSignal](ret, arg.Addr())
 		case Variant:
 			return val
 		case VariantPkg.Any:
@@ -412,7 +416,8 @@ func (variant Variant) Interface() any {
 		callable := variantAsPointerType[Callable](variant, vtype)
 		return CallableType.Through(CallableProxy{}, pointers.Pack(callable))
 	case TypeSignal:
-		return variantAsPointerType[Signal](variant, vtype)
+		signal := variantAsPointerType[Signal](variant, vtype)
+		return SignalType.Via(SignalProxy{}, pointers.Pack(signal))
 	case TypeDictionary:
 		dict := variantAsPointerType[Dictionary](variant, vtype)
 		return DictionaryType.Through(DictionaryProxy[VariantPkg.Any, VariantPkg.Any]{}, pointers.Pack(dict))
