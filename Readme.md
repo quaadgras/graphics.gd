@@ -125,9 +125,6 @@ arguments fit entirely within registers. TBA.
 There are a number of examples in the [examples](https://github.com/grow-graphics/eg)
 repo. All examples are designed to be run with `gd run` without any additional setup.
 
-## Testing
-To run the go tests for this module `cd internal && gd test`.
-
 ## Supported Platforms
 
 * Windows
@@ -157,6 +154,8 @@ optimise functionality and/or improve test converage of these packages is more t
 Thirdly, the project needs more tests to ensure that everything is working, the best way you can
 guarantee that graphics.gd won't break on you is to contribute tests that cover the functionality
 you need!
+
+To run the go tests for graphics.gd, cd into the repo and run `cd internal && gd test`.
 
 ## See Also
 
