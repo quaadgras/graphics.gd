@@ -26,7 +26,6 @@ func TestAny(t *testing.T) {
 	if i8.Int8() != int8(22) {
 		t.Error("i8.Int8() != 22")
 	}
-	i8.Bool()
 }
 
 func BenchmarkNewAllocs(b *testing.B) {

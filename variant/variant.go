@@ -169,7 +169,10 @@ var Nil Any
 func load[T any](a Any) T {
 	_, ok := a.value.(*T)
 	if !ok {
-		panic("variant conversion: variant is " + a.Type().String() + ", not " + reflect.TypeFor[T]().String())
+		if val, ok := a.value.(T); ok {
+			return val
+		}
+		panic("variant conversion: variant is " + reflect.TypeOf(a.value).String() + ", not " + reflect.TypeFor[T]().String())
 	}
 	return *(*T)(unsafe.Pointer(&a.local))
 }

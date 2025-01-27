@@ -6,7 +6,7 @@ import (
 
 	ArrayType "graphics.gd/variant/Array"
 	DictionaryType "graphics.gd/variant/Dictionary"
-	NodePathType "graphics.gd/variant/NodePath"
+	"graphics.gd/variant/Path"
 	SignalType "graphics.gd/variant/Signal"
 	StringType "graphics.gd/variant/String"
 )
@@ -33,7 +33,7 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 		}
 		return TypeArray, true
 	case reflect.String:
-		if rtype == reflect.TypeFor[NodePathType.String]() {
+		if rtype == reflect.TypeFor[Path.ToNode]() {
 			return TypeNodePath, true
 		}
 		return TypeString, true
