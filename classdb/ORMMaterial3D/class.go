@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/BaseMaterial3D"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
@@ -31,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 ORMMaterial3D's properties are inherited from [BaseMaterial3D]. Unlike [StandardMaterial3D], ORMMaterial3D uses a single texture for ambient occlusion, roughness and metallic maps, known as an ORM texture.

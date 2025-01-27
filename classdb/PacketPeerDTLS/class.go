@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/PacketPeer"
 
 var _ Object.ID
@@ -29,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This class represents a DTLS peer connection. It can be used to connect to a DTLS server, and is returned by [method DTLSServer.take_connection].

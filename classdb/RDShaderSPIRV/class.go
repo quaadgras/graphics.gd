@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -29,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 [RDShaderSPIRV] represents a [RDShaderFile]'s [url=https://www.khronos.org/spir/]SPIR-V[/url] code for various shader stages, as well as possible compilation error messages. SPIR-V is a low-level intermediate shader representation. This intermediate representation is not used directly by GPUs for rendering, but it can be compiled into binary shaders that GPUs can understand. Unlike compiled shaders, SPIR-V is portable across GPU models and driver versions.

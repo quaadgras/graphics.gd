@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Resource"
 
@@ -30,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 InputEventFromWindow represents events specifically received by windows. This includes mouse events, keyboard events in focused windows or touch screen actions.

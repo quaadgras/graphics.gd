@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
@@ -33,6 +34,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Base node for geometry-based visual instances. Shares some common functionality like visibility and custom materials.
@@ -54,14 +56,14 @@ Set the value of a shader uniform for this instance only ([url=$DOCS_URL/tutoria
 [b]Note:[/b] Per-instance shader uniforms are currently only available in 3D, so there is no 2D equivalent of this method.
 */
 func (self Instance) SetInstanceShaderParameter(name string, value any) { //gd:GeometryInstance3D.set_instance_shader_parameter
-	class(self).SetInstanceShaderParameter(gd.NewStringName(name), gd.NewVariant(value))
+	class(self).SetInstanceShaderParameter(String.Name(String.New(name)), gd.NewVariant(value))
 }
 
 /*
 Get the value of a shader parameter as set on this instance.
 */
 func (self Instance) GetInstanceShaderParameter(name string) any { //gd:GeometryInstance3D.get_instance_shader_parameter
-	return any(class(self).GetInstanceShaderParameter(gd.NewStringName(name)).Interface())
+	return any(class(self).GetInstanceShaderParameter(String.Name(String.New(name))).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -399,9 +401,9 @@ Set the value of a shader uniform for this instance only ([url=$DOCS_URL/tutoria
 [b]Note:[/b] Per-instance shader uniforms are currently only available in 3D, so there is no 2D equivalent of this method.
 */
 //go:nosplit
-func (self class) SetInstanceShaderParameter(name gd.StringName, value gd.Variant) { //gd:GeometryInstance3D.set_instance_shader_parameter
+func (self class) SetInstanceShaderParameter(name String.Name, value gd.Variant) { //gd:GeometryInstance3D.set_instance_shader_parameter
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_set_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -412,9 +414,9 @@ func (self class) SetInstanceShaderParameter(name gd.StringName, value gd.Varian
 Get the value of a shader parameter as set on this instance.
 */
 //go:nosplit
-func (self class) GetInstanceShaderParameter(name gd.StringName) gd.Variant { //gd:GeometryInstance3D.get_instance_shader_parameter
+func (self class) GetInstanceShaderParameter(name String.Name) gd.Variant { //gd:GeometryInstance3D.get_instance_shader_parameter
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())

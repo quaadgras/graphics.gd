@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -29,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 A custom shader program implemented in the Godot shading language, saved with the [code].gdshader[/code] extension.
@@ -57,7 +59,7 @@ Sets the default texture to be used with a texture uniform. The default is used 
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 func (self Instance) SetDefaultTextureParameter(name string, texture [1]gdclass.Texture2D) { //gd:Shader.set_default_texture_parameter
-	class(self).SetDefaultTextureParameter(gd.NewStringName(name), texture, gd.Int(0))
+	class(self).SetDefaultTextureParameter(String.Name(String.New(name)), texture, gd.Int(0))
 }
 
 /*
@@ -66,7 +68,7 @@ Returns the texture that is set as default for the specified parameter.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 func (self Instance) GetDefaultTextureParameter(name string) [1]gdclass.Texture2D { //gd:Shader.get_default_texture_parameter
-	return [1]gdclass.Texture2D(class(self).GetDefaultTextureParameter(gd.NewStringName(name), gd.Int(0)))
+	return [1]gdclass.Texture2D(class(self).GetDefaultTextureParameter(String.Name(String.New(name)), gd.Int(0)))
 }
 
 /*
@@ -142,9 +144,9 @@ Sets the default texture to be used with a texture uniform. The default is used 
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 //go:nosplit
-func (self class) SetDefaultTextureParameter(name gd.StringName, texture [1]gdclass.Texture2D, index gd.Int) { //gd:Shader.set_default_texture_parameter
+func (self class) SetDefaultTextureParameter(name String.Name, texture [1]gdclass.Texture2D, index gd.Int) { //gd:Shader.set_default_texture_parameter
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -158,9 +160,9 @@ Returns the texture that is set as default for the specified parameter.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 //go:nosplit
-func (self class) GetDefaultTextureParameter(name gd.StringName, index gd.Int) [1]gdclass.Texture2D { //gd:Shader.get_default_texture_parameter
+func (self class) GetDefaultTextureParameter(name String.Name, index gd.Int) [1]gdclass.Texture2D { //gd:Shader.get_default_texture_parameter
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -30,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Allows control of [AnimationTree] state machines created with [AnimationNodeStateMachine]. Retrieve with [code]$AnimationTree.get("parameters/playback")[/code].
@@ -61,7 +63,7 @@ If the path does not connect from the current state, the animation will play aft
 If [param reset_on_teleport] is [code]true[/code], the animation is played from the beginning when the travel cause a teleportation.
 */
 func (self Instance) Travel(to_node string) { //gd:AnimationNodeStateMachinePlayback.travel
-	class(self).Travel(gd.NewStringName(to_node), true)
+	class(self).Travel(String.Name(String.New(to_node)), true)
 }
 
 /*
@@ -69,7 +71,7 @@ Starts playing the given animation.
 If [param reset] is [code]true[/code], the animation is played from the beginning.
 */
 func (self Instance) Start(node string) { //gd:AnimationNodeStateMachinePlayback.start
-	class(self).Start(gd.NewStringName(node), true)
+	class(self).Start(String.Name(String.New(node)), true)
 }
 
 /*
@@ -155,9 +157,9 @@ If the path does not connect from the current state, the animation will play aft
 If [param reset_on_teleport] is [code]true[/code], the animation is played from the beginning when the travel cause a teleportation.
 */
 //go:nosplit
-func (self class) Travel(to_node gd.StringName, reset_on_teleport bool) { //gd:AnimationNodeStateMachinePlayback.travel
+func (self class) Travel(to_node String.Name, reset_on_teleport bool) { //gd:AnimationNodeStateMachinePlayback.travel
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(to_node))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(to_node)))
 	callframe.Arg(frame, reset_on_teleport)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_travel, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -169,9 +171,9 @@ Starts playing the given animation.
 If [param reset] is [code]true[/code], the animation is played from the beginning.
 */
 //go:nosplit
-func (self class) Start(node gd.StringName, reset bool) { //gd:AnimationNodeStateMachinePlayback.start
+func (self class) Start(node String.Name, reset bool) { //gd:AnimationNodeStateMachinePlayback.start
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(node))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(node)))
 	callframe.Arg(frame, reset)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_start, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -218,11 +220,11 @@ Returns the currently playing animation state.
 [b]Note:[/b] When using a cross-fade, the current state changes to the next state immediately after the cross-fade begins.
 */
 //go:nosplit
-func (self class) GetCurrentNode() gd.StringName { //gd:AnimationNodeStateMachinePlayback.get_current_node
+func (self class) GetCurrentNode() String.Name { //gd:AnimationNodeStateMachinePlayback.get_current_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -258,11 +260,11 @@ func (self class) GetCurrentLength() gd.Float { //gd:AnimationNodeStateMachinePl
 Returns the starting state of currently fading animation.
 */
 //go:nosplit
-func (self class) GetFadingFromNode() gd.StringName { //gd:AnimationNodeStateMachinePlayback.get_fading_from_node
+func (self class) GetFadingFromNode() String.Name { //gd:AnimationNodeStateMachinePlayback.get_fading_from_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_fading_from_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -271,11 +273,11 @@ func (self class) GetFadingFromNode() gd.StringName { //gd:AnimationNodeStateMac
 Returns the current travel path as computed internally by the A* algorithm.
 */
 //go:nosplit
-func (self class) GetTravelPath() Array.Contains[gd.StringName] { //gd:AnimationNodeStateMachinePlayback.get_travel_path
+func (self class) GetTravelPath() Array.Contains[String.Name] { //gd:AnimationNodeStateMachinePlayback.get_travel_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_travel_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

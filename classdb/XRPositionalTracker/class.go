@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/XRTracker"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
@@ -33,6 +34,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 An instance of this object represents a device that is tracked, such as a controller or anchor point. HMDs aren't represented here as they are handled internally.
@@ -53,42 +55,42 @@ type Any interface {
 Returns [code]true[/code] if the tracker is available and is currently tracking the bound [param name] pose.
 */
 func (self Instance) HasPose(name string) bool { //gd:XRPositionalTracker.has_pose
-	return bool(class(self).HasPose(gd.NewStringName(name)))
+	return bool(class(self).HasPose(String.Name(String.New(name))))
 }
 
 /*
 Returns the current [XRPose] state object for the bound [param name] pose.
 */
 func (self Instance) GetPose(name string) [1]gdclass.XRPose { //gd:XRPositionalTracker.get_pose
-	return [1]gdclass.XRPose(class(self).GetPose(gd.NewStringName(name)))
+	return [1]gdclass.XRPose(class(self).GetPose(String.Name(String.New(name))))
 }
 
 /*
 Marks this pose as invalid, we don't clear the last reported state but it allows users to decide if trackers need to be hidden if we lose tracking or just remain at their last known position.
 */
 func (self Instance) InvalidatePose(name string) { //gd:XRPositionalTracker.invalidate_pose
-	class(self).InvalidatePose(gd.NewStringName(name))
+	class(self).InvalidatePose(String.Name(String.New(name)))
 }
 
 /*
 Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [XRInterface] implementation and should not be used directly.
 */
 func (self Instance) SetPose(name string, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence gdclass.XRPoseTrackingConfidence) { //gd:XRPositionalTracker.set_pose
-	class(self).SetPose(gd.NewStringName(name), gd.Transform3D(transform), gd.Vector3(linear_velocity), gd.Vector3(angular_velocity), tracking_confidence)
+	class(self).SetPose(String.Name(String.New(name)), gd.Transform3D(transform), gd.Vector3(linear_velocity), gd.Vector3(angular_velocity), tracking_confidence)
 }
 
 /*
 Returns an input for this tracker. It can return a boolean, float or [Vector2] value depending on whether the input is a button, trigger or thumbstick/thumbpad.
 */
 func (self Instance) GetInput(name string) any { //gd:XRPositionalTracker.get_input
-	return any(class(self).GetInput(gd.NewStringName(name)).Interface())
+	return any(class(self).GetInput(String.Name(String.New(name))).Interface())
 }
 
 /*
 Changes the value for the given input. This method is called by a [XRInterface] implementation and should not be used directly.
 */
 func (self Instance) SetInput(name string, value any) { //gd:XRPositionalTracker.set_input
-	class(self).SetInput(gd.NewStringName(name), gd.NewVariant(value))
+	class(self).SetInput(String.Name(String.New(name)), gd.NewVariant(value))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -168,9 +170,9 @@ func (self class) SetTrackerHand(hand gdclass.XRPositionalTrackerTrackerHand) { 
 Returns [code]true[/code] if the tracker is available and is currently tracking the bound [param name] pose.
 */
 //go:nosplit
-func (self class) HasPose(name gd.StringName) bool { //gd:XRPositionalTracker.has_pose
+func (self class) HasPose(name String.Name) bool { //gd:XRPositionalTracker.has_pose
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_has_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -182,9 +184,9 @@ func (self class) HasPose(name gd.StringName) bool { //gd:XRPositionalTracker.ha
 Returns the current [XRPose] state object for the bound [param name] pose.
 */
 //go:nosplit
-func (self class) GetPose(name gd.StringName) [1]gdclass.XRPose { //gd:XRPositionalTracker.get_pose
+func (self class) GetPose(name String.Name) [1]gdclass.XRPose { //gd:XRPositionalTracker.get_pose
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.XRPose{gd.PointerWithOwnershipTransferredToGo[gdclass.XRPose](r_ret.Get())}
@@ -196,9 +198,9 @@ func (self class) GetPose(name gd.StringName) [1]gdclass.XRPose { //gd:XRPositio
 Marks this pose as invalid, we don't clear the last reported state but it allows users to decide if trackers need to be hidden if we lose tracking or just remain at their last known position.
 */
 //go:nosplit
-func (self class) InvalidatePose(name gd.StringName) { //gd:XRPositionalTracker.invalidate_pose
+func (self class) InvalidatePose(name String.Name) { //gd:XRPositionalTracker.invalidate_pose
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_invalidate_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -208,9 +210,9 @@ func (self class) InvalidatePose(name gd.StringName) { //gd:XRPositionalTracker.
 Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [XRInterface] implementation and should not be used directly.
 */
 //go:nosplit
-func (self class) SetPose(name gd.StringName, transform gd.Transform3D, linear_velocity gd.Vector3, angular_velocity gd.Vector3, tracking_confidence gdclass.XRPoseTrackingConfidence) { //gd:XRPositionalTracker.set_pose
+func (self class) SetPose(name String.Name, transform gd.Transform3D, linear_velocity gd.Vector3, angular_velocity gd.Vector3, tracking_confidence gdclass.XRPoseTrackingConfidence) { //gd:XRPositionalTracker.set_pose
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, transform)
 	callframe.Arg(frame, linear_velocity)
 	callframe.Arg(frame, angular_velocity)
@@ -224,9 +226,9 @@ func (self class) SetPose(name gd.StringName, transform gd.Transform3D, linear_v
 Returns an input for this tracker. It can return a boolean, float or [Vector2] value depending on whether the input is a button, trigger or thumbstick/thumbpad.
 */
 //go:nosplit
-func (self class) GetInput(name gd.StringName) gd.Variant { //gd:XRPositionalTracker.get_input
+func (self class) GetInput(name String.Name) gd.Variant { //gd:XRPositionalTracker.get_input
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
@@ -238,9 +240,9 @@ func (self class) GetInput(name gd.StringName) gd.Variant { //gd:XRPositionalTra
 Changes the value for the given input. This method is called by a [XRInterface] implementation and should not be used directly.
 */
 //go:nosplit
-func (self class) SetInput(name gd.StringName, value gd.Variant) { //gd:XRPositionalTracker.set_input
+func (self class) SetInput(name String.Name, value gd.Variant) { //gd:XRPositionalTracker.set_input
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_input, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -154,6 +154,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import "graphics.gd/variant/Dictionary"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant/RID"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant/String"`)
+	fmt.Fprintln(file, `import "graphics.gd/variant/Path"`)
 	var imported = make(map[string]bool)
 	if class.Name == "TextEdit" {
 		imported["graphics.gd/variant/Rect2"] = true
@@ -169,10 +170,6 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			}
 			super = classDB[super.Inherits]
 		}
-	}
-	if class.Name == "CodeEdit" {
-		imported["graphics.gd/classdb/Resource"] = true
-		fmt.Fprintf(file, "import %q\n", "graphics.gd/classdb/Resource")
 	}
 	if class.Name == "IP" {
 		imported["net/netip"] = true
@@ -227,6 +224,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, "var _ Dictionary.Any")
 	fmt.Fprintln(file, "var _ RID.Any")
 	fmt.Fprintln(file, "var _ String.Readable")
+	fmt.Fprintln(file, "var _ Path.ToNode")
 	fmt.Fprintln(file)
 	var local_enums = make(map[string]bool)
 	var hasVirtual bool

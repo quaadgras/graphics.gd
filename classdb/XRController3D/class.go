@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/XRNode3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
@@ -33,6 +34,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This is a helper spatial node that is linked to the tracking of controllers. It also offers several handy passthroughs to the state of buttons and such on the controllers.
@@ -54,28 +56,28 @@ type Any interface {
 Returns [code]true[/code] if the button with the given [param name] is pressed.
 */
 func (self Instance) IsButtonPressed(name string) bool { //gd:XRController3D.is_button_pressed
-	return bool(class(self).IsButtonPressed(gd.NewStringName(name)))
+	return bool(class(self).IsButtonPressed(String.Name(String.New(name))))
 }
 
 /*
 Returns a [Variant] for the input with the given [param name]. This works for any input type, the variant will be typed according to the actions configuration.
 */
 func (self Instance) GetInput(name string) any { //gd:XRController3D.get_input
-	return any(class(self).GetInput(gd.NewStringName(name)).Interface())
+	return any(class(self).GetInput(String.Name(String.New(name))).Interface())
 }
 
 /*
 Returns a numeric value for the input with the given [param name]. This is used for triggers and grip sensors.
 */
 func (self Instance) GetFloat(name string) Float.X { //gd:XRController3D.get_float
-	return Float.X(Float.X(class(self).GetFloat(gd.NewStringName(name))))
+	return Float.X(Float.X(class(self).GetFloat(String.Name(String.New(name)))))
 }
 
 /*
 Returns a [Vector2] for the input with the given [param name]. This is used for thumbsticks and thumbpads found on many controllers.
 */
 func (self Instance) GetVector2(name string) Vector2.XY { //gd:XRController3D.get_vector2
-	return Vector2.XY(class(self).GetVector2(gd.NewStringName(name)))
+	return Vector2.XY(class(self).GetVector2(String.Name(String.New(name))))
 }
 
 /*
@@ -107,9 +109,9 @@ func New() Instance {
 Returns [code]true[/code] if the button with the given [param name] is pressed.
 */
 //go:nosplit
-func (self class) IsButtonPressed(name gd.StringName) bool { //gd:XRController3D.is_button_pressed
+func (self class) IsButtonPressed(name String.Name) bool { //gd:XRController3D.is_button_pressed
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRController3D.Bind_is_button_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -121,9 +123,9 @@ func (self class) IsButtonPressed(name gd.StringName) bool { //gd:XRController3D
 Returns a [Variant] for the input with the given [param name]. This works for any input type, the variant will be typed according to the actions configuration.
 */
 //go:nosplit
-func (self class) GetInput(name gd.StringName) gd.Variant { //gd:XRController3D.get_input
+func (self class) GetInput(name String.Name) gd.Variant { //gd:XRController3D.get_input
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRController3D.Bind_get_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
@@ -135,9 +137,9 @@ func (self class) GetInput(name gd.StringName) gd.Variant { //gd:XRController3D.
 Returns a numeric value for the input with the given [param name]. This is used for triggers and grip sensors.
 */
 //go:nosplit
-func (self class) GetFloat(name gd.StringName) gd.Float { //gd:XRController3D.get_float
+func (self class) GetFloat(name String.Name) gd.Float { //gd:XRController3D.get_float
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRController3D.Bind_get_float, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -149,9 +151,9 @@ func (self class) GetFloat(name gd.StringName) gd.Float { //gd:XRController3D.ge
 Returns a [Vector2] for the input with the given [param name]. This is used for thumbsticks and thumbpads found on many controllers.
 */
 //go:nosplit
-func (self class) GetVector2(name gd.StringName) gd.Vector2 { //gd:XRController3D.get_vector2
+func (self class) GetVector2(name String.Name) gd.Vector2 { //gd:XRController3D.get_vector2
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRController3D.Bind_get_vector2, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

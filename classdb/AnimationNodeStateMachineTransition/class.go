@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -30,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 The path generated when using [method AnimationNodeStateMachinePlayback.travel] is limited to the nodes connected by [AnimationNodeStateMachineTransition].
@@ -125,7 +127,7 @@ func (self Instance) AdvanceCondition() string {
 }
 
 func (self Instance) SetAdvanceCondition(value string) {
-	class(self).SetAdvanceCondition(gd.NewStringName(value))
+	class(self).SetAdvanceCondition(String.Name(String.New(value)))
 }
 
 func (self Instance) AdvanceExpression() string {
@@ -175,20 +177,20 @@ func (self class) GetAdvanceMode() gdclass.AnimationNodeStateMachineTransitionAd
 }
 
 //go:nosplit
-func (self class) SetAdvanceCondition(name gd.StringName) { //gd:AnimationNodeStateMachineTransition.set_advance_condition
+func (self class) SetAdvanceCondition(name String.Name) { //gd:AnimationNodeStateMachineTransition.set_advance_condition
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_advance_condition, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAdvanceCondition() gd.StringName { //gd:AnimationNodeStateMachineTransition.get_advance_condition
+func (self class) GetAdvanceCondition() String.Name { //gd:AnimationNodeStateMachineTransition.get_advance_condition
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_advance_condition, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

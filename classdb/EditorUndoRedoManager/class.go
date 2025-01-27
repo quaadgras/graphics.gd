@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -28,6 +29,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 [EditorUndoRedoManager] is a manager for [UndoRedo] objects associated with edited scenes. Each scene has its own undo history and [EditorUndoRedoManager] ensures that each action performed in the editor gets associated with a proper scene. For actions not related to scenes ([ProjectSettings] edits, external resources, etc.), a separate global history is used.
@@ -86,7 +88,7 @@ Register a property value change for "do".
 If this is the first operation, the [param object] will be used to deduce target undo history.
 */
 func (self Instance) AddDoProperty(obj Object.Instance, property string, value any) { //gd:EditorUndoRedoManager.add_do_property
-	class(self).AddDoProperty(obj, gd.NewStringName(property), gd.NewVariant(value))
+	class(self).AddDoProperty(obj, String.Name(String.New(property)), gd.NewVariant(value))
 }
 
 /*
@@ -94,7 +96,7 @@ Register a property value change for "undo".
 If this is the first operation, the [param object] will be used to deduce target undo history.
 */
 func (self Instance) AddUndoProperty(obj Object.Instance, property string, value any) { //gd:EditorUndoRedoManager.add_undo_property
-	class(self).AddUndoProperty(obj, gd.NewStringName(property), gd.NewVariant(value))
+	class(self).AddUndoProperty(obj, String.Name(String.New(property)), gd.NewVariant(value))
 }
 
 /*
@@ -205,10 +207,10 @@ Register a property value change for "do".
 If this is the first operation, the [param object] will be used to deduce target undo history.
 */
 //go:nosplit
-func (self class) AddDoProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) { //gd:EditorUndoRedoManager.add_do_property
+func (self class) AddDoProperty(obj [1]gd.Object, property String.Name, value gd.Variant) { //gd:EditorUndoRedoManager.add_do_property
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_do_property, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -220,10 +222,10 @@ Register a property value change for "undo".
 If this is the first operation, the [param object] will be used to deduce target undo history.
 */
 //go:nosplit
-func (self class) AddUndoProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) { //gd:EditorUndoRedoManager.add_undo_property
+func (self class) AddUndoProperty(obj [1]gd.Object, property String.Name, value gd.Variant) { //gd:EditorUndoRedoManager.add_undo_property
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_undo_property, self.AsObject(), frame.Array(0), r_ret.Addr())

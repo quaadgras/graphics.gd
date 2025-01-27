@@ -15,9 +15,9 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This node selects a bone in a [Skeleton3D] and attaches to it. This means that the [BoneAttachment3D] node will either dynamically copy or override the 3D transform of the selected bone.
@@ -69,15 +70,15 @@ func (self Instance) GetUseExternalSkeleton() bool { //gd:BoneAttachment3D.get_u
 /*
 Sets the [NodePath] to the external skeleton that the BoneAttachment3D node should use. See [method set_use_external_skeleton] to enable the external [Skeleton3D] node.
 */
-func (self Instance) SetExternalSkeleton(external_skeleton NodePath.String) { //gd:BoneAttachment3D.set_external_skeleton
-	class(self).SetExternalSkeleton(gd.NewString(string(external_skeleton)).NodePath())
+func (self Instance) SetExternalSkeleton(external_skeleton string) { //gd:BoneAttachment3D.set_external_skeleton
+	class(self).SetExternalSkeleton(Path.ToNode(String.New(external_skeleton)))
 }
 
 /*
 Returns the [NodePath] to the external [Skeleton3D] node, if one has been set.
 */
-func (self Instance) GetExternalSkeleton() NodePath.String { //gd:BoneAttachment3D.get_external_skeleton
-	return NodePath.String(class(self).GetExternalSkeleton().String())
+func (self Instance) GetExternalSkeleton() string { //gd:BoneAttachment3D.get_external_skeleton
+	return string(class(self).GetExternalSkeleton().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -219,9 +220,9 @@ func (self class) GetUseExternalSkeleton() bool { //gd:BoneAttachment3D.get_use_
 Sets the [NodePath] to the external skeleton that the BoneAttachment3D node should use. See [method set_use_external_skeleton] to enable the external [Skeleton3D] node.
 */
 //go:nosplit
-func (self class) SetExternalSkeleton(external_skeleton gd.NodePath) { //gd:BoneAttachment3D.set_external_skeleton
+func (self class) SetExternalSkeleton(external_skeleton Path.ToNode) { //gd:BoneAttachment3D.set_external_skeleton
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(external_skeleton))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(external_skeleton)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneAttachment3D.Bind_set_external_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -231,11 +232,11 @@ func (self class) SetExternalSkeleton(external_skeleton gd.NodePath) { //gd:Bone
 Returns the [NodePath] to the external [Skeleton3D] node, if one has been set.
 */
 //go:nosplit
-func (self class) GetExternalSkeleton() gd.NodePath { //gd:BoneAttachment3D.get_external_skeleton
+func (self class) GetExternalSkeleton() Path.ToNode { //gd:BoneAttachment3D.get_external_skeleton
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneAttachment3D.Bind_get_external_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

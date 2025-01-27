@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/AudioStreamPlayback"
 import "graphics.gd/variant/Float"
 
@@ -30,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Playback instance for [AudioStreamPolyphonic]. After setting the [code]stream[/code] property of [AudioStreamPlayer], [AudioStreamPlayer2D], or [AudioStreamPlayer3D], the playback instance can be obtained by calling [method AudioStreamPlayer.get_stream_playback], [method AudioStreamPlayer2D.get_stream_playback] or [method AudioStreamPlayer3D.get_stream_playback] methods.
@@ -51,7 +53,7 @@ This ID becomes invalid when the stream ends (if it does not loop), when the [Au
 This function returns [constant INVALID_ID] if the amount of streams currently playing equals [member AudioStreamPolyphonic.polyphony]. If you need a higher amount of maximum polyphony, raise this value.
 */
 func (self Instance) PlayStream(stream [1]gdclass.AudioStream) int { //gd:AudioStreamPlaybackPolyphonic.play_stream
-	return int(int(class(self).PlayStream(stream, gd.Float(0), gd.Float(0), gd.Float(1.0), 0, gd.NewStringName("Master"))))
+	return int(int(class(self).PlayStream(stream, gd.Float(0), gd.Float(0), gd.Float(1.0), 0, String.Name(String.New("Master")))))
 }
 
 /*
@@ -108,14 +110,14 @@ This ID becomes invalid when the stream ends (if it does not loop), when the [Au
 This function returns [constant INVALID_ID] if the amount of streams currently playing equals [member AudioStreamPolyphonic.polyphony]. If you need a higher amount of maximum polyphony, raise this value.
 */
 //go:nosplit
-func (self class) PlayStream(stream [1]gdclass.AudioStream, from_offset gd.Float, volume_db gd.Float, pitch_scale gd.Float, playback_type gdclass.AudioServerPlaybackType, bus gd.StringName) gd.Int { //gd:AudioStreamPlaybackPolyphonic.play_stream
+func (self class) PlayStream(stream [1]gdclass.AudioStream, from_offset gd.Float, volume_db gd.Float, pitch_scale gd.Float, playback_type gdclass.AudioServerPlaybackType, bus String.Name) gd.Int { //gd:AudioStreamPlaybackPolyphonic.play_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
 	callframe.Arg(frame, from_offset)
 	callframe.Arg(frame, volume_db)
 	callframe.Arg(frame, pitch_scale)
 	callframe.Arg(frame, playback_type)
-	callframe.Arg(frame, pointers.Get(bus))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(bus)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaybackPolyphonic.Bind_play_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

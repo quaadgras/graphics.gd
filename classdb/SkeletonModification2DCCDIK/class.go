@@ -15,9 +15,9 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -32,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This [SkeletonModification2D] uses an algorithm called Cyclic Coordinate Descent Inverse Kinematics, or CCDIK, to manipulate a chain of bones in a [Skeleton2D] so it reaches a defined target.
@@ -52,15 +53,15 @@ type Any interface {
 /*
 Sets the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].
 */
-func (self Instance) SetCcdikJointBone2dNode(joint_idx int, bone2d_nodepath NodePath.String) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone2d_node
-	class(self).SetCcdikJointBone2dNode(gd.Int(joint_idx), gd.NewString(string(bone2d_nodepath)).NodePath())
+func (self Instance) SetCcdikJointBone2dNode(joint_idx int, bone2d_nodepath string) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone2d_node
+	class(self).SetCcdikJointBone2dNode(gd.Int(joint_idx), Path.ToNode(String.New(bone2d_nodepath)))
 }
 
 /*
 Returns the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].
 */
-func (self Instance) GetCcdikJointBone2dNode(joint_idx int) NodePath.String { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_bone2d_node
-	return NodePath.String(class(self).GetCcdikJointBone2dNode(gd.Int(joint_idx)).String())
+func (self Instance) GetCcdikJointBone2dNode(joint_idx int) string { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_bone2d_node
+	return string(class(self).GetCcdikJointBone2dNode(gd.Int(joint_idx)).String())
 }
 
 /*
@@ -167,20 +168,20 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TargetNodepath() NodePath.String {
-	return NodePath.String(class(self).GetTargetNode().String())
+func (self Instance) TargetNodepath() string {
+	return string(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNodepath(value NodePath.String) {
-	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
+func (self Instance) SetTargetNodepath(value string) {
+	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 }
 
-func (self Instance) TipNodepath() NodePath.String {
-	return NodePath.String(class(self).GetTipNode().String())
+func (self Instance) TipNodepath() string {
+	return string(class(self).GetTipNode().String())
 }
 
-func (self Instance) SetTipNodepath(value NodePath.String) {
-	class(self).SetTipNode(gd.NewString(string(value)).NodePath())
+func (self Instance) SetTipNodepath(value string) {
+	class(self).SetTipNode(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) CcdikDataChainLength() int {
@@ -192,39 +193,39 @@ func (self Instance) SetCcdikDataChainLength(value int) {
 }
 
 //go:nosplit
-func (self class) SetTargetNode(target_nodepath gd.NodePath) { //gd:SkeletonModification2DCCDIK.set_target_node
+func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModification2DCCDIK.set_target_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(target_nodepath))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(target_nodepath)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTargetNode() gd.NodePath { //gd:SkeletonModification2DCCDIK.get_target_node
+func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DCCDIK.get_target_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetTipNode(tip_nodepath gd.NodePath) { //gd:SkeletonModification2DCCDIK.set_tip_node
+func (self class) SetTipNode(tip_nodepath Path.ToNode) { //gd:SkeletonModification2DCCDIK.set_tip_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(tip_nodepath))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(tip_nodepath)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_tip_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTipNode() gd.NodePath { //gd:SkeletonModification2DCCDIK.get_tip_node
+func (self class) GetTipNode() Path.ToNode { //gd:SkeletonModification2DCCDIK.get_tip_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_tip_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -252,10 +253,10 @@ func (self class) GetCcdikDataChainLength() gd.Int { //gd:SkeletonModification2D
 Sets the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) SetCcdikJointBone2dNode(joint_idx gd.Int, bone2d_nodepath gd.NodePath) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone2d_node
+func (self class) SetCcdikJointBone2dNode(joint_idx gd.Int, bone2d_nodepath Path.ToNode) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
-	callframe.Arg(frame, pointers.Get(bone2d_nodepath))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(bone2d_nodepath)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -265,12 +266,12 @@ func (self class) SetCcdikJointBone2dNode(joint_idx gd.Int, bone2d_nodepath gd.N
 Returns the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetCcdikJointBone2dNode(joint_idx gd.Int) gd.NodePath { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_bone2d_node
+func (self class) GetCcdikJointBone2dNode(joint_idx gd.Int) Path.ToNode { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

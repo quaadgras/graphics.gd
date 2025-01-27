@@ -15,11 +15,11 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/SkeletonModifier3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Transform3D"
-import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
 
@@ -35,6 +35,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 SkeletonIK3D is used to rotate all bones of a [Skeleton3D] bone chain a way that places the end bone at a desired 3D position. A typical scenario for IK in games is to place a character's feet on the ground or a character's hands on a currently held object. SkeletonIK uses FabrikInverseKinematic internally to solve the bone chain and applies the results to the [Skeleton3D] [code]bones_global_pose_override[/code] property for all affected bones in the chain. If fully applied, this overwrites any bone transform from [Animation]s or bone custom poses set by users. The applied amount can be controlled with the [member SkeletonModifier3D.influence] property.
@@ -119,7 +120,7 @@ func (self Instance) RootBone() string {
 }
 
 func (self Instance) SetRootBone(value string) {
-	class(self).SetRootBone(gd.NewStringName(value))
+	class(self).SetRootBone(String.Name(String.New(value)))
 }
 
 func (self Instance) TipBone() string {
@@ -127,7 +128,7 @@ func (self Instance) TipBone() string {
 }
 
 func (self Instance) SetTipBone(value string) {
-	class(self).SetTipBone(gd.NewStringName(value))
+	class(self).SetTipBone(String.Name(String.New(value)))
 }
 
 func (self Instance) Target() Transform3D.BasisOrigin {
@@ -162,12 +163,12 @@ func (self Instance) SetMagnet(value Vector3.XYZ) {
 	class(self).SetMagnetPosition(gd.Vector3(value))
 }
 
-func (self Instance) TargetNode() NodePath.String {
-	return NodePath.String(class(self).GetTargetNode().String())
+func (self Instance) TargetNode() string {
+	return string(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNode(value NodePath.String) {
-	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
+func (self Instance) SetTargetNode(value string) {
+	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) MinDistance() Float.X {
@@ -195,39 +196,39 @@ func (self Instance) SetInterpolation(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetRootBone(root_bone gd.StringName) { //gd:SkeletonIK3D.set_root_bone
+func (self class) SetRootBone(root_bone String.Name) { //gd:SkeletonIK3D.set_root_bone
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(root_bone))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(root_bone)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_set_root_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetRootBone() gd.StringName { //gd:SkeletonIK3D.get_root_bone
+func (self class) GetRootBone() String.Name { //gd:SkeletonIK3D.get_root_bone
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_get_root_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetTipBone(tip_bone gd.StringName) { //gd:SkeletonIK3D.set_tip_bone
+func (self class) SetTipBone(tip_bone String.Name) { //gd:SkeletonIK3D.set_tip_bone
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(tip_bone))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(tip_bone)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_set_tip_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTipBone() gd.StringName { //gd:SkeletonIK3D.get_tip_bone
+func (self class) GetTipBone() String.Name { //gd:SkeletonIK3D.get_tip_bone
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_get_tip_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -252,20 +253,20 @@ func (self class) GetTargetTransform() gd.Transform3D { //gd:SkeletonIK3D.get_ta
 }
 
 //go:nosplit
-func (self class) SetTargetNode(node gd.NodePath) { //gd:SkeletonIK3D.set_target_node
+func (self class) SetTargetNode(node Path.ToNode) { //gd:SkeletonIK3D.set_target_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(node))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(node)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_set_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTargetNode() gd.NodePath { //gd:SkeletonIK3D.get_target_node
+func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonIK3D.get_target_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

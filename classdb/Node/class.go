@@ -15,8 +15,8 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Nodes are Godot's building blocks. They can be assigned as the child of another node, resulting in a tree arrangement. A given node can contain any number of nodes as children with the requirement that all siblings (direct children of a node) should have unique names.
@@ -410,8 +411,8 @@ func (self Instance) GetChild(idx int) [1]gdclass.Node { //gd:Node.get_child
 /*
 Returns [code]true[/code] if the [param path] points to a valid node. See also [method get_node].
 */
-func (self Instance) HasNode(path NodePath.String) bool { //gd:Node.has_node
-	return bool(class(self).HasNode(gd.NewString(string(path)).NodePath()))
+func (self Instance) HasNode(path string) bool { //gd:Node.has_node
+	return bool(class(self).HasNode(Path.ToNode(String.New(path))))
 }
 
 /*
@@ -448,15 +449,15 @@ GetNode("/root/MyGame");
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetNode(path NodePath.String) [1]gdclass.Node { //gd:Node.get_node
-	return [1]gdclass.Node(class(self).GetNode(gd.NewString(string(path)).NodePath()))
+func (self Instance) GetNode(path string) [1]gdclass.Node { //gd:Node.get_node
+	return [1]gdclass.Node(class(self).GetNode(Path.ToNode(String.New(path))))
 }
 
 /*
 Fetches a node by [NodePath]. Similar to [method get_node], but does not generate an error if [param path] does not point to a valid node.
 */
-func (self Instance) GetNodeOrNull(path NodePath.String) [1]gdclass.Node { //gd:Node.get_node_or_null
-	return [1]gdclass.Node(class(self).GetNodeOrNull(gd.NewString(string(path)).NodePath()))
+func (self Instance) GetNodeOrNull(path string) [1]gdclass.Node { //gd:Node.get_node_or_null
+	return [1]gdclass.Node(class(self).GetNodeOrNull(Path.ToNode(String.New(path))))
 }
 
 /*
@@ -500,8 +501,8 @@ func (self Instance) FindParent(pattern string) [1]gdclass.Node { //gd:Node.find
 /*
 Returns [code]true[/code] if [param path] points to a valid node and its subnames point to a valid [Resource], e.g. [code]Area2D/CollisionShape2D:shape[/code]. Properties that are not [Resource] types (such as nodes or other [Variant] types) are not considered. See also [method get_node_and_resource].
 */
-func (self Instance) HasNodeAndResource(path NodePath.String) bool { //gd:Node.has_node_and_resource
-	return bool(class(self).HasNodeAndResource(gd.NewString(string(path)).NodePath()))
+func (self Instance) HasNodeAndResource(path string) bool { //gd:Node.has_node_and_resource
+	return bool(class(self).HasNodeAndResource(Path.ToNode(String.New(path))))
 }
 
 /*
@@ -545,8 +546,8 @@ GD.Print(c[2]);             // Prints ^":region"
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetNodeAndResource(path NodePath.String) []any { //gd:Node.get_node_and_resource
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetNodeAndResource(gd.NewString(string(path)).NodePath()))))
+func (self Instance) GetNodeAndResource(path string) []any { //gd:Node.get_node_and_resource
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetNodeAndResource(Path.ToNode(String.New(path))))))
 }
 
 /*
@@ -580,8 +581,8 @@ func (self Instance) IsGreaterThan(node [1]gdclass.Node) bool { //gd:Node.is_gre
 /*
 Returns the node's absolute path, relative to the [member SceneTree.root]. If the node is not inside the scene tree, this method fails and returns an empty [NodePath].
 */
-func (self Instance) GetPath() NodePath.String { //gd:Node.get_path
-	return NodePath.String(class(self).GetPath().String())
+func (self Instance) GetPath() string { //gd:Node.get_path
+	return string(class(self).GetPath().String())
 }
 
 /*
@@ -589,8 +590,8 @@ Returns the relative [NodePath] from this node to the specified [param node]. Bo
 If [param use_unique_path] is [code]true[/code], returns the shortest path accounting for this node's unique name (see [member unique_name_in_owner]).
 [b]Note:[/b] If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
 */
-func (self Instance) GetPathTo(node [1]gdclass.Node) NodePath.String { //gd:Node.get_path_to
-	return NodePath.String(class(self).GetPathTo(node, false).String())
+func (self Instance) GetPathTo(node [1]gdclass.Node) string { //gd:Node.get_path_to
+	return string(class(self).GetPathTo(node, false).String())
 }
 
 /*
@@ -600,21 +601,21 @@ If [param persistent] is [code]true[/code], the group will be stored when saved 
 [b]Note:[/b] [SceneTree]'s group methods will [i]not[/i] work on this node if not inside the tree (see [method is_inside_tree]).
 */
 func (self Instance) AddToGroup(group string) { //gd:Node.add_to_group
-	class(self).AddToGroup(gd.NewStringName(group), false)
+	class(self).AddToGroup(String.Name(String.New(group)), false)
 }
 
 /*
 Removes the node from the given [param group]. Does nothing if the node is not in the [param group]. See also notes in the description, and the [SceneTree]'s group methods.
 */
 func (self Instance) RemoveFromGroup(group string) { //gd:Node.remove_from_group
-	class(self).RemoveFromGroup(gd.NewStringName(group))
+	class(self).RemoveFromGroup(String.Name(String.New(group)))
 }
 
 /*
 Returns [code]true[/code] if this node has been added to the given [param group]. See [method add_to_group] and [method remove_from_group]. See also notes in the description, and the [SceneTree]'s group methods.
 */
 func (self Instance) IsInGroup(group string) bool { //gd:Node.is_in_group
-	return bool(class(self).IsInGroup(gd.NewStringName(group)))
+	return bool(class(self).IsInGroup(String.Name(String.New(group))))
 }
 
 /*
@@ -744,7 +745,7 @@ Calls the given [param method] name, passing [param args] as arguments, on this 
 If [param parent_first] is [code]true[/code], the method is called on this node first, then on all of its children. If [code]false[/code], the children's methods are called first.
 */
 func (self Instance) PropagateCall(method string) { //gd:Node.propagate_call
-	class(self).PropagateCall(gd.NewStringName(method), Array.Nil, false)
+	class(self).PropagateCall(String.Name(String.New(method)), Array.Nil, false)
 }
 
 /*
@@ -1084,7 +1085,7 @@ Changes the RPC configuration for the given [param method]. [param config] shoul
 [b]Note:[/b] In GDScript, this method corresponds to the [annotation @GDScript.@rpc] annotation, with various parameters passed ([code]@rpc(any)[/code], [code]@rpc(authority)[/code]...). See also the [url=$DOCS_URL/tutorials/networking/high_level_multiplayer.html]high-level multiplayer[/url] tutorial.
 */
 func (self Instance) RpcConfig(method string, config any) { //gd:Node.rpc_config
-	class(self).RpcConfig(gd.NewStringName(method), gd.NewVariant(config))
+	class(self).RpcConfig(String.Name(String.New(method)), gd.NewVariant(config))
 }
 
 /*
@@ -1094,7 +1095,7 @@ If [method Object.can_translate_messages] is [code]false[/code], or no translati
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
 */
 func (self Instance) Atr(message string) string { //gd:Node.atr
-	return string(class(self).Atr(String.New(message), gd.NewStringName("")).String())
+	return string(class(self).Atr(String.New(message), String.Name(String.New(""))).String())
 }
 
 /*
@@ -1106,7 +1107,7 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 [b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [method atr].
 */
 func (self Instance) AtrN(message string, plural_message string, n int) string { //gd:Node.atr_n
-	return string(class(self).AtrN(String.New(message), gd.NewStringName(plural_message), gd.Int(n), gd.NewStringName("")).String())
+	return string(class(self).AtrN(String.New(message), String.Name(String.New(plural_message)), gd.Int(n), String.Name(String.New(""))).String())
 }
 
 /*
@@ -1120,7 +1121,7 @@ func (self Instance) UpdateConfigurationWarnings() { //gd:Node.update_configurat
 Similar to [method call_deferred_thread_group], but for setting properties.
 */
 func (self Instance) SetDeferredThreadGroup(property string, value any) { //gd:Node.set_deferred_thread_group
-	class(self).SetDeferredThreadGroup(gd.NewStringName(property), gd.NewVariant(value))
+	class(self).SetDeferredThreadGroup(String.Name(String.New(property)), gd.NewVariant(value))
 }
 
 /*
@@ -1134,7 +1135,7 @@ func (self Instance) NotifyDeferredThreadGroup(what int) { //gd:Node.notify_defe
 Similar to [method call_thread_safe], but for setting properties.
 */
 func (self Instance) SetThreadSafe(property string, value any) { //gd:Node.set_thread_safe
-	class(self).SetThreadSafe(gd.NewStringName(property), gd.NewVariant(value))
+	class(self).SetThreadSafe(String.Name(String.New(property)), gd.NewVariant(value))
 }
 
 /*
@@ -1475,11 +1476,11 @@ func (self class) SetName(name String.Readable) { //gd:Node.set_name
 }
 
 //go:nosplit
-func (self class) GetName() gd.StringName { //gd:Node.get_name
+func (self class) GetName() String.Name { //gd:Node.get_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1606,9 +1607,9 @@ func (self class) GetChild(idx gd.Int, include_internal bool) [1]gdclass.Node { 
 Returns [code]true[/code] if the [param path] points to a valid node. See also [method get_node].
 */
 //go:nosplit
-func (self class) HasNode(path gd.NodePath) bool { //gd:Node.has_node
+func (self class) HasNode(path Path.ToNode) bool { //gd:Node.has_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_has_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1649,9 +1650,9 @@ GetNode("/root/MyGame");
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetNode(path gd.NodePath) [1]gdclass.Node { //gd:Node.get_node
+func (self class) GetNode(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
@@ -1663,9 +1664,9 @@ func (self class) GetNode(path gd.NodePath) [1]gdclass.Node { //gd:Node.get_node
 Fetches a node by [NodePath]. Similar to [method get_node], but does not generate an error if [param path] does not point to a valid node.
 */
 //go:nosplit
-func (self class) GetNodeOrNull(path gd.NodePath) [1]gdclass.Node { //gd:Node.get_node_or_null
+func (self class) GetNodeOrNull(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node_or_null
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node_or_null, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
@@ -1747,9 +1748,9 @@ func (self class) FindParent(pattern String.Readable) [1]gdclass.Node { //gd:Nod
 Returns [code]true[/code] if [param path] points to a valid node and its subnames point to a valid [Resource], e.g. [code]Area2D/CollisionShape2D:shape[/code]. Properties that are not [Resource] types (such as nodes or other [Variant] types) are not considered. See also [method get_node_and_resource].
 */
 //go:nosplit
-func (self class) HasNodeAndResource(path gd.NodePath) bool { //gd:Node.has_node_and_resource
+func (self class) HasNodeAndResource(path Path.ToNode) bool { //gd:Node.has_node_and_resource
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_has_node_and_resource, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1799,9 +1800,9 @@ GD.Print(c[2]);             // Prints ^":region"
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetNodeAndResource(path gd.NodePath) Array.Any { //gd:Node.get_node_and_resource
+func (self class) GetNodeAndResource(path Path.ToNode) Array.Any { //gd:Node.get_node_and_resource
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node_and_resource, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
@@ -1867,11 +1868,11 @@ func (self class) IsGreaterThan(node [1]gdclass.Node) bool { //gd:Node.is_greate
 Returns the node's absolute path, relative to the [member SceneTree.root]. If the node is not inside the scene tree, this method fails and returns an empty [NodePath].
 */
 //go:nosplit
-func (self class) GetPath() gd.NodePath { //gd:Node.get_path
+func (self class) GetPath() Path.ToNode { //gd:Node.get_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1882,13 +1883,13 @@ If [param use_unique_path] is [code]true[/code], returns the shortest path accou
 [b]Note:[/b] If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
 */
 //go:nosplit
-func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) gd.NodePath { //gd:Node.get_path_to
+func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) Path.ToNode { //gd:Node.get_path_to
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	callframe.Arg(frame, use_unique_path)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_path_to, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1900,9 +1901,9 @@ If [param persistent] is [code]true[/code], the group will be stored when saved 
 [b]Note:[/b] [SceneTree]'s group methods will [i]not[/i] work on this node if not inside the tree (see [method is_inside_tree]).
 */
 //go:nosplit
-func (self class) AddToGroup(group gd.StringName, persistent bool) { //gd:Node.add_to_group
+func (self class) AddToGroup(group String.Name, persistent bool) { //gd:Node.add_to_group
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(group))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
 	callframe.Arg(frame, persistent)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_add_to_group, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1913,9 +1914,9 @@ func (self class) AddToGroup(group gd.StringName, persistent bool) { //gd:Node.a
 Removes the node from the given [param group]. Does nothing if the node is not in the [param group]. See also notes in the description, and the [SceneTree]'s group methods.
 */
 //go:nosplit
-func (self class) RemoveFromGroup(group gd.StringName) { //gd:Node.remove_from_group
+func (self class) RemoveFromGroup(group String.Name) { //gd:Node.remove_from_group
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(group))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_remove_from_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1925,9 +1926,9 @@ func (self class) RemoveFromGroup(group gd.StringName) { //gd:Node.remove_from_g
 Returns [code]true[/code] if this node has been added to the given [param group]. See [method add_to_group] and [method remove_from_group]. See also notes in the description, and the [SceneTree]'s group methods.
 */
 //go:nosplit
-func (self class) IsInGroup(group gd.StringName) bool { //gd:Node.is_in_group
+func (self class) IsInGroup(group String.Name) bool { //gd:Node.is_in_group
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(group))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_in_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1973,11 +1974,11 @@ foreach (string group in GetGroups())
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetGroups() Array.Contains[gd.StringName] { //gd:Node.get_groups
+func (self class) GetGroups() Array.Contains[String.Name] { //gd:Node.get_groups
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_groups, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2136,9 +2137,9 @@ Calls the given [param method] name, passing [param args] as arguments, on this 
 If [param parent_first] is [code]true[/code], the method is called on this node first, then on all of its children. If [code]false[/code], the children's methods are called first.
 */
 //go:nosplit
-func (self class) PropagateCall(method gd.StringName, args Array.Any, parent_first bool) { //gd:Node.propagate_call
+func (self class) PropagateCall(method String.Name, args Array.Any, parent_first bool) { //gd:Node.propagate_call
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(method))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(method)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
 	callframe.Arg(frame, parent_first)
 	var r_ret = callframe.Nil
@@ -2877,9 +2878,9 @@ Changes the RPC configuration for the given [param method]. [param config] shoul
 [b]Note:[/b] In GDScript, this method corresponds to the [annotation @GDScript.@rpc] annotation, with various parameters passed ([code]@rpc(any)[/code], [code]@rpc(authority)[/code]...). See also the [url=$DOCS_URL/tutorials/networking/high_level_multiplayer.html]high-level multiplayer[/url] tutorial.
 */
 //go:nosplit
-func (self class) RpcConfig(method gd.StringName, config gd.Variant) { //gd:Node.rpc_config
+func (self class) RpcConfig(method String.Name, config gd.Variant) { //gd:Node.rpc_config
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(method))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(method)))
 	callframe.Arg(frame, pointers.Get(config))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_rpc_config, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2931,10 +2932,10 @@ If [method Object.can_translate_messages] is [code]false[/code], or no translati
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
 */
 //go:nosplit
-func (self class) Atr(message String.Readable, context gd.StringName) String.Readable { //gd:Node.atr
+func (self class) Atr(message String.Readable, context String.Name) String.Readable { //gd:Node.atr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(message)))
-	callframe.Arg(frame, pointers.Get(context))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_atr, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
@@ -2951,12 +2952,12 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 [b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [method atr].
 */
 //go:nosplit
-func (self class) AtrN(message String.Readable, plural_message gd.StringName, n gd.Int, context gd.StringName) String.Readable { //gd:Node.atr_n
+func (self class) AtrN(message String.Readable, plural_message String.Name, n gd.Int, context String.Name) String.Readable { //gd:Node.atr_n
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(message)))
-	callframe.Arg(frame, pointers.Get(plural_message))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(plural_message)))
 	callframe.Arg(frame, n)
-	callframe.Arg(frame, pointers.Get(context))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_atr_n, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
@@ -2979,9 +2980,9 @@ func (self class) UpdateConfigurationWarnings() { //gd:Node.update_configuration
 Similar to [method call_deferred_thread_group], but for setting properties.
 */
 //go:nosplit
-func (self class) SetDeferredThreadGroup(property gd.StringName, value gd.Variant) { //gd:Node.set_deferred_thread_group
+func (self class) SetDeferredThreadGroup(property String.Name, value gd.Variant) { //gd:Node.set_deferred_thread_group
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_deferred_thread_group, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3004,9 +3005,9 @@ func (self class) NotifyDeferredThreadGroup(what gd.Int) { //gd:Node.notify_defe
 Similar to [method call_thread_safe], but for setting properties.
 */
 //go:nosplit
-func (self class) SetThreadSafe(property gd.StringName, value gd.Variant) { //gd:Node.set_thread_safe
+func (self class) SetThreadSafe(property String.Name, value gd.Variant) { //gd:Node.set_thread_safe
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_thread_safe, self.AsObject(), frame.Array(0), r_ret.Addr())

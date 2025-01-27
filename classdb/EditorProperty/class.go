@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -32,6 +33,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 A custom control for editing properties that can be added to the [EditorInspector]. It is added via [EditorInspectorPlugin].
@@ -125,7 +127,7 @@ func (self Instance) SetBottomEditor(editor [1]gdclass.Control) { //gd:EditorPro
 If one or several properties have changed, this must be called. [param field] is used in case your editor can modify fields separately (as an example, Vector3.x). The [param changing] argument avoids the editor requesting this property to be refreshed (leave as [code]false[/code] if unsure).
 */
 func (self Instance) EmitChanged(property string, value any) { //gd:EditorProperty.emit_changed
-	class(self).EmitChanged(gd.NewStringName(property), gd.NewVariant(value), gd.NewStringName(""), false)
+	class(self).EmitChanged(String.Name(String.New(property)), gd.NewVariant(value), String.Name(String.New("")), false)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -357,11 +359,11 @@ func (self class) IsDeletable() bool { //gd:EditorProperty.is_deletable
 Gets the edited property. If your editor is for a single property (added via [method EditorInspectorPlugin._parse_property]), then this will return the property.
 */
 //go:nosplit
-func (self class) GetEditedProperty() gd.StringName { //gd:EditorProperty.get_edited_property
+func (self class) GetEditedProperty() String.Name { //gd:EditorProperty.get_edited_property
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_get_edited_property, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -418,11 +420,11 @@ func (self class) SetBottomEditor(editor [1]gdclass.Control) { //gd:EditorProper
 If one or several properties have changed, this must be called. [param field] is used in case your editor can modify fields separately (as an example, Vector3.x). The [param changing] argument avoids the editor requesting this property to be refreshed (leave as [code]false[/code] if unsure).
 */
 //go:nosplit
-func (self class) EmitChanged(property gd.StringName, value gd.Variant, field gd.StringName, changing bool) { //gd:EditorProperty.emit_changed
+func (self class) EmitChanged(property String.Name, value gd.Variant, field String.Name, changing bool) { //gd:EditorProperty.emit_changed
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	callframe.Arg(frame, pointers.Get(value))
-	callframe.Arg(frame, pointers.Get(field))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(field)))
 	callframe.Arg(frame, changing)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_emit_changed, self.AsObject(), frame.Array(0), r_ret.Addr())

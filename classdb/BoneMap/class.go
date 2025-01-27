@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -29,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This class contains a dictionary that uses a list of bone names in [SkeletonProfile] as key names.
@@ -49,7 +51,7 @@ Returns a skeleton bone name is mapped to [param profile_bone_name].
 In the retargeting process, the returned bone name is the bone name of the source skeleton.
 */
 func (self Instance) GetSkeletonBoneName(profile_bone_name string) string { //gd:BoneMap.get_skeleton_bone_name
-	return string(class(self).GetSkeletonBoneName(gd.NewStringName(profile_bone_name)).String())
+	return string(class(self).GetSkeletonBoneName(String.Name(String.New(profile_bone_name))).String())
 }
 
 /*
@@ -57,7 +59,7 @@ Maps a skeleton bone name to [param profile_bone_name].
 In the retargeting process, the setting bone name is the bone name of the source skeleton.
 */
 func (self Instance) SetSkeletonBoneName(profile_bone_name string, skeleton_bone_name string) { //gd:BoneMap.set_skeleton_bone_name
-	class(self).SetSkeletonBoneName(gd.NewStringName(profile_bone_name), gd.NewStringName(skeleton_bone_name))
+	class(self).SetSkeletonBoneName(String.Name(String.New(profile_bone_name)), String.Name(String.New(skeleton_bone_name)))
 }
 
 /*
@@ -65,7 +67,7 @@ Returns a profile bone name having [param skeleton_bone_name]. If not found, an 
 In the retargeting process, the returned bone name is the bone name of the target skeleton.
 */
 func (self Instance) FindProfileBoneName(skeleton_bone_name string) string { //gd:BoneMap.find_profile_bone_name
-	return string(class(self).FindProfileBoneName(gd.NewStringName(skeleton_bone_name)).String())
+	return string(class(self).FindProfileBoneName(String.Name(String.New(skeleton_bone_name))).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -119,12 +121,12 @@ Returns a skeleton bone name is mapped to [param profile_bone_name].
 In the retargeting process, the returned bone name is the bone name of the source skeleton.
 */
 //go:nosplit
-func (self class) GetSkeletonBoneName(profile_bone_name gd.StringName) gd.StringName { //gd:BoneMap.get_skeleton_bone_name
+func (self class) GetSkeletonBoneName(profile_bone_name String.Name) String.Name { //gd:BoneMap.get_skeleton_bone_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(profile_bone_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(profile_bone_name)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_get_skeleton_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -134,10 +136,10 @@ Maps a skeleton bone name to [param profile_bone_name].
 In the retargeting process, the setting bone name is the bone name of the source skeleton.
 */
 //go:nosplit
-func (self class) SetSkeletonBoneName(profile_bone_name gd.StringName, skeleton_bone_name gd.StringName) { //gd:BoneMap.set_skeleton_bone_name
+func (self class) SetSkeletonBoneName(profile_bone_name String.Name, skeleton_bone_name String.Name) { //gd:BoneMap.set_skeleton_bone_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(profile_bone_name))
-	callframe.Arg(frame, pointers.Get(skeleton_bone_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(profile_bone_name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(skeleton_bone_name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_set_skeleton_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -148,12 +150,12 @@ Returns a profile bone name having [param skeleton_bone_name]. If not found, an 
 In the retargeting process, the returned bone name is the bone name of the target skeleton.
 */
 //go:nosplit
-func (self class) FindProfileBoneName(skeleton_bone_name gd.StringName) gd.StringName { //gd:BoneMap.find_profile_bone_name
+func (self class) FindProfileBoneName(skeleton_bone_name String.Name) String.Name { //gd:BoneMap.find_profile_bone_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(skeleton_bone_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(skeleton_bone_name)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_find_profile_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

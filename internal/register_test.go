@@ -10,6 +10,7 @@ import (
 	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/Node2D"
+	gd "graphics.gd/internal"
 	internal "graphics.gd/internal"
 	"graphics.gd/variant/String"
 	"graphics.gd/variant/StringName"
@@ -21,10 +22,10 @@ func TestRegister(t *testing.T) {
 	}
 	classdb.Register[TestingSimpleClass]()
 
-	if tag := internal.Global.ClassDB.GetClassTag(StringName.New("Node2D")); tag == 0 {
+	if tag := internal.Global.ClassDB.GetClassTag(gd.NewStringName("Node2D")); tag == 0 {
 		t.Fail()
 	}
-	if tag := internal.Global.ClassDB.GetClassTag(StringName.New("TestingSimpleClass")); tag == 0 {
+	if tag := internal.Global.ClassDB.GetClassTag(gd.NewStringName("TestingSimpleClass")); tag == 0 {
 		t.Fail()
 	}
 

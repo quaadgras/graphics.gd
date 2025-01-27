@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/AudioEffect"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
@@ -31,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Dynamic range compressor reduces the level of the sound when the amplitude goes over a certain threshold in Decibels. One of the main uses of a compressor is to increase the dynamic range by clipping as little as possible (when sound goes over 0dB).
@@ -122,7 +124,7 @@ func (self Instance) Sidechain() string {
 }
 
 func (self Instance) SetSidechain(value string) {
-	class(self).SetSidechain(gd.NewStringName(value))
+	class(self).SetSidechain(String.Name(String.New(value)))
 }
 
 //go:nosplit
@@ -240,20 +242,20 @@ func (self class) GetMix() gd.Float { //gd:AudioEffectCompressor.get_mix
 }
 
 //go:nosplit
-func (self class) SetSidechain(sidechain gd.StringName) { //gd:AudioEffectCompressor.set_sidechain
+func (self class) SetSidechain(sidechain String.Name) { //gd:AudioEffectCompressor.set_sidechain
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(sidechain))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(sidechain)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectCompressor.Bind_set_sidechain, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSidechain() gd.StringName { //gd:AudioEffectCompressor.get_sidechain
+func (self class) GetSidechain() String.Name { //gd:AudioEffectCompressor.get_sidechain
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectCompressor.Bind_get_sidechain, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

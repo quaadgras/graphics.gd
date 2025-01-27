@@ -8,6 +8,7 @@ import (
 	"graphics.gd/classdb/ResourceLoader"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/Path"
 )
 
 // ID that uniquely identifies a resource.
@@ -24,12 +25,9 @@ func Int64(id int64) ID { //gd:rid_from_int64
 	return gd.RidFromInt64(gd.Int(id))
 }
 
-// Path to a resource, typically prefixed with "res://"
-type Path string
-
 // Load behaves like the builtin "load" function in GDScript.
-func Load[T Any](path Path) T {
-	resource := Instance(ResourceLoader.Load(string(path)))
+func Load[T Any](path Path.ToResource) T {
+	resource := Instance(ResourceLoader.Load(path.String()))
 	result, ok := as[T](resource)
 	if !ok {
 		panic("Resource is not of the expected type")

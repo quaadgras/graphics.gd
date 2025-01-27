@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Shader"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
@@ -31,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This class provides a graph-like visual editor for creating a [Shader]. Although [VisualShader]s do not require coding, they share the same logic with script shaders. They use [VisualShaderNode]s that can be connected to each other to control the flow of the shader. The visual shader graph is converted to a script shader behind the scenes.
@@ -105,7 +107,7 @@ func (self Instance) RemoveNode(atype gdclass.VisualShaderType, id int) { //gd:V
 Replaces the specified node with a node of new class type.
 */
 func (self Instance) ReplaceNode(atype gdclass.VisualShaderType, id int, new_class string) { //gd:VisualShader.replace_node
-	class(self).ReplaceNode(atype, gd.Int(id), gd.NewStringName(new_class))
+	class(self).ReplaceNode(atype, gd.Int(id), String.Name(String.New(new_class)))
 }
 
 /*
@@ -328,11 +330,11 @@ func (self class) RemoveNode(atype gdclass.VisualShaderType, id gd.Int) { //gd:V
 Replaces the specified node with a node of new class type.
 */
 //go:nosplit
-func (self class) ReplaceNode(atype gdclass.VisualShaderType, id gd.Int, new_class gd.StringName) { //gd:VisualShader.replace_node
+func (self class) ReplaceNode(atype gdclass.VisualShaderType, id gd.Int, new_class String.Name) { //gd:VisualShader.replace_node
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(new_class))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(new_class)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShader.Bind_replace_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

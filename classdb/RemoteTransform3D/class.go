@@ -15,9 +15,9 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 RemoteTransform3D pushes its own [Transform3D] to another [Node3D] derived Node (called the remote node) in the scene.
@@ -71,12 +72,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) RemotePath() NodePath.String {
-	return NodePath.String(class(self).GetRemoteNode().String())
+func (self Instance) RemotePath() string {
+	return string(class(self).GetRemoteNode().String())
 }
 
-func (self Instance) SetRemotePath(value NodePath.String) {
-	class(self).SetRemoteNode(gd.NewString(string(value)).NodePath())
+func (self Instance) SetRemotePath(value string) {
+	class(self).SetRemoteNode(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) UseGlobalCoordinates() bool {
@@ -112,20 +113,20 @@ func (self Instance) SetUpdateScale(value bool) {
 }
 
 //go:nosplit
-func (self class) SetRemoteNode(path gd.NodePath) { //gd:RemoteTransform3D.set_remote_node
+func (self class) SetRemoteNode(path Path.ToNode) { //gd:RemoteTransform3D.set_remote_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform3D.Bind_set_remote_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetRemoteNode() gd.NodePath { //gd:RemoteTransform3D.get_remote_node
+func (self class) GetRemoteNode() Path.ToNode { //gd:RemoteTransform3D.get_remote_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform3D.Bind_get_remote_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

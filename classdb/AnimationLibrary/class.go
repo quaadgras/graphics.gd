@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -29,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 An animation library stores a set of animations accessible through [StringName] keys, for use with [AnimationPlayer] nodes.
@@ -47,35 +49,35 @@ type Any interface {
 Adds the [param animation] to the library, accessible by the key [param name].
 */
 func (self Instance) AddAnimation(name string, animation [1]gdclass.Animation) error { //gd:AnimationLibrary.add_animation
-	return error(gd.ToError(class(self).AddAnimation(gd.NewStringName(name), animation)))
+	return error(gd.ToError(class(self).AddAnimation(String.Name(String.New(name)), animation)))
 }
 
 /*
 Removes the [Animation] with the key [param name].
 */
 func (self Instance) RemoveAnimation(name string) { //gd:AnimationLibrary.remove_animation
-	class(self).RemoveAnimation(gd.NewStringName(name))
+	class(self).RemoveAnimation(String.Name(String.New(name)))
 }
 
 /*
 Changes the key of the [Animation] associated with the key [param name] to [param newname].
 */
 func (self Instance) RenameAnimation(name string, newname string) { //gd:AnimationLibrary.rename_animation
-	class(self).RenameAnimation(gd.NewStringName(name), gd.NewStringName(newname))
+	class(self).RenameAnimation(String.Name(String.New(name)), String.Name(String.New(newname)))
 }
 
 /*
 Returns [code]true[/code] if the library stores an [Animation] with [param name] as the key.
 */
 func (self Instance) HasAnimation(name string) bool { //gd:AnimationLibrary.has_animation
-	return bool(class(self).HasAnimation(gd.NewStringName(name)))
+	return bool(class(self).HasAnimation(String.Name(String.New(name))))
 }
 
 /*
 Returns the [Animation] with the key [param name]. If the animation does not exist, [code]null[/code] is returned and an error is logged.
 */
 func (self Instance) GetAnimation(name string) [1]gdclass.Animation { //gd:AnimationLibrary.get_animation
-	return [1]gdclass.Animation(class(self).GetAnimation(gd.NewStringName(name)))
+	return [1]gdclass.Animation(class(self).GetAnimation(String.Name(String.New(name))))
 }
 
 /*
@@ -108,9 +110,9 @@ func New() Instance {
 Adds the [param animation] to the library, accessible by the key [param name].
 */
 //go:nosplit
-func (self class) AddAnimation(name gd.StringName, animation [1]gdclass.Animation) gd.Error { //gd:AnimationLibrary.add_animation
+func (self class) AddAnimation(name String.Name, animation [1]gdclass.Animation) gd.Error { //gd:AnimationLibrary.add_animation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(animation[0])[0])
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationLibrary.Bind_add_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -123,9 +125,9 @@ func (self class) AddAnimation(name gd.StringName, animation [1]gdclass.Animatio
 Removes the [Animation] with the key [param name].
 */
 //go:nosplit
-func (self class) RemoveAnimation(name gd.StringName) { //gd:AnimationLibrary.remove_animation
+func (self class) RemoveAnimation(name String.Name) { //gd:AnimationLibrary.remove_animation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationLibrary.Bind_remove_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -135,10 +137,10 @@ func (self class) RemoveAnimation(name gd.StringName) { //gd:AnimationLibrary.re
 Changes the key of the [Animation] associated with the key [param name] to [param newname].
 */
 //go:nosplit
-func (self class) RenameAnimation(name gd.StringName, newname gd.StringName) { //gd:AnimationLibrary.rename_animation
+func (self class) RenameAnimation(name String.Name, newname String.Name) { //gd:AnimationLibrary.rename_animation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(newname))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(newname)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationLibrary.Bind_rename_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -148,9 +150,9 @@ func (self class) RenameAnimation(name gd.StringName, newname gd.StringName) { /
 Returns [code]true[/code] if the library stores an [Animation] with [param name] as the key.
 */
 //go:nosplit
-func (self class) HasAnimation(name gd.StringName) bool { //gd:AnimationLibrary.has_animation
+func (self class) HasAnimation(name String.Name) bool { //gd:AnimationLibrary.has_animation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationLibrary.Bind_has_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -162,9 +164,9 @@ func (self class) HasAnimation(name gd.StringName) bool { //gd:AnimationLibrary.
 Returns the [Animation] with the key [param name]. If the animation does not exist, [code]null[/code] is returned and an error is logged.
 */
 //go:nosplit
-func (self class) GetAnimation(name gd.StringName) [1]gdclass.Animation { //gd:AnimationLibrary.get_animation
+func (self class) GetAnimation(name String.Name) [1]gdclass.Animation { //gd:AnimationLibrary.get_animation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationLibrary.Bind_get_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Animation{gd.PointerWithOwnershipTransferredToGo[gdclass.Animation](r_ret.Get())}
@@ -176,11 +178,11 @@ func (self class) GetAnimation(name gd.StringName) [1]gdclass.Animation { //gd:A
 Returns the keys for the [Animation]s stored in the library.
 */
 //go:nosplit
-func (self class) GetAnimationList() Array.Contains[gd.StringName] { //gd:AnimationLibrary.get_animation_list
+func (self class) GetAnimationList() Array.Contains[String.Name] { //gd:AnimationLibrary.get_animation_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationLibrary.Bind_get_animation_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -15,8 +15,8 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Vector2i"
 
@@ -32,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 type Instance [1]gdclass.StatusIndicator
 
@@ -84,12 +85,12 @@ func (self Instance) SetIcon(value [1]gdclass.Texture2D) {
 	class(self).SetIcon(value)
 }
 
-func (self Instance) Menu() NodePath.String {
-	return NodePath.String(class(self).GetMenu().String())
+func (self Instance) Menu() string {
+	return string(class(self).GetMenu().String())
 }
 
-func (self Instance) SetMenu(value NodePath.String) {
-	class(self).SetMenu(gd.NewString(string(value)).NodePath())
+func (self Instance) SetMenu(value string) {
+	class(self).SetMenu(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) Visible() bool {
@@ -158,20 +159,20 @@ func (self class) IsVisible() bool { //gd:StatusIndicator.is_visible
 }
 
 //go:nosplit
-func (self class) SetMenu(menu gd.NodePath) { //gd:StatusIndicator.set_menu
+func (self class) SetMenu(menu Path.ToNode) { //gd:StatusIndicator.set_menu
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(menu))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(menu)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StatusIndicator.Bind_set_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetMenu() gd.NodePath { //gd:StatusIndicator.get_menu
+func (self class) GetMenu() Path.ToNode { //gd:StatusIndicator.get_menu
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StatusIndicator.Bind_get_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -28,6 +29,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Godot loads resources in the editor or in exported games using ResourceFormatLoaders. They are queried automatically via the [ResourceLoader] singleton, or when a resource with internal dependencies is loaded. Each file type may load as a different resource type, so multiple ResourceFormatLoaders are registered in the engine.
@@ -118,8 +120,8 @@ func (Instance) _recognize_path(impl func(ptr unsafe.Pointer, path string, atype
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		var atype = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(atype)
+		var atype = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
+		defer pointers.End(gd.InternalStringName(atype))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), atype.String())
 		gd.UnsafeSet(p_back, ret)
@@ -132,8 +134,8 @@ Tells which resource class this loader can load.
 */
 func (Instance) _handles_type(impl func(ptr unsafe.Pointer, atype string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var atype = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(atype)
+		var atype = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(atype))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype.String())
 		gd.UnsafeSet(p_back, ret)
@@ -310,12 +312,12 @@ func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) gd.PackedS
 Tells whether or not this loader should load a resource from its resource path for a given type.
 If it is not implemented, the default behavior returns whether the path's extension is within the ones provided by [method _get_recognized_extensions], and if the type is within the ones provided by [method _get_resource_type].
 */
-func (class) _recognize_path(impl func(ptr unsafe.Pointer, path String.Readable, atype gd.StringName) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _recognize_path(impl func(ptr unsafe.Pointer, path String.Readable, atype String.Name) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		var atype = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(atype)
+		var atype = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
+		defer pointers.End(gd.InternalStringName(atype))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, atype)
 		gd.UnsafeSet(p_back, ret)
@@ -326,10 +328,10 @@ func (class) _recognize_path(impl func(ptr unsafe.Pointer, path String.Readable,
 Tells which resource class this loader can load.
 [b]Note:[/b] Custom resource types defined by scripts aren't known by the [ClassDB], so you might just handle [code]"Resource"[/code] for them.
 */
-func (class) _handles_type(impl func(ptr unsafe.Pointer, atype gd.StringName) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _handles_type(impl func(ptr unsafe.Pointer, atype String.Name) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var atype = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(atype)
+		var atype = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(atype))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype)
 		gd.UnsafeSet(p_back, ret)

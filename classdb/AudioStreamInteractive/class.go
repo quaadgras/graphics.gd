@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
@@ -31,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This is an audio stream that can playback music interactively, combining clips and a transition table. Clips must be added first, and the transition rules via the [method add_transition]. Additionally, this stream export a property parameter to control the playback via [AudioStreamPlayer], [AudioStreamPlayer2D], or [AudioStreamPlayer3D].
@@ -50,7 +52,7 @@ type Any interface {
 Set the name of the current clip (for easier identification).
 */
 func (self Instance) SetClipName(clip_index int, name string) { //gd:AudioStreamInteractive.set_clip_name
-	class(self).SetClipName(gd.Int(clip_index), gd.NewStringName(name))
+	class(self).SetClipName(gd.Int(clip_index), String.Name(String.New(name)))
 }
 
 /*
@@ -263,10 +265,10 @@ func (self class) GetInitialClip() gd.Int { //gd:AudioStreamInteractive.get_init
 Set the name of the current clip (for easier identification).
 */
 //go:nosplit
-func (self class) SetClipName(clip_index gd.Int, name gd.StringName) { //gd:AudioStreamInteractive.set_clip_name
+func (self class) SetClipName(clip_index gd.Int, name String.Name) { //gd:AudioStreamInteractive.set_clip_name
 	var frame = callframe.New()
 	callframe.Arg(frame, clip_index)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamInteractive.Bind_set_clip_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -276,12 +278,12 @@ func (self class) SetClipName(clip_index gd.Int, name gd.StringName) { //gd:Audi
 Return the name of a clip.
 */
 //go:nosplit
-func (self class) GetClipName(clip_index gd.Int) gd.StringName { //gd:AudioStreamInteractive.get_clip_name
+func (self class) GetClipName(clip_index gd.Int) String.Name { //gd:AudioStreamInteractive.get_clip_name
 	var frame = callframe.New()
 	callframe.Arg(frame, clip_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamInteractive.Bind_get_clip_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

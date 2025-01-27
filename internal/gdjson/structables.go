@@ -7,6 +7,7 @@ import (
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Path"
 	"graphics.gd/variant/RID"
 	"graphics.gd/variant/Vector2"
 	"graphics.gd/variant/Vector2i"
@@ -31,12 +32,12 @@ type SignalInfo struct {
 }
 
 type CompletionInfo struct {
-	Kind         any        `gd:"kind" type:"[1]gdclass.CodeEditCodeCompletionKind"`
-	DisplayText  string     `gd:"display_text"`
-	InsertText   string     `gd:"insert_text"`
-	FontColor    Color.RGBA `gd:"font_color"`
-	Icon         string     `gd:"icon" type:"Resource.Path"`
-	DefaultValue string     `gd:"default_value"`
+	Kind         any             `gd:"kind" type:"[1]gdclass.CodeEditCodeCompletionKind"`
+	DisplayText  string          `gd:"display_text"`
+	InsertText   string          `gd:"insert_text"`
+	FontColor    Color.RGBA      `gd:"font_color"`
+	Icon         Path.ToResource `gd:"icon"`
+	DefaultValue string          `gd:"default_value"`
 }
 
 type DiffLine map[any]any

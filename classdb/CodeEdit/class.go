@@ -15,11 +15,11 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/TextEdit"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -34,6 +34,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 CodeEdit is a specialized [TextEdit] designed for editing plain text code files. It has many features commonly found in code editors such as line numbers, line folding, code completion, indent management, and string/comment management.
@@ -2226,6 +2227,6 @@ type CompletionInfo struct {
 		B float32
 		A float32
 	} `gd:"font_color"`
-	Icon         Resource.Path `gd:"icon"`
-	DefaultValue string        `gd:"default_value"`
+	Icon         Path.ToFile `gd:"icon"`
+	DefaultValue string      `gd:"default_value"`
 }

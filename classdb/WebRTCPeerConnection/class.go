@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -28,6 +29,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 A WebRTC connection between the local computer and a remote peer. Provides an interface to connect, maintain and monitor the connection.
@@ -52,7 +54,7 @@ Sets the [param extension_class] as the default [WebRTCPeerConnectionExtension] 
 */
 func SetDefaultExtension(extension_class string) { //gd:WebRTCPeerConnection.set_default_extension
 	self := Instance{}
-	class(self).SetDefaultExtension(gd.NewStringName(extension_class))
+	class(self).SetDefaultExtension(String.Name(String.New(extension_class)))
 }
 
 /*
@@ -195,9 +197,9 @@ func New() Instance {
 Sets the [param extension_class] as the default [WebRTCPeerConnectionExtension] returned when creating a new [WebRTCPeerConnection].
 */
 //go:nosplit
-func (self class) SetDefaultExtension(extension_class gd.StringName) { //gd:WebRTCPeerConnection.set_default_extension
+func (self class) SetDefaultExtension(extension_class String.Name) { //gd:WebRTCPeerConnection.set_default_extension
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(extension_class))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(extension_class)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_set_default_extension, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

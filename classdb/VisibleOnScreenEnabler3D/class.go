@@ -15,11 +15,11 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/VisibleOnScreenNotifier3D"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +33,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 [VisibleOnScreenEnabler3D] contains a box-shaped region of 3D space and a target node. The target node will be automatically enabled (via its [member Node.process_mode] property) when any part of this region becomes visible on the screen, and automatically disabled otherwise. This can for example be used to activate enemies only when the player approaches them.
@@ -75,12 +76,12 @@ func (self Instance) SetEnableMode(value gdclass.VisibleOnScreenEnabler3DEnableM
 	class(self).SetEnableMode(value)
 }
 
-func (self Instance) EnableNodePath() NodePath.String {
-	return NodePath.String(class(self).GetEnableNodePath().String())
+func (self Instance) EnableNodePath() string {
+	return string(class(self).GetEnableNodePath().String())
 }
 
-func (self Instance) SetEnableNodePath(value NodePath.String) {
-	class(self).SetEnableNodePath(gd.NewString(string(value)).NodePath())
+func (self Instance) SetEnableNodePath(value string) {
+	class(self).SetEnableNodePath(Path.ToNode(String.New(value)))
 }
 
 //go:nosplit
@@ -103,20 +104,20 @@ func (self class) GetEnableMode() gdclass.VisibleOnScreenEnabler3DEnableMode { /
 }
 
 //go:nosplit
-func (self class) SetEnableNodePath(path gd.NodePath) { //gd:VisibleOnScreenEnabler3D.set_enable_node_path
+func (self class) SetEnableNodePath(path Path.ToNode) { //gd:VisibleOnScreenEnabler3D.set_enable_node_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_set_enable_node_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetEnableNodePath() gd.NodePath { //gd:VisibleOnScreenEnabler3D.get_enable_node_path
+func (self class) GetEnableNodePath() Path.ToNode { //gd:VisibleOnScreenEnabler3D.get_enable_node_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_get_enable_node_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

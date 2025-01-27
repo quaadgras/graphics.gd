@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
@@ -32,6 +33,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 A navigation mesh can be created either by baking it with the help of the [NavigationServer2D], or by adding vertices and convex polygon indices arrays manually.
@@ -250,7 +252,7 @@ func (self Instance) SourceGeometryGroupName() string {
 }
 
 func (self Instance) SetSourceGeometryGroupName(value string) {
-	class(self).SetSourceGeometryGroupName(gd.NewStringName(value))
+	class(self).SetSourceGeometryGroupName(String.Name(String.New(value)))
 }
 
 func (self Instance) CellSize() Float.X {
@@ -603,20 +605,20 @@ func (self class) GetSourceGeometryMode() gdclass.NavigationPolygonSourceGeometr
 }
 
 //go:nosplit
-func (self class) SetSourceGeometryGroupName(group_name gd.StringName) { //gd:NavigationPolygon.set_source_geometry_group_name
+func (self class) SetSourceGeometryGroupName(group_name String.Name) { //gd:NavigationPolygon.set_source_geometry_group_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(group_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group_name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_set_source_geometry_group_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSourceGeometryGroupName() gd.StringName { //gd:NavigationPolygon.get_source_geometry_group_name
+func (self class) GetSourceGeometryGroupName() String.Name { //gd:NavigationPolygon.get_source_geometry_group_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_get_source_geometry_group_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

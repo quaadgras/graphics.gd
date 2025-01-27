@@ -16,6 +16,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -30,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 The [Engine] singleton allows you to query and modify the project's run-time parameters, such as frames per second, time scale, and others. It also stores information about the current build of Godot, such as the current version.
@@ -304,7 +306,7 @@ GD.Print(Engine.HasSingleton("Unknown"));     // Prints false
 */
 func HasSingleton(name string) bool { //gd:Engine.has_singleton
 	once.Do(singleton)
-	return bool(class(self).HasSingleton(gd.NewStringName(name)))
+	return bool(class(self).HasSingleton(String.Name(String.New(name))))
 }
 
 /*
@@ -313,7 +315,7 @@ Returns the global singleton with the given [param name], or [code]null[/code] i
 */
 func GetSingleton(name string) Object.Instance { //gd:Engine.get_singleton
 	once.Do(singleton)
-	return Object.Instance(class(self).GetSingleton(gd.NewStringName(name)))
+	return Object.Instance(class(self).GetSingleton(String.Name(String.New(name))))
 }
 
 /*
@@ -321,7 +323,7 @@ Registers the given [Object] [param instance] as a singleton, available globally
 */
 func RegisterSingleton(name string, instance Object.Instance) { //gd:Engine.register_singleton
 	once.Do(singleton)
-	class(self).RegisterSingleton(gd.NewStringName(name), instance)
+	class(self).RegisterSingleton(String.Name(String.New(name)), instance)
 }
 
 /*
@@ -329,7 +331,7 @@ Removes the singleton registered under [param name]. The singleton object is [i]
 */
 func UnregisterSingleton(name string) { //gd:Engine.unregister_singleton
 	once.Do(singleton)
-	class(self).UnregisterSingleton(gd.NewStringName(name))
+	class(self).UnregisterSingleton(String.Name(String.New(name)))
 }
 
 /*
@@ -875,9 +877,9 @@ GD.Print(Engine.HasSingleton("Unknown"));     // Prints false
 [b]Note:[/b] Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
 */
 //go:nosplit
-func (self class) HasSingleton(name gd.StringName) bool { //gd:Engine.has_singleton
+func (self class) HasSingleton(name String.Name) bool { //gd:Engine.has_singleton
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_has_singleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -890,9 +892,9 @@ Returns the global singleton with the given [param name], or [code]null[/code] i
 [b]Note:[/b] Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
 */
 //go:nosplit
-func (self class) GetSingleton(name gd.StringName) [1]gd.Object { //gd:Engine.get_singleton
+func (self class) GetSingleton(name String.Name) [1]gd.Object { //gd:Engine.get_singleton
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_singleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(r_ret.Get())})}
@@ -904,9 +906,9 @@ func (self class) GetSingleton(name gd.StringName) [1]gd.Object { //gd:Engine.ge
 Registers the given [Object] [param instance] as a singleton, available globally under [param name]. Useful for plugins.
 */
 //go:nosplit
-func (self class) RegisterSingleton(name gd.StringName, instance [1]gd.Object) { //gd:Engine.register_singleton
+func (self class) RegisterSingleton(name String.Name, instance [1]gd.Object) { //gd:Engine.register_singleton
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(instance[0].AsObject()[0]))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_register_singleton, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -917,9 +919,9 @@ func (self class) RegisterSingleton(name gd.StringName, instance [1]gd.Object) {
 Removes the singleton registered under [param name]. The singleton object is [i]not[/i] freed. Only works with user-defined singletons registered with [method register_singleton].
 */
 //go:nosplit
-func (self class) UnregisterSingleton(name gd.StringName) { //gd:Engine.unregister_singleton
+func (self class) UnregisterSingleton(name String.Name) { //gd:Engine.unregister_singleton
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_unregister_singleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1186,6 +1188,11 @@ const (
 	ErrPrinterOnFire Error = 48
 )
 
+type Part struct {
+	Files     []string `gd:"files"`
+	Copyright []string `gd:"copyright"`
+	License   string   `gd:"license"`
+}
 type DonorInfo struct {
 	PlatinumSponsors []string `gd:"platinum_sponsors"`
 	GoldSponsors     []string `gd:"gold_sponsors"`
@@ -1216,9 +1223,4 @@ type AuthorInfo struct {
 type Copyright struct {
 	Name  string `gd:"name"`
 	Parts []Part `gd:"parts"`
-}
-type Part struct {
-	Files     []string `gd:"files"`
-	Copyright []string `gd:"copyright"`
-	License   string   `gd:"license"`
 }

@@ -21,8 +21,8 @@ import (
 	ShaderMaterialClass "graphics.gd/classdb/ShaderMaterial"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Object"
+	"graphics.gd/variant/Path"
 	"graphics.gd/variant/String"
-	"graphics.gd/variant/StringName"
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
@@ -163,8 +163,8 @@ func Register[T Class]() {
 			tool = true
 		}
 		var reference T
-		var className = pointers.Pin(StringName.New(rename))
-		var superName = pointers.Pin(StringName.New(nameOf(superType)))
+		var className = pointers.Pin(gd.NewStringName(rename))
+		var superName = pointers.Pin(gd.NewStringName(nameOf(superType)))
 
 		var isMainLoop = false
 		if _, ok := any(super).(interface {
@@ -565,7 +565,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	if tag := field.Tag.Get("gd"); tag != "" {
 		name = tag
 	}
-	path := gd.NewString(name).NodePath()
+	path := Path.ToNode(String.New(name))
 	if !NodeClass.Advanced(parent).HasNode(path) {
 		child := gd.Global.ClassDB.ConstructObject(gd.NewStringName(nameOf(field.Type)))
 		defer pointers.End(child[0])

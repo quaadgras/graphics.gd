@@ -16,8 +16,8 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 [EditorInterface] gives you control over Godot editor's window. It allows customizing the window, saving and (re-)loading scenes, rendering mesh previews, inspecting and editing resources and objects, and provides access to [EditorSettings], [EditorFileSystem], [EditorResourcePreview], [ScriptEditor], the editor viewport, and information about scenes.
@@ -289,9 +290,9 @@ func _on_node_selected(node_path):
 
 [/codeblock]
 */
-func PopupNodeSelector(callback func(selected NodePath.String)) { //gd:EditorInterface.popup_node_selector
+func PopupNodeSelector(callback func(selected string)) { //gd:EditorInterface.popup_node_selector
 	once.Do(singleton)
-	class(self).PopupNodeSelector(Callable.New(callback), gd.ArrayFromSlice[Array.Contains[gd.StringName]]([1][]string{}[0]))
+	class(self).PopupNodeSelector(Callable.New(callback), gd.ArrayFromSlice[Array.Contains[String.Name]]([1][]string{}[0]))
 }
 
 /*
@@ -312,7 +313,7 @@ func _on_property_selected(property_path):
 
 [/codeblock]
 */
-func PopupPropertySelector(obj Object.Instance, callback func(selected NodePath.String)) { //gd:EditorInterface.popup_property_selector
+func PopupPropertySelector(obj Object.Instance, callback func(selected string)) { //gd:EditorInterface.popup_property_selector
 	once.Do(singleton)
 	class(self).PopupPropertySelector(obj, Callable.New(callback), gd.NewPackedInt32Slice([1][]int32{}[0]))
 }
@@ -917,7 +918,7 @@ func _on_node_selected(node_path):
 [/codeblock]
 */
 //go:nosplit
-func (self class) PopupNodeSelector(callback Callable.Function, valid_types Array.Contains[gd.StringName]) { //gd:EditorInterface.popup_node_selector
+func (self class) PopupNodeSelector(callback Callable.Function, valid_types Array.Contains[String.Name]) { //gd:EditorInterface.popup_node_selector
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(valid_types)))

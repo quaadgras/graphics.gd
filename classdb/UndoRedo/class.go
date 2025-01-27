@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -28,6 +29,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 UndoRedo works by registering methods and property changes inside "actions". You can create an action, then provide ways to do and undo this action using function calls and property changes, then commit the action.
@@ -175,14 +177,14 @@ func (self Instance) AddUndoMethod(callable func()) { //gd:UndoRedo.add_undo_met
 Register a [param property] that would change its value to [param value] when the action is committed.
 */
 func (self Instance) AddDoProperty(obj Object.Instance, property string, value any) { //gd:UndoRedo.add_do_property
-	class(self).AddDoProperty(obj, gd.NewStringName(property), gd.NewVariant(value))
+	class(self).AddDoProperty(obj, String.Name(String.New(property)), gd.NewVariant(value))
 }
 
 /*
 Register a [param property] that would change its value to [param value] when the action is undone.
 */
 func (self Instance) AddUndoProperty(obj Object.Instance, property string, value any) { //gd:UndoRedo.add_undo_property
-	class(self).AddUndoProperty(obj, gd.NewStringName(property), gd.NewVariant(value))
+	class(self).AddUndoProperty(obj, String.Name(String.New(property)), gd.NewVariant(value))
 }
 
 /*
@@ -398,10 +400,10 @@ func (self class) AddUndoMethod(callable Callable.Function) { //gd:UndoRedo.add_
 Register a [param property] that would change its value to [param value] when the action is committed.
 */
 //go:nosplit
-func (self class) AddDoProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) { //gd:UndoRedo.add_do_property
+func (self class) AddDoProperty(obj [1]gd.Object, property String.Name, value gd.Variant) { //gd:UndoRedo.add_do_property
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_do_property, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -412,10 +414,10 @@ func (self class) AddDoProperty(obj [1]gd.Object, property gd.StringName, value 
 Register a [param property] that would change its value to [param value] when the action is undone.
 */
 //go:nosplit
-func (self class) AddUndoProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) { //gd:UndoRedo.add_undo_property
+func (self class) AddUndoProperty(obj [1]gd.Object, property String.Name, value gd.Variant) { //gd:UndoRedo.add_undo_property
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_undo_property, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -30,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Sprite frame library for an [AnimatedSprite2D] or [AnimatedSprite3D] node. Contains frames and animation data for playback.
@@ -48,28 +50,28 @@ type Any interface {
 Adds a new [param anim] animation to the library.
 */
 func (self Instance) AddAnimation(anim string) { //gd:SpriteFrames.add_animation
-	class(self).AddAnimation(gd.NewStringName(anim))
+	class(self).AddAnimation(String.Name(String.New(anim)))
 }
 
 /*
 Returns [code]true[/code] if the [param anim] animation exists.
 */
 func (self Instance) HasAnimation(anim string) bool { //gd:SpriteFrames.has_animation
-	return bool(class(self).HasAnimation(gd.NewStringName(anim)))
+	return bool(class(self).HasAnimation(String.Name(String.New(anim))))
 }
 
 /*
 Removes the [param anim] animation.
 */
 func (self Instance) RemoveAnimation(anim string) { //gd:SpriteFrames.remove_animation
-	class(self).RemoveAnimation(gd.NewStringName(anim))
+	class(self).RemoveAnimation(String.Name(String.New(anim)))
 }
 
 /*
 Changes the [param anim] animation's name to [param newname].
 */
 func (self Instance) RenameAnimation(anim string, newname string) { //gd:SpriteFrames.rename_animation
-	class(self).RenameAnimation(gd.NewStringName(anim), gd.NewStringName(newname))
+	class(self).RenameAnimation(String.Name(String.New(anim)), String.Name(String.New(newname)))
 }
 
 /*
@@ -83,63 +85,63 @@ func (self Instance) GetAnimationNames() []string { //gd:SpriteFrames.get_animat
 Sets the speed for the [param anim] animation in frames per second.
 */
 func (self Instance) SetAnimationSpeed(anim string, fps Float.X) { //gd:SpriteFrames.set_animation_speed
-	class(self).SetAnimationSpeed(gd.NewStringName(anim), gd.Float(fps))
+	class(self).SetAnimationSpeed(String.Name(String.New(anim)), gd.Float(fps))
 }
 
 /*
 Returns the speed in frames per second for the [param anim] animation.
 */
 func (self Instance) GetAnimationSpeed(anim string) Float.X { //gd:SpriteFrames.get_animation_speed
-	return Float.X(Float.X(class(self).GetAnimationSpeed(gd.NewStringName(anim))))
+	return Float.X(Float.X(class(self).GetAnimationSpeed(String.Name(String.New(anim)))))
 }
 
 /*
 If [param loop] is [code]true[/code], the [param anim] animation will loop when it reaches the end, or the start if it is played in reverse.
 */
 func (self Instance) SetAnimationLoop(anim string, loop bool) { //gd:SpriteFrames.set_animation_loop
-	class(self).SetAnimationLoop(gd.NewStringName(anim), loop)
+	class(self).SetAnimationLoop(String.Name(String.New(anim)), loop)
 }
 
 /*
 Returns [code]true[/code] if the given animation is configured to loop when it finishes playing. Otherwise, returns [code]false[/code].
 */
 func (self Instance) GetAnimationLoop(anim string) bool { //gd:SpriteFrames.get_animation_loop
-	return bool(class(self).GetAnimationLoop(gd.NewStringName(anim)))
+	return bool(class(self).GetAnimationLoop(String.Name(String.New(anim))))
 }
 
 /*
 Adds a frame to the [param anim] animation. If [param at_position] is [code]-1[/code], the frame will be added to the end of the animation. [param duration] specifies the relative duration, see [method get_frame_duration] for details.
 */
 func (self Instance) AddFrame(anim string, texture [1]gdclass.Texture2D) { //gd:SpriteFrames.add_frame
-	class(self).AddFrame(gd.NewStringName(anim), texture, gd.Float(1.0), gd.Int(-1))
+	class(self).AddFrame(String.Name(String.New(anim)), texture, gd.Float(1.0), gd.Int(-1))
 }
 
 /*
 Sets the [param texture] and the [param duration] of the frame [param idx] in the [param anim] animation. [param duration] specifies the relative duration, see [method get_frame_duration] for details.
 */
 func (self Instance) SetFrame(anim string, idx int, texture [1]gdclass.Texture2D) { //gd:SpriteFrames.set_frame
-	class(self).SetFrame(gd.NewStringName(anim), gd.Int(idx), texture, gd.Float(1.0))
+	class(self).SetFrame(String.Name(String.New(anim)), gd.Int(idx), texture, gd.Float(1.0))
 }
 
 /*
 Removes the [param anim] animation's frame [param idx].
 */
 func (self Instance) RemoveFrame(anim string, idx int) { //gd:SpriteFrames.remove_frame
-	class(self).RemoveFrame(gd.NewStringName(anim), gd.Int(idx))
+	class(self).RemoveFrame(String.Name(String.New(anim)), gd.Int(idx))
 }
 
 /*
 Returns the number of frames for the [param anim] animation.
 */
 func (self Instance) GetFrameCount(anim string) int { //gd:SpriteFrames.get_frame_count
-	return int(int(class(self).GetFrameCount(gd.NewStringName(anim))))
+	return int(int(class(self).GetFrameCount(String.Name(String.New(anim)))))
 }
 
 /*
 Returns the texture of the frame [param idx] in the [param anim] animation.
 */
 func (self Instance) GetFrameTexture(anim string, idx int) [1]gdclass.Texture2D { //gd:SpriteFrames.get_frame_texture
-	return [1]gdclass.Texture2D(class(self).GetFrameTexture(gd.NewStringName(anim), gd.Int(idx)))
+	return [1]gdclass.Texture2D(class(self).GetFrameTexture(String.Name(String.New(anim)), gd.Int(idx)))
 }
 
 /*
@@ -150,14 +152,14 @@ absolute_duration = relative_duration / (animation_fps * abs(playing_speed))
 In this example, [code]playing_speed[/code] refers to either [method AnimatedSprite2D.get_playing_speed] or [method AnimatedSprite3D.get_playing_speed].
 */
 func (self Instance) GetFrameDuration(anim string, idx int) Float.X { //gd:SpriteFrames.get_frame_duration
-	return Float.X(Float.X(class(self).GetFrameDuration(gd.NewStringName(anim), gd.Int(idx))))
+	return Float.X(Float.X(class(self).GetFrameDuration(String.Name(String.New(anim)), gd.Int(idx))))
 }
 
 /*
 Removes all frames from the [param anim] animation.
 */
 func (self Instance) Clear(anim string) { //gd:SpriteFrames.clear
-	class(self).Clear(gd.NewStringName(anim))
+	class(self).Clear(String.Name(String.New(anim)))
 }
 
 /*
@@ -190,9 +192,9 @@ func New() Instance {
 Adds a new [param anim] animation to the library.
 */
 //go:nosplit
-func (self class) AddAnimation(anim gd.StringName) { //gd:SpriteFrames.add_animation
+func (self class) AddAnimation(anim String.Name) { //gd:SpriteFrames.add_animation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_add_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -202,9 +204,9 @@ func (self class) AddAnimation(anim gd.StringName) { //gd:SpriteFrames.add_anima
 Returns [code]true[/code] if the [param anim] animation exists.
 */
 //go:nosplit
-func (self class) HasAnimation(anim gd.StringName) bool { //gd:SpriteFrames.has_animation
+func (self class) HasAnimation(anim String.Name) bool { //gd:SpriteFrames.has_animation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_has_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -216,9 +218,9 @@ func (self class) HasAnimation(anim gd.StringName) bool { //gd:SpriteFrames.has_
 Removes the [param anim] animation.
 */
 //go:nosplit
-func (self class) RemoveAnimation(anim gd.StringName) { //gd:SpriteFrames.remove_animation
+func (self class) RemoveAnimation(anim String.Name) { //gd:SpriteFrames.remove_animation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_remove_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -228,10 +230,10 @@ func (self class) RemoveAnimation(anim gd.StringName) { //gd:SpriteFrames.remove
 Changes the [param anim] animation's name to [param newname].
 */
 //go:nosplit
-func (self class) RenameAnimation(anim gd.StringName, newname gd.StringName) { //gd:SpriteFrames.rename_animation
+func (self class) RenameAnimation(anim String.Name, newname String.Name) { //gd:SpriteFrames.rename_animation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
-	callframe.Arg(frame, pointers.Get(newname))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(newname)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_rename_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -254,9 +256,9 @@ func (self class) GetAnimationNames() gd.PackedStringArray { //gd:SpriteFrames.g
 Sets the speed for the [param anim] animation in frames per second.
 */
 //go:nosplit
-func (self class) SetAnimationSpeed(anim gd.StringName, fps gd.Float) { //gd:SpriteFrames.set_animation_speed
+func (self class) SetAnimationSpeed(anim String.Name, fps gd.Float) { //gd:SpriteFrames.set_animation_speed
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
 	callframe.Arg(frame, fps)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_set_animation_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -267,9 +269,9 @@ func (self class) SetAnimationSpeed(anim gd.StringName, fps gd.Float) { //gd:Spr
 Returns the speed in frames per second for the [param anim] animation.
 */
 //go:nosplit
-func (self class) GetAnimationSpeed(anim gd.StringName) gd.Float { //gd:SpriteFrames.get_animation_speed
+func (self class) GetAnimationSpeed(anim String.Name) gd.Float { //gd:SpriteFrames.get_animation_speed
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_animation_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -281,9 +283,9 @@ func (self class) GetAnimationSpeed(anim gd.StringName) gd.Float { //gd:SpriteFr
 If [param loop] is [code]true[/code], the [param anim] animation will loop when it reaches the end, or the start if it is played in reverse.
 */
 //go:nosplit
-func (self class) SetAnimationLoop(anim gd.StringName, loop bool) { //gd:SpriteFrames.set_animation_loop
+func (self class) SetAnimationLoop(anim String.Name, loop bool) { //gd:SpriteFrames.set_animation_loop
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
 	callframe.Arg(frame, loop)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_set_animation_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -294,9 +296,9 @@ func (self class) SetAnimationLoop(anim gd.StringName, loop bool) { //gd:SpriteF
 Returns [code]true[/code] if the given animation is configured to loop when it finishes playing. Otherwise, returns [code]false[/code].
 */
 //go:nosplit
-func (self class) GetAnimationLoop(anim gd.StringName) bool { //gd:SpriteFrames.get_animation_loop
+func (self class) GetAnimationLoop(anim String.Name) bool { //gd:SpriteFrames.get_animation_loop
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_animation_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -308,9 +310,9 @@ func (self class) GetAnimationLoop(anim gd.StringName) bool { //gd:SpriteFrames.
 Adds a frame to the [param anim] animation. If [param at_position] is [code]-1[/code], the frame will be added to the end of the animation. [param duration] specifies the relative duration, see [method get_frame_duration] for details.
 */
 //go:nosplit
-func (self class) AddFrame(anim gd.StringName, texture [1]gdclass.Texture2D, duration gd.Float, at_position gd.Int) { //gd:SpriteFrames.add_frame
+func (self class) AddFrame(anim String.Name, texture [1]gdclass.Texture2D, duration gd.Float, at_position gd.Int) { //gd:SpriteFrames.add_frame
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, duration)
 	callframe.Arg(frame, at_position)
@@ -323,9 +325,9 @@ func (self class) AddFrame(anim gd.StringName, texture [1]gdclass.Texture2D, dur
 Sets the [param texture] and the [param duration] of the frame [param idx] in the [param anim] animation. [param duration] specifies the relative duration, see [method get_frame_duration] for details.
 */
 //go:nosplit
-func (self class) SetFrame(anim gd.StringName, idx gd.Int, texture [1]gdclass.Texture2D, duration gd.Float) { //gd:SpriteFrames.set_frame
+func (self class) SetFrame(anim String.Name, idx gd.Int, texture [1]gdclass.Texture2D, duration gd.Float) { //gd:SpriteFrames.set_frame
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, duration)
@@ -338,9 +340,9 @@ func (self class) SetFrame(anim gd.StringName, idx gd.Int, texture [1]gdclass.Te
 Removes the [param anim] animation's frame [param idx].
 */
 //go:nosplit
-func (self class) RemoveFrame(anim gd.StringName, idx gd.Int) { //gd:SpriteFrames.remove_frame
+func (self class) RemoveFrame(anim String.Name, idx gd.Int) { //gd:SpriteFrames.remove_frame
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_remove_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -351,9 +353,9 @@ func (self class) RemoveFrame(anim gd.StringName, idx gd.Int) { //gd:SpriteFrame
 Returns the number of frames for the [param anim] animation.
 */
 //go:nosplit
-func (self class) GetFrameCount(anim gd.StringName) gd.Int { //gd:SpriteFrames.get_frame_count
+func (self class) GetFrameCount(anim String.Name) gd.Int { //gd:SpriteFrames.get_frame_count
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_frame_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -365,9 +367,9 @@ func (self class) GetFrameCount(anim gd.StringName) gd.Int { //gd:SpriteFrames.g
 Returns the texture of the frame [param idx] in the [param anim] animation.
 */
 //go:nosplit
-func (self class) GetFrameTexture(anim gd.StringName, idx gd.Int) [1]gdclass.Texture2D { //gd:SpriteFrames.get_frame_texture
+func (self class) GetFrameTexture(anim String.Name, idx gd.Int) [1]gdclass.Texture2D { //gd:SpriteFrames.get_frame_texture
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_frame_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -384,9 +386,9 @@ absolute_duration = relative_duration / (animation_fps * abs(playing_speed))
 In this example, [code]playing_speed[/code] refers to either [method AnimatedSprite2D.get_playing_speed] or [method AnimatedSprite3D.get_playing_speed].
 */
 //go:nosplit
-func (self class) GetFrameDuration(anim gd.StringName, idx gd.Int) gd.Float { //gd:SpriteFrames.get_frame_duration
+func (self class) GetFrameDuration(anim String.Name, idx gd.Int) gd.Float { //gd:SpriteFrames.get_frame_duration
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_frame_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -399,9 +401,9 @@ func (self class) GetFrameDuration(anim gd.StringName, idx gd.Int) gd.Float { //
 Removes all frames from the [param anim] animation.
 */
 //go:nosplit
-func (self class) Clear(anim gd.StringName) { //gd:SpriteFrames.clear
+func (self class) Clear(anim String.Name) { //gd:SpriteFrames.clear
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(anim))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

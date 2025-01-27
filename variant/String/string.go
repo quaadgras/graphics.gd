@@ -60,6 +60,14 @@ type Comparable = struct {
 	ptr *Readable
 }
 
+// Name will be replaced with [Comparable] in Go 1.24
+type Name structure
+
+// String implements the [fmt.Stringer] interface.
+func (name Name) String() string {
+	return Readable(name).String()
+}
+
 func MakeComparable[T Any](s T) Comparable {
 	panic("not implemented")
 }

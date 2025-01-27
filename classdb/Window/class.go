@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Viewport"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
@@ -35,6 +36,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 A node that creates a window. The window can either be a native system window or embedded inside another [Window] (see [member Viewport.gui_embed_subwindows]).
@@ -246,7 +248,7 @@ Creates a local override for a theme icon with the specified [param name]. Local
 See also [method get_theme_icon].
 */
 func (self Instance) AddThemeIconOverride(name string, texture [1]gdclass.Texture2D) { //gd:Window.add_theme_icon_override
-	class(self).AddThemeIconOverride(gd.NewStringName(name), texture)
+	class(self).AddThemeIconOverride(String.Name(String.New(name)), texture)
 }
 
 /*
@@ -254,7 +256,7 @@ Creates a local override for a theme [StyleBox] with the specified [param name].
 See also [method get_theme_stylebox] and [method Control.add_theme_stylebox_override] for more details.
 */
 func (self Instance) AddThemeStyleboxOverride(name string, stylebox [1]gdclass.StyleBox) { //gd:Window.add_theme_stylebox_override
-	class(self).AddThemeStyleboxOverride(gd.NewStringName(name), stylebox)
+	class(self).AddThemeStyleboxOverride(String.Name(String.New(name)), stylebox)
 }
 
 /*
@@ -262,7 +264,7 @@ Creates a local override for a theme [Font] with the specified [param name]. Loc
 See also [method get_theme_font].
 */
 func (self Instance) AddThemeFontOverride(name string, font [1]gdclass.Font) { //gd:Window.add_theme_font_override
-	class(self).AddThemeFontOverride(gd.NewStringName(name), font)
+	class(self).AddThemeFontOverride(String.Name(String.New(name)), font)
 }
 
 /*
@@ -270,7 +272,7 @@ Creates a local override for a theme font size with the specified [param name]. 
 See also [method get_theme_font_size].
 */
 func (self Instance) AddThemeFontSizeOverride(name string, font_size int) { //gd:Window.add_theme_font_size_override
-	class(self).AddThemeFontSizeOverride(gd.NewStringName(name), gd.Int(font_size))
+	class(self).AddThemeFontSizeOverride(String.Name(String.New(name)), gd.Int(font_size))
 }
 
 /*
@@ -278,7 +280,7 @@ Creates a local override for a theme [Color] with the specified [param name]. Lo
 See also [method get_theme_color] and [method Control.add_theme_color_override] for more details.
 */
 func (self Instance) AddThemeColorOverride(name string, color Color.RGBA) { //gd:Window.add_theme_color_override
-	class(self).AddThemeColorOverride(gd.NewStringName(name), gd.Color(color))
+	class(self).AddThemeColorOverride(String.Name(String.New(name)), gd.Color(color))
 }
 
 /*
@@ -286,49 +288,49 @@ Creates a local override for a theme constant with the specified [param name]. L
 See also [method get_theme_constant].
 */
 func (self Instance) AddThemeConstantOverride(name string, constant int) { //gd:Window.add_theme_constant_override
-	class(self).AddThemeConstantOverride(gd.NewStringName(name), gd.Int(constant))
+	class(self).AddThemeConstantOverride(String.Name(String.New(name)), gd.Int(constant))
 }
 
 /*
 Removes a local override for a theme icon with the specified [param name] previously added by [method add_theme_icon_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeIconOverride(name string) { //gd:Window.remove_theme_icon_override
-	class(self).RemoveThemeIconOverride(gd.NewStringName(name))
+	class(self).RemoveThemeIconOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme [StyleBox] with the specified [param name] previously added by [method add_theme_stylebox_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeStyleboxOverride(name string) { //gd:Window.remove_theme_stylebox_override
-	class(self).RemoveThemeStyleboxOverride(gd.NewStringName(name))
+	class(self).RemoveThemeStyleboxOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme [Font] with the specified [param name] previously added by [method add_theme_font_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeFontOverride(name string) { //gd:Window.remove_theme_font_override
-	class(self).RemoveThemeFontOverride(gd.NewStringName(name))
+	class(self).RemoveThemeFontOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme font size with the specified [param name] previously added by [method add_theme_font_size_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeFontSizeOverride(name string) { //gd:Window.remove_theme_font_size_override
-	class(self).RemoveThemeFontSizeOverride(gd.NewStringName(name))
+	class(self).RemoveThemeFontSizeOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme [Color] with the specified [param name] previously added by [method add_theme_color_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeColorOverride(name string) { //gd:Window.remove_theme_color_override
-	class(self).RemoveThemeColorOverride(gd.NewStringName(name))
+	class(self).RemoveThemeColorOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme constant with the specified [param name] previously added by [method add_theme_constant_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeConstantOverride(name string) { //gd:Window.remove_theme_constant_override
-	class(self).RemoveThemeConstantOverride(gd.NewStringName(name))
+	class(self).RemoveThemeConstantOverride(String.Name(String.New(name)))
 }
 
 /*
@@ -336,7 +338,7 @@ Returns an icon from the first matching [Theme] in the tree if that [Theme] has 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) GetThemeIcon(name string) [1]gdclass.Texture2D { //gd:Window.get_theme_icon
-	return [1]gdclass.Texture2D(class(self).GetThemeIcon(gd.NewStringName(name), gd.NewStringName("")))
+	return [1]gdclass.Texture2D(class(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
@@ -344,7 +346,7 @@ Returns a [StyleBox] from the first matching [Theme] in the tree if that [Theme]
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) GetThemeStylebox(name string) [1]gdclass.StyleBox { //gd:Window.get_theme_stylebox
-	return [1]gdclass.StyleBox(class(self).GetThemeStylebox(gd.NewStringName(name), gd.NewStringName("")))
+	return [1]gdclass.StyleBox(class(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
@@ -352,7 +354,7 @@ Returns a [Font] from the first matching [Theme] in the tree if that [Theme] has
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) GetThemeFont(name string) [1]gdclass.Font { //gd:Window.get_theme_font
-	return [1]gdclass.Font(class(self).GetThemeFont(gd.NewStringName(name), gd.NewStringName("")))
+	return [1]gdclass.Font(class(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
@@ -360,7 +362,7 @@ Returns a font size from the first matching [Theme] in the tree if that [Theme] 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) GetThemeFontSize(name string) int { //gd:Window.get_theme_font_size
-	return int(int(class(self).GetThemeFontSize(gd.NewStringName(name), gd.NewStringName(""))))
+	return int(int(class(self).GetThemeFontSize(String.Name(String.New(name)), String.Name(String.New("")))))
 }
 
 /*
@@ -368,7 +370,7 @@ Returns a [Color] from the first matching [Theme] in the tree if that [Theme] ha
 See [method Control.get_theme_color] for more details.
 */
 func (self Instance) GetThemeColor(name string) Color.RGBA { //gd:Window.get_theme_color
-	return Color.RGBA(class(self).GetThemeColor(gd.NewStringName(name), gd.NewStringName("")))
+	return Color.RGBA(class(self).GetThemeColor(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
@@ -376,7 +378,7 @@ Returns a constant from the first matching [Theme] in the tree if that [Theme] h
 See [method Control.get_theme_color] for more details.
 */
 func (self Instance) GetThemeConstant(name string) int { //gd:Window.get_theme_constant
-	return int(int(class(self).GetThemeConstant(gd.NewStringName(name), gd.NewStringName(""))))
+	return int(int(class(self).GetThemeConstant(String.Name(String.New(name)), String.Name(String.New("")))))
 }
 
 /*
@@ -384,7 +386,7 @@ Returns [code]true[/code] if there is a local override for a theme icon with the
 See [method add_theme_icon_override].
 */
 func (self Instance) HasThemeIconOverride(name string) bool { //gd:Window.has_theme_icon_override
-	return bool(class(self).HasThemeIconOverride(gd.NewStringName(name)))
+	return bool(class(self).HasThemeIconOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -392,7 +394,7 @@ Returns [code]true[/code] if there is a local override for a theme [StyleBox] wi
 See [method add_theme_stylebox_override].
 */
 func (self Instance) HasThemeStyleboxOverride(name string) bool { //gd:Window.has_theme_stylebox_override
-	return bool(class(self).HasThemeStyleboxOverride(gd.NewStringName(name)))
+	return bool(class(self).HasThemeStyleboxOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -400,7 +402,7 @@ Returns [code]true[/code] if there is a local override for a theme [Font] with t
 See [method add_theme_font_override].
 */
 func (self Instance) HasThemeFontOverride(name string) bool { //gd:Window.has_theme_font_override
-	return bool(class(self).HasThemeFontOverride(gd.NewStringName(name)))
+	return bool(class(self).HasThemeFontOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -408,7 +410,7 @@ Returns [code]true[/code] if there is a local override for a theme font size wit
 See [method add_theme_font_size_override].
 */
 func (self Instance) HasThemeFontSizeOverride(name string) bool { //gd:Window.has_theme_font_size_override
-	return bool(class(self).HasThemeFontSizeOverride(gd.NewStringName(name)))
+	return bool(class(self).HasThemeFontSizeOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -416,7 +418,7 @@ Returns [code]true[/code] if there is a local override for a theme [Color] with 
 See [method add_theme_color_override].
 */
 func (self Instance) HasThemeColorOverride(name string) bool { //gd:Window.has_theme_color_override
-	return bool(class(self).HasThemeColorOverride(gd.NewStringName(name)))
+	return bool(class(self).HasThemeColorOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -424,7 +426,7 @@ Returns [code]true[/code] if there is a local override for a theme constant with
 See [method add_theme_constant_override].
 */
 func (self Instance) HasThemeConstantOverride(name string) bool { //gd:Window.has_theme_constant_override
-	return bool(class(self).HasThemeConstantOverride(gd.NewStringName(name)))
+	return bool(class(self).HasThemeConstantOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -432,7 +434,7 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has an
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) HasThemeIcon(name string) bool { //gd:Window.has_theme_icon
-	return bool(class(self).HasThemeIcon(gd.NewStringName(name), gd.NewStringName("")))
+	return bool(class(self).HasThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
@@ -440,7 +442,7 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) HasThemeStylebox(name string) bool { //gd:Window.has_theme_stylebox
-	return bool(class(self).HasThemeStylebox(gd.NewStringName(name), gd.NewStringName("")))
+	return bool(class(self).HasThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
@@ -448,7 +450,7 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) HasThemeFont(name string) bool { //gd:Window.has_theme_font
-	return bool(class(self).HasThemeFont(gd.NewStringName(name), gd.NewStringName("")))
+	return bool(class(self).HasThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
@@ -456,7 +458,7 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) HasThemeFontSize(name string) bool { //gd:Window.has_theme_font_size
-	return bool(class(self).HasThemeFontSize(gd.NewStringName(name), gd.NewStringName("")))
+	return bool(class(self).HasThemeFontSize(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
@@ -464,7 +466,7 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) HasThemeColor(name string) bool { //gd:Window.has_theme_color
-	return bool(class(self).HasThemeColor(gd.NewStringName(name), gd.NewStringName("")))
+	return bool(class(self).HasThemeColor(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
@@ -472,7 +474,7 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) HasThemeConstant(name string) bool { //gd:Window.has_theme_constant
-	return bool(class(self).HasThemeConstant(gd.NewStringName(name), gd.NewStringName("")))
+	return bool(class(self).HasThemeConstant(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
@@ -872,7 +874,7 @@ func (self Instance) ThemeTypeVariation() string {
 }
 
 func (self Instance) SetThemeTypeVariation(value string) {
-	class(self).SetThemeTypeVariation(gd.NewStringName(value))
+	class(self).SetThemeTypeVariation(String.Name(String.New(value)))
 }
 
 /*
@@ -1589,20 +1591,20 @@ func (self class) GetTheme() [1]gdclass.Theme { //gd:Window.get_theme
 }
 
 //go:nosplit
-func (self class) SetThemeTypeVariation(theme_type gd.StringName) { //gd:Window.set_theme_type_variation
+func (self class) SetThemeTypeVariation(theme_type String.Name) { //gd:Window.set_theme_type_variation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(theme_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_theme_type_variation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetThemeTypeVariation() gd.StringName { //gd:Window.get_theme_type_variation
+func (self class) GetThemeTypeVariation() String.Name { //gd:Window.get_theme_type_variation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_type_variation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1634,9 +1636,9 @@ Creates a local override for a theme icon with the specified [param name]. Local
 See also [method get_theme_icon].
 */
 //go:nosplit
-func (self class) AddThemeIconOverride(name gd.StringName, texture [1]gdclass.Texture2D) { //gd:Window.add_theme_icon_override
+func (self class) AddThemeIconOverride(name String.Name, texture [1]gdclass.Texture2D) { //gd:Window.add_theme_icon_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_icon_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1648,9 +1650,9 @@ Creates a local override for a theme [StyleBox] with the specified [param name].
 See also [method get_theme_stylebox] and [method Control.add_theme_stylebox_override] for more details.
 */
 //go:nosplit
-func (self class) AddThemeStyleboxOverride(name gd.StringName, stylebox [1]gdclass.StyleBox) { //gd:Window.add_theme_stylebox_override
+func (self class) AddThemeStyleboxOverride(name String.Name, stylebox [1]gdclass.StyleBox) { //gd:Window.add_theme_stylebox_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(stylebox[0])[0])
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_stylebox_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1662,9 +1664,9 @@ Creates a local override for a theme [Font] with the specified [param name]. Loc
 See also [method get_theme_font].
 */
 //go:nosplit
-func (self class) AddThemeFontOverride(name gd.StringName, font [1]gdclass.Font) { //gd:Window.add_theme_font_override
+func (self class) AddThemeFontOverride(name String.Name, font [1]gdclass.Font) { //gd:Window.add_theme_font_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_font_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1676,9 +1678,9 @@ Creates a local override for a theme font size with the specified [param name]. 
 See also [method get_theme_font_size].
 */
 //go:nosplit
-func (self class) AddThemeFontSizeOverride(name gd.StringName, font_size gd.Int) { //gd:Window.add_theme_font_size_override
+func (self class) AddThemeFontSizeOverride(name String.Name, font_size gd.Int) { //gd:Window.add_theme_font_size_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, font_size)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_font_size_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1690,9 +1692,9 @@ Creates a local override for a theme [Color] with the specified [param name]. Lo
 See also [method get_theme_color] and [method Control.add_theme_color_override] for more details.
 */
 //go:nosplit
-func (self class) AddThemeColorOverride(name gd.StringName, color gd.Color) { //gd:Window.add_theme_color_override
+func (self class) AddThemeColorOverride(name String.Name, color gd.Color) { //gd:Window.add_theme_color_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_color_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1704,9 +1706,9 @@ Creates a local override for a theme constant with the specified [param name]. L
 See also [method get_theme_constant].
 */
 //go:nosplit
-func (self class) AddThemeConstantOverride(name gd.StringName, constant gd.Int) { //gd:Window.add_theme_constant_override
+func (self class) AddThemeConstantOverride(name String.Name, constant gd.Int) { //gd:Window.add_theme_constant_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, constant)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_constant_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1717,9 +1719,9 @@ func (self class) AddThemeConstantOverride(name gd.StringName, constant gd.Int) 
 Removes a local override for a theme icon with the specified [param name] previously added by [method add_theme_icon_override] or via the Inspector dock.
 */
 //go:nosplit
-func (self class) RemoveThemeIconOverride(name gd.StringName) { //gd:Window.remove_theme_icon_override
+func (self class) RemoveThemeIconOverride(name String.Name) { //gd:Window.remove_theme_icon_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_icon_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1729,9 +1731,9 @@ func (self class) RemoveThemeIconOverride(name gd.StringName) { //gd:Window.remo
 Removes a local override for a theme [StyleBox] with the specified [param name] previously added by [method add_theme_stylebox_override] or via the Inspector dock.
 */
 //go:nosplit
-func (self class) RemoveThemeStyleboxOverride(name gd.StringName) { //gd:Window.remove_theme_stylebox_override
+func (self class) RemoveThemeStyleboxOverride(name String.Name) { //gd:Window.remove_theme_stylebox_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_stylebox_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1741,9 +1743,9 @@ func (self class) RemoveThemeStyleboxOverride(name gd.StringName) { //gd:Window.
 Removes a local override for a theme [Font] with the specified [param name] previously added by [method add_theme_font_override] or via the Inspector dock.
 */
 //go:nosplit
-func (self class) RemoveThemeFontOverride(name gd.StringName) { //gd:Window.remove_theme_font_override
+func (self class) RemoveThemeFontOverride(name String.Name) { //gd:Window.remove_theme_font_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_font_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1753,9 +1755,9 @@ func (self class) RemoveThemeFontOverride(name gd.StringName) { //gd:Window.remo
 Removes a local override for a theme font size with the specified [param name] previously added by [method add_theme_font_size_override] or via the Inspector dock.
 */
 //go:nosplit
-func (self class) RemoveThemeFontSizeOverride(name gd.StringName) { //gd:Window.remove_theme_font_size_override
+func (self class) RemoveThemeFontSizeOverride(name String.Name) { //gd:Window.remove_theme_font_size_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_font_size_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1765,9 +1767,9 @@ func (self class) RemoveThemeFontSizeOverride(name gd.StringName) { //gd:Window.
 Removes a local override for a theme [Color] with the specified [param name] previously added by [method add_theme_color_override] or via the Inspector dock.
 */
 //go:nosplit
-func (self class) RemoveThemeColorOverride(name gd.StringName) { //gd:Window.remove_theme_color_override
+func (self class) RemoveThemeColorOverride(name String.Name) { //gd:Window.remove_theme_color_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_color_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1777,9 +1779,9 @@ func (self class) RemoveThemeColorOverride(name gd.StringName) { //gd:Window.rem
 Removes a local override for a theme constant with the specified [param name] previously added by [method add_theme_constant_override] or via the Inspector dock.
 */
 //go:nosplit
-func (self class) RemoveThemeConstantOverride(name gd.StringName) { //gd:Window.remove_theme_constant_override
+func (self class) RemoveThemeConstantOverride(name String.Name) { //gd:Window.remove_theme_constant_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_constant_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1790,10 +1792,10 @@ Returns an icon from the first matching [Theme] in the tree if that [Theme] has 
 See [method Control.get_theme_color] for details.
 */
 //go:nosplit
-func (self class) GetThemeIcon(name gd.StringName, theme_type gd.StringName) [1]gdclass.Texture2D { //gd:Window.get_theme_icon
+func (self class) GetThemeIcon(name String.Name, theme_type String.Name) [1]gdclass.Texture2D { //gd:Window.get_theme_icon
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(theme_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
@@ -1806,10 +1808,10 @@ Returns a [StyleBox] from the first matching [Theme] in the tree if that [Theme]
 See [method Control.get_theme_color] for details.
 */
 //go:nosplit
-func (self class) GetThemeStylebox(name gd.StringName, theme_type gd.StringName) [1]gdclass.StyleBox { //gd:Window.get_theme_stylebox
+func (self class) GetThemeStylebox(name String.Name, theme_type String.Name) [1]gdclass.StyleBox { //gd:Window.get_theme_stylebox
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(theme_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_stylebox, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.StyleBox{gd.PointerWithOwnershipTransferredToGo[gdclass.StyleBox](r_ret.Get())}
@@ -1822,10 +1824,10 @@ Returns a [Font] from the first matching [Theme] in the tree if that [Theme] has
 See [method Control.get_theme_color] for details.
 */
 //go:nosplit
-func (self class) GetThemeFont(name gd.StringName, theme_type gd.StringName) [1]gdclass.Font { //gd:Window.get_theme_font
+func (self class) GetThemeFont(name String.Name, theme_type String.Name) [1]gdclass.Font { //gd:Window.get_theme_font
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(theme_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
@@ -1838,10 +1840,10 @@ Returns a font size from the first matching [Theme] in the tree if that [Theme] 
 See [method Control.get_theme_color] for details.
 */
 //go:nosplit
-func (self class) GetThemeFontSize(name gd.StringName, theme_type gd.StringName) gd.Int { //gd:Window.get_theme_font_size
+func (self class) GetThemeFontSize(name String.Name, theme_type String.Name) gd.Int { //gd:Window.get_theme_font_size
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(theme_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1854,10 +1856,10 @@ Returns a [Color] from the first matching [Theme] in the tree if that [Theme] ha
 See [method Control.get_theme_color] for more details.
 */
 //go:nosplit
-func (self class) GetThemeColor(name gd.StringName, theme_type gd.StringName) gd.Color { //gd:Window.get_theme_color
+func (self class) GetThemeColor(name String.Name, theme_type String.Name) gd.Color { //gd:Window.get_theme_color
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(theme_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1870,10 +1872,10 @@ Returns a constant from the first matching [Theme] in the tree if that [Theme] h
 See [method Control.get_theme_color] for more details.
 */
 //go:nosplit
-func (self class) GetThemeConstant(name gd.StringName, theme_type gd.StringName) gd.Int { //gd:Window.get_theme_constant
+func (self class) GetThemeConstant(name String.Name, theme_type String.Name) gd.Int { //gd:Window.get_theme_constant
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(theme_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1886,9 +1888,9 @@ Returns [code]true[/code] if there is a local override for a theme icon with the
 See [method add_theme_icon_override].
 */
 //go:nosplit
-func (self class) HasThemeIconOverride(name gd.StringName) bool { //gd:Window.has_theme_icon_override
+func (self class) HasThemeIconOverride(name String.Name) bool { //gd:Window.has_theme_icon_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_icon_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1901,9 +1903,9 @@ Returns [code]true[/code] if there is a local override for a theme [StyleBox] wi
 See [method add_theme_stylebox_override].
 */
 //go:nosplit
-func (self class) HasThemeStyleboxOverride(name gd.StringName) bool { //gd:Window.has_theme_stylebox_override
+func (self class) HasThemeStyleboxOverride(name String.Name) bool { //gd:Window.has_theme_stylebox_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_stylebox_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1916,9 +1918,9 @@ Returns [code]true[/code] if there is a local override for a theme [Font] with t
 See [method add_theme_font_override].
 */
 //go:nosplit
-func (self class) HasThemeFontOverride(name gd.StringName) bool { //gd:Window.has_theme_font_override
+func (self class) HasThemeFontOverride(name String.Name) bool { //gd:Window.has_theme_font_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_font_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1931,9 +1933,9 @@ Returns [code]true[/code] if there is a local override for a theme font size wit
 See [method add_theme_font_size_override].
 */
 //go:nosplit
-func (self class) HasThemeFontSizeOverride(name gd.StringName) bool { //gd:Window.has_theme_font_size_override
+func (self class) HasThemeFontSizeOverride(name String.Name) bool { //gd:Window.has_theme_font_size_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_font_size_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1946,9 +1948,9 @@ Returns [code]true[/code] if there is a local override for a theme [Color] with 
 See [method add_theme_color_override].
 */
 //go:nosplit
-func (self class) HasThemeColorOverride(name gd.StringName) bool { //gd:Window.has_theme_color_override
+func (self class) HasThemeColorOverride(name String.Name) bool { //gd:Window.has_theme_color_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_color_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1961,9 +1963,9 @@ Returns [code]true[/code] if there is a local override for a theme constant with
 See [method add_theme_constant_override].
 */
 //go:nosplit
-func (self class) HasThemeConstantOverride(name gd.StringName) bool { //gd:Window.has_theme_constant_override
+func (self class) HasThemeConstantOverride(name String.Name) bool { //gd:Window.has_theme_constant_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_constant_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1976,10 +1978,10 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has an
 See [method Control.get_theme_color] for details.
 */
 //go:nosplit
-func (self class) HasThemeIcon(name gd.StringName, theme_type gd.StringName) bool { //gd:Window.has_theme_icon
+func (self class) HasThemeIcon(name String.Name, theme_type String.Name) bool { //gd:Window.has_theme_icon
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(theme_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1992,10 +1994,10 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 //go:nosplit
-func (self class) HasThemeStylebox(name gd.StringName, theme_type gd.StringName) bool { //gd:Window.has_theme_stylebox
+func (self class) HasThemeStylebox(name String.Name, theme_type String.Name) bool { //gd:Window.has_theme_stylebox
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(theme_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_stylebox, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2008,10 +2010,10 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 //go:nosplit
-func (self class) HasThemeFont(name gd.StringName, theme_type gd.StringName) bool { //gd:Window.has_theme_font
+func (self class) HasThemeFont(name String.Name, theme_type String.Name) bool { //gd:Window.has_theme_font
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(theme_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2024,10 +2026,10 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 //go:nosplit
-func (self class) HasThemeFontSize(name gd.StringName, theme_type gd.StringName) bool { //gd:Window.has_theme_font_size
+func (self class) HasThemeFontSize(name String.Name, theme_type String.Name) bool { //gd:Window.has_theme_font_size
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(theme_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2040,10 +2042,10 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 //go:nosplit
-func (self class) HasThemeColor(name gd.StringName, theme_type gd.StringName) bool { //gd:Window.has_theme_color
+func (self class) HasThemeColor(name String.Name, theme_type String.Name) bool { //gd:Window.has_theme_color
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(theme_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2056,10 +2058,10 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 //go:nosplit
-func (self class) HasThemeConstant(name gd.StringName, theme_type gd.StringName) bool { //gd:Window.has_theme_constant
+func (self class) HasThemeConstant(name String.Name, theme_type String.Name) bool { //gd:Window.has_theme_constant
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(theme_type))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

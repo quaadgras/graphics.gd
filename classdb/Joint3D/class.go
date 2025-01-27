@@ -15,9 +15,9 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Abstract base class for all joints in 3D physics. 3D joints bind together two physics bodies ([member node_a] and [member node_b]) and apply a constraint. If only one body is defined, it is attached to a fixed [StaticBody3D] without collision shapes.
@@ -70,20 +71,20 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) NodeA() NodePath.String {
-	return NodePath.String(class(self).GetNodeA().String())
+func (self Instance) NodeA() string {
+	return string(class(self).GetNodeA().String())
 }
 
-func (self Instance) SetNodeA(value NodePath.String) {
-	class(self).SetNodeA(gd.NewString(string(value)).NodePath())
+func (self Instance) SetNodeA(value string) {
+	class(self).SetNodeA(Path.ToNode(String.New(value)))
 }
 
-func (self Instance) NodeB() NodePath.String {
-	return NodePath.String(class(self).GetNodeB().String())
+func (self Instance) NodeB() string {
+	return string(class(self).GetNodeB().String())
 }
 
-func (self Instance) SetNodeB(value NodePath.String) {
-	class(self).SetNodeB(gd.NewString(string(value)).NodePath())
+func (self Instance) SetNodeB(value string) {
+	class(self).SetNodeB(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) SolverPriority() int {
@@ -103,39 +104,39 @@ func (self Instance) SetExcludeNodesFromCollision(value bool) {
 }
 
 //go:nosplit
-func (self class) SetNodeA(node gd.NodePath) { //gd:Joint3D.set_node_a
+func (self class) SetNodeA(node Path.ToNode) { //gd:Joint3D.set_node_a
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(node))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(node)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint3D.Bind_set_node_a, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetNodeA() gd.NodePath { //gd:Joint3D.get_node_a
+func (self class) GetNodeA() Path.ToNode { //gd:Joint3D.get_node_a
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint3D.Bind_get_node_a, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetNodeB(node gd.NodePath) { //gd:Joint3D.set_node_b
+func (self class) SetNodeB(node Path.ToNode) { //gd:Joint3D.set_node_b
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(node))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(node)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint3D.Bind_set_node_b, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetNodeB() gd.NodePath { //gd:Joint3D.get_node_b
+func (self class) GetNodeB() Path.ToNode { //gd:Joint3D.get_node_b
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint3D.Bind_get_node_b, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

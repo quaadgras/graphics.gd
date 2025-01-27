@@ -16,6 +16,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -29,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 The server that manages all language translations. Translations can be added to or removed from it.
@@ -145,7 +147,7 @@ Returns the current locale's translation for the given message (key) and context
 */
 func Translate(message string) string { //gd:TranslationServer.translate
 	once.Do(singleton)
-	return string(class(self).Translate(gd.NewStringName(message), gd.NewStringName("")).String())
+	return string(class(self).Translate(String.Name(String.New(message)), String.Name(String.New(""))).String())
 }
 
 /*
@@ -154,7 +156,7 @@ The number [param n] is the number or quantity of the plural object. It will be 
 */
 func TranslatePlural(message string, plural_message string, n int) string { //gd:TranslationServer.translate_plural
 	once.Do(singleton)
-	return string(class(self).TranslatePlural(gd.NewStringName(message), gd.NewStringName(plural_message), gd.Int(n), gd.NewStringName("")).String())
+	return string(class(self).TranslatePlural(String.Name(String.New(message)), String.Name(String.New(plural_message)), gd.Int(n), String.Name(String.New(""))).String())
 }
 
 /*
@@ -211,7 +213,7 @@ Returns the pseudolocalized string based on the [param message] passed in.
 */
 func Pseudolocalize(message string) string { //gd:TranslationServer.pseudolocalize
 	once.Do(singleton)
-	return string(class(self).Pseudolocalize(gd.NewStringName(message)).String())
+	return string(class(self).Pseudolocalize(String.Name(String.New(message))).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -401,13 +403,13 @@ func (self class) GetLocaleName(locale String.Readable) String.Readable { //gd:T
 Returns the current locale's translation for the given message (key) and context.
 */
 //go:nosplit
-func (self class) Translate(message gd.StringName, context gd.StringName) gd.StringName { //gd:TranslationServer.translate
+func (self class) Translate(message String.Name, context String.Name) String.Name { //gd:TranslationServer.translate
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(message))
-	callframe.Arg(frame, pointers.Get(context))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(message)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_translate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -417,15 +419,15 @@ Returns the current locale's translation for the given message (key), plural mes
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 */
 //go:nosplit
-func (self class) TranslatePlural(message gd.StringName, plural_message gd.StringName, n gd.Int, context gd.StringName) gd.StringName { //gd:TranslationServer.translate_plural
+func (self class) TranslatePlural(message String.Name, plural_message String.Name, n gd.Int, context String.Name) String.Name { //gd:TranslationServer.translate_plural
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(message))
-	callframe.Arg(frame, pointers.Get(plural_message))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(message)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(plural_message)))
 	callframe.Arg(frame, n)
-	callframe.Arg(frame, pointers.Get(context))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_translate_plural, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -527,12 +529,12 @@ func (self class) ReloadPseudolocalization() { //gd:TranslationServer.reload_pse
 Returns the pseudolocalized string based on the [param message] passed in.
 */
 //go:nosplit
-func (self class) Pseudolocalize(message gd.StringName) gd.StringName { //gd:TranslationServer.pseudolocalize
+func (self class) Pseudolocalize(message String.Name) String.Name { //gd:TranslationServer.pseudolocalize
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(message))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(message)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_pseudolocalize, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

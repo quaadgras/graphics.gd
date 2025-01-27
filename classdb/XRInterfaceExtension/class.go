@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Vector2"
@@ -35,6 +36,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 External XR interface plugins should inherit from this class.
@@ -170,7 +172,7 @@ func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.Extension
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewStringName(ret))
+		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
 
 		if !ok {
 			return
@@ -448,8 +450,8 @@ Returns a [PackedStringArray] with pose names configured by this interface. Note
 */
 func (Instance) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_name string) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var tracker_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(tracker_name)
+		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(tracker_name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, tracker_name.String())
 		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
@@ -479,8 +481,8 @@ func (Instance) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var action_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(action_name))
-		var tracker_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(tracker_name)
+		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
+		defer pointers.End(gd.InternalStringName(tracker_name))
 		var frequency = gd.UnsafeGet[gd.Float](p_args, 2)
 
 		var amplitude = gd.UnsafeGet[gd.Float](p_args, 3)
@@ -606,11 +608,11 @@ func New() Instance {
 /*
 Returns the name of this interface.
 */
-func (class) _get_name(impl func(ptr unsafe.Pointer) gd.StringName) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_name(impl func(ptr unsafe.Pointer) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalStringName(ret))
 
 		if !ok {
 			return
@@ -887,10 +889,10 @@ func (class) _get_suggested_tracker_names(impl func(ptr unsafe.Pointer) gd.Packe
 /*
 Returns a [PackedStringArray] with pose names configured by this interface. Note that user configuration can override this list.
 */
-func (class) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_name gd.StringName) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_name String.Name) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var tracker_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(tracker_name)
+		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(tracker_name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, tracker_name)
 		ptr, ok := pointers.End(ret)
@@ -916,12 +918,12 @@ func (class) _get_tracking_status(impl func(ptr unsafe.Pointer) gdclass.XRInterf
 /*
 Triggers a haptic pulse to be emitted on the specified tracker.
 */
-func (class) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name String.Readable, tracker_name gd.StringName, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name String.Readable, tracker_name String.Name, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var action_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(action_name))
-		var tracker_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(tracker_name)
+		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
+		defer pointers.End(gd.InternalStringName(tracker_name))
 		var frequency = gd.UnsafeGet[gd.Float](p_args, 2)
 
 		var amplitude = gd.UnsafeGet[gd.Float](p_args, 3)

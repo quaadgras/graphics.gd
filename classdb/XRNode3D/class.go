@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
@@ -31,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This node can be bound to a specific pose of a [XRPositionalTracker] and will automatically have its [member Node3D.transform] updated by the [XRServer]. Nodes of this type must be added as children of the [XROrigin3D] node.
@@ -101,7 +103,7 @@ func (self Instance) Tracker() string {
 }
 
 func (self Instance) SetTracker(value string) {
-	class(self).SetTracker(gd.NewStringName(value))
+	class(self).SetTracker(String.Name(String.New(value)))
 }
 
 func (self Instance) Pose() string {
@@ -109,7 +111,7 @@ func (self Instance) Pose() string {
 }
 
 func (self Instance) SetPose(value string) {
-	class(self).SetPoseName(gd.NewStringName(value))
+	class(self).SetPoseName(String.Name(String.New(value)))
 }
 
 func (self Instance) ShowWhenTracked() bool {
@@ -121,39 +123,39 @@ func (self Instance) SetShowWhenTracked(value bool) {
 }
 
 //go:nosplit
-func (self class) SetTracker(tracker_name gd.StringName) { //gd:XRNode3D.set_tracker
+func (self class) SetTracker(tracker_name String.Name) { //gd:XRNode3D.set_tracker
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(tracker_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(tracker_name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_set_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTracker() gd.StringName { //gd:XRNode3D.get_tracker
+func (self class) GetTracker() String.Name { //gd:XRNode3D.get_tracker
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetPoseName(pose gd.StringName) { //gd:XRNode3D.set_pose_name
+func (self class) SetPoseName(pose String.Name) { //gd:XRNode3D.set_pose_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(pose))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(pose)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_set_pose_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPoseName() gd.StringName { //gd:XRNode3D.get_pose_name
+func (self class) GetPoseName() String.Name { //gd:XRNode3D.get_pose_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_pose_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

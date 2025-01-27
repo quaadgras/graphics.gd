@@ -15,12 +15,12 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Quaternion"
 import "graphics.gd/variant/Basis"
-import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -35,6 +35,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Most basic 3D game object, with a [Transform3D] and visibility settings. All other 3D game objects inherit from [Node3D]. Use [Node3D] as a parent node to move, scale, rotate and show/hide children in a 3D project.
@@ -458,12 +459,12 @@ func (self Instance) SetVisible(value bool) {
 	class(self).SetVisible(value)
 }
 
-func (self Instance) VisibilityParent() NodePath.String {
-	return NodePath.String(class(self).GetVisibilityParent().String())
+func (self Instance) VisibilityParent() string {
+	return string(class(self).GetVisibilityParent().String())
 }
 
-func (self Instance) SetVisibilityParent(value NodePath.String) {
-	class(self).SetVisibilityParent(gd.NewString(string(value)).NodePath())
+func (self Instance) SetVisibilityParent(value string) {
+	class(self).SetVisibilityParent(Path.ToNode(String.New(value)))
 }
 
 //go:nosplit
@@ -827,20 +828,20 @@ func (self class) ForceUpdateTransform() { //gd:Node3D.force_update_transform
 }
 
 //go:nosplit
-func (self class) SetVisibilityParent(path gd.NodePath) { //gd:Node3D.set_visibility_parent
+func (self class) SetVisibilityParent(path Path.ToNode) { //gd:Node3D.set_visibility_parent
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_visibility_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetVisibilityParent() gd.NodePath { //gd:Node3D.get_visibility_parent
+func (self class) GetVisibilityParent() Path.ToNode { //gd:Node3D.get_visibility_parent
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_visibility_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

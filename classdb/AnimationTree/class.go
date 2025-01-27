@@ -15,9 +15,9 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/AnimationMixer"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 A node used for advanced animation transitions in an [AnimationPlayer].
@@ -86,20 +87,20 @@ func (self Instance) SetTreeRoot(value [1]gdclass.AnimationRootNode) {
 	class(self).SetTreeRoot(value)
 }
 
-func (self Instance) AdvanceExpressionBaseNode() NodePath.String {
-	return NodePath.String(class(self).GetAdvanceExpressionBaseNode().String())
+func (self Instance) AdvanceExpressionBaseNode() string {
+	return string(class(self).GetAdvanceExpressionBaseNode().String())
 }
 
-func (self Instance) SetAdvanceExpressionBaseNode(value NodePath.String) {
-	class(self).SetAdvanceExpressionBaseNode(gd.NewString(string(value)).NodePath())
+func (self Instance) SetAdvanceExpressionBaseNode(value string) {
+	class(self).SetAdvanceExpressionBaseNode(Path.ToNode(String.New(value)))
 }
 
-func (self Instance) AnimPlayer() NodePath.String {
-	return NodePath.String(class(self).GetAnimationPlayer().String())
+func (self Instance) AnimPlayer() string {
+	return string(class(self).GetAnimationPlayer().String())
 }
 
-func (self Instance) SetAnimPlayer(value NodePath.String) {
-	class(self).SetAnimationPlayer(gd.NewString(string(value)).NodePath())
+func (self Instance) SetAnimPlayer(value string) {
+	class(self).SetAnimationPlayer(Path.ToNode(String.New(value)))
 }
 
 //go:nosplit
@@ -122,39 +123,39 @@ func (self class) GetTreeRoot() [1]gdclass.AnimationRootNode { //gd:AnimationTre
 }
 
 //go:nosplit
-func (self class) SetAdvanceExpressionBaseNode(path gd.NodePath) { //gd:AnimationTree.set_advance_expression_base_node
+func (self class) SetAdvanceExpressionBaseNode(path Path.ToNode) { //gd:AnimationTree.set_advance_expression_base_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_set_advance_expression_base_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAdvanceExpressionBaseNode() gd.NodePath { //gd:AnimationTree.get_advance_expression_base_node
+func (self class) GetAdvanceExpressionBaseNode() Path.ToNode { //gd:AnimationTree.get_advance_expression_base_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_get_advance_expression_base_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetAnimationPlayer(path gd.NodePath) { //gd:AnimationTree.set_animation_player
+func (self class) SetAnimationPlayer(path Path.ToNode) { //gd:AnimationTree.set_animation_player
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_set_animation_player, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAnimationPlayer() gd.NodePath { //gd:AnimationTree.get_animation_player
+func (self class) GetAnimationPlayer() Path.ToNode { //gd:AnimationTree.get_animation_player
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_get_animation_player, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

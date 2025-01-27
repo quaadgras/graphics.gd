@@ -16,6 +16,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Transform2D"
@@ -41,6 +42,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 The rendering server is the API backend for everything visible. The whole scene system mounts on it to display. The rendering server is completely opaque: the internals are entirely implementation-specific and cannot be accessed.
@@ -287,7 +289,7 @@ Returns the default value for the specified shader uniform. This is usually the 
 */
 func ShaderGetParameterDefault(shader RID.Shader, name string) any { //gd:RenderingServer.shader_get_parameter_default
 	once.Do(singleton)
-	return any(class(self).ShaderGetParameterDefault(gd.RID(shader), gd.NewStringName(name)).Interface())
+	return any(class(self).ShaderGetParameterDefault(gd.RID(shader), String.Name(String.New(name))).Interface())
 }
 
 /*
@@ -296,7 +298,7 @@ Sets a shader's default texture. Overwrites the texture given by name.
 */
 func ShaderSetDefaultTextureParameter(shader RID.Shader, name string, texture RID.Texture) { //gd:RenderingServer.shader_set_default_texture_parameter
 	once.Do(singleton)
-	class(self).ShaderSetDefaultTextureParameter(gd.RID(shader), gd.NewStringName(name), gd.RID(texture), gd.Int(0))
+	class(self).ShaderSetDefaultTextureParameter(gd.RID(shader), String.Name(String.New(name)), gd.RID(texture), gd.Int(0))
 }
 
 /*
@@ -305,7 +307,7 @@ Returns a default texture from a shader searched by name.
 */
 func ShaderGetDefaultTextureParameter(shader RID.Shader, name string) RID.Texture { //gd:RenderingServer.shader_get_default_texture_parameter
 	once.Do(singleton)
-	return RID.Texture(class(self).ShaderGetDefaultTextureParameter(gd.RID(shader), gd.NewStringName(name), gd.Int(0)))
+	return RID.Texture(class(self).ShaderGetDefaultTextureParameter(gd.RID(shader), String.Name(String.New(name)), gd.Int(0)))
 }
 
 /*
@@ -331,7 +333,7 @@ Sets a material's parameter.
 */
 func MaterialSetParam(material RID.Material, parameter string, value any) { //gd:RenderingServer.material_set_param
 	once.Do(singleton)
-	class(self).MaterialSetParam(gd.RID(material), gd.NewStringName(parameter), gd.NewVariant(value))
+	class(self).MaterialSetParam(gd.RID(material), String.Name(String.New(parameter)), gd.NewVariant(value))
 }
 
 /*
@@ -339,7 +341,7 @@ Returns the value of a certain material's parameter.
 */
 func MaterialGetParam(material RID.Material, parameter string) any { //gd:RenderingServer.material_get_param
 	once.Do(singleton)
-	return any(class(self).MaterialGetParam(gd.RID(material), gd.NewStringName(parameter)).Interface())
+	return any(class(self).MaterialGetParam(gd.RID(material), String.Name(String.New(parameter))).Interface())
 }
 
 /*
@@ -2932,7 +2934,7 @@ Sets the per-instance shader uniform on the specified 3D geometry instance. Equi
 */
 func InstanceGeometrySetShaderParameter(instance RID.VisualInstance, parameter string, value any) { //gd:RenderingServer.instance_geometry_set_shader_parameter
 	once.Do(singleton)
-	class(self).InstanceGeometrySetShaderParameter(gd.RID(instance), gd.NewStringName(parameter), gd.NewVariant(value))
+	class(self).InstanceGeometrySetShaderParameter(gd.RID(instance), String.Name(String.New(parameter)), gd.NewVariant(value))
 }
 
 /*
@@ -2941,7 +2943,7 @@ Returns the value of the per-instance shader uniform from the specified 3D geome
 */
 func InstanceGeometryGetShaderParameter(instance RID.VisualInstance, parameter string) any { //gd:RenderingServer.instance_geometry_get_shader_parameter
 	once.Do(singleton)
-	return any(class(self).InstanceGeometryGetShaderParameter(gd.RID(instance), gd.NewStringName(parameter)).Interface())
+	return any(class(self).InstanceGeometryGetShaderParameter(gd.RID(instance), String.Name(String.New(parameter))).Interface())
 }
 
 /*
@@ -2949,7 +2951,7 @@ Returns the default value of the per-instance shader uniform from the specified 
 */
 func InstanceGeometryGetShaderParameterDefaultValue(instance RID.VisualInstance, parameter string) any { //gd:RenderingServer.instance_geometry_get_shader_parameter_default_value
 	once.Do(singleton)
-	return any(class(self).InstanceGeometryGetShaderParameterDefaultValue(gd.RID(instance), gd.NewStringName(parameter)).Interface())
+	return any(class(self).InstanceGeometryGetShaderParameterDefaultValue(gd.RID(instance), String.Name(String.New(parameter))).Interface())
 }
 
 /*
@@ -3768,7 +3770,7 @@ Creates a new global shader uniform.
 */
 func GlobalShaderParameterAdd(name string, atype gdclass.RenderingServerGlobalShaderParameterType, default_value any) { //gd:RenderingServer.global_shader_parameter_add
 	once.Do(singleton)
-	class(self).GlobalShaderParameterAdd(gd.NewStringName(name), atype, gd.NewVariant(default_value))
+	class(self).GlobalShaderParameterAdd(String.Name(String.New(name)), atype, gd.NewVariant(default_value))
 }
 
 /*
@@ -3776,7 +3778,7 @@ Removes the global shader uniform specified by [param name].
 */
 func GlobalShaderParameterRemove(name string) { //gd:RenderingServer.global_shader_parameter_remove
 	once.Do(singleton)
-	class(self).GlobalShaderParameterRemove(gd.NewStringName(name))
+	class(self).GlobalShaderParameterRemove(String.Name(String.New(name)))
 }
 
 /*
@@ -3793,7 +3795,7 @@ Sets the global shader uniform [param name] to [param value].
 */
 func GlobalShaderParameterSet(name string, value any) { //gd:RenderingServer.global_shader_parameter_set
 	once.Do(singleton)
-	class(self).GlobalShaderParameterSet(gd.NewStringName(name), gd.NewVariant(value))
+	class(self).GlobalShaderParameterSet(String.Name(String.New(name)), gd.NewVariant(value))
 }
 
 /*
@@ -3801,7 +3803,7 @@ Overrides the global shader uniform [param name] with [param value]. Equivalent 
 */
 func GlobalShaderParameterSetOverride(name string, value any) { //gd:RenderingServer.global_shader_parameter_set_override
 	once.Do(singleton)
-	class(self).GlobalShaderParameterSetOverride(gd.NewStringName(name), gd.NewVariant(value))
+	class(self).GlobalShaderParameterSetOverride(String.Name(String.New(name)), gd.NewVariant(value))
 }
 
 /*
@@ -3810,7 +3812,7 @@ Returns the value of the global shader uniform specified by [param name].
 */
 func GlobalShaderParameterGet(name string) any { //gd:RenderingServer.global_shader_parameter_get
 	once.Do(singleton)
-	return any(class(self).GlobalShaderParameterGet(gd.NewStringName(name)).Interface())
+	return any(class(self).GlobalShaderParameterGet(String.Name(String.New(name))).Interface())
 }
 
 /*
@@ -3819,7 +3821,7 @@ Returns the type associated to the global shader uniform specified by [param nam
 */
 func GlobalShaderParameterGetType(name string) gdclass.RenderingServerGlobalShaderParameterType { //gd:RenderingServer.global_shader_parameter_get_type
 	once.Do(singleton)
-	return gdclass.RenderingServerGlobalShaderParameterType(class(self).GlobalShaderParameterGetType(gd.NewStringName(name)))
+	return gdclass.RenderingServerGlobalShaderParameterType(class(self).GlobalShaderParameterGetType(String.Name(String.New(name))))
 }
 
 /*
@@ -4461,10 +4463,10 @@ func (self class) GetShaderParameterList(shader gd.RID) Array.Contains[Dictionar
 Returns the default value for the specified shader uniform. This is usually the value written in the shader source code.
 */
 //go:nosplit
-func (self class) ShaderGetParameterDefault(shader gd.RID, name gd.StringName) gd.Variant { //gd:RenderingServer.shader_get_parameter_default
+func (self class) ShaderGetParameterDefault(shader gd.RID, name String.Name) gd.Variant { //gd:RenderingServer.shader_get_parameter_default
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_get_parameter_default, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
@@ -4477,10 +4479,10 @@ Sets a shader's default texture. Overwrites the texture given by name.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 //go:nosplit
-func (self class) ShaderSetDefaultTextureParameter(shader gd.RID, name gd.StringName, texture gd.RID, index gd.Int) { //gd:RenderingServer.shader_set_default_texture_parameter
+func (self class) ShaderSetDefaultTextureParameter(shader gd.RID, name String.Name, texture gd.RID, index gd.Int) { //gd:RenderingServer.shader_set_default_texture_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -4493,10 +4495,10 @@ Returns a default texture from a shader searched by name.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 //go:nosplit
-func (self class) ShaderGetDefaultTextureParameter(shader gd.RID, name gd.StringName, index gd.Int) gd.RID { //gd:RenderingServer.shader_get_default_texture_parameter
+func (self class) ShaderGetDefaultTextureParameter(shader gd.RID, name String.Name, index gd.Int) gd.RID { //gd:RenderingServer.shader_get_default_texture_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_get_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4537,10 +4539,10 @@ func (self class) MaterialSetShader(shader_material gd.RID, shader gd.RID) { //g
 Sets a material's parameter.
 */
 //go:nosplit
-func (self class) MaterialSetParam(material gd.RID, parameter gd.StringName, value gd.Variant) { //gd:RenderingServer.material_set_param
+func (self class) MaterialSetParam(material gd.RID, parameter String.Name, value gd.Variant) { //gd:RenderingServer.material_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, material)
-	callframe.Arg(frame, pointers.Get(parameter))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(parameter)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_set_param, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4551,10 +4553,10 @@ func (self class) MaterialSetParam(material gd.RID, parameter gd.StringName, val
 Returns the value of a certain material's parameter.
 */
 //go:nosplit
-func (self class) MaterialGetParam(material gd.RID, parameter gd.StringName) gd.Variant { //gd:RenderingServer.material_get_param
+func (self class) MaterialGetParam(material gd.RID, parameter String.Name) gd.Variant { //gd:RenderingServer.material_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, material)
-	callframe.Arg(frame, pointers.Get(parameter))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(parameter)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
@@ -9007,10 +9009,10 @@ func (self class) InstanceGeometrySetLodBias(instance gd.RID, lod_bias gd.Float)
 Sets the per-instance shader uniform on the specified 3D geometry instance. Equivalent to [method GeometryInstance3D.set_instance_shader_parameter].
 */
 //go:nosplit
-func (self class) InstanceGeometrySetShaderParameter(instance gd.RID, parameter gd.StringName, value gd.Variant) { //gd:RenderingServer.instance_geometry_set_shader_parameter
+func (self class) InstanceGeometrySetShaderParameter(instance gd.RID, parameter String.Name, value gd.Variant) { //gd:RenderingServer.instance_geometry_set_shader_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
-	callframe.Arg(frame, pointers.Get(parameter))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(parameter)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -9022,10 +9024,10 @@ Returns the value of the per-instance shader uniform from the specified 3D geome
 [b]Note:[/b] Per-instance shader parameter names are case-sensitive.
 */
 //go:nosplit
-func (self class) InstanceGeometryGetShaderParameter(instance gd.RID, parameter gd.StringName) gd.Variant { //gd:RenderingServer.instance_geometry_get_shader_parameter
+func (self class) InstanceGeometryGetShaderParameter(instance gd.RID, parameter String.Name) gd.Variant { //gd:RenderingServer.instance_geometry_get_shader_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
-	callframe.Arg(frame, pointers.Get(parameter))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(parameter)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
@@ -9037,10 +9039,10 @@ func (self class) InstanceGeometryGetShaderParameter(instance gd.RID, parameter 
 Returns the default value of the per-instance shader uniform from the specified 3D geometry instance. Equivalent to [method GeometryInstance3D.get_instance_shader_parameter].
 */
 //go:nosplit
-func (self class) InstanceGeometryGetShaderParameterDefaultValue(instance gd.RID, parameter gd.StringName) gd.Variant { //gd:RenderingServer.instance_geometry_get_shader_parameter_default_value
+func (self class) InstanceGeometryGetShaderParameterDefaultValue(instance gd.RID, parameter String.Name) gd.Variant { //gd:RenderingServer.instance_geometry_get_shader_parameter_default_value
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
-	callframe.Arg(frame, pointers.Get(parameter))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(parameter)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
@@ -10444,9 +10446,9 @@ Creates a new global shader uniform.
 [b]Note:[/b] Global shader parameter names are case-sensitive.
 */
 //go:nosplit
-func (self class) GlobalShaderParameterAdd(name gd.StringName, atype gdclass.RenderingServerGlobalShaderParameterType, default_value gd.Variant) { //gd:RenderingServer.global_shader_parameter_add
+func (self class) GlobalShaderParameterAdd(name String.Name, atype gdclass.RenderingServerGlobalShaderParameterType, default_value gd.Variant) { //gd:RenderingServer.global_shader_parameter_add
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, pointers.Get(default_value))
 	var r_ret = callframe.Nil
@@ -10458,9 +10460,9 @@ func (self class) GlobalShaderParameterAdd(name gd.StringName, atype gdclass.Ren
 Removes the global shader uniform specified by [param name].
 */
 //go:nosplit
-func (self class) GlobalShaderParameterRemove(name gd.StringName) { //gd:RenderingServer.global_shader_parameter_remove
+func (self class) GlobalShaderParameterRemove(name String.Name) { //gd:RenderingServer.global_shader_parameter_remove
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_remove, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -10471,11 +10473,11 @@ Returns the list of global shader uniform names.
 [b]Note:[/b] [method global_shader_parameter_get] has a large performance penalty as the rendering thread needs to synchronize with the calling thread, which is slow. Do not use this method during gameplay to avoid stuttering. If you need to read values in a script after setting them, consider creating an autoload where you store the values you need to query at the same time you're setting them as global parameters.
 */
 //go:nosplit
-func (self class) GlobalShaderParameterGetList() Array.Contains[gd.StringName] { //gd:RenderingServer.global_shader_parameter_get_list
+func (self class) GlobalShaderParameterGetList() Array.Contains[String.Name] { //gd:RenderingServer.global_shader_parameter_get_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -10484,9 +10486,9 @@ func (self class) GlobalShaderParameterGetList() Array.Contains[gd.StringName] {
 Sets the global shader uniform [param name] to [param value].
 */
 //go:nosplit
-func (self class) GlobalShaderParameterSet(name gd.StringName, value gd.Variant) { //gd:RenderingServer.global_shader_parameter_set
+func (self class) GlobalShaderParameterSet(name String.Name, value gd.Variant) { //gd:RenderingServer.global_shader_parameter_set
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_set, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -10497,9 +10499,9 @@ func (self class) GlobalShaderParameterSet(name gd.StringName, value gd.Variant)
 Overrides the global shader uniform [param name] with [param value]. Equivalent to the [ShaderGlobalsOverride] node.
 */
 //go:nosplit
-func (self class) GlobalShaderParameterSetOverride(name gd.StringName, value gd.Variant) { //gd:RenderingServer.global_shader_parameter_set_override
+func (self class) GlobalShaderParameterSetOverride(name String.Name, value gd.Variant) { //gd:RenderingServer.global_shader_parameter_set_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_set_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -10511,9 +10513,9 @@ Returns the value of the global shader uniform specified by [param name].
 [b]Note:[/b] [method global_shader_parameter_get] has a large performance penalty as the rendering thread needs to synchronize with the calling thread, which is slow. Do not use this method during gameplay to avoid stuttering. If you need to read values in a script after setting them, consider creating an autoload where you store the values you need to query at the same time you're setting them as global parameters.
 */
 //go:nosplit
-func (self class) GlobalShaderParameterGet(name gd.StringName) gd.Variant { //gd:RenderingServer.global_shader_parameter_get
+func (self class) GlobalShaderParameterGet(name String.Name) gd.Variant { //gd:RenderingServer.global_shader_parameter_get
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
@@ -10526,9 +10528,9 @@ Returns the type associated to the global shader uniform specified by [param nam
 [b]Note:[/b] [method global_shader_parameter_get] has a large performance penalty as the rendering thread needs to synchronize with the calling thread, which is slow. Do not use this method during gameplay to avoid stuttering. If you need to read values in a script after setting them, consider creating an autoload where you store the values you need to query at the same time you're setting them as global parameters.
 */
 //go:nosplit
-func (self class) GlobalShaderParameterGetType(name gd.StringName) gdclass.RenderingServerGlobalShaderParameterType { //gd:RenderingServer.global_shader_parameter_get_type
+func (self class) GlobalShaderParameterGetType(name String.Name) gdclass.RenderingServerGlobalShaderParameterType { //gd:RenderingServer.global_shader_parameter_get_type
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[gdclass.RenderingServerGlobalShaderParameterType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

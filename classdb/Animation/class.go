@@ -15,8 +15,8 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Quaternion"
@@ -34,6 +34,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This resource holds data that can be used to animate anything in the engine. Animations are divided into tracks and each track must be linked to a node. The state of that node can be changed through time, by adding timed keys (events) to the track.
@@ -103,23 +104,23 @@ func (self Instance) TrackGetType(track_idx int) gdclass.AnimationTrackType { //
 /*
 Gets the path of a track. For more information on the path format, see [method track_set_path].
 */
-func (self Instance) TrackGetPath(track_idx int) NodePath.String { //gd:Animation.track_get_path
-	return NodePath.String(class(self).TrackGetPath(gd.Int(track_idx)).String())
+func (self Instance) TrackGetPath(track_idx int) string { //gd:Animation.track_get_path
+	return string(class(self).TrackGetPath(gd.Int(track_idx)).String())
 }
 
 /*
 Sets the path of a track. Paths must be valid scene-tree paths to a node and must be specified starting from the [member AnimationMixer.root_node] that will reproduce the animation. Tracks that control properties or bones must append their name after the path, separated by [code]":"[/code].
 For example, [code]"character/skeleton:ankle"[/code] or [code]"character/mesh:transform/local"[/code].
 */
-func (self Instance) TrackSetPath(track_idx int, path NodePath.String) { //gd:Animation.track_set_path
-	class(self).TrackSetPath(gd.Int(track_idx), gd.NewString(string(path)).NodePath())
+func (self Instance) TrackSetPath(track_idx int, path string) { //gd:Animation.track_set_path
+	class(self).TrackSetPath(gd.Int(track_idx), Path.ToNode(String.New(path)))
 }
 
 /*
 Returns the index of the specified track. If the track is not found, return -1.
 */
-func (self Instance) FindTrack(path NodePath.String, atype gdclass.AnimationTrackType) int { //gd:Animation.find_track
-	return int(int(class(self).FindTrack(gd.NewString(string(path)).NodePath(), atype)))
+func (self Instance) FindTrack(path string, atype gdclass.AnimationTrackType) int { //gd:Animation.find_track
+	return int(int(class(self).FindTrack(Path.ToNode(String.New(path)), atype)))
 }
 
 /*
@@ -512,14 +513,14 @@ func (self Instance) AudioTrackIsUseBlend(track_idx int) bool { //gd:Animation.a
 Inserts a key with value [param animation] at the given [param time] (in seconds). The [param track_idx] must be the index of an Animation Track.
 */
 func (self Instance) AnimationTrackInsertKey(track_idx int, time Float.X, animation string) int { //gd:Animation.animation_track_insert_key
-	return int(int(class(self).AnimationTrackInsertKey(gd.Int(track_idx), gd.Float(time), gd.NewStringName(animation))))
+	return int(int(class(self).AnimationTrackInsertKey(gd.Int(track_idx), gd.Float(time), String.Name(String.New(animation)))))
 }
 
 /*
 Sets the key identified by [param key_idx] to value [param animation]. The [param track_idx] must be the index of an Animation Track.
 */
 func (self Instance) AnimationTrackSetKeyAnimation(track_idx int, key_idx int, animation string) { //gd:Animation.animation_track_set_key_animation
-	class(self).AnimationTrackSetKeyAnimation(gd.Int(track_idx), gd.Int(key_idx), gd.NewStringName(animation))
+	class(self).AnimationTrackSetKeyAnimation(gd.Int(track_idx), gd.Int(key_idx), String.Name(String.New(animation)))
 }
 
 /*
@@ -656,12 +657,12 @@ func (self class) TrackGetType(track_idx gd.Int) gdclass.AnimationTrackType { //
 Gets the path of a track. For more information on the path format, see [method track_set_path].
 */
 //go:nosplit
-func (self class) TrackGetPath(track_idx gd.Int) gd.NodePath { //gd:Animation.track_get_path
+func (self class) TrackGetPath(track_idx gd.Int) Path.ToNode { //gd:Animation.track_get_path
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -671,10 +672,10 @@ Sets the path of a track. Paths must be valid scene-tree paths to a node and mus
 For example, [code]"character/skeleton:ankle"[/code] or [code]"character/mesh:transform/local"[/code].
 */
 //go:nosplit
-func (self class) TrackSetPath(track_idx gd.Int, path gd.NodePath) { //gd:Animation.track_set_path
+func (self class) TrackSetPath(track_idx gd.Int, path Path.ToNode) { //gd:Animation.track_set_path
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -684,9 +685,9 @@ func (self class) TrackSetPath(track_idx gd.Int, path gd.NodePath) { //gd:Animat
 Returns the index of the specified track. If the track is not found, return -1.
 */
 //go:nosplit
-func (self class) FindTrack(path gd.NodePath, atype gdclass.AnimationTrackType) gd.Int { //gd:Animation.find_track
+func (self class) FindTrack(path Path.ToNode, atype gdclass.AnimationTrackType) gd.Int { //gd:Animation.find_track
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_find_track, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1208,13 +1209,13 @@ func (self class) ValueTrackInterpolate(track_idx gd.Int, time_sec gd.Float, bac
 Returns the method name of a method track.
 */
 //go:nosplit
-func (self class) MethodTrackGetName(track_idx gd.Int, key_idx gd.Int) gd.StringName { //gd:Animation.method_track_get_name
+func (self class) MethodTrackGetName(track_idx gd.Int, key_idx gd.Int) String.Name { //gd:Animation.method_track_get_name
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_method_track_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1496,11 +1497,11 @@ func (self class) AudioTrackIsUseBlend(track_idx gd.Int) bool { //gd:Animation.a
 Inserts a key with value [param animation] at the given [param time] (in seconds). The [param track_idx] must be the index of an Animation Track.
 */
 //go:nosplit
-func (self class) AnimationTrackInsertKey(track_idx gd.Int, time gd.Float, animation gd.StringName) gd.Int { //gd:Animation.animation_track_insert_key
+func (self class) AnimationTrackInsertKey(track_idx gd.Int, time gd.Float, animation String.Name) gd.Int { //gd:Animation.animation_track_insert_key
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
-	callframe.Arg(frame, pointers.Get(animation))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_animation_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1512,11 +1513,11 @@ func (self class) AnimationTrackInsertKey(track_idx gd.Int, time gd.Float, anima
 Sets the key identified by [param key_idx] to value [param animation]. The [param track_idx] must be the index of an Animation Track.
 */
 //go:nosplit
-func (self class) AnimationTrackSetKeyAnimation(track_idx gd.Int, key_idx gd.Int, animation gd.StringName) { //gd:Animation.animation_track_set_key_animation
+func (self class) AnimationTrackSetKeyAnimation(track_idx gd.Int, key_idx gd.Int, animation String.Name) { //gd:Animation.animation_track_set_key_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
-	callframe.Arg(frame, pointers.Get(animation))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_animation_track_set_key_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1526,13 +1527,13 @@ func (self class) AnimationTrackSetKeyAnimation(track_idx gd.Int, key_idx gd.Int
 Returns the animation name at the key identified by [param key_idx]. The [param track_idx] must be the index of an Animation Track.
 */
 //go:nosplit
-func (self class) AnimationTrackGetKeyAnimation(track_idx gd.Int, key_idx gd.Int) gd.StringName { //gd:Animation.animation_track_get_key_animation
+func (self class) AnimationTrackGetKeyAnimation(track_idx gd.Int, key_idx gd.Int) String.Name { //gd:Animation.animation_track_get_key_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_animation_track_get_key_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -34,6 +35,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 [GraphEdit] provides tools for creation, manipulation, and display of various graphs. Its main purpose in the engine is to power the visual programming systems, such as visual shaders, but it is also available for use in user projects.
@@ -216,12 +218,12 @@ public override bool _IsNodeHoverValid(StringName fromNode, int fromPort, String
 */
 func (Instance) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node string, from_port int, to_node string, to_port int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var from_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(from_node)
+		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(from_node))
 		var from_port = gd.UnsafeGet[gd.Int](p_args, 1)
 
-		var to_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(to_node)
+		var to_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2)))))
+		defer pointers.End(gd.InternalStringName(to_node))
 		var to_port = gd.UnsafeGet[gd.Int](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -234,28 +236,28 @@ func (Instance) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node str
 Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
 */
 func (self Instance) ConnectNode(from_node string, from_port int, to_node string, to_port int) error { //gd:GraphEdit.connect_node
-	return error(gd.ToError(class(self).ConnectNode(gd.NewStringName(from_node), gd.Int(from_port), gd.NewStringName(to_node), gd.Int(to_port))))
+	return error(gd.ToError(class(self).ConnectNode(String.Name(String.New(from_node)), gd.Int(from_port), String.Name(String.New(to_node)), gd.Int(to_port))))
 }
 
 /*
 Returns [code]true[/code] if the [param from_port] of the [param from_node] [GraphNode] is connected to the [param to_port] of the [param to_node] [GraphNode].
 */
 func (self Instance) IsNodeConnected(from_node string, from_port int, to_node string, to_port int) bool { //gd:GraphEdit.is_node_connected
-	return bool(class(self).IsNodeConnected(gd.NewStringName(from_node), gd.Int(from_port), gd.NewStringName(to_node), gd.Int(to_port)))
+	return bool(class(self).IsNodeConnected(String.Name(String.New(from_node)), gd.Int(from_port), String.Name(String.New(to_node)), gd.Int(to_port)))
 }
 
 /*
 Removes the connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection does not exist, no connection is removed.
 */
 func (self Instance) DisconnectNode(from_node string, from_port int, to_node string, to_port int) { //gd:GraphEdit.disconnect_node
-	class(self).DisconnectNode(gd.NewStringName(from_node), gd.Int(from_port), gd.NewStringName(to_node), gd.Int(to_port))
+	class(self).DisconnectNode(String.Name(String.New(from_node)), gd.Int(from_port), String.Name(String.New(to_node)), gd.Int(to_port))
 }
 
 /*
 Sets the coloration of the connection between [param from_node]'s [param from_port] and [param to_node]'s [param to_port] with the color provided in the [theme_item activity] theme property. The color is linearly interpolated between the connection color and the activity color using [param amount] as weight.
 */
 func (self Instance) SetConnectionActivity(from_node string, from_port int, to_node string, to_port int, amount Float.X) { //gd:GraphEdit.set_connection_activity
-	class(self).SetConnectionActivity(gd.NewStringName(from_node), gd.Int(from_port), gd.NewStringName(to_node), gd.Int(to_port), gd.Float(amount))
+	class(self).SetConnectionActivity(String.Name(String.New(from_node)), gd.Int(from_port), String.Name(String.New(to_node)), gd.Int(to_port), gd.Float(amount))
 }
 
 /*
@@ -365,28 +367,28 @@ func (self Instance) GetConnectionLine(from_node Vector2.XY, to_node Vector2.XY)
 Attaches the [param element] [GraphElement] to the [param frame] [GraphFrame].
 */
 func (self Instance) AttachGraphElementToFrame(element string, frame_ string) { //gd:GraphEdit.attach_graph_element_to_frame
-	class(self).AttachGraphElementToFrame(gd.NewStringName(element), gd.NewStringName(frame_))
+	class(self).AttachGraphElementToFrame(String.Name(String.New(element)), String.Name(String.New(frame_)))
 }
 
 /*
 Detaches the [param element] [GraphElement] from the [GraphFrame] it is currently attached to.
 */
 func (self Instance) DetachGraphElementFromFrame(element string) { //gd:GraphEdit.detach_graph_element_from_frame
-	class(self).DetachGraphElementFromFrame(gd.NewStringName(element))
+	class(self).DetachGraphElementFromFrame(String.Name(String.New(element)))
 }
 
 /*
 Returns the [GraphFrame] that contains the [GraphElement] with the given name.
 */
 func (self Instance) GetElementFrame(element string) [1]gdclass.GraphFrame { //gd:GraphEdit.get_element_frame
-	return [1]gdclass.GraphFrame(class(self).GetElementFrame(gd.NewStringName(element)))
+	return [1]gdclass.GraphFrame(class(self).GetElementFrame(String.Name(String.New(element))))
 }
 
 /*
 Returns an array of node names that are attached to the [GraphFrame] with the given name.
 */
 func (self Instance) GetAttachedNodesOfFrame(frame_ string) []string { //gd:GraphEdit.get_attached_nodes_of_frame
-	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAttachedNodesOfFrame(gd.NewStringName(frame_)))))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAttachedNodesOfFrame(String.Name(String.New(frame_))))))
 }
 
 /*
@@ -711,14 +713,14 @@ public override bool _IsNodeHoverValid(StringName fromNode, int fromPort, String
 [/csharp]
 [/codeblocks]
 */
-func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node String.Name, from_port gd.Int, to_node String.Name, to_port gd.Int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var from_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(from_node)
+		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(from_node))
 		var from_port = gd.UnsafeGet[gd.Int](p_args, 1)
 
-		var to_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(to_node)
+		var to_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2)))))
+		defer pointers.End(gd.InternalStringName(to_node))
 		var to_port = gd.UnsafeGet[gd.Int](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -731,11 +733,11 @@ func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node gd.Str
 Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
 */
 //go:nosplit
-func (self class) ConnectNode(from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) gd.Error { //gd:GraphEdit.connect_node
+func (self class) ConnectNode(from_node String.Name, from_port gd.Int, to_node String.Name, to_port gd.Int) gd.Error { //gd:GraphEdit.connect_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(from_node))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(from_node)))
 	callframe.Arg(frame, from_port)
-	callframe.Arg(frame, pointers.Get(to_node))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(to_node)))
 	callframe.Arg(frame, to_port)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_connect_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -748,11 +750,11 @@ func (self class) ConnectNode(from_node gd.StringName, from_port gd.Int, to_node
 Returns [code]true[/code] if the [param from_port] of the [param from_node] [GraphNode] is connected to the [param to_port] of the [param to_node] [GraphNode].
 */
 //go:nosplit
-func (self class) IsNodeConnected(from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) bool { //gd:GraphEdit.is_node_connected
+func (self class) IsNodeConnected(from_node String.Name, from_port gd.Int, to_node String.Name, to_port gd.Int) bool { //gd:GraphEdit.is_node_connected
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(from_node))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(from_node)))
 	callframe.Arg(frame, from_port)
-	callframe.Arg(frame, pointers.Get(to_node))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(to_node)))
 	callframe.Arg(frame, to_port)
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_is_node_connected, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -765,11 +767,11 @@ func (self class) IsNodeConnected(from_node gd.StringName, from_port gd.Int, to_
 Removes the connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection does not exist, no connection is removed.
 */
 //go:nosplit
-func (self class) DisconnectNode(from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) { //gd:GraphEdit.disconnect_node
+func (self class) DisconnectNode(from_node String.Name, from_port gd.Int, to_node String.Name, to_port gd.Int) { //gd:GraphEdit.disconnect_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(from_node))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(from_node)))
 	callframe.Arg(frame, from_port)
-	callframe.Arg(frame, pointers.Get(to_node))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(to_node)))
 	callframe.Arg(frame, to_port)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_disconnect_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -780,11 +782,11 @@ func (self class) DisconnectNode(from_node gd.StringName, from_port gd.Int, to_n
 Sets the coloration of the connection between [param from_node]'s [param from_port] and [param to_node]'s [param to_port] with the color provided in the [theme_item activity] theme property. The color is linearly interpolated between the connection color and the activity color using [param amount] as weight.
 */
 //go:nosplit
-func (self class) SetConnectionActivity(from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int, amount gd.Float) { //gd:GraphEdit.set_connection_activity
+func (self class) SetConnectionActivity(from_node String.Name, from_port gd.Int, to_node String.Name, to_port gd.Int, amount gd.Float) { //gd:GraphEdit.set_connection_activity
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(from_node))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(from_node)))
 	callframe.Arg(frame, from_port)
-	callframe.Arg(frame, pointers.Get(to_node))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(to_node)))
 	callframe.Arg(frame, to_port)
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -995,10 +997,10 @@ func (self class) GetConnectionLine(from_node gd.Vector2, to_node gd.Vector2) gd
 Attaches the [param element] [GraphElement] to the [param frame] [GraphFrame].
 */
 //go:nosplit
-func (self class) AttachGraphElementToFrame(element gd.StringName, frame_ gd.StringName) { //gd:GraphEdit.attach_graph_element_to_frame
+func (self class) AttachGraphElementToFrame(element String.Name, frame_ String.Name) { //gd:GraphEdit.attach_graph_element_to_frame
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(element))
-	callframe.Arg(frame, pointers.Get(frame_))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(element)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(frame_)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_attach_graph_element_to_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1008,9 +1010,9 @@ func (self class) AttachGraphElementToFrame(element gd.StringName, frame_ gd.Str
 Detaches the [param element] [GraphElement] from the [GraphFrame] it is currently attached to.
 */
 //go:nosplit
-func (self class) DetachGraphElementFromFrame(element gd.StringName) { //gd:GraphEdit.detach_graph_element_from_frame
+func (self class) DetachGraphElementFromFrame(element String.Name) { //gd:GraphEdit.detach_graph_element_from_frame
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(element))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(element)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_detach_graph_element_from_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1020,9 +1022,9 @@ func (self class) DetachGraphElementFromFrame(element gd.StringName) { //gd:Grap
 Returns the [GraphFrame] that contains the [GraphElement] with the given name.
 */
 //go:nosplit
-func (self class) GetElementFrame(element gd.StringName) [1]gdclass.GraphFrame { //gd:GraphEdit.get_element_frame
+func (self class) GetElementFrame(element String.Name) [1]gdclass.GraphFrame { //gd:GraphEdit.get_element_frame
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(element))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(element)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_element_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GraphFrame{gd.PointerLifetimeBoundTo[gdclass.GraphFrame](self.AsObject(), r_ret.Get())}
@@ -1034,12 +1036,12 @@ func (self class) GetElementFrame(element gd.StringName) [1]gdclass.GraphFrame {
 Returns an array of node names that are attached to the [GraphFrame] with the given name.
 */
 //go:nosplit
-func (self class) GetAttachedNodesOfFrame(frame_ gd.StringName) Array.Contains[gd.StringName] { //gd:GraphEdit.get_attached_nodes_of_frame
+func (self class) GetAttachedNodesOfFrame(frame_ String.Name) Array.Contains[String.Name] { //gd:GraphEdit.get_attached_nodes_of_frame
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(frame_))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(frame_)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_attached_nodes_of_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

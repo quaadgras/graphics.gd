@@ -16,6 +16,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -30,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This class provides access to a number of different monitors related to performance, such as memory usage, draw calls, and FPS. These are the same as the values displayed in the [b]Monitor[/b] tab in the editor's [b]Debugger[/b] panel. By using the [method get_monitor] method of this class, you can access this data from your code.
@@ -123,7 +125,7 @@ Callables are called with arguments supplied in argument array.
 */
 func AddCustomMonitor(id string, callable Callable.Function) { //gd:Performance.add_custom_monitor
 	once.Do(singleton)
-	class(self).AddCustomMonitor(gd.NewStringName(id), Callable.New(callable), Array.Nil)
+	class(self).AddCustomMonitor(String.Name(String.New(id)), Callable.New(callable), Array.Nil)
 }
 
 /*
@@ -131,7 +133,7 @@ Removes the custom monitor with given [param id]. Prints an error if the given [
 */
 func RemoveCustomMonitor(id string) { //gd:Performance.remove_custom_monitor
 	once.Do(singleton)
-	class(self).RemoveCustomMonitor(gd.NewStringName(id))
+	class(self).RemoveCustomMonitor(String.Name(String.New(id)))
 }
 
 /*
@@ -139,7 +141,7 @@ Returns [code]true[/code] if custom monitor with the given [param id] is present
 */
 func HasCustomMonitor(id string) bool { //gd:Performance.has_custom_monitor
 	once.Do(singleton)
-	return bool(class(self).HasCustomMonitor(gd.NewStringName(id)))
+	return bool(class(self).HasCustomMonitor(String.Name(String.New(id))))
 }
 
 /*
@@ -147,7 +149,7 @@ Returns the value of custom monitor with given [param id]. The callable is calle
 */
 func GetCustomMonitor(id string) any { //gd:Performance.get_custom_monitor
 	once.Do(singleton)
-	return any(class(self).GetCustomMonitor(gd.NewStringName(id)).Interface())
+	return any(class(self).GetCustomMonitor(String.Name(String.New(id))).Interface())
 }
 
 /*
@@ -252,9 +254,9 @@ The debugger calls the callable to get the value of custom monitor. The callable
 Callables are called with arguments supplied in argument array.
 */
 //go:nosplit
-func (self class) AddCustomMonitor(id gd.StringName, callable Callable.Function, arguments Array.Any) { //gd:Performance.add_custom_monitor
+func (self class) AddCustomMonitor(id String.Name, callable Callable.Function, arguments Array.Any) { //gd:Performance.add_custom_monitor
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(id))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(id)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arguments)))
 	var r_ret = callframe.Nil
@@ -266,9 +268,9 @@ func (self class) AddCustomMonitor(id gd.StringName, callable Callable.Function,
 Removes the custom monitor with given [param id]. Prints an error if the given [param id] is already absent.
 */
 //go:nosplit
-func (self class) RemoveCustomMonitor(id gd.StringName) { //gd:Performance.remove_custom_monitor
+func (self class) RemoveCustomMonitor(id String.Name) { //gd:Performance.remove_custom_monitor
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(id))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(id)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_remove_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -278,9 +280,9 @@ func (self class) RemoveCustomMonitor(id gd.StringName) { //gd:Performance.remov
 Returns [code]true[/code] if custom monitor with the given [param id] is present, [code]false[/code] otherwise.
 */
 //go:nosplit
-func (self class) HasCustomMonitor(id gd.StringName) bool { //gd:Performance.has_custom_monitor
+func (self class) HasCustomMonitor(id String.Name) bool { //gd:Performance.has_custom_monitor
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(id))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(id)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_has_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -292,9 +294,9 @@ func (self class) HasCustomMonitor(id gd.StringName) bool { //gd:Performance.has
 Returns the value of custom monitor with given [param id]. The callable is called to get the value of custom monitor. See also [method has_custom_monitor]. Prints an error if the given [param id] is absent.
 */
 //go:nosplit
-func (self class) GetCustomMonitor(id gd.StringName) gd.Variant { //gd:Performance.get_custom_monitor
+func (self class) GetCustomMonitor(id String.Name) gd.Variant { //gd:Performance.get_custom_monitor
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(id))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(id)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
@@ -319,11 +321,11 @@ func (self class) GetMonitorModificationTime() gd.Int { //gd:Performance.get_mon
 Returns the names of active custom monitors in an [Array].
 */
 //go:nosplit
-func (self class) GetCustomMonitorNames() Array.Contains[gd.StringName] { //gd:Performance.get_custom_monitor_names
+func (self class) GetCustomMonitorNames() Array.Contains[String.Name] { //gd:Performance.get_custom_monitor_names
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_custom_monitor_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

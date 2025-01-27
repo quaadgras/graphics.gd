@@ -15,8 +15,8 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/MultiplayerAPI"
-import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -31,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This class is the default implementation of [MultiplayerAPI], used to provide multiplayer functionalities in Godot Engine.
@@ -111,12 +112,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) RootPath() NodePath.String {
-	return NodePath.String(class(self).GetRootPath().String())
+func (self Instance) RootPath() string {
+	return string(class(self).GetRootPath().String())
 }
 
-func (self Instance) SetRootPath(value NodePath.String) {
-	class(self).SetRootPath(gd.NewString(string(value)).NodePath())
+func (self Instance) SetRootPath(value string) {
+	class(self).SetRootPath(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) AuthCallback() Callable.Function {
@@ -176,20 +177,20 @@ func (self Instance) SetMaxDeltaPacketSize(value int) {
 }
 
 //go:nosplit
-func (self class) SetRootPath(path gd.NodePath) { //gd:SceneMultiplayer.set_root_path
+func (self class) SetRootPath(path Path.ToNode) { //gd:SceneMultiplayer.set_root_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneMultiplayer.Bind_set_root_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetRootPath() gd.NodePath { //gd:SceneMultiplayer.get_root_path
+func (self class) GetRootPath() Path.ToNode { //gd:SceneMultiplayer.get_root_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneMultiplayer.Bind_get_root_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

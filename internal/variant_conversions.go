@@ -130,6 +130,14 @@ func NewVariant(v any) Variant {
 			var s = NewString(value.String()).NodePath()
 			var arg = callframe.Arg(frame, pointers.Get(s))
 			Global.variant.FromType[TypeNodePath](ret, arg.Addr())
+		case reflect.TypeFor[StringType.Name]():
+			var s = NewStringName(value.String())
+			var arg = callframe.Arg(frame, pointers.Get(s))
+			Global.variant.FromType[TypeStringName](ret, arg.Addr())
+		case reflect.TypeFor[StringType.Readable]():
+			var s = NewString(value.String())
+			var arg = callframe.Arg(frame, pointers.Get(s))
+			Global.variant.FromType[TypeString](ret, arg.Addr())
 		default:
 			var s = NewString(value.String())
 			var arg = callframe.Arg(frame, pointers.Get(s))
@@ -152,6 +160,12 @@ func NewVariant(v any) Variant {
 		case StringType.Readable:
 			var arg = callframe.Arg(frame, pointers.Get(InternalString(val)))
 			Global.variant.FromType[TypeString](ret, arg.Addr())
+		case Path.ToNode:
+			var arg = callframe.Arg(frame, pointers.Get(InternalNodePath(val)))
+			Global.variant.FromType[TypeNodePath](ret, arg.Addr())
+		case StringType.Name:
+			var arg = callframe.Arg(frame, pointers.Get(InternalStringName(val)))
+			Global.variant.FromType[TypeStringName](ret, arg.Addr())
 		case CallableType.Function:
 			var arg = callframe.Arg(frame, pointers.Get(InternalCallable(val)))
 			Global.variant.FromType[TypeCallable](ret, arg.Addr())
@@ -370,7 +384,8 @@ func (variant Variant) Interface() any {
 	case TypeFloat:
 		return variantAsValueType[Float](variant, vtype)
 	case TypeString:
-		return variantAsPointerType[String](variant, vtype)
+		s := variantAsPointerType[String](variant, vtype)
+		return StringType.Via(StringProxy{}, pointers.Pack(s))
 	case TypeVector2:
 		return variantAsValueType[Vector2](variant, vtype)
 	case TypeVector2i:
@@ -404,9 +419,11 @@ func (variant Variant) Interface() any {
 	case TypeColor:
 		return variantAsValueType[Color](variant, vtype)
 	case TypeStringName:
-		return variantAsPointerType[StringName](variant, vtype)
+		s := variantAsPointerType[StringName](variant, vtype)
+		return StringType.Name(StringType.Via(StringNameProxy{}, pointers.Pack(s)))
 	case TypeNodePath:
-		return variantAsPointerType[NodePath](variant, vtype)
+		s := variantAsPointerType[NodePath](variant, vtype)
+		return Path.ToNode(StringType.Via(NodePathProxy{}, pointers.Pack(s)))
 	case TypeRID:
 		return variantAsValueType[RID](variant, vtype)
 	case TypeObject:

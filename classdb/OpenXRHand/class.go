@@ -15,9 +15,9 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This node enables OpenXR's hand tracking functionality. The node should be a child node of an [XROrigin3D] node, tracking will update its position to the player's tracked hand Palm joint location (the center of the middle finger's metacarpal bone). This node also updates the skeleton of a properly skinned hand or avatar model.
@@ -82,12 +83,12 @@ func (self Instance) SetMotionRange(value gdclass.OpenXRHandMotionRange) {
 	class(self).SetMotionRange(value)
 }
 
-func (self Instance) HandSkeleton() NodePath.String {
-	return NodePath.String(class(self).GetHandSkeleton().String())
+func (self Instance) HandSkeleton() string {
+	return string(class(self).GetHandSkeleton().String())
 }
 
-func (self Instance) SetHandSkeleton(value NodePath.String) {
-	class(self).SetHandSkeleton(gd.NewString(string(value)).NodePath())
+func (self Instance) SetHandSkeleton(value string) {
+	class(self).SetHandSkeleton(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) SkeletonRig() gdclass.OpenXRHandSkeletonRig {
@@ -126,20 +127,20 @@ func (self class) GetHand() gdclass.OpenXRHandHands { //gd:OpenXRHand.get_hand
 }
 
 //go:nosplit
-func (self class) SetHandSkeleton(hand_skeleton gd.NodePath) { //gd:OpenXRHand.set_hand_skeleton
+func (self class) SetHandSkeleton(hand_skeleton Path.ToNode) { //gd:OpenXRHand.set_hand_skeleton
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(hand_skeleton))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(hand_skeleton)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_set_hand_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetHandSkeleton() gd.NodePath { //gd:OpenXRHand.get_hand_skeleton
+func (self class) GetHandSkeleton() Path.ToNode { //gd:OpenXRHand.get_hand_skeleton
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_get_hand_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

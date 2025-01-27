@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -28,6 +29,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 An editor feature profile can be used to disable specific features of the Godot editor. When disabled, the features won't appear in the editor, which makes the editor less cluttered. This is useful in education settings to reduce confusion or when working in a team. For example, artists and level designers could use a feature profile that disables the script editor to avoid accidentally making changes to files they aren't supposed to edit.
@@ -47,42 +49,42 @@ type Any interface {
 If [param disable] is [code]true[/code], disables the class specified by [param class_name]. When disabled, the class won't appear in the Create New Node dialog.
 */
 func (self Instance) SetDisableClass(class_name string, disable bool) { //gd:EditorFeatureProfile.set_disable_class
-	class(self).SetDisableClass(gd.NewStringName(class_name), disable)
+	class(self).SetDisableClass(String.Name(String.New(class_name)), disable)
 }
 
 /*
 Returns [code]true[/code] if the class specified by [param class_name] is disabled. When disabled, the class won't appear in the Create New Node dialog.
 */
 func (self Instance) IsClassDisabled(class_name string) bool { //gd:EditorFeatureProfile.is_class_disabled
-	return bool(class(self).IsClassDisabled(gd.NewStringName(class_name)))
+	return bool(class(self).IsClassDisabled(String.Name(String.New(class_name))))
 }
 
 /*
 If [param disable] is [code]true[/code], disables editing for the class specified by [param class_name]. When disabled, the class will still appear in the Create New Node dialog but the Inspector will be read-only when selecting a node that extends the class.
 */
 func (self Instance) SetDisableClassEditor(class_name string, disable bool) { //gd:EditorFeatureProfile.set_disable_class_editor
-	class(self).SetDisableClassEditor(gd.NewStringName(class_name), disable)
+	class(self).SetDisableClassEditor(String.Name(String.New(class_name)), disable)
 }
 
 /*
 Returns [code]true[/code] if editing for the class specified by [param class_name] is disabled. When disabled, the class will still appear in the Create New Node dialog but the Inspector will be read-only when selecting a node that extends the class.
 */
 func (self Instance) IsClassEditorDisabled(class_name string) bool { //gd:EditorFeatureProfile.is_class_editor_disabled
-	return bool(class(self).IsClassEditorDisabled(gd.NewStringName(class_name)))
+	return bool(class(self).IsClassEditorDisabled(String.Name(String.New(class_name))))
 }
 
 /*
 If [param disable] is [code]true[/code], disables editing for [param property] in the class specified by [param class_name]. When a property is disabled, it won't appear in the Inspector when selecting a node that extends the class specified by [param class_name].
 */
 func (self Instance) SetDisableClassProperty(class_name string, property string, disable bool) { //gd:EditorFeatureProfile.set_disable_class_property
-	class(self).SetDisableClassProperty(gd.NewStringName(class_name), gd.NewStringName(property), disable)
+	class(self).SetDisableClassProperty(String.Name(String.New(class_name)), String.Name(String.New(property)), disable)
 }
 
 /*
 Returns [code]true[/code] if [param property] is disabled in the class specified by [param class_name]. When a property is disabled, it won't appear in the Inspector when selecting a node that extends the class specified by [param class_name].
 */
 func (self Instance) IsClassPropertyDisabled(class_name string, property string) bool { //gd:EditorFeatureProfile.is_class_property_disabled
-	return bool(class(self).IsClassPropertyDisabled(gd.NewStringName(class_name), gd.NewStringName(property)))
+	return bool(class(self).IsClassPropertyDisabled(String.Name(String.New(class_name)), String.Name(String.New(property))))
 }
 
 /*
@@ -145,9 +147,9 @@ func New() Instance {
 If [param disable] is [code]true[/code], disables the class specified by [param class_name]. When disabled, the class won't appear in the Create New Node dialog.
 */
 //go:nosplit
-func (self class) SetDisableClass(class_name gd.StringName, disable bool) { //gd:EditorFeatureProfile.set_disable_class
+func (self class) SetDisableClass(class_name String.Name, disable bool) { //gd:EditorFeatureProfile.set_disable_class
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(class_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_name)))
 	callframe.Arg(frame, disable)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_class, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -158,9 +160,9 @@ func (self class) SetDisableClass(class_name gd.StringName, disable bool) { //gd
 Returns [code]true[/code] if the class specified by [param class_name] is disabled. When disabled, the class won't appear in the Create New Node dialog.
 */
 //go:nosplit
-func (self class) IsClassDisabled(class_name gd.StringName) bool { //gd:EditorFeatureProfile.is_class_disabled
+func (self class) IsClassDisabled(class_name String.Name) bool { //gd:EditorFeatureProfile.is_class_disabled
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(class_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_is_class_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -172,9 +174,9 @@ func (self class) IsClassDisabled(class_name gd.StringName) bool { //gd:EditorFe
 If [param disable] is [code]true[/code], disables editing for the class specified by [param class_name]. When disabled, the class will still appear in the Create New Node dialog but the Inspector will be read-only when selecting a node that extends the class.
 */
 //go:nosplit
-func (self class) SetDisableClassEditor(class_name gd.StringName, disable bool) { //gd:EditorFeatureProfile.set_disable_class_editor
+func (self class) SetDisableClassEditor(class_name String.Name, disable bool) { //gd:EditorFeatureProfile.set_disable_class_editor
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(class_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_name)))
 	callframe.Arg(frame, disable)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_class_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -185,9 +187,9 @@ func (self class) SetDisableClassEditor(class_name gd.StringName, disable bool) 
 Returns [code]true[/code] if editing for the class specified by [param class_name] is disabled. When disabled, the class will still appear in the Create New Node dialog but the Inspector will be read-only when selecting a node that extends the class.
 */
 //go:nosplit
-func (self class) IsClassEditorDisabled(class_name gd.StringName) bool { //gd:EditorFeatureProfile.is_class_editor_disabled
+func (self class) IsClassEditorDisabled(class_name String.Name) bool { //gd:EditorFeatureProfile.is_class_editor_disabled
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(class_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_is_class_editor_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -199,10 +201,10 @@ func (self class) IsClassEditorDisabled(class_name gd.StringName) bool { //gd:Ed
 If [param disable] is [code]true[/code], disables editing for [param property] in the class specified by [param class_name]. When a property is disabled, it won't appear in the Inspector when selecting a node that extends the class specified by [param class_name].
 */
 //go:nosplit
-func (self class) SetDisableClassProperty(class_name gd.StringName, property gd.StringName, disable bool) { //gd:EditorFeatureProfile.set_disable_class_property
+func (self class) SetDisableClassProperty(class_name String.Name, property String.Name, disable bool) { //gd:EditorFeatureProfile.set_disable_class_property
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(class_name))
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	callframe.Arg(frame, disable)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_class_property, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -213,10 +215,10 @@ func (self class) SetDisableClassProperty(class_name gd.StringName, property gd.
 Returns [code]true[/code] if [param property] is disabled in the class specified by [param class_name]. When a property is disabled, it won't appear in the Inspector when selecting a node that extends the class specified by [param class_name].
 */
 //go:nosplit
-func (self class) IsClassPropertyDisabled(class_name gd.StringName, property gd.StringName) bool { //gd:EditorFeatureProfile.is_class_property_disabled
+func (self class) IsClassPropertyDisabled(class_name String.Name, property String.Name) bool { //gd:EditorFeatureProfile.is_class_property_disabled
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(class_name))
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_is_class_property_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

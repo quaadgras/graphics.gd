@@ -15,12 +15,12 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/MeshInstance3D"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
 
@@ -36,6 +36,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 A deformable 3D physics mesh. Used to create elastic or deformable objects such as cloth, rubber, or other flexible materials.
@@ -119,7 +120,7 @@ func (self Instance) GetPointTransform(point_index int) Vector3.XYZ { //gd:SoftB
 Sets the pinned state of a surface vertex. When set to [code]true[/code], the optional [param attachment_path] can define a [Node3D] the pinned vertex will be attached to.
 */
 func (self Instance) SetPointPinned(point_index int, pinned bool) { //gd:SoftBody3D.set_point_pinned
-	class(self).SetPointPinned(gd.Int(point_index), pinned, gd.NewString(string("")).NodePath())
+	class(self).SetPointPinned(gd.Int(point_index), pinned, Path.ToNode(String.New("")))
 }
 
 /*
@@ -163,12 +164,12 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(gd.Int(value))
 }
 
-func (self Instance) ParentCollisionIgnore() NodePath.String {
-	return NodePath.String(class(self).GetParentCollisionIgnore().String())
+func (self Instance) ParentCollisionIgnore() string {
+	return string(class(self).GetParentCollisionIgnore().String())
 }
 
-func (self Instance) SetParentCollisionIgnore(value NodePath.String) {
-	class(self).SetParentCollisionIgnore(gd.NewString(string(value)).NodePath())
+func (self Instance) SetParentCollisionIgnore(value string) {
+	class(self).SetParentCollisionIgnore(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) SimulationPrecision() int {
@@ -341,20 +342,20 @@ func (self class) GetCollisionLayerValue(layer_number gd.Int) bool { //gd:SoftBo
 }
 
 //go:nosplit
-func (self class) SetParentCollisionIgnore(parent_collision_ignore gd.NodePath) { //gd:SoftBody3D.set_parent_collision_ignore
+func (self class) SetParentCollisionIgnore(parent_collision_ignore Path.ToNode) { //gd:SoftBody3D.set_parent_collision_ignore
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(parent_collision_ignore))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(parent_collision_ignore)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_set_parent_collision_ignore, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetParentCollisionIgnore() gd.NodePath { //gd:SoftBody3D.get_parent_collision_ignore
+func (self class) GetParentCollisionIgnore() Path.ToNode { //gd:SoftBody3D.get_parent_collision_ignore
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_get_parent_collision_ignore, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -547,11 +548,11 @@ func (self class) GetPointTransform(point_index gd.Int) gd.Vector3 { //gd:SoftBo
 Sets the pinned state of a surface vertex. When set to [code]true[/code], the optional [param attachment_path] can define a [Node3D] the pinned vertex will be attached to.
 */
 //go:nosplit
-func (self class) SetPointPinned(point_index gd.Int, pinned bool, attachment_path gd.NodePath) { //gd:SoftBody3D.set_point_pinned
+func (self class) SetPointPinned(point_index gd.Int, pinned bool, attachment_path Path.ToNode) { //gd:SoftBody3D.set_point_pinned
 	var frame = callframe.New()
 	callframe.Arg(frame, point_index)
 	callframe.Arg(frame, pinned)
-	callframe.Arg(frame, pointers.Get(attachment_path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(attachment_path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_set_point_pinned, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -28,6 +29,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This plugin type exists to modify the process of importing scenes, allowing to change the content as well as add importer options at every stage of the process.
@@ -225,7 +227,7 @@ func (Instance) _post_process(impl func(ptr unsafe.Pointer, scene [1]gdclass.Nod
 Query the value of an option. This function can only be called from those querying visibility, or processing.
 */
 func (self Instance) GetOptionValue(name string) any { //gd:EditorScenePostImportPlugin.get_option_value
-	return any(class(self).GetOptionValue(gd.NewStringName(name)).Interface())
+	return any(class(self).GetOptionValue(String.Name(String.New(name))).Interface())
 }
 
 /*
@@ -400,9 +402,9 @@ func (class) _post_process(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node))
 Query the value of an option. This function can only be called from those querying visibility, or processing.
 */
 //go:nosplit
-func (self class) GetOptionValue(name gd.StringName) gd.Variant { //gd:EditorScenePostImportPlugin.get_option_value
+func (self class) GetOptionValue(name String.Name) gd.Variant { //gd:EditorScenePostImportPlugin.get_option_value
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScenePostImportPlugin.Bind_get_option_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())

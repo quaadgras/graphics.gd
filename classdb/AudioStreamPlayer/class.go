@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
 
@@ -30,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 The [AudioStreamPlayer] node plays an audio stream non-positionally. It is ideal for user interfaces, menus, or background music.
@@ -172,7 +174,7 @@ func (self Instance) Bus() string {
 }
 
 func (self Instance) SetBus(value string) {
-	class(self).SetBus(gd.NewStringName(value))
+	class(self).SetBus(String.Name(String.New(value)))
 }
 
 func (self Instance) PlaybackType() gdclass.AudioServerPlaybackType {
@@ -300,20 +302,20 @@ func (self class) GetPlaybackPosition() gd.Float { //gd:AudioStreamPlayer.get_pl
 }
 
 //go:nosplit
-func (self class) SetBus(bus gd.StringName) { //gd:AudioStreamPlayer.set_bus
+func (self class) SetBus(bus String.Name) { //gd:AudioStreamPlayer.set_bus
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bus))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(bus)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_set_bus, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetBus() gd.StringName { //gd:AudioStreamPlayer.get_bus
+func (self class) GetBus() String.Name { //gd:AudioStreamPlayer.get_bus
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_bus, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

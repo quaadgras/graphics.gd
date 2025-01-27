@@ -6,9 +6,11 @@ import (
 	"fmt"
 	"reflect"
 
+	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
 	DictionaryType "graphics.gd/variant/Dictionary"
+	"graphics.gd/variant/Path"
 	StringType "graphics.gd/variant/String"
 	"runtime.link/api/xray"
 )
@@ -55,6 +57,9 @@ func VariantAs[T any](value Variant) T {
 func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error) {
 	if reflect.TypeOf(value) == rtype {
 		return reflect.ValueOf(value), nil
+	}
+	if reflect.TypeOf(value).ConvertibleTo(rtype) {
+		return reflect.ValueOf(value).Convert(rtype), nil
 	}
 	variant, ok := value.(Variant)
 	if ok {
@@ -145,6 +150,12 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 		case StringName:
 			return reflect.ValueOf(value.String()).Convert(rtype), nil
 		case NodePath:
+			return reflect.ValueOf(value.String()).Convert(rtype), nil
+		case Path.ToNode:
+			return reflect.ValueOf(value.String()).Convert(rtype), nil
+		case StringType.Readable:
+			return reflect.ValueOf(value.String()).Convert(rtype), nil
+		case StringType.Name:
 			return reflect.ValueOf(value.String()).Convert(rtype), nil
 		default:
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to stringy %s", value, rtype))
@@ -246,9 +257,29 @@ func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
 			return reflect.ValueOf(value.String()), nil
 		}
 		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
+	case Path.ToNode:
+		if rtype.Kind() == reflect.String {
+			return reflect.ValueOf(value.String()), nil
+		}
+		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
+	case StringType.Name:
+		if rtype.Kind() == reflect.String {
+			return reflect.ValueOf(value.String()), nil
+		}
+		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 	case String:
 		if rtype.ConvertibleTo(reflect.TypeFor[StringType.Readable]()) {
 			return reflect.ValueOf(StringType.New(value.String())).Convert(rtype), nil
+		}
+		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
+	case StringName:
+		if reflect.TypeFor[StringType.Readable]().ConvertibleTo(rtype) {
+			return reflect.ValueOf(StringType.Via(StringNameProxy{}, pointers.Pack(value))).Convert(rtype), nil
+		}
+		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
+	case NodePath:
+		if reflect.TypeFor[StringType.Readable]().ConvertibleTo(rtype) {
+			return reflect.ValueOf(StringType.Via(NodePathProxy{}, pointers.Pack(value))).Convert(rtype), nil
 		}
 		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 	case DictionaryType.Any:

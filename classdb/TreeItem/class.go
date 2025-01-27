@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
@@ -31,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 A single item of a [Tree] control. It can contain other [TreeItem]s as children, which allows it to create a hierarchy. It can also contain text and buttons. [TreeItem] is not a [Node], it is internal to the [Tree].
@@ -328,7 +330,7 @@ Sets the given column's custom draw callback to the [param callback] method on [
 The method named [param callback] should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2].
 */
 func (self Instance) SetCustomDraw(column int, obj Object.Instance, callback string) { //gd:TreeItem.set_custom_draw
-	class(self).SetCustomDraw(gd.Int(column), obj, gd.NewStringName(callback))
+	class(self).SetCustomDraw(gd.Int(column), obj, String.Name(String.New(callback)))
 }
 
 /*
@@ -1363,11 +1365,11 @@ Sets the given column's custom draw callback to the [param callback] method on [
 The method named [param callback] should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2].
 */
 //go:nosplit
-func (self class) SetCustomDraw(column gd.Int, obj [1]gd.Object, callback gd.StringName) { //gd:TreeItem.set_custom_draw
+func (self class) SetCustomDraw(column gd.Int, obj [1]gd.Object, callback String.Name) { //gd:TreeItem.set_custom_draw
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

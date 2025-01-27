@@ -16,6 +16,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -29,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Stores variables that can be accessed from everywhere. Use [method get_setting], [method set_setting] or [method has_setting] to access them. Variables stored in [code]project.godot[/code] are also loaded into [ProjectSettings], making this object very useful for reading custom game configuration options.
@@ -106,7 +108,7 @@ Then the overridden setting will be returned instead if the project is running o
 */
 func GetSettingWithOverride(name string) any { //gd:ProjectSettings.get_setting_with_override
 	once.Do(singleton)
-	return any(class(self).GetSettingWithOverride(gd.NewStringName(name)).Interface())
+	return any(class(self).GetSettingWithOverride(String.Name(String.New(name))).Interface())
 }
 
 /*
@@ -370,9 +372,9 @@ GD.Print(ProjectSettings.GetSettingWithOverride("application/config/name"));
 Then the overridden setting will be returned instead if the project is running on the [i]Windows[/i] operating system.
 */
 //go:nosplit
-func (self class) GetSettingWithOverride(name gd.StringName) gd.Variant { //gd:ProjectSettings.get_setting_with_override
+func (self class) GetSettingWithOverride(name String.Name) gd.Variant { //gd:ProjectSettings.get_setting_with_override
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_get_setting_with_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())

@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/AABB"
@@ -32,6 +33,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 A navigation mesh is a collection of polygons that define which areas of an environment are traversable to aid agents in pathfinding through complicated spaces.
@@ -167,7 +169,7 @@ func (self Instance) GeometrySourceGroupName() string {
 }
 
 func (self Instance) SetGeometrySourceGroupName(value string) {
-	class(self).SetSourceGroupName(gd.NewStringName(value))
+	class(self).SetSourceGroupName(String.Name(String.New(value)))
 }
 
 func (self Instance) CellSize() Float.X {
@@ -426,20 +428,20 @@ func (self class) GetSourceGeometryMode() gdclass.NavigationMeshSourceGeometryMo
 }
 
 //go:nosplit
-func (self class) SetSourceGroupName(mask gd.StringName) { //gd:NavigationMesh.set_source_group_name
+func (self class) SetSourceGroupName(mask String.Name) { //gd:NavigationMesh.set_source_group_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(mask))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(mask)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_set_source_group_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSourceGroupName() gd.StringName { //gd:NavigationMesh.get_source_group_name
+func (self class) GetSourceGroupName() String.Name { //gd:NavigationMesh.get_source_group_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_source_group_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

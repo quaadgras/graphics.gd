@@ -16,6 +16,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform3D"
 
@@ -31,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 The AR/VR server is the heart of our Advanced and Virtual Reality solution and handles all the processing.
@@ -157,7 +159,7 @@ Returns the positional tracker with the given [param tracker_name].
 */
 func GetTracker(tracker_name string) [1]gdclass.XRTracker { //gd:XRServer.get_tracker
 	once.Do(singleton)
-	return [1]gdclass.XRTracker(class(self).GetTracker(gd.NewStringName(tracker_name)))
+	return [1]gdclass.XRTracker(class(self).GetTracker(String.Name(String.New(tracker_name))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -407,9 +409,9 @@ func (self class) GetTrackers(tracker_types gd.Int) Dictionary.Any { //gd:XRServ
 Returns the positional tracker with the given [param tracker_name].
 */
 //go:nosplit
-func (self class) GetTracker(tracker_name gd.StringName) [1]gdclass.XRTracker { //gd:XRServer.get_tracker
+func (self class) GetTracker(tracker_name String.Name) [1]gdclass.XRTracker { //gd:XRServer.get_tracker
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(tracker_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(tracker_name)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.XRTracker{gd.PointerWithOwnershipTransferredToGo[gdclass.XRTracker](r_ret.Get())}

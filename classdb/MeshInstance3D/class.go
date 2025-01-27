@@ -15,11 +15,11 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -34,6 +34,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 MeshInstance3D is a node that takes a [Mesh] resource and adds it to the current scenario by creating an instance of it. This is the class most often used render 3D geometry and can be used to instance a single [Mesh] in many places. This allows reusing geometry, which can save on resources. When a [Mesh] has to be instantiated more than thousands of times at close proximity, consider using a [MultiMesh] in a [MultiMeshInstance3D] instead.
@@ -120,7 +121,7 @@ func (self Instance) GetBlendShapeCount() int { //gd:MeshInstance3D.get_blend_sh
 Returns the index of the blend shape with the given [param name]. Returns [code]-1[/code] if no blend shape with this name exists, including when [member mesh] is [code]null[/code].
 */
 func (self Instance) FindBlendShapeByName(name string) int { //gd:MeshInstance3D.find_blend_shape_by_name
-	return int(int(class(self).FindBlendShapeByName(gd.NewStringName(name))))
+	return int(int(class(self).FindBlendShapeByName(String.Name(String.New(name)))))
 }
 
 /*
@@ -186,12 +187,12 @@ func (self Instance) SetSkin(value [1]gdclass.Skin) {
 	class(self).SetSkin(value)
 }
 
-func (self Instance) Skeleton() NodePath.String {
-	return NodePath.String(class(self).GetSkeletonPath().String())
+func (self Instance) Skeleton() string {
+	return string(class(self).GetSkeletonPath().String())
 }
 
-func (self Instance) SetSkeleton(value NodePath.String) {
-	class(self).SetSkeletonPath(gd.NewString(string(value)).NodePath())
+func (self Instance) SetSkeleton(value string) {
+	class(self).SetSkeletonPath(Path.ToNode(String.New(value)))
 }
 
 //go:nosplit
@@ -214,20 +215,20 @@ func (self class) GetMesh() [1]gdclass.Mesh { //gd:MeshInstance3D.get_mesh
 }
 
 //go:nosplit
-func (self class) SetSkeletonPath(skeleton_path gd.NodePath) { //gd:MeshInstance3D.set_skeleton_path
+func (self class) SetSkeletonPath(skeleton_path Path.ToNode) { //gd:MeshInstance3D.set_skeleton_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(skeleton_path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(skeleton_path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_set_skeleton_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSkeletonPath() gd.NodePath { //gd:MeshInstance3D.get_skeleton_path
+func (self class) GetSkeletonPath() Path.ToNode { //gd:MeshInstance3D.get_skeleton_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_skeleton_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -376,9 +377,9 @@ func (self class) GetBlendShapeCount() gd.Int { //gd:MeshInstance3D.get_blend_sh
 Returns the index of the blend shape with the given [param name]. Returns [code]-1[/code] if no blend shape with this name exists, including when [member mesh] is [code]null[/code].
 */
 //go:nosplit
-func (self class) FindBlendShapeByName(name gd.StringName) gd.Int { //gd:MeshInstance3D.find_blend_shape_by_name
+func (self class) FindBlendShapeByName(name String.Name) gd.Int { //gd:MeshInstance3D.find_blend_shape_by_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_find_blend_shape_by_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

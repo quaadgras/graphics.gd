@@ -15,13 +15,13 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +35,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 A Polygon2D is defined by a set of points. Each point is connected to the next, with the final point being connected to the first, resulting in a closed polygon. Polygon2Ds can be filled with color (solid or gradient) or filled with a given texture.
@@ -52,8 +53,8 @@ type Any interface {
 /*
 Adds a bone with the specified [param path] and [param weights].
 */
-func (self Instance) AddBone(path NodePath.String, weights []float32) { //gd:Polygon2D.add_bone
-	class(self).AddBone(gd.NewString(string(path)).NodePath(), gd.NewPackedFloat32Slice(weights))
+func (self Instance) AddBone(path string, weights []float32) { //gd:Polygon2D.add_bone
+	class(self).AddBone(Path.ToNode(String.New(path)), gd.NewPackedFloat32Slice(weights))
 }
 
 /*
@@ -66,8 +67,8 @@ func (self Instance) GetBoneCount() int { //gd:Polygon2D.get_bone_count
 /*
 Returns the path to the node associated with the specified bone.
 */
-func (self Instance) GetBonePath(index int) NodePath.String { //gd:Polygon2D.get_bone_path
-	return NodePath.String(class(self).GetBonePath(gd.Int(index)).String())
+func (self Instance) GetBonePath(index int) string { //gd:Polygon2D.get_bone_path
+	return string(class(self).GetBonePath(gd.Int(index)).String())
 }
 
 /*
@@ -94,8 +95,8 @@ func (self Instance) ClearBones() { //gd:Polygon2D.clear_bones
 /*
 Sets the path to the node associated with the specified bone.
 */
-func (self Instance) SetBonePath(index int, path NodePath.String) { //gd:Polygon2D.set_bone_path
-	class(self).SetBonePath(gd.Int(index), gd.NewString(string(path)).NodePath())
+func (self Instance) SetBonePath(index int, path string) { //gd:Polygon2D.set_bone_path
+	class(self).SetBonePath(gd.Int(index), Path.ToNode(String.New(path)))
 }
 
 /*
@@ -179,12 +180,12 @@ func (self Instance) SetTextureRotation(value Float.X) {
 	class(self).SetTextureRotation(gd.Float(value))
 }
 
-func (self Instance) Skeleton() NodePath.String {
-	return NodePath.String(class(self).GetSkeleton().String())
+func (self Instance) Skeleton() string {
+	return string(class(self).GetSkeleton().String())
 }
 
-func (self Instance) SetSkeleton(value NodePath.String) {
-	class(self).SetSkeleton(gd.NewString(string(value)).NodePath())
+func (self Instance) SetSkeleton(value string) {
+	class(self).SetSkeleton(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) InvertEnabled() bool {
@@ -494,9 +495,9 @@ func (self class) GetOffset() gd.Vector2 { //gd:Polygon2D.get_offset
 Adds a bone with the specified [param path] and [param weights].
 */
 //go:nosplit
-func (self class) AddBone(path gd.NodePath, weights gd.PackedFloat32Array) { //gd:Polygon2D.add_bone
+func (self class) AddBone(path Path.ToNode, weights gd.PackedFloat32Array) { //gd:Polygon2D.add_bone
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	callframe.Arg(frame, pointers.Get(weights))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_add_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -520,12 +521,12 @@ func (self class) GetBoneCount() gd.Int { //gd:Polygon2D.get_bone_count
 Returns the path to the node associated with the specified bone.
 */
 //go:nosplit
-func (self class) GetBonePath(index gd.Int) gd.NodePath { //gd:Polygon2D.get_bone_path
+func (self class) GetBonePath(index gd.Int) Path.ToNode { //gd:Polygon2D.get_bone_path
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_get_bone_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -571,10 +572,10 @@ func (self class) ClearBones() { //gd:Polygon2D.clear_bones
 Sets the path to the node associated with the specified bone.
 */
 //go:nosplit
-func (self class) SetBonePath(index gd.Int, path gd.NodePath) { //gd:Polygon2D.set_bone_path
+func (self class) SetBonePath(index gd.Int, path Path.ToNode) { //gd:Polygon2D.set_bone_path
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_set_bone_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -594,20 +595,20 @@ func (self class) SetBoneWeights(index gd.Int, weights gd.PackedFloat32Array) { 
 }
 
 //go:nosplit
-func (self class) SetSkeleton(skeleton gd.NodePath) { //gd:Polygon2D.set_skeleton
+func (self class) SetSkeleton(skeleton Path.ToNode) { //gd:Polygon2D.set_skeleton
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(skeleton))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(skeleton)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_set_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSkeleton() gd.NodePath { //gd:Polygon2D.get_skeleton
+func (self class) GetSkeleton() Path.ToNode { //gd:Polygon2D.get_skeleton
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -29,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 A class stored as a resource. A script extends the functionality of all objects that instantiate it.
@@ -114,7 +116,7 @@ func (self Instance) GetGlobalName() string { //gd:Script.get_global_name
 Returns [code]true[/code] if the script, or a base class, defines a signal with the given name.
 */
 func (self Instance) HasScriptSignal(signal_name string) bool { //gd:Script.has_script_signal
-	return bool(class(self).HasScriptSignal(gd.NewStringName(signal_name)))
+	return bool(class(self).HasScriptSignal(String.Name(String.New(signal_name))))
 }
 
 /*
@@ -149,7 +151,7 @@ func (self Instance) GetScriptConstantMap() map[string]interface{} { //gd:Script
 Returns the default value of the specified property.
 */
 func (self Instance) GetPropertyDefaultValue(property string) any { //gd:Script.get_property_default_value
-	return any(class(self).GetPropertyDefaultValue(gd.NewStringName(property)).Interface())
+	return any(class(self).GetPropertyDefaultValue(String.Name(String.New(property))).Interface())
 }
 
 /*
@@ -284,11 +286,11 @@ func (self class) GetBaseScript() [1]gdclass.Script { //gd:Script.get_base_scrip
 Returns the script's base type.
 */
 //go:nosplit
-func (self class) GetInstanceBaseType() gd.StringName { //gd:Script.get_instance_base_type
+func (self class) GetInstanceBaseType() String.Name { //gd:Script.get_instance_base_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_instance_base_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -312,11 +314,11 @@ public partial class MyNode : Node
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetGlobalName() gd.StringName { //gd:Script.get_global_name
+func (self class) GetGlobalName() String.Name { //gd:Script.get_global_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_global_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -325,9 +327,9 @@ func (self class) GetGlobalName() gd.StringName { //gd:Script.get_global_name
 Returns [code]true[/code] if the script, or a base class, defines a signal with the given name.
 */
 //go:nosplit
-func (self class) HasScriptSignal(signal_name gd.StringName) bool { //gd:Script.has_script_signal
+func (self class) HasScriptSignal(signal_name String.Name) bool { //gd:Script.has_script_signal
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(signal_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(signal_name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_has_script_signal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -391,9 +393,9 @@ func (self class) GetScriptConstantMap() Dictionary.Any { //gd:Script.get_script
 Returns the default value of the specified property.
 */
 //go:nosplit
-func (self class) GetPropertyDefaultValue(property gd.StringName) gd.Variant { //gd:Script.get_property_default_value
+func (self class) GetPropertyDefaultValue(property String.Name) gd.Variant { //gd:Script.get_property_default_value
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_property_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())

@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/AudioStreamPlayback"
 
 var _ Object.ID
@@ -29,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Playback component of [AudioStreamInteractive]. Contains functions to change the currently played clip.
@@ -47,7 +49,7 @@ type Any interface {
 Switch to a clip (by name).
 */
 func (self Instance) SwitchToClipByName(clip_name string) { //gd:AudioStreamPlaybackInteractive.switch_to_clip_by_name
-	class(self).SwitchToClipByName(gd.NewStringName(clip_name))
+	class(self).SwitchToClipByName(String.Name(String.New(clip_name)))
 }
 
 /*
@@ -80,9 +82,9 @@ func New() Instance {
 Switch to a clip (by name).
 */
 //go:nosplit
-func (self class) SwitchToClipByName(clip_name gd.StringName) { //gd:AudioStreamPlaybackInteractive.switch_to_clip_by_name
+func (self class) SwitchToClipByName(clip_name String.Name) { //gd:AudioStreamPlaybackInteractive.switch_to_clip_by_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(clip_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(clip_name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaybackInteractive.Bind_switch_to_clip_by_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

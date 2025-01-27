@@ -16,6 +16,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
@@ -32,6 +33,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 The [Input] singleton handles key presses, mouse buttons and movement, gamepads, and input actions. Actions and their events can be set in the [b]Input Map[/b] tab in [b]Project > Project Settings[/b], or with the [InputMap] class.
@@ -104,7 +106,7 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 func IsActionPressed(action string) bool { //gd:Input.is_action_pressed
 	once.Do(singleton)
-	return bool(class(self).IsActionPressed(gd.NewStringName(action), false))
+	return bool(class(self).IsActionPressed(String.Name(String.New(action)), false))
 }
 
 /*
@@ -117,7 +119,7 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 func IsActionJustPressed(action string) bool { //gd:Input.is_action_just_pressed
 	once.Do(singleton)
-	return bool(class(self).IsActionJustPressed(gd.NewStringName(action), false))
+	return bool(class(self).IsActionJustPressed(String.Name(String.New(action)), false))
 }
 
 /*
@@ -128,7 +130,7 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 func IsActionJustReleased(action string) bool { //gd:Input.is_action_just_released
 	once.Do(singleton)
-	return bool(class(self).IsActionJustReleased(gd.NewStringName(action), false))
+	return bool(class(self).IsActionJustReleased(String.Name(String.New(action)), false))
 }
 
 /*
@@ -137,7 +139,7 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 func GetActionStrength(action string) Float.X { //gd:Input.get_action_strength
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).GetActionStrength(gd.NewStringName(action), false)))
+	return Float.X(Float.X(class(self).GetActionStrength(String.Name(String.New(action)), false)))
 }
 
 /*
@@ -146,7 +148,7 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 func GetActionRawStrength(action string) Float.X { //gd:Input.get_action_raw_strength
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).GetActionRawStrength(gd.NewStringName(action), false)))
+	return Float.X(Float.X(class(self).GetActionRawStrength(String.Name(String.New(action)), false)))
 }
 
 /*
@@ -155,7 +157,7 @@ This is a shorthand for writing [code]Input.get_action_strength("positive_action
 */
 func GetAxis(negative_action string, positive_action string) Float.X { //gd:Input.get_axis
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).GetAxis(gd.NewStringName(negative_action), gd.NewStringName(positive_action))))
+	return Float.X(Float.X(class(self).GetAxis(String.Name(String.New(negative_action)), String.Name(String.New(positive_action)))))
 }
 
 /*
@@ -165,7 +167,7 @@ By default, the deadzone is automatically calculated from the average of the act
 */
 func GetVector(negative_x string, positive_x string, negative_y string, positive_y string) Vector2.XY { //gd:Input.get_vector
 	once.Do(singleton)
-	return Vector2.XY(class(self).GetVector(gd.NewStringName(negative_x), gd.NewStringName(positive_x), gd.NewStringName(negative_y), gd.NewStringName(positive_y), gd.Float(-1.0)))
+	return Vector2.XY(class(self).GetVector(String.Name(String.New(negative_x)), String.Name(String.New(positive_x)), String.Name(String.New(negative_y)), String.Name(String.New(positive_y)), gd.Float(-1.0)))
 }
 
 /*
@@ -410,7 +412,7 @@ The strength can be used for non-boolean actions, it's ranged between 0 and 1 re
 */
 func ActionPress(action string) { //gd:Input.action_press
 	once.Do(singleton)
-	class(self).ActionPress(gd.NewStringName(action), gd.Float(1.0))
+	class(self).ActionPress(String.Name(String.New(action)), gd.Float(1.0))
 }
 
 /*
@@ -418,7 +420,7 @@ If the specified action is already pressed, this will release it.
 */
 func ActionRelease(action string) { //gd:Input.action_release
 	once.Do(singleton)
-	class(self).ActionRelease(gd.NewStringName(action))
+	class(self).ActionRelease(String.Name(String.New(action)))
 }
 
 /*
@@ -621,9 +623,9 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 [b]Note:[/b] Due to keyboard ghosting, [method is_action_pressed] may return [code]false[/code] even if one of the action's keys is pressed. See [url=$DOCS_URL/tutorials/inputs/input_examples.html#keyboard-events]Input examples[/url] in the documentation for more information.
 */
 //go:nosplit
-func (self class) IsActionPressed(action gd.StringName, exact_match bool) bool { //gd:Input.is_action_pressed
+func (self class) IsActionPressed(action String.Name, exact_match bool) bool { //gd:Input.is_action_pressed
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_action_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -641,9 +643,9 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 [b]Note:[/b] During input handling (e.g. [method Node._input]), use [method InputEvent.is_action_pressed] instead to query the action state of the current event.
 */
 //go:nosplit
-func (self class) IsActionJustPressed(action gd.StringName, exact_match bool) bool { //gd:Input.is_action_just_pressed
+func (self class) IsActionJustPressed(action String.Name, exact_match bool) bool { //gd:Input.is_action_just_pressed
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_action_just_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -659,9 +661,9 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 [b]Note:[/b] During input handling (e.g. [method Node._input]), use [method InputEvent.is_action_released] instead to query the action state of the current event.
 */
 //go:nosplit
-func (self class) IsActionJustReleased(action gd.StringName, exact_match bool) bool { //gd:Input.is_action_just_released
+func (self class) IsActionJustReleased(action String.Name, exact_match bool) bool { //gd:Input.is_action_just_released
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_action_just_released, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -675,9 +677,9 @@ Returns a value between 0 and 1 representing the intensity of the given action. 
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 //go:nosplit
-func (self class) GetActionStrength(action gd.StringName, exact_match bool) gd.Float { //gd:Input.get_action_strength
+func (self class) GetActionStrength(action String.Name, exact_match bool) gd.Float { //gd:Input.get_action_strength
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_action_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -691,9 +693,9 @@ Returns a value between 0 and 1 representing the raw intensity of the given acti
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 //go:nosplit
-func (self class) GetActionRawStrength(action gd.StringName, exact_match bool) gd.Float { //gd:Input.get_action_raw_strength
+func (self class) GetActionRawStrength(action String.Name, exact_match bool) gd.Float { //gd:Input.get_action_raw_strength
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_action_raw_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -707,10 +709,10 @@ Get axis input by specifying two actions, one negative and one positive.
 This is a shorthand for writing [code]Input.get_action_strength("positive_action") - Input.get_action_strength("negative_action")[/code].
 */
 //go:nosplit
-func (self class) GetAxis(negative_action gd.StringName, positive_action gd.StringName) gd.Float { //gd:Input.get_axis
+func (self class) GetAxis(negative_action String.Name, positive_action String.Name) gd.Float { //gd:Input.get_axis
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(negative_action))
-	callframe.Arg(frame, pointers.Get(positive_action))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(negative_action)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(positive_action)))
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -724,12 +726,12 @@ This method is useful when getting vector input, such as from a joystick, direct
 By default, the deadzone is automatically calculated from the average of the action deadzones. However, you can override the deadzone to be whatever you want (on the range of 0 to 1).
 */
 //go:nosplit
-func (self class) GetVector(negative_x gd.StringName, positive_x gd.StringName, negative_y gd.StringName, positive_y gd.StringName, deadzone gd.Float) gd.Vector2 { //gd:Input.get_vector
+func (self class) GetVector(negative_x String.Name, positive_x String.Name, negative_y String.Name, positive_y String.Name, deadzone gd.Float) gd.Vector2 { //gd:Input.get_vector
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(negative_x))
-	callframe.Arg(frame, pointers.Get(positive_x))
-	callframe.Arg(frame, pointers.Get(negative_y))
-	callframe.Arg(frame, pointers.Get(positive_y))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(negative_x)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(positive_x)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(negative_y)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(positive_y)))
 	callframe.Arg(frame, deadzone)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_vector, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1133,9 +1135,9 @@ The strength can be used for non-boolean actions, it's ranged between 0 and 1 re
 [b]Note:[/b] This method will not cause any [method Node._input] calls. It is intended to be used with [method is_action_pressed] and [method is_action_just_pressed]. If you want to simulate [code]_input[/code], use [method parse_input_event] instead.
 */
 //go:nosplit
-func (self class) ActionPress(action gd.StringName, strength gd.Float) { //gd:Input.action_press
+func (self class) ActionPress(action String.Name, strength gd.Float) { //gd:Input.action_press
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_action_press, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1146,9 +1148,9 @@ func (self class) ActionPress(action gd.StringName, strength gd.Float) { //gd:In
 If the specified action is already pressed, this will release it.
 */
 //go:nosplit
-func (self class) ActionRelease(action gd.StringName) { //gd:Input.action_release
+func (self class) ActionRelease(action String.Name) { //gd:Input.action_release
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_action_release, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

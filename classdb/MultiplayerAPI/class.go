@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -28,6 +29,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Base class for high-level multiplayer API implementations. See also [MultiplayerPeer].
@@ -87,7 +89,7 @@ Sends an RPC to the target [param peer]. The given [param method] will be called
 [b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
 */
 func (self Instance) Rpc(peer int, obj Object.Instance, method string) error { //gd:MultiplayerAPI.rpc
-	return error(gd.ToError(class(self).Rpc(gd.Int(peer), obj, gd.NewStringName(method), Array.Nil)))
+	return error(gd.ToError(class(self).Rpc(gd.Int(peer), obj, String.Name(String.New(method)), Array.Nil)))
 }
 
 /*
@@ -118,7 +120,7 @@ Sets the default MultiplayerAPI implementation class. This method can be used by
 */
 func SetDefaultInterface(interface_name string) { //gd:MultiplayerAPI.set_default_interface
 	self := Instance{}
-	class(self).SetDefaultInterface(gd.NewStringName(interface_name))
+	class(self).SetDefaultInterface(String.Name(String.New(interface_name)))
 }
 
 /*
@@ -255,11 +257,11 @@ Sends an RPC to the target [param peer]. The given [param method] will be called
 [b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
 */
 //go:nosplit
-func (self class) Rpc(peer gd.Int, obj [1]gd.Object, method gd.StringName, arguments Array.Any) gd.Error { //gd:MultiplayerAPI.rpc
+func (self class) Rpc(peer gd.Int, obj [1]gd.Object, method String.Name, arguments Array.Any) gd.Error { //gd:MultiplayerAPI.rpc
 	var frame = callframe.New()
 	callframe.Arg(frame, peer)
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
-	callframe.Arg(frame, pointers.Get(method))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(method)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arguments)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_rpc, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -317,9 +319,9 @@ func (self class) GetPeers() gd.PackedInt32Array { //gd:MultiplayerAPI.get_peers
 Sets the default MultiplayerAPI implementation class. This method can be used by modules and extensions to configure which implementation will be used by [SceneTree] when the engine starts.
 */
 //go:nosplit
-func (self class) SetDefaultInterface(interface_name gd.StringName) { //gd:MultiplayerAPI.set_default_interface
+func (self class) SetDefaultInterface(interface_name String.Name) { //gd:MultiplayerAPI.set_default_interface
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(interface_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(interface_name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_set_default_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -329,11 +331,11 @@ func (self class) SetDefaultInterface(interface_name gd.StringName) { //gd:Multi
 Returns the default MultiplayerAPI implementation class name. This is usually [code]"SceneMultiplayer"[/code] when [SceneMultiplayer] is available. See [method set_default_interface].
 */
 //go:nosplit
-func (self class) GetDefaultInterface() gd.StringName { //gd:MultiplayerAPI.get_default_interface
+func (self class) GetDefaultInterface() String.Name { //gd:MultiplayerAPI.get_default_interface
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_get_default_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

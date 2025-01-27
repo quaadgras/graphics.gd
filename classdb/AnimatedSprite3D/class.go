@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/SpriteBase3D"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/VisualInstance3D"
@@ -34,6 +35,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 [AnimatedSprite3D] is similar to the [Sprite3D] node, except it carries multiple textures as animation [member sprite_frames]. Animations are created using a [SpriteFrames] resource, which allows you to import image files (or a folder containing said files) to provide the animation frames for the sprite. The [SpriteFrames] resource can be configured in the editor via the SpriteFrames bottom panel.
@@ -60,7 +62,7 @@ Plays the animation with key [param name]. If [param custom_speed] is negative a
 If this method is called with that same animation [param name], or with no [param name] parameter, the assigned animation will resume playing if it was paused.
 */
 func (self Instance) Play() { //gd:AnimatedSprite3D.play
-	class(self).Play(gd.NewStringName(""), gd.Float(1.0), false)
+	class(self).Play(String.Name(String.New("")), gd.Float(1.0), false)
 }
 
 /*
@@ -68,7 +70,7 @@ Plays the animation with key [param name] in reverse.
 This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 */
 func (self Instance) PlayBackwards() { //gd:AnimatedSprite3D.play_backwards
-	class(self).PlayBackwards(gd.NewStringName(""))
+	class(self).PlayBackwards(String.Name(String.New("")))
 }
 
 /*
@@ -143,7 +145,7 @@ func (self Instance) Animation() string {
 }
 
 func (self Instance) SetAnimation(value string) {
-	class(self).SetAnimation(gd.NewStringName(value))
+	class(self).SetAnimation(String.Name(String.New(value)))
 }
 
 func (self Instance) Autoplay() string {
@@ -198,20 +200,20 @@ func (self class) GetSpriteFrames() [1]gdclass.SpriteFrames { //gd:AnimatedSprit
 }
 
 //go:nosplit
-func (self class) SetAnimation(name gd.StringName) { //gd:AnimatedSprite3D.set_animation
+func (self class) SetAnimation(name String.Name) { //gd:AnimatedSprite3D.set_animation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAnimation() gd.StringName { //gd:AnimatedSprite3D.get_animation
+func (self class) GetAnimation() String.Name { //gd:AnimatedSprite3D.get_animation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -253,9 +255,9 @@ Plays the animation with key [param name]. If [param custom_speed] is negative a
 If this method is called with that same animation [param name], or with no [param name] parameter, the assigned animation will resume playing if it was paused.
 */
 //go:nosplit
-func (self class) Play(name gd.StringName, custom_speed gd.Float, from_end bool) { //gd:AnimatedSprite3D.play
+func (self class) Play(name String.Name, custom_speed gd.Float, from_end bool) { //gd:AnimatedSprite3D.play
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, custom_speed)
 	callframe.Arg(frame, from_end)
 	var r_ret = callframe.Nil
@@ -268,9 +270,9 @@ Plays the animation with key [param name] in reverse.
 This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 */
 //go:nosplit
-func (self class) PlayBackwards(name gd.StringName) { //gd:AnimatedSprite3D.play_backwards
+func (self class) PlayBackwards(name String.Name) { //gd:AnimatedSprite3D.play_backwards
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_play_backwards, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

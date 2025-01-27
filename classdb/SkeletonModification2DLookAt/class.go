@@ -15,9 +15,9 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -32,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This [SkeletonModification2D] rotates a bone to look a target. This is extremely helpful for moving character's head to look at the player, rotating a turret to look at a target, or any other case where you want to make a bone rotate towards something quickly and easily.
@@ -144,37 +145,37 @@ func (self Instance) SetBoneIndex(value int) {
 	class(self).SetBoneIndex(gd.Int(value))
 }
 
-func (self Instance) Bone2dNode() NodePath.String {
-	return NodePath.String(class(self).GetBone2dNode().String())
+func (self Instance) Bone2dNode() string {
+	return string(class(self).GetBone2dNode().String())
 }
 
-func (self Instance) SetBone2dNode(value NodePath.String) {
-	class(self).SetBone2dNode(gd.NewString(string(value)).NodePath())
+func (self Instance) SetBone2dNode(value string) {
+	class(self).SetBone2dNode(Path.ToNode(String.New(value)))
 }
 
-func (self Instance) TargetNodepath() NodePath.String {
-	return NodePath.String(class(self).GetTargetNode().String())
+func (self Instance) TargetNodepath() string {
+	return string(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNodepath(value NodePath.String) {
-	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
+func (self Instance) SetTargetNodepath(value string) {
+	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 }
 
 //go:nosplit
-func (self class) SetBone2dNode(bone2d_nodepath gd.NodePath) { //gd:SkeletonModification2DLookAt.set_bone2d_node
+func (self class) SetBone2dNode(bone2d_nodepath Path.ToNode) { //gd:SkeletonModification2DLookAt.set_bone2d_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bone2d_nodepath))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(bone2d_nodepath)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetBone2dNode() gd.NodePath { //gd:SkeletonModification2DLookAt.get_bone2d_node
+func (self class) GetBone2dNode() Path.ToNode { //gd:SkeletonModification2DLookAt.get_bone2d_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -199,20 +200,20 @@ func (self class) GetBoneIndex() gd.Int { //gd:SkeletonModification2DLookAt.get_
 }
 
 //go:nosplit
-func (self class) SetTargetNode(target_nodepath gd.NodePath) { //gd:SkeletonModification2DLookAt.set_target_node
+func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModification2DLookAt.set_target_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(target_nodepath))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(target_nodepath)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTargetNode() gd.NodePath { //gd:SkeletonModification2DLookAt.get_target_node
+func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DLookAt.get_target_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

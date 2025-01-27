@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -28,6 +29,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 [EditorExportPlugin]s are automatically invoked whenever the user exports the project. Their most common use is to determine what files are being included in the exported project. For each plugin, [method _export_begin] is called at the beginning of the export process and then [method _export_file] is called for each exported file.
@@ -727,7 +729,7 @@ func (self Instance) Skip() { //gd:EditorExportPlugin.skip
 Returns the current value of an export option supplied by [method _get_export_options].
 */
 func (self Instance) GetOption(name string) any { //gd:EditorExportPlugin.get_option
-	return any(class(self).GetOption(gd.NewStringName(name)).Interface())
+	return any(class(self).GetOption(String.Name(String.New(name))).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -1336,9 +1338,9 @@ func (self class) Skip() { //gd:EditorExportPlugin.skip
 Returns the current value of an export option supplied by [method _get_export_options].
 */
 //go:nosplit
-func (self class) GetOption(name gd.StringName) gd.Variant { //gd:EditorExportPlugin.get_option
+func (self class) GetOption(name String.Name) gd.Variant { //gd:EditorExportPlugin.get_option
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_get_option, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())

@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/AnimationRootNode"
 import "graphics.gd/classdb/AnimationNode"
 import "graphics.gd/classdb/Resource"
@@ -32,6 +33,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 A resource to add to an [AnimationNodeBlendTree]. Only has one output port using the [member animation] property. Used as an input for [AnimationNode]s that blend animations together.
@@ -70,7 +72,7 @@ func (self Instance) Animation() string {
 }
 
 func (self Instance) SetAnimation(value string) {
-	class(self).SetAnimation(gd.NewStringName(value))
+	class(self).SetAnimation(String.Name(String.New(value)))
 }
 
 func (self Instance) PlayMode() gdclass.AnimationNodeAnimationPlayMode {
@@ -122,20 +124,20 @@ func (self Instance) SetLoopMode(value gdclass.AnimationLoopMode) {
 }
 
 //go:nosplit
-func (self class) SetAnimation(name gd.StringName) { //gd:AnimationNodeAnimation.set_animation
+func (self class) SetAnimation(name String.Name) { //gd:AnimationNodeAnimation.set_animation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_set_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAnimation() gd.StringName { //gd:AnimationNodeAnimation.get_animation
+func (self class) GetAnimation() String.Name { //gd:AnimationNodeAnimation.get_animation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_get_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

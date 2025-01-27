@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/OpenXRCompositionLayer"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
@@ -32,6 +33,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 An OpenXR composition layer that allows rendering a [SubViewport] on an internal slice of a cylinder.

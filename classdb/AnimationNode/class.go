@@ -15,9 +15,9 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Base resource for [AnimationTree] nodes. In general, it's not used directly, but you can create custom ones with custom blending formulas.
@@ -130,8 +131,8 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Instance) _get_child_by_name(impl func(ptr unsafe.Pointer, name string) [1]gdclass.AnimationNode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(name)
+		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name.String())
 		ptr, ok := pointers.End(ret[0])
@@ -148,8 +149,8 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Instance) _get_parameter_default_value(impl func(ptr unsafe.Pointer, parameter string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(parameter)
+		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(parameter))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter.String())
 		ptr, ok := pointers.End(gd.NewVariant(ret))
@@ -166,8 +167,8 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Instance) _is_parameter_read_only(impl func(ptr unsafe.Pointer, parameter string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(parameter)
+		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(parameter))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter.String())
 		gd.UnsafeSet(p_back, ret)
@@ -267,15 +268,15 @@ func (self Instance) FindInput(name string) int { //gd:AnimationNode.find_input
 /*
 Adds or removes a path for the filter.
 */
-func (self Instance) SetFilterPath(path NodePath.String, enable bool) { //gd:AnimationNode.set_filter_path
-	class(self).SetFilterPath(gd.NewString(string(path)).NodePath(), enable)
+func (self Instance) SetFilterPath(path string, enable bool) { //gd:AnimationNode.set_filter_path
+	class(self).SetFilterPath(Path.ToNode(String.New(path)), enable)
 }
 
 /*
 Returns whether the given path is filtered.
 */
-func (self Instance) IsPathFiltered(path NodePath.String) bool { //gd:AnimationNode.is_path_filtered
-	return bool(class(self).IsPathFiltered(gd.NewString(string(path)).NodePath()))
+func (self Instance) IsPathFiltered(path string) bool { //gd:AnimationNode.is_path_filtered
+	return bool(class(self).IsPathFiltered(Path.ToNode(String.New(path))))
 }
 
 /*
@@ -283,14 +284,14 @@ Blend an animation by [param blend] amount (name must be valid in the linked [An
 A [param looped_flag] is used by internal processing immediately after the loop. See also [enum Animation.LoopedFlag].
 */
 func (self Instance) BlendAnimation(animation string, time Float.X, delta Float.X, seeked bool, is_external_seeking bool, blend Float.X) { //gd:AnimationNode.blend_animation
-	class(self).BlendAnimation(gd.NewStringName(animation), gd.Float(time), gd.Float(delta), seeked, is_external_seeking, gd.Float(blend), 0)
+	class(self).BlendAnimation(String.Name(String.New(animation)), gd.Float(time), gd.Float(delta), seeked, is_external_seeking, gd.Float(blend), 0)
 }
 
 /*
 Blend another animation node (in case this animation node contains child animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, otherwise editors will not display your animation node for addition.
 */
 func (self Instance) BlendNode(name string, node [1]gdclass.AnimationNode, time Float.X, seek bool, is_external_seeking bool, blend Float.X) Float.X { //gd:AnimationNode.blend_node
-	return Float.X(Float.X(class(self).BlendNode(gd.NewStringName(name), node, gd.Float(time), seek, is_external_seeking, gd.Float(blend), 0, true, false)))
+	return Float.X(Float.X(class(self).BlendNode(String.Name(String.New(name)), node, gd.Float(time), seek, is_external_seeking, gd.Float(blend), 0, true, false)))
 }
 
 /*
@@ -304,14 +305,14 @@ func (self Instance) BlendInput(input_index int, time Float.X, seek bool, is_ext
 Sets a custom parameter. These are used as local memory, because resources can be reused across the tree or scenes.
 */
 func (self Instance) SetParameter(name string, value any) { //gd:AnimationNode.set_parameter
-	class(self).SetParameter(gd.NewStringName(name), gd.NewVariant(value))
+	class(self).SetParameter(String.Name(String.New(name)), gd.NewVariant(value))
 }
 
 /*
 Gets the value of a parameter. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
 func (self Instance) GetParameter(name string) any { //gd:AnimationNode.get_parameter
-	return any(class(self).GetParameter(gd.NewStringName(name)).Interface())
+	return any(class(self).GetParameter(String.Name(String.New(name))).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -376,10 +377,10 @@ func (class) _get_parameter_list(impl func(ptr unsafe.Pointer) Array.Any) (cb gd
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return a child animation node by its [param name].
 */
-func (class) _get_child_by_name(impl func(ptr unsafe.Pointer, name gd.StringName) [1]gdclass.AnimationNode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_child_by_name(impl func(ptr unsafe.Pointer, name String.Name) [1]gdclass.AnimationNode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(name)
+		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name)
 		ptr, ok := pointers.End(ret[0])
@@ -394,10 +395,10 @@ func (class) _get_child_by_name(impl func(ptr unsafe.Pointer, name gd.StringName
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return the default value of a [param parameter]. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
-func (class) _get_parameter_default_value(impl func(ptr unsafe.Pointer, parameter gd.StringName) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_parameter_default_value(impl func(ptr unsafe.Pointer, parameter String.Name) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(parameter)
+		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(parameter))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter)
 		ptr, ok := pointers.End(ret)
@@ -412,10 +413,10 @@ func (class) _get_parameter_default_value(impl func(ptr unsafe.Pointer, paramete
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return whether the [param parameter] is read-only. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
-func (class) _is_parameter_read_only(impl func(ptr unsafe.Pointer, parameter gd.StringName) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_parameter_read_only(impl func(ptr unsafe.Pointer, parameter String.Name) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(parameter)
+		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(parameter))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter)
 		gd.UnsafeSet(p_back, ret)
@@ -556,9 +557,9 @@ func (self class) FindInput(name String.Readable) gd.Int { //gd:AnimationNode.fi
 Adds or removes a path for the filter.
 */
 //go:nosplit
-func (self class) SetFilterPath(path gd.NodePath, enable bool) { //gd:AnimationNode.set_filter_path
+func (self class) SetFilterPath(path Path.ToNode, enable bool) { //gd:AnimationNode.set_filter_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_set_filter_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -569,9 +570,9 @@ func (self class) SetFilterPath(path gd.NodePath, enable bool) { //gd:AnimationN
 Returns whether the given path is filtered.
 */
 //go:nosplit
-func (self class) IsPathFiltered(path gd.NodePath) bool { //gd:AnimationNode.is_path_filtered
+func (self class) IsPathFiltered(path Path.ToNode) bool { //gd:AnimationNode.is_path_filtered
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_is_path_filtered, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -603,9 +604,9 @@ Blend an animation by [param blend] amount (name must be valid in the linked [An
 A [param looped_flag] is used by internal processing immediately after the loop. See also [enum Animation.LoopedFlag].
 */
 //go:nosplit
-func (self class) BlendAnimation(animation gd.StringName, time gd.Float, delta gd.Float, seeked bool, is_external_seeking bool, blend gd.Float, looped_flag gdclass.AnimationLoopedFlag) { //gd:AnimationNode.blend_animation
+func (self class) BlendAnimation(animation String.Name, time gd.Float, delta gd.Float, seeked bool, is_external_seeking bool, blend gd.Float, looped_flag gdclass.AnimationLoopedFlag) { //gd:AnimationNode.blend_animation
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(animation))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation)))
 	callframe.Arg(frame, time)
 	callframe.Arg(frame, delta)
 	callframe.Arg(frame, seeked)
@@ -621,9 +622,9 @@ func (self class) BlendAnimation(animation gd.StringName, time gd.Float, delta g
 Blend another animation node (in case this animation node contains child animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, otherwise editors will not display your animation node for addition.
 */
 //go:nosplit
-func (self class) BlendNode(name gd.StringName, node [1]gdclass.AnimationNode, time gd.Float, seek bool, is_external_seeking bool, blend gd.Float, filter gdclass.AnimationNodeFilterAction, sync bool, test_only bool) gd.Float { //gd:AnimationNode.blend_node
+func (self class) BlendNode(name String.Name, node [1]gdclass.AnimationNode, time gd.Float, seek bool, is_external_seeking bool, blend gd.Float, filter gdclass.AnimationNodeFilterAction, sync bool, test_only bool) gd.Float { //gd:AnimationNode.blend_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	callframe.Arg(frame, time)
 	callframe.Arg(frame, seek)
@@ -664,9 +665,9 @@ func (self class) BlendInput(input_index gd.Int, time gd.Float, seek bool, is_ex
 Sets a custom parameter. These are used as local memory, because resources can be reused across the tree or scenes.
 */
 //go:nosplit
-func (self class) SetParameter(name gd.StringName, value gd.Variant) { //gd:AnimationNode.set_parameter
+func (self class) SetParameter(name String.Name, value gd.Variant) { //gd:AnimationNode.set_parameter
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_set_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -677,9 +678,9 @@ func (self class) SetParameter(name gd.StringName, value gd.Variant) { //gd:Anim
 Gets the value of a parameter. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
 //go:nosplit
-func (self class) GetParameter(name gd.StringName) gd.Variant { //gd:AnimationNode.get_parameter
+func (self class) GetParameter(name String.Name) gd.Variant { //gd:AnimationNode.get_parameter
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_get_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())

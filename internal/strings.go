@@ -5,6 +5,7 @@ package gd
 import (
 	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/Path"
 	StringType "graphics.gd/variant/String"
 )
 
@@ -113,6 +114,16 @@ func (s String) NodePath() NodePath {
 	return pointers.New[NodePath](raw)
 }
 
+func (n NodePath) InternalString() String {
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(n))
+	var r_ret = callframe.Ret[[1]EnginePointer](frame)
+	Global.typeset.creation.String[2](r_ret.Addr(), frame.Array(0))
+	var raw = r_ret.Get()
+	frame.Free()
+	return pointers.New[String](raw)
+}
+
 func (n NodePath) String() string {
 	return Global.StringFromNodePath(n).String()
 }
@@ -174,4 +185,108 @@ func (StringProxy) AppendString(raw complex128, str string) StringType.Readable 
 	s := pointers.Load[String](raw)
 	r := Global.Strings.Append(s, NewString(str))
 	return StringType.Via(StringProxy{}, pointers.Pack(r))
+}
+
+func InternalNodePath(s Path.ToNode) NodePath {
+	_, ptr := StringType.Proxy(s, NodePathCheck, NewNodePathProxy)
+	return pointers.Load[NodePath](ptr)
+}
+
+func NodePathCheck(_ NodePathProxy, raw complex128) bool { return true }
+
+func NewNodePathProxy() (NodePathProxy, complex128) {
+	return NodePathProxy{}, pointers.Pack(NewString("").NodePath())
+}
+
+type NodePathProxy struct{}
+
+func (NodePathProxy) Len(raw complex128) int {
+	return pointers.Load[NodePath](raw).InternalString().Len()
+}
+func (NodePathProxy) Slice(raw complex128, index int, close int) StringType.Readable {
+	s := pointers.Load[NodePath](raw)
+	s = s.InternalString().Substr(Int(index), Int(close)).NodePath()
+	return StringType.Via(StringProxy{}, pointers.Pack(s))
+}
+func (NodePathProxy) String(raw complex128) string {
+	return pointers.Load[NodePath](raw).String()
+}
+func (NodePathProxy) Index(raw complex128, n int) byte {
+	return byte(Global.Strings.Index(pointers.Load[String](raw), Int(n)))
+}
+func (NodePathProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Readable) {
+	s := pointers.Load[NodePath](raw)
+	str := s.InternalString()
+	next := str.Substr(0, 1).NodePath()
+	return StringType.Rune(Global.Strings.Index(pointers.Load[String](raw), 0)), 0, StringType.Via(StringProxy{}, pointers.Pack(next))
+}
+func (NodePathProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Readable {
+	s := pointers.Load[NodePath](raw)
+	str := s.InternalString()
+	Global.Strings.AppendRune(str, rune(r))
+	s = str.NodePath()
+	return StringType.Via(NodePathProxy{}, pointers.Pack(s))
+}
+func (NodePathProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Readable {
+	s := pointers.Load[NodePath](raw).InternalString()
+	s2 := pointers.Load[NodePath](raw2).InternalString()
+	r := Global.Strings.Append(s, s2).NodePath()
+	return StringType.Via(NodePathProxy{}, pointers.Pack(r))
+}
+func (NodePathProxy) AppendString(raw complex128, str string) StringType.Readable {
+	s := pointers.Load[NodePath](raw)
+	r := Global.Strings.Append(s.InternalString(), NewString(str)).NodePath()
+	return StringType.Via(NodePathProxy{}, pointers.Pack(r))
+}
+
+func InternalStringName(s StringType.Name) StringName {
+	_, ptr := StringType.Proxy(s, StringNameCheck, NewStringNameProxy)
+	return pointers.Load[StringName](ptr)
+}
+
+func StringNameCheck(_ StringNameProxy, raw complex128) bool { return true }
+
+func NewStringNameProxy() (StringNameProxy, complex128) {
+	return StringNameProxy{}, pointers.Pack(NewStringName(""))
+}
+
+type StringNameProxy struct{}
+
+func (StringNameProxy) Len(raw complex128) int {
+	return int(pointers.Load[StringName](raw).Length())
+}
+func (StringNameProxy) Slice(raw complex128, index int, close int) StringType.Readable {
+	s := pointers.Load[StringName](raw)
+	s = s.Substr(Int(index), Int(close)).StringName()
+	return StringType.Via(StringNameProxy{}, pointers.Pack(s))
+}
+func (StringNameProxy) String(raw complex128) string {
+	return pointers.Load[StringName](raw).String()
+}
+func (StringNameProxy) Index(raw complex128, n int) byte {
+	name := pointers.Load[StringName](raw)
+	return byte(Global.Strings.Index(name.Substr(0, name.Length()), Int(n)))
+}
+func (StringNameProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Readable) {
+	s := pointers.Load[StringName](raw)
+	next := s.Substr(0, 1).StringName()
+	return StringType.Rune(Global.Strings.Index(pointers.Load[String](raw), 0)), 0, StringType.Via(StringNameProxy{}, pointers.Pack(next))
+}
+func (StringNameProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Readable {
+	s := pointers.Load[StringName](raw)
+	str := s.Substr(0, s.Length())
+	Global.Strings.AppendRune(str, rune(r))
+	s = str.StringName()
+	return StringType.Via(StringNameProxy{}, pointers.Pack(s))
+}
+func (StringNameProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Readable {
+	s := pointers.Load[StringName](raw)
+	s2 := pointers.Load[StringName](raw2)
+	r := Global.Strings.Append(s.Substr(0, s.Length()), s2.Substr(0, s2.Length())).StringName()
+	return StringType.Via(StringNameProxy{}, pointers.Pack(r))
+}
+func (StringNameProxy) AppendString(raw complex128, str string) StringType.Readable {
+	s := pointers.Load[StringName](raw)
+	r := Global.Strings.Append(s.Substr(0, s.Length()), NewString(str)).StringName()
+	return StringType.Via(StringNameProxy{}, pointers.Pack(r))
 }

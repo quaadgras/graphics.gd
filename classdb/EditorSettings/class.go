@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -29,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Object that holds the project-independent editor settings. These settings are generally visible in the [b]Editor > Editor Settings[/b] menu.
@@ -96,7 +98,7 @@ func (self Instance) Erase(property string) { //gd:EditorSettings.erase
 Sets the initial value of the setting specified by [param name] to [param value]. This is used to provide a value for the Revert button in the Editor Settings. If [param update_current] is true, the current value of the setting will be set to [param value] as well.
 */
 func (self Instance) SetInitialValue(name string, value any, update_current bool) { //gd:EditorSettings.set_initial_value
-	class(self).SetInitialValue(gd.NewStringName(name), gd.NewVariant(value), update_current)
+	class(self).SetInitialValue(String.Name(String.New(name)), gd.NewVariant(value), update_current)
 }
 
 /*
@@ -286,9 +288,9 @@ func (self class) Erase(property String.Readable) { //gd:EditorSettings.erase
 Sets the initial value of the setting specified by [param name] to [param value]. This is used to provide a value for the Revert button in the Editor Settings. If [param update_current] is true, the current value of the setting will be set to [param value] as well.
 */
 //go:nosplit
-func (self class) SetInitialValue(name gd.StringName, value gd.Variant, update_current bool) { //gd:EditorSettings.set_initial_value
+func (self class) SetInitialValue(name String.Name, value gd.Variant, update_current bool) { //gd:EditorSettings.set_initial_value
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, update_current)
 	var r_ret = callframe.Nil

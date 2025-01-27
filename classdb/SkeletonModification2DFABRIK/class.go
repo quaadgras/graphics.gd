@@ -15,9 +15,9 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -32,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This [SkeletonModification2D] uses an algorithm called Forward And Backward Reaching Inverse Kinematics, or FABRIK, to rotate a bone chain so that it reaches a target.
@@ -53,15 +54,15 @@ type Any interface {
 /*
 Sets the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
-func (self Instance) SetFabrikJointBone2dNode(joint_idx int, bone2d_nodepath NodePath.String) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone2d_node
-	class(self).SetFabrikJointBone2dNode(gd.Int(joint_idx), gd.NewString(string(bone2d_nodepath)).NodePath())
+func (self Instance) SetFabrikJointBone2dNode(joint_idx int, bone2d_nodepath string) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone2d_node
+	class(self).SetFabrikJointBone2dNode(gd.Int(joint_idx), Path.ToNode(String.New(bone2d_nodepath)))
 }
 
 /*
 Returns the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
-func (self Instance) GetFabrikJointBone2dNode(joint_idx int) NodePath.String { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_bone2d_node
-	return NodePath.String(class(self).GetFabrikJointBone2dNode(gd.Int(joint_idx)).String())
+func (self Instance) GetFabrikJointBone2dNode(joint_idx int) string { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_bone2d_node
+	return string(class(self).GetFabrikJointBone2dNode(gd.Int(joint_idx)).String())
 }
 
 /*
@@ -126,12 +127,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TargetNodepath() NodePath.String {
-	return NodePath.String(class(self).GetTargetNode().String())
+func (self Instance) TargetNodepath() string {
+	return string(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNodepath(value NodePath.String) {
-	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
+func (self Instance) SetTargetNodepath(value string) {
+	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) FabrikDataChainLength() int {
@@ -143,20 +144,20 @@ func (self Instance) SetFabrikDataChainLength(value int) {
 }
 
 //go:nosplit
-func (self class) SetTargetNode(target_nodepath gd.NodePath) { //gd:SkeletonModification2DFABRIK.set_target_node
+func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModification2DFABRIK.set_target_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(target_nodepath))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(target_nodepath)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_set_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTargetNode() gd.NodePath { //gd:SkeletonModification2DFABRIK.get_target_node
+func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DFABRIK.get_target_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -184,10 +185,10 @@ func (self class) GetFabrikDataChainLength() gd.Int { //gd:SkeletonModification2
 Sets the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) SetFabrikJointBone2dNode(joint_idx gd.Int, bone2d_nodepath gd.NodePath) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone2d_node
+func (self class) SetFabrikJointBone2dNode(joint_idx gd.Int, bone2d_nodepath Path.ToNode) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
-	callframe.Arg(frame, pointers.Get(bone2d_nodepath))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(bone2d_nodepath)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_set_fabrik_joint_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -197,12 +198,12 @@ func (self class) SetFabrikJointBone2dNode(joint_idx gd.Int, bone2d_nodepath gd.
 Returns the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetFabrikJointBone2dNode(joint_idx gd.Int) gd.NodePath { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_bone2d_node
+func (self class) GetFabrikJointBone2dNode(joint_idx gd.Int) Path.ToNode { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_get_fabrik_joint_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

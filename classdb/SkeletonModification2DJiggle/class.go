@@ -15,9 +15,9 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 
@@ -33,6 +33,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This modification moves a series of bones, typically called a bone chain, towards a target. What makes this modification special is that it calculates the velocity and acceleration for each bone in the bone chain, and runs a very light physics-like calculation using the inputted values. This allows the bones to overshoot the target and "jiggle" around. It can be configured to act more like a spring, or sway around like cloth might.
@@ -80,15 +81,15 @@ func (self Instance) GetCollisionMask() int { //gd:SkeletonModification2DJiggle.
 /*
 Sets the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
-func (self Instance) SetJiggleJointBone2dNode(joint_idx int, bone2d_node NodePath.String) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone2d_node
-	class(self).SetJiggleJointBone2dNode(gd.Int(joint_idx), gd.NewString(string(bone2d_node)).NodePath())
+func (self Instance) SetJiggleJointBone2dNode(joint_idx int, bone2d_node string) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone2d_node
+	class(self).SetJiggleJointBone2dNode(gd.Int(joint_idx), Path.ToNode(String.New(bone2d_node)))
 }
 
 /*
 Returns the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
-func (self Instance) GetJiggleJointBone2dNode(joint_idx int) NodePath.String { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone2d_node
-	return NodePath.String(class(self).GetJiggleJointBone2dNode(gd.Int(joint_idx)).String())
+func (self Instance) GetJiggleJointBone2dNode(joint_idx int) string { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone2d_node
+	return string(class(self).GetJiggleJointBone2dNode(gd.Int(joint_idx)).String())
 }
 
 /*
@@ -208,12 +209,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TargetNodepath() NodePath.String {
-	return NodePath.String(class(self).GetTargetNode().String())
+func (self Instance) TargetNodepath() string {
+	return string(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNodepath(value NodePath.String) {
-	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
+func (self Instance) SetTargetNodepath(value string) {
+	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) JiggleDataChainLength() int {
@@ -265,20 +266,20 @@ func (self Instance) SetGravity(value Vector2.XY) {
 }
 
 //go:nosplit
-func (self class) SetTargetNode(target_nodepath gd.NodePath) { //gd:SkeletonModification2DJiggle.set_target_node
+func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModification2DJiggle.set_target_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(target_nodepath))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(target_nodepath)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTargetNode() gd.NodePath { //gd:SkeletonModification2DJiggle.get_target_node
+func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DJiggle.get_target_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -451,10 +452,10 @@ func (self class) GetCollisionMask() gd.Int { //gd:SkeletonModification2DJiggle.
 Sets the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) SetJiggleJointBone2dNode(joint_idx gd.Int, bone2d_node gd.NodePath) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone2d_node
+func (self class) SetJiggleJointBone2dNode(joint_idx gd.Int, bone2d_node Path.ToNode) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
-	callframe.Arg(frame, pointers.Get(bone2d_node))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(bone2d_node)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_jiggle_joint_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -464,12 +465,12 @@ func (self class) SetJiggleJointBone2dNode(joint_idx gd.Int, bone2d_node gd.Node
 Returns the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetJiggleJointBone2dNode(joint_idx gd.Int) gd.NodePath { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone2d_node
+func (self class) GetJiggleJointBone2dNode(joint_idx gd.Int) Path.ToNode { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_joint_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

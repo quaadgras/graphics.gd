@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/MainLoop"
 import "graphics.gd/variant/Float"
 
@@ -30,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 As one of the most important classes, the [SceneTree] manages the hierarchy of nodes in a scene, as well as scenes themselves. Nodes can be added, fetched and removed. The whole scene tree (and thus the current scene) can be paused. Scenes can be loaded, switched and reloaded.
@@ -50,7 +52,7 @@ type Any interface {
 Returns [code]true[/code] if a node added to the given group [param name] exists in the tree.
 */
 func (self Instance) HasGroup(name string) bool { //gd:SceneTree.has_group
-	return bool(class(self).HasGroup(gd.NewStringName(name)))
+	return bool(class(self).HasGroup(String.Name(String.New(name))))
 }
 
 /*
@@ -134,7 +136,7 @@ func (self Instance) QueueDelete(obj Object.Instance) { //gd:SceneTree.queue_del
 Calls [method Object.notification] with the given [param notification] to all nodes inside this tree added to the [param group]. Use [param call_flags] to customize this method's behavior (see [enum GroupCallFlags]).
 */
 func (self Instance) NotifyGroupFlags(call_flags int, group string, notification int) { //gd:SceneTree.notify_group_flags
-	class(self).NotifyGroupFlags(gd.Int(call_flags), gd.NewStringName(group), gd.Int(notification))
+	class(self).NotifyGroupFlags(gd.Int(call_flags), String.Name(String.New(group)), gd.Int(notification))
 }
 
 /*
@@ -142,7 +144,7 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 func (self Instance) SetGroupFlags(call_flags int, group string, property string, value any) { //gd:SceneTree.set_group_flags
-	class(self).SetGroupFlags(gd.Int(call_flags), gd.NewStringName(group), String.New(property), gd.NewVariant(value))
+	class(self).SetGroupFlags(gd.Int(call_flags), String.Name(String.New(group)), String.New(property), gd.NewVariant(value))
 }
 
 /*
@@ -150,7 +152,7 @@ Calls [method Object.notification] with the given [param notification] to all no
 [b]Note:[/b] This method acts immediately on all selected nodes at once, which may cause stuttering in some performance-intensive situations.
 */
 func (self Instance) NotifyGroup(group string, notification int) { //gd:SceneTree.notify_group
-	class(self).NotifyGroup(gd.NewStringName(group), gd.Int(notification))
+	class(self).NotifyGroup(String.Name(String.New(group)), gd.Int(notification))
 }
 
 /*
@@ -159,28 +161,28 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 func (self Instance) SetGroup(group string, property string, value any) { //gd:SceneTree.set_group
-	class(self).SetGroup(gd.NewStringName(group), String.New(property), gd.NewVariant(value))
+	class(self).SetGroup(String.Name(String.New(group)), String.New(property), gd.NewVariant(value))
 }
 
 /*
 Returns an [Array] containing all nodes inside this tree, that have been added to the given [param group], in scene hierarchy order.
 */
 func (self Instance) GetNodesInGroup(group string) [][1]gdclass.Node { //gd:SceneTree.get_nodes_in_group
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).GetNodesInGroup(gd.NewStringName(group)))))
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).GetNodesInGroup(String.Name(String.New(group))))))
 }
 
 /*
 Returns the first [Node] found inside the tree, that has been added to the given [param group], in scene hierarchy order. Returns [code]null[/code] if no match is found. See also [method get_nodes_in_group].
 */
 func (self Instance) GetFirstNodeInGroup(group string) [1]gdclass.Node { //gd:SceneTree.get_first_node_in_group
-	return [1]gdclass.Node(class(self).GetFirstNodeInGroup(gd.NewStringName(group)))
+	return [1]gdclass.Node(class(self).GetFirstNodeInGroup(String.Name(String.New(group))))
 }
 
 /*
 Returns the number of nodes assigned to the given group.
 */
 func (self Instance) GetNodeCountInGroup(group string) int { //gd:SceneTree.get_node_count_in_group
-	return int(int(class(self).GetNodeCountInGroup(gd.NewStringName(group))))
+	return int(int(class(self).GetNodeCountInGroup(String.Name(String.New(group)))))
 }
 
 /*
@@ -224,14 +226,14 @@ Sets a custom [MultiplayerAPI] with the given [param root_path] (controlling als
 [b]Note:[/b] No [MultiplayerAPI] must be configured for the subpath containing [param root_path], nested custom multiplayers are not allowed. I.e. if one is configured for [code]"/root/Foo"[/code] setting one for [code]"/root/Foo/Bar"[/code] will cause an error.
 */
 func (self Instance) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI) { //gd:SceneTree.set_multiplayer
-	class(self).SetMultiplayer(multiplayer, gd.NewString(string("")).NodePath())
+	class(self).SetMultiplayer(multiplayer, Path.ToNode(String.New("")))
 }
 
 /*
 Searches for the [MultiplayerAPI] configured for the given path, if one does not exist it searches the parent paths until one is found. If the path is empty, or none is found, the default one is returned. See [method set_multiplayer].
 */
 func (self Instance) GetMultiplayer() [1]gdclass.MultiplayerAPI { //gd:SceneTree.get_multiplayer
-	return [1]gdclass.MultiplayerAPI(class(self).GetMultiplayer(gd.NewString(string("")).NodePath()))
+	return [1]gdclass.MultiplayerAPI(class(self).GetMultiplayer(Path.ToNode(String.New(""))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -350,9 +352,9 @@ func (self class) GetRoot() [1]gdclass.Window { //gd:SceneTree.get_root
 Returns [code]true[/code] if a node added to the given group [param name] exists in the tree.
 */
 //go:nosplit
-func (self class) HasGroup(name gd.StringName) bool { //gd:SceneTree.has_group
+func (self class) HasGroup(name String.Name) bool { //gd:SceneTree.has_group
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_has_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -633,10 +635,10 @@ func (self class) QueueDelete(obj [1]gd.Object) { //gd:SceneTree.queue_delete
 Calls [method Object.notification] with the given [param notification] to all nodes inside this tree added to the [param group]. Use [param call_flags] to customize this method's behavior (see [enum GroupCallFlags]).
 */
 //go:nosplit
-func (self class) NotifyGroupFlags(call_flags gd.Int, group gd.StringName, notification gd.Int) { //gd:SceneTree.notify_group_flags
+func (self class) NotifyGroupFlags(call_flags gd.Int, group String.Name, notification gd.Int) { //gd:SceneTree.notify_group_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, call_flags)
-	callframe.Arg(frame, pointers.Get(group))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
 	callframe.Arg(frame, notification)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_notify_group_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -648,10 +650,10 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self class) SetGroupFlags(call_flags gd.Int, group gd.StringName, property String.Readable, value gd.Variant) { //gd:SceneTree.set_group_flags
+func (self class) SetGroupFlags(call_flags gd.Int, group String.Name, property String.Readable, value gd.Variant) { //gd:SceneTree.set_group_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, call_flags)
-	callframe.Arg(frame, pointers.Get(group))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(property)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
@@ -664,9 +666,9 @@ Calls [method Object.notification] with the given [param notification] to all no
 [b]Note:[/b] This method acts immediately on all selected nodes at once, which may cause stuttering in some performance-intensive situations.
 */
 //go:nosplit
-func (self class) NotifyGroup(group gd.StringName, notification gd.Int) { //gd:SceneTree.notify_group
+func (self class) NotifyGroup(group String.Name, notification gd.Int) { //gd:SceneTree.notify_group
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(group))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
 	callframe.Arg(frame, notification)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_notify_group, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -679,9 +681,9 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self class) SetGroup(group gd.StringName, property String.Readable, value gd.Variant) { //gd:SceneTree.set_group
+func (self class) SetGroup(group String.Name, property String.Readable, value gd.Variant) { //gd:SceneTree.set_group
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(group))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(property)))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
@@ -693,9 +695,9 @@ func (self class) SetGroup(group gd.StringName, property String.Readable, value 
 Returns an [Array] containing all nodes inside this tree, that have been added to the given [param group], in scene hierarchy order.
 */
 //go:nosplit
-func (self class) GetNodesInGroup(group gd.StringName) Array.Contains[[1]gdclass.Node] { //gd:SceneTree.get_nodes_in_group
+func (self class) GetNodesInGroup(group String.Name) Array.Contains[[1]gdclass.Node] { //gd:SceneTree.get_nodes_in_group
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(group))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_nodes_in_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
@@ -707,9 +709,9 @@ func (self class) GetNodesInGroup(group gd.StringName) Array.Contains[[1]gdclass
 Returns the first [Node] found inside the tree, that has been added to the given [param group], in scene hierarchy order. Returns [code]null[/code] if no match is found. See also [method get_nodes_in_group].
 */
 //go:nosplit
-func (self class) GetFirstNodeInGroup(group gd.StringName) [1]gdclass.Node { //gd:SceneTree.get_first_node_in_group
+func (self class) GetFirstNodeInGroup(group String.Name) [1]gdclass.Node { //gd:SceneTree.get_first_node_in_group
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(group))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_first_node_in_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
@@ -721,9 +723,9 @@ func (self class) GetFirstNodeInGroup(group gd.StringName) [1]gdclass.Node { //g
 Returns the number of nodes assigned to the given group.
 */
 //go:nosplit
-func (self class) GetNodeCountInGroup(group gd.StringName) gd.Int { //gd:SceneTree.get_node_count_in_group
+func (self class) GetNodeCountInGroup(group String.Name) gd.Int { //gd:SceneTree.get_node_count_in_group
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(group))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_node_count_in_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -815,10 +817,10 @@ Sets a custom [MultiplayerAPI] with the given [param root_path] (controlling als
 [b]Note:[/b] No [MultiplayerAPI] must be configured for the subpath containing [param root_path], nested custom multiplayers are not allowed. I.e. if one is configured for [code]"/root/Foo"[/code] setting one for [code]"/root/Foo/Bar"[/code] will cause an error.
 */
 //go:nosplit
-func (self class) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI, root_path gd.NodePath) { //gd:SceneTree.set_multiplayer
+func (self class) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI, root_path Path.ToNode) { //gd:SceneTree.set_multiplayer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(multiplayer[0])[0])
-	callframe.Arg(frame, pointers.Get(root_path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(root_path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_set_multiplayer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -828,9 +830,9 @@ func (self class) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI, root_pat
 Searches for the [MultiplayerAPI] configured for the given path, if one does not exist it searches the parent paths until one is found. If the path is empty, or none is found, the default one is returned. See [method set_multiplayer].
 */
 //go:nosplit
-func (self class) GetMultiplayer(for_path gd.NodePath) [1]gdclass.MultiplayerAPI { //gd:SceneTree.get_multiplayer
+func (self class) GetMultiplayer(for_path Path.ToNode) [1]gdclass.MultiplayerAPI { //gd:SceneTree.get_multiplayer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(for_path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(for_path)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_multiplayer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerAPI](r_ret.Get())}

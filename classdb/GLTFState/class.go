@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -30,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Contains all nodes and resources of a GLTF file. This is used by [GLTFDocument] as data storage, which allows [GLTFDocument] and all [GLTFDocumentExtension] classes to remain stateless.
@@ -94,7 +96,7 @@ Gets additional arbitrary data in this [GLTFState] instance. This can be used to
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
 */
 func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFState.get_additional_data
-	return any(class(self).GetAdditionalData(gd.NewStringName(extension_name)).Interface())
+	return any(class(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
 }
 
 /*
@@ -102,7 +104,7 @@ Sets additional arbitrary data in this [GLTFState] instance. This can be used to
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
 */
 func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFState.set_additional_data
-	class(self).SetAdditionalData(gd.NewStringName(extension_name), gd.NewVariant(additional_data))
+	class(self).SetAdditionalData(String.Name(String.New(extension_name)), gd.NewVariant(additional_data))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -1053,9 +1055,9 @@ Gets additional arbitrary data in this [GLTFState] instance. This can be used to
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
 */
 //go:nosplit
-func (self class) GetAdditionalData(extension_name gd.StringName) gd.Variant { //gd:GLTFState.get_additional_data
+func (self class) GetAdditionalData(extension_name String.Name) gd.Variant { //gd:GLTFState.get_additional_data
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(extension_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(extension_name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_additional_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
@@ -1068,9 +1070,9 @@ Sets additional arbitrary data in this [GLTFState] instance. This can be used to
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
 */
 //go:nosplit
-func (self class) SetAdditionalData(extension_name gd.StringName, additional_data gd.Variant) { //gd:GLTFState.set_additional_data
+func (self class) SetAdditionalData(extension_name String.Name, additional_data gd.Variant) { //gd:GLTFState.set_additional_data
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(extension_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(extension_name)))
 	callframe.Arg(frame, pointers.Get(additional_data))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_additional_data, self.AsObject(), frame.Array(0), r_ret.Addr())

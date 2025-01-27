@@ -19,8 +19,8 @@ import (
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Dictionary"
-	"graphics.gd/variant/NodePath"
 	"graphics.gd/variant/Object"
+	"graphics.gd/variant/Path"
 	"graphics.gd/variant/Plane"
 	"graphics.gd/variant/Projection"
 	"graphics.gd/variant/Quaternion"
@@ -94,8 +94,8 @@ func (c Converter) GetBasis() Basis.XYZ                     { return Basis.New()
 func (c Converter) GetTransform3D() Transform3D.BasisOrigin { return Transform3D.Identity }
 func (c Converter) GetProjection() Projection.XYZW          { return Projection.New() }
 func (c Converter) Color() Color.RGBA                       { return Color.Bytes(255, 0, 0, 255) }
-func (c Converter) StringName() StringName.Advanced         { return StringName.New("testing") }
-func (c Converter) NodePath() NodePath.String               { return "/" }
+func (c Converter) StringName() String.Name                 { return StringName.New("testing") }
+func (c Converter) NodePath() Path.ToNode                   { return Path.ToNode(String.New("/")) }
 func (c Converter) RID() Resource.ID                        { return 22 }
 func (c Converter) Object() Object.Instance                 { return Object.New() }
 func (c Converter) Callable() Callable.Function {
@@ -104,7 +104,7 @@ func (c Converter) Callable() Callable.Function {
 	})
 }
 func (c Converter) Signal() Signal.Any {
-	sig := gd.NewSignalOf(c.AsObject(), StringName.New("property_list_changed"))
+	sig := gd.NewSignalOf(c.AsObject(), gd.NewStringName("property_list_changed"))
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(sig))
 }
 func (c Converter) Dictionary() Dictionary.Any {
@@ -177,11 +177,11 @@ func (c Converter) ValidBasis(b Basis.XYZ) bool                     { return b =
 func (c Converter) ValidTransform3D(t Transform3D.BasisOrigin) bool { return t == c.GetTransform3D() }
 func (c Converter) ValidProjection(p Projection.XYZW) bool          { return p == c.GetProjection() }
 func (c Converter) ValidColor(cc Color.RGBA) bool                   { return cc == c.Color() }
-func (c Converter) ValidStringName(s StringName.Advanced) bool {
+func (c Converter) ValidStringName(s String.Name) bool {
 	return s.String() == c.StringName().String()
 }
-func (c Converter) ValidNodePath(n NodePath.String) bool { return n == c.NodePath() }
-func (c Converter) ValidRID(r Resource.ID) bool          { return r == c.RID() }
+func (c Converter) ValidNodePath(n Path.ToNode) bool { return n.String() == c.NodePath().String() }
+func (c Converter) ValidRID(r Resource.ID) bool      { return r == c.RID() }
 func (c Converter) ValidObject(o Object.Instance) bool {
 	return o.AsObject()[0].GetClass().String() == "Object"
 }
@@ -192,7 +192,7 @@ func (c Converter) ValidSignal(s Signal.Any) bool {
 	return s.Name().String() == c.Signal().Name().String()
 }
 func (c Converter) ValidDictionary(d Dictionary.Any) bool {
-	return d.Index(variant.New("hello")).Interface().(gd.String).String() == "world"
+	return d.Index(variant.New("hello")).String() == "world"
 }
 func (c Converter) ValidArray(a []int) bool {
 	return len(a) == 3 && a[0] == 1 && a[1] == 2 && a[2] == 3

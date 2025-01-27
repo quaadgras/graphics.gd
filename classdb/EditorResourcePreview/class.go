@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Node"
 
 var _ Object.ID
@@ -29,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This node is used to generate previews for resources or files.
@@ -49,7 +51,7 @@ Queue a resource file located at [param path] for preview. Once the preview is r
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
 func (self Instance) QueueResourcePreview(path string, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_resource_preview
-	class(self).QueueResourcePreview(String.New(path), receiver, gd.NewStringName(receiver_func), gd.NewVariant(userdata))
+	class(self).QueueResourcePreview(String.New(path), receiver, String.Name(String.New(receiver_func)), gd.NewVariant(userdata))
 }
 
 /*
@@ -57,7 +59,7 @@ Queue the [param resource] being edited for preview. Once the preview is ready, 
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
 func (self Instance) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_edited_resource_preview
-	class(self).QueueEditedResourcePreview(resource, receiver, gd.NewStringName(receiver_func), gd.NewVariant(userdata))
+	class(self).QueueEditedResourcePreview(resource, receiver, String.Name(String.New(receiver_func)), gd.NewVariant(userdata))
 }
 
 /*
@@ -104,11 +106,11 @@ Queue a resource file located at [param path] for preview. Once the preview is r
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
 //go:nosplit
-func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Object, receiver_func gd.StringName, userdata gd.Variant) { //gd:EditorResourcePreview.queue_resource_preview
+func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Object, receiver_func String.Name, userdata gd.Variant) { //gd:EditorResourcePreview.queue_resource_preview
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0]))
-	callframe.Arg(frame, pointers.Get(receiver_func))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(receiver_func)))
 	callframe.Arg(frame, pointers.Get(userdata))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePreview.Bind_queue_resource_preview, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -120,11 +122,11 @@ Queue the [param resource] being edited for preview. Once the preview is ready, 
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
 //go:nosplit
-func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver [1]gd.Object, receiver_func gd.StringName, userdata gd.Variant) { //gd:EditorResourcePreview.queue_edited_resource_preview
+func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver [1]gd.Object, receiver_func String.Name, userdata gd.Variant) { //gd:EditorResourcePreview.queue_edited_resource_preview
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(resource[0])[0])
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0]))
-	callframe.Arg(frame, pointers.Get(receiver_func))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(receiver_func)))
 	callframe.Arg(frame, pointers.Get(userdata))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePreview.Bind_queue_edited_resource_preview, self.AsObject(), frame.Array(0), r_ret.Addr())

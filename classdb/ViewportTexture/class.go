@@ -15,10 +15,10 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -32,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 A [ViewportTexture] provides the content of a [Viewport] as a dynamic [Texture2D]. This can be used to combine the rendering of [Control], [Node2D] and [Node3D] nodes. For example, you can use this texture to display a 3D scene inside a [TextureRect], or a 2D overlay in a [Sprite3D].
@@ -68,29 +69,29 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) ViewportPath() NodePath.String {
-	return NodePath.String(class(self).GetViewportPathInScene().String())
+func (self Instance) ViewportPath() string {
+	return string(class(self).GetViewportPathInScene().String())
 }
 
-func (self Instance) SetViewportPath(value NodePath.String) {
-	class(self).SetViewportPathInScene(gd.NewString(string(value)).NodePath())
+func (self Instance) SetViewportPath(value string) {
+	class(self).SetViewportPathInScene(Path.ToNode(String.New(value)))
 }
 
 //go:nosplit
-func (self class) SetViewportPathInScene(path gd.NodePath) { //gd:ViewportTexture.set_viewport_path_in_scene
+func (self class) SetViewportPathInScene(path Path.ToNode) { //gd:ViewportTexture.set_viewport_path_in_scene
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ViewportTexture.Bind_set_viewport_path_in_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetViewportPathInScene() gd.NodePath { //gd:ViewportTexture.get_viewport_path_in_scene
+func (self class) GetViewportPathInScene() Path.ToNode { //gd:ViewportTexture.get_viewport_path_in_scene
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ViewportTexture.Bind_get_viewport_path_in_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

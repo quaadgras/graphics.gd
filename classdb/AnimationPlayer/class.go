@@ -15,10 +15,10 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/AnimationMixer"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -32,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 An animation player is used for general-purpose playback of animations. It contains a dictionary of [AnimationLibrary] resources and custom blend times between animation transitions.
@@ -53,28 +54,28 @@ type Any interface {
 Triggers the [param animation_to] animation when the [param animation_from] animation completes.
 */
 func (self Instance) AnimationSetNext(animation_from string, animation_to string) { //gd:AnimationPlayer.animation_set_next
-	class(self).AnimationSetNext(gd.NewStringName(animation_from), gd.NewStringName(animation_to))
+	class(self).AnimationSetNext(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)))
 }
 
 /*
 Returns the key of the animation which is queued to play after the [param animation_from] animation.
 */
 func (self Instance) AnimationGetNext(animation_from string) string { //gd:AnimationPlayer.animation_get_next
-	return string(class(self).AnimationGetNext(gd.NewStringName(animation_from)).String())
+	return string(class(self).AnimationGetNext(String.Name(String.New(animation_from))).String())
 }
 
 /*
 Specifies a blend time (in seconds) between two animations, referenced by their keys.
 */
 func (self Instance) SetBlendTime(animation_from string, animation_to string, sec Float.X) { //gd:AnimationPlayer.set_blend_time
-	class(self).SetBlendTime(gd.NewStringName(animation_from), gd.NewStringName(animation_to), gd.Float(sec))
+	class(self).SetBlendTime(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)), gd.Float(sec))
 }
 
 /*
 Returns the blend time (in seconds) between two animations, referenced by their keys.
 */
 func (self Instance) GetBlendTime(animation_from string, animation_to string) Float.X { //gd:AnimationPlayer.get_blend_time
-	return Float.X(Float.X(class(self).GetBlendTime(gd.NewStringName(animation_from), gd.NewStringName(animation_to))))
+	return Float.X(Float.X(class(self).GetBlendTime(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)))))
 }
 
 /*
@@ -84,7 +85,7 @@ The [AnimationPlayer] keeps track of its current or last played animation with [
 [b]Note:[/b] The animation will be updated the next time the [AnimationPlayer] is processed. If other variables are updated at the same time this is called, they may be updated too early. To perform the update immediately, call [code]advance(0)[/code].
 */
 func (self Instance) Play() { //gd:AnimationPlayer.play
-	class(self).Play(gd.NewStringName(""), gd.Float(-1), gd.Float(1.0), false)
+	class(self).Play(String.Name(String.New("")), gd.Float(-1), gd.Float(1.0), false)
 }
 
 /*
@@ -92,7 +93,7 @@ Plays the animation with key [param name] in reverse.
 This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 */
 func (self Instance) PlayBackwards() { //gd:AnimationPlayer.play_backwards
-	class(self).PlayBackwards(gd.NewStringName(""), gd.Float(-1))
+	class(self).PlayBackwards(String.Name(String.New("")), gd.Float(-1))
 }
 
 /*
@@ -107,7 +108,7 @@ If [param duration] is a negative value, the duration is set to the interval bet
 [b]Note:[/b] The [param duration] takes [member speed_scale] into account, but [param custom_speed] does not, because the capture cache is interpolated with the blend result and the result may contain multiple animations.
 */
 func (self Instance) PlayWithCapture() { //gd:AnimationPlayer.play_with_capture
-	class(self).PlayWithCapture(gd.NewStringName(""), gd.Float(-1.0), gd.Float(-1), gd.Float(1.0), false, 0, 0)
+	class(self).PlayWithCapture(String.Name(String.New("")), gd.Float(-1.0), gd.Float(-1), gd.Float(1.0), false, 0, 0)
 }
 
 /*
@@ -139,7 +140,7 @@ Queues an animation for playback once the current animation and all previously q
 [b]Note:[/b] If a looped animation is currently playing, the queued animation will never play unless the looped animation is stopped somehow.
 */
 func (self Instance) Queue(name string) { //gd:AnimationPlayer.queue
-	class(self).Queue(gd.NewStringName(name))
+	class(self).Queue(String.Name(String.New(name)))
 }
 
 /*
@@ -204,15 +205,15 @@ func (self Instance) GetMethodCallMode() gdclass.AnimationPlayerAnimationMethodC
 /*
 Sets the node which node path references will travel from.
 */
-func (self Instance) SetRoot(path NodePath.String) { //gd:AnimationPlayer.set_root
-	class(self).SetRoot(gd.NewString(string(path)).NodePath())
+func (self Instance) SetRoot(path string) { //gd:AnimationPlayer.set_root
+	class(self).SetRoot(Path.ToNode(String.New(path)))
 }
 
 /*
 Returns the node which node path references will travel from.
 */
-func (self Instance) GetRoot() NodePath.String { //gd:AnimationPlayer.get_root
-	return NodePath.String(class(self).GetRoot().String())
+func (self Instance) GetRoot() string { //gd:AnimationPlayer.get_root
+	return string(class(self).GetRoot().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -325,10 +326,10 @@ func (self Instance) SetMovieQuitOnFinish(value bool) {
 Triggers the [param animation_to] animation when the [param animation_from] animation completes.
 */
 //go:nosplit
-func (self class) AnimationSetNext(animation_from gd.StringName, animation_to gd.StringName) { //gd:AnimationPlayer.animation_set_next
+func (self class) AnimationSetNext(animation_from String.Name, animation_to String.Name) { //gd:AnimationPlayer.animation_set_next
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(animation_from))
-	callframe.Arg(frame, pointers.Get(animation_to))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation_from)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation_to)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_animation_set_next, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -338,12 +339,12 @@ func (self class) AnimationSetNext(animation_from gd.StringName, animation_to gd
 Returns the key of the animation which is queued to play after the [param animation_from] animation.
 */
 //go:nosplit
-func (self class) AnimationGetNext(animation_from gd.StringName) gd.StringName { //gd:AnimationPlayer.animation_get_next
+func (self class) AnimationGetNext(animation_from String.Name) String.Name { //gd:AnimationPlayer.animation_get_next
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(animation_from))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation_from)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_animation_get_next, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -352,10 +353,10 @@ func (self class) AnimationGetNext(animation_from gd.StringName) gd.StringName {
 Specifies a blend time (in seconds) between two animations, referenced by their keys.
 */
 //go:nosplit
-func (self class) SetBlendTime(animation_from gd.StringName, animation_to gd.StringName, sec gd.Float) { //gd:AnimationPlayer.set_blend_time
+func (self class) SetBlendTime(animation_from String.Name, animation_to String.Name, sec gd.Float) { //gd:AnimationPlayer.set_blend_time
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(animation_from))
-	callframe.Arg(frame, pointers.Get(animation_to))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation_from)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation_to)))
 	callframe.Arg(frame, sec)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_blend_time, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -366,10 +367,10 @@ func (self class) SetBlendTime(animation_from gd.StringName, animation_to gd.Str
 Returns the blend time (in seconds) between two animations, referenced by their keys.
 */
 //go:nosplit
-func (self class) GetBlendTime(animation_from gd.StringName, animation_to gd.StringName) gd.Float { //gd:AnimationPlayer.get_blend_time
+func (self class) GetBlendTime(animation_from String.Name, animation_to String.Name) gd.Float { //gd:AnimationPlayer.get_blend_time
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(animation_from))
-	callframe.Arg(frame, pointers.Get(animation_to))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation_from)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation_to)))
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_blend_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -479,9 +480,9 @@ The [AnimationPlayer] keeps track of its current or last played animation with [
 [b]Note:[/b] The animation will be updated the next time the [AnimationPlayer] is processed. If other variables are updated at the same time this is called, they may be updated too early. To perform the update immediately, call [code]advance(0)[/code].
 */
 //go:nosplit
-func (self class) Play(name gd.StringName, custom_blend gd.Float, custom_speed gd.Float, from_end bool) { //gd:AnimationPlayer.play
+func (self class) Play(name String.Name, custom_blend gd.Float, custom_speed gd.Float, from_end bool) { //gd:AnimationPlayer.play
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, custom_blend)
 	callframe.Arg(frame, custom_speed)
 	callframe.Arg(frame, from_end)
@@ -495,9 +496,9 @@ Plays the animation with key [param name] in reverse.
 This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 */
 //go:nosplit
-func (self class) PlayBackwards(name gd.StringName, custom_blend gd.Float) { //gd:AnimationPlayer.play_backwards
+func (self class) PlayBackwards(name String.Name, custom_blend gd.Float) { //gd:AnimationPlayer.play_backwards
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, custom_blend)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_play_backwards, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -516,9 +517,9 @@ If [param duration] is a negative value, the duration is set to the interval bet
 [b]Note:[/b] The [param duration] takes [member speed_scale] into account, but [param custom_speed] does not, because the capture cache is interpolated with the blend result and the result may contain multiple animations.
 */
 //go:nosplit
-func (self class) PlayWithCapture(name gd.StringName, duration gd.Float, custom_blend gd.Float, custom_speed gd.Float, from_end bool, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) { //gd:AnimationPlayer.play_with_capture
+func (self class) PlayWithCapture(name String.Name, duration gd.Float, custom_blend gd.Float, custom_speed gd.Float, from_end bool, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) { //gd:AnimationPlayer.play_with_capture
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, duration)
 	callframe.Arg(frame, custom_blend)
 	callframe.Arg(frame, custom_speed)
@@ -612,9 +613,9 @@ Queues an animation for playback once the current animation and all previously q
 [b]Note:[/b] If a looped animation is currently playing, the queued animation will never play unless the looped animation is stopped somehow.
 */
 //go:nosplit
-func (self class) Queue(name gd.StringName) { //gd:AnimationPlayer.queue
+func (self class) Queue(name String.Name) { //gd:AnimationPlayer.queue
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_queue, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -805,9 +806,9 @@ func (self class) GetMethodCallMode() gdclass.AnimationPlayerAnimationMethodCall
 Sets the node which node path references will travel from.
 */
 //go:nosplit
-func (self class) SetRoot(path gd.NodePath) { //gd:AnimationPlayer.set_root
+func (self class) SetRoot(path Path.ToNode) { //gd:AnimationPlayer.set_root
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_root, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -817,11 +818,11 @@ func (self class) SetRoot(path gd.NodePath) { //gd:AnimationPlayer.set_root
 Returns the node which node path references will travel from.
 */
 //go:nosplit
-func (self class) GetRoot() gd.NodePath { //gd:AnimationPlayer.get_root
+func (self class) GetRoot() Path.ToNode { //gd:AnimationPlayer.get_root
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_root, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

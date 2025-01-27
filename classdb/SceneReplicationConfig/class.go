@@ -15,8 +15,8 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 type Instance [1]gdclass.SceneReplicationConfig
 
@@ -44,93 +45,93 @@ type Any interface {
 /*
 Returns a list of synchronized property [NodePath]s.
 */
-func (self Instance) GetProperties() []NodePath.String { //gd:SceneReplicationConfig.get_properties
-	return []NodePath.String(gd.ArrayAs[[]NodePath.String](gd.InternalArray(class(self).GetProperties())))
+func (self Instance) GetProperties() []string { //gd:SceneReplicationConfig.get_properties
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetProperties())))
 }
 
 /*
 Adds the property identified by the given [param path] to the list of the properties being synchronized, optionally passing an [param index].
 [b]Note:[/b] For details on restrictions and limitations on property synchronization, see [MultiplayerSynchronizer].
 */
-func (self Instance) AddProperty(path NodePath.String) { //gd:SceneReplicationConfig.add_property
-	class(self).AddProperty(gd.NewString(string(path)).NodePath(), gd.Int(-1))
+func (self Instance) AddProperty(path string) { //gd:SceneReplicationConfig.add_property
+	class(self).AddProperty(Path.ToNode(String.New(path)), gd.Int(-1))
 }
 
 /*
 Returns [code]true[/code] if the given [param path] is configured for synchronization.
 */
-func (self Instance) HasProperty(path NodePath.String) bool { //gd:SceneReplicationConfig.has_property
-	return bool(class(self).HasProperty(gd.NewString(string(path)).NodePath()))
+func (self Instance) HasProperty(path string) bool { //gd:SceneReplicationConfig.has_property
+	return bool(class(self).HasProperty(Path.ToNode(String.New(path))))
 }
 
 /*
 Removes the property identified by the given [param path] from the configuration.
 */
-func (self Instance) RemoveProperty(path NodePath.String) { //gd:SceneReplicationConfig.remove_property
-	class(self).RemoveProperty(gd.NewString(string(path)).NodePath())
+func (self Instance) RemoveProperty(path string) { //gd:SceneReplicationConfig.remove_property
+	class(self).RemoveProperty(Path.ToNode(String.New(path)))
 }
 
 /*
 Finds the index of the given [param path].
 */
-func (self Instance) PropertyGetIndex(path NodePath.String) int { //gd:SceneReplicationConfig.property_get_index
-	return int(int(class(self).PropertyGetIndex(gd.NewString(string(path)).NodePath())))
+func (self Instance) PropertyGetIndex(path string) int { //gd:SceneReplicationConfig.property_get_index
+	return int(int(class(self).PropertyGetIndex(Path.ToNode(String.New(path)))))
 }
 
 /*
 Returns [code]true[/code] if the property identified by the given [param path] is configured to be synchronized on spawn.
 */
-func (self Instance) PropertyGetSpawn(path NodePath.String) bool { //gd:SceneReplicationConfig.property_get_spawn
-	return bool(class(self).PropertyGetSpawn(gd.NewString(string(path)).NodePath()))
+func (self Instance) PropertyGetSpawn(path string) bool { //gd:SceneReplicationConfig.property_get_spawn
+	return bool(class(self).PropertyGetSpawn(Path.ToNode(String.New(path))))
 }
 
 /*
 Sets whether the property identified by the given [param path] is configured to be synchronized on spawn.
 */
-func (self Instance) PropertySetSpawn(path NodePath.String, enabled bool) { //gd:SceneReplicationConfig.property_set_spawn
-	class(self).PropertySetSpawn(gd.NewString(string(path)).NodePath(), enabled)
+func (self Instance) PropertySetSpawn(path string, enabled bool) { //gd:SceneReplicationConfig.property_set_spawn
+	class(self).PropertySetSpawn(Path.ToNode(String.New(path)), enabled)
 }
 
 /*
 Returns the replication mode for the property identified by the given [param path]. See [enum ReplicationMode].
 */
-func (self Instance) PropertyGetReplicationMode(path NodePath.String) gdclass.SceneReplicationConfigReplicationMode { //gd:SceneReplicationConfig.property_get_replication_mode
-	return gdclass.SceneReplicationConfigReplicationMode(class(self).PropertyGetReplicationMode(gd.NewString(string(path)).NodePath()))
+func (self Instance) PropertyGetReplicationMode(path string) gdclass.SceneReplicationConfigReplicationMode { //gd:SceneReplicationConfig.property_get_replication_mode
+	return gdclass.SceneReplicationConfigReplicationMode(class(self).PropertyGetReplicationMode(Path.ToNode(String.New(path))))
 }
 
 /*
 Sets the synchronization mode for the property identified by the given [param path]. See [enum ReplicationMode].
 */
-func (self Instance) PropertySetReplicationMode(path NodePath.String, mode gdclass.SceneReplicationConfigReplicationMode) { //gd:SceneReplicationConfig.property_set_replication_mode
-	class(self).PropertySetReplicationMode(gd.NewString(string(path)).NodePath(), mode)
+func (self Instance) PropertySetReplicationMode(path string, mode gdclass.SceneReplicationConfigReplicationMode) { //gd:SceneReplicationConfig.property_set_replication_mode
+	class(self).PropertySetReplicationMode(Path.ToNode(String.New(path)), mode)
 }
 
 /*
 Returns [code]true[/code] if the property identified by the given [param path] is configured to be synchronized on process.
 */
-func (self Instance) PropertyGetSync(path NodePath.String) bool { //gd:SceneReplicationConfig.property_get_sync
-	return bool(class(self).PropertyGetSync(gd.NewString(string(path)).NodePath()))
+func (self Instance) PropertyGetSync(path string) bool { //gd:SceneReplicationConfig.property_get_sync
+	return bool(class(self).PropertyGetSync(Path.ToNode(String.New(path))))
 }
 
 /*
 Sets whether the property identified by the given [param path] is configured to be synchronized on process.
 */
-func (self Instance) PropertySetSync(path NodePath.String, enabled bool) { //gd:SceneReplicationConfig.property_set_sync
-	class(self).PropertySetSync(gd.NewString(string(path)).NodePath(), enabled)
+func (self Instance) PropertySetSync(path string, enabled bool) { //gd:SceneReplicationConfig.property_set_sync
+	class(self).PropertySetSync(Path.ToNode(String.New(path)), enabled)
 }
 
 /*
 Returns [code]true[/code] if the property identified by the given [param path] is configured to be reliably synchronized when changes are detected on process.
 */
-func (self Instance) PropertyGetWatch(path NodePath.String) bool { //gd:SceneReplicationConfig.property_get_watch
-	return bool(class(self).PropertyGetWatch(gd.NewString(string(path)).NodePath()))
+func (self Instance) PropertyGetWatch(path string) bool { //gd:SceneReplicationConfig.property_get_watch
+	return bool(class(self).PropertyGetWatch(Path.ToNode(String.New(path))))
 }
 
 /*
 Sets whether the property identified by the given [param path] is configured to be reliably synchronized when changes are detected on process.
 */
-func (self Instance) PropertySetWatch(path NodePath.String, enabled bool) { //gd:SceneReplicationConfig.property_set_watch
-	class(self).PropertySetWatch(gd.NewString(string(path)).NodePath(), enabled)
+func (self Instance) PropertySetWatch(path string, enabled bool) { //gd:SceneReplicationConfig.property_set_watch
+	class(self).PropertySetWatch(Path.ToNode(String.New(path)), enabled)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -156,11 +157,11 @@ func New() Instance {
 Returns a list of synchronized property [NodePath]s.
 */
 //go:nosplit
-func (self class) GetProperties() Array.Contains[gd.NodePath] { //gd:SceneReplicationConfig.get_properties
+func (self class) GetProperties() Array.Contains[Path.ToNode] { //gd:SceneReplicationConfig.get_properties
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_get_properties, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.NodePath]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -170,9 +171,9 @@ Adds the property identified by the given [param path] to the list of the proper
 [b]Note:[/b] For details on restrictions and limitations on property synchronization, see [MultiplayerSynchronizer].
 */
 //go:nosplit
-func (self class) AddProperty(path gd.NodePath, index gd.Int) { //gd:SceneReplicationConfig.add_property
+func (self class) AddProperty(path Path.ToNode, index gd.Int) { //gd:SceneReplicationConfig.add_property
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_add_property, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -183,9 +184,9 @@ func (self class) AddProperty(path gd.NodePath, index gd.Int) { //gd:SceneReplic
 Returns [code]true[/code] if the given [param path] is configured for synchronization.
 */
 //go:nosplit
-func (self class) HasProperty(path gd.NodePath) bool { //gd:SceneReplicationConfig.has_property
+func (self class) HasProperty(path Path.ToNode) bool { //gd:SceneReplicationConfig.has_property
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_has_property, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -197,9 +198,9 @@ func (self class) HasProperty(path gd.NodePath) bool { //gd:SceneReplicationConf
 Removes the property identified by the given [param path] from the configuration.
 */
 //go:nosplit
-func (self class) RemoveProperty(path gd.NodePath) { //gd:SceneReplicationConfig.remove_property
+func (self class) RemoveProperty(path Path.ToNode) { //gd:SceneReplicationConfig.remove_property
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_remove_property, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -209,9 +210,9 @@ func (self class) RemoveProperty(path gd.NodePath) { //gd:SceneReplicationConfig
 Finds the index of the given [param path].
 */
 //go:nosplit
-func (self class) PropertyGetIndex(path gd.NodePath) gd.Int { //gd:SceneReplicationConfig.property_get_index
+func (self class) PropertyGetIndex(path Path.ToNode) gd.Int { //gd:SceneReplicationConfig.property_get_index
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -223,9 +224,9 @@ func (self class) PropertyGetIndex(path gd.NodePath) gd.Int { //gd:SceneReplicat
 Returns [code]true[/code] if the property identified by the given [param path] is configured to be synchronized on spawn.
 */
 //go:nosplit
-func (self class) PropertyGetSpawn(path gd.NodePath) bool { //gd:SceneReplicationConfig.property_get_spawn
+func (self class) PropertyGetSpawn(path Path.ToNode) bool { //gd:SceneReplicationConfig.property_get_spawn
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_spawn, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -237,9 +238,9 @@ func (self class) PropertyGetSpawn(path gd.NodePath) bool { //gd:SceneReplicatio
 Sets whether the property identified by the given [param path] is configured to be synchronized on spawn.
 */
 //go:nosplit
-func (self class) PropertySetSpawn(path gd.NodePath, enabled bool) { //gd:SceneReplicationConfig.property_set_spawn
+func (self class) PropertySetSpawn(path Path.ToNode, enabled bool) { //gd:SceneReplicationConfig.property_set_spawn
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_property_set_spawn, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -250,9 +251,9 @@ func (self class) PropertySetSpawn(path gd.NodePath, enabled bool) { //gd:SceneR
 Returns the replication mode for the property identified by the given [param path]. See [enum ReplicationMode].
 */
 //go:nosplit
-func (self class) PropertyGetReplicationMode(path gd.NodePath) gdclass.SceneReplicationConfigReplicationMode { //gd:SceneReplicationConfig.property_get_replication_mode
+func (self class) PropertyGetReplicationMode(path Path.ToNode) gdclass.SceneReplicationConfigReplicationMode { //gd:SceneReplicationConfig.property_get_replication_mode
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Ret[gdclass.SceneReplicationConfigReplicationMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_replication_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -264,9 +265,9 @@ func (self class) PropertyGetReplicationMode(path gd.NodePath) gdclass.SceneRepl
 Sets the synchronization mode for the property identified by the given [param path]. See [enum ReplicationMode].
 */
 //go:nosplit
-func (self class) PropertySetReplicationMode(path gd.NodePath, mode gdclass.SceneReplicationConfigReplicationMode) { //gd:SceneReplicationConfig.property_set_replication_mode
+func (self class) PropertySetReplicationMode(path Path.ToNode, mode gdclass.SceneReplicationConfigReplicationMode) { //gd:SceneReplicationConfig.property_set_replication_mode
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_property_set_replication_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -277,9 +278,9 @@ func (self class) PropertySetReplicationMode(path gd.NodePath, mode gdclass.Scen
 Returns [code]true[/code] if the property identified by the given [param path] is configured to be synchronized on process.
 */
 //go:nosplit
-func (self class) PropertyGetSync(path gd.NodePath) bool { //gd:SceneReplicationConfig.property_get_sync
+func (self class) PropertyGetSync(path Path.ToNode) bool { //gd:SceneReplicationConfig.property_get_sync
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_sync, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -291,9 +292,9 @@ func (self class) PropertyGetSync(path gd.NodePath) bool { //gd:SceneReplication
 Sets whether the property identified by the given [param path] is configured to be synchronized on process.
 */
 //go:nosplit
-func (self class) PropertySetSync(path gd.NodePath, enabled bool) { //gd:SceneReplicationConfig.property_set_sync
+func (self class) PropertySetSync(path Path.ToNode, enabled bool) { //gd:SceneReplicationConfig.property_set_sync
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_property_set_sync, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -304,9 +305,9 @@ func (self class) PropertySetSync(path gd.NodePath, enabled bool) { //gd:SceneRe
 Returns [code]true[/code] if the property identified by the given [param path] is configured to be reliably synchronized when changes are detected on process.
 */
 //go:nosplit
-func (self class) PropertyGetWatch(path gd.NodePath) bool { //gd:SceneReplicationConfig.property_get_watch
+func (self class) PropertyGetWatch(path Path.ToNode) bool { //gd:SceneReplicationConfig.property_get_watch
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_watch, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -318,9 +319,9 @@ func (self class) PropertyGetWatch(path gd.NodePath) bool { //gd:SceneReplicatio
 Sets whether the property identified by the given [param path] is configured to be reliably synchronized when changes are detected on process.
 */
 //go:nosplit
-func (self class) PropertySetWatch(path gd.NodePath, enabled bool) { //gd:SceneReplicationConfig.property_set_watch
+func (self class) PropertySetWatch(path Path.ToNode, enabled bool) { //gd:SceneReplicationConfig.property_set_watch
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_property_set_watch, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
@@ -30,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 XR runtimes often identify multiple locations on devices such as controllers that are spatially tracked.
@@ -84,7 +86,7 @@ func (self Instance) Name() string {
 }
 
 func (self Instance) SetName(value string) {
-	class(self).SetName(gd.NewStringName(value))
+	class(self).SetName(String.Name(String.New(value)))
 }
 
 func (self Instance) Transform() Transform3D.BasisOrigin {
@@ -139,20 +141,20 @@ func (self class) GetHasTrackingData() bool { //gd:XRPose.get_has_tracking_data
 }
 
 //go:nosplit
-func (self class) SetName(name gd.StringName) { //gd:XRPose.set_name
+func (self class) SetName(name String.Name) { //gd:XRPose.set_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_set_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetName() gd.StringName { //gd:XRPose.get_name
+func (self class) GetName() String.Name { //gd:XRPose.get_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -15,10 +15,10 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
 
@@ -34,6 +34,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 [i]Root motion[/i] refers to an animation technique where a mesh's skeleton is used to give impulse to a character. When working with 3D animations, a popular technique is for animators to use the root skeleton bone to give motion to the rest of the skeleton. This allows animating characters in a way where steps actually match the floor below. It also allows precise interaction with objects during cinematics. See also [AnimationMixer].
@@ -67,12 +68,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) AnimationPath() NodePath.String {
-	return NodePath.String(class(self).GetAnimationPath().String())
+func (self Instance) AnimationPath() string {
+	return string(class(self).GetAnimationPath().String())
 }
 
-func (self Instance) SetAnimationPath(value NodePath.String) {
-	class(self).SetAnimationPath(gd.NewString(string(value)).NodePath())
+func (self Instance) SetAnimationPath(value string) {
+	class(self).SetAnimationPath(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) Color() Color.RGBA {
@@ -108,20 +109,20 @@ func (self Instance) SetZeroY(value bool) {
 }
 
 //go:nosplit
-func (self class) SetAnimationPath(path gd.NodePath) { //gd:RootMotionView.set_animation_path
+func (self class) SetAnimationPath(path Path.ToNode) { //gd:RootMotionView.set_animation_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RootMotionView.Bind_set_animation_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAnimationPath() gd.NodePath { //gd:RootMotionView.get_animation_path
+func (self class) GetAnimationPath() Path.ToNode { //gd:RootMotionView.get_animation_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RootMotionView.Bind_get_animation_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

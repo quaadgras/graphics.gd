@@ -15,13 +15,13 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/RigidBody2D"
 import "graphics.gd/classdb/PhysicsBody2D"
 import "graphics.gd/classdb/CollisionObject2D"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +35,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 The [PhysicalBone2D] node is a [RigidBody2D]-based node that can be used to make [Bone2D]s in a [Skeleton2D] react to physics.
@@ -83,12 +84,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Bone2dNodepath() NodePath.String {
-	return NodePath.String(class(self).GetBone2dNodepath().String())
+func (self Instance) Bone2dNodepath() string {
+	return string(class(self).GetBone2dNodepath().String())
 }
 
-func (self Instance) SetBone2dNodepath(value NodePath.String) {
-	class(self).SetBone2dNodepath(gd.NewString(string(value)).NodePath())
+func (self Instance) SetBone2dNodepath(value string) {
+	class(self).SetBone2dNodepath(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) Bone2dIndex() int {
@@ -188,20 +189,20 @@ func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBone2D.is_simulating
 }
 
 //go:nosplit
-func (self class) SetBone2dNodepath(nodepath gd.NodePath) { //gd:PhysicalBone2D.set_bone2d_nodepath
+func (self class) SetBone2dNodepath(nodepath Path.ToNode) { //gd:PhysicalBone2D.set_bone2d_nodepath
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(nodepath))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(nodepath)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone2D.Bind_set_bone2d_nodepath, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetBone2dNodepath() gd.NodePath { //gd:PhysicalBone2D.get_bone2d_nodepath
+func (self class) GetBone2dNodepath() Path.ToNode { //gd:PhysicalBone2D.get_bone2d_nodepath
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone2D.Bind_get_bone2d_nodepath, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

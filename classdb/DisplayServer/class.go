@@ -16,6 +16,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Rect2"
@@ -36,6 +37,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 [DisplayServer] handles everything related to window management. It is separated from [OS] as a single operating system may support multiple display servers.
@@ -5711,13 +5713,13 @@ const (
 	MouseButtonMaskMbXbutton2 MouseButtonMask = 256
 )
 
-type TextToSpeechVoice struct {
-	Name     string `gd:"name"`
-	ID       string `gd:"id"`
-	Language string `gd:"language"`
-}
 type FileDialogOption struct {
 	Name    string   `gd:"name"`
 	Values  []string `gd:"values"`
 	Default int      `gd:"default"`
+}
+type TextToSpeechVoice struct {
+	Name     string `gd:"name"`
+	ID       string `gd:"id"`
+	Language string `gd:"language"`
 }

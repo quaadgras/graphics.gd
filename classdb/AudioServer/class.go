@@ -16,6 +16,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -30,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 [AudioServer] is a low-level server interface for audio access. It is in charge of creating sample data (playable audio) as well as its playback via a voice interface.
@@ -87,7 +89,7 @@ Returns the index of the bus with the name [param bus_name]. Returns [code]-1[/c
 */
 func GetBusIndex(bus_name string) int { //gd:AudioServer.get_bus_index
 	once.Do(singleton)
-	return int(int(class(self).GetBusIndex(gd.NewStringName(bus_name))))
+	return int(int(class(self).GetBusIndex(String.Name(String.New(bus_name)))))
 }
 
 /*
@@ -119,7 +121,7 @@ Connects the output of the bus at [param bus_idx] to the bus named [param send].
 */
 func SetBusSend(bus_idx int, send string) { //gd:AudioServer.set_bus_send
 	once.Do(singleton)
-	class(self).SetBusSend(gd.Int(bus_idx), gd.NewStringName(send))
+	class(self).SetBusSend(gd.Int(bus_idx), String.Name(String.New(send)))
 }
 
 /*
@@ -505,9 +507,9 @@ func (self class) GetBusName(bus_idx gd.Int) String.Readable { //gd:AudioServer.
 Returns the index of the bus with the name [param bus_name]. Returns [code]-1[/code] if no bus with the specified name exist.
 */
 //go:nosplit
-func (self class) GetBusIndex(bus_name gd.StringName) gd.Int { //gd:AudioServer.get_bus_index
+func (self class) GetBusIndex(bus_name String.Name) gd.Int { //gd:AudioServer.get_bus_index
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bus_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(bus_name)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -560,10 +562,10 @@ func (self class) GetBusVolumeDb(bus_idx gd.Int) gd.Float { //gd:AudioServer.get
 Connects the output of the bus at [param bus_idx] to the bus named [param send].
 */
 //go:nosplit
-func (self class) SetBusSend(bus_idx gd.Int, send gd.StringName) { //gd:AudioServer.set_bus_send
+func (self class) SetBusSend(bus_idx gd.Int, send String.Name) { //gd:AudioServer.set_bus_send
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
-	callframe.Arg(frame, pointers.Get(send))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(send)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_send, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -573,12 +575,12 @@ func (self class) SetBusSend(bus_idx gd.Int, send gd.StringName) { //gd:AudioSer
 Returns the name of the bus that the bus at index [param bus_idx] sends to.
 */
 //go:nosplit
-func (self class) GetBusSend(bus_idx gd.Int) gd.StringName { //gd:AudioServer.get_bus_send
+func (self class) GetBusSend(bus_idx gd.Int) String.Name { //gd:AudioServer.get_bus_send
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_send, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

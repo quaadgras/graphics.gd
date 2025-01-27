@@ -15,9 +15,9 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -32,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 type Instance [1]gdclass.ImporterMeshInstance3D
 
@@ -77,12 +78,12 @@ func (self Instance) SetSkin(value [1]gdclass.Skin) {
 	class(self).SetSkin(value)
 }
 
-func (self Instance) SkeletonPath() NodePath.String {
-	return NodePath.String(class(self).GetSkeletonPath().String())
+func (self Instance) SkeletonPath() string {
+	return string(class(self).GetSkeletonPath().String())
 }
 
-func (self Instance) SetSkeletonPath(value NodePath.String) {
-	class(self).SetSkeletonPath(gd.NewString(string(value)).NodePath())
+func (self Instance) SetSkeletonPath(value string) {
+	class(self).SetSkeletonPath(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) LayerMask() int {
@@ -180,20 +181,20 @@ func (self class) GetSkin() [1]gdclass.Skin { //gd:ImporterMeshInstance3D.get_sk
 }
 
 //go:nosplit
-func (self class) SetSkeletonPath(skeleton_path gd.NodePath) { //gd:ImporterMeshInstance3D.set_skeleton_path
+func (self class) SetSkeletonPath(skeleton_path Path.ToNode) { //gd:ImporterMeshInstance3D.set_skeleton_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(skeleton_path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(skeleton_path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_set_skeleton_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSkeletonPath() gd.NodePath { //gd:ImporterMeshInstance3D.get_skeleton_path
+func (self class) GetSkeletonPath() Path.ToNode { //gd:ImporterMeshInstance3D.get_skeleton_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_skeleton_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Vector2i"
@@ -33,6 +34,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Mesh is a type of [Resource] that contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials. The maximum number of surfaces per mesh is [constant RenderingServer.MAX_MESH_SURFACES].
@@ -271,7 +273,7 @@ func (Instance) _get_blend_shape_name(impl func(ptr unsafe.Pointer, index int) s
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
-		ptr, ok := pointers.End(gd.NewStringName(ret))
+		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
 
 		if !ok {
 			return
@@ -287,8 +289,8 @@ func (Instance) _set_blend_shape_name(impl func(ptr unsafe.Pointer, index int, n
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 
-		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(name)
+		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
+		defer pointers.End(gd.InternalStringName(name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(index), name.String())
 	}
@@ -586,13 +588,13 @@ func (class) _get_blend_shape_count(impl func(ptr unsafe.Pointer) gd.Int) (cb gd
 /*
 Virtual method to override the retrieval of blend shape names for a custom class extending [Mesh].
 */
-func (class) _get_blend_shape_name(impl func(ptr unsafe.Pointer, index gd.Int) gd.StringName) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_blend_shape_name(impl func(ptr unsafe.Pointer, index gd.Int) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalStringName(ret))
 
 		if !ok {
 			return
@@ -604,12 +606,12 @@ func (class) _get_blend_shape_name(impl func(ptr unsafe.Pointer, index gd.Int) g
 /*
 Virtual method to override the names of blend shapes for a custom class extending [Mesh].
 */
-func (class) _set_blend_shape_name(impl func(ptr unsafe.Pointer, index gd.Int, name gd.StringName)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_blend_shape_name(impl func(ptr unsafe.Pointer, index gd.Int, name String.Name)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 
-		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(name)
+		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
+		defer pointers.End(gd.InternalStringName(name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, index, name)
 	}

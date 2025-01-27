@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/VisualShaderNodeTextureParameter"
 import "graphics.gd/classdb/VisualShaderNodeParameter"
 import "graphics.gd/classdb/VisualShaderNode"
@@ -32,6 +33,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Performs a lookup operation on the texture provided as a uniform for the shader, with support for triplanar mapping.

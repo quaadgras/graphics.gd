@@ -73,6 +73,10 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 			return TypeArray, true
 		case reflect.TypeFor[StringType.Readable]():
 			return TypeString, true
+		case reflect.TypeFor[Path.ToNode]():
+			return TypeNodePath, true
+		case reflect.TypeFor[StringType.Name]():
+			return TypeStringName, true
 		case reflect.TypeFor[DictionaryType.Any]():
 			return TypeDictionary, true
 		case reflect.TypeFor[SignalType.Any]():

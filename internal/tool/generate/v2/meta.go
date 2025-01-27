@@ -102,7 +102,7 @@ func importsVariant(class gdjson.Class, identifier, s string) iter.Seq[string] {
 		case "Float", "float":
 			yield("graphics.gd/variant/Float")
 		case "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
-			"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath":
+			"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color":
 			yield("graphics.gd/variant/" + s)
 		case "PackedVector2Array":
 			yield("graphics.gd/variant/Vector2")
@@ -152,7 +152,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 	case "bool", "Bool":
 		return "bool"
 	case "StringName":
-		return maybeInternal("StringName")
+		return "String.Name"
 	case "enum::GDExtension.InitializationLevel":
 		return maybeInternal("GDExtensionInitializationLevel")
 	case "enum::GDExtensionManager.LoadStatus":
@@ -160,8 +160,10 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 	case "PackedStringArray", "PackedInt32Array", "PackedInt64Array", "PackedFloat32Array",
 		"PackedFloat64Array", "PackedVector2Array", "PackedVector3Array", "PackedVector4Array", "PackedColorArray", "PackedByteArray",
 		"Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
-		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath", "RID":
+		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "RID":
 		return maybeInternal(gdType)
+	case "NodePath":
+		return "Path.ToNode"
 	case "Signal":
 		return "Signal.Any"
 	case "Array":
@@ -315,7 +317,7 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 	case "Color":
 		return "Color.RGBA"
 	case "NodePath":
-		return "NodePath.String"
+		return "string"
 	case "RID", "gd.RID":
 		if class.Name == "Resource" {
 			return "ID"

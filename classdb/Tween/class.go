@@ -15,7 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
-import "graphics.gd/variant/NodePath"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -30,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Tweens are mostly useful for animations requiring a numerical property to be interpolated over a range of values. The name [i]tween[/i] comes from [i]in-betweening[/i], an animation technique where you specify [i]keyframes[/i] and the computer interpolates the frames that appear between them. Animating something with a [Tween] is called tweening.
@@ -169,8 +170,8 @@ tween.TweenProperty(GetNode("Sprite"), "position", Vector2.Right * 300.0f, 1.0f)
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) TweenProperty(obj Object.Instance, property NodePath.String, final_val any, duration Float.X) [1]gdclass.PropertyTweener { //gd:Tween.tween_property
-	return [1]gdclass.PropertyTweener(class(self).TweenProperty(obj, gd.NewString(string(property)).NodePath(), gd.NewVariant(final_val), gd.Float(duration)))
+func (self Instance) TweenProperty(obj Object.Instance, property string, final_val any, duration Float.X) [1]gdclass.PropertyTweener { //gd:Tween.tween_property
+	return [1]gdclass.PropertyTweener(class(self).TweenProperty(obj, Path.ToNode(String.New(property)), gd.NewVariant(final_val), gd.Float(duration)))
 }
 
 /*
@@ -540,10 +541,10 @@ tween.TweenProperty(GetNode("Sprite"), "position", Vector2.Right * 300.0f, 1.0f)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) TweenProperty(obj [1]gd.Object, property gd.NodePath, final_val gd.Variant, duration gd.Float) [1]gdclass.PropertyTweener { //gd:Tween.tween_property
+func (self class) TweenProperty(obj [1]gd.Object, property Path.ToNode, final_val gd.Variant, duration gd.Float) [1]gdclass.PropertyTweener { //gd:Tween.tween_property
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
-	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(property)))
 	callframe.Arg(frame, pointers.Get(final_val))
 	callframe.Arg(frame, duration)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

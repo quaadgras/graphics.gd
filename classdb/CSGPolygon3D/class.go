@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/CSGPrimitive3D"
 import "graphics.gd/classdb/CSGShape3D"
 import "graphics.gd/classdb/GeometryInstance3D"
@@ -23,7 +24,6 @@ import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +37,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 An array of 2D points is extruded to quickly and easily create a variety of 3D meshes. See also [CSGMesh3D] for using 3D meshes as CSG nodes.
@@ -110,12 +111,12 @@ func (self Instance) SetSpinSides(value int) {
 	class(self).SetSpinSides(gd.Int(value))
 }
 
-func (self Instance) PathNode() NodePath.String {
-	return NodePath.String(class(self).GetPathNode().String())
+func (self Instance) PathNode() string {
+	return string(class(self).GetPathNode().String())
 }
 
-func (self Instance) SetPathNode(value NodePath.String) {
-	class(self).SetPathNode(gd.NewString(string(value)).NodePath())
+func (self Instance) SetPathNode(value string) {
+	class(self).SetPathNode(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) PathIntervalType() gdclass.CSGPolygon3DPathIntervalType {
@@ -294,20 +295,20 @@ func (self class) GetSpinSides() gd.Int { //gd:CSGPolygon3D.get_spin_sides
 }
 
 //go:nosplit
-func (self class) SetPathNode(path gd.NodePath) { //gd:CSGPolygon3D.set_path_node
+func (self class) SetPathNode(path Path.ToNode) { //gd:CSGPolygon3D.set_path_node
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_set_path_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPathNode() gd.NodePath { //gd:CSGPolygon3D.get_path_node
+func (self class) GetPathNode() Path.ToNode { //gd:CSGPolygon3D.get_path_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_get_path_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

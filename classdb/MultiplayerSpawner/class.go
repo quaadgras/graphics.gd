@@ -15,8 +15,8 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Spawnable scenes can be configured in the editor or through code (see [method add_spawnable_scene]).
@@ -100,12 +101,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) SpawnPath() NodePath.String {
-	return NodePath.String(class(self).GetSpawnPath().String())
+func (self Instance) SpawnPath() string {
+	return string(class(self).GetSpawnPath().String())
 }
 
-func (self Instance) SetSpawnPath(value NodePath.String) {
-	class(self).SetSpawnPath(gd.NewString(string(value)).NodePath())
+func (self Instance) SetSpawnPath(value string) {
+	class(self).SetSpawnPath(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) SpawnLimit() int {
@@ -190,19 +191,19 @@ func (self class) Spawn(data gd.Variant) [1]gdclass.Node { //gd:MultiplayerSpawn
 }
 
 //go:nosplit
-func (self class) GetSpawnPath() gd.NodePath { //gd:MultiplayerSpawner.get_spawn_path
+func (self class) GetSpawnPath() Path.ToNode { //gd:MultiplayerSpawner.get_spawn_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawn_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetSpawnPath(path gd.NodePath) { //gd:MultiplayerSpawner.set_spawn_path
+func (self class) SetSpawnPath(path Path.ToNode) { //gd:MultiplayerSpawner.set_spawn_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_set_spawn_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

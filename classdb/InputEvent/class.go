@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
@@ -31,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Abstract base class of all types of input events. See [method Node._input].
@@ -50,7 +52,7 @@ Returns [code]true[/code] if this input event matches a pre-defined action of an
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 func (self Instance) IsAction(action string) bool { //gd:InputEvent.is_action
-	return bool(class(self).IsAction(gd.NewStringName(action), false))
+	return bool(class(self).IsAction(String.Name(String.New(action)), false))
 }
 
 /*
@@ -59,7 +61,7 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 [b]Note:[/b] Due to keyboard ghosting, [method is_action_pressed] may return [code]false[/code] even if one of the action's keys is pressed. See [url=$DOCS_URL/tutorials/inputs/input_examples.html#keyboard-events]Input examples[/url] in the documentation for more information.
 */
 func (self Instance) IsActionPressed(action string) bool { //gd:InputEvent.is_action_pressed
-	return bool(class(self).IsActionPressed(gd.NewStringName(action), false, false))
+	return bool(class(self).IsActionPressed(String.Name(String.New(action)), false, false))
 }
 
 /*
@@ -67,7 +69,7 @@ Returns [code]true[/code] if the given action is released (i.e. not pressed). No
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 func (self Instance) IsActionReleased(action string) bool { //gd:InputEvent.is_action_released
-	return bool(class(self).IsActionReleased(gd.NewStringName(action), false))
+	return bool(class(self).IsActionReleased(String.Name(String.New(action)), false))
 }
 
 /*
@@ -75,7 +77,7 @@ Returns a value between 0.0 and 1.0 depending on the given actions' state. Usefu
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 func (self Instance) GetActionStrength(action string) Float.X { //gd:InputEvent.get_action_strength
-	return Float.X(Float.X(class(self).GetActionStrength(gd.NewStringName(action), false)))
+	return Float.X(Float.X(class(self).GetActionStrength(String.Name(String.New(action)), false)))
 }
 
 /*
@@ -196,9 +198,9 @@ Returns [code]true[/code] if this input event matches a pre-defined action of an
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 //go:nosplit
-func (self class) IsAction(action gd.StringName, exact_match bool) bool { //gd:InputEvent.is_action
+func (self class) IsAction(action String.Name, exact_match bool) bool { //gd:InputEvent.is_action
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_is_action, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -213,9 +215,9 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 [b]Note:[/b] Due to keyboard ghosting, [method is_action_pressed] may return [code]false[/code] even if one of the action's keys is pressed. See [url=$DOCS_URL/tutorials/inputs/input_examples.html#keyboard-events]Input examples[/url] in the documentation for more information.
 */
 //go:nosplit
-func (self class) IsActionPressed(action gd.StringName, allow_echo bool, exact_match bool) bool { //gd:InputEvent.is_action_pressed
+func (self class) IsActionPressed(action String.Name, allow_echo bool, exact_match bool) bool { //gd:InputEvent.is_action_pressed
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, allow_echo)
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[bool](frame)
@@ -230,9 +232,9 @@ Returns [code]true[/code] if the given action is released (i.e. not pressed). No
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 //go:nosplit
-func (self class) IsActionReleased(action gd.StringName, exact_match bool) bool { //gd:InputEvent.is_action_released
+func (self class) IsActionReleased(action String.Name, exact_match bool) bool { //gd:InputEvent.is_action_released
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_is_action_released, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -246,9 +248,9 @@ Returns a value between 0.0 and 1.0 depending on the given actions' state. Usefu
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 //go:nosplit
-func (self class) GetActionStrength(action gd.StringName, exact_match bool) gd.Float { //gd:InputEvent.get_action_strength
+func (self class) GetActionStrength(action String.Name, exact_match bool) gd.Float { //gd:InputEvent.get_action_strength
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_get_action_strength, self.AsObject(), frame.Array(0), r_ret.Addr())

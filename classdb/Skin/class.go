@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
 
@@ -30,6 +31,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 type Instance [1]gdclass.Skin
 
@@ -60,7 +62,7 @@ func (self Instance) GetBindPose(bind_index int) Transform3D.BasisOrigin { //gd:
 	return Transform3D.BasisOrigin(class(self).GetBindPose(gd.Int(bind_index)))
 }
 func (self Instance) SetBindName(bind_index int, name string) { //gd:Skin.set_bind_name
-	class(self).SetBindName(gd.Int(bind_index), gd.NewStringName(name))
+	class(self).SetBindName(gd.Int(bind_index), String.Name(String.New(name)))
 }
 func (self Instance) GetBindName(bind_index int) string { //gd:Skin.get_bind_name
 	return string(class(self).GetBindName(gd.Int(bind_index)).String())
@@ -155,22 +157,22 @@ func (self class) GetBindPose(bind_index gd.Int) gd.Transform3D { //gd:Skin.get_
 }
 
 //go:nosplit
-func (self class) SetBindName(bind_index gd.Int, name gd.StringName) { //gd:Skin.set_bind_name
+func (self class) SetBindName(bind_index gd.Int, name String.Name) { //gd:Skin.set_bind_name
 	var frame = callframe.New()
 	callframe.Arg(frame, bind_index)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skin.Bind_set_bind_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetBindName(bind_index gd.Int) gd.StringName { //gd:Skin.get_bind_name
+func (self class) GetBindName(bind_index gd.Int) String.Name { //gd:Skin.get_bind_name
 	var frame = callframe.New()
 	callframe.Arg(frame, bind_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skin.Bind_get_bind_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

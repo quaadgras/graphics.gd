@@ -15,12 +15,12 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Rect2"
-import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Color"
@@ -37,6 +37,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 2D particle node used to create a variety of particle systems and effects. [GPUParticles2D] features an emitter that generates some number of particles at a given rate.
@@ -126,12 +127,12 @@ func (self Instance) SetAmountRatio(value Float.X) {
 	class(self).SetAmountRatio(gd.Float(value))
 }
 
-func (self Instance) SubEmitter() NodePath.String {
-	return NodePath.String(class(self).GetSubEmitter().String())
+func (self Instance) SubEmitter() string {
+	return string(class(self).GetSubEmitter().String())
 }
 
-func (self Instance) SetSubEmitter(value NodePath.String) {
-	class(self).SetSubEmitter(gd.NewString(string(value)).NodePath())
+func (self Instance) SetSubEmitter(value string) {
+	class(self).SetSubEmitter(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) ProcessMaterial() [1]gdclass.Material {
@@ -663,20 +664,20 @@ func (self class) Restart() { //gd:GPUParticles2D.restart
 }
 
 //go:nosplit
-func (self class) SetSubEmitter(path gd.NodePath) { //gd:GPUParticles2D.set_sub_emitter
+func (self class) SetSubEmitter(path Path.ToNode) { //gd:GPUParticles2D.set_sub_emitter
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_set_sub_emitter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSubEmitter() gd.NodePath { //gd:GPUParticles2D.get_sub_emitter
+func (self class) GetSubEmitter() Path.ToNode { //gd:GPUParticles2D.get_sub_emitter
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_sub_emitter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -32,6 +33,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Plays audio that is attenuated with distance to the listener.
@@ -190,7 +192,7 @@ func (self Instance) Bus() string {
 }
 
 func (self Instance) SetBus(value string) {
-	class(self).SetBus(gd.NewStringName(value))
+	class(self).SetBus(String.Name(String.New(value)))
 }
 
 func (self Instance) AreaMask() int {
@@ -325,20 +327,20 @@ func (self class) GetPlaybackPosition() gd.Float { //gd:AudioStreamPlayer2D.get_
 }
 
 //go:nosplit
-func (self class) SetBus(bus gd.StringName) { //gd:AudioStreamPlayer2D.set_bus
+func (self class) SetBus(bus String.Name) { //gd:AudioStreamPlayer2D.set_bus
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bus))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(bus)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_bus, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetBus() gd.StringName { //gd:AudioStreamPlayer2D.get_bus
+func (self class) GetBus() String.Name { //gd:AudioStreamPlayer2D.get_bus
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_bus, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

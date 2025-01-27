@@ -15,12 +15,12 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
-import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +34,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 [Area3D] is a region of 3D space defined by one or multiple [CollisionShape3D] or [CollisionPolygon3D] child nodes. It detects when other [CollisionObject3D]s enter or exit it, and it also keeps track of which collision objects haven't exited it yet (i.e. which one are overlapping it).
@@ -238,12 +239,12 @@ func (self Instance) SetWindAttenuationFactor(value Float.X) {
 	class(self).SetWindAttenuationFactor(gd.Float(value))
 }
 
-func (self Instance) WindSourcePath() NodePath.String {
-	return NodePath.String(class(self).GetWindSourcePath().String())
+func (self Instance) WindSourcePath() string {
+	return string(class(self).GetWindSourcePath().String())
 }
 
-func (self Instance) SetWindSourcePath(value NodePath.String) {
-	class(self).SetWindSourcePath(gd.NewString(string(value)).NodePath())
+func (self Instance) SetWindSourcePath(value string) {
+	class(self).SetWindSourcePath(Path.ToNode(String.New(value)))
 }
 
 func (self Instance) AudioBusOverride() bool {
@@ -259,7 +260,7 @@ func (self Instance) AudioBusName() string {
 }
 
 func (self Instance) SetAudioBusName(value string) {
-	class(self).SetAudioBusName(gd.NewStringName(value))
+	class(self).SetAudioBusName(String.Name(String.New(value)))
 }
 
 func (self Instance) ReverbBusEnabled() bool {
@@ -275,7 +276,7 @@ func (self Instance) ReverbBusName() string {
 }
 
 func (self Instance) SetReverbBusName(value string) {
-	class(self).SetReverbBusName(gd.NewStringName(value))
+	class(self).SetReverbBusName(String.Name(String.New(value)))
 }
 
 func (self Instance) ReverbBusAmount() Float.X {
@@ -542,20 +543,20 @@ func (self class) GetWindAttenuationFactor() gd.Float { //gd:Area3D.get_wind_att
 }
 
 //go:nosplit
-func (self class) SetWindSourcePath(wind_source_path gd.NodePath) { //gd:Area3D.set_wind_source_path
+func (self class) SetWindSourcePath(wind_source_path Path.ToNode) { //gd:Area3D.set_wind_source_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(wind_source_path))
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(wind_source_path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_set_wind_source_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetWindSourcePath() gd.NodePath { //gd:Area3D.get_wind_source_path
+func (self class) GetWindSourcePath() Path.ToNode { //gd:Area3D.get_wind_source_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_wind_source_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.NodePath](r_ret.Get())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -705,20 +706,20 @@ func (self class) IsOverridingAudioBus() bool { //gd:Area3D.is_overriding_audio_
 }
 
 //go:nosplit
-func (self class) SetAudioBusName(name gd.StringName) { //gd:Area3D.set_audio_bus_name
+func (self class) SetAudioBusName(name String.Name) { //gd:Area3D.set_audio_bus_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_set_audio_bus_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAudioBusName() gd.StringName { //gd:Area3D.get_audio_bus_name
+func (self class) GetAudioBusName() String.Name { //gd:Area3D.get_audio_bus_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_audio_bus_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -743,20 +744,20 @@ func (self class) IsUsingReverbBus() bool { //gd:Area3D.is_using_reverb_bus
 }
 
 //go:nosplit
-func (self class) SetReverbBusName(name gd.StringName) { //gd:Area3D.set_reverb_bus_name
+func (self class) SetReverbBusName(name String.Name) { //gd:Area3D.set_reverb_bus_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_set_reverb_bus_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetReverbBusName() gd.StringName { //gd:Area3D.get_reverb_bus_name
+func (self class) GetReverbBusName() String.Name { //gd:Area3D.get_reverb_bus_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_reverb_bus_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

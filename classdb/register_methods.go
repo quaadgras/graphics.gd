@@ -6,6 +6,7 @@ import (
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/String"
 
 	EngineClass "graphics.gd/classdb/Engine"
 )
@@ -320,8 +321,12 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
 		case gd.PackedColorArray:
 			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
+		case String.Readable:
+			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalString(val)))
+		case String.Name:
+			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalStringName(val)))
 		default:
-			panic(fmt.Sprintf("gdextension: unsupported Go -> Godot type %v", method.Type().Out(0)))
+			panic(fmt.Sprintf("gdextension: unsupported Go -> Godot type %v", reflect.TypeOf(val)))
 		}
 	}
 }

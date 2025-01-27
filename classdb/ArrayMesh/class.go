@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
@@ -33,6 +34,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 The [ArrayMesh] is used to construct a [Mesh] by specifying the attributes as arrays.
@@ -94,7 +96,7 @@ type Any interface {
 Adds name for a blend shape that will be added with [method add_surface_from_arrays]. Must be called before surface is added.
 */
 func (self Instance) AddBlendShape(name string) { //gd:ArrayMesh.add_blend_shape
-	class(self).AddBlendShape(gd.NewStringName(name))
+	class(self).AddBlendShape(String.Name(String.New(name)))
 }
 
 /*
@@ -115,7 +117,7 @@ func (self Instance) GetBlendShapeName(index int) string { //gd:ArrayMesh.get_bl
 Sets the name of the blend shape at this index.
 */
 func (self Instance) SetBlendShapeName(index int, name string) { //gd:ArrayMesh.set_blend_shape_name
-	class(self).SetBlendShapeName(gd.Int(index), gd.NewStringName(name))
+	class(self).SetBlendShapeName(gd.Int(index), String.Name(String.New(name)))
 }
 
 /*
@@ -264,9 +266,9 @@ func (self Instance) SetShadowMesh(value [1]gdclass.ArrayMesh) {
 Adds name for a blend shape that will be added with [method add_surface_from_arrays]. Must be called before surface is added.
 */
 //go:nosplit
-func (self class) AddBlendShape(name gd.StringName) { //gd:ArrayMesh.add_blend_shape
+func (self class) AddBlendShape(name String.Name) { //gd:ArrayMesh.add_blend_shape
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_add_blend_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -289,12 +291,12 @@ func (self class) GetBlendShapeCount() gd.Int { //gd:ArrayMesh.get_blend_shape_c
 Returns the name of the blend shape at this index.
 */
 //go:nosplit
-func (self class) GetBlendShapeName(index gd.Int) gd.StringName { //gd:ArrayMesh.get_blend_shape_name
+func (self class) GetBlendShapeName(index gd.Int) String.Name { //gd:ArrayMesh.get_blend_shape_name
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_blend_shape_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -303,10 +305,10 @@ func (self class) GetBlendShapeName(index gd.Int) gd.StringName { //gd:ArrayMesh
 Sets the name of the blend shape at this index.
 */
 //go:nosplit
-func (self class) SetBlendShapeName(index gd.Int, name gd.StringName) { //gd:ArrayMesh.set_blend_shape_name
+func (self class) SetBlendShapeName(index gd.Int, name String.Name) { //gd:ArrayMesh.set_blend_shape_name
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_set_blend_shape_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

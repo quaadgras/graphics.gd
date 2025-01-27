@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/SkeletonModifier3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
@@ -31,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 This node uses hand tracking data from an [XRHandTracker] to pose the skeleton of a hand mesh.
@@ -70,7 +72,7 @@ func (self Instance) HandTracker() string {
 }
 
 func (self Instance) SetHandTracker(value string) {
-	class(self).SetHandTracker(gd.NewStringName(value))
+	class(self).SetHandTracker(String.Name(String.New(value)))
 }
 
 func (self Instance) BoneUpdate() gdclass.XRHandModifier3DBoneUpdate {
@@ -82,20 +84,20 @@ func (self Instance) SetBoneUpdate(value gdclass.XRHandModifier3DBoneUpdate) {
 }
 
 //go:nosplit
-func (self class) SetHandTracker(tracker_name gd.StringName) { //gd:XRHandModifier3D.set_hand_tracker
+func (self class) SetHandTracker(tracker_name String.Name) { //gd:XRHandModifier3D.set_hand_tracker
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(tracker_name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(tracker_name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_set_hand_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetHandTracker() gd.StringName { //gd:XRHandModifier3D.get_hand_tracker
+func (self class) GetHandTracker() String.Name { //gd:XRHandModifier3D.get_hand_tracker
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_get_hand_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

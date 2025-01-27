@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
@@ -31,6 +32,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 Contains a generic action which can be targeted from several types of inputs. Actions and their events can be set in the [b]Input Map[/b] tab in [b]Project > Project Settings[/b], or with the [InputMap] class.
@@ -70,7 +72,7 @@ func (self Instance) Action() string {
 }
 
 func (self Instance) SetAction(value string) {
-	class(self).SetAction(gd.NewStringName(value))
+	class(self).SetAction(String.Name(String.New(value)))
 }
 
 func (self Instance) SetPressed(value bool) {
@@ -94,20 +96,20 @@ func (self Instance) SetEventIndex(value int) {
 }
 
 //go:nosplit
-func (self class) SetAction(action gd.StringName) { //gd:InputEventAction.set_action
+func (self class) SetAction(action String.Name) { //gd:InputEventAction.set_action
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventAction.Bind_set_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAction() gd.StringName { //gd:InputEventAction.get_action
+func (self class) GetAction() String.Name { //gd:InputEventAction.get_action
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventAction.Bind_get_action, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

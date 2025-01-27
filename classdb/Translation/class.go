@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -29,6 +30,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 [Translation]s are resources that can be loaded and unloaded on demand. They map a collection of strings to their individual translations, and they also provide convenience methods for pluralization.
@@ -68,17 +70,17 @@ Virtual method to override [method get_plural_message].
 */
 func (Instance) _get_plural_message(impl func(ptr unsafe.Pointer, src_message string, src_plural_message string, n int, context string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var src_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(src_message)
-		var src_plural_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(src_plural_message)
+		var src_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(src_message))
+		var src_plural_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
+		defer pointers.End(gd.InternalStringName(src_plural_message))
 		var n = gd.UnsafeGet[gd.Int](p_args, 2)
 
-		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))
-		defer pointers.End(context)
+		var context = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3)))))
+		defer pointers.End(gd.InternalStringName(context))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, src_message.String(), src_plural_message.String(), int(n), context.String())
-		ptr, ok := pointers.End(gd.NewStringName(ret))
+		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
 
 		if !ok {
 			return
@@ -92,13 +94,13 @@ Virtual method to override [method get_message].
 */
 func (Instance) _get_message(impl func(ptr unsafe.Pointer, src_message string, context string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var src_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(src_message)
-		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(context)
+		var src_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(src_message))
+		var context = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
+		defer pointers.End(gd.InternalStringName(context))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, src_message.String(), context.String())
-		ptr, ok := pointers.End(gd.NewStringName(ret))
+		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
 
 		if !ok {
 			return
@@ -112,7 +114,7 @@ Adds a message if nonexistent, followed by its translation.
 An additional context could be used to specify the translation context or differentiate polysemic words.
 */
 func (self Instance) AddMessage(src_message string, xlated_message string) { //gd:Translation.add_message
-	class(self).AddMessage(gd.NewStringName(src_message), gd.NewStringName(xlated_message), gd.NewStringName(""))
+	class(self).AddMessage(String.Name(String.New(src_message)), String.Name(String.New(xlated_message)), String.Name(String.New("")))
 }
 
 /*
@@ -120,14 +122,14 @@ Adds a message involving plural translation if nonexistent, followed by its tran
 An additional context could be used to specify the translation context or differentiate polysemic words.
 */
 func (self Instance) AddPluralMessage(src_message string, xlated_messages []string) { //gd:Translation.add_plural_message
-	class(self).AddPluralMessage(gd.NewStringName(src_message), gd.NewPackedStringSlice(xlated_messages), gd.NewStringName(""))
+	class(self).AddPluralMessage(String.Name(String.New(src_message)), gd.NewPackedStringSlice(xlated_messages), String.Name(String.New("")))
 }
 
 /*
 Returns a message's translation.
 */
 func (self Instance) GetMessage(src_message string) string { //gd:Translation.get_message
-	return string(class(self).GetMessage(gd.NewStringName(src_message), gd.NewStringName("")).String())
+	return string(class(self).GetMessage(String.Name(String.New(src_message)), String.Name(String.New(""))).String())
 }
 
 /*
@@ -135,14 +137,14 @@ Returns a message's translation involving plurals.
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 */
 func (self Instance) GetPluralMessage(src_message string, src_plural_message string, n int) string { //gd:Translation.get_plural_message
-	return string(class(self).GetPluralMessage(gd.NewStringName(src_message), gd.NewStringName(src_plural_message), gd.Int(n), gd.NewStringName("")).String())
+	return string(class(self).GetPluralMessage(String.Name(String.New(src_message)), String.Name(String.New(src_plural_message)), gd.Int(n), String.Name(String.New(""))).String())
 }
 
 /*
 Erases a message.
 */
 func (self Instance) EraseMessage(src_message string) { //gd:Translation.erase_message
-	class(self).EraseMessage(gd.NewStringName(src_message), gd.NewStringName(""))
+	class(self).EraseMessage(String.Name(String.New(src_message)), String.Name(String.New("")))
 }
 
 /*
@@ -196,19 +198,19 @@ func (self Instance) SetLocale(value string) {
 /*
 Virtual method to override [method get_plural_message].
 */
-func (class) _get_plural_message(impl func(ptr unsafe.Pointer, src_message gd.StringName, src_plural_message gd.StringName, n gd.Int, context gd.StringName) gd.StringName) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_plural_message(impl func(ptr unsafe.Pointer, src_message String.Name, src_plural_message String.Name, n gd.Int, context String.Name) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var src_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(src_message)
-		var src_plural_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(src_plural_message)
+		var src_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(src_message))
+		var src_plural_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
+		defer pointers.End(gd.InternalStringName(src_plural_message))
 		var n = gd.UnsafeGet[gd.Int](p_args, 2)
 
-		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))
-		defer pointers.End(context)
+		var context = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3)))))
+		defer pointers.End(gd.InternalStringName(context))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, src_message, src_plural_message, n, context)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalStringName(ret))
 
 		if !ok {
 			return
@@ -220,15 +222,15 @@ func (class) _get_plural_message(impl func(ptr unsafe.Pointer, src_message gd.St
 /*
 Virtual method to override [method get_message].
 */
-func (class) _get_message(impl func(ptr unsafe.Pointer, src_message gd.StringName, context gd.StringName) gd.StringName) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_message(impl func(ptr unsafe.Pointer, src_message String.Name, context String.Name) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var src_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(src_message)
-		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(context)
+		var src_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		defer pointers.End(gd.InternalStringName(src_message))
+		var context = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
+		defer pointers.End(gd.InternalStringName(context))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, src_message, context)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalStringName(ret))
 
 		if !ok {
 			return
@@ -261,11 +263,11 @@ Adds a message if nonexistent, followed by its translation.
 An additional context could be used to specify the translation context or differentiate polysemic words.
 */
 //go:nosplit
-func (self class) AddMessage(src_message gd.StringName, xlated_message gd.StringName, context gd.StringName) { //gd:Translation.add_message
+func (self class) AddMessage(src_message String.Name, xlated_message String.Name, context String.Name) { //gd:Translation.add_message
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(src_message))
-	callframe.Arg(frame, pointers.Get(xlated_message))
-	callframe.Arg(frame, pointers.Get(context))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_message)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(xlated_message)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_add_message, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -276,11 +278,11 @@ Adds a message involving plural translation if nonexistent, followed by its tran
 An additional context could be used to specify the translation context or differentiate polysemic words.
 */
 //go:nosplit
-func (self class) AddPluralMessage(src_message gd.StringName, xlated_messages gd.PackedStringArray, context gd.StringName) { //gd:Translation.add_plural_message
+func (self class) AddPluralMessage(src_message String.Name, xlated_messages gd.PackedStringArray, context String.Name) { //gd:Translation.add_plural_message
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(src_message))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_message)))
 	callframe.Arg(frame, pointers.Get(xlated_messages))
-	callframe.Arg(frame, pointers.Get(context))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_add_plural_message, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -290,13 +292,13 @@ func (self class) AddPluralMessage(src_message gd.StringName, xlated_messages gd
 Returns a message's translation.
 */
 //go:nosplit
-func (self class) GetMessage(src_message gd.StringName, context gd.StringName) gd.StringName { //gd:Translation.get_message
+func (self class) GetMessage(src_message String.Name, context String.Name) String.Name { //gd:Translation.get_message
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(src_message))
-	callframe.Arg(frame, pointers.Get(context))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_message)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -306,15 +308,15 @@ Returns a message's translation involving plurals.
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 */
 //go:nosplit
-func (self class) GetPluralMessage(src_message gd.StringName, src_plural_message gd.StringName, n gd.Int, context gd.StringName) gd.StringName { //gd:Translation.get_plural_message
+func (self class) GetPluralMessage(src_message String.Name, src_plural_message String.Name, n gd.Int, context String.Name) String.Name { //gd:Translation.get_plural_message
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(src_message))
-	callframe.Arg(frame, pointers.Get(src_plural_message))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_message)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_plural_message)))
 	callframe.Arg(frame, n)
-	callframe.Arg(frame, pointers.Get(context))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_plural_message, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -323,10 +325,10 @@ func (self class) GetPluralMessage(src_message gd.StringName, src_plural_message
 Erases a message.
 */
 //go:nosplit
-func (self class) EraseMessage(src_message gd.StringName, context gd.StringName) { //gd:Translation.erase_message
+func (self class) EraseMessage(src_message String.Name, context String.Name) { //gd:Translation.erase_message
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(src_message))
-	callframe.Arg(frame, pointers.Get(context))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_message)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_erase_message, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

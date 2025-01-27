@@ -71,6 +71,10 @@ func (name Name) ConvertToSimple(val string) string {
 		return fmt.Sprintf("gd.DictionaryFromMap(%v)", val)
 	case "String.Readable":
 		return fmt.Sprintf("String.New(%v)", val)
+	case "Path.ToNode":
+		return fmt.Sprintf("Path.ToNode(String.New(%v))", val)
+	case "String.Name":
+		return fmt.Sprintf("String.Name(String.New(%v))", val)
 	case "gd.RID":
 		return fmt.Sprintf("gd.RID(%v)", val)
 	case "gd.String":
@@ -132,7 +136,7 @@ func (name Name) ConvertToGo(val string, simple string) string {
 		return fmt.Sprintf("gd.ArrayAs[%s](gd.InternalArray(%s))", simple, val)
 	}
 	switch name {
-	case "gd.String", "gd.StringName", "gd.NodePath", "String.Readable":
+	case "gd.String", "gd.StringName", "gd.NodePath", "String.Readable", "Path.ToNode", "String.Name":
 		return fmt.Sprintf("%v.String()", val)
 	case "gd.Error":
 		return fmt.Sprintf("gd.ToError(%v)", val)
@@ -177,6 +181,10 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 		return fmt.Sprintf("[1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(%s)})}", val)
 	case "Callable.Function":
 		return fmt.Sprintf("Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](%s)))", val)
+	case "Path.ToNode":
+		return fmt.Sprintf("Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](%s))))", val)
+	case "String.Name":
+		return fmt.Sprintf("String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](%s))))", val)
 	default:
 		_, argIsPtr := name.IsPointer()
 		if name == "Object" {
@@ -210,6 +218,10 @@ func (name Name) EndPointer(val string) string {
 		return fmt.Sprintf("pointers.End(gd.InternalDictionary(%v))", val)
 	case "Callable.Function":
 		return fmt.Sprintf("pointers.End(gd.InternalCallable(%v))", val)
+	case "Path.ToNode":
+		return fmt.Sprintf("pointers.End(gd.InternalNodePath(%v))", val)
+	case "String.Name":
+		return fmt.Sprintf("pointers.End(gd.InternalStringName(%v))", val)
 	default:
 		name := strings.TrimPrefix(string(name), "classdb.")
 		name = strings.TrimPrefix(name, "[1]gdclass.")
@@ -236,6 +248,10 @@ func (name Name) LoadOntoCallFrame(val string) string {
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalDictionary(%v)))\n", val)
 	case "Callable.Function":
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalCallable(%v)))\n", val)
+	case "Path.ToNode":
+		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalNodePath(%v)))\n", val)
+	case "String.Name":
+		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalStringName(%v)))\n", val)
 	}
 	_, argIsPtr := name.IsPointer()
 	if argIsPtr {
@@ -256,7 +272,7 @@ func (name Name) IsPointer() (string, bool) {
 	}
 	switch t {
 	case "String", "StringName", "NodePath",
-		"Dictionary.Any", "Array.Any", "String.Readable":
+		"Dictionary.Any", "Array.Any", "String.Readable", "Path.ToNode", "String.Name":
 		return "[1]gd.EnginePointer", true
 	case "Signal", "Signal.Any":
 		return "[2]uint64", true

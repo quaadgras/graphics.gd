@@ -15,6 +15,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Path"
 import "graphics.gd/classdb/CollisionObject2D"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
@@ -34,6 +35,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
+var _ Path.ToNode
 
 /*
 [Area2D] is a region of 2D space defined by one or multiple [CollisionShape2D] or [CollisionPolygon2D] child nodes. It detects when other [CollisionObject2D]s enter or exit it, and it also keeps track of which collision objects haven't exited it yet (i.e. which one are overlapping it).
@@ -234,7 +236,7 @@ func (self Instance) AudioBusName() string {
 }
 
 func (self Instance) SetAudioBusName(value string) {
-	class(self).SetAudioBusName(gd.NewStringName(value))
+	class(self).SetAudioBusName(String.Name(String.New(value)))
 }
 
 //go:nosplit
@@ -572,20 +574,20 @@ func (self class) OverlapsArea(area [1]gdclass.Node) bool { //gd:Area2D.overlaps
 }
 
 //go:nosplit
-func (self class) SetAudioBusName(name gd.StringName) { //gd:Area2D.set_audio_bus_name
+func (self class) SetAudioBusName(name String.Name) { //gd:Area2D.set_audio_bus_name
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_audio_bus_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAudioBusName() gd.StringName { //gd:Area2D.get_audio_bus_name
+func (self class) GetAudioBusName() String.Name { //gd:Area2D.get_audio_bus_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_audio_bus_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.StringName](r_ret.Get())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
