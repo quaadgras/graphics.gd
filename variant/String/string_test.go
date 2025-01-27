@@ -51,6 +51,33 @@ func TestFormat(t *testing.T) {
 	gdtests.Print(t, "User 42 is Godot.", String.Format("User 42 is Godot.", map[string]any{"id": 42, "name": "Godot"}))
 }
 
+func TestBaseDir(t *testing.T) {
+	var dir_path = String.Directory("/path/to/file.txt") // dir_path is "/path/to"
+
+	gdtests.That(t, dir_path, "/path/to")
+}
+
+func TestFileExtension(t *testing.T) {
+	var a = String.FileExtension("/path/to/file.txt") // a is "txt"
+	var b = String.FileExtension("cool.txt")          // b is "txt"
+	var c = String.FileExtension("cool.font.tres")    // c is "tres"
+	var d = String.FileExtension(".pack1")            // d is "pack1"
+
+	var e = String.FileExtension("file.txt.")  // e is ""
+	var f = String.FileExtension("file.txt..") // f is ""
+	var g = String.FileExtension("txt")        // g is ""
+	var h = String.FileExtension("")           // h is ""
+
+	gdtests.That(t, a, "txt")
+	gdtests.That(t, b, "txt")
+	gdtests.That(t, c, "tres")
+	gdtests.That(t, d, "pack1")
+	gdtests.That(t, e, "")
+	gdtests.That(t, f, "")
+	gdtests.That(t, g, "")
+	gdtests.That(t, h, "")
+}
+
 func TestFileName(t *testing.T) {
 	var file = String.FileName("/path/to/icon.png") // file is "icon.png"
 

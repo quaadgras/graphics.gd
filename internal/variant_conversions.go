@@ -13,7 +13,7 @@ import (
 	CallableType "graphics.gd/variant/Callable"
 	DictionaryType "graphics.gd/variant/Dictionary"
 	FloatType "graphics.gd/variant/Float"
-	"graphics.gd/variant/Path"
+	NodePathType "graphics.gd/variant/NodePath"
 	SignalType "graphics.gd/variant/Signal"
 	StringType "graphics.gd/variant/String"
 )
@@ -126,7 +126,7 @@ func NewVariant(v any) Variant {
 		Global.variant.FromType[TypeDictionary](ret, arg.Addr())
 	case reflect.String:
 		switch rtype {
-		case reflect.TypeFor[Path.ToNode]():
+		case reflect.TypeFor[NodePathType.String]():
 			var s = NewString(value.String()).NodePath()
 			var arg = callframe.Arg(frame, pointers.Get(s))
 			Global.variant.FromType[TypeNodePath](ret, arg.Addr())

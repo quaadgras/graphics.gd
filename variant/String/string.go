@@ -660,6 +660,11 @@ func Format[S Any](format S, args ...any) S { //gd:String.format
 	return As[S](result.String())
 }
 
+// Directory returns the base directory name if the string is a valid file path.
+func Directory[S Any](path S) S { //gd:String.get_base_dir
+	return As[S](filepath.Dir(As[string](path)))
+}
+
 // FileExtension returns the file extension without the leading period (.) if the string is a
 // valid file name or path. Otherwise, returns an empty string.
 func FileExtension[S Any](path S) S { //gd:String.get_extension
@@ -1347,7 +1352,7 @@ func TrimPrefix[S, P Any](s S, prefix P) S { //gd:String.trim_prefix
 }
 
 // TrimSuffix removes the given suffix from the end of the string, or returns the string unchanged.
-func TrimSuffix[S, P Any](s S, suffix P) S { //gd:String.trim_suffix
+func TrimSuffix[S Any](s S, suffix S) S { //gd:String.trim_suffix
 	return As[S](strings.TrimSuffix(As[string](s), As[string](suffix)))
 }
 
