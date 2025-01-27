@@ -4,6 +4,7 @@ package GDExtensionManager
 import "unsafe"
 import "sync"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 The GDExtensionManager loads, initializes, and keeps track of all available [GDExtension] libraries in the project.
@@ -164,11 +168,11 @@ func (self class) IsExtensionLoaded(path String.Readable) bool { //gd:GDExtensio
 Returns the file paths of all currently loaded extensions.
 */
 //go:nosplit
-func (self class) GetLoadedExtensions() gd.PackedStringArray { //gd:GDExtensionManager.get_loaded_extensions
+func (self class) GetLoadedExtensions() Packed.Strings { //gd:GDExtensionManager.get_loaded_extensions
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GDExtensionManager.Bind_get_loaded_extensions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

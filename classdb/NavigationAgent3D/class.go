@@ -3,6 +3,7 @@ package NavigationAgent3D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A 3D agent used to pathfind to a position while avoiding static and dynamic obstacles. The calculation can be used by the parent node to dynamically move it along the path. Requires navigation data to work correctly.
@@ -117,7 +121,7 @@ func (self Instance) GetCurrentNavigationResult() [1]gdclass.NavigationPathQuery
 Returns this agent's current path from start to finish in global coordinates. The path only updates when the target position is changed or the agent requires a repath. The path array is not intended to be used in direct path movement as the agent has its own internal path logic that would get corrupted by changing the path array manually. Use the intended [method get_next_path_position] once every physics frame to receive the next path point for the agents movement as this function also updates the internal path logic.
 */
 func (self Instance) GetCurrentNavigationPath() []Vector3.XYZ { //gd:NavigationAgent3D.get_current_navigation_path
-	return []Vector3.XYZ(class(self).GetCurrentNavigationPath().AsSlice())
+	return []Vector3.XYZ(slices.Collect(class(self).GetCurrentNavigationPath().Values()))
 }
 
 /*
@@ -972,11 +976,11 @@ func (self class) GetCurrentNavigationResult() [1]gdclass.NavigationPathQueryRes
 Returns this agent's current path from start to finish in global coordinates. The path only updates when the target position is changed or the agent requires a repath. The path array is not intended to be used in direct path movement as the agent has its own internal path logic that would get corrupted by changing the path array manually. Use the intended [method get_next_path_position] once every physics frame to receive the next path point for the agents movement as this function also updates the internal path logic.
 */
 //go:nosplit
-func (self class) GetCurrentNavigationPath() gd.PackedVector3Array { //gd:NavigationAgent3D.get_current_navigation_path
+func (self class) GetCurrentNavigationPath() Packed.Array[Vector3.XYZ] { //gd:NavigationAgent3D.get_current_navigation_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_current_navigation_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

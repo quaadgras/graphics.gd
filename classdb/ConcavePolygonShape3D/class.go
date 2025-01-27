@@ -3,6 +3,7 @@ package ConcavePolygonShape3D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector3"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A 3D trimesh shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D].
@@ -71,11 +75,11 @@ func New() Instance {
 }
 
 func (self Instance) Data() []Vector3.XYZ {
-	return []Vector3.XYZ(class(self).GetFaces().AsSlice())
+	return []Vector3.XYZ(slices.Collect(class(self).GetFaces().Values()))
 }
 
 func (self Instance) SetData(value []Vector3.XYZ) {
-	class(self).SetFaces(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&value))))
+	class(self).SetFaces(Packed.New(value...))
 }
 
 func (self Instance) BackfaceCollision() bool {
@@ -90,9 +94,9 @@ func (self Instance) SetBackfaceCollision(value bool) {
 Sets the faces of the trimesh shape from an array of vertices. The [param faces] array should be composed of triples such that each triple of vertices defines a triangle.
 */
 //go:nosplit
-func (self class) SetFaces(faces gd.PackedVector3Array) { //gd:ConcavePolygonShape3D.set_faces
+func (self class) SetFaces(faces Packed.Array[Vector3.XYZ]) { //gd:ConcavePolygonShape3D.set_faces
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(faces))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](faces))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConcavePolygonShape3D.Bind_set_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -102,11 +106,11 @@ func (self class) SetFaces(faces gd.PackedVector3Array) { //gd:ConcavePolygonSha
 Returns the faces of the trimesh shape as an array of vertices. The array (of length divisible by three) is naturally divided into triples; each triple of vertices defines a triangle.
 */
 //go:nosplit
-func (self class) GetFaces() gd.PackedVector3Array { //gd:ConcavePolygonShape3D.get_faces
+func (self class) GetFaces() Packed.Array[Vector3.XYZ] { //gd:ConcavePolygonShape3D.get_faces
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConcavePolygonShape3D.Bind_get_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

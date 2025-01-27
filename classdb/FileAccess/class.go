@@ -3,6 +3,7 @@ package FileAccess
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This class can be used to permanently store data in the user device's file system and to read from it. This is useful for store game save data or player configuration files.
@@ -98,7 +102,7 @@ Returns [code]null[/code] if opening the file failed. You can use [method get_op
 */
 func OpenEncrypted(path string, mode_flags gdclass.FileAccessModeFlags, key []byte) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
 	self := Instance{}
-	return [1]gdclass.FileAccess(class(self).OpenEncrypted(String.New(path), mode_flags, gd.NewPackedByteSlice(key)))
+	return [1]gdclass.FileAccess(class(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...))))
 }
 
 /*
@@ -451,7 +455,7 @@ func (self Instance) StoreReal(value Float.X) { //gd:FileAccess.store_real
 Stores the given array of bytes in the file.
 */
 func (self Instance) StoreBuffer(buffer []byte) { //gd:FileAccess.store_buffer
-	class(self).StoreBuffer(gd.NewPackedByteSlice(buffer))
+	class(self).StoreBuffer(Packed.Bytes(Packed.New(buffer...)))
 }
 
 /*
@@ -466,7 +470,7 @@ Store the given [PackedStringArray] in the file as a line formatted in the CSV (
 Text will be encoded as UTF-8.
 */
 func (self Instance) StoreCsvLine(values []string) { //gd:FileAccess.store_csv_line
-	class(self).StoreCsvLine(gd.NewPackedStringSlice(values), String.New(","))
+	class(self).StoreCsvLine(Packed.MakeStrings(values...), String.New(","))
 }
 
 /*
@@ -631,11 +635,11 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
 //go:nosplit
-func (self class) OpenEncrypted(path String.Readable, mode_flags gdclass.FileAccessModeFlags, key gd.PackedByteArray) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
+func (self class) OpenEncrypted(path String.Readable, mode_flags gdclass.FileAccessModeFlags, key Packed.Bytes) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, mode_flags)
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open_encrypted, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret.Get())}
@@ -696,12 +700,12 @@ Returns the whole [param path] file contents as a [PackedByteArray] without any 
 Returns an empty [PackedByteArray] if an error occurred while opening the file. You can use [method get_open_error] to check the error that occurred.
 */
 //go:nosplit
-func (self class) GetFileAsBytes(path String.Readable) gd.PackedByteArray { //gd:FileAccess.get_file_as_bytes
+func (self class) GetFileAsBytes(path String.Readable) Packed.Bytes { //gd:FileAccess.get_file_as_bytes
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_file_as_bytes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -958,12 +962,12 @@ func (self class) GetReal() gd.Float { //gd:FileAccess.get_real
 Returns next [param length] bytes of the file as a [PackedByteArray].
 */
 //go:nosplit
-func (self class) GetBuffer(length gd.Int) gd.PackedByteArray { //gd:FileAccess.get_buffer
+func (self class) GetBuffer(length gd.Int) Packed.Bytes { //gd:FileAccess.get_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -994,12 +998,12 @@ Alice,"I thought you'd reply with ""Hello, world""."
 Note how the second line can omit the enclosing quotes as it does not include the delimiter. However it [i]could[/i] very well use quotes, it was only written without for demonstration purposes. The third line must use [code]""[/code] for each quotation mark that needs to be interpreted as such instead of the end of a text value.
 */
 //go:nosplit
-func (self class) GetCsvLine(delim String.Readable) gd.PackedStringArray { //gd:FileAccess.get_csv_line
+func (self class) GetCsvLine(delim String.Readable) Packed.Strings { //gd:FileAccess.get_csv_line
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(delim)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_csv_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1222,9 +1226,9 @@ func (self class) StoreReal(value gd.Float) { //gd:FileAccess.store_real
 Stores the given array of bytes in the file.
 */
 //go:nosplit
-func (self class) StoreBuffer(buffer gd.PackedByteArray) { //gd:FileAccess.store_buffer
+func (self class) StoreBuffer(buffer Packed.Bytes) { //gd:FileAccess.store_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1247,9 +1251,9 @@ Store the given [PackedStringArray] in the file as a line formatted in the CSV (
 Text will be encoded as UTF-8.
 */
 //go:nosplit
-func (self class) StoreCsvLine(values gd.PackedStringArray, delim String.Readable) { //gd:FileAccess.store_csv_line
+func (self class) StoreCsvLine(values Packed.Strings, delim String.Readable) { //gd:FileAccess.store_csv_line
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(values))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(values)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(delim)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_csv_line, self.AsObject(), frame.Array(0), r_ret.Addr())

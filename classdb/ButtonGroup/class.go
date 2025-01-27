@@ -3,6 +3,7 @@ package ButtonGroup
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A group of [BaseButton]-derived buttons. The buttons in a [ButtonGroup] are treated like radio buttons: No more than one button can be pressed at a time. Some types of buttons (such as [CheckBox]) may have a special appearance in this state.

@@ -3,6 +3,7 @@ package ConfigFile
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +32,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This helper class can be used to store [Variant] values on the filesystem using INI-style formatting. The stored values are identified by a section and a key:
@@ -225,7 +229,7 @@ Loads the encrypted config file specified as a parameter, using the provided [pa
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) LoadEncrypted(path string, key []byte) error { //gd:ConfigFile.load_encrypted
-	return error(gd.ToError(class(self).LoadEncrypted(String.New(path), gd.NewPackedByteSlice(key))))
+	return error(gd.ToError(class(self).LoadEncrypted(String.New(path), Packed.Bytes(Packed.New(key...)))))
 }
 
 /*
@@ -241,7 +245,7 @@ Saves the contents of the [ConfigFile] object to the AES-256 encrypted file spec
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) SaveEncrypted(path string, key []byte) error { //gd:ConfigFile.save_encrypted
-	return error(gd.ToError(class(self).SaveEncrypted(String.New(path), gd.NewPackedByteSlice(key))))
+	return error(gd.ToError(class(self).SaveEncrypted(String.New(path), Packed.Bytes(Packed.New(key...)))))
 }
 
 /*
@@ -341,11 +345,11 @@ func (self class) HasSectionKey(section String.Readable, key String.Readable) bo
 Returns an array of all defined section identifiers.
 */
 //go:nosplit
-func (self class) GetSections() gd.PackedStringArray { //gd:ConfigFile.get_sections
+func (self class) GetSections() Packed.Strings { //gd:ConfigFile.get_sections
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_get_sections, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -354,12 +358,12 @@ func (self class) GetSections() gd.PackedStringArray { //gd:ConfigFile.get_secti
 Returns an array of all defined key identifiers in the specified section. Raises an error and returns an empty array if the section does not exist.
 */
 //go:nosplit
-func (self class) GetSectionKeys(section String.Readable) gd.PackedStringArray { //gd:ConfigFile.get_section_keys
+func (self class) GetSectionKeys(section String.Readable) Packed.Strings { //gd:ConfigFile.get_section_keys
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_get_section_keys, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -452,10 +456,10 @@ Loads the encrypted config file specified as a parameter, using the provided [pa
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) LoadEncrypted(path String.Readable, key gd.PackedByteArray) gd.Error { //gd:ConfigFile.load_encrypted
+func (self class) LoadEncrypted(path String.Readable, key Packed.Bytes) gd.Error { //gd:ConfigFile.load_encrypted
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load_encrypted, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -484,10 +488,10 @@ Saves the contents of the [ConfigFile] object to the AES-256 encrypted file spec
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) SaveEncrypted(path String.Readable, key gd.PackedByteArray) gd.Error { //gd:ConfigFile.save_encrypted
+func (self class) SaveEncrypted(path String.Readable, key Packed.Bytes) gd.Error { //gd:ConfigFile.save_encrypted
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save_encrypted, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

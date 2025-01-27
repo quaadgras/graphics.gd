@@ -3,6 +3,7 @@ package XMLParser
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +32,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Provides a low-level interface for creating parsers for [url=https://en.wikipedia.org/wiki/XML]XML[/url] files. This class can serve as base to make custom XML parsers.
@@ -198,7 +202,7 @@ func (self Instance) Open(file string) error { //gd:XMLParser.open
 Opens an XML raw [param buffer] for parsing. This method returns an error code.
 */
 func (self Instance) OpenBuffer(buffer []byte) error { //gd:XMLParser.open_buffer
-	return error(gd.ToError(class(self).OpenBuffer(gd.NewPackedByteSlice(buffer))))
+	return error(gd.ToError(class(self).OpenBuffer(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -439,9 +443,9 @@ func (self class) Open(file String.Readable) gd.Error { //gd:XMLParser.open
 Opens an XML raw [param buffer] for parsing. This method returns an error code.
 */
 //go:nosplit
-func (self class) OpenBuffer(buffer gd.PackedByteArray) gd.Error { //gd:XMLParser.open_buffer
+func (self class) OpenBuffer(buffer Packed.Bytes) gd.Error { //gd:XMLParser.open_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_open_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

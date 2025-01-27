@@ -4,6 +4,7 @@ package AudioServer
 import "unsafe"
 import "sync"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [AudioServer] is a low-level server interface for audio access. It is in charge of creating sample data (playable audio) as well as its playback via a voice interface.
@@ -883,11 +887,11 @@ func (self class) GetMixRate() gd.Float { //gd:AudioServer.get_mix_rate
 Returns the names of all audio output devices detected on the system.
 */
 //go:nosplit
-func (self class) GetOutputDeviceList() gd.PackedStringArray { //gd:AudioServer.get_output_device_list
+func (self class) GetOutputDeviceList() Packed.Strings { //gd:AudioServer.get_output_device_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_output_device_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -956,11 +960,11 @@ Returns the names of all audio input devices detected on the system.
 [b]Note:[/b] [member ProjectSettings.audio/driver/enable_input] must be [code]true[/code] for audio input to work. See also that setting's description for caveats related to permissions and operating system privacy settings.
 */
 //go:nosplit
-func (self class) GetInputDeviceList() gd.PackedStringArray { //gd:AudioServer.get_input_device_list
+func (self class) GetInputDeviceList() Packed.Strings { //gd:AudioServer.get_input_device_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_input_device_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

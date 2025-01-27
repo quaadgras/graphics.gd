@@ -3,6 +3,7 @@ package GLTFMesh
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 GLTFMesh handles 3D mesh data imported from GLTF files. It includes properties for blend channels, blend weights, instance materials, and the mesh itself.
@@ -97,11 +101,11 @@ func (self Instance) SetMesh(value [1]gdclass.ImporterMesh) {
 }
 
 func (self Instance) BlendWeights() []float32 {
-	return []float32(class(self).GetBlendWeights().AsSlice())
+	return []float32(slices.Collect(class(self).GetBlendWeights().Values()))
 }
 
 func (self Instance) SetBlendWeights(value []float32) {
-	class(self).SetBlendWeights(gd.NewPackedFloat32Slice(value))
+	class(self).SetBlendWeights(Packed.New(value...))
 }
 
 func (self Instance) InstanceMaterials() [][1]gdclass.Material {
@@ -151,19 +155,19 @@ func (self class) SetMesh(mesh [1]gdclass.ImporterMesh) { //gd:GLTFMesh.set_mesh
 }
 
 //go:nosplit
-func (self class) GetBlendWeights() gd.PackedFloat32Array { //gd:GLTFMesh.get_blend_weights
+func (self class) GetBlendWeights() Packed.Array[float32] { //gd:GLTFMesh.get_blend_weights
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_blend_weights, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedFloat32Array](r_ret.Get())
+	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetBlendWeights(blend_weights gd.PackedFloat32Array) { //gd:GLTFMesh.set_blend_weights
+func (self class) SetBlendWeights(blend_weights Packed.Array[float32]) { //gd:GLTFMesh.set_blend_weights
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(blend_weights))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](blend_weights))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_set_blend_weights, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

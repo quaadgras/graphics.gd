@@ -3,6 +3,7 @@ package GLTFNode
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Represents a GLTF node. GLTF nodes may have names, transforms, children (other GLTF nodes), and more specialized properties (represented by their own classes).
@@ -173,11 +177,11 @@ func (self Instance) SetScale(value Vector3.XYZ) {
 }
 
 func (self Instance) Children() []int32 {
-	return []int32(class(self).GetChildren().AsSlice())
+	return []int32(slices.Collect(class(self).GetChildren().Values()))
 }
 
 func (self Instance) SetChildren(value []int32) {
-	class(self).SetChildren(gd.NewPackedInt32Slice(value))
+	class(self).SetChildren(Packed.New(value...))
 }
 
 func (self Instance) Light() int {
@@ -398,19 +402,19 @@ func (self class) SetScale(scale gd.Vector3) { //gd:GLTFNode.set_scale
 }
 
 //go:nosplit
-func (self class) GetChildren() gd.PackedInt32Array { //gd:GLTFNode.get_children
+func (self class) GetChildren() Packed.Array[int32] { //gd:GLTFNode.get_children
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_children, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetChildren(children gd.PackedInt32Array) { //gd:GLTFNode.set_children
+func (self class) SetChildren(children Packed.Array[int32]) { //gd:GLTFNode.set_children
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(children))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](children))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_children, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

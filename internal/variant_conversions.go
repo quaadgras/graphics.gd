@@ -13,6 +13,7 @@ import (
 	CallableType "graphics.gd/variant/Callable"
 	DictionaryType "graphics.gd/variant/Dictionary"
 	FloatType "graphics.gd/variant/Float"
+	PackedType "graphics.gd/variant/Packed"
 	"graphics.gd/variant/Path"
 	SignalType "graphics.gd/variant/Signal"
 	StringType "graphics.gd/variant/String"
@@ -145,6 +146,39 @@ func NewVariant(v any) Variant {
 		}
 	case reflect.Struct:
 		switch val := v.(type) {
+		case PackedType.Bytes:
+			var arg = callframe.Arg(frame, pointers.Get(InternalPacked[PackedByteArray, byte](PackedType.Array[byte](val))))
+			Global.variant.FromType[TypePackedByteArray](ret, arg.Addr())
+		case PackedType.Array[byte]:
+			var arg = callframe.Arg(frame, pointers.Get(InternalPacked[PackedByteArray, byte](val)))
+			Global.variant.FromType[TypePackedByteArray](ret, arg.Addr())
+		case PackedType.Array[int32]:
+			var arg = callframe.Arg(frame, pointers.Get(InternalPacked[PackedInt32Array, int32](val)))
+			Global.variant.FromType[TypePackedInt32Array](ret, arg.Addr())
+		case PackedType.Array[int64]:
+			var arg = callframe.Arg(frame, pointers.Get(InternalPacked[PackedInt64Array, int64](val)))
+			Global.variant.FromType[TypePackedInt64Array](ret, arg.Addr())
+		case PackedType.Array[float32]:
+			var arg = callframe.Arg(frame, pointers.Get(InternalPacked[PackedFloat32Array, float32](val)))
+			Global.variant.FromType[TypePackedFloat32Array](ret, arg.Addr())
+		case PackedType.Array[float64]:
+			var arg = callframe.Arg(frame, pointers.Get(InternalPacked[PackedFloat64Array, float64](val)))
+			Global.variant.FromType[TypePackedFloat64Array](ret, arg.Addr())
+		case PackedType.Strings:
+			var arg = callframe.Arg(frame, pointers.Get(InternalPackedStrings(val)))
+			Global.variant.FromType[TypePackedStringArray](ret, arg.Addr())
+		case PackedType.Array[Vector2]:
+			var arg = callframe.Arg(frame, pointers.Get(InternalPacked[PackedVector2Array, Vector2](val)))
+			Global.variant.FromType[TypePackedVector2Array](ret, arg.Addr())
+		case PackedType.Array[Vector3]:
+			var arg = callframe.Arg(frame, pointers.Get(InternalPacked[PackedVector3Array, Vector3](val)))
+			Global.variant.FromType[TypePackedVector3Array](ret, arg.Addr())
+		case PackedType.Array[Color]:
+			var arg = callframe.Arg(frame, pointers.Get(InternalPacked[PackedColorArray, Color](val)))
+			Global.variant.FromType[TypePackedColorArray](ret, arg.Addr())
+		case PackedType.Array[Vector4]:
+			var arg = callframe.Arg(frame, pointers.Get(InternalPacked[PackedVector4Array, Vector4](val)))
+			Global.variant.FromType[TypePackedVector4Array](ret, arg.Addr())
 		case ArrayType.Any:
 			var arg = callframe.Arg(frame, pointers.Get(InternalArray(val)))
 			Global.variant.FromType[TypeArray](ret, arg.Addr())
@@ -442,25 +476,35 @@ func (variant Variant) Interface() any {
 		array := variantAsPointerType[Array](variant, vtype)
 		return ArrayType.Through(ArrayProxy[VariantPkg.Any]{}, pointers.Pack(array))
 	case TypePackedByteArray:
-		return variantAsPointerType[PackedByteArray](variant, vtype)
+		array := variantAsPointerType[PackedByteArray](variant, vtype)
+		return PackedType.Bytes(ArrayType.Through(PackedProxy[PackedByteArray, byte]{}, pointers.Pack(array)))
 	case TypePackedInt32Array:
-		return variantAsPointerType[PackedInt32Array](variant, vtype)
+		array := variantAsPointerType[PackedInt32Array](variant, vtype)
+		return PackedType.Array[int32](ArrayType.Through(PackedProxy[PackedInt32Array, int32]{}, pointers.Pack(array)))
 	case TypePackedInt64Array:
-		return variantAsPointerType[PackedInt64Array](variant, vtype)
+		array := variantAsPointerType[PackedInt64Array](variant, vtype)
+		return PackedType.Array[int64](ArrayType.Through(PackedProxy[PackedInt64Array, int64]{}, pointers.Pack(array)))
 	case TypePackedFloat32Array:
-		return variantAsPointerType[PackedFloat32Array](variant, vtype)
+		array := variantAsPointerType[PackedFloat32Array](variant, vtype)
+		return PackedType.Array[float32](ArrayType.Through(PackedProxy[PackedFloat32Array, float32]{}, pointers.Pack(array)))
 	case TypePackedFloat64Array:
-		return variantAsPointerType[PackedFloat64Array](variant, vtype)
+		array := variantAsPointerType[PackedFloat64Array](variant, vtype)
+		return PackedType.Array[float64](ArrayType.Through(PackedProxy[PackedFloat64Array, float64]{}, pointers.Pack(array)))
 	case TypePackedStringArray:
-		return variantAsPointerType[PackedStringArray](variant, vtype)
+		array := variantAsPointerType[PackedStringArray](variant, vtype)
+		return PackedType.Strings(ArrayType.Through(PackedStringArrayProxy{}, pointers.Pack(array)))
 	case TypePackedVector2Array:
-		return variantAsPointerType[PackedVector2Array](variant, vtype)
+		array := variantAsPointerType[PackedVector2Array](variant, vtype)
+		return PackedType.Array[Vector2](ArrayType.Through(PackedProxy[PackedVector2Array, Vector2]{}, pointers.Pack(array)))
 	case TypePackedVector3Array:
-		return variantAsPointerType[PackedVector3Array](variant, vtype)
+		array := variantAsPointerType[PackedVector3Array](variant, vtype)
+		return PackedType.Array[Vector3](ArrayType.Through(PackedProxy[PackedVector3Array, Vector3]{}, pointers.Pack(array)))
 	case TypePackedVector4Array:
-		return variantAsPointerType[PackedVector4Array](variant, vtype)
+		array := variantAsPointerType[PackedVector4Array](variant, vtype)
+		return PackedType.Array[Vector4](ArrayType.Through(PackedProxy[PackedVector4Array, Vector4]{}, pointers.Pack(array)))
 	case TypePackedColorArray:
-		return variantAsPointerType[PackedColorArray](variant, vtype)
+		array := variantAsPointerType[PackedColorArray](variant, vtype)
+		return PackedType.Array[Color](ArrayType.Through(PackedProxy[PackedColorArray, Color]{}, pointers.Pack(array)))
 	default:
 		panic("gd.Variant.Interface: invalid variant type " + fmt.Sprint(vtype))
 	}

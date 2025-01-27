@@ -3,6 +3,7 @@ package EditorNode3DGizmoPlugin
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Plane"
@@ -35,6 +37,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [EditorNode3DGizmoPlugin] allows you to define a new type of Gizmo. There are two main ways to do so: extending [EditorNode3DGizmoPlugin] for the simpler gizmos, or creating a new [EditorNode3DGizmo] type. See the tutorial in the documentation for more info.
@@ -405,7 +409,7 @@ func (Instance) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, gizmo
 		defer pointers.End(gd.InternalArray(frustum_planes))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gizmo, camera, gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(frustum_planes)))
-		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -456,14 +460,14 @@ func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, gizmo [1]gdclass
 		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(gizmo[0])
-		var ids = pointers.New[gd.PackedInt32Array](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
-		defer pointers.End(ids)
+		var ids = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ids))
 		var restores = Array.Through(gd.ArrayProxy[gd.Transform3D]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalArray(restores))
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, gizmo, ids.AsSlice(), gd.ArrayAs[[]Transform3D.BasisOrigin](gd.InternalArray(restores)), cancel)
+		impl(self, gizmo, slices.Collect(ids.Values()), gd.ArrayAs[[]Transform3D.BasisOrigin](gd.InternalArray(restores)), cancel)
 	}
 }
 
@@ -768,7 +772,7 @@ func (class) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, gizmo [1]gdc
 /*
 Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and [param frustum_planes], this method should return which subgizmos are contained within the frustums. The [param frustum_planes] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, these identifiers can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos]. Called for this plugin's active gizmos.
 */
-func (class) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, frustum_planes Array.Contains[gd.Plane]) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, frustum_planes Array.Contains[gd.Plane]) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -780,7 +784,7 @@ func (class) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, gizmo [1
 		defer pointers.End(gd.InternalArray(frustum_planes))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gizmo, camera, frustum_planes)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
 		if !ok {
 			return
@@ -826,13 +830,13 @@ func (class) _set_subgizmo_transform(impl func(ptr unsafe.Pointer, gizmo [1]gdcl
 Override this method to commit a group of subgizmos being edited (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the [param restores] transforms as "undo".
 If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action. As with all subgizmo methods, transforms are given in local space respect to the gizmo's Node3D. Called for this plugin's active gizmos.
 */
-func (class) _commit_subgizmos(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.EditorNode3DGizmo, ids gd.PackedInt32Array, restores Array.Contains[gd.Transform3D], cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _commit_subgizmos(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.EditorNode3DGizmo, ids Packed.Array[int32], restores Array.Contains[gd.Transform3D], cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(gizmo[0])
-		var ids = pointers.New[gd.PackedInt32Array](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
-		defer pointers.End(ids)
+		var ids = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ids))
 		var restores = Array.Through(gd.ArrayProxy[gd.Transform3D]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalArray(restores))
 		var cancel = gd.UnsafeGet[bool](p_args, 3)

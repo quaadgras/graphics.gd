@@ -3,6 +3,7 @@ package Curve3D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This class describes a Bézier curve in 3D space. It is mainly used to give a shape to a [Path3D], but can be manually sampled for other purposes.
@@ -177,14 +181,14 @@ func (self Instance) SampleBakedUpVector(offset Float.X) Vector3.XYZ { //gd:Curv
 Returns the cache of points as a [PackedVector3Array].
 */
 func (self Instance) GetBakedPoints() []Vector3.XYZ { //gd:Curve3D.get_baked_points
-	return []Vector3.XYZ(class(self).GetBakedPoints().AsSlice())
+	return []Vector3.XYZ(slices.Collect(class(self).GetBakedPoints().Values()))
 }
 
 /*
 Returns the cache of tilts as a [PackedFloat32Array].
 */
 func (self Instance) GetBakedTilts() []float32 { //gd:Curve3D.get_baked_tilts
-	return []float32(class(self).GetBakedTilts().AsSlice())
+	return []float32(slices.Collect(class(self).GetBakedTilts().Values()))
 }
 
 /*
@@ -192,7 +196,7 @@ Returns the cache of up vectors as a [PackedVector3Array].
 If [member up_vector_enabled] is [code]false[/code], the cache will be empty.
 */
 func (self Instance) GetBakedUpVectors() []Vector3.XYZ { //gd:Curve3D.get_baked_up_vectors
-	return []Vector3.XYZ(class(self).GetBakedUpVectors().AsSlice())
+	return []Vector3.XYZ(slices.Collect(class(self).GetBakedUpVectors().Values()))
 }
 
 /*
@@ -218,7 +222,7 @@ This approximation makes straight segments between each point, then subdivides t
 [param tolerance_degrees] controls how many degrees the midpoint of a segment may deviate from the real curve, before the segment has to be subdivided.
 */
 func (self Instance) Tessellate() []Vector3.XYZ { //gd:Curve3D.tessellate
-	return []Vector3.XYZ(class(self).Tessellate(gd.Int(5), gd.Float(4)).AsSlice())
+	return []Vector3.XYZ(slices.Collect(class(self).Tessellate(gd.Int(5), gd.Float(4)).Values()))
 }
 
 /*
@@ -226,7 +230,7 @@ Returns a list of points along the curve, with almost uniform density. [param ma
 [param tolerance_length] controls the maximal distance between two neighboring points, before the segment has to be subdivided.
 */
 func (self Instance) TessellateEvenLength() []Vector3.XYZ { //gd:Curve3D.tessellate_even_length
-	return []Vector3.XYZ(class(self).TessellateEvenLength(gd.Int(5), gd.Float(0.2)).AsSlice())
+	return []Vector3.XYZ(slices.Collect(class(self).TessellateEvenLength(gd.Int(5), gd.Float(0.2)).Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -572,11 +576,11 @@ func (self class) SampleBakedUpVector(offset gd.Float, apply_tilt bool) gd.Vecto
 Returns the cache of points as a [PackedVector3Array].
 */
 //go:nosplit
-func (self class) GetBakedPoints() gd.PackedVector3Array { //gd:Curve3D.get_baked_points
+func (self class) GetBakedPoints() Packed.Array[Vector3.XYZ] { //gd:Curve3D.get_baked_points
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_points, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -585,11 +589,11 @@ func (self class) GetBakedPoints() gd.PackedVector3Array { //gd:Curve3D.get_bake
 Returns the cache of tilts as a [PackedFloat32Array].
 */
 //go:nosplit
-func (self class) GetBakedTilts() gd.PackedFloat32Array { //gd:Curve3D.get_baked_tilts
+func (self class) GetBakedTilts() Packed.Array[float32] { //gd:Curve3D.get_baked_tilts
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_tilts, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedFloat32Array](r_ret.Get())
+	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -599,11 +603,11 @@ Returns the cache of up vectors as a [PackedVector3Array].
 If [member up_vector_enabled] is [code]false[/code], the cache will be empty.
 */
 //go:nosplit
-func (self class) GetBakedUpVectors() gd.PackedVector3Array { //gd:Curve3D.get_baked_up_vectors
+func (self class) GetBakedUpVectors() Packed.Array[Vector3.XYZ] { //gd:Curve3D.get_baked_up_vectors
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_up_vectors, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -645,13 +649,13 @@ This approximation makes straight segments between each point, then subdivides t
 [param tolerance_degrees] controls how many degrees the midpoint of a segment may deviate from the real curve, before the segment has to be subdivided.
 */
 //go:nosplit
-func (self class) Tessellate(max_stages gd.Int, tolerance_degrees gd.Float) gd.PackedVector3Array { //gd:Curve3D.tessellate
+func (self class) Tessellate(max_stages gd.Int, tolerance_degrees gd.Float) Packed.Array[Vector3.XYZ] { //gd:Curve3D.tessellate
 	var frame = callframe.New()
 	callframe.Arg(frame, max_stages)
 	callframe.Arg(frame, tolerance_degrees)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_tessellate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -661,13 +665,13 @@ Returns a list of points along the curve, with almost uniform density. [param ma
 [param tolerance_length] controls the maximal distance between two neighboring points, before the segment has to be subdivided.
 */
 //go:nosplit
-func (self class) TessellateEvenLength(max_stages gd.Int, tolerance_length gd.Float) gd.PackedVector3Array { //gd:Curve3D.tessellate_even_length
+func (self class) TessellateEvenLength(max_stages gd.Int, tolerance_length gd.Float) Packed.Array[Vector3.XYZ] { //gd:Curve3D.tessellate_even_length
 	var frame = callframe.New()
 	callframe.Arg(frame, max_stages)
 	callframe.Arg(frame, tolerance_length)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_tessellate_even_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

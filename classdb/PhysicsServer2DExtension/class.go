@@ -3,6 +3,7 @@ package PhysicsServer2DExtension
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This class extends [PhysicsServer2D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
@@ -878,7 +882,7 @@ func (Instance) _space_get_contacts(impl func(ptr unsafe.Pointer, space RID.Any)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space)
-		ptr, ok := pointers.End(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&ret))))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -2907,13 +2911,13 @@ func (class) _space_set_debug_contacts(impl func(ptr unsafe.Pointer, space gd.RI
 Should return the positions of all contacts that have occurred during the last physics step in the given [param space]. See also [method _space_get_contact_count] and [method _space_set_debug_contacts].
 Overridable version of [PhysicsServer2D]'s internal [code]space_get_contacts[/code] method.
 */
-func (class) _space_get_contacts(impl func(ptr unsafe.Pointer, space gd.RID) gd.PackedVector2Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _space_get_contacts(impl func(ptr unsafe.Pointer, space gd.RID) Packed.Array[Vector2.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var space = gd.UnsafeGet[gd.RID](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](ret))
 
 		if !ok {
 			return

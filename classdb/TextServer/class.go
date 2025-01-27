@@ -3,6 +3,7 @@ package TextServer
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2i"
@@ -37,6 +39,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [TextServer] is the API backend for managing fonts and rendering text.
@@ -165,7 +169,7 @@ func (self Instance) CreateFontLinkedVariation(font_rid RID.Font) RID.Font { //g
 Sets font source data, e.g contents of the dynamic font source file.
 */
 func (self Instance) FontSetData(font_rid RID.Font, data []byte) { //gd:TextServer.font_set_data
-	class(self).FontSetData(gd.RID(font_rid), gd.NewPackedByteSlice(data))
+	class(self).FontSetData(gd.RID(font_rid), Packed.Bytes(Packed.New(data...)))
 }
 
 /*
@@ -655,21 +659,21 @@ func (self Instance) FontGetTextureImage(font_rid RID.Font, size Vector2i.XY, te
 Sets array containing glyph packing data.
 */
 func (self Instance) FontSetTextureOffsets(font_rid RID.Font, size Vector2i.XY, texture_index int, offset []int32) { //gd:TextServer.font_set_texture_offsets
-	class(self).FontSetTextureOffsets(gd.RID(font_rid), gd.Vector2i(size), gd.Int(texture_index), gd.NewPackedInt32Slice(offset))
+	class(self).FontSetTextureOffsets(gd.RID(font_rid), gd.Vector2i(size), gd.Int(texture_index), Packed.New(offset...))
 }
 
 /*
 Returns array containing glyph packing data.
 */
 func (self Instance) FontGetTextureOffsets(font_rid RID.Font, size Vector2i.XY, texture_index int) []int32 { //gd:TextServer.font_get_texture_offsets
-	return []int32(class(self).FontGetTextureOffsets(gd.RID(font_rid), gd.Vector2i(size), gd.Int(texture_index)).AsSlice())
+	return []int32(slices.Collect(class(self).FontGetTextureOffsets(gd.RID(font_rid), gd.Vector2i(size), gd.Int(texture_index)).Values()))
 }
 
 /*
 Returns list of rendered glyphs in the cache entry.
 */
 func (self Instance) FontGetGlyphList(font_rid RID.Font, size Vector2i.XY) []int32 { //gd:TextServer.font_get_glyph_list
-	return []int32(class(self).FontGetGlyphList(gd.RID(font_rid), gd.Vector2i(size)).AsSlice())
+	return []int32(slices.Collect(class(self).FontGetGlyphList(gd.RID(font_rid), gd.Vector2i(size)).Values()))
 }
 
 /*
@@ -1207,7 +1211,7 @@ func (self Instance) ShapedTextFitToWidth(shaped RID.TextBuffer, width Float.X) 
 Aligns shaped text to the given tab-stops.
 */
 func (self Instance) ShapedTextTabAlign(shaped RID.TextBuffer, tab_stops []float32) Float.X { //gd:TextServer.shaped_text_tab_align
-	return Float.X(Float.X(class(self).ShapedTextTabAlign(gd.RID(shaped), gd.NewPackedFloat32Slice(tab_stops))))
+	return Float.X(Float.X(class(self).ShapedTextTabAlign(gd.RID(shaped), Packed.New(tab_stops...))))
 }
 
 /*
@@ -1273,21 +1277,21 @@ func (self Instance) ShapedTextGetRange(shaped RID.TextBuffer) Vector2i.XY { //g
 Breaks text to the lines and columns. Returns character ranges for each segment.
 */
 func (self Instance) ShapedTextGetLineBreaksAdv(shaped RID.TextBuffer, width []float32) []int32 { //gd:TextServer.shaped_text_get_line_breaks_adv
-	return []int32(class(self).ShapedTextGetLineBreaksAdv(gd.RID(shaped), gd.NewPackedFloat32Slice(width), gd.Int(0), true, 3).AsSlice())
+	return []int32(slices.Collect(class(self).ShapedTextGetLineBreaksAdv(gd.RID(shaped), Packed.New(width...), gd.Int(0), true, 3).Values()))
 }
 
 /*
 Breaks text to the lines and returns character ranges for each line.
 */
 func (self Instance) ShapedTextGetLineBreaks(shaped RID.TextBuffer, width Float.X) []int32 { //gd:TextServer.shaped_text_get_line_breaks
-	return []int32(class(self).ShapedTextGetLineBreaks(gd.RID(shaped), gd.Float(width), gd.Int(0), 3).AsSlice())
+	return []int32(slices.Collect(class(self).ShapedTextGetLineBreaks(gd.RID(shaped), gd.Float(width), gd.Int(0), 3).Values()))
 }
 
 /*
 Breaks text into words and returns array of character ranges. Use [param grapheme_flags] to set what characters are used for breaking (see [enum GraphemeFlag]).
 */
 func (self Instance) ShapedTextGetWordBreaks(shaped RID.TextBuffer) []int32 { //gd:TextServer.shaped_text_get_word_breaks
-	return []int32(class(self).ShapedTextGetWordBreaks(gd.RID(shaped), 264, 4).AsSlice())
+	return []int32(slices.Collect(class(self).ShapedTextGetWordBreaks(gd.RID(shaped), 264, 4).Values()))
 }
 
 /*
@@ -1426,7 +1430,7 @@ func (self Instance) ShapedTextGetCarets(shaped RID.TextBuffer, position int) ma
 Returns selection rectangles for the specified character range.
 */
 func (self Instance) ShapedTextGetSelection(shaped RID.TextBuffer, start int, end int) []Vector2.XY { //gd:TextServer.shaped_text_get_selection
-	return []Vector2.XY(class(self).ShapedTextGetSelection(gd.RID(shaped), gd.Int(start), gd.Int(end)).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).ShapedTextGetSelection(gd.RID(shaped), gd.Int(start), gd.Int(end)).Values()))
 }
 
 /*
@@ -1468,7 +1472,7 @@ func (self Instance) ShapedTextPrevGraphemePos(shaped RID.TextBuffer, pos int) i
 Returns array of the composite character boundaries.
 */
 func (self Instance) ShapedTextGetCharacterBreaks(shaped RID.TextBuffer) []int32 { //gd:TextServer.shaped_text_get_character_breaks
-	return []int32(class(self).ShapedTextGetCharacterBreaks(gd.RID(shaped)).AsSlice())
+	return []int32(slices.Collect(class(self).ShapedTextGetCharacterBreaks(gd.RID(shaped)).Values()))
 }
 
 /*
@@ -1546,7 +1550,7 @@ print(ts.string_get_word_breaks("The Godot Engine, 4", "en", 10)) # Prints [0, 9
 [/codeblock]
 */
 func (self Instance) StringGetWordBreaks(s string) []int32 { //gd:TextServer.string_get_word_breaks
-	return []int32(class(self).StringGetWordBreaks(String.New(s), String.New(""), gd.Int(0)).AsSlice())
+	return []int32(slices.Collect(class(self).StringGetWordBreaks(String.New(s), String.New(""), gd.Int(0)).Values()))
 }
 
 /*
@@ -1557,7 +1561,7 @@ print(ts.string_get_word_breaks("Test ❤️‍🔥 Test")) # Prints [1, 2, 3, 4
 [/codeblock]
 */
 func (self Instance) StringGetCharacterBreaks(s string) []int32 { //gd:TextServer.string_get_character_breaks
-	return []int32(class(self).StringGetCharacterBreaks(String.New(s), String.New("")).AsSlice())
+	return []int32(slices.Collect(class(self).StringGetCharacterBreaks(String.New(s), String.New("")).Values()))
 }
 
 /*
@@ -1566,7 +1570,7 @@ Returns index of the first string in [param dict] which is visually confusable w
 [b]Note:[/b] Always returns [code]-1[/code] if the server does not support the [constant FEATURE_UNICODE_SECURITY] feature.
 */
 func (self Instance) IsConfusable(s string, dict []string) int { //gd:TextServer.is_confusable
-	return int(int(class(self).IsConfusable(String.New(s), gd.NewPackedStringSlice(dict))))
+	return int(int(class(self).IsConfusable(String.New(s), Packed.MakeStrings(dict...))))
 }
 
 /*
@@ -1855,10 +1859,10 @@ func (self class) CreateFontLinkedVariation(font_rid gd.RID) gd.RID { //gd:TextS
 Sets font source data, e.g contents of the dynamic font source file.
 */
 //go:nosplit
-func (self class) FontSetData(font_rid gd.RID, data gd.PackedByteArray) { //gd:TextServer.font_set_data
+func (self class) FontSetData(font_rid gd.RID, data Packed.Bytes) { //gd:TextServer.font_set_data
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_set_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2810,12 +2814,12 @@ func (self class) FontGetTextureImage(font_rid gd.RID, size gd.Vector2i, texture
 Sets array containing glyph packing data.
 */
 //go:nosplit
-func (self class) FontSetTextureOffsets(font_rid gd.RID, size gd.Vector2i, texture_index gd.Int, offset gd.PackedInt32Array) { //gd:TextServer.font_set_texture_offsets
+func (self class) FontSetTextureOffsets(font_rid gd.RID, size gd.Vector2i, texture_index gd.Int, offset Packed.Array[int32]) { //gd:TextServer.font_set_texture_offsets
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, texture_index)
-	callframe.Arg(frame, pointers.Get(offset))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](offset))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_set_texture_offsets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2825,14 +2829,14 @@ func (self class) FontSetTextureOffsets(font_rid gd.RID, size gd.Vector2i, textu
 Returns array containing glyph packing data.
 */
 //go:nosplit
-func (self class) FontGetTextureOffsets(font_rid gd.RID, size gd.Vector2i, texture_index gd.Int) gd.PackedInt32Array { //gd:TextServer.font_get_texture_offsets
+func (self class) FontGetTextureOffsets(font_rid gd.RID, size gd.Vector2i, texture_index gd.Int) Packed.Array[int32] { //gd:TextServer.font_get_texture_offsets
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, texture_index)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_texture_offsets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -2841,13 +2845,13 @@ func (self class) FontGetTextureOffsets(font_rid gd.RID, size gd.Vector2i, textu
 Returns list of rendered glyphs in the cache entry.
 */
 //go:nosplit
-func (self class) FontGetGlyphList(font_rid gd.RID, size gd.Vector2i) gd.PackedInt32Array { //gd:TextServer.font_get_glyph_list
+func (self class) FontGetGlyphList(font_rid gd.RID, size gd.Vector2i) Packed.Array[int32] { //gd:TextServer.font_get_glyph_list
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_glyph_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -3355,12 +3359,12 @@ func (self class) FontRemoveLanguageSupportOverride(font_rid gd.RID, language St
 Returns list of language support overrides.
 */
 //go:nosplit
-func (self class) FontGetLanguageSupportOverrides(font_rid gd.RID) gd.PackedStringArray { //gd:TextServer.font_get_language_support_overrides
+func (self class) FontGetLanguageSupportOverrides(font_rid gd.RID) Packed.Strings { //gd:TextServer.font_get_language_support_overrides
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_language_support_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -3426,12 +3430,12 @@ func (self class) FontRemoveScriptSupportOverride(font_rid gd.RID, script String
 Returns list of script support overrides.
 */
 //go:nosplit
-func (self class) FontGetScriptSupportOverrides(font_rid gd.RID) gd.PackedStringArray { //gd:TextServer.font_get_script_support_overrides
+func (self class) FontGetScriptSupportOverrides(font_rid gd.RID) Packed.Strings { //gd:TextServer.font_get_script_support_overrides
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_script_support_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -3951,10 +3955,10 @@ func (self class) ShapedTextFitToWidth(shaped gd.RID, width gd.Float, justificat
 Aligns shaped text to the given tab-stops.
 */
 //go:nosplit
-func (self class) ShapedTextTabAlign(shaped gd.RID, tab_stops gd.PackedFloat32Array) gd.Float { //gd:TextServer.shaped_text_tab_align
+func (self class) ShapedTextTabAlign(shaped gd.RID, tab_stops Packed.Array[float32]) gd.Float { //gd:TextServer.shaped_text_tab_align
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	callframe.Arg(frame, pointers.Get(tab_stops))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_tab_align, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -4065,16 +4069,16 @@ func (self class) ShapedTextGetRange(shaped gd.RID) gd.Vector2i { //gd:TextServe
 Breaks text to the lines and columns. Returns character ranges for each segment.
 */
 //go:nosplit
-func (self class) ShapedTextGetLineBreaksAdv(shaped gd.RID, width gd.PackedFloat32Array, start gd.Int, once bool, break_flags gdclass.TextServerLineBreakFlag) gd.PackedInt32Array { //gd:TextServer.shaped_text_get_line_breaks_adv
+func (self class) ShapedTextGetLineBreaksAdv(shaped gd.RID, width Packed.Array[float32], start gd.Int, once bool, break_flags gdclass.TextServerLineBreakFlag) Packed.Array[int32] { //gd:TextServer.shaped_text_get_line_breaks_adv
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	callframe.Arg(frame, pointers.Get(width))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](width))
 	callframe.Arg(frame, start)
 	callframe.Arg(frame, once)
 	callframe.Arg(frame, break_flags)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_line_breaks_adv, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -4083,7 +4087,7 @@ func (self class) ShapedTextGetLineBreaksAdv(shaped gd.RID, width gd.PackedFloat
 Breaks text to the lines and returns character ranges for each line.
 */
 //go:nosplit
-func (self class) ShapedTextGetLineBreaks(shaped gd.RID, width gd.Float, start gd.Int, break_flags gdclass.TextServerLineBreakFlag) gd.PackedInt32Array { //gd:TextServer.shaped_text_get_line_breaks
+func (self class) ShapedTextGetLineBreaks(shaped gd.RID, width gd.Float, start gd.Int, break_flags gdclass.TextServerLineBreakFlag) Packed.Array[int32] { //gd:TextServer.shaped_text_get_line_breaks
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, width)
@@ -4091,7 +4095,7 @@ func (self class) ShapedTextGetLineBreaks(shaped gd.RID, width gd.Float, start g
 	callframe.Arg(frame, break_flags)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_line_breaks, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -4100,14 +4104,14 @@ func (self class) ShapedTextGetLineBreaks(shaped gd.RID, width gd.Float, start g
 Breaks text into words and returns array of character ranges. Use [param grapheme_flags] to set what characters are used for breaking (see [enum GraphemeFlag]).
 */
 //go:nosplit
-func (self class) ShapedTextGetWordBreaks(shaped gd.RID, grapheme_flags gdclass.TextServerGraphemeFlag, skip_grapheme_flags gdclass.TextServerGraphemeFlag) gd.PackedInt32Array { //gd:TextServer.shaped_text_get_word_breaks
+func (self class) ShapedTextGetWordBreaks(shaped gd.RID, grapheme_flags gdclass.TextServerGraphemeFlag, skip_grapheme_flags gdclass.TextServerGraphemeFlag) Packed.Array[int32] { //gd:TextServer.shaped_text_get_word_breaks
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, grapheme_flags)
 	callframe.Arg(frame, skip_grapheme_flags)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_word_breaks, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -4346,14 +4350,14 @@ func (self class) ShapedTextGetCarets(shaped gd.RID, position gd.Int) Dictionary
 Returns selection rectangles for the specified character range.
 */
 //go:nosplit
-func (self class) ShapedTextGetSelection(shaped gd.RID, start gd.Int, end gd.Int) gd.PackedVector2Array { //gd:TextServer.shaped_text_get_selection
+func (self class) ShapedTextGetSelection(shaped gd.RID, start gd.Int, end gd.Int) Packed.Array[Vector2.XY] { //gd:TextServer.shaped_text_get_selection
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, start)
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -4437,12 +4441,12 @@ func (self class) ShapedTextPrevGraphemePos(shaped gd.RID, pos gd.Int) gd.Int { 
 Returns array of the composite character boundaries.
 */
 //go:nosplit
-func (self class) ShapedTextGetCharacterBreaks(shaped gd.RID) gd.PackedInt32Array { //gd:TextServer.shaped_text_get_character_breaks
+func (self class) ShapedTextGetCharacterBreaks(shaped gd.RID) Packed.Array[int32] { //gd:TextServer.shaped_text_get_character_breaks
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_character_breaks, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -4599,14 +4603,14 @@ print(ts.string_get_word_breaks("The Godot Engine, 4", "en", 10)) # Prints [0, 9
 [/codeblock]
 */
 //go:nosplit
-func (self class) StringGetWordBreaks(s String.Readable, language String.Readable, chars_per_line gd.Int) gd.PackedInt32Array { //gd:TextServer.string_get_word_breaks
+func (self class) StringGetWordBreaks(s String.Readable, language String.Readable, chars_per_line gd.Int) Packed.Array[int32] { //gd:TextServer.string_get_word_breaks
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	callframe.Arg(frame, chars_per_line)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_string_get_word_breaks, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -4619,13 +4623,13 @@ print(ts.string_get_word_breaks("Test ❤️‍🔥 Test")) # Prints [1, 2, 3, 4
 [/codeblock]
 */
 //go:nosplit
-func (self class) StringGetCharacterBreaks(s String.Readable, language String.Readable) gd.PackedInt32Array { //gd:TextServer.string_get_character_breaks
+func (self class) StringGetCharacterBreaks(s String.Readable, language String.Readable) Packed.Array[int32] { //gd:TextServer.string_get_character_breaks
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_string_get_character_breaks, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -4636,10 +4640,10 @@ Returns index of the first string in [param dict] which is visually confusable w
 [b]Note:[/b] Always returns [code]-1[/code] if the server does not support the [constant FEATURE_UNICODE_SECURITY] feature.
 */
 //go:nosplit
-func (self class) IsConfusable(s String.Readable, dict gd.PackedStringArray) gd.Int { //gd:TextServer.is_confusable
+func (self class) IsConfusable(s String.Readable, dict Packed.Strings) gd.Int { //gd:TextServer.is_confusable
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
-	callframe.Arg(frame, pointers.Get(dict))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(dict)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_is_confusable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

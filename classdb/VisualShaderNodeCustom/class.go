@@ -3,6 +3,7 @@ package VisualShaderNodeCustom
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/Resource"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 By inheriting this class you can create a custom [VisualShader] script addon which will be automatically added to the Visual Shader Editor. The [VisualShaderNode]'s behavior is defined by overriding the provided virtual methods.
@@ -404,7 +408,7 @@ func (Instance) _get_property_options(impl func(ptr unsafe.Pointer, index int) [
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
-		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
 			return
@@ -774,13 +778,13 @@ func (class) _get_property_default_index(impl func(ptr unsafe.Pointer, index gd.
 Override this method to define the options inside the drop-down list property of the associated custom node.
 Defining this method is [b]optional[/b].
 */
-func (class) _get_property_options(impl func(ptr unsafe.Pointer, index gd.Int) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_property_options(impl func(ptr unsafe.Pointer, index gd.Int) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
 		if !ok {
 			return

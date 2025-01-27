@@ -3,6 +3,7 @@ package Line2D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -36,6 +38,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This node draws a 2D polyline, i.e. a shape consisting of several points connected by segments. [Line2D] is not a mathematical polyline, i.e. the segments are not infinitely thin. It is intended for rendering and it can be colored and optionally textured.
@@ -114,11 +118,11 @@ func New() Instance {
 }
 
 func (self Instance) Points() []Vector2.XY {
-	return []Vector2.XY(class(self).GetPoints().AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).GetPoints().Values()))
 }
 
 func (self Instance) SetPoints(value []Vector2.XY) {
-	class(self).SetPoints(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
+	class(self).SetPoints(Packed.New(value...))
 }
 
 func (self Instance) Closed() bool {
@@ -226,20 +230,20 @@ func (self Instance) SetAntialiased(value bool) {
 }
 
 //go:nosplit
-func (self class) SetPoints(points gd.PackedVector2Array) { //gd:Line2D.set_points
+func (self class) SetPoints(points Packed.Array[Vector2.XY]) { //gd:Line2D.set_points
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(points))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_set_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPoints() gd.PackedVector2Array { //gd:Line2D.get_points
+func (self class) GetPoints() Packed.Array[Vector2.XY] { //gd:Line2D.get_points
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_points, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

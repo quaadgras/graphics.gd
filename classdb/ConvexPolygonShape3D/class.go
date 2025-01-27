@@ -3,6 +3,7 @@ package ConvexPolygonShape3D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector3"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A 3D convex polyhedron shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D].
@@ -70,28 +74,28 @@ func New() Instance {
 }
 
 func (self Instance) Points() []Vector3.XYZ {
-	return []Vector3.XYZ(class(self).GetPoints().AsSlice())
+	return []Vector3.XYZ(slices.Collect(class(self).GetPoints().Values()))
 }
 
 func (self Instance) SetPoints(value []Vector3.XYZ) {
-	class(self).SetPoints(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&value))))
+	class(self).SetPoints(Packed.New(value...))
 }
 
 //go:nosplit
-func (self class) SetPoints(points gd.PackedVector3Array) { //gd:ConvexPolygonShape3D.set_points
+func (self class) SetPoints(points Packed.Array[Vector3.XYZ]) { //gd:ConvexPolygonShape3D.set_points
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(points))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConvexPolygonShape3D.Bind_set_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPoints() gd.PackedVector3Array { //gd:ConvexPolygonShape3D.get_points
+func (self class) GetPoints() Packed.Array[Vector3.XYZ] { //gd:ConvexPolygonShape3D.get_points
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConvexPolygonShape3D.Bind_get_points, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

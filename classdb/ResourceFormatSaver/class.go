@@ -3,6 +3,7 @@ package ResourceFormatSaver
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +32,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 The engine can save resources when you do it from the editor, or when you use the [ResourceSaver] singleton. This is accomplished thanks to multiple [ResourceFormatSaver]s, each handling its own format and called automatically by the engine.
@@ -134,7 +138,7 @@ func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer, resourc
 		defer pointers.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource)
-		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
 			return
@@ -230,14 +234,14 @@ func (class) _recognize(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resour
 /*
 Returns the list of extensions available for saving the resource object, provided it is recognized (see [method _recognize]).
 */
-func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
 		if !ok {
 			return

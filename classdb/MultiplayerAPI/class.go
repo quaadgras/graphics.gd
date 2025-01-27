@@ -3,6 +3,7 @@ package MultiplayerAPI
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +32,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Base class for high-level multiplayer API implementations. See also [MultiplayerPeer].
@@ -112,7 +116,7 @@ func (self Instance) ObjectConfigurationRemove(obj Object.Instance, configuratio
 Returns the peer IDs of all connected peers of this MultiplayerAPI's [member multiplayer_peer].
 */
 func (self Instance) GetPeers() []int32 { //gd:MultiplayerAPI.get_peers
-	return []int32(class(self).GetPeers().AsSlice())
+	return []int32(slices.Collect(class(self).GetPeers().Values()))
 }
 
 /*
@@ -306,11 +310,11 @@ func (self class) ObjectConfigurationRemove(obj [1]gd.Object, configuration gd.V
 Returns the peer IDs of all connected peers of this MultiplayerAPI's [member multiplayer_peer].
 */
 //go:nosplit
-func (self class) GetPeers() gd.PackedInt32Array { //gd:MultiplayerAPI.get_peers
+func (self class) GetPeers() Packed.Array[int32] { //gd:MultiplayerAPI.get_peers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_get_peers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

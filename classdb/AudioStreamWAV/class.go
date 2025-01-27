@@ -3,6 +3,7 @@ package AudioStreamWAV
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/classdb/Resource"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 AudioStreamWAV stores sound samples loaded from WAV files. To play the stored sound, use an [AudioStreamPlayer] (for non-positional audio) or [AudioStreamPlayer2D]/[AudioStreamPlayer3D] (for positional audio). The sound can be looped.
@@ -79,7 +83,7 @@ func (self Instance) Data() []byte {
 }
 
 func (self Instance) SetData(value []byte) {
-	class(self).SetData(gd.NewPackedByteSlice(value))
+	class(self).SetData(Packed.Bytes(Packed.New(value...)))
 }
 
 func (self Instance) Format() gdclass.AudioStreamWAVFormat {
@@ -131,20 +135,20 @@ func (self Instance) SetStereo(value bool) {
 }
 
 //go:nosplit
-func (self class) SetData(data gd.PackedByteArray) { //gd:AudioStreamWAV.set_data
+func (self class) SetData(data Packed.Bytes) { //gd:AudioStreamWAV.set_data
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_set_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetData() gd.PackedByteArray { //gd:AudioStreamWAV.get_data
+func (self class) GetData() Packed.Bytes { //gd:AudioStreamWAV.get_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

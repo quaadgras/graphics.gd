@@ -3,6 +3,7 @@ package HeightMapShape3D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A 3D heightmap shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D]. This is useful for terrain, but it is limited as overhangs (such as caves) cannot be stored. Holes in a [HeightMapShape3D] are created by assigning very low values to points in the desired area.
@@ -120,11 +124,11 @@ func (self Instance) SetMapDepth(value int) {
 }
 
 func (self Instance) MapData() []float32 {
-	return []float32(class(self).GetMapData().AsSlice())
+	return []float32(slices.Collect(class(self).GetMapData().Values()))
 }
 
 func (self Instance) SetMapData(value []float32) {
-	class(self).SetMapData(gd.NewPackedFloat32Slice(value))
+	class(self).SetMapData(Packed.New(value...))
 }
 
 //go:nosplit
@@ -166,20 +170,20 @@ func (self class) GetMapDepth() gd.Int { //gd:HeightMapShape3D.get_map_depth
 }
 
 //go:nosplit
-func (self class) SetMapData(data gd.PackedFloat32Array) { //gd:HeightMapShape3D.set_map_data
+func (self class) SetMapData(data Packed.Array[float32]) { //gd:HeightMapShape3D.set_map_data
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](data))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HeightMapShape3D.Bind_set_map_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetMapData() gd.PackedFloat32Array { //gd:HeightMapShape3D.get_map_data
+func (self class) GetMapData() Packed.Array[float32] { //gd:HeightMapShape3D.get_map_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HeightMapShape3D.Bind_get_map_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedFloat32Array](r_ret.Get())
+	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

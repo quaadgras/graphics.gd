@@ -3,6 +3,7 @@ package WebSocketPeer
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/PacketPeer"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This class represents WebSocket connection, and can be used as a WebSocket client (RFC 6455-compliant) or as a remote peer of a WebSocket server.
@@ -96,7 +100,7 @@ func (self Instance) AcceptStream(stream [1]gdclass.StreamPeer) error { //gd:Web
 Sends the given [param message] using the desired [param write_mode]. When sending a [String], prefer using [method send_text].
 */
 func (self Instance) Send(message []byte) error { //gd:WebSocketPeer.send
-	return error(gd.ToError(class(self).Send(gd.NewPackedByteSlice(message), 1)))
+	return error(gd.ToError(class(self).Send(Packed.Bytes(Packed.New(message...)), 1)))
 }
 
 /*
@@ -219,7 +223,7 @@ func (self Instance) SupportedProtocols() []string {
 }
 
 func (self Instance) SetSupportedProtocols(value []string) {
-	class(self).SetSupportedProtocols(gd.NewPackedStringSlice(value))
+	class(self).SetSupportedProtocols(Packed.MakeStrings(value...))
 }
 
 func (self Instance) HandshakeHeaders() []string {
@@ -227,7 +231,7 @@ func (self Instance) HandshakeHeaders() []string {
 }
 
 func (self Instance) SetHandshakeHeaders(value []string) {
-	class(self).SetHandshakeHeaders(gd.NewPackedStringSlice(value))
+	class(self).SetHandshakeHeaders(Packed.MakeStrings(value...))
 }
 
 func (self Instance) InboundBufferSize() int {
@@ -289,9 +293,9 @@ func (self class) AcceptStream(stream [1]gdclass.StreamPeer) gd.Error { //gd:Web
 Sends the given [param message] using the desired [param write_mode]. When sending a [String], prefer using [method send_text].
 */
 //go:nosplit
-func (self class) Send(message gd.PackedByteArray, write_mode gdclass.WebSocketPeerWriteMode) gd.Error { //gd:WebSocketPeer.send
+func (self class) Send(message Packed.Bytes, write_mode gdclass.WebSocketPeerWriteMode) gd.Error { //gd:WebSocketPeer.send
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(message))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](message))))
 	callframe.Arg(frame, write_mode)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_send, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -473,38 +477,38 @@ func (self class) GetCloseReason() String.Readable { //gd:WebSocketPeer.get_clos
 }
 
 //go:nosplit
-func (self class) GetSupportedProtocols() gd.PackedStringArray { //gd:WebSocketPeer.get_supported_protocols
+func (self class) GetSupportedProtocols() Packed.Strings { //gd:WebSocketPeer.get_supported_protocols
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_supported_protocols, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetSupportedProtocols(protocols gd.PackedStringArray) { //gd:WebSocketPeer.set_supported_protocols
+func (self class) SetSupportedProtocols(protocols Packed.Strings) { //gd:WebSocketPeer.set_supported_protocols
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(protocols))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(protocols)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_set_supported_protocols, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetHandshakeHeaders() gd.PackedStringArray { //gd:WebSocketPeer.get_handshake_headers
+func (self class) GetHandshakeHeaders() Packed.Strings { //gd:WebSocketPeer.get_handshake_headers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_handshake_headers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetHandshakeHeaders(protocols gd.PackedStringArray) { //gd:WebSocketPeer.set_handshake_headers
+func (self class) SetHandshakeHeaders(protocols Packed.Strings) { //gd:WebSocketPeer.set_handshake_headers
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(protocols))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(protocols)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_set_handshake_headers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

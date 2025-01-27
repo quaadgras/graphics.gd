@@ -4,6 +4,7 @@ package EditorInterface
 import "unsafe"
 import "sync"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [EditorInterface] gives you control over Godot editor's window. It allows customizing the window, saving and (re-)loading scenes, rendering mesh previews, inspecting and editing resources and objects, and provides access to [EditorSettings], [EditorFileSystem], [EditorResourcePreview], [ScriptEditor], the editor viewport, and information about scenes.
@@ -315,7 +319,7 @@ func _on_property_selected(property_path):
 */
 func PopupPropertySelector(obj Object.Instance, callback func(selected string)) { //gd:EditorInterface.popup_property_selector
 	once.Do(singleton)
-	class(self).PopupPropertySelector(obj, Callable.New(callback), gd.NewPackedInt32Slice([1][]int32{}[0]))
+	class(self).PopupPropertySelector(obj, Callable.New(callback), Packed.New([1][]int32{}[0]...))
 }
 
 /*
@@ -943,11 +947,11 @@ func _on_property_selected(property_path):
 [/codeblock]
 */
 //go:nosplit
-func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Function, type_filter gd.PackedInt32Array) { //gd:EditorInterface.popup_property_selector
+func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Function, type_filter Packed.Array[int32]) { //gd:EditorInterface.popup_property_selector
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	callframe.Arg(frame, pointers.Get(type_filter))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](type_filter))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_property_selector, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -983,11 +987,11 @@ func (self class) SelectFile(file String.Readable) { //gd:EditorInterface.select
 Returns an array containing the paths of the currently selected files (and directories) in the [FileSystemDock].
 */
 //go:nosplit
-func (self class) GetSelectedPaths() gd.PackedStringArray { //gd:EditorInterface.get_selected_paths
+func (self class) GetSelectedPaths() Packed.Strings { //gd:EditorInterface.get_selected_paths
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_selected_paths, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1113,11 +1117,11 @@ func (self class) ReloadSceneFromPath(scene_filepath String.Readable) { //gd:Edi
 Returns an [Array] with the file paths of the currently opened scenes.
 */
 //go:nosplit
-func (self class) GetOpenScenes() gd.PackedStringArray { //gd:EditorInterface.get_open_scenes
+func (self class) GetOpenScenes() Packed.Strings { //gd:EditorInterface.get_open_scenes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_open_scenes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -3,6 +3,7 @@ package NavigationMeshSourceGeometryData2D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Container for parsed source geometry data used in navigation mesh baking.
@@ -64,28 +68,28 @@ func (self Instance) HasData() bool { //gd:NavigationMeshSourceGeometryData2D.ha
 Appends another array of [param traversable_outlines] at the end of the existing traversable outlines array.
 */
 func (self Instance) AppendTraversableOutlines(traversable_outlines [][]Vector2.XY) { //gd:NavigationMeshSourceGeometryData2D.append_traversable_outlines
-	class(self).AppendTraversableOutlines(gd.ArrayFromSlice[Array.Contains[gd.PackedVector2Array]](traversable_outlines))
+	class(self).AppendTraversableOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](traversable_outlines))
 }
 
 /*
 Appends another array of [param obstruction_outlines] at the end of the existing obstruction outlines array.
 */
 func (self Instance) AppendObstructionOutlines(obstruction_outlines [][]Vector2.XY) { //gd:NavigationMeshSourceGeometryData2D.append_obstruction_outlines
-	class(self).AppendObstructionOutlines(gd.ArrayFromSlice[Array.Contains[gd.PackedVector2Array]](obstruction_outlines))
+	class(self).AppendObstructionOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](obstruction_outlines))
 }
 
 /*
 Adds the outline points of a shape as traversable area.
 */
 func (self Instance) AddTraversableOutline(shape_outline []Vector2.XY) { //gd:NavigationMeshSourceGeometryData2D.add_traversable_outline
-	class(self).AddTraversableOutline(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&shape_outline))))
+	class(self).AddTraversableOutline(Packed.New(shape_outline...))
 }
 
 /*
 Adds the outline points of a shape as obstructed area.
 */
 func (self Instance) AddObstructionOutline(shape_outline []Vector2.XY) { //gd:NavigationMeshSourceGeometryData2D.add_obstruction_outline
-	class(self).AddObstructionOutline(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&shape_outline))))
+	class(self).AddObstructionOutline(Packed.New(shape_outline...))
 }
 
 /*
@@ -99,7 +103,7 @@ func (self Instance) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometr
 Adds a projected obstruction shape to the source geometry. If [param carve] is [code]true[/code] the carved shape will not be affected by additional offsets (e.g. agent radius) of the navigation mesh baking process.
 */
 func (self Instance) AddProjectedObstruction(vertices []Vector2.XY, carve bool) { //gd:NavigationMeshSourceGeometryData2D.add_projected_obstruction
-	class(self).AddProjectedObstruction(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&vertices))), carve)
+	class(self).AddProjectedObstruction(Packed.New(vertices...), carve)
 }
 
 /*
@@ -133,7 +137,7 @@ func (self Instance) TraversableOutlines() [][]Vector2.XY {
 }
 
 func (self Instance) SetTraversableOutlines(value [][]Vector2.XY) {
-	class(self).SetTraversableOutlines(gd.ArrayFromSlice[Array.Contains[gd.PackedVector2Array]](value))
+	class(self).SetTraversableOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](value))
 }
 
 func (self Instance) ObstructionOutlines() [][]Vector2.XY {
@@ -141,7 +145,7 @@ func (self Instance) ObstructionOutlines() [][]Vector2.XY {
 }
 
 func (self Instance) SetObstructionOutlines(value [][]Vector2.XY) {
-	class(self).SetObstructionOutlines(gd.ArrayFromSlice[Array.Contains[gd.PackedVector2Array]](value))
+	class(self).SetObstructionOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](value))
 }
 
 func (self Instance) ProjectedObstructions() []any {
@@ -180,7 +184,7 @@ func (self class) HasData() bool { //gd:NavigationMeshSourceGeometryData2D.has_d
 Sets all the traversable area outlines arrays.
 */
 //go:nosplit
-func (self class) SetTraversableOutlines(traversable_outlines Array.Contains[gd.PackedVector2Array]) { //gd:NavigationMeshSourceGeometryData2D.set_traversable_outlines
+func (self class) SetTraversableOutlines(traversable_outlines Array.Contains[Packed.Array[Vector2.XY]]) { //gd:NavigationMeshSourceGeometryData2D.set_traversable_outlines
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(traversable_outlines)))
 	var r_ret = callframe.Nil
@@ -192,11 +196,11 @@ func (self class) SetTraversableOutlines(traversable_outlines Array.Contains[gd.
 Returns all the traversable area outlines arrays.
 */
 //go:nosplit
-func (self class) GetTraversableOutlines() Array.Contains[gd.PackedVector2Array] { //gd:NavigationMeshSourceGeometryData2D.get_traversable_outlines
+func (self class) GetTraversableOutlines() Array.Contains[Packed.Array[Vector2.XY]] { //gd:NavigationMeshSourceGeometryData2D.get_traversable_outlines
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_get_traversable_outlines, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -205,7 +209,7 @@ func (self class) GetTraversableOutlines() Array.Contains[gd.PackedVector2Array]
 Sets all the obstructed area outlines arrays.
 */
 //go:nosplit
-func (self class) SetObstructionOutlines(obstruction_outlines Array.Contains[gd.PackedVector2Array]) { //gd:NavigationMeshSourceGeometryData2D.set_obstruction_outlines
+func (self class) SetObstructionOutlines(obstruction_outlines Array.Contains[Packed.Array[Vector2.XY]]) { //gd:NavigationMeshSourceGeometryData2D.set_obstruction_outlines
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(obstruction_outlines)))
 	var r_ret = callframe.Nil
@@ -217,11 +221,11 @@ func (self class) SetObstructionOutlines(obstruction_outlines Array.Contains[gd.
 Returns all the obstructed area outlines arrays.
 */
 //go:nosplit
-func (self class) GetObstructionOutlines() Array.Contains[gd.PackedVector2Array] { //gd:NavigationMeshSourceGeometryData2D.get_obstruction_outlines
+func (self class) GetObstructionOutlines() Array.Contains[Packed.Array[Vector2.XY]] { //gd:NavigationMeshSourceGeometryData2D.get_obstruction_outlines
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_get_obstruction_outlines, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -230,7 +234,7 @@ func (self class) GetObstructionOutlines() Array.Contains[gd.PackedVector2Array]
 Appends another array of [param traversable_outlines] at the end of the existing traversable outlines array.
 */
 //go:nosplit
-func (self class) AppendTraversableOutlines(traversable_outlines Array.Contains[gd.PackedVector2Array]) { //gd:NavigationMeshSourceGeometryData2D.append_traversable_outlines
+func (self class) AppendTraversableOutlines(traversable_outlines Array.Contains[Packed.Array[Vector2.XY]]) { //gd:NavigationMeshSourceGeometryData2D.append_traversable_outlines
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(traversable_outlines)))
 	var r_ret = callframe.Nil
@@ -242,7 +246,7 @@ func (self class) AppendTraversableOutlines(traversable_outlines Array.Contains[
 Appends another array of [param obstruction_outlines] at the end of the existing obstruction outlines array.
 */
 //go:nosplit
-func (self class) AppendObstructionOutlines(obstruction_outlines Array.Contains[gd.PackedVector2Array]) { //gd:NavigationMeshSourceGeometryData2D.append_obstruction_outlines
+func (self class) AppendObstructionOutlines(obstruction_outlines Array.Contains[Packed.Array[Vector2.XY]]) { //gd:NavigationMeshSourceGeometryData2D.append_obstruction_outlines
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(obstruction_outlines)))
 	var r_ret = callframe.Nil
@@ -254,9 +258,9 @@ func (self class) AppendObstructionOutlines(obstruction_outlines Array.Contains[
 Adds the outline points of a shape as traversable area.
 */
 //go:nosplit
-func (self class) AddTraversableOutline(shape_outline gd.PackedVector2Array) { //gd:NavigationMeshSourceGeometryData2D.add_traversable_outline
+func (self class) AddTraversableOutline(shape_outline Packed.Array[Vector2.XY]) { //gd:NavigationMeshSourceGeometryData2D.add_traversable_outline
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(shape_outline))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](shape_outline))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_add_traversable_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -266,9 +270,9 @@ func (self class) AddTraversableOutline(shape_outline gd.PackedVector2Array) { /
 Adds the outline points of a shape as obstructed area.
 */
 //go:nosplit
-func (self class) AddObstructionOutline(shape_outline gd.PackedVector2Array) { //gd:NavigationMeshSourceGeometryData2D.add_obstruction_outline
+func (self class) AddObstructionOutline(shape_outline Packed.Array[Vector2.XY]) { //gd:NavigationMeshSourceGeometryData2D.add_obstruction_outline
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(shape_outline))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](shape_outline))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_add_obstruction_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -290,9 +294,9 @@ func (self class) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryDa
 Adds a projected obstruction shape to the source geometry. If [param carve] is [code]true[/code] the carved shape will not be affected by additional offsets (e.g. agent radius) of the navigation mesh baking process.
 */
 //go:nosplit
-func (self class) AddProjectedObstruction(vertices gd.PackedVector2Array, carve bool) { //gd:NavigationMeshSourceGeometryData2D.add_projected_obstruction
+func (self class) AddProjectedObstruction(vertices Packed.Array[Vector2.XY], carve bool) { //gd:NavigationMeshSourceGeometryData2D.add_projected_obstruction
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(vertices))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices))
 	callframe.Arg(frame, carve)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_add_projected_obstruction, self.AsObject(), frame.Array(0), r_ret.Addr())

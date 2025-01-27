@@ -3,6 +3,7 @@ package Label
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -35,6 +37,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A control for displaying plain text. It gives you control over the horizontal and vertical alignment and can wrap the text inside the node's bounding rectangle. It doesn't support bold, italics, or other rich text formatting. For that, use [RichTextLabel] instead.
@@ -185,11 +189,11 @@ func (self Instance) SetUppercase(value bool) {
 }
 
 func (self Instance) TabStops() []float32 {
-	return []float32(class(self).GetTabStops().AsSlice())
+	return []float32(slices.Collect(class(self).GetTabStops().Values()))
 }
 
 func (self Instance) SetTabStops(value []float32) {
-	class(self).SetTabStops(gd.NewPackedFloat32Slice(value))
+	class(self).SetTabStops(Packed.New(value...))
 }
 
 func (self Instance) LinesSkipped() int {
@@ -436,20 +440,20 @@ func (self class) IsClippingText() bool { //gd:Label.is_clipping_text
 }
 
 //go:nosplit
-func (self class) SetTabStops(tab_stops gd.PackedFloat32Array) { //gd:Label.set_tab_stops
+func (self class) SetTabStops(tab_stops Packed.Array[float32]) { //gd:Label.set_tab_stops
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(tab_stops))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_set_tab_stops, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTabStops() gd.PackedFloat32Array { //gd:Label.get_tab_stops
+func (self class) GetTabStops() Packed.Array[float32] { //gd:Label.get_tab_stops
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_tab_stops, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedFloat32Array](r_ret.Get())
+	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

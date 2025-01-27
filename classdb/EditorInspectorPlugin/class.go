@@ -3,6 +3,7 @@ package EditorInspectorPlugin
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +32,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [EditorInspectorPlugin] allows adding custom property editors to [EditorInspector].
@@ -192,7 +196,7 @@ func (self Instance) AddPropertyEditor(property string, editor [1]gdclass.Contro
 Adds an editor that allows modifying multiple properties. The [param editor] control must extend [EditorProperty].
 */
 func (self Instance) AddPropertyEditorForMultipleProperties(label string, properties []string, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
-	class(self).AddPropertyEditorForMultipleProperties(String.New(label), gd.NewPackedStringSlice(properties), editor)
+	class(self).AddPropertyEditorForMultipleProperties(String.New(label), Packed.MakeStrings(properties...), editor)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -337,10 +341,10 @@ func (self class) AddPropertyEditor(property String.Readable, editor [1]gdclass.
 Adds an editor that allows modifying multiple properties. The [param editor] control must extend [EditorProperty].
 */
 //go:nosplit
-func (self class) AddPropertyEditorForMultipleProperties(label String.Readable, properties gd.PackedStringArray, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
+func (self class) AddPropertyEditorForMultipleProperties(label String.Readable, properties Packed.Strings, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
-	callframe.Arg(frame, pointers.Get(properties))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(properties)))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()[0]))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspectorPlugin.Bind_add_property_editor_for_multiple_properties, self.AsObject(), frame.Array(0), r_ret.Addr())

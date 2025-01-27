@@ -7,6 +7,7 @@ import (
 
 	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/pointers"
+	PackedType "graphics.gd/variant/Packed"
 
 	"runtime.link/api"
 )
@@ -193,17 +194,22 @@ type API struct {
 	Singletons singletons
 }
 
-type Packed[T any] interface {
+type Packed[T any, V PackedType.Type] interface {
 	PackedByteArray | PackedInt32Array | PackedInt64Array | PackedFloat32Array |
 		PackedFloat64Array | PackedStringArray |
 		PackedVector2Array | PackedVector3Array | PackedVector4Array |
 		PackedColorArray
 
 	pointers.Generic[T, PackedPointers]
+
+	New() T
 	Len() int
+	Resize(Int) Int
+	Index(Int) V
+	SetIndex(Int, V)
 }
 
-type PackedFunctionsFor[T Packed[T], V any] struct {
+type PackedFunctionsFor[T Packed[T, V], V PackedType.Type] struct {
 	Index         func(T, Int) V
 	SetIndex      func(T, Int, V)
 	CopyAsSlice   func(T) []V

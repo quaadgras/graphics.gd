@@ -3,6 +3,7 @@ package CanvasItem
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2"
@@ -36,6 +38,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Abstract base class for everything in 2D space. Canvas items are laid out in a tree; children inherit and extend their parent's transform. [CanvasItem] is extended by [Control] for GUI-related nodes, and by [Node2D] for 2D game objects.
@@ -148,7 +152,7 @@ Draws interconnected line segments with a uniform [param color] and [param width
 If [param width] is negative, it will be ignored and the polyline will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
 func (self Instance) DrawPolyline(points []Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_polyline
-	class(self).DrawPolyline(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.Color(color), gd.Float(-1.0), false)
+	class(self).DrawPolyline(Packed.New(points...), gd.Color(color), gd.Float(-1.0), false)
 }
 
 /*
@@ -156,7 +160,7 @@ Draws interconnected line segments with a uniform [param width], point-by-point 
 If [param width] is negative, it will be ignored and the polyline will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
 func (self Instance) DrawPolylineColors(points []Vector2.XY, colors []Color.RGBA) { //gd:CanvasItem.draw_polyline_colors
-	class(self).DrawPolylineColors(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.Float(-1.0), false)
+	class(self).DrawPolylineColors(Packed.New(points...), Packed.New(colors...), gd.Float(-1.0), false)
 }
 
 /*
@@ -174,7 +178,7 @@ If [param width] is negative, then two-point primitives will be drawn instead of
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
 func (self Instance) DrawMultiline(points []Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_multiline
-	class(self).DrawMultiline(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.Color(color), gd.Float(-1.0), false)
+	class(self).DrawMultiline(Packed.New(points...), gd.Color(color), gd.Float(-1.0), false)
 }
 
 /*
@@ -183,7 +187,7 @@ If [param width] is negative, then two-point primitives will be drawn instead of
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
 func (self Instance) DrawMultilineColors(points []Vector2.XY, colors []Color.RGBA) { //gd:CanvasItem.draw_multiline_colors
-	class(self).DrawMultilineColors(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.Float(-1.0), false)
+	class(self).DrawMultilineColors(Packed.New(points...), Packed.New(colors...), gd.Float(-1.0), false)
 }
 
 /*
@@ -263,21 +267,21 @@ func (self Instance) DrawStyleBox(style_box [1]gdclass.StyleBox, rect Rect2.Posi
 Draws a custom primitive. 1 point for a point, 2 points for a line, 3 points for a triangle, and 4 points for a quad. If 0 points or more than 4 points are specified, nothing will be drawn and an error message will be printed. See also [method draw_line], [method draw_polyline], [method draw_polygon], and [method draw_rect].
 */
 func (self Instance) DrawPrimitive(points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY) { //gd:CanvasItem.draw_primitive
-	class(self).DrawPrimitive(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&uvs))), [1][1]gdclass.Texture2D{}[0])
+	class(self).DrawPrimitive(Packed.New(points...), Packed.New(colors...), Packed.New(uvs...), [1][1]gdclass.Texture2D{}[0])
 }
 
 /*
 Draws a solid polygon of any number of points, convex or concave. Unlike [method draw_colored_polygon], each point's color can be changed individually. See also [method draw_polyline] and [method draw_polyline_colors]. If you need more flexibility (such as being able to use bones), use [method RenderingServer.canvas_item_add_triangle_array] instead.
 */
 func (self Instance) DrawPolygon(points []Vector2.XY, colors []Color.RGBA) { //gd:CanvasItem.draw_polygon
-	class(self).DrawPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.NewPackedVector2Slice(nil), [1][1]gdclass.Texture2D{}[0])
+	class(self).DrawPolygon(Packed.New(points...), Packed.New(colors...), Packed.New[Vector2.XY](), [1][1]gdclass.Texture2D{}[0])
 }
 
 /*
 Draws a colored polygon of any number of points, convex or concave. Unlike [method draw_polygon], a single color must be specified for the whole polygon.
 */
 func (self Instance) DrawColoredPolygon(points []Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_colored_polygon
-	class(self).DrawColoredPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.Color(color), gd.NewPackedVector2Slice(nil), [1][1]gdclass.Texture2D{}[0])
+	class(self).DrawColoredPolygon(Packed.New(points...), gd.Color(color), Packed.New[Vector2.XY](), [1][1]gdclass.Texture2D{}[0])
 }
 
 /*
@@ -969,9 +973,9 @@ Draws interconnected line segments with a uniform [param color] and [param width
 If [param width] is negative, it will be ignored and the polyline will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
 //go:nosplit
-func (self class) DrawPolyline(points gd.PackedVector2Array, color gd.Color, width gd.Float, antialiased bool) { //gd:CanvasItem.draw_polyline
+func (self class) DrawPolyline(points Packed.Array[Vector2.XY], color gd.Color, width gd.Float, antialiased bool) { //gd:CanvasItem.draw_polyline
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(points))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
@@ -985,10 +989,10 @@ Draws interconnected line segments with a uniform [param width], point-by-point 
 If [param width] is negative, it will be ignored and the polyline will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
 //go:nosplit
-func (self class) DrawPolylineColors(points gd.PackedVector2Array, colors gd.PackedColorArray, width gd.Float, antialiased bool) { //gd:CanvasItem.draw_polyline_colors
+func (self class) DrawPolylineColors(points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width gd.Float, antialiased bool) { //gd:CanvasItem.draw_polyline_colors
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(points))
-	callframe.Arg(frame, pointers.Get(colors))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
 	var r_ret = callframe.Nil
@@ -1023,9 +1027,9 @@ If [param width] is negative, then two-point primitives will be drawn instead of
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
 //go:nosplit
-func (self class) DrawMultiline(points gd.PackedVector2Array, color gd.Color, width gd.Float, antialiased bool) { //gd:CanvasItem.draw_multiline
+func (self class) DrawMultiline(points Packed.Array[Vector2.XY], color gd.Color, width gd.Float, antialiased bool) { //gd:CanvasItem.draw_multiline
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(points))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
@@ -1040,10 +1044,10 @@ If [param width] is negative, then two-point primitives will be drawn instead of
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
 //go:nosplit
-func (self class) DrawMultilineColors(points gd.PackedVector2Array, colors gd.PackedColorArray, width gd.Float, antialiased bool) { //gd:CanvasItem.draw_multiline_colors
+func (self class) DrawMultilineColors(points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width gd.Float, antialiased bool) { //gd:CanvasItem.draw_multiline_colors
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(points))
-	callframe.Arg(frame, pointers.Get(colors))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
 	var r_ret = callframe.Nil
@@ -1198,11 +1202,11 @@ func (self class) DrawStyleBox(style_box [1]gdclass.StyleBox, rect gd.Rect2) { /
 Draws a custom primitive. 1 point for a point, 2 points for a line, 3 points for a triangle, and 4 points for a quad. If 0 points or more than 4 points are specified, nothing will be drawn and an error message will be printed. See also [method draw_line], [method draw_polyline], [method draw_polygon], and [method draw_rect].
 */
 //go:nosplit
-func (self class) DrawPrimitive(points gd.PackedVector2Array, colors gd.PackedColorArray, uvs gd.PackedVector2Array, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_primitive
+func (self class) DrawPrimitive(points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_primitive
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(points))
-	callframe.Arg(frame, pointers.Get(colors))
-	callframe.Arg(frame, pointers.Get(uvs))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs))
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_primitive, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1213,11 +1217,11 @@ func (self class) DrawPrimitive(points gd.PackedVector2Array, colors gd.PackedCo
 Draws a solid polygon of any number of points, convex or concave. Unlike [method draw_colored_polygon], each point's color can be changed individually. See also [method draw_polyline] and [method draw_polyline_colors]. If you need more flexibility (such as being able to use bones), use [method RenderingServer.canvas_item_add_triangle_array] instead.
 */
 //go:nosplit
-func (self class) DrawPolygon(points gd.PackedVector2Array, colors gd.PackedColorArray, uvs gd.PackedVector2Array, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_polygon
+func (self class) DrawPolygon(points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_polygon
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(points))
-	callframe.Arg(frame, pointers.Get(colors))
-	callframe.Arg(frame, pointers.Get(uvs))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs))
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1228,11 +1232,11 @@ func (self class) DrawPolygon(points gd.PackedVector2Array, colors gd.PackedColo
 Draws a colored polygon of any number of points, convex or concave. Unlike [method draw_polygon], a single color must be specified for the whole polygon.
 */
 //go:nosplit
-func (self class) DrawColoredPolygon(points gd.PackedVector2Array, color gd.Color, uvs gd.PackedVector2Array, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_colored_polygon
+func (self class) DrawColoredPolygon(points Packed.Array[Vector2.XY], color gd.Color, uvs Packed.Array[Vector2.XY], texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_colored_polygon
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(points))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))
 	callframe.Arg(frame, color)
-	callframe.Arg(frame, pointers.Get(uvs))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs))
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_colored_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())

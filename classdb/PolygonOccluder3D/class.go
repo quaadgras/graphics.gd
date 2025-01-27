@@ -3,6 +3,7 @@ package PolygonOccluder3D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Occluder3D"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [PolygonOccluder3D] stores a polygon shape that can be used by the engine's occlusion culling system. When an [OccluderInstance3D] with a [PolygonOccluder3D] is selected in the editor, an editor will appear at the top of the 3D viewport so you can add/remove points. All points must be placed on the same 2D plane, which means it is not possible to create arbitrary 3D shapes with a single [PolygonOccluder3D]. To use arbitrary 3D shapes as occluders, use [ArrayOccluder3D] or [OccluderInstance3D]'s baking feature instead.
@@ -68,28 +72,28 @@ func New() Instance {
 }
 
 func (self Instance) Polygon() []Vector2.XY {
-	return []Vector2.XY(class(self).GetPolygon().AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
 func (self Instance) SetPolygon(value []Vector2.XY) {
-	class(self).SetPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
+	class(self).SetPolygon(Packed.New(value...))
 }
 
 //go:nosplit
-func (self class) SetPolygon(polygon gd.PackedVector2Array) { //gd:PolygonOccluder3D.set_polygon
+func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:PolygonOccluder3D.set_polygon
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(polygon))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonOccluder3D.Bind_set_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPolygon() gd.PackedVector2Array { //gd:PolygonOccluder3D.get_polygon
+func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:PolygonOccluder3D.get_polygon
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonOccluder3D.Bind_get_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -4,6 +4,7 @@ package OS
 import "unsafe"
 import "sync"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 The [OS] class wraps the most common functionalities for communicating with the host operating system, such as the video driver, delays, environment variables, execution of binaries, command line, etc.
@@ -210,7 +214,7 @@ OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
 */
 func Execute(path string, arguments []string) int { //gd:OS.execute
 	once.Do(singleton)
-	return int(int(class(self).Execute(String.New(path), gd.NewPackedStringSlice(arguments), Array.Nil, false, false)))
+	return int(int(class(self).Execute(String.New(path), Packed.MakeStrings(arguments...), Array.Nil, false, false)))
 }
 
 /*
@@ -227,7 +231,7 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 */
 func ExecuteWithPipe(path string, arguments []string) Pipe { //gd:OS.execute_with_pipe
 	once.Do(singleton)
-	return Pipe(gd.DictionaryAs[Pipe](class(self).ExecuteWithPipe(String.New(path), gd.NewPackedStringSlice(arguments))))
+	return Pipe(gd.DictionaryAs[Pipe](class(self).ExecuteWithPipe(String.New(path), Packed.MakeStrings(arguments...))))
 }
 
 /*
@@ -249,7 +253,7 @@ See [method execute] if you wish to run an external command and retrieve the res
 */
 func CreateProcess(path string, arguments []string) int { //gd:OS.create_process
 	once.Do(singleton)
-	return int(int(class(self).CreateProcess(String.New(path), gd.NewPackedStringSlice(arguments), false)))
+	return int(int(class(self).CreateProcess(String.New(path), Packed.MakeStrings(arguments...), false)))
 }
 
 /*
@@ -260,7 +264,7 @@ See [method create_process] if you wish to run a different process.
 */
 func CreateInstance(arguments []string) int { //gd:OS.create_instance
 	once.Do(singleton)
-	return int(int(class(self).CreateInstance(gd.NewPackedStringSlice(arguments))))
+	return int(int(class(self).CreateInstance(Packed.MakeStrings(arguments...))))
 }
 
 /*
@@ -535,7 +539,7 @@ This method can be used to apply setting changes that require a restart. See als
 */
 func SetRestartOnExit(restart bool) { //gd:OS.set_restart_on_exit
 	once.Do(singleton)
-	class(self).SetRestartOnExit(restart, gd.NewPackedStringSlice([1][]string{}[0]))
+	class(self).SetRestartOnExit(restart, Packed.MakeStrings([1][]string{}[0]...))
 }
 
 /*
@@ -942,12 +946,12 @@ Generates a [PackedByteArray] of cryptographically secure random bytes with give
 [b]Note:[/b] Generating large quantities of bytes using this method can result in locking and entropy of lower quality on most platforms. Using [method Crypto.generate_random_bytes] is preferred in most cases.
 */
 //go:nosplit
-func (self class) GetEntropy(size gd.Int) gd.PackedByteArray { //gd:OS.get_entropy
+func (self class) GetEntropy(size gd.Int) Packed.Bytes { //gd:OS.get_entropy
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_entropy, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -970,11 +974,11 @@ Returns an array of connected MIDI device names, if they exist. Returns an empty
 [b]Note:[/b] This method is implemented on Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) GetConnectedMidiInputs() gd.PackedStringArray { //gd:OS.get_connected_midi_inputs
+func (self class) GetConnectedMidiInputs() Packed.Strings { //gd:OS.get_connected_midi_inputs
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_connected_midi_inputs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1118,11 +1122,11 @@ Returns the list of font family names available.
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) GetSystemFonts() gd.PackedStringArray { //gd:OS.get_system_fonts
+func (self class) GetSystemFonts() Packed.Strings { //gd:OS.get_system_fonts
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_fonts, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1155,7 +1159,7 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) GetSystemFontPathForText(font_name String.Readable, text String.Readable, locale String.Readable, script String.Readable, weight gd.Int, stretch gd.Int, italic bool) gd.PackedStringArray { //gd:OS.get_system_font_path_for_text
+func (self class) GetSystemFontPathForText(font_name String.Readable, text String.Readable, locale String.Readable, script String.Readable, weight gd.Int, stretch gd.Int, italic bool) Packed.Strings { //gd:OS.get_system_font_path_for_text
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(font_name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
@@ -1166,7 +1170,7 @@ func (self class) GetSystemFontPathForText(font_name String.Readable, text Strin
 	callframe.Arg(frame, italic)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_font_path_for_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1236,10 +1240,10 @@ OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
 [b]Note:[/b] On Android, system commands such as [code]dumpsys[/code] can only be run on a rooted device.
 */
 //go:nosplit
-func (self class) Execute(path String.Readable, arguments gd.PackedStringArray, output Array.Any, read_stderr bool, open_console bool) gd.Int { //gd:OS.execute
+func (self class) Execute(path String.Readable, arguments Packed.Strings, output Array.Any, read_stderr bool, open_console bool) gd.Int { //gd:OS.execute
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(arguments))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(output)))
 	callframe.Arg(frame, read_stderr)
 	callframe.Arg(frame, open_console)
@@ -1263,10 +1267,10 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
 //go:nosplit
-func (self class) ExecuteWithPipe(path String.Readable, arguments gd.PackedStringArray) Dictionary.Any { //gd:OS.execute_with_pipe
+func (self class) ExecuteWithPipe(path String.Readable, arguments Packed.Strings) Dictionary.Any { //gd:OS.execute_with_pipe
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(arguments))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_execute_with_pipe, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
@@ -1292,10 +1296,10 @@ See [method execute] if you wish to run an external command and retrieve the res
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
 //go:nosplit
-func (self class) CreateProcess(path String.Readable, arguments gd.PackedStringArray, open_console bool) gd.Int { //gd:OS.create_process
+func (self class) CreateProcess(path String.Readable, arguments Packed.Strings, open_console bool) gd.Int { //gd:OS.create_process
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(arguments))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
 	callframe.Arg(frame, open_console)
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_create_process, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1311,9 +1315,9 @@ See [method create_process] if you wish to run a different process.
 [b]Note:[/b] This method is implemented on Android, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) CreateInstance(arguments gd.PackedStringArray) gd.Int { //gd:OS.create_instance
+func (self class) CreateInstance(arguments Packed.Strings) gd.Int { //gd:OS.create_instance
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(arguments))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_create_instance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1618,11 +1622,11 @@ foreach (var argument in OS.GetCmdlineArgs())
 [b]Note:[/b] Passing custom user arguments directly is not recommended, as the engine may discard or modify them. Instead, pass the standard UNIX double dash ([code]--[/code]) and then the custom arguments, which the engine will ignore by design. These can be read via [method get_cmdline_user_args].
 */
 //go:nosplit
-func (self class) GetCmdlineArgs() gd.PackedStringArray { //gd:OS.get_cmdline_args
+func (self class) GetCmdlineArgs() Packed.Strings { //gd:OS.get_cmdline_args
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cmdline_args, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1639,11 +1643,11 @@ OS.get_cmdline_user_args() # Returns ["--level=2", "--hardcore"]
 To get all passed arguments, use [method get_cmdline_args].
 */
 //go:nosplit
-func (self class) GetCmdlineUserArgs() gd.PackedStringArray { //gd:OS.get_cmdline_user_args
+func (self class) GetCmdlineUserArgs() Packed.Strings { //gd:OS.get_cmdline_user_args
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cmdline_user_args, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1655,11 +1659,11 @@ The second element holds the driver version. For example, on the [code]nvidia[/c
 [b]Note:[/b] This method is only supported on Linux/BSD and Windows when not running in headless mode. On other platforms, it returns an empty array.
 */
 //go:nosplit
-func (self class) GetVideoAdapterDriverInfo() gd.PackedStringArray { //gd:OS.get_video_adapter_driver_info
+func (self class) GetVideoAdapterDriverInfo() Packed.Strings { //gd:OS.get_video_adapter_driver_info
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_video_adapter_driver_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1671,10 +1675,10 @@ This method can be used to apply setting changes that require a restart. See als
 [b]Note:[/b] If the project process crashes or is [i]killed[/i] by the user (by sending [code]SIGKILL[/code] instead of the usual [code]SIGTERM[/code]), the project won't restart automatically.
 */
 //go:nosplit
-func (self class) SetRestartOnExit(restart bool, arguments gd.PackedStringArray) { //gd:OS.set_restart_on_exit
+func (self class) SetRestartOnExit(restart bool, arguments Packed.Strings) { //gd:OS.set_restart_on_exit
 	var frame = callframe.New()
 	callframe.Arg(frame, restart)
-	callframe.Arg(frame, pointers.Get(arguments))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_restart_on_exit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1697,11 +1701,11 @@ func (self class) IsRestartOnExitSet() bool { //gd:OS.is_restart_on_exit_set
 Returns the list of command line arguments that will be used when the project automatically restarts using [method set_restart_on_exit]. See also [method is_restart_on_exit_set].
 */
 //go:nosplit
-func (self class) GetRestartOnExitArguments() gd.PackedStringArray { //gd:OS.get_restart_on_exit_arguments
+func (self class) GetRestartOnExitArguments() Packed.Strings { //gd:OS.get_restart_on_exit_arguments
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_restart_on_exit_arguments, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -2194,11 +2198,11 @@ On Android devices: Returns the list of dangerous permissions that have been gra
 On macOS: Returns the list of user selected folders accessible to the application (sandboxed applications only). Use the native file dialog to request folder access permission.
 */
 //go:nosplit
-func (self class) GetGrantedPermissions() gd.PackedStringArray { //gd:OS.get_granted_permissions
+func (self class) GetGrantedPermissions() Packed.Strings { //gd:OS.get_granted_permissions
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_granted_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

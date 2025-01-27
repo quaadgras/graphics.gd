@@ -3,6 +3,7 @@ package MeshDataTool
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Plane"
 import "graphics.gd/variant/Vector2"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 MeshDataTool provides access to individual vertices in a [Mesh]. It allows users to read and edit vertex data of meshes. It also creates an array of faces and edges.
@@ -232,28 +236,28 @@ func (self Instance) GetVertexColor(idx int) Color.RGBA { //gd:MeshDataTool.get_
 Sets the bones of the given vertex.
 */
 func (self Instance) SetVertexBones(idx int, bones []int32) { //gd:MeshDataTool.set_vertex_bones
-	class(self).SetVertexBones(gd.Int(idx), gd.NewPackedInt32Slice(bones))
+	class(self).SetVertexBones(gd.Int(idx), Packed.New(bones...))
 }
 
 /*
 Returns the bones of the given vertex.
 */
 func (self Instance) GetVertexBones(idx int) []int32 { //gd:MeshDataTool.get_vertex_bones
-	return []int32(class(self).GetVertexBones(gd.Int(idx)).AsSlice())
+	return []int32(slices.Collect(class(self).GetVertexBones(gd.Int(idx)).Values()))
 }
 
 /*
 Sets the bone weights of the given vertex.
 */
 func (self Instance) SetVertexWeights(idx int, weights []float32) { //gd:MeshDataTool.set_vertex_weights
-	class(self).SetVertexWeights(gd.Int(idx), gd.NewPackedFloat32Slice(weights))
+	class(self).SetVertexWeights(gd.Int(idx), Packed.New(weights...))
 }
 
 /*
 Returns bone weights of the given vertex.
 */
 func (self Instance) GetVertexWeights(idx int) []float32 { //gd:MeshDataTool.get_vertex_weights
-	return []float32(class(self).GetVertexWeights(gd.Int(idx)).AsSlice())
+	return []float32(slices.Collect(class(self).GetVertexWeights(gd.Int(idx)).Values()))
 }
 
 /*
@@ -274,14 +278,14 @@ func (self Instance) GetVertexMeta(idx int) any { //gd:MeshDataTool.get_vertex_m
 Returns an array of edges that share the given vertex.
 */
 func (self Instance) GetVertexEdges(idx int) []int32 { //gd:MeshDataTool.get_vertex_edges
-	return []int32(class(self).GetVertexEdges(gd.Int(idx)).AsSlice())
+	return []int32(slices.Collect(class(self).GetVertexEdges(gd.Int(idx)).Values()))
 }
 
 /*
 Returns an array of faces that share the given vertex.
 */
 func (self Instance) GetVertexFaces(idx int) []int32 { //gd:MeshDataTool.get_vertex_faces
-	return []int32(class(self).GetVertexFaces(gd.Int(idx)).AsSlice())
+	return []int32(slices.Collect(class(self).GetVertexFaces(gd.Int(idx)).Values()))
 }
 
 /*
@@ -296,7 +300,7 @@ func (self Instance) GetEdgeVertex(idx int, vertex int) int { //gd:MeshDataTool.
 Returns array of faces that touch given edge.
 */
 func (self Instance) GetEdgeFaces(idx int) []int32 { //gd:MeshDataTool.get_edge_faces
-	return []int32(class(self).GetEdgeFaces(gd.Int(idx)).AsSlice())
+	return []int32(slices.Collect(class(self).GetEdgeFaces(gd.Int(idx)).Values()))
 }
 
 /*
@@ -656,10 +660,10 @@ func (self class) GetVertexColor(idx gd.Int) gd.Color { //gd:MeshDataTool.get_ve
 Sets the bones of the given vertex.
 */
 //go:nosplit
-func (self class) SetVertexBones(idx gd.Int, bones gd.PackedInt32Array) { //gd:MeshDataTool.set_vertex_bones
+func (self class) SetVertexBones(idx gd.Int, bones Packed.Array[int32]) { //gd:MeshDataTool.set_vertex_bones
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(bones))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](bones))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_set_vertex_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -669,12 +673,12 @@ func (self class) SetVertexBones(idx gd.Int, bones gd.PackedInt32Array) { //gd:M
 Returns the bones of the given vertex.
 */
 //go:nosplit
-func (self class) GetVertexBones(idx gd.Int) gd.PackedInt32Array { //gd:MeshDataTool.get_vertex_bones
+func (self class) GetVertexBones(idx gd.Int) Packed.Array[int32] { //gd:MeshDataTool.get_vertex_bones
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_vertex_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -683,10 +687,10 @@ func (self class) GetVertexBones(idx gd.Int) gd.PackedInt32Array { //gd:MeshData
 Sets the bone weights of the given vertex.
 */
 //go:nosplit
-func (self class) SetVertexWeights(idx gd.Int, weights gd.PackedFloat32Array) { //gd:MeshDataTool.set_vertex_weights
+func (self class) SetVertexWeights(idx gd.Int, weights Packed.Array[float32]) { //gd:MeshDataTool.set_vertex_weights
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(weights))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](weights))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_set_vertex_weights, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -696,12 +700,12 @@ func (self class) SetVertexWeights(idx gd.Int, weights gd.PackedFloat32Array) { 
 Returns bone weights of the given vertex.
 */
 //go:nosplit
-func (self class) GetVertexWeights(idx gd.Int) gd.PackedFloat32Array { //gd:MeshDataTool.get_vertex_weights
+func (self class) GetVertexWeights(idx gd.Int) Packed.Array[float32] { //gd:MeshDataTool.get_vertex_weights
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_vertex_weights, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedFloat32Array](r_ret.Get())
+	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -737,12 +741,12 @@ func (self class) GetVertexMeta(idx gd.Int) gd.Variant { //gd:MeshDataTool.get_v
 Returns an array of edges that share the given vertex.
 */
 //go:nosplit
-func (self class) GetVertexEdges(idx gd.Int) gd.PackedInt32Array { //gd:MeshDataTool.get_vertex_edges
+func (self class) GetVertexEdges(idx gd.Int) Packed.Array[int32] { //gd:MeshDataTool.get_vertex_edges
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_vertex_edges, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -751,12 +755,12 @@ func (self class) GetVertexEdges(idx gd.Int) gd.PackedInt32Array { //gd:MeshData
 Returns an array of faces that share the given vertex.
 */
 //go:nosplit
-func (self class) GetVertexFaces(idx gd.Int) gd.PackedInt32Array { //gd:MeshDataTool.get_vertex_faces
+func (self class) GetVertexFaces(idx gd.Int) Packed.Array[int32] { //gd:MeshDataTool.get_vertex_faces
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_vertex_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -781,12 +785,12 @@ func (self class) GetEdgeVertex(idx gd.Int, vertex gd.Int) gd.Int { //gd:MeshDat
 Returns array of faces that touch given edge.
 */
 //go:nosplit
-func (self class) GetEdgeFaces(idx gd.Int) gd.PackedInt32Array { //gd:MeshDataTool.get_edge_faces
+func (self class) GetEdgeFaces(idx gd.Int) Packed.Array[int32] { //gd:MeshDataTool.get_edge_faces
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_edge_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

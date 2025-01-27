@@ -4,6 +4,7 @@ package NavigationServer2D
 import "unsafe"
 import "sync"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Transform2D"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 NavigationServer2D is the server that handles navigation maps, regions and agents. It does not handle A* navigation from [AStar2D] or [AStarGrid2D].
@@ -154,7 +158,7 @@ Returns the navigation path to reach the destination from the origin. [param nav
 */
 func MapGetPath(mapping RID.NavigationMap2D, origin Vector2.XY, destination Vector2.XY, optimize bool) []Vector2.XY { //gd:NavigationServer2D.map_get_path
 	once.Do(singleton)
-	return []Vector2.XY(class(self).MapGetPath(gd.RID(mapping), gd.Vector2(origin), gd.Vector2(destination), optimize, gd.Int(1)).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).MapGetPath(gd.RID(mapping), gd.Vector2(origin), gd.Vector2(destination), optimize, gd.Int(1)).Values()))
 }
 
 /*
@@ -958,7 +962,7 @@ Sets the outline vertices for the obstacle. If the vertices are winded in clockw
 */
 func ObstacleSetVertices(obstacle RID.NavigationObstacle2D, vertices []Vector2.XY) { //gd:NavigationServer2D.obstacle_set_vertices
 	once.Do(singleton)
-	class(self).ObstacleSetVertices(gd.RID(obstacle), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&vertices))))
+	class(self).ObstacleSetVertices(gd.RID(obstacle), Packed.New(vertices...))
 }
 
 /*
@@ -966,7 +970,7 @@ Returns the outline vertices for the specified [param obstacle].
 */
 func ObstacleGetVertices(obstacle RID.NavigationObstacle2D) []Vector2.XY { //gd:NavigationServer2D.obstacle_get_vertices
 	once.Do(singleton)
-	return []Vector2.XY(class(self).ObstacleGetVertices(gd.RID(obstacle)).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).ObstacleGetVertices(gd.RID(obstacle)).Values()))
 }
 
 /*
@@ -1044,7 +1048,7 @@ Path simplification can be helpful to mitigate various path following issues tha
 */
 func SimplifyPath(path []Vector2.XY, epsilon Float.X) []Vector2.XY { //gd:NavigationServer2D.simplify_path
 	once.Do(singleton)
-	return []Vector2.XY(class(self).SimplifyPath(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&path))), gd.Float(epsilon)).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).SimplifyPath(Packed.New(path...), gd.Float(epsilon)).Values()))
 }
 
 /*
@@ -1246,7 +1250,7 @@ func (self class) MapGetLinkConnectionRadius(mapping gd.RID) gd.Float { //gd:Nav
 Returns the navigation path to reach the destination from the origin. [param navigation_layers] is a bitmask of all region navigation layers that are allowed to be in the path.
 */
 //go:nosplit
-func (self class) MapGetPath(mapping gd.RID, origin gd.Vector2, destination gd.Vector2, optimize bool, navigation_layers gd.Int) gd.PackedVector2Array { //gd:NavigationServer2D.map_get_path
+func (self class) MapGetPath(mapping gd.RID, origin gd.Vector2, destination gd.Vector2, optimize bool, navigation_layers gd.Int) Packed.Array[Vector2.XY] { //gd:NavigationServer2D.map_get_path
 	var frame = callframe.New()
 	callframe.Arg(frame, mapping)
 	callframe.Arg(frame, origin)
@@ -1255,7 +1259,7 @@ func (self class) MapGetPath(mapping gd.RID, origin gd.Vector2, destination gd.V
 	callframe.Arg(frame, navigation_layers)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_map_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -2610,10 +2614,10 @@ func (self class) ObstacleGetPosition(obstacle gd.RID) gd.Vector2 { //gd:Navigat
 Sets the outline vertices for the obstacle. If the vertices are winded in clockwise order agents will be pushed in by the obstacle, else they will be pushed out.
 */
 //go:nosplit
-func (self class) ObstacleSetVertices(obstacle gd.RID, vertices gd.PackedVector2Array) { //gd:NavigationServer2D.obstacle_set_vertices
+func (self class) ObstacleSetVertices(obstacle gd.RID, vertices Packed.Array[Vector2.XY]) { //gd:NavigationServer2D.obstacle_set_vertices
 	var frame = callframe.New()
 	callframe.Arg(frame, obstacle)
-	callframe.Arg(frame, pointers.Get(vertices))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_obstacle_set_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2623,12 +2627,12 @@ func (self class) ObstacleSetVertices(obstacle gd.RID, vertices gd.PackedVector2
 Returns the outline vertices for the specified [param obstacle].
 */
 //go:nosplit
-func (self class) ObstacleGetVertices(obstacle gd.RID) gd.PackedVector2Array { //gd:NavigationServer2D.obstacle_get_vertices
+func (self class) ObstacleGetVertices(obstacle gd.RID) Packed.Array[Vector2.XY] { //gd:NavigationServer2D.obstacle_get_vertices
 	var frame = callframe.New()
 	callframe.Arg(frame, obstacle)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_obstacle_get_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -2753,13 +2757,13 @@ Returns a simplified version of [param path] with less critical path points remo
 Path simplification can be helpful to mitigate various path following issues that can arise with certain agent types and script behaviors. E.g. "steering" agents or avoidance in "open fields".
 */
 //go:nosplit
-func (self class) SimplifyPath(path gd.PackedVector2Array, epsilon gd.Float) gd.PackedVector2Array { //gd:NavigationServer2D.simplify_path
+func (self class) SimplifyPath(path Packed.Array[Vector2.XY], epsilon gd.Float) Packed.Array[Vector2.XY] { //gd:NavigationServer2D.simplify_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](path))
 	callframe.Arg(frame, epsilon)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_simplify_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

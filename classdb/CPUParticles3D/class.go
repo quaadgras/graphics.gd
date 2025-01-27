@@ -3,6 +3,7 @@ package CPUParticles3D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/classdb/Node3D"
@@ -38,6 +40,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 CPU-based 3D particle node used to create a variety of particle systems and effects.
@@ -230,27 +234,27 @@ func (self Instance) SetEmissionBoxExtents(value Vector3.XYZ) {
 }
 
 func (self Instance) EmissionPoints() []Vector3.XYZ {
-	return []Vector3.XYZ(class(self).GetEmissionPoints().AsSlice())
+	return []Vector3.XYZ(slices.Collect(class(self).GetEmissionPoints().Values()))
 }
 
 func (self Instance) SetEmissionPoints(value []Vector3.XYZ) {
-	class(self).SetEmissionPoints(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&value))))
+	class(self).SetEmissionPoints(Packed.New(value...))
 }
 
 func (self Instance) EmissionNormals() []Vector3.XYZ {
-	return []Vector3.XYZ(class(self).GetEmissionNormals().AsSlice())
+	return []Vector3.XYZ(slices.Collect(class(self).GetEmissionNormals().Values()))
 }
 
 func (self Instance) SetEmissionNormals(value []Vector3.XYZ) {
-	class(self).SetEmissionNormals(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&value))))
+	class(self).SetEmissionNormals(Packed.New(value...))
 }
 
 func (self Instance) EmissionColors() []Color.RGBA {
-	return []Color.RGBA(class(self).GetEmissionColors().AsSlice())
+	return []Color.RGBA(slices.Collect(class(self).GetEmissionColors().Values()))
 }
 
 func (self Instance) SetEmissionColors(value []Color.RGBA) {
-	class(self).SetEmissionColors(gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&value))))
+	class(self).SetEmissionColors(Packed.New(value...))
 }
 
 func (self Instance) EmissionRingAxis() Vector3.XYZ {
@@ -1253,58 +1257,58 @@ func (self class) GetEmissionBoxExtents() gd.Vector3 { //gd:CPUParticles3D.get_e
 }
 
 //go:nosplit
-func (self class) SetEmissionPoints(array gd.PackedVector3Array) { //gd:CPUParticles3D.set_emission_points
+func (self class) SetEmissionPoints(array Packed.Array[Vector3.XYZ]) { //gd:CPUParticles3D.set_emission_points
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(array))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](array))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_set_emission_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetEmissionPoints() gd.PackedVector3Array { //gd:CPUParticles3D.get_emission_points
+func (self class) GetEmissionPoints() Packed.Array[Vector3.XYZ] { //gd:CPUParticles3D.get_emission_points
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_get_emission_points, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetEmissionNormals(array gd.PackedVector3Array) { //gd:CPUParticles3D.set_emission_normals
+func (self class) SetEmissionNormals(array Packed.Array[Vector3.XYZ]) { //gd:CPUParticles3D.set_emission_normals
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(array))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](array))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_set_emission_normals, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetEmissionNormals() gd.PackedVector3Array { //gd:CPUParticles3D.get_emission_normals
+func (self class) GetEmissionNormals() Packed.Array[Vector3.XYZ] { //gd:CPUParticles3D.get_emission_normals
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_get_emission_normals, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetEmissionColors(array gd.PackedColorArray) { //gd:CPUParticles3D.set_emission_colors
+func (self class) SetEmissionColors(array Packed.Array[Color.RGBA]) { //gd:CPUParticles3D.set_emission_colors
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(array))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](array))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_set_emission_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetEmissionColors() gd.PackedColorArray { //gd:CPUParticles3D.get_emission_colors
+func (self class) GetEmissionColors() Packed.Array[Color.RGBA] { //gd:CPUParticles3D.get_emission_colors
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_get_emission_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedColorArray](r_ret.Get())
+	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

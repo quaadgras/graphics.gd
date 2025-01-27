@@ -3,6 +3,7 @@ package HMACContext
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +32,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 The HMACContext class is useful for advanced HMAC use cases, such as streaming the message as it supports creating the message over time rather than providing it all at once.
@@ -95,14 +99,14 @@ type Any interface {
 Initializes the HMACContext. This method cannot be called again on the same HMACContext until [method finish] has been called.
 */
 func (self Instance) Start(hash_type gdclass.HashingContextHashType, key []byte) error { //gd:HMACContext.start
-	return error(gd.ToError(class(self).Start(hash_type, gd.NewPackedByteSlice(key))))
+	return error(gd.ToError(class(self).Start(hash_type, Packed.Bytes(Packed.New(key...)))))
 }
 
 /*
 Updates the message to be HMACed. This can be called multiple times before [method finish] is called to append [param data] to the message, but cannot be called until [method start] has been called.
 */
 func (self Instance) Update(data []byte) error { //gd:HMACContext.update
-	return error(gd.ToError(class(self).Update(gd.NewPackedByteSlice(data))))
+	return error(gd.ToError(class(self).Update(Packed.Bytes(Packed.New(data...)))))
 }
 
 /*
@@ -135,10 +139,10 @@ func New() Instance {
 Initializes the HMACContext. This method cannot be called again on the same HMACContext until [method finish] has been called.
 */
 //go:nosplit
-func (self class) Start(hash_type gdclass.HashingContextHashType, key gd.PackedByteArray) gd.Error { //gd:HMACContext.start
+func (self class) Start(hash_type gdclass.HashingContextHashType, key Packed.Bytes) gd.Error { //gd:HMACContext.start
 	var frame = callframe.New()
 	callframe.Arg(frame, hash_type)
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HMACContext.Bind_start, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -150,9 +154,9 @@ func (self class) Start(hash_type gdclass.HashingContextHashType, key gd.PackedB
 Updates the message to be HMACed. This can be called multiple times before [method finish] is called to append [param data] to the message, but cannot be called until [method start] has been called.
 */
 //go:nosplit
-func (self class) Update(data gd.PackedByteArray) gd.Error { //gd:HMACContext.update
+func (self class) Update(data Packed.Bytes) gd.Error { //gd:HMACContext.update
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HMACContext.Bind_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -164,11 +168,11 @@ func (self class) Update(data gd.PackedByteArray) gd.Error { //gd:HMACContext.up
 Returns the resulting HMAC. If the HMAC failed, an empty [PackedByteArray] is returned.
 */
 //go:nosplit
-func (self class) Finish() gd.PackedByteArray { //gd:HMACContext.finish
+func (self class) Finish() Packed.Bytes { //gd:HMACContext.finish
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HMACContext.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

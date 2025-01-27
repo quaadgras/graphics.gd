@@ -3,6 +3,7 @@ package NavigationObstacle3D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 An obstacle needs a navigation map and outline [member vertices] defined to work correctly. The outlines can not cross or overlap and are restricted to a plane projection. This means the y-axis of the vertices is ignored, instead the obstacle's global y-axis position is used for placement. The projected shape is extruded by the obstacles height along the y-axis.
@@ -120,11 +124,11 @@ func (self Instance) SetHeight(value Float.X) {
 }
 
 func (self Instance) Vertices() []Vector3.XYZ {
-	return []Vector3.XYZ(class(self).GetVertices().AsSlice())
+	return []Vector3.XYZ(slices.Collect(class(self).GetVertices().Values()))
 }
 
 func (self Instance) SetVertices(value []Vector3.XYZ) {
-	class(self).SetVertices(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&value))))
+	class(self).SetVertices(Packed.New(value...))
 }
 
 func (self Instance) AffectNavigationMesh() bool {
@@ -290,20 +294,20 @@ func (self class) GetVelocity() gd.Vector3 { //gd:NavigationObstacle3D.get_veloc
 }
 
 //go:nosplit
-func (self class) SetVertices(vertices gd.PackedVector3Array) { //gd:NavigationObstacle3D.set_vertices
+func (self class) SetVertices(vertices Packed.Array[Vector3.XYZ]) { //gd:NavigationObstacle3D.set_vertices
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(vertices))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle3D.Bind_set_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetVertices() gd.PackedVector3Array { //gd:NavigationObstacle3D.get_vertices
+func (self class) GetVertices() Packed.Array[Vector3.XYZ] { //gd:NavigationObstacle3D.get_vertices
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle3D.Bind_get_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

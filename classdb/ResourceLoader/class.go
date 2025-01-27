@@ -4,6 +4,7 @@ package ResourceLoader
 import "unsafe"
 import "sync"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A singleton used to load resource files from the filesystem.
@@ -251,12 +255,12 @@ func (self class) Load(path String.Readable, type_hint String.Readable, cache_mo
 Returns the list of recognized extensions for a resource type.
 */
 //go:nosplit
-func (self class) GetRecognizedExtensionsForType(atype String.Readable) gd.PackedStringArray { //gd:ResourceLoader.get_recognized_extensions_for_type
+func (self class) GetRecognizedExtensionsForType(atype String.Readable) Packed.Strings { //gd:ResourceLoader.get_recognized_extensions_for_type
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(atype)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_get_recognized_extensions_for_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -309,12 +313,12 @@ for dep in ResourceLoader.get_dependencies(path):
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetDependencies(path String.Readable) gd.PackedStringArray { //gd:ResourceLoader.get_dependencies
+func (self class) GetDependencies(path String.Readable) Packed.Strings { //gd:ResourceLoader.get_dependencies
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_get_dependencies, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -3,6 +3,7 @@ package AStarGrid2D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Rect2i"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [AStarGrid2D] is a variant of [AStar2D] that is specialized for partial 2D grids. It is simpler to use because it doesn't require you to manually create points and connect them together. This class also supports multiple types of heuristics, modes for diagonal movement, and a jumping mode to speed up calculations.
@@ -215,7 +219,7 @@ If there is no valid path to the target, and [param allow_partial_path] is [code
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 */
 func (self Instance) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vector2.XY { //gd:AStarGrid2D.get_point_path
-	return []Vector2.XY(class(self).GetPointPath(gd.Vector2i(from_id), gd.Vector2i(to_id), false).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).GetPointPath(gd.Vector2i(from_id), gd.Vector2i(to_id), false).Values()))
 }
 
 /*
@@ -689,14 +693,14 @@ If there is no valid path to the target, and [param allow_partial_path] is [code
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 */
 //go:nosplit
-func (self class) GetPointPath(from_id gd.Vector2i, to_id gd.Vector2i, allow_partial_path bool) gd.PackedVector2Array { //gd:AStarGrid2D.get_point_path
+func (self class) GetPointPath(from_id gd.Vector2i, to_id gd.Vector2i, allow_partial_path bool) Packed.Array[Vector2.XY] { //gd:AStarGrid2D.get_point_path
 	var frame = callframe.New()
 	callframe.Arg(frame, from_id)
 	callframe.Arg(frame, to_id)
 	callframe.Arg(frame, allow_partial_path)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_point_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -3,6 +3,7 @@ package AStar2D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 An implementation of the A* algorithm, used to find the shortest path between two vertices on a connected graph in 2D space.
@@ -197,14 +201,14 @@ int[] neighbors = astar.GetPointConnections(1); // Returns [2, 3]
 [/codeblocks]
 */
 func (self Instance) GetPointConnections(id int) []int64 { //gd:AStar2D.get_point_connections
-	return []int64(class(self).GetPointConnections(gd.Int(id)).AsSlice())
+	return []int64(slices.Collect(class(self).GetPointConnections(gd.Int(id)).Values()))
 }
 
 /*
 Returns an array of all point IDs.
 */
 func (self Instance) GetPointIds() []int64 { //gd:AStar2D.get_point_ids
-	return []int64(class(self).GetPointIds().AsSlice())
+	return []int64(slices.Collect(class(self).GetPointIds().Values()))
 }
 
 /*
@@ -322,7 +326,7 @@ If there is no valid path to the target, and [param allow_partial_path] is [code
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 */
 func (self Instance) GetPointPath(from_id int, to_id int) []Vector2.XY { //gd:AStar2D.get_point_path
-	return []Vector2.XY(class(self).GetPointPath(gd.Int(from_id), gd.Int(to_id), false).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).GetPointPath(gd.Int(from_id), gd.Int(to_id), false).Values()))
 }
 
 /*
@@ -360,7 +364,7 @@ int[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
 If you change the 2nd point's weight to 3, then the result will be [code][1, 4, 3][/code] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */
 func (self Instance) GetIdPath(from_id int, to_id int) []int64 { //gd:AStar2D.get_id_path
-	return []int64(class(self).GetIdPath(gd.Int(from_id), gd.Int(to_id), false).AsSlice())
+	return []int64(slices.Collect(class(self).GetIdPath(gd.Int(from_id), gd.Int(to_id), false).Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -563,12 +567,12 @@ int[] neighbors = astar.GetPointConnections(1); // Returns [2, 3]
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetPointConnections(id gd.Int) gd.PackedInt64Array { //gd:AStar2D.get_point_connections
+func (self class) GetPointConnections(id gd.Int) Packed.Array[int64] { //gd:AStar2D.get_point_connections
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar2D.Bind_get_point_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
+	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -577,11 +581,11 @@ func (self class) GetPointConnections(id gd.Int) gd.PackedInt64Array { //gd:ASta
 Returns an array of all point IDs.
 */
 //go:nosplit
-func (self class) GetPointIds() gd.PackedInt64Array { //gd:AStar2D.get_point_ids
+func (self class) GetPointIds() Packed.Array[int64] { //gd:AStar2D.get_point_ids
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar2D.Bind_get_point_ids, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
+	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -773,14 +777,14 @@ If there is no valid path to the target, and [param allow_partial_path] is [code
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 */
 //go:nosplit
-func (self class) GetPointPath(from_id gd.Int, to_id gd.Int, allow_partial_path bool) gd.PackedVector2Array { //gd:AStar2D.get_point_path
+func (self class) GetPointPath(from_id gd.Int, to_id gd.Int, allow_partial_path bool) Packed.Array[Vector2.XY] { //gd:AStar2D.get_point_path
 	var frame = callframe.New()
 	callframe.Arg(frame, from_id)
 	callframe.Arg(frame, to_id)
 	callframe.Arg(frame, allow_partial_path)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar2D.Bind_get_point_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -820,14 +824,14 @@ int[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
 If you change the 2nd point's weight to 3, then the result will be [code][1, 4, 3][/code] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */
 //go:nosplit
-func (self class) GetIdPath(from_id gd.Int, to_id gd.Int, allow_partial_path bool) gd.PackedInt64Array { //gd:AStar2D.get_id_path
+func (self class) GetIdPath(from_id gd.Int, to_id gd.Int, allow_partial_path bool) Packed.Array[int64] { //gd:AStar2D.get_id_path
 	var frame = callframe.New()
 	callframe.Arg(frame, from_id)
 	callframe.Arg(frame, to_id)
 	callframe.Arg(frame, allow_partial_path)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar2D.Bind_get_id_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
+	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

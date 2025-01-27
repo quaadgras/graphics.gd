@@ -3,6 +3,7 @@ package JSONRPC
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +32,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [url=https://www.jsonrpc.org/]JSON-RPC[/url] is a standard which wraps a method call in a [JSON] object. The object has a particular structure and identifies which method is called, the parameters to that function, and carries an ID to keep track of responses. This class implements that standard on top of [Dictionary]; you will have to convert between a [Dictionary] and [JSON] with other functions.
@@ -260,15 +264,6 @@ const (
 	InternalError ErrorCode = -32603
 )
 
-type Request struct {
-	Method string      `gd:"method"`
-	Params interface{} `gd:"params"`
-	ID     string      `gd:"id"`
-}
-type Response struct {
-	Result interface{} `gd:"result"`
-	ID     string      `gd:"id"`
-}
 type Notification struct {
 	Method string      `gd:"method"`
 	Params interface{} `gd:"params"`
@@ -277,4 +272,13 @@ type ResponseError struct {
 	Code    int    `gd:"code"`
 	Message string `gd:"message"`
 	ID      int    `gd:"id"`
+}
+type Request struct {
+	Method string      `gd:"method"`
+	Params interface{} `gd:"params"`
+	ID     string      `gd:"id"`
+}
+type Response struct {
+	Result interface{} `gd:"result"`
+	ID     string      `gd:"id"`
 }

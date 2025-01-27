@@ -3,6 +3,7 @@ package TextServerExtension
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/TextServer"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
@@ -38,6 +40,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 External [TextServer] implementations should inherit from this class.
@@ -1294,8 +1298,8 @@ func (Instance) _font_set_data(impl func(ptr unsafe.Pointer, font_rid RID.Any, d
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var data = pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
-		defer pointers.End(data)
+		var data = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, data.Bytes())
 	}
@@ -2380,10 +2384,10 @@ func (Instance) _font_set_texture_offsets(impl func(ptr unsafe.Pointer, font_rid
 
 		var texture_index = gd.UnsafeGet[gd.Int](p_args, 2)
 
-		var offset = pointers.New[gd.PackedInt32Array](gd.UnsafeGet[gd.PackedPointers](p_args, 3))
-		defer pointers.End(offset)
+		var offset = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](offset))
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, font_rid, size, int(texture_index), offset.AsSlice())
+		impl(self, font_rid, size, int(texture_index), slices.Collect(offset.Values()))
 	}
 }
 
@@ -2401,7 +2405,7 @@ func (Instance) _font_get_texture_offsets(impl func(ptr unsafe.Pointer, font_rid
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, size, int(texture_index))
-		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -2422,7 +2426,7 @@ func (Instance) _font_get_glyph_list(impl func(ptr unsafe.Pointer, font_rid RID.
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, size)
-		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -3028,7 +3032,7 @@ func (Instance) _font_get_language_support_overrides(impl func(ptr unsafe.Pointe
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
 			return
@@ -3111,7 +3115,7 @@ func (Instance) _font_get_script_support_overrides(impl func(ptr unsafe.Pointer,
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
 			return
@@ -3710,10 +3714,10 @@ func (Instance) _shaped_text_tab_align(impl func(ptr unsafe.Pointer, shaped RID.
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var tab_stops = pointers.New[gd.PackedFloat32Array](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
-		defer pointers.End(tab_stops)
+		var tab_stops = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, shaped, tab_stops.AsSlice())
+		ret := impl(self, shaped, slices.Collect(tab_stops.Values()))
 		gd.UnsafeSet(p_back, gd.Float(ret))
 	}
 }
@@ -3838,8 +3842,8 @@ func (Instance) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, s
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var width = pointers.New[gd.PackedFloat32Array](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
-		defer pointers.End(width)
+		var width = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedFloat32Array, float32](width))
 		var start = gd.UnsafeGet[gd.Int](p_args, 2)
 
 		var once = gd.UnsafeGet[bool](p_args, 3)
@@ -3847,8 +3851,8 @@ func (Instance) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, s
 		var break_flags = gd.UnsafeGet[gdclass.TextServerLineBreakFlag](p_args, 4)
 
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, shaped, width.AsSlice(), int(start), once, break_flags)
-		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
+		ret := impl(self, shaped, slices.Collect(width.Values()), int(start), once, break_flags)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -3873,7 +3877,7 @@ func (Instance) _shaped_text_get_line_breaks(impl func(ptr unsafe.Pointer, shape
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, Float.X(width), int(start), break_flags)
-		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -3896,7 +3900,7 @@ func (Instance) _shaped_text_get_word_breaks(impl func(ptr unsafe.Pointer, shape
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, grapheme_flags, skip_grapheme_flags)
-		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -4178,7 +4182,7 @@ func (Instance) _shaped_text_get_selection(impl func(ptr unsafe.Pointer, shaped 
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, int(start), int(end))
-		ptr, ok := pointers.End(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&ret))))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -4325,7 +4329,7 @@ func (Instance) _shaped_text_get_character_breaks(impl func(ptr unsafe.Pointer, 
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped)
-		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -4499,7 +4503,7 @@ func (Instance) _string_get_word_breaks(impl func(ptr unsafe.Pointer, s string, 
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s.String(), language.String(), int(chars_per_line))
-		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -4520,7 +4524,7 @@ func (Instance) _string_get_character_breaks(impl func(ptr unsafe.Pointer, s str
 		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s.String(), language.String())
-		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -4537,8 +4541,8 @@ func (Instance) _is_confusable(impl func(ptr unsafe.Pointer, s string, dict []st
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
-		var dict = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
-		defer pointers.End(dict)
+		var dict = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPackedStrings(dict))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s.String(), dict.Strings())
 		gd.UnsafeSet(p_back, gd.Int(ret))
@@ -4884,12 +4888,12 @@ func (class) _create_font_linked_variation(impl func(ptr unsafe.Pointer, font_ri
 [b]Optional.[/b]
 Sets font source data, e.g contents of the dynamic font source file.
 */
-func (class) _font_set_data(impl func(ptr unsafe.Pointer, font_rid gd.RID, data gd.PackedByteArray)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_data(impl func(ptr unsafe.Pointer, font_rid gd.RID, data Packed.Bytes)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var data = pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
-		defer pointers.End(data)
+		var data = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, data)
 	}
@@ -5966,7 +5970,7 @@ func (class) _font_get_texture_image(impl func(ptr unsafe.Pointer, font_rid gd.R
 [b]Optional.[/b]
 Sets array containing glyph packing data.
 */
-func (class) _font_set_texture_offsets(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, texture_index gd.Int, offset gd.PackedInt32Array)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_texture_offsets(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, texture_index gd.Int, offset Packed.Array[int32])) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
@@ -5974,8 +5978,8 @@ func (class) _font_set_texture_offsets(impl func(ptr unsafe.Pointer, font_rid gd
 
 		var texture_index = gd.UnsafeGet[gd.Int](p_args, 2)
 
-		var offset = pointers.New[gd.PackedInt32Array](gd.UnsafeGet[gd.PackedPointers](p_args, 3))
-		defer pointers.End(offset)
+		var offset = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](offset))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, size, texture_index, offset)
 	}
@@ -5985,7 +5989,7 @@ func (class) _font_set_texture_offsets(impl func(ptr unsafe.Pointer, font_rid gd
 [b]Optional.[/b]
 Returns array containing glyph packing data.
 */
-func (class) _font_get_texture_offsets(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, texture_index gd.Int) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_texture_offsets(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, texture_index gd.Int) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
@@ -5995,7 +5999,7 @@ func (class) _font_get_texture_offsets(impl func(ptr unsafe.Pointer, font_rid gd
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, size, texture_index)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
 		if !ok {
 			return
@@ -6008,7 +6012,7 @@ func (class) _font_get_texture_offsets(impl func(ptr unsafe.Pointer, font_rid gd
 [b]Required.[/b]
 Returns list of rendered glyphs in the cache entry.
 */
-func (class) _font_get_glyph_list(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_glyph_list(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
@@ -6016,7 +6020,7 @@ func (class) _font_get_glyph_list(impl func(ptr unsafe.Pointer, font_rid gd.RID,
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, size)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
 		if !ok {
 			return
@@ -6616,13 +6620,13 @@ func (class) _font_remove_language_support_override(impl func(ptr unsafe.Pointer
 [b]Optional.[/b]
 Returns list of language support overrides.
 */
-func (class) _font_get_language_support_overrides(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_language_support_overrides(impl func(ptr unsafe.Pointer, font_rid gd.RID) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
 		if !ok {
 			return
@@ -6699,13 +6703,13 @@ func (class) _font_remove_script_support_override(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns list of script support overrides.
 */
-func (class) _font_get_script_support_overrides(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_script_support_overrides(impl func(ptr unsafe.Pointer, font_rid gd.RID) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
 		if !ok {
 			return
@@ -7300,12 +7304,12 @@ func (class) _shaped_text_fit_to_width(impl func(ptr unsafe.Pointer, shaped gd.R
 [b]Optional.[/b]
 Aligns shaped text to the given tab-stops.
 */
-func (class) _shaped_text_tab_align(impl func(ptr unsafe.Pointer, shaped gd.RID, tab_stops gd.PackedFloat32Array) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_tab_align(impl func(ptr unsafe.Pointer, shaped gd.RID, tab_stops Packed.Array[float32]) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var tab_stops = pointers.New[gd.PackedFloat32Array](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
-		defer pointers.End(tab_stops)
+		var tab_stops = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, tab_stops)
 		gd.UnsafeSet(p_back, ret)
@@ -7428,12 +7432,12 @@ func (class) _shaped_text_get_range(impl func(ptr unsafe.Pointer, shaped gd.RID)
 [b]Optional.[/b]
 Breaks text to the lines and columns. Returns character ranges for each segment.
 */
-func (class) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, shaped gd.RID, width gd.PackedFloat32Array, start gd.Int, once bool, break_flags gdclass.TextServerLineBreakFlag) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, shaped gd.RID, width Packed.Array[float32], start gd.Int, once bool, break_flags gdclass.TextServerLineBreakFlag) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var width = pointers.New[gd.PackedFloat32Array](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
-		defer pointers.End(width)
+		var width = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedFloat32Array, float32](width))
 		var start = gd.UnsafeGet[gd.Int](p_args, 2)
 
 		var once = gd.UnsafeGet[bool](p_args, 3)
@@ -7442,7 +7446,7 @@ func (class) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, shap
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, width, start, once, break_flags)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
 		if !ok {
 			return
@@ -7455,7 +7459,7 @@ func (class) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, shap
 [b]Optional.[/b]
 Breaks text to the lines and returns character ranges for each line.
 */
-func (class) _shaped_text_get_line_breaks(impl func(ptr unsafe.Pointer, shaped gd.RID, width gd.Float, start gd.Int, break_flags gdclass.TextServerLineBreakFlag) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_line_breaks(impl func(ptr unsafe.Pointer, shaped gd.RID, width gd.Float, start gd.Int, break_flags gdclass.TextServerLineBreakFlag) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 
@@ -7467,7 +7471,7 @@ func (class) _shaped_text_get_line_breaks(impl func(ptr unsafe.Pointer, shaped g
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, width, start, break_flags)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
 		if !ok {
 			return
@@ -7480,7 +7484,7 @@ func (class) _shaped_text_get_line_breaks(impl func(ptr unsafe.Pointer, shaped g
 [b]Optional.[/b]
 Breaks text into words and returns array of character ranges. Use [param grapheme_flags] to set what characters are used for breaking (see [enum TextServer.GraphemeFlag]).
 */
-func (class) _shaped_text_get_word_breaks(impl func(ptr unsafe.Pointer, shaped gd.RID, grapheme_flags gdclass.TextServerGraphemeFlag, skip_grapheme_flags gdclass.TextServerGraphemeFlag) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_word_breaks(impl func(ptr unsafe.Pointer, shaped gd.RID, grapheme_flags gdclass.TextServerGraphemeFlag, skip_grapheme_flags gdclass.TextServerGraphemeFlag) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 
@@ -7490,7 +7494,7 @@ func (class) _shaped_text_get_word_breaks(impl func(ptr unsafe.Pointer, shaped g
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, grapheme_flags, skip_grapheme_flags)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
 		if !ok {
 			return
@@ -7762,7 +7766,7 @@ func (class) _shaped_text_get_carets(impl func(ptr unsafe.Pointer, shaped gd.RID
 [b]Optional.[/b]
 Returns selection rectangles for the specified character range.
 */
-func (class) _shaped_text_get_selection(impl func(ptr unsafe.Pointer, shaped gd.RID, start gd.Int, end gd.Int) gd.PackedVector2Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_selection(impl func(ptr unsafe.Pointer, shaped gd.RID, start gd.Int, end gd.Int) Packed.Array[Vector2.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 
@@ -7772,7 +7776,7 @@ func (class) _shaped_text_get_selection(impl func(ptr unsafe.Pointer, shaped gd.
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, start, end)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](ret))
 
 		if !ok {
 			return
@@ -7913,13 +7917,13 @@ func (class) _shaped_text_prev_grapheme_pos(impl func(ptr unsafe.Pointer, shaped
 [b]Optional.[/b]
 Returns array of the composite character boundaries.
 */
-func (class) _shaped_text_get_character_breaks(impl func(ptr unsafe.Pointer, shaped gd.RID) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_character_breaks(impl func(ptr unsafe.Pointer, shaped gd.RID) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
 		if !ok {
 			return
@@ -8084,7 +8088,7 @@ func (class) _is_valid_letter(impl func(ptr unsafe.Pointer, unicode gd.Int) bool
 [b]Optional.[/b]
 Returns an array of the word break boundaries. Elements in the returned array are the offsets of the start and end of words. Therefore the length of the array is always even.
 */
-func (class) _string_get_word_breaks(impl func(ptr unsafe.Pointer, s String.Readable, language String.Readable, chars_per_line gd.Int) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _string_get_word_breaks(impl func(ptr unsafe.Pointer, s String.Readable, language String.Readable, chars_per_line gd.Int) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
@@ -8094,7 +8098,7 @@ func (class) _string_get_word_breaks(impl func(ptr unsafe.Pointer, s String.Read
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s, language, chars_per_line)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
 		if !ok {
 			return
@@ -8107,7 +8111,7 @@ func (class) _string_get_word_breaks(impl func(ptr unsafe.Pointer, s String.Read
 [b]Optional.[/b]
 Returns array of the composite character boundaries.
 */
-func (class) _string_get_character_breaks(impl func(ptr unsafe.Pointer, s String.Readable, language String.Readable) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _string_get_character_breaks(impl func(ptr unsafe.Pointer, s String.Readable, language String.Readable) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
@@ -8115,7 +8119,7 @@ func (class) _string_get_character_breaks(impl func(ptr unsafe.Pointer, s String
 		defer pointers.End(gd.InternalString(language))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s, language)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
 		if !ok {
 			return
@@ -8128,12 +8132,12 @@ func (class) _string_get_character_breaks(impl func(ptr unsafe.Pointer, s String
 [b]Optional.[/b]
 Returns index of the first string in [param dict] which is visually confusable with the [param string], or [code]-1[/code] if none is found.
 */
-func (class) _is_confusable(impl func(ptr unsafe.Pointer, s String.Readable, dict gd.PackedStringArray) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_confusable(impl func(ptr unsafe.Pointer, s String.Readable, dict Packed.Strings) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
-		var dict = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
-		defer pointers.End(dict)
+		var dict = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPackedStrings(dict))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, s, dict)
 		gd.UnsafeSet(p_back, ret)

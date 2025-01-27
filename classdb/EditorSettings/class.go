@@ -3,6 +3,7 @@ package EditorSettings
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Object that holds the project-independent editor settings. These settings are generally visible in the [b]Editor > Editor Settings[/b] menu.
@@ -160,7 +164,7 @@ func (self Instance) GetProjectMetadata(section string, key string) any { //gd:E
 Sets the list of favorite files and directories for this project.
 */
 func (self Instance) SetFavorites(dirs []string) { //gd:EditorSettings.set_favorites
-	class(self).SetFavorites(gd.NewPackedStringSlice(dirs))
+	class(self).SetFavorites(Packed.MakeStrings(dirs...))
 }
 
 /*
@@ -174,7 +178,7 @@ func (self Instance) GetFavorites() []string { //gd:EditorSettings.get_favorites
 Sets the list of recently visited folders in the file dialog for this project.
 */
 func (self Instance) SetRecentDirs(dirs []string) { //gd:EditorSettings.set_recent_dirs
-	class(self).SetRecentDirs(gd.NewPackedStringSlice(dirs))
+	class(self).SetRecentDirs(Packed.MakeStrings(dirs...))
 }
 
 /*
@@ -377,9 +381,9 @@ func (self class) GetProjectMetadata(section String.Readable, key String.Readabl
 Sets the list of favorite files and directories for this project.
 */
 //go:nosplit
-func (self class) SetFavorites(dirs gd.PackedStringArray) { //gd:EditorSettings.set_favorites
+func (self class) SetFavorites(dirs Packed.Strings) { //gd:EditorSettings.set_favorites
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dirs))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(dirs)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_set_favorites, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -389,11 +393,11 @@ func (self class) SetFavorites(dirs gd.PackedStringArray) { //gd:EditorSettings.
 Returns the list of favorite files and directories for this project.
 */
 //go:nosplit
-func (self class) GetFavorites() gd.PackedStringArray { //gd:EditorSettings.get_favorites
+func (self class) GetFavorites() Packed.Strings { //gd:EditorSettings.get_favorites
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_get_favorites, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -402,9 +406,9 @@ func (self class) GetFavorites() gd.PackedStringArray { //gd:EditorSettings.get_
 Sets the list of recently visited folders in the file dialog for this project.
 */
 //go:nosplit
-func (self class) SetRecentDirs(dirs gd.PackedStringArray) { //gd:EditorSettings.set_recent_dirs
+func (self class) SetRecentDirs(dirs Packed.Strings) { //gd:EditorSettings.set_recent_dirs
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dirs))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(dirs)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_set_recent_dirs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -414,11 +418,11 @@ func (self class) SetRecentDirs(dirs gd.PackedStringArray) { //gd:EditorSettings
 Returns the list of recently visited folders in the file dialog for this project.
 */
 //go:nosplit
-func (self class) GetRecentDirs() gd.PackedStringArray { //gd:EditorSettings.get_recent_dirs
+func (self class) GetRecentDirs() Packed.Strings { //gd:EditorSettings.get_recent_dirs
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_get_recent_dirs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -454,11 +458,11 @@ func (self class) CheckChangedSettingsInGroup(setting_prefix String.Readable) bo
 Gets an array of the settings which have been changed since the last save. Note that internally [code]changed_settings[/code] is cleared after a successful save, so generally the most appropriate place to use this method is when processing [constant NOTIFICATION_EDITOR_SETTINGS_CHANGED].
 */
 //go:nosplit
-func (self class) GetChangedSettings() gd.PackedStringArray { //gd:EditorSettings.get_changed_settings
+func (self class) GetChangedSettings() Packed.Strings { //gd:EditorSettings.get_changed_settings
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_get_changed_settings, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

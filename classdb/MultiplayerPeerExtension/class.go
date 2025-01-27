@@ -3,6 +3,7 @@ package MultiplayerPeerExtension
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/classdb/PacketPeer"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This class is designed to be inherited from a GDExtension plugin to implement custom networking layers for the multiplayer API (such as WebRTC). All the methods below [b]must[/b] be implemented to have a working custom multiplayer implementation. See also [MultiplayerAPI].
@@ -186,7 +190,7 @@ func (Instance) _get_packet_script(impl func(ptr unsafe.Pointer) []byte) (cb gd.
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewPackedByteSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](Packed.Bytes(Packed.New(ret...)))))
 
 		if !ok {
 			return
@@ -200,8 +204,8 @@ Called when a packet needs to be sent by the [MultiplayerAPI], if [method _put_p
 */
 func (Instance) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer []byte) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_buffer = pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0))
-		defer pointers.End(p_buffer)
+		var p_buffer = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](p_buffer)))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_buffer.Bytes())
 		gd.UnsafeSet(p_back, ret)
@@ -474,11 +478,11 @@ func (class) _get_max_packet_size(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.E
 /*
 Called when a packet needs to be received by the [MultiplayerAPI], if [method _get_packet] isn't implemented. Use this when extending this class via GDScript.
 */
-func (class) _get_packet_script(impl func(ptr unsafe.Pointer) gd.PackedByteArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_packet_script(impl func(ptr unsafe.Pointer) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ret)))
 
 		if !ok {
 			return
@@ -490,10 +494,10 @@ func (class) _get_packet_script(impl func(ptr unsafe.Pointer) gd.PackedByteArray
 /*
 Called when a packet needs to be sent by the [MultiplayerAPI], if [method _put_packet] isn't implemented. Use this when extending this class via GDScript.
 */
-func (class) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer gd.PackedByteArray) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer Packed.Bytes) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_buffer = pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0))
-		defer pointers.End(p_buffer)
+		var p_buffer = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](p_buffer)))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_buffer)
 		gd.UnsafeSet(p_back, ret)

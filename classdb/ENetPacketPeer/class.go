@@ -3,6 +3,7 @@ package ENetPacketPeer
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/PacketPeer"
 import "graphics.gd/variant/Float"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A PacketPeer implementation representing a peer of an [ENetConnection].
@@ -94,7 +98,7 @@ func (self Instance) Reset() { //gd:ENetPacketPeer.reset
 Queues a [param packet] to be sent over the specified [param channel]. See [code]FLAG_*[/code] constants for available packet flags.
 */
 func (self Instance) Send(channel int, packet []byte, flags int) error { //gd:ENetPacketPeer.send
-	return error(gd.ToError(class(self).Send(gd.Int(channel), gd.NewPackedByteSlice(packet), gd.Int(flags))))
+	return error(gd.ToError(class(self).Send(gd.Int(channel), Packed.Bytes(Packed.New(packet...)), gd.Int(flags))))
 }
 
 /*
@@ -251,10 +255,10 @@ func (self class) Reset() { //gd:ENetPacketPeer.reset
 Queues a [param packet] to be sent over the specified [param channel]. See [code]FLAG_*[/code] constants for available packet flags.
 */
 //go:nosplit
-func (self class) Send(channel gd.Int, packet gd.PackedByteArray, flags gd.Int) gd.Error { //gd:ENetPacketPeer.send
+func (self class) Send(channel gd.Int, packet Packed.Bytes, flags gd.Int) gd.Error { //gd:ENetPacketPeer.send
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
-	callframe.Arg(frame, pointers.Get(packet))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet))))
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_send, self.AsObject(), frame.Array(0), r_ret.Addr())

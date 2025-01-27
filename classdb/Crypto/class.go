@@ -3,6 +3,7 @@ package Crypto
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +32,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 The Crypto class provides access to advanced cryptographic functionalities.
@@ -152,14 +156,14 @@ func (self Instance) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey) [1]
 Sign a given [param hash] of type [param hash_type] with the provided private [param key].
 */
 func (self Instance) Sign(hash_type gdclass.HashingContextHashType, hash []byte, key [1]gdclass.CryptoKey) []byte { //gd:Crypto.sign
-	return []byte(class(self).Sign(hash_type, gd.NewPackedByteSlice(hash), key).Bytes())
+	return []byte(class(self).Sign(hash_type, Packed.Bytes(Packed.New(hash...)), key).Bytes())
 }
 
 /*
 Verify that a given [param signature] for [param hash] of type [param hash_type] against the provided public [param key].
 */
 func (self Instance) Verify(hash_type gdclass.HashingContextHashType, hash []byte, signature []byte, key [1]gdclass.CryptoKey) bool { //gd:Crypto.verify
-	return bool(class(self).Verify(hash_type, gd.NewPackedByteSlice(hash), gd.NewPackedByteSlice(signature), key))
+	return bool(class(self).Verify(hash_type, Packed.Bytes(Packed.New(hash...)), Packed.Bytes(Packed.New(signature...)), key))
 }
 
 /*
@@ -167,7 +171,7 @@ Encrypt the given [param plaintext] with the provided public [param key].
 [b]Note:[/b] The maximum size of accepted plaintext is limited by the key size.
 */
 func (self Instance) Encrypt(key [1]gdclass.CryptoKey, plaintext []byte) []byte { //gd:Crypto.encrypt
-	return []byte(class(self).Encrypt(key, gd.NewPackedByteSlice(plaintext)).Bytes())
+	return []byte(class(self).Encrypt(key, Packed.Bytes(Packed.New(plaintext...))).Bytes())
 }
 
 /*
@@ -175,7 +179,7 @@ Decrypt the given [param ciphertext] with the provided private [param key].
 [b]Note:[/b] The maximum size of accepted ciphertext is limited by the key size.
 */
 func (self Instance) Decrypt(key [1]gdclass.CryptoKey, ciphertext []byte) []byte { //gd:Crypto.decrypt
-	return []byte(class(self).Decrypt(key, gd.NewPackedByteSlice(ciphertext)).Bytes())
+	return []byte(class(self).Decrypt(key, Packed.Bytes(Packed.New(ciphertext...))).Bytes())
 }
 
 /*
@@ -183,7 +187,7 @@ Generates an [url=https://en.wikipedia.org/wiki/HMAC]HMAC[/url] digest of [param
 Currently, only [constant HashingContext.HASH_SHA256] and [constant HashingContext.HASH_SHA1] are supported.
 */
 func (self Instance) HmacDigest(hash_type gdclass.HashingContextHashType, key []byte, msg []byte) []byte { //gd:Crypto.hmac_digest
-	return []byte(class(self).HmacDigest(hash_type, gd.NewPackedByteSlice(key), gd.NewPackedByteSlice(msg)).Bytes())
+	return []byte(class(self).HmacDigest(hash_type, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(msg...))).Bytes())
 }
 
 /*
@@ -191,7 +195,7 @@ Compares two [PackedByteArray]s for equality without leaking timing information 
 See [url=https://paragonie.com/blog/2015/11/preventing-timing-attacks-on-string-comparison-with-double-hmac-strategy]this blog post[/url] for more information.
 */
 func (self Instance) ConstantTimeCompare(trusted []byte, received []byte) bool { //gd:Crypto.constant_time_compare
-	return bool(class(self).ConstantTimeCompare(gd.NewPackedByteSlice(trusted), gd.NewPackedByteSlice(received)))
+	return bool(class(self).ConstantTimeCompare(Packed.Bytes(Packed.New(trusted...)), Packed.Bytes(Packed.New(received...))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -217,12 +221,12 @@ func New() Instance {
 Generates a [PackedByteArray] of cryptographically secure random bytes with given [param size].
 */
 //go:nosplit
-func (self class) GenerateRandomBytes(size gd.Int) gd.PackedByteArray { //gd:Crypto.generate_random_bytes
+func (self class) GenerateRandomBytes(size gd.Int) Packed.Bytes { //gd:Crypto.generate_random_bytes
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_random_bytes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -279,14 +283,14 @@ func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer
 Sign a given [param hash] of type [param hash_type] with the provided private [param key].
 */
 //go:nosplit
-func (self class) Sign(hash_type gdclass.HashingContextHashType, hash gd.PackedByteArray, key [1]gdclass.CryptoKey) gd.PackedByteArray { //gd:Crypto.sign
+func (self class) Sign(hash_type gdclass.HashingContextHashType, hash Packed.Bytes, key [1]gdclass.CryptoKey) Packed.Bytes { //gd:Crypto.sign
 	var frame = callframe.New()
 	callframe.Arg(frame, hash_type)
-	callframe.Arg(frame, pointers.Get(hash))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash))))
 	callframe.Arg(frame, pointers.Get(key[0])[0])
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_sign, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -295,11 +299,11 @@ func (self class) Sign(hash_type gdclass.HashingContextHashType, hash gd.PackedB
 Verify that a given [param signature] for [param hash] of type [param hash_type] against the provided public [param key].
 */
 //go:nosplit
-func (self class) Verify(hash_type gdclass.HashingContextHashType, hash gd.PackedByteArray, signature gd.PackedByteArray, key [1]gdclass.CryptoKey) bool { //gd:Crypto.verify
+func (self class) Verify(hash_type gdclass.HashingContextHashType, hash Packed.Bytes, signature Packed.Bytes, key [1]gdclass.CryptoKey) bool { //gd:Crypto.verify
 	var frame = callframe.New()
 	callframe.Arg(frame, hash_type)
-	callframe.Arg(frame, pointers.Get(hash))
-	callframe.Arg(frame, pointers.Get(signature))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash))))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](signature))))
 	callframe.Arg(frame, pointers.Get(key[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_verify, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -313,13 +317,13 @@ Encrypt the given [param plaintext] with the provided public [param key].
 [b]Note:[/b] The maximum size of accepted plaintext is limited by the key size.
 */
 //go:nosplit
-func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext gd.PackedByteArray) gd.PackedByteArray { //gd:Crypto.encrypt
+func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext Packed.Bytes) Packed.Bytes { //gd:Crypto.encrypt
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key[0])[0])
-	callframe.Arg(frame, pointers.Get(plaintext))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](plaintext))))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_encrypt, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -329,13 +333,13 @@ Decrypt the given [param ciphertext] with the provided private [param key].
 [b]Note:[/b] The maximum size of accepted ciphertext is limited by the key size.
 */
 //go:nosplit
-func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext gd.PackedByteArray) gd.PackedByteArray { //gd:Crypto.decrypt
+func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext Packed.Bytes) Packed.Bytes { //gd:Crypto.decrypt
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key[0])[0])
-	callframe.Arg(frame, pointers.Get(ciphertext))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ciphertext))))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_decrypt, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -345,14 +349,14 @@ Generates an [url=https://en.wikipedia.org/wiki/HMAC]HMAC[/url] digest of [param
 Currently, only [constant HashingContext.HASH_SHA256] and [constant HashingContext.HASH_SHA1] are supported.
 */
 //go:nosplit
-func (self class) HmacDigest(hash_type gdclass.HashingContextHashType, key gd.PackedByteArray, msg gd.PackedByteArray) gd.PackedByteArray { //gd:Crypto.hmac_digest
+func (self class) HmacDigest(hash_type gdclass.HashingContextHashType, key Packed.Bytes, msg Packed.Bytes) Packed.Bytes { //gd:Crypto.hmac_digest
 	var frame = callframe.New()
 	callframe.Arg(frame, hash_type)
-	callframe.Arg(frame, pointers.Get(key))
-	callframe.Arg(frame, pointers.Get(msg))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](msg))))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_hmac_digest, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -362,10 +366,10 @@ Compares two [PackedByteArray]s for equality without leaking timing information 
 See [url=https://paragonie.com/blog/2015/11/preventing-timing-attacks-on-string-comparison-with-double-hmac-strategy]this blog post[/url] for more information.
 */
 //go:nosplit
-func (self class) ConstantTimeCompare(trusted gd.PackedByteArray, received gd.PackedByteArray) bool { //gd:Crypto.constant_time_compare
+func (self class) ConstantTimeCompare(trusted Packed.Bytes, received Packed.Bytes) bool { //gd:Crypto.constant_time_compare
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(trusted))
-	callframe.Arg(frame, pointers.Get(received))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](trusted))))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](received))))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_constant_time_compare, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

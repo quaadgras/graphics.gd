@@ -3,6 +3,7 @@ package StreamPeerBuffer
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/StreamPeer"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A data buffer stream peer that uses a byte array as the stream. This object can be used to handle binary data from network sessions. To handle binary data stored in files, [FileAccess] can be used directly.
@@ -112,7 +116,7 @@ func (self Instance) DataArray() []byte {
 }
 
 func (self Instance) SetDataArray(value []byte) {
-	class(self).SetDataArray(gd.NewPackedByteSlice(value))
+	class(self).SetDataArray(Packed.Bytes(Packed.New(value...)))
 }
 
 /*
@@ -166,20 +170,20 @@ func (self class) Resize(size gd.Int) { //gd:StreamPeerBuffer.resize
 }
 
 //go:nosplit
-func (self class) SetDataArray(data gd.PackedByteArray) { //gd:StreamPeerBuffer.set_data_array
+func (self class) SetDataArray(data Packed.Bytes) { //gd:StreamPeerBuffer.set_data_array
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerBuffer.Bind_set_data_array, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetDataArray() gd.PackedByteArray { //gd:StreamPeerBuffer.get_data_array
+func (self class) GetDataArray() Packed.Bytes { //gd:StreamPeerBuffer.get_data_array
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerBuffer.Bind_get_data_array, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

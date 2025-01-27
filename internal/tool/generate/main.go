@@ -797,13 +797,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	if class.Name == "JavaClassWrapper" || class.Name == "JavaScriptBridge" {
 		return
 	}
-
-	if ctype == callBuiltin && strings.HasPrefix(class.Name, "Packed") {
-		fmt.Fprintf(w, "//go:nosplit\nfunc (selfPtr *%v) %v(", class.Name, convertName(method.Name))
-	} else {
-		fmt.Fprintf(w, "//go:nosplit\nfunc (self %v) %v(", class.Name, convertName(method.Name))
-	}
-
+	fmt.Fprintf(w, "//go:nosplit\nfunc (self %v) %v(", class.Name, convertName(method.Name))
 	if method.Name == "select" {
 		method.Name = "select_"
 	}
@@ -824,11 +818,6 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		fmt.Fprintf(w, "args ..."+prefix+"Variant")
 	}
 	fmt.Fprintf(w, ") %v {\n", result)
-	if !method.IsStatic {
-		if ctype == callBuiltin && strings.HasPrefix(class.Name, "Packed") {
-			fmt.Fprintf(w, "\tvar self = *selfPtr\n")
-		}
-	}
 	fmt.Fprintf(w, "\tvar frame = callframe.New()\n")
 	for _, arg := range method.Arguments {
 		_, ok := classDB[arg.Type]
@@ -867,29 +856,18 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		}
 	}
 	if ctype == callBuiltin {
-		if strings.HasPrefix(class.Name, "Packed") {
-			var self = "callframe.Nil"
-			if !method.IsStatic {
-				fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, pointers.Get(self))\n")
-				self = "p_self.Addr()"
-			}
-			if method.IsVararg {
-				fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Addr(), int32(len(args))+%d)\n", class.Name, method.Name, self, len(method.Arguments))
-			} else {
-				fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Addr(), %d)\n", class.Name, method.Name, self, len(method.Arguments))
-			}
-			fmt.Fprintf(w, "\tpointers.Set(*selfPtr, p_self.Get())\n")
+		var self = "callframe.Nil"
+		if !method.IsStatic {
+			fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, pointers.Get(self))\n")
+			self = "p_self.Addr()"
+		}
+		if method.IsVararg {
+			fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Addr(), int32(len(args))+%d)\n", class.Name, method.Name, self, len(method.Arguments))
 		} else {
-			var self = "callframe.Nil"
-			if !method.IsStatic {
-				fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, pointers.Get(self))\n")
-				self = "p_self.Addr()"
-			}
-			if method.IsVararg {
-				fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Addr(), int32(len(args))+%d)\n", class.Name, method.Name, self, len(method.Arguments))
-			} else {
-				fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Addr(), %d)\n", class.Name, method.Name, self, len(method.Arguments))
-			}
+			fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Addr(), %d)\n", class.Name, method.Name, self, len(method.Arguments))
+		}
+		if strings.HasPrefix(class.Name, "Packed") {
+			fmt.Fprintf(w, "\tpointers.Set(self, p_self.Get())\n")
 		}
 	} else {
 		if method.IsVararg {

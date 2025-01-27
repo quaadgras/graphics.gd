@@ -3,6 +3,7 @@ package EditorFileSystem
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This object holds information of all resources in the filesystem, their types, etc.
@@ -110,7 +114,7 @@ If the file type changed or the file was newly created, use [method update_file]
 [b]Note:[/b] This function blocks until the import is finished. However, the main loop iteration, including timers and [method Node._process], will occur during the import process due to progress bar updates. Avoid calls to [method reimport_files] or [method scan] while an import is in progress.
 */
 func (self Instance) ReimportFiles(files []string) { //gd:EditorFileSystem.reimport_files
-	class(self).ReimportFiles(gd.NewPackedStringSlice(files))
+	class(self).ReimportFiles(Packed.MakeStrings(files...))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -239,9 +243,9 @@ If the file type changed or the file was newly created, use [method update_file]
 [b]Note:[/b] This function blocks until the import is finished. However, the main loop iteration, including timers and [method Node._process], will occur during the import process due to progress bar updates. Avoid calls to [method reimport_files] or [method scan] while an import is in progress.
 */
 //go:nosplit
-func (self class) ReimportFiles(files gd.PackedStringArray) { //gd:EditorFileSystem.reimport_files
+func (self class) ReimportFiles(files Packed.Strings) { //gd:EditorFileSystem.reimport_files
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(files))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(files)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystem.Bind_reimport_files, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

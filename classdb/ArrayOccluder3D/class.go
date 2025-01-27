@@ -3,6 +3,7 @@ package ArrayOccluder3D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Occluder3D"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector3"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [ArrayOccluder3D] stores an arbitrary 3D polygon shape that can be used by the engine's occlusion culling system. This is analogous to [ArrayMesh], but for occluders.
@@ -52,7 +56,7 @@ type Any interface {
 Sets [member indices] and [member vertices], while updating the final occluder only once after both values are set.
 */
 func (self Instance) SetArrays(vertices []Vector3.XYZ, indices []int32) { //gd:ArrayOccluder3D.set_arrays
-	class(self).SetArrays(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&vertices))), gd.NewPackedInt32Slice(indices))
+	class(self).SetArrays(Packed.New(vertices...), Packed.New(indices...))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -75,39 +79,39 @@ func New() Instance {
 }
 
 func (self Instance) SetVertices(value []Vector3.XYZ) {
-	class(self).SetVertices(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&value))))
+	class(self).SetVertices(Packed.New(value...))
 }
 
 func (self Instance) SetIndices(value []int32) {
-	class(self).SetIndices(gd.NewPackedInt32Slice(value))
+	class(self).SetIndices(Packed.New(value...))
 }
 
 /*
 Sets [member indices] and [member vertices], while updating the final occluder only once after both values are set.
 */
 //go:nosplit
-func (self class) SetArrays(vertices gd.PackedVector3Array, indices gd.PackedInt32Array) { //gd:ArrayOccluder3D.set_arrays
+func (self class) SetArrays(vertices Packed.Array[Vector3.XYZ], indices Packed.Array[int32]) { //gd:ArrayOccluder3D.set_arrays
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(vertices))
-	callframe.Arg(frame, pointers.Get(indices))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](indices))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayOccluder3D.Bind_set_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) SetVertices(vertices gd.PackedVector3Array) { //gd:ArrayOccluder3D.set_vertices
+func (self class) SetVertices(vertices Packed.Array[Vector3.XYZ]) { //gd:ArrayOccluder3D.set_vertices
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(vertices))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayOccluder3D.Bind_set_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) SetIndices(indices gd.PackedInt32Array) { //gd:ArrayOccluder3D.set_indices
+func (self class) SetIndices(indices Packed.Array[int32]) { //gd:ArrayOccluder3D.set_indices
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(indices))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](indices))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayOccluder3D.Bind_set_indices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

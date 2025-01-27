@@ -4,6 +4,7 @@ package Marshalls
 import "unsafe"
 import "sync"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Provides data transformation and encoding utility functions.
@@ -67,7 +71,7 @@ Returns a Base64-encoded string of a given [PackedByteArray].
 */
 func RawToBase64(array []byte) string { //gd:Marshalls.raw_to_base64
 	once.Do(singleton)
-	return string(class(self).RawToBase64(gd.NewPackedByteSlice(array)).String())
+	return string(class(self).RawToBase64(Packed.Bytes(Packed.New(array...))).String())
 }
 
 /*
@@ -141,9 +145,9 @@ func (self class) Base64ToVariant(base64_str String.Readable, allow_objects bool
 Returns a Base64-encoded string of a given [PackedByteArray].
 */
 //go:nosplit
-func (self class) RawToBase64(array gd.PackedByteArray) String.Readable { //gd:Marshalls.raw_to_base64
+func (self class) RawToBase64(array Packed.Bytes) String.Readable { //gd:Marshalls.raw_to_base64
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(array))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](array))))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_raw_to_base64, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
@@ -155,12 +159,12 @@ func (self class) RawToBase64(array gd.PackedByteArray) String.Readable { //gd:M
 Returns a decoded [PackedByteArray] corresponding to the Base64-encoded string [param base64_str].
 */
 //go:nosplit
-func (self class) Base64ToRaw(base64_str String.Readable) gd.PackedByteArray { //gd:Marshalls.base64_to_raw
+func (self class) Base64ToRaw(base64_str String.Readable) Packed.Bytes { //gd:Marshalls.base64_to_raw
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(base64_str)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_base64_to_raw, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

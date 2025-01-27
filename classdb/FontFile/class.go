@@ -3,6 +3,7 @@ package FontFile
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
@@ -37,6 +39,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [FontFile] contains a set of glyphs to represent Unicode characters imported from a font file, as well as a cache of rasterized glyphs, and a set of fallback [Font]s to use.
@@ -325,21 +329,21 @@ func (self Instance) GetTextureImage(cache_index int, size Vector2i.XY, texture_
 Sets array containing glyph packing data.
 */
 func (self Instance) SetTextureOffsets(cache_index int, size Vector2i.XY, texture_index int, offset []int32) { //gd:FontFile.set_texture_offsets
-	class(self).SetTextureOffsets(gd.Int(cache_index), gd.Vector2i(size), gd.Int(texture_index), gd.NewPackedInt32Slice(offset))
+	class(self).SetTextureOffsets(gd.Int(cache_index), gd.Vector2i(size), gd.Int(texture_index), Packed.New(offset...))
 }
 
 /*
 Returns a copy of the array containing glyph packing data.
 */
 func (self Instance) GetTextureOffsets(cache_index int, size Vector2i.XY, texture_index int) []int32 { //gd:FontFile.get_texture_offsets
-	return []int32(class(self).GetTextureOffsets(gd.Int(cache_index), gd.Vector2i(size), gd.Int(texture_index)).AsSlice())
+	return []int32(slices.Collect(class(self).GetTextureOffsets(gd.Int(cache_index), gd.Vector2i(size), gd.Int(texture_index)).Values()))
 }
 
 /*
 Returns list of rendered glyphs in the cache entry.
 */
 func (self Instance) GetGlyphList(cache_index int, size Vector2i.XY) []int32 { //gd:FontFile.get_glyph_list
-	return []int32(class(self).GetGlyphList(gd.Int(cache_index), gd.Vector2i(size)).AsSlice())
+	return []int32(slices.Collect(class(self).GetGlyphList(gd.Int(cache_index), gd.Vector2i(size)).Values()))
 }
 
 /*
@@ -573,7 +577,7 @@ func (self Instance) Data() []byte {
 }
 
 func (self Instance) SetData(value []byte) {
-	class(self).SetData(gd.NewPackedByteSlice(value))
+	class(self).SetData(Packed.Bytes(Packed.New(value...)))
 }
 
 func (self Instance) GenerateMipmaps() bool {
@@ -739,20 +743,20 @@ func (self class) LoadDynamicFont(path String.Readable) gd.Error { //gd:FontFile
 }
 
 //go:nosplit
-func (self class) SetData(data gd.PackedByteArray) { //gd:FontFile.set_data
+func (self class) SetData(data Packed.Bytes) { //gd:FontFile.set_data
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetData() gd.PackedByteArray { //gd:FontFile.get_data
+func (self class) GetData() Packed.Bytes { //gd:FontFile.get_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1512,12 +1516,12 @@ func (self class) GetTextureImage(cache_index gd.Int, size gd.Vector2i, texture_
 Sets array containing glyph packing data.
 */
 //go:nosplit
-func (self class) SetTextureOffsets(cache_index gd.Int, size gd.Vector2i, texture_index gd.Int, offset gd.PackedInt32Array) { //gd:FontFile.set_texture_offsets
+func (self class) SetTextureOffsets(cache_index gd.Int, size gd.Vector2i, texture_index gd.Int, offset Packed.Array[int32]) { //gd:FontFile.set_texture_offsets
 	var frame = callframe.New()
 	callframe.Arg(frame, cache_index)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, texture_index)
-	callframe.Arg(frame, pointers.Get(offset))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](offset))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_texture_offsets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1527,14 +1531,14 @@ func (self class) SetTextureOffsets(cache_index gd.Int, size gd.Vector2i, textur
 Returns a copy of the array containing glyph packing data.
 */
 //go:nosplit
-func (self class) GetTextureOffsets(cache_index gd.Int, size gd.Vector2i, texture_index gd.Int) gd.PackedInt32Array { //gd:FontFile.get_texture_offsets
+func (self class) GetTextureOffsets(cache_index gd.Int, size gd.Vector2i, texture_index gd.Int) Packed.Array[int32] { //gd:FontFile.get_texture_offsets
 	var frame = callframe.New()
 	callframe.Arg(frame, cache_index)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, texture_index)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_texture_offsets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1543,13 +1547,13 @@ func (self class) GetTextureOffsets(cache_index gd.Int, size gd.Vector2i, textur
 Returns list of rendered glyphs in the cache entry.
 */
 //go:nosplit
-func (self class) GetGlyphList(cache_index gd.Int, size gd.Vector2i) gd.PackedInt32Array { //gd:FontFile.get_glyph_list
+func (self class) GetGlyphList(cache_index gd.Int, size gd.Vector2i) Packed.Array[int32] { //gd:FontFile.get_glyph_list
 	var frame = callframe.New()
 	callframe.Arg(frame, cache_index)
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_glyph_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1885,11 +1889,11 @@ func (self class) RemoveLanguageSupportOverride(language String.Readable) { //gd
 Returns list of language support overrides.
 */
 //go:nosplit
-func (self class) GetLanguageSupportOverrides() gd.PackedStringArray { //gd:FontFile.get_language_support_overrides
+func (self class) GetLanguageSupportOverrides() Packed.Strings { //gd:FontFile.get_language_support_overrides
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_language_support_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1937,11 +1941,11 @@ func (self class) RemoveScriptSupportOverride(script String.Readable) { //gd:Fon
 Returns list of script support overrides.
 */
 //go:nosplit
-func (self class) GetScriptSupportOverrides() gd.PackedStringArray { //gd:FontFile.get_script_support_overrides
+func (self class) GetScriptSupportOverrides() Packed.Strings { //gd:FontFile.get_script_support_overrides
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_script_support_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

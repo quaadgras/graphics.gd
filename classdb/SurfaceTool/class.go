@@ -3,6 +3,7 @@ package SurfaceTool
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Plane"
@@ -37,6 +39,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 The [SurfaceTool] is used to construct a [Mesh] by specifying vertex attributes individually. It can be used to construct a [Mesh] from a script. All properties except indices need to be added before calling [method add_vertex]. For example, to add vertex colors and UVs:
@@ -159,14 +163,14 @@ func (self Instance) SetUv2(uv2 Vector2.XY) { //gd:SurfaceTool.set_uv2
 Specifies an array of bones to use for the [i]next[/i] vertex. [param bones] must contain 4 integers.
 */
 func (self Instance) SetBones(bones []int32) { //gd:SurfaceTool.set_bones
-	class(self).SetBones(gd.NewPackedInt32Slice(bones))
+	class(self).SetBones(Packed.New(bones...))
 }
 
 /*
 Specifies weight values to use for the [i]next[/i] vertex. [param weights] must contain 4 values. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 func (self Instance) SetWeights(weights []float32) { //gd:SurfaceTool.set_weights
-	class(self).SetWeights(gd.NewPackedFloat32Slice(weights))
+	class(self).SetWeights(Packed.New(weights...))
 }
 
 /*
@@ -190,7 +194,7 @@ Inserts a triangle fan made of array data into [Mesh] being constructed.
 Requires the primitive type be set to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 func (self Instance) AddTriangleFan(vertices []Vector3.XYZ) { //gd:SurfaceTool.add_triangle_fan
-	class(self).AddTriangleFan(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&vertices))), gd.NewPackedVector2Slice(nil), gd.NewPackedColorSlice(nil), gd.NewPackedVector2Slice(nil), gd.NewPackedVector3Slice(nil), gd.ArrayFromSlice[Array.Contains[gd.Plane]]([1][]Plane.NormalD{}[0]))
+	class(self).AddTriangleFan(Packed.New(vertices...), Packed.New[Vector2.XY](), Packed.New([1][]Color.RGBA{}[0]...), Packed.New[Vector2.XY](), Packed.New([1][]Vector3.XYZ{}[0]...), gd.ArrayFromSlice[Array.Contains[gd.Plane]]([1][]Plane.NormalD{}[0]))
 }
 
 /*
@@ -248,7 +252,7 @@ func (self Instance) GetAabb() AABB.PositionSize { //gd:SurfaceTool.get_aabb
 Generates an LOD for a given [param nd_threshold] in linear units (square root of quadric error metric), using at most [param target_index_count] indices.
 */
 func (self Instance) GenerateLod(nd_threshold Float.X) []int32 { //gd:SurfaceTool.generate_lod
-	return []int32(class(self).GenerateLod(gd.Float(nd_threshold), gd.Int(3)).AsSlice())
+	return []int32(slices.Collect(class(self).GenerateLod(gd.Float(nd_threshold), gd.Int(3)).Values()))
 }
 
 /*
@@ -480,9 +484,9 @@ func (self class) SetUv2(uv2 gd.Vector2) { //gd:SurfaceTool.set_uv2
 Specifies an array of bones to use for the [i]next[/i] vertex. [param bones] must contain 4 integers.
 */
 //go:nosplit
-func (self class) SetBones(bones gd.PackedInt32Array) { //gd:SurfaceTool.set_bones
+func (self class) SetBones(bones Packed.Array[int32]) { //gd:SurfaceTool.set_bones
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bones))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](bones))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -492,9 +496,9 @@ func (self class) SetBones(bones gd.PackedInt32Array) { //gd:SurfaceTool.set_bon
 Specifies weight values to use for the [i]next[/i] vertex. [param weights] must contain 4 values. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 //go:nosplit
-func (self class) SetWeights(weights gd.PackedFloat32Array) { //gd:SurfaceTool.set_weights
+func (self class) SetWeights(weights Packed.Array[float32]) { //gd:SurfaceTool.set_weights
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(weights))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](weights))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_weights, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -532,13 +536,13 @@ Inserts a triangle fan made of array data into [Mesh] being constructed.
 Requires the primitive type be set to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
-func (self class) AddTriangleFan(vertices gd.PackedVector3Array, uvs gd.PackedVector2Array, colors gd.PackedColorArray, uv2s gd.PackedVector2Array, normals gd.PackedVector3Array, tangents Array.Contains[gd.Plane]) { //gd:SurfaceTool.add_triangle_fan
+func (self class) AddTriangleFan(vertices Packed.Array[Vector3.XYZ], uvs Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uv2s Packed.Array[Vector2.XY], normals Packed.Array[Vector3.XYZ], tangents Array.Contains[gd.Plane]) { //gd:SurfaceTool.add_triangle_fan
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(vertices))
-	callframe.Arg(frame, pointers.Get(uvs))
-	callframe.Arg(frame, pointers.Get(colors))
-	callframe.Arg(frame, pointers.Get(uv2s))
-	callframe.Arg(frame, pointers.Get(normals))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uv2s))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](normals))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(tangents)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_add_triangle_fan, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -632,13 +636,13 @@ func (self class) GetAabb() gd.AABB { //gd:SurfaceTool.get_aabb
 Generates an LOD for a given [param nd_threshold] in linear units (square root of quadric error metric), using at most [param target_index_count] indices.
 */
 //go:nosplit
-func (self class) GenerateLod(nd_threshold gd.Float, target_index_count gd.Int) gd.PackedInt32Array { //gd:SurfaceTool.generate_lod
+func (self class) GenerateLod(nd_threshold gd.Float, target_index_count gd.Int) Packed.Array[int32] { //gd:SurfaceTool.generate_lod
 	var frame = callframe.New()
 	callframe.Arg(frame, nd_threshold)
 	callframe.Arg(frame, target_index_count)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_generate_lod, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

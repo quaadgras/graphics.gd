@@ -3,6 +3,7 @@ package MultiMesh
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Transform2D"
@@ -35,6 +37,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 MultiMesh provides low-level mesh instancing. Drawing thousands of [MeshInstance3D] nodes can be slow, since each object is submitted to the GPU then drawn individually.
@@ -198,11 +202,11 @@ func (self Instance) SetMesh(value [1]gdclass.Mesh) {
 }
 
 func (self Instance) Buffer() []float32 {
-	return []float32(class(self).GetBuffer().AsSlice())
+	return []float32(slices.Collect(class(self).GetBuffer().Values()))
 }
 
 func (self Instance) SetBuffer(value []float32) {
-	class(self).SetBuffer(gd.NewPackedFloat32Slice(value))
+	class(self).SetBuffer(Packed.New(value...))
 }
 
 //go:nosplit
@@ -465,19 +469,19 @@ func (self class) GetAabb() gd.AABB { //gd:MultiMesh.get_aabb
 }
 
 //go:nosplit
-func (self class) GetBuffer() gd.PackedFloat32Array { //gd:MultiMesh.get_buffer
+func (self class) GetBuffer() Packed.Array[float32] { //gd:MultiMesh.get_buffer
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedFloat32Array](r_ret.Get())
+	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetBuffer(buffer gd.PackedFloat32Array) { //gd:MultiMesh.set_buffer
+func (self class) SetBuffer(buffer Packed.Array[float32]) { //gd:MultiMesh.set_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](buffer))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_set_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

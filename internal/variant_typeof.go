@@ -6,6 +6,7 @@ import (
 
 	ArrayType "graphics.gd/variant/Array"
 	DictionaryType "graphics.gd/variant/Dictionary"
+	PackedType "graphics.gd/variant/Packed"
 	"graphics.gd/variant/Path"
 	SignalType "graphics.gd/variant/Signal"
 	StringType "graphics.gd/variant/String"
@@ -69,6 +70,26 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 		return TypeDictionary, true
 	case reflect.Struct:
 		switch rtype {
+		case reflect.TypeFor[PackedType.Bytes]():
+			return TypePackedByteArray, true
+		case reflect.TypeFor[PackedType.Array[int32]]():
+			return TypePackedInt32Array, true
+		case reflect.TypeFor[PackedType.Array[int64]]():
+			return TypePackedInt64Array, true
+		case reflect.TypeFor[PackedType.Array[float32]]():
+			return TypePackedFloat32Array, true
+		case reflect.TypeFor[PackedType.Array[float64]]():
+			return TypePackedFloat64Array, true
+		case reflect.TypeFor[PackedType.Strings]():
+			return TypePackedStringArray, true
+		case reflect.TypeFor[PackedType.Array[Vector2]]():
+			return TypePackedVector2Array, true
+		case reflect.TypeFor[PackedType.Array[Vector3]]():
+			return TypePackedVector3Array, true
+		case reflect.TypeFor[PackedType.Array[Color]]():
+			return TypePackedColorArray, true
+		case reflect.TypeFor[PackedType.Array[Vector4]]():
+			return TypePackedVector4Array, true
 		case reflect.TypeFor[ArrayType.Any]():
 			return TypeArray, true
 		case reflect.TypeFor[StringType.Readable]():

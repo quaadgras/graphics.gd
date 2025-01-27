@@ -3,6 +3,7 @@ package NavigationMesh
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/AABB"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A navigation mesh is a collection of polygons that define which areas of an environment are traversable to aid agents in pathfinding through complicated spaces.
@@ -66,7 +70,7 @@ func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:Navigat
 Adds a polygon using the indices of the vertices you get when calling [method get_vertices].
 */
 func (self Instance) AddPolygon(polygon []int32) { //gd:NavigationMesh.add_polygon
-	class(self).AddPolygon(gd.NewPackedInt32Slice(polygon))
+	class(self).AddPolygon(Packed.New(polygon...))
 }
 
 /*
@@ -80,7 +84,7 @@ func (self Instance) GetPolygonCount() int { //gd:NavigationMesh.get_polygon_cou
 Returns a [PackedInt32Array] containing the indices of the vertices of a created polygon.
 */
 func (self Instance) GetPolygon(idx int) []int32 { //gd:NavigationMesh.get_polygon
-	return []int32(class(self).GetPolygon(gd.Int(idx)).AsSlice())
+	return []int32(slices.Collect(class(self).GetPolygon(gd.Int(idx)).Values()))
 }
 
 /*
@@ -125,11 +129,11 @@ func New() Instance {
 }
 
 func (self Instance) Vertices() []Vector3.XYZ {
-	return []Vector3.XYZ(class(self).GetVertices().AsSlice())
+	return []Vector3.XYZ(slices.Collect(class(self).GetVertices().Values()))
 }
 
 func (self Instance) SetVertices(value []Vector3.XYZ) {
-	class(self).SetVertices(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&value))))
+	class(self).SetVertices(Packed.New(value...))
 }
 
 func (self Instance) SamplePartitionType() gdclass.NavigationMeshSamplePartitionType {
@@ -811,9 +815,9 @@ func (self class) GetFilterBakingAabbOffset() gd.Vector3 { //gd:NavigationMesh.g
 Sets the vertices that can be then indexed to create polygons with the [method add_polygon] method.
 */
 //go:nosplit
-func (self class) SetVertices(vertices gd.PackedVector3Array) { //gd:NavigationMesh.set_vertices
+func (self class) SetVertices(vertices Packed.Array[Vector3.XYZ]) { //gd:NavigationMesh.set_vertices
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(vertices))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_set_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -823,11 +827,11 @@ func (self class) SetVertices(vertices gd.PackedVector3Array) { //gd:NavigationM
 Returns a [PackedVector3Array] containing all the vertices being used to create the polygons.
 */
 //go:nosplit
-func (self class) GetVertices() gd.PackedVector3Array { //gd:NavigationMesh.get_vertices
+func (self class) GetVertices() Packed.Array[Vector3.XYZ] { //gd:NavigationMesh.get_vertices
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -836,9 +840,9 @@ func (self class) GetVertices() gd.PackedVector3Array { //gd:NavigationMesh.get_
 Adds a polygon using the indices of the vertices you get when calling [method get_vertices].
 */
 //go:nosplit
-func (self class) AddPolygon(polygon gd.PackedInt32Array) { //gd:NavigationMesh.add_polygon
+func (self class) AddPolygon(polygon Packed.Array[int32]) { //gd:NavigationMesh.add_polygon
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(polygon))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](polygon))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_add_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -861,12 +865,12 @@ func (self class) GetPolygonCount() gd.Int { //gd:NavigationMesh.get_polygon_cou
 Returns a [PackedInt32Array] containing the indices of the vertices of a created polygon.
 */
 //go:nosplit
-func (self class) GetPolygon(idx gd.Int) gd.PackedInt32Array { //gd:NavigationMesh.get_polygon
+func (self class) GetPolygon(idx gd.Int) Packed.Array[int32] { //gd:NavigationMesh.get_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -6932,13 +6932,12 @@ func (self Array) IsReadOnly() Bool {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Size() Int {
-	var self = *selfPtr
+func (self PackedByteArray) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6948,13 +6947,12 @@ func (selfPtr *PackedByteArray) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) IsEmpty() Bool {
-	var self = *selfPtr
+func (self PackedByteArray) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6964,15 +6962,14 @@ func (selfPtr *PackedByteArray) IsEmpty() Bool {
 Changes the byte at the given index.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Set(index Int, value Int) {
-	var self = *selfPtr
+func (self PackedByteArray) Set(index Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -6980,14 +6977,13 @@ func (selfPtr *PackedByteArray) Set(index Int, value Int) {
 Appends an element at the end of the array.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) PushBack(value Int) Bool {
-	var self = *selfPtr
+func (self PackedByteArray) PushBack(value Int) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6997,14 +6993,13 @@ func (selfPtr *PackedByteArray) PushBack(value Int) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Append(value Int) Bool {
-	var self = *selfPtr
+func (self PackedByteArray) Append(value Int) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7014,14 +7009,13 @@ func (selfPtr *PackedByteArray) Append(value Int) Bool {
 Appends a [PackedByteArray] at the end of this array.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) AppendArray(array PackedByteArray) {
-	var self = *selfPtr
+func (self PackedByteArray) AppendArray(array PackedByteArray) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7029,14 +7023,13 @@ func (selfPtr *PackedByteArray) AppendArray(array PackedByteArray) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) RemoveAt(index Int) {
-	var self = *selfPtr
+func (self PackedByteArray) RemoveAt(index Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7044,15 +7037,14 @@ func (selfPtr *PackedByteArray) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Insert(at_index Int, value Int) Int {
-	var self = *selfPtr
+func (self PackedByteArray) Insert(at_index Int, value Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7062,14 +7054,13 @@ func (selfPtr *PackedByteArray) Insert(at_index Int, value Int) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Fill(value Int) {
-	var self = *selfPtr
+func (self PackedByteArray) Fill(value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7077,14 +7068,13 @@ func (selfPtr *PackedByteArray) Fill(value Int) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Resize(new_size Int) Int {
-	var self = *selfPtr
+func (self PackedByteArray) Resize(new_size Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7094,13 +7084,12 @@ func (selfPtr *PackedByteArray) Resize(new_size Int) Int {
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Clear() {
-	var self = *selfPtr
+func (self PackedByteArray) Clear() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7108,14 +7097,13 @@ func (selfPtr *PackedByteArray) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Has(value Int) Bool {
-	var self = *selfPtr
+func (self PackedByteArray) Has(value Int) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7125,13 +7113,12 @@ func (selfPtr *PackedByteArray) Has(value Int) Bool {
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Reverse() {
-	var self = *selfPtr
+func (self PackedByteArray) Reverse() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7141,15 +7128,14 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Slice(begin Int, end Int) PackedByteArray {
-	var self = *selfPtr
+func (self PackedByteArray) Slice(begin Int, end Int) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7159,13 +7145,12 @@ func (selfPtr *PackedByteArray) Slice(begin Int, end Int) PackedByteArray {
 Sorts the elements of the array in ascending order.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Sort() {
-	var self = *selfPtr
+func (self PackedByteArray) Sort() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7174,15 +7159,14 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Bsearch(value Int, before Bool) Int {
-	var self = *selfPtr
+func (self PackedByteArray) Bsearch(value Int, before Bool) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7192,13 +7176,12 @@ func (selfPtr *PackedByteArray) Bsearch(value Int, before Bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Duplicate() PackedByteArray {
-	var self = *selfPtr
+func (self PackedByteArray) Duplicate() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7208,15 +7191,14 @@ func (selfPtr *PackedByteArray) Duplicate() PackedByteArray {
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Find(value Int, from Int) Int {
-	var self = *selfPtr
+func (self PackedByteArray) Find(value Int, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7226,15 +7208,14 @@ func (selfPtr *PackedByteArray) Find(value Int, from Int) Int {
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Rfind(value Int, from Int) Int {
-	var self = *selfPtr
+func (self PackedByteArray) Rfind(value Int, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7244,14 +7225,13 @@ func (selfPtr *PackedByteArray) Rfind(value Int, from Int) Int {
 Returns the number of times an element is in the array.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Count(value Int) Int {
-	var self = *selfPtr
+func (self PackedByteArray) Count(value Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7261,13 +7241,12 @@ func (selfPtr *PackedByteArray) Count(value Int) Int {
 Converts ASCII/Latin-1 encoded array to [String]. Fast alternative to [method get_string_from_utf8] if the content is ASCII/Latin-1 only. Unlike the UTF-8 function this function maps every byte to a character in the array. Multibyte sequences will not be interpreted correctly. For parsing user input always use [method get_string_from_utf8]. This is the inverse of [method String.to_ascii_buffer].
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) GetStringFromAscii() String {
-	var self = *selfPtr
+func (self PackedByteArray) GetStringFromAscii() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.get_string_from_ascii(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7277,13 +7256,12 @@ func (selfPtr *PackedByteArray) GetStringFromAscii() String {
 Converts UTF-8 encoded array to [String]. Slower than [method get_string_from_ascii] but supports UTF-8 encoded data. Use this function if you are unsure about the source of the data. For user input this function should always be preferred. Returns empty string if source array is not valid UTF-8 string. This is the inverse of [method String.to_utf8_buffer].
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) GetStringFromUtf8() String {
-	var self = *selfPtr
+func (self PackedByteArray) GetStringFromUtf8() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.get_string_from_utf8(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7293,13 +7271,12 @@ func (selfPtr *PackedByteArray) GetStringFromUtf8() String {
 Converts UTF-16 encoded array to [String]. If the BOM is missing, system endianness is assumed. Returns empty string if source array is not valid UTF-16 string. This is the inverse of [method String.to_utf16_buffer].
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) GetStringFromUtf16() String {
-	var self = *selfPtr
+func (self PackedByteArray) GetStringFromUtf16() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.get_string_from_utf16(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7309,13 +7286,12 @@ func (selfPtr *PackedByteArray) GetStringFromUtf16() String {
 Converts UTF-32 encoded array to [String]. System endianness is assumed. Returns empty string if source array is not valid UTF-32 string. This is the inverse of [method String.to_utf32_buffer].
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) GetStringFromUtf32() String {
-	var self = *selfPtr
+func (self PackedByteArray) GetStringFromUtf32() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.get_string_from_utf32(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7325,13 +7301,12 @@ func (selfPtr *PackedByteArray) GetStringFromUtf32() String {
 Converts wide character ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded array to [String]. Returns empty string if source array is not valid wide string. This is the inverse of [method String.to_wchar_buffer].
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) GetStringFromWchar() String {
-	var self = *selfPtr
+func (self PackedByteArray) GetStringFromWchar() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.get_string_from_wchar(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7351,13 +7326,12 @@ GD.Print(array.HexEncode()); // Prints: 0b2eff
 [/codeblocks]
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) HexEncode() String {
-	var self = *selfPtr
+func (self PackedByteArray) HexEncode() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.hex_encode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7367,14 +7341,13 @@ func (selfPtr *PackedByteArray) HexEncode() String {
 Returns a new [PackedByteArray] with the data compressed. Set the compression mode using one of [enum FileAccess.CompressionMode]'s constants.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Compress(compression_mode Int) PackedByteArray {
-	var self = *selfPtr
+func (self PackedByteArray) Compress(compression_mode Int) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, compression_mode)
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.compress(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7385,15 +7358,14 @@ Returns a new [PackedByteArray] with the data decompressed. Set [param buffer_si
 [b]Note:[/b] Decompression is not guaranteed to work with data not compressed by Godot, for example if data compressed with the deflate compression mode lacks a checksum or header.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Decompress(buffer_size Int, compression_mode Int) PackedByteArray {
-	var self = *selfPtr
+func (self PackedByteArray) Decompress(buffer_size Int, compression_mode Int) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer_size)
 	callframe.Arg(frame, compression_mode)
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decompress(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7406,15 +7378,14 @@ GZIP has a maximal compression ratio of 1032:1, meaning it's very possible for a
 [b]Note:[/b] Decompression is not guaranteed to work with data not compressed by Godot, for example if data compressed with the deflate compression mode lacks a checksum or header.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecompressDynamic(max_output_size Int, compression_mode Int) PackedByteArray {
-	var self = *selfPtr
+func (self PackedByteArray) DecompressDynamic(max_output_size Int, compression_mode Int) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_output_size)
 	callframe.Arg(frame, compression_mode)
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decompress_dynamic(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7424,14 +7395,13 @@ func (selfPtr *PackedByteArray) DecompressDynamic(max_output_size Int, compressi
 Decodes a 8-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeU8(byte_offset Int) Int {
-	var self = *selfPtr
+func (self PackedByteArray) DecodeU8(byte_offset Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_u8(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7441,14 +7411,13 @@ func (selfPtr *PackedByteArray) DecodeU8(byte_offset Int) Int {
 Decodes a 8-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeS8(byte_offset Int) Int {
-	var self = *selfPtr
+func (self PackedByteArray) DecodeS8(byte_offset Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_s8(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7458,14 +7427,13 @@ func (selfPtr *PackedByteArray) DecodeS8(byte_offset Int) Int {
 Decodes a 16-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeU16(byte_offset Int) Int {
-	var self = *selfPtr
+func (self PackedByteArray) DecodeU16(byte_offset Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_u16(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7475,14 +7443,13 @@ func (selfPtr *PackedByteArray) DecodeU16(byte_offset Int) Int {
 Decodes a 16-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeS16(byte_offset Int) Int {
-	var self = *selfPtr
+func (self PackedByteArray) DecodeS16(byte_offset Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_s16(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7492,14 +7459,13 @@ func (selfPtr *PackedByteArray) DecodeS16(byte_offset Int) Int {
 Decodes a 32-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeU32(byte_offset Int) Int {
-	var self = *selfPtr
+func (self PackedByteArray) DecodeU32(byte_offset Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_u32(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7509,14 +7475,13 @@ func (selfPtr *PackedByteArray) DecodeU32(byte_offset Int) Int {
 Decodes a 32-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeS32(byte_offset Int) Int {
-	var self = *selfPtr
+func (self PackedByteArray) DecodeS32(byte_offset Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_s32(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7526,14 +7491,13 @@ func (selfPtr *PackedByteArray) DecodeS32(byte_offset Int) Int {
 Decodes a 64-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeU64(byte_offset Int) Int {
-	var self = *selfPtr
+func (self PackedByteArray) DecodeU64(byte_offset Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_u64(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7543,14 +7507,13 @@ func (selfPtr *PackedByteArray) DecodeU64(byte_offset Int) Int {
 Decodes a 64-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeS64(byte_offset Int) Int {
-	var self = *selfPtr
+func (self PackedByteArray) DecodeS64(byte_offset Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_s64(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7560,14 +7523,13 @@ func (selfPtr *PackedByteArray) DecodeS64(byte_offset Int) Int {
 Decodes a 16-bit floating-point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeHalf(byte_offset Int) Float {
-	var self = *selfPtr
+func (self PackedByteArray) DecodeHalf(byte_offset Int) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_half(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7577,14 +7539,13 @@ func (selfPtr *PackedByteArray) DecodeHalf(byte_offset Int) Float {
 Decodes a 32-bit floating-point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeFloat(byte_offset Int) Float {
-	var self = *selfPtr
+func (self PackedByteArray) DecodeFloat(byte_offset Int) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_float(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7594,14 +7555,13 @@ func (selfPtr *PackedByteArray) DecodeFloat(byte_offset Int) Float {
 Decodes a 64-bit floating-point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeDouble(byte_offset Int) Float {
-	var self = *selfPtr
+func (self PackedByteArray) DecodeDouble(byte_offset Int) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_double(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7611,15 +7571,14 @@ func (selfPtr *PackedByteArray) DecodeDouble(byte_offset Int) Float {
 Returns [code]true[/code] if a valid [Variant] value can be decoded at the [param byte_offset]. Returns [code]false[/code] otherwise or when the value is [Object]-derived and [param allow_objects] is [code]false[/code].
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects Bool) Bool {
-	var self = *selfPtr
+func (self PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects Bool) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.has_encoded_var(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7629,15 +7588,14 @@ func (selfPtr *PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects Boo
 Decodes a [Variant] from the bytes starting at [param byte_offset]. Returns [code]null[/code] if a valid variant can't be decoded or the value is [Object]-derived and [param allow_objects] is [code]false[/code].
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeVar(byte_offset Int, allow_objects Bool) Variant {
-	var self = *selfPtr
+func (self PackedByteArray) DecodeVar(byte_offset Int, allow_objects Bool) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_var(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7647,15 +7605,14 @@ func (selfPtr *PackedByteArray) DecodeVar(byte_offset Int, allow_objects Bool) V
 Decodes a size of a [Variant] from the bytes starting at [param byte_offset]. Requires at least 4 bytes of data starting at the offset, otherwise fails.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeVarSize(byte_offset Int, allow_objects Bool) Int {
-	var self = *selfPtr
+func (self PackedByteArray) DecodeVarSize(byte_offset Int, allow_objects Bool) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_var_size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7667,13 +7624,12 @@ The size of the input array must be a multiple of 4 (size of 32-bit integer). Th
 If the original data can't be converted to signed 32-bit integers, the resulting data is undefined.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) ToInt32Array() PackedInt32Array {
-	var self = *selfPtr
+func (self PackedByteArray) ToInt32Array() PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.to_int32_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7685,13 +7641,12 @@ The size of the input array must be a multiple of 8 (size of 64-bit integer). Th
 If the original data can't be converted to signed 64-bit integers, the resulting data is undefined.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) ToInt64Array() PackedInt64Array {
-	var self = *selfPtr
+func (self PackedByteArray) ToInt64Array() PackedInt64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.to_int64_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedInt64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7703,13 +7658,12 @@ The size of the input array must be a multiple of 4 (size of 32-bit float). The 
 If the original data can't be converted to 32-bit floats, the resulting data is undefined.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) ToFloat32Array() PackedFloat32Array {
-	var self = *selfPtr
+func (self PackedByteArray) ToFloat32Array() PackedFloat32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.to_float32_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedFloat32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7721,13 +7675,12 @@ The size of the input array must be a multiple of 8 (size of 64-bit double). The
 If the original data can't be converted to 64-bit floats, the resulting data is undefined.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) ToFloat64Array() PackedFloat64Array {
-	var self = *selfPtr
+func (self PackedByteArray) ToFloat64Array() PackedFloat64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.to_float64_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedFloat64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -7737,15 +7690,14 @@ func (selfPtr *PackedByteArray) ToFloat64Array() PackedFloat64Array {
 Encodes a 8-bit unsigned integer number (byte) at the index of [param byte_offset] bytes. The array must have at least 1 byte of space, starting at the offset.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) EncodeU8(byte_offset Int, value Int) {
-	var self = *selfPtr
+func (self PackedByteArray) EncodeU8(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.encode_u8(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7753,15 +7705,14 @@ func (selfPtr *PackedByteArray) EncodeU8(byte_offset Int, value Int) {
 Encodes a 8-bit signed integer number (signed byte) at the index of [param byte_offset] bytes. The array must have at least 1 byte of space, starting at the offset.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) EncodeS8(byte_offset Int, value Int) {
-	var self = *selfPtr
+func (self PackedByteArray) EncodeS8(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.encode_s8(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7769,15 +7720,14 @@ func (selfPtr *PackedByteArray) EncodeS8(byte_offset Int, value Int) {
 Encodes a 16-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) EncodeU16(byte_offset Int, value Int) {
-	var self = *selfPtr
+func (self PackedByteArray) EncodeU16(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.encode_u16(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7785,15 +7735,14 @@ func (selfPtr *PackedByteArray) EncodeU16(byte_offset Int, value Int) {
 Encodes a 16-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) EncodeS16(byte_offset Int, value Int) {
-	var self = *selfPtr
+func (self PackedByteArray) EncodeS16(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.encode_s16(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7801,15 +7750,14 @@ func (selfPtr *PackedByteArray) EncodeS16(byte_offset Int, value Int) {
 Encodes a 32-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) EncodeU32(byte_offset Int, value Int) {
-	var self = *selfPtr
+func (self PackedByteArray) EncodeU32(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.encode_u32(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7817,15 +7765,14 @@ func (selfPtr *PackedByteArray) EncodeU32(byte_offset Int, value Int) {
 Encodes a 32-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) EncodeS32(byte_offset Int, value Int) {
-	var self = *selfPtr
+func (self PackedByteArray) EncodeS32(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.encode_s32(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7833,15 +7780,14 @@ func (selfPtr *PackedByteArray) EncodeS32(byte_offset Int, value Int) {
 Encodes a 64-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) EncodeU64(byte_offset Int, value Int) {
-	var self = *selfPtr
+func (self PackedByteArray) EncodeU64(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.encode_u64(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7849,15 +7795,14 @@ func (selfPtr *PackedByteArray) EncodeU64(byte_offset Int, value Int) {
 Encodes a 64-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) EncodeS64(byte_offset Int, value Int) {
-	var self = *selfPtr
+func (self PackedByteArray) EncodeS64(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.encode_s64(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7865,15 +7810,14 @@ func (selfPtr *PackedByteArray) EncodeS64(byte_offset Int, value Int) {
 Encodes a 16-bit floating-point number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
-	var self = *selfPtr
+func (self PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.encode_half(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7881,15 +7825,14 @@ func (selfPtr *PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
 Encodes a 32-bit floating-point number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
-	var self = *selfPtr
+func (self PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.encode_float(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7897,15 +7840,14 @@ func (selfPtr *PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
 Encodes a 64-bit floating-point number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of allocated space, starting at the offset.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
-	var self = *selfPtr
+func (self PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.encode_double(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7913,8 +7855,7 @@ func (selfPtr *PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
 Encodes a [Variant] at the index of [param byte_offset] bytes. A sufficient space must be allocated, depending on the encoded variant's size. If [param allow_objects] is [code]false[/code], [Object]-derived values are not permitted and will instead be serialized as ID-only.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_objects Bool) Int {
-	var self = *selfPtr
+func (self PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_objects Bool) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, pointers.Get(value))
@@ -7922,7 +7863,7 @@ func (selfPtr *PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.encode_var(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7932,13 +7873,12 @@ func (selfPtr *PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Size() Int {
-	var self = *selfPtr
+func (self PackedInt32Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7948,13 +7888,12 @@ func (selfPtr *PackedInt32Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) IsEmpty() Bool {
-	var self = *selfPtr
+func (self PackedInt32Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7964,15 +7903,14 @@ func (selfPtr *PackedInt32Array) IsEmpty() Bool {
 Changes the integer at the given index.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Set(index Int, value Int) {
-	var self = *selfPtr
+func (self PackedInt32Array) Set(index Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -7980,14 +7918,13 @@ func (selfPtr *PackedInt32Array) Set(index Int, value Int) {
 Appends a value to the array.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) PushBack(value Int) Bool {
-	var self = *selfPtr
+func (self PackedInt32Array) PushBack(value Int) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7997,14 +7934,13 @@ func (selfPtr *PackedInt32Array) PushBack(value Int) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Append(value Int) Bool {
-	var self = *selfPtr
+func (self PackedInt32Array) Append(value Int) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8014,14 +7950,13 @@ func (selfPtr *PackedInt32Array) Append(value Int) Bool {
 Appends a [PackedInt32Array] at the end of this array.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) AppendArray(array PackedInt32Array) {
-	var self = *selfPtr
+func (self PackedInt32Array) AppendArray(array PackedInt32Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8029,14 +7964,13 @@ func (selfPtr *PackedInt32Array) AppendArray(array PackedInt32Array) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) RemoveAt(index Int) {
-	var self = *selfPtr
+func (self PackedInt32Array) RemoveAt(index Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8044,15 +7978,14 @@ func (selfPtr *PackedInt32Array) RemoveAt(index Int) {
 Inserts a new integer at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Insert(at_index Int, value Int) Int {
-	var self = *selfPtr
+func (self PackedInt32Array) Insert(at_index Int, value Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8062,14 +7995,13 @@ func (selfPtr *PackedInt32Array) Insert(at_index Int, value Int) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Fill(value Int) {
-	var self = *selfPtr
+func (self PackedInt32Array) Fill(value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8077,14 +8009,13 @@ func (selfPtr *PackedInt32Array) Fill(value Int) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Resize(new_size Int) Int {
-	var self = *selfPtr
+func (self PackedInt32Array) Resize(new_size Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8094,13 +8025,12 @@ func (selfPtr *PackedInt32Array) Resize(new_size Int) Int {
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Clear() {
-	var self = *selfPtr
+func (self PackedInt32Array) Clear() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8108,14 +8038,13 @@ func (selfPtr *PackedInt32Array) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Has(value Int) Bool {
-	var self = *selfPtr
+func (self PackedInt32Array) Has(value Int) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8125,13 +8054,12 @@ func (selfPtr *PackedInt32Array) Has(value Int) Bool {
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Reverse() {
-	var self = *selfPtr
+func (self PackedInt32Array) Reverse() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8141,15 +8069,14 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Slice(begin Int, end Int) PackedInt32Array {
-	var self = *selfPtr
+func (self PackedInt32Array) Slice(begin Int, end Int) PackedInt32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -8160,13 +8087,12 @@ Returns a copy of the data converted to a [PackedByteArray], where each element 
 The size of the new array will be [code]int32_array.size() * 4[/code].
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) ToByteArray() PackedByteArray {
-	var self = *selfPtr
+func (self PackedInt32Array) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -8176,13 +8102,12 @@ func (selfPtr *PackedInt32Array) ToByteArray() PackedByteArray {
 Sorts the elements of the array in ascending order.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Sort() {
-	var self = *selfPtr
+func (self PackedInt32Array) Sort() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8191,15 +8116,14 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Bsearch(value Int, before Bool) Int {
-	var self = *selfPtr
+func (self PackedInt32Array) Bsearch(value Int, before Bool) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8209,13 +8133,12 @@ func (selfPtr *PackedInt32Array) Bsearch(value Int, before Bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Duplicate() PackedInt32Array {
-	var self = *selfPtr
+func (self PackedInt32Array) Duplicate() PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -8225,15 +8148,14 @@ func (selfPtr *PackedInt32Array) Duplicate() PackedInt32Array {
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Find(value Int, from Int) Int {
-	var self = *selfPtr
+func (self PackedInt32Array) Find(value Int, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8243,15 +8165,14 @@ func (selfPtr *PackedInt32Array) Find(value Int, from Int) Int {
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Rfind(value Int, from Int) Int {
-	var self = *selfPtr
+func (self PackedInt32Array) Rfind(value Int, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8261,14 +8182,13 @@ func (selfPtr *PackedInt32Array) Rfind(value Int, from Int) Int {
 Returns the number of times an element is in the array.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Count(value Int) Int {
-	var self = *selfPtr
+func (self PackedInt32Array) Count(value Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8278,13 +8198,12 @@ func (selfPtr *PackedInt32Array) Count(value Int) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Size() Int {
-	var self = *selfPtr
+func (self PackedInt64Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8294,13 +8213,12 @@ func (selfPtr *PackedInt64Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) IsEmpty() Bool {
-	var self = *selfPtr
+func (self PackedInt64Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8310,15 +8228,14 @@ func (selfPtr *PackedInt64Array) IsEmpty() Bool {
 Changes the integer at the given index.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Set(index Int, value Int) {
-	var self = *selfPtr
+func (self PackedInt64Array) Set(index Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8326,14 +8243,13 @@ func (selfPtr *PackedInt64Array) Set(index Int, value Int) {
 Appends a value to the array.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) PushBack(value Int) Bool {
-	var self = *selfPtr
+func (self PackedInt64Array) PushBack(value Int) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8343,14 +8259,13 @@ func (selfPtr *PackedInt64Array) PushBack(value Int) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Append(value Int) Bool {
-	var self = *selfPtr
+func (self PackedInt64Array) Append(value Int) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8360,14 +8275,13 @@ func (selfPtr *PackedInt64Array) Append(value Int) Bool {
 Appends a [PackedInt64Array] at the end of this array.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) AppendArray(array PackedInt64Array) {
-	var self = *selfPtr
+func (self PackedInt64Array) AppendArray(array PackedInt64Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8375,14 +8289,13 @@ func (selfPtr *PackedInt64Array) AppendArray(array PackedInt64Array) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) RemoveAt(index Int) {
-	var self = *selfPtr
+func (self PackedInt64Array) RemoveAt(index Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8390,15 +8303,14 @@ func (selfPtr *PackedInt64Array) RemoveAt(index Int) {
 Inserts a new integer at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Insert(at_index Int, value Int) Int {
-	var self = *selfPtr
+func (self PackedInt64Array) Insert(at_index Int, value Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8408,14 +8320,13 @@ func (selfPtr *PackedInt64Array) Insert(at_index Int, value Int) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Fill(value Int) {
-	var self = *selfPtr
+func (self PackedInt64Array) Fill(value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8423,14 +8334,13 @@ func (selfPtr *PackedInt64Array) Fill(value Int) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Resize(new_size Int) Int {
-	var self = *selfPtr
+func (self PackedInt64Array) Resize(new_size Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8440,13 +8350,12 @@ func (selfPtr *PackedInt64Array) Resize(new_size Int) Int {
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Clear() {
-	var self = *selfPtr
+func (self PackedInt64Array) Clear() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8454,14 +8363,13 @@ func (selfPtr *PackedInt64Array) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Has(value Int) Bool {
-	var self = *selfPtr
+func (self PackedInt64Array) Has(value Int) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8471,13 +8379,12 @@ func (selfPtr *PackedInt64Array) Has(value Int) Bool {
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Reverse() {
-	var self = *selfPtr
+func (self PackedInt64Array) Reverse() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8487,15 +8394,14 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Slice(begin Int, end Int) PackedInt64Array {
-	var self = *selfPtr
+func (self PackedInt64Array) Slice(begin Int, end Int) PackedInt64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedInt64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -8506,13 +8412,12 @@ Returns a copy of the data converted to a [PackedByteArray], where each element 
 The size of the new array will be [code]int64_array.size() * 8[/code].
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) ToByteArray() PackedByteArray {
-	var self = *selfPtr
+func (self PackedInt64Array) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -8522,13 +8427,12 @@ func (selfPtr *PackedInt64Array) ToByteArray() PackedByteArray {
 Sorts the elements of the array in ascending order.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Sort() {
-	var self = *selfPtr
+func (self PackedInt64Array) Sort() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8537,15 +8441,14 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Bsearch(value Int, before Bool) Int {
-	var self = *selfPtr
+func (self PackedInt64Array) Bsearch(value Int, before Bool) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8555,13 +8458,12 @@ func (selfPtr *PackedInt64Array) Bsearch(value Int, before Bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Duplicate() PackedInt64Array {
-	var self = *selfPtr
+func (self PackedInt64Array) Duplicate() PackedInt64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedInt64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -8571,15 +8473,14 @@ func (selfPtr *PackedInt64Array) Duplicate() PackedInt64Array {
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Find(value Int, from Int) Int {
-	var self = *selfPtr
+func (self PackedInt64Array) Find(value Int, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8589,15 +8490,14 @@ func (selfPtr *PackedInt64Array) Find(value Int, from Int) Int {
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Rfind(value Int, from Int) Int {
-	var self = *selfPtr
+func (self PackedInt64Array) Rfind(value Int, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8607,14 +8507,13 @@ func (selfPtr *PackedInt64Array) Rfind(value Int, from Int) Int {
 Returns the number of times an element is in the array.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Count(value Int) Int {
-	var self = *selfPtr
+func (self PackedInt64Array) Count(value Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8624,13 +8523,12 @@ func (selfPtr *PackedInt64Array) Count(value Int) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Size() Int {
-	var self = *selfPtr
+func (self PackedFloat32Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8640,13 +8538,12 @@ func (selfPtr *PackedFloat32Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) IsEmpty() Bool {
-	var self = *selfPtr
+func (self PackedFloat32Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8656,15 +8553,14 @@ func (selfPtr *PackedFloat32Array) IsEmpty() Bool {
 Changes the float at the given index.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Set(index Int, value Float) {
-	var self = *selfPtr
+func (self PackedFloat32Array) Set(index Int, value Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8672,14 +8568,13 @@ func (selfPtr *PackedFloat32Array) Set(index Int, value Float) {
 Appends an element at the end of the array.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) PushBack(value Float) Bool {
-	var self = *selfPtr
+func (self PackedFloat32Array) PushBack(value Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8689,14 +8584,13 @@ func (selfPtr *PackedFloat32Array) PushBack(value Float) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Append(value Float) Bool {
-	var self = *selfPtr
+func (self PackedFloat32Array) Append(value Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8706,14 +8600,13 @@ func (selfPtr *PackedFloat32Array) Append(value Float) Bool {
 Appends a [PackedFloat32Array] at the end of this array.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) AppendArray(array PackedFloat32Array) {
-	var self = *selfPtr
+func (self PackedFloat32Array) AppendArray(array PackedFloat32Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8721,14 +8614,13 @@ func (selfPtr *PackedFloat32Array) AppendArray(array PackedFloat32Array) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) RemoveAt(index Int) {
-	var self = *selfPtr
+func (self PackedFloat32Array) RemoveAt(index Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8736,15 +8628,14 @@ func (selfPtr *PackedFloat32Array) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Insert(at_index Int, value Float) Int {
-	var self = *selfPtr
+func (self PackedFloat32Array) Insert(at_index Int, value Float) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8754,14 +8645,13 @@ func (selfPtr *PackedFloat32Array) Insert(at_index Int, value Float) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Fill(value Float) {
-	var self = *selfPtr
+func (self PackedFloat32Array) Fill(value Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8769,14 +8659,13 @@ func (selfPtr *PackedFloat32Array) Fill(value Float) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Resize(new_size Int) Int {
-	var self = *selfPtr
+func (self PackedFloat32Array) Resize(new_size Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8786,13 +8675,12 @@ func (selfPtr *PackedFloat32Array) Resize(new_size Int) Int {
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Clear() {
-	var self = *selfPtr
+func (self PackedFloat32Array) Clear() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8801,14 +8689,13 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Has(value Float) Bool {
-	var self = *selfPtr
+func (self PackedFloat32Array) Has(value Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8818,13 +8705,12 @@ func (selfPtr *PackedFloat32Array) Has(value Float) Bool {
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Reverse() {
-	var self = *selfPtr
+func (self PackedFloat32Array) Reverse() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8834,15 +8720,14 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Slice(begin Int, end Int) PackedFloat32Array {
-	var self = *selfPtr
+func (self PackedFloat32Array) Slice(begin Int, end Int) PackedFloat32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedFloat32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -8853,13 +8738,12 @@ Returns a copy of the data converted to a [PackedByteArray], where each element 
 The size of the new array will be [code]float32_array.size() * 4[/code].
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) ToByteArray() PackedByteArray {
-	var self = *selfPtr
+func (self PackedFloat32Array) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -8870,13 +8754,12 @@ Sorts the elements of the array in ascending order.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Sort() {
-	var self = *selfPtr
+func (self PackedFloat32Array) Sort() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -8886,15 +8769,14 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Bsearch(value Float, before Bool) Int {
-	var self = *selfPtr
+func (self PackedFloat32Array) Bsearch(value Float, before Bool) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8904,13 +8786,12 @@ func (selfPtr *PackedFloat32Array) Bsearch(value Float, before Bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Duplicate() PackedFloat32Array {
-	var self = *selfPtr
+func (self PackedFloat32Array) Duplicate() PackedFloat32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedFloat32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -8921,15 +8802,14 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Find(value Float, from Int) Int {
-	var self = *selfPtr
+func (self PackedFloat32Array) Find(value Float, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8940,15 +8820,14 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Rfind(value Float, from Int) Int {
-	var self = *selfPtr
+func (self PackedFloat32Array) Rfind(value Float, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8959,14 +8838,13 @@ Returns the number of times an element is in the array.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Count(value Float) Int {
-	var self = *selfPtr
+func (self PackedFloat32Array) Count(value Float) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8976,13 +8854,12 @@ func (selfPtr *PackedFloat32Array) Count(value Float) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Size() Int {
-	var self = *selfPtr
+func (self PackedFloat64Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8992,13 +8869,12 @@ func (selfPtr *PackedFloat64Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) IsEmpty() Bool {
-	var self = *selfPtr
+func (self PackedFloat64Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9008,15 +8884,14 @@ func (selfPtr *PackedFloat64Array) IsEmpty() Bool {
 Changes the float at the given index.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Set(index Int, value Float) {
-	var self = *selfPtr
+func (self PackedFloat64Array) Set(index Int, value Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9024,14 +8899,13 @@ func (selfPtr *PackedFloat64Array) Set(index Int, value Float) {
 Appends an element at the end of the array.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) PushBack(value Float) Bool {
-	var self = *selfPtr
+func (self PackedFloat64Array) PushBack(value Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9041,14 +8915,13 @@ func (selfPtr *PackedFloat64Array) PushBack(value Float) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Append(value Float) Bool {
-	var self = *selfPtr
+func (self PackedFloat64Array) Append(value Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9058,14 +8931,13 @@ func (selfPtr *PackedFloat64Array) Append(value Float) Bool {
 Appends a [PackedFloat64Array] at the end of this array.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) AppendArray(array PackedFloat64Array) {
-	var self = *selfPtr
+func (self PackedFloat64Array) AppendArray(array PackedFloat64Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9073,14 +8945,13 @@ func (selfPtr *PackedFloat64Array) AppendArray(array PackedFloat64Array) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) RemoveAt(index Int) {
-	var self = *selfPtr
+func (self PackedFloat64Array) RemoveAt(index Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9088,15 +8959,14 @@ func (selfPtr *PackedFloat64Array) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Insert(at_index Int, value Float) Int {
-	var self = *selfPtr
+func (self PackedFloat64Array) Insert(at_index Int, value Float) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9106,14 +8976,13 @@ func (selfPtr *PackedFloat64Array) Insert(at_index Int, value Float) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Fill(value Float) {
-	var self = *selfPtr
+func (self PackedFloat64Array) Fill(value Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9121,14 +8990,13 @@ func (selfPtr *PackedFloat64Array) Fill(value Float) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Resize(new_size Int) Int {
-	var self = *selfPtr
+func (self PackedFloat64Array) Resize(new_size Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9138,13 +9006,12 @@ func (selfPtr *PackedFloat64Array) Resize(new_size Int) Int {
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Clear() {
-	var self = *selfPtr
+func (self PackedFloat64Array) Clear() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9153,14 +9020,13 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Has(value Float) Bool {
-	var self = *selfPtr
+func (self PackedFloat64Array) Has(value Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9170,13 +9036,12 @@ func (selfPtr *PackedFloat64Array) Has(value Float) Bool {
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Reverse() {
-	var self = *selfPtr
+func (self PackedFloat64Array) Reverse() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9186,15 +9051,14 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Slice(begin Int, end Int) PackedFloat64Array {
-	var self = *selfPtr
+func (self PackedFloat64Array) Slice(begin Int, end Int) PackedFloat64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedFloat64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9205,13 +9069,12 @@ Returns a copy of the data converted to a [PackedByteArray], where each element 
 The size of the new array will be [code]float64_array.size() * 8[/code].
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) ToByteArray() PackedByteArray {
-	var self = *selfPtr
+func (self PackedFloat64Array) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9222,13 +9085,12 @@ Sorts the elements of the array in ascending order.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Sort() {
-	var self = *selfPtr
+func (self PackedFloat64Array) Sort() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9238,15 +9100,14 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Bsearch(value Float, before Bool) Int {
-	var self = *selfPtr
+func (self PackedFloat64Array) Bsearch(value Float, before Bool) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9256,13 +9117,12 @@ func (selfPtr *PackedFloat64Array) Bsearch(value Float, before Bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Duplicate() PackedFloat64Array {
-	var self = *selfPtr
+func (self PackedFloat64Array) Duplicate() PackedFloat64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedFloat64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9273,15 +9133,14 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Find(value Float, from Int) Int {
-	var self = *selfPtr
+func (self PackedFloat64Array) Find(value Float, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9292,15 +9151,14 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Rfind(value Float, from Int) Int {
-	var self = *selfPtr
+func (self PackedFloat64Array) Rfind(value Float, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9311,14 +9169,13 @@ Returns the number of times an element is in the array.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Count(value Float) Int {
-	var self = *selfPtr
+func (self PackedFloat64Array) Count(value Float) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9328,13 +9185,12 @@ func (selfPtr *PackedFloat64Array) Count(value Float) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Size() Int {
-	var self = *selfPtr
+func (self PackedStringArray) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9344,13 +9200,12 @@ func (selfPtr *PackedStringArray) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) IsEmpty() Bool {
-	var self = *selfPtr
+func (self PackedStringArray) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9360,15 +9215,14 @@ func (selfPtr *PackedStringArray) IsEmpty() Bool {
 Changes the [String] at the given index.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Set(index Int, value String) {
-	var self = *selfPtr
+func (self PackedStringArray) Set(index Int, value String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9376,14 +9230,13 @@ func (selfPtr *PackedStringArray) Set(index Int, value String) {
 Appends a string element at end of the array.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) PushBack(value String) Bool {
-	var self = *selfPtr
+func (self PackedStringArray) PushBack(value String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9393,14 +9246,13 @@ func (selfPtr *PackedStringArray) PushBack(value String) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Append(value String) Bool {
-	var self = *selfPtr
+func (self PackedStringArray) Append(value String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9410,14 +9262,13 @@ func (selfPtr *PackedStringArray) Append(value String) Bool {
 Appends a [PackedStringArray] at the end of this array.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) AppendArray(array PackedStringArray) {
-	var self = *selfPtr
+func (self PackedStringArray) AppendArray(array PackedStringArray) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9425,14 +9276,13 @@ func (selfPtr *PackedStringArray) AppendArray(array PackedStringArray) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) RemoveAt(index Int) {
-	var self = *selfPtr
+func (self PackedStringArray) RemoveAt(index Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9440,15 +9290,14 @@ func (selfPtr *PackedStringArray) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Insert(at_index Int, value String) Int {
-	var self = *selfPtr
+func (self PackedStringArray) Insert(at_index Int, value String) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9458,14 +9307,13 @@ func (selfPtr *PackedStringArray) Insert(at_index Int, value String) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Fill(value String) {
-	var self = *selfPtr
+func (self PackedStringArray) Fill(value String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9473,14 +9321,13 @@ func (selfPtr *PackedStringArray) Fill(value String) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Resize(new_size Int) Int {
-	var self = *selfPtr
+func (self PackedStringArray) Resize(new_size Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9490,13 +9337,12 @@ func (selfPtr *PackedStringArray) Resize(new_size Int) Int {
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Clear() {
-	var self = *selfPtr
+func (self PackedStringArray) Clear() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9504,14 +9350,13 @@ func (selfPtr *PackedStringArray) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Has(value String) Bool {
-	var self = *selfPtr
+func (self PackedStringArray) Has(value String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9521,13 +9366,12 @@ func (selfPtr *PackedStringArray) Has(value String) Bool {
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Reverse() {
-	var self = *selfPtr
+func (self PackedStringArray) Reverse() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9537,15 +9381,14 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Slice(begin Int, end Int) PackedStringArray {
-	var self = *selfPtr
+func (self PackedStringArray) Slice(begin Int, end Int) PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9555,13 +9398,12 @@ func (selfPtr *PackedStringArray) Slice(begin Int, end Int) PackedStringArray {
 Returns a [PackedByteArray] with each string encoded as bytes.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) ToByteArray() PackedByteArray {
-	var self = *selfPtr
+func (self PackedStringArray) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9571,13 +9413,12 @@ func (selfPtr *PackedStringArray) ToByteArray() PackedByteArray {
 Sorts the elements of the array in ascending order.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Sort() {
-	var self = *selfPtr
+func (self PackedStringArray) Sort() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9586,15 +9427,14 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Bsearch(value String, before Bool) Int {
-	var self = *selfPtr
+func (self PackedStringArray) Bsearch(value String, before Bool) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9604,13 +9444,12 @@ func (selfPtr *PackedStringArray) Bsearch(value String, before Bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Duplicate() PackedStringArray {
-	var self = *selfPtr
+func (self PackedStringArray) Duplicate() PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9620,15 +9459,14 @@ func (selfPtr *PackedStringArray) Duplicate() PackedStringArray {
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Find(value String, from Int) Int {
-	var self = *selfPtr
+func (self PackedStringArray) Find(value String, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9638,15 +9476,14 @@ func (selfPtr *PackedStringArray) Find(value String, from Int) Int {
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Rfind(value String, from Int) Int {
-	var self = *selfPtr
+func (self PackedStringArray) Rfind(value String, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9656,14 +9493,13 @@ func (selfPtr *PackedStringArray) Rfind(value String, from Int) Int {
 Returns the number of times an element is in the array.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Count(value String) Int {
-	var self = *selfPtr
+func (self PackedStringArray) Count(value String) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9673,13 +9509,12 @@ func (selfPtr *PackedStringArray) Count(value String) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Size() Int {
-	var self = *selfPtr
+func (self PackedVector2Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9689,13 +9524,12 @@ func (selfPtr *PackedVector2Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) IsEmpty() Bool {
-	var self = *selfPtr
+func (self PackedVector2Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9705,15 +9539,14 @@ func (selfPtr *PackedVector2Array) IsEmpty() Bool {
 Changes the [Vector2] at the given index.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Set(index Int, value Vector2) {
-	var self = *selfPtr
+func (self PackedVector2Array) Set(index Int, value Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9721,14 +9554,13 @@ func (selfPtr *PackedVector2Array) Set(index Int, value Vector2) {
 Inserts a [Vector2] at the end.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) PushBack(value Vector2) Bool {
-	var self = *selfPtr
+func (self PackedVector2Array) PushBack(value Vector2) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9738,14 +9570,13 @@ func (selfPtr *PackedVector2Array) PushBack(value Vector2) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Append(value Vector2) Bool {
-	var self = *selfPtr
+func (self PackedVector2Array) Append(value Vector2) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9755,14 +9586,13 @@ func (selfPtr *PackedVector2Array) Append(value Vector2) Bool {
 Appends a [PackedVector2Array] at the end of this array.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) AppendArray(array PackedVector2Array) {
-	var self = *selfPtr
+func (self PackedVector2Array) AppendArray(array PackedVector2Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9770,14 +9600,13 @@ func (selfPtr *PackedVector2Array) AppendArray(array PackedVector2Array) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) RemoveAt(index Int) {
-	var self = *selfPtr
+func (self PackedVector2Array) RemoveAt(index Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9785,15 +9614,14 @@ func (selfPtr *PackedVector2Array) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Insert(at_index Int, value Vector2) Int {
-	var self = *selfPtr
+func (self PackedVector2Array) Insert(at_index Int, value Vector2) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9803,14 +9631,13 @@ func (selfPtr *PackedVector2Array) Insert(at_index Int, value Vector2) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Fill(value Vector2) {
-	var self = *selfPtr
+func (self PackedVector2Array) Fill(value Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9818,14 +9645,13 @@ func (selfPtr *PackedVector2Array) Fill(value Vector2) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Resize(new_size Int) Int {
-	var self = *selfPtr
+func (self PackedVector2Array) Resize(new_size Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9835,13 +9661,12 @@ func (selfPtr *PackedVector2Array) Resize(new_size Int) Int {
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Clear() {
-	var self = *selfPtr
+func (self PackedVector2Array) Clear() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9850,14 +9675,13 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Has(value Vector2) Bool {
-	var self = *selfPtr
+func (self PackedVector2Array) Has(value Vector2) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9867,13 +9691,12 @@ func (selfPtr *PackedVector2Array) Has(value Vector2) Bool {
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Reverse() {
-	var self = *selfPtr
+func (self PackedVector2Array) Reverse() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9883,15 +9706,14 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Slice(begin Int, end Int) PackedVector2Array {
-	var self = *selfPtr
+func (self PackedVector2Array) Slice(begin Int, end Int) PackedVector2Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedVector2Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9901,13 +9723,12 @@ func (selfPtr *PackedVector2Array) Slice(begin Int, end Int) PackedVector2Array 
 Returns a [PackedByteArray] with each vector encoded as bytes.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) ToByteArray() PackedByteArray {
-	var self = *selfPtr
+func (self PackedVector2Array) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9918,13 +9739,12 @@ Sorts the elements of the array in ascending order.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Sort() {
-	var self = *selfPtr
+func (self PackedVector2Array) Sort() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -9934,15 +9754,14 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Bsearch(value Vector2, before Bool) Int {
-	var self = *selfPtr
+func (self PackedVector2Array) Bsearch(value Vector2, before Bool) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9952,13 +9771,12 @@ func (selfPtr *PackedVector2Array) Bsearch(value Vector2, before Bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Duplicate() PackedVector2Array {
-	var self = *selfPtr
+func (self PackedVector2Array) Duplicate() PackedVector2Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedVector2Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9969,15 +9787,14 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Find(value Vector2, from Int) Int {
-	var self = *selfPtr
+func (self PackedVector2Array) Find(value Vector2, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9988,15 +9805,14 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Rfind(value Vector2, from Int) Int {
-	var self = *selfPtr
+func (self PackedVector2Array) Rfind(value Vector2, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10007,14 +9823,13 @@ Returns the number of times an element is in the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Count(value Vector2) Int {
-	var self = *selfPtr
+func (self PackedVector2Array) Count(value Vector2) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10024,13 +9839,12 @@ func (selfPtr *PackedVector2Array) Count(value Vector2) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Size() Int {
-	var self = *selfPtr
+func (self PackedVector3Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10040,13 +9854,12 @@ func (selfPtr *PackedVector3Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) IsEmpty() Bool {
-	var self = *selfPtr
+func (self PackedVector3Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10056,15 +9869,14 @@ func (selfPtr *PackedVector3Array) IsEmpty() Bool {
 Changes the [Vector3] at the given index.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Set(index Int, value Vector3) {
-	var self = *selfPtr
+func (self PackedVector3Array) Set(index Int, value Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10072,14 +9884,13 @@ func (selfPtr *PackedVector3Array) Set(index Int, value Vector3) {
 Inserts a [Vector3] at the end.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) PushBack(value Vector3) Bool {
-	var self = *selfPtr
+func (self PackedVector3Array) PushBack(value Vector3) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10089,14 +9900,13 @@ func (selfPtr *PackedVector3Array) PushBack(value Vector3) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Append(value Vector3) Bool {
-	var self = *selfPtr
+func (self PackedVector3Array) Append(value Vector3) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10106,14 +9916,13 @@ func (selfPtr *PackedVector3Array) Append(value Vector3) Bool {
 Appends a [PackedVector3Array] at the end of this array.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) AppendArray(array PackedVector3Array) {
-	var self = *selfPtr
+func (self PackedVector3Array) AppendArray(array PackedVector3Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10121,14 +9930,13 @@ func (selfPtr *PackedVector3Array) AppendArray(array PackedVector3Array) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) RemoveAt(index Int) {
-	var self = *selfPtr
+func (self PackedVector3Array) RemoveAt(index Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10136,15 +9944,14 @@ func (selfPtr *PackedVector3Array) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Insert(at_index Int, value Vector3) Int {
-	var self = *selfPtr
+func (self PackedVector3Array) Insert(at_index Int, value Vector3) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10154,14 +9961,13 @@ func (selfPtr *PackedVector3Array) Insert(at_index Int, value Vector3) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Fill(value Vector3) {
-	var self = *selfPtr
+func (self PackedVector3Array) Fill(value Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10169,14 +9975,13 @@ func (selfPtr *PackedVector3Array) Fill(value Vector3) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Resize(new_size Int) Int {
-	var self = *selfPtr
+func (self PackedVector3Array) Resize(new_size Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10186,13 +9991,12 @@ func (selfPtr *PackedVector3Array) Resize(new_size Int) Int {
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Clear() {
-	var self = *selfPtr
+func (self PackedVector3Array) Clear() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10201,14 +10005,13 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Has(value Vector3) Bool {
-	var self = *selfPtr
+func (self PackedVector3Array) Has(value Vector3) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10218,13 +10021,12 @@ func (selfPtr *PackedVector3Array) Has(value Vector3) Bool {
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Reverse() {
-	var self = *selfPtr
+func (self PackedVector3Array) Reverse() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10234,15 +10036,14 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Slice(begin Int, end Int) PackedVector3Array {
-	var self = *selfPtr
+func (self PackedVector3Array) Slice(begin Int, end Int) PackedVector3Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedVector3Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -10252,13 +10053,12 @@ func (selfPtr *PackedVector3Array) Slice(begin Int, end Int) PackedVector3Array 
 Returns a [PackedByteArray] with each vector encoded as bytes.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) ToByteArray() PackedByteArray {
-	var self = *selfPtr
+func (self PackedVector3Array) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -10269,13 +10069,12 @@ Sorts the elements of the array in ascending order.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Sort() {
-	var self = *selfPtr
+func (self PackedVector3Array) Sort() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10285,15 +10084,14 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Bsearch(value Vector3, before Bool) Int {
-	var self = *selfPtr
+func (self PackedVector3Array) Bsearch(value Vector3, before Bool) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10303,13 +10101,12 @@ func (selfPtr *PackedVector3Array) Bsearch(value Vector3, before Bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Duplicate() PackedVector3Array {
-	var self = *selfPtr
+func (self PackedVector3Array) Duplicate() PackedVector3Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedVector3Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -10320,15 +10117,14 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Find(value Vector3, from Int) Int {
-	var self = *selfPtr
+func (self PackedVector3Array) Find(value Vector3, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10339,15 +10135,14 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Rfind(value Vector3, from Int) Int {
-	var self = *selfPtr
+func (self PackedVector3Array) Rfind(value Vector3, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10358,14 +10153,13 @@ Returns the number of times an element is in the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Count(value Vector3) Int {
-	var self = *selfPtr
+func (self PackedVector3Array) Count(value Vector3) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10375,13 +10169,12 @@ func (selfPtr *PackedVector3Array) Count(value Vector3) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Size() Int {
-	var self = *selfPtr
+func (self PackedColorArray) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10391,13 +10184,12 @@ func (selfPtr *PackedColorArray) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) IsEmpty() Bool {
-	var self = *selfPtr
+func (self PackedColorArray) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10407,15 +10199,14 @@ func (selfPtr *PackedColorArray) IsEmpty() Bool {
 Changes the [Color] at the given index.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Set(index Int, value Color) {
-	var self = *selfPtr
+func (self PackedColorArray) Set(index Int, value Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10423,14 +10214,13 @@ func (selfPtr *PackedColorArray) Set(index Int, value Color) {
 Appends a value to the array.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) PushBack(value Color) Bool {
-	var self = *selfPtr
+func (self PackedColorArray) PushBack(value Color) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10440,14 +10230,13 @@ func (selfPtr *PackedColorArray) PushBack(value Color) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Append(value Color) Bool {
-	var self = *selfPtr
+func (self PackedColorArray) Append(value Color) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10457,14 +10246,13 @@ func (selfPtr *PackedColorArray) Append(value Color) Bool {
 Appends a [PackedColorArray] at the end of this array.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) AppendArray(array PackedColorArray) {
-	var self = *selfPtr
+func (self PackedColorArray) AppendArray(array PackedColorArray) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10472,14 +10260,13 @@ func (selfPtr *PackedColorArray) AppendArray(array PackedColorArray) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) RemoveAt(index Int) {
-	var self = *selfPtr
+func (self PackedColorArray) RemoveAt(index Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10487,15 +10274,14 @@ func (selfPtr *PackedColorArray) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Insert(at_index Int, value Color) Int {
-	var self = *selfPtr
+func (self PackedColorArray) Insert(at_index Int, value Color) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10505,14 +10291,13 @@ func (selfPtr *PackedColorArray) Insert(at_index Int, value Color) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Fill(value Color) {
-	var self = *selfPtr
+func (self PackedColorArray) Fill(value Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10520,14 +10305,13 @@ func (selfPtr *PackedColorArray) Fill(value Color) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Resize(new_size Int) Int {
-	var self = *selfPtr
+func (self PackedColorArray) Resize(new_size Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10537,13 +10321,12 @@ func (selfPtr *PackedColorArray) Resize(new_size Int) Int {
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Clear() {
-	var self = *selfPtr
+func (self PackedColorArray) Clear() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10551,14 +10334,13 @@ func (selfPtr *PackedColorArray) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Has(value Color) Bool {
-	var self = *selfPtr
+func (self PackedColorArray) Has(value Color) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10568,13 +10350,12 @@ func (selfPtr *PackedColorArray) Has(value Color) Bool {
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Reverse() {
-	var self = *selfPtr
+func (self PackedColorArray) Reverse() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10584,15 +10365,14 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Slice(begin Int, end Int) PackedColorArray {
-	var self = *selfPtr
+func (self PackedColorArray) Slice(begin Int, end Int) PackedColorArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedColorArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -10602,13 +10382,12 @@ func (selfPtr *PackedColorArray) Slice(begin Int, end Int) PackedColorArray {
 Returns a [PackedByteArray] with each color encoded as bytes.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) ToByteArray() PackedByteArray {
-	var self = *selfPtr
+func (self PackedColorArray) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -10618,13 +10397,12 @@ func (selfPtr *PackedColorArray) ToByteArray() PackedByteArray {
 Sorts the elements of the array in ascending order.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Sort() {
-	var self = *selfPtr
+func (self PackedColorArray) Sort() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10633,15 +10411,14 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Bsearch(value Color, before Bool) Int {
-	var self = *selfPtr
+func (self PackedColorArray) Bsearch(value Color, before Bool) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10651,13 +10428,12 @@ func (selfPtr *PackedColorArray) Bsearch(value Color, before Bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Duplicate() PackedColorArray {
-	var self = *selfPtr
+func (self PackedColorArray) Duplicate() PackedColorArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedColorArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -10667,15 +10443,14 @@ func (selfPtr *PackedColorArray) Duplicate() PackedColorArray {
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Find(value Color, from Int) Int {
-	var self = *selfPtr
+func (self PackedColorArray) Find(value Color, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10685,15 +10460,14 @@ func (selfPtr *PackedColorArray) Find(value Color, from Int) Int {
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Rfind(value Color, from Int) Int {
-	var self = *selfPtr
+func (self PackedColorArray) Rfind(value Color, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10703,14 +10477,13 @@ func (selfPtr *PackedColorArray) Rfind(value Color, from Int) Int {
 Returns the number of times an element is in the array.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Count(value Color) Int {
-	var self = *selfPtr
+func (self PackedColorArray) Count(value Color) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10720,13 +10493,12 @@ func (selfPtr *PackedColorArray) Count(value Color) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Size() Int {
-	var self = *selfPtr
+func (self PackedVector4Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10736,13 +10508,12 @@ func (selfPtr *PackedVector4Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) IsEmpty() Bool {
-	var self = *selfPtr
+func (self PackedVector4Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10752,15 +10523,14 @@ func (selfPtr *PackedVector4Array) IsEmpty() Bool {
 Changes the [Vector4] at the given index.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Set(index Int, value Vector4) {
-	var self = *selfPtr
+func (self PackedVector4Array) Set(index Int, value Vector4) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10768,14 +10538,13 @@ func (selfPtr *PackedVector4Array) Set(index Int, value Vector4) {
 Inserts a [Vector4] at the end.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) PushBack(value Vector4) Bool {
-	var self = *selfPtr
+func (self PackedVector4Array) PushBack(value Vector4) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10785,14 +10554,13 @@ func (selfPtr *PackedVector4Array) PushBack(value Vector4) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Append(value Vector4) Bool {
-	var self = *selfPtr
+func (self PackedVector4Array) Append(value Vector4) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10802,14 +10570,13 @@ func (selfPtr *PackedVector4Array) Append(value Vector4) Bool {
 Appends a [PackedVector4Array] at the end of this array.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) AppendArray(array PackedVector4Array) {
-	var self = *selfPtr
+func (self PackedVector4Array) AppendArray(array PackedVector4Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10817,14 +10584,13 @@ func (selfPtr *PackedVector4Array) AppendArray(array PackedVector4Array) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) RemoveAt(index Int) {
-	var self = *selfPtr
+func (self PackedVector4Array) RemoveAt(index Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10832,15 +10598,14 @@ func (selfPtr *PackedVector4Array) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Insert(at_index Int, value Vector4) Int {
-	var self = *selfPtr
+func (self PackedVector4Array) Insert(at_index Int, value Vector4) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10850,14 +10615,13 @@ func (selfPtr *PackedVector4Array) Insert(at_index Int, value Vector4) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Fill(value Vector4) {
-	var self = *selfPtr
+func (self PackedVector4Array) Fill(value Vector4) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10865,14 +10629,13 @@ func (selfPtr *PackedVector4Array) Fill(value Vector4) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Resize(new_size Int) Int {
-	var self = *selfPtr
+func (self PackedVector4Array) Resize(new_size Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10882,13 +10645,12 @@ func (selfPtr *PackedVector4Array) Resize(new_size Int) Int {
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Clear() {
-	var self = *selfPtr
+func (self PackedVector4Array) Clear() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10897,14 +10659,13 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Has(value Vector4) Bool {
-	var self = *selfPtr
+func (self PackedVector4Array) Has(value Vector4) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10914,13 +10675,12 @@ func (selfPtr *PackedVector4Array) Has(value Vector4) Bool {
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Reverse() {
-	var self = *selfPtr
+func (self PackedVector4Array) Reverse() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10930,15 +10690,14 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Slice(begin Int, end Int) PackedVector4Array {
-	var self = *selfPtr
+func (self PackedVector4Array) Slice(begin Int, end Int) PackedVector4Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedVector4Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -10948,13 +10707,12 @@ func (selfPtr *PackedVector4Array) Slice(begin Int, end Int) PackedVector4Array 
 Returns a [PackedByteArray] with each vector encoded as bytes.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) ToByteArray() PackedByteArray {
-	var self = *selfPtr
+func (self PackedVector4Array) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -10965,13 +10723,12 @@ Sorts the elements of the array in ascending order.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Sort() {
-	var self = *selfPtr
+func (self PackedVector4Array) Sort() {
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	frame.Free()
 }
 
@@ -10981,15 +10738,14 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Bsearch(value Vector4, before Bool) Int {
-	var self = *selfPtr
+func (self PackedVector4Array) Bsearch(value Vector4, before Bool) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10999,13 +10755,12 @@ func (selfPtr *PackedVector4Array) Bsearch(value Vector4, before Bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Duplicate() PackedVector4Array {
-	var self = *selfPtr
+func (self PackedVector4Array) Duplicate() PackedVector4Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = pointers.New[PackedVector4Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11016,15 +10771,14 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Find(value Vector4, from Int) Int {
-	var self = *selfPtr
+func (self PackedVector4Array) Find(value Vector4, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11035,15 +10789,14 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Rfind(value Vector4, from Int) Int {
-	var self = *selfPtr
+func (self PackedVector4Array) Rfind(value Vector4, from Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11054,14 +10807,13 @@ Returns the number of times an element is in the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Count(value Vector4) Int {
-	var self = *selfPtr
+func (self PackedVector4Array) Count(value Vector4) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	pointers.Set(*selfPtr, p_self.Get())
+	pointers.Set(self, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

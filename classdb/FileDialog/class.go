@@ -3,6 +3,7 @@ package FileDialog
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/Window"
@@ -35,6 +37,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [FileDialog] is a preset dialog used to choose files and directories in the filesystem. It supports filter masks. [FileDialog] automatically sets its window title according to the [member file_mode]. If you want to use a custom title, disable this by setting [member mode_overrides_title] to [code]false[/code].
@@ -97,7 +101,7 @@ func (self Instance) SetOptionName(option int, name string) { //gd:FileDialog.se
 Sets the option values of the [OptionButton] with index [param option].
 */
 func (self Instance) SetOptionValues(option int, values []string) { //gd:FileDialog.set_option_values
-	class(self).SetOptionValues(gd.Int(option), gd.NewPackedStringSlice(values))
+	class(self).SetOptionValues(gd.Int(option), Packed.MakeStrings(values...))
 }
 
 /*
@@ -112,7 +116,7 @@ Adds an additional [OptionButton] to the file dialog. If [param values] is empty
 [param default_value_index] should be an index of the value in the [param values]. If [param values] is empty it should be either [code]1[/code] (checked), or [code]0[/code] (unchecked).
 */
 func (self Instance) AddOption(name string, values []string, default_value_index int) { //gd:FileDialog.add_option
-	class(self).AddOption(String.New(name), gd.NewPackedStringSlice(values), gd.Int(default_value_index))
+	class(self).AddOption(String.New(name), Packed.MakeStrings(values...), gd.Int(default_value_index))
 }
 
 /*
@@ -209,7 +213,7 @@ func (self Instance) Filters() []string {
 }
 
 func (self Instance) SetFilters(value []string) {
-	class(self).SetFilters(gd.NewPackedStringSlice(value))
+	class(self).SetFilters(Packed.MakeStrings(value...))
 }
 
 func (self Instance) OptionCount() int {
@@ -287,20 +291,20 @@ func (self class) AddFilter(filter String.Readable, description String.Readable)
 }
 
 //go:nosplit
-func (self class) SetFilters(filters gd.PackedStringArray) { //gd:FileDialog.set_filters
+func (self class) SetFilters(filters Packed.Strings) { //gd:FileDialog.set_filters
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(filters))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(filters)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_filters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetFilters() gd.PackedStringArray { //gd:FileDialog.get_filters
+func (self class) GetFilters() Packed.Strings { //gd:FileDialog.get_filters
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_filters, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -323,12 +327,12 @@ func (self class) GetOptionName(option gd.Int) String.Readable { //gd:FileDialog
 Returns an array of values of the [OptionButton] with index [param option].
 */
 //go:nosplit
-func (self class) GetOptionValues(option gd.Int) gd.PackedStringArray { //gd:FileDialog.get_option_values
+func (self class) GetOptionValues(option gd.Int) Packed.Strings { //gd:FileDialog.get_option_values
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_values, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -364,10 +368,10 @@ func (self class) SetOptionName(option gd.Int, name String.Readable) { //gd:File
 Sets the option values of the [OptionButton] with index [param option].
 */
 //go:nosplit
-func (self class) SetOptionValues(option gd.Int, values gd.PackedStringArray) { //gd:FileDialog.set_option_values
+func (self class) SetOptionValues(option gd.Int, values Packed.Strings) { //gd:FileDialog.set_option_values
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
-	callframe.Arg(frame, pointers.Get(values))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(values)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_option_values, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -410,10 +414,10 @@ Adds an additional [OptionButton] to the file dialog. If [param values] is empty
 [param default_value_index] should be an index of the value in the [param values]. If [param values] is empty it should be either [code]1[/code] (checked), or [code]0[/code] (unchecked).
 */
 //go:nosplit
-func (self class) AddOption(name String.Readable, values gd.PackedStringArray, default_value_index gd.Int) { //gd:FileDialog.add_option
+func (self class) AddOption(name String.Readable, values Packed.Strings, default_value_index gd.Int) { //gd:FileDialog.add_option
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pointers.Get(values))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(values)))
 	callframe.Arg(frame, default_value_index)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_add_option, self.AsObject(), frame.Array(0), r_ret.Addr())

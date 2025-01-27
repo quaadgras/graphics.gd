@@ -3,6 +3,7 @@ package HashingContext
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +32,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 The HashingContext class provides an interface for computing cryptographic hashes over multiple iterations. Useful for computing hashes of big files (so you don't have to load them all in memory), network streams, and data streams in general (so you don't have to hold buffers).
@@ -110,7 +114,7 @@ func (self Instance) Start(atype gdclass.HashingContextHashType) error { //gd:Ha
 Updates the computation with the given [param chunk] of data.
 */
 func (self Instance) Update(chunk []byte) error { //gd:HashingContext.update
-	return error(gd.ToError(class(self).Update(gd.NewPackedByteSlice(chunk))))
+	return error(gd.ToError(class(self).Update(Packed.Bytes(Packed.New(chunk...)))))
 }
 
 /*
@@ -157,9 +161,9 @@ func (self class) Start(atype gdclass.HashingContextHashType) gd.Error { //gd:Ha
 Updates the computation with the given [param chunk] of data.
 */
 //go:nosplit
-func (self class) Update(chunk gd.PackedByteArray) gd.Error { //gd:HashingContext.update
+func (self class) Update(chunk Packed.Bytes) gd.Error { //gd:HashingContext.update
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(chunk))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](chunk))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HashingContext.Bind_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -171,11 +175,11 @@ func (self class) Update(chunk gd.PackedByteArray) gd.Error { //gd:HashingContex
 Closes the current context, and return the computed hash.
 */
 //go:nosplit
-func (self class) Finish() gd.PackedByteArray { //gd:HashingContext.finish
+func (self class) Finish() Packed.Bytes { //gd:HashingContext.finish
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HashingContext.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

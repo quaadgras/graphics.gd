@@ -3,6 +3,7 @@ package Translation
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [Translation]s are resources that can be loaded and unloaded on demand. They map a collection of strings to their individual translations, and they also provide convenience methods for pluralization.
@@ -122,7 +126,7 @@ Adds a message involving plural translation if nonexistent, followed by its tran
 An additional context could be used to specify the translation context or differentiate polysemic words.
 */
 func (self Instance) AddPluralMessage(src_message string, xlated_messages []string) { //gd:Translation.add_plural_message
-	class(self).AddPluralMessage(String.Name(String.New(src_message)), gd.NewPackedStringSlice(xlated_messages), String.Name(String.New("")))
+	class(self).AddPluralMessage(String.Name(String.New(src_message)), Packed.MakeStrings(xlated_messages...), String.Name(String.New("")))
 }
 
 /*
@@ -278,10 +282,10 @@ Adds a message involving plural translation if nonexistent, followed by its tran
 An additional context could be used to specify the translation context or differentiate polysemic words.
 */
 //go:nosplit
-func (self class) AddPluralMessage(src_message String.Name, xlated_messages gd.PackedStringArray, context String.Name) { //gd:Translation.add_plural_message
+func (self class) AddPluralMessage(src_message String.Name, xlated_messages Packed.Strings, context String.Name) { //gd:Translation.add_plural_message
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_message)))
-	callframe.Arg(frame, pointers.Get(xlated_messages))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(xlated_messages)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_add_plural_message, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -338,11 +342,11 @@ func (self class) EraseMessage(src_message String.Name, context String.Name) { /
 Returns all the messages (keys).
 */
 //go:nosplit
-func (self class) GetMessageList() gd.PackedStringArray { //gd:Translation.get_message_list
+func (self class) GetMessageList() Packed.Strings { //gd:Translation.get_message_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -351,11 +355,11 @@ func (self class) GetMessageList() gd.PackedStringArray { //gd:Translation.get_m
 Returns all the messages (translated text).
 */
 //go:nosplit
-func (self class) GetTranslatedMessageList() gd.PackedStringArray { //gd:Translation.get_translated_message_list
+func (self class) GetTranslatedMessageList() Packed.Strings { //gd:Translation.get_translated_message_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_translated_message_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

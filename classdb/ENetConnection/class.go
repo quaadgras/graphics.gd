@@ -3,6 +3,7 @@ package ENetConnection
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 ENet's purpose is to provide a relatively thin, simple and robust network communication layer on top of UDP (User Datagram Protocol).
@@ -111,7 +115,7 @@ func (self Instance) ChannelLimit(limit int) { //gd:ENetConnection.channel_limit
 Queues a [param packet] to be sent to all peers associated with the host over the specified [param channel]. See [ENetPacketPeer] [code]FLAG_*[/code] constants for available packet flags.
 */
 func (self Instance) Broadcast(channel int, packet []byte, flags int) { //gd:ENetConnection.broadcast
-	class(self).Broadcast(gd.Int(channel), gd.NewPackedByteSlice(packet), gd.Int(flags))
+	class(self).Broadcast(gd.Int(channel), Packed.Bytes(Packed.New(packet...)), gd.Int(flags))
 }
 
 /*
@@ -180,7 +184,7 @@ This is useful as it serves to establish entries in NAT routing tables on all de
 This requires forward knowledge of a prospective client's address and communication port as seen by the public internet - after any NAT devices have handled their connection request. This information can be obtained by a [url=https://en.wikipedia.org/wiki/STUN]STUN[/url] service, and must be handed off to your host by an entity that is not the prospective client. This will never work for a client behind a Symmetric NAT due to the nature of the Symmetric NAT routing algorithm, as their IP and Port cannot be known beforehand.
 */
 func (self Instance) SocketSend(destination_address string, destination_port int, packet []byte) { //gd:ENetConnection.socket_send
-	class(self).SocketSend(String.New(destination_address), gd.Int(destination_port), gd.NewPackedByteSlice(packet))
+	class(self).SocketSend(String.New(destination_address), gd.Int(destination_port), Packed.Bytes(Packed.New(packet...)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -326,10 +330,10 @@ func (self class) ChannelLimit(limit gd.Int) { //gd:ENetConnection.channel_limit
 Queues a [param packet] to be sent to all peers associated with the host over the specified [param channel]. See [ENetPacketPeer] [code]FLAG_*[/code] constants for available packet flags.
 */
 //go:nosplit
-func (self class) Broadcast(channel gd.Int, packet gd.PackedByteArray, flags gd.Int) { //gd:ENetConnection.broadcast
+func (self class) Broadcast(channel gd.Int, packet Packed.Bytes, flags gd.Int) { //gd:ENetConnection.broadcast
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
-	callframe.Arg(frame, pointers.Get(packet))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet))))
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_broadcast, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -452,11 +456,11 @@ This is useful as it serves to establish entries in NAT routing tables on all de
 This requires forward knowledge of a prospective client's address and communication port as seen by the public internet - after any NAT devices have handled their connection request. This information can be obtained by a [url=https://en.wikipedia.org/wiki/STUN]STUN[/url] service, and must be handed off to your host by an entity that is not the prospective client. This will never work for a client behind a Symmetric NAT due to the nature of the Symmetric NAT routing algorithm, as their IP and Port cannot be known beforehand.
 */
 //go:nosplit
-func (self class) SocketSend(destination_address String.Readable, destination_port gd.Int, packet gd.PackedByteArray) { //gd:ENetConnection.socket_send
+func (self class) SocketSend(destination_address String.Readable, destination_port gd.Int, packet Packed.Bytes) { //gd:ENetConnection.socket_send
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(destination_address)))
 	callframe.Arg(frame, destination_port)
-	callframe.Arg(frame, pointers.Get(packet))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet))))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_socket_send, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

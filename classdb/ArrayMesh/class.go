@@ -3,6 +3,7 @@ package ArrayMesh
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
@@ -35,6 +37,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 The [ArrayMesh] is used to construct a [Mesh] by specifying the attributes as arrays.
@@ -147,13 +151,13 @@ func (self Instance) ClearSurfaces() { //gd:ArrayMesh.clear_surfaces
 	class(self).ClearSurfaces()
 }
 func (self Instance) SurfaceUpdateVertexRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_vertex_region
-	class(self).SurfaceUpdateVertexRegion(gd.Int(surf_idx), gd.Int(offset), gd.NewPackedByteSlice(data))
+	class(self).SurfaceUpdateVertexRegion(gd.Int(surf_idx), gd.Int(offset), Packed.Bytes(Packed.New(data...)))
 }
 func (self Instance) SurfaceUpdateAttributeRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_attribute_region
-	class(self).SurfaceUpdateAttributeRegion(gd.Int(surf_idx), gd.Int(offset), gd.NewPackedByteSlice(data))
+	class(self).SurfaceUpdateAttributeRegion(gd.Int(surf_idx), gd.Int(offset), Packed.Bytes(Packed.New(data...)))
 }
 func (self Instance) SurfaceUpdateSkinRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_skin_region
-	class(self).SurfaceUpdateSkinRegion(gd.Int(surf_idx), gd.Int(offset), gd.NewPackedByteSlice(data))
+	class(self).SurfaceUpdateSkinRegion(gd.Int(surf_idx), gd.Int(offset), Packed.Bytes(Packed.New(data...)))
 }
 
 /*
@@ -378,33 +382,33 @@ func (self class) ClearSurfaces() { //gd:ArrayMesh.clear_surfaces
 }
 
 //go:nosplit
-func (self class) SurfaceUpdateVertexRegion(surf_idx gd.Int, offset gd.Int, data gd.PackedByteArray) { //gd:ArrayMesh.surface_update_vertex_region
+func (self class) SurfaceUpdateVertexRegion(surf_idx gd.Int, offset gd.Int, data Packed.Bytes) { //gd:ArrayMesh.surface_update_vertex_region
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, offset)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_update_vertex_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) SurfaceUpdateAttributeRegion(surf_idx gd.Int, offset gd.Int, data gd.PackedByteArray) { //gd:ArrayMesh.surface_update_attribute_region
+func (self class) SurfaceUpdateAttributeRegion(surf_idx gd.Int, offset gd.Int, data Packed.Bytes) { //gd:ArrayMesh.surface_update_attribute_region
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, offset)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_update_attribute_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) SurfaceUpdateSkinRegion(surf_idx gd.Int, offset gd.Int, data gd.PackedByteArray) { //gd:ArrayMesh.surface_update_skin_region
+func (self class) SurfaceUpdateSkinRegion(surf_idx gd.Int, offset gd.Int, data Packed.Bytes) { //gd:ArrayMesh.surface_update_skin_region
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, offset)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_update_skin_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

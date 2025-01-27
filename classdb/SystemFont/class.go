@@ -3,6 +3,7 @@ package SystemFont
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [SystemFont] loads a font from a system font with the first matching name from [member font_names].
@@ -75,7 +79,7 @@ func (self Instance) FontNames() []string {
 }
 
 func (self Instance) SetFontNames(value []string) {
-	class(self).SetFontNames(gd.NewPackedStringSlice(value))
+	class(self).SetFontNames(Packed.MakeStrings(value...))
 }
 
 func (self Instance) FontItalic() bool {
@@ -392,19 +396,19 @@ func (self class) GetOversampling() gd.Float { //gd:SystemFont.get_oversampling
 }
 
 //go:nosplit
-func (self class) GetFontNames() gd.PackedStringArray { //gd:SystemFont.get_font_names
+func (self class) GetFontNames() Packed.Strings { //gd:SystemFont.get_font_names
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_font_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetFontNames(names gd.PackedStringArray) { //gd:SystemFont.set_font_names
+func (self class) SetFontNames(names Packed.Strings) { //gd:SystemFont.set_font_names
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(names))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(names)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_set_font_names, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

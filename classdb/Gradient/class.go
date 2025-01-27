@@ -3,6 +3,7 @@ package Gradient
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Color"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This resource describes a color transition by defining a set of colored points and how to interpolate between them.
@@ -148,19 +152,19 @@ func (self Instance) SetInterpolationColorSpace(value gdclass.GradientColorSpace
 }
 
 func (self Instance) Offsets() []float32 {
-	return []float32(class(self).GetOffsets().AsSlice())
+	return []float32(slices.Collect(class(self).GetOffsets().Values()))
 }
 
 func (self Instance) SetOffsets(value []float32) {
-	class(self).SetOffsets(gd.NewPackedFloat32Slice(value))
+	class(self).SetOffsets(Packed.New(value...))
 }
 
 func (self Instance) Colors() []Color.RGBA {
-	return []Color.RGBA(class(self).GetColors().AsSlice())
+	return []Color.RGBA(slices.Collect(class(self).GetColors().Values()))
 }
 
 func (self Instance) SetColors(value []Color.RGBA) {
-	class(self).SetColors(gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&value))))
+	class(self).SetColors(Packed.New(value...))
 }
 
 /*
@@ -282,39 +286,39 @@ func (self class) GetPointCount() gd.Int { //gd:Gradient.get_point_count
 }
 
 //go:nosplit
-func (self class) SetOffsets(offsets gd.PackedFloat32Array) { //gd:Gradient.set_offsets
+func (self class) SetOffsets(offsets Packed.Array[float32]) { //gd:Gradient.set_offsets
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(offsets))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](offsets))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_offsets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetOffsets() gd.PackedFloat32Array { //gd:Gradient.get_offsets
+func (self class) GetOffsets() Packed.Array[float32] { //gd:Gradient.get_offsets
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_offsets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedFloat32Array](r_ret.Get())
+	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetColors(colors gd.PackedColorArray) { //gd:Gradient.set_colors
+func (self class) SetColors(colors Packed.Array[Color.RGBA]) { //gd:Gradient.set_colors
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(colors))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetColors() gd.PackedColorArray { //gd:Gradient.get_colors
+func (self class) GetColors() Packed.Array[Color.RGBA] { //gd:Gradient.get_colors
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedColorArray](r_ret.Get())
+	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

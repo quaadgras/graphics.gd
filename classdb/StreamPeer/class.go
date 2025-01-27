@@ -3,6 +3,7 @@ package StreamPeer
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 StreamPeer is an abstract base class mostly used for stream-based protocols (such as TCP). It provides an API for sending and receiving data through streams as raw data or strings.
@@ -50,14 +54,14 @@ type Any interface {
 Sends a chunk of data through the connection, blocking if necessary until the data is done sending. This function returns an [enum Error] code.
 */
 func (self Instance) PutData(data []byte) error { //gd:StreamPeer.put_data
-	return error(gd.ToError(class(self).PutData(gd.NewPackedByteSlice(data))))
+	return error(gd.ToError(class(self).PutData(Packed.Bytes(Packed.New(data...)))))
 }
 
 /*
 Sends a chunk of data through the connection. If all the data could not be sent at once, only part of it will. This function returns two values, an [enum Error] code and an integer, describing how much data was actually sent.
 */
 func (self Instance) PutPartialData(data []byte) []any { //gd:StreamPeer.put_partial_data
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).PutPartialData(gd.NewPackedByteSlice(data)))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).PutPartialData(Packed.Bytes(Packed.New(data...))))))
 }
 
 /*
@@ -315,9 +319,9 @@ func (self Instance) SetBigEndian(value bool) {
 Sends a chunk of data through the connection, blocking if necessary until the data is done sending. This function returns an [enum Error] code.
 */
 //go:nosplit
-func (self class) PutData(data gd.PackedByteArray) gd.Error { //gd:StreamPeer.put_data
+func (self class) PutData(data Packed.Bytes) gd.Error { //gd:StreamPeer.put_data
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_put_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -329,9 +333,9 @@ func (self class) PutData(data gd.PackedByteArray) gd.Error { //gd:StreamPeer.pu
 Sends a chunk of data through the connection. If all the data could not be sent at once, only part of it will. This function returns two values, an [enum Error] code and an integer, describing how much data was actually sent.
 */
 //go:nosplit
-func (self class) PutPartialData(data gd.PackedByteArray) Array.Any { //gd:StreamPeer.put_partial_data
+func (self class) PutPartialData(data Packed.Bytes) Array.Any { //gd:StreamPeer.put_partial_data
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_put_partial_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))

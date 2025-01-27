@@ -3,6 +3,7 @@ package PhysicsDirectSpaceState3D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Provides direct access to a physics space in the [PhysicsServer3D]. It's used mainly to do queries against objects and areas residing in a given space.
@@ -92,7 +96,7 @@ Returns an array with the safe and unsafe proportions (between 0 and 1) of the m
 [b]Note:[/b] Any [Shape3D]s that the shape is already colliding with e.g. inside of, will be ignored. Use [method collide_shape] to determine the [Shape3D]s that the shape is already colliding with.
 */
 func (self Instance) CastMotion(parameters [1]gdclass.PhysicsShapeQueryParameters3D) []float32 { //gd:PhysicsDirectSpaceState3D.cast_motion
-	return []float32(class(self).CastMotion(parameters).AsSlice())
+	return []float32(slices.Collect(class(self).CastMotion(parameters).Values()))
 }
 
 /*
@@ -207,12 +211,12 @@ Returns an array with the safe and unsafe proportions (between 0 and 1) of the m
 [b]Note:[/b] Any [Shape3D]s that the shape is already colliding with e.g. inside of, will be ignored. Use [method collide_shape] to determine the [Shape3D]s that the shape is already colliding with.
 */
 //go:nosplit
-func (self class) CastMotion(parameters [1]gdclass.PhysicsShapeQueryParameters3D) gd.PackedFloat32Array { //gd:PhysicsDirectSpaceState3D.cast_motion
+func (self class) CastMotion(parameters [1]gdclass.PhysicsShapeQueryParameters3D) Packed.Array[float32] { //gd:PhysicsDirectSpaceState3D.cast_motion
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_cast_motion, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedFloat32Array](r_ret.Get())
+	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

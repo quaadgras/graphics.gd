@@ -4,6 +4,7 @@ package TranslationServer
 import "unsafe"
 import "sync"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 The server that manages all language translations. Translations can be added to or removed from it.
@@ -308,11 +312,11 @@ func (self class) StandardizeLocale(locale String.Readable) String.Readable { //
 Returns array of known language codes.
 */
 //go:nosplit
-func (self class) GetAllLanguages() gd.PackedStringArray { //gd:TranslationServer.get_all_languages
+func (self class) GetAllLanguages() Packed.Strings { //gd:TranslationServer.get_all_languages
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_all_languages, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -335,11 +339,11 @@ func (self class) GetLanguageName(language String.Readable) String.Readable { //
 Returns an array of known script codes.
 */
 //go:nosplit
-func (self class) GetAllScripts() gd.PackedStringArray { //gd:TranslationServer.get_all_scripts
+func (self class) GetAllScripts() Packed.Strings { //gd:TranslationServer.get_all_scripts
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_all_scripts, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -362,11 +366,11 @@ func (self class) GetScriptName(script String.Readable) String.Readable { //gd:T
 Returns an array of known country codes.
 */
 //go:nosplit
-func (self class) GetAllCountries() gd.PackedStringArray { //gd:TranslationServer.get_all_countries
+func (self class) GetAllCountries() Packed.Strings { //gd:TranslationServer.get_all_countries
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_all_countries, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -486,11 +490,11 @@ func (self class) Clear() { //gd:TranslationServer.clear
 Returns an array of all loaded locales of the project.
 */
 //go:nosplit
-func (self class) GetLoadedLocales() gd.PackedStringArray { //gd:TranslationServer.get_loaded_locales
+func (self class) GetLoadedLocales() Packed.Strings { //gd:TranslationServer.get_loaded_locales
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_loaded_locales, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

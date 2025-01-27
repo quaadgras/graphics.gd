@@ -3,6 +3,7 @@ package BitMap
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Rect2i"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A two-dimensional array of boolean values, can be used to efficiently store a binary matrix (every matrix element takes only one bit) and query the values using natural cartesian coordinates.
@@ -330,13 +334,13 @@ Rect2(Vector2(), get_size())
 [param epsilon] is passed to RDP to control how accurately the polygons cover the bitmap: a lower [param epsilon] corresponds to more points in the polygons.
 */
 //go:nosplit
-func (self class) OpaqueToPolygons(rect gd.Rect2i, epsilon gd.Float) Array.Contains[gd.PackedVector2Array] { //gd:BitMap.opaque_to_polygons
+func (self class) OpaqueToPolygons(rect gd.Rect2i, epsilon gd.Float) Array.Contains[Packed.Array[Vector2.XY]] { //gd:BitMap.opaque_to_polygons
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	callframe.Arg(frame, epsilon)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_opaque_to_polygons, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

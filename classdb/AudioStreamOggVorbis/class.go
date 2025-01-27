@@ -3,6 +3,7 @@ package AudioStreamOggVorbis
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 The AudioStreamOggVorbis class is a specialized [AudioStream] for handling Ogg Vorbis file formats. It offers functionality for loading and playing back Ogg Vorbis files, as well as managing looping and other playback properties. This class is part of the audio stream system, which also supports WAV files through the [AudioStreamWAV] class.
@@ -52,7 +56,7 @@ Creates a new AudioStreamOggVorbis instance from the given buffer. The buffer mu
 */
 func LoadFromBuffer(buffer []byte) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_buffer
 	self := Instance{}
-	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromBuffer(gd.NewPackedByteSlice(buffer)))
+	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromBuffer(Packed.Bytes(Packed.New(buffer...))))
 }
 
 /*
@@ -134,9 +138,9 @@ func (self Instance) SetLoopOffset(value Float.X) {
 Creates a new AudioStreamOggVorbis instance from the given buffer. The buffer must contain Ogg Vorbis data.
 */
 //go:nosplit
-func (self class) LoadFromBuffer(buffer gd.PackedByteArray) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_buffer
+func (self class) LoadFromBuffer(buffer Packed.Bytes) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamOggVorbis.Bind_load_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamOggVorbis](r_ret.Get())}

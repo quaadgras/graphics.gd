@@ -3,6 +3,7 @@ package VoxelGIData
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/AABB"
@@ -35,6 +37,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [VoxelGIData] contains baked voxel global illumination for use in a [VoxelGI] node. [VoxelGIData] also offers several properties to adjust the final appearance of the global illumination. These properties can be adjusted at run-time without having to bake the [VoxelGI] node again.
@@ -51,7 +55,7 @@ type Any interface {
 }
 
 func (self Instance) Allocate(to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3.XYZ, octree_cells []byte, data_cells []byte, distance_field []byte, level_counts []int32) { //gd:VoxelGIData.allocate
-	class(self).Allocate(gd.Transform3D(to_cell_xform), gd.AABB(aabb), gd.Vector3(octree_size), gd.NewPackedByteSlice(octree_cells), gd.NewPackedByteSlice(data_cells), gd.NewPackedByteSlice(distance_field), gd.NewPackedInt32Slice(level_counts))
+	class(self).Allocate(gd.Transform3D(to_cell_xform), gd.AABB(aabb), gd.Vector3(octree_size), Packed.Bytes(Packed.New(octree_cells...)), Packed.Bytes(Packed.New(data_cells...)), Packed.Bytes(Packed.New(distance_field...)), Packed.New(level_counts...))
 }
 
 /*
@@ -74,7 +78,7 @@ func (self Instance) GetDataCells() []byte { //gd:VoxelGIData.get_data_cells
 	return []byte(class(self).GetDataCells().Bytes())
 }
 func (self Instance) GetLevelCounts() []int32 { //gd:VoxelGIData.get_level_counts
-	return []int32(class(self).GetLevelCounts().AsSlice())
+	return []int32(slices.Collect(class(self).GetLevelCounts().Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -153,15 +157,15 @@ func (self Instance) SetInterior(value bool) {
 }
 
 //go:nosplit
-func (self class) Allocate(to_cell_xform gd.Transform3D, aabb gd.AABB, octree_size gd.Vector3, octree_cells gd.PackedByteArray, data_cells gd.PackedByteArray, distance_field gd.PackedByteArray, level_counts gd.PackedInt32Array) { //gd:VoxelGIData.allocate
+func (self class) Allocate(to_cell_xform gd.Transform3D, aabb gd.AABB, octree_size gd.Vector3, octree_cells Packed.Bytes, data_cells Packed.Bytes, distance_field Packed.Bytes, level_counts Packed.Array[int32]) { //gd:VoxelGIData.allocate
 	var frame = callframe.New()
 	callframe.Arg(frame, to_cell_xform)
 	callframe.Arg(frame, aabb)
 	callframe.Arg(frame, octree_size)
-	callframe.Arg(frame, pointers.Get(octree_cells))
-	callframe.Arg(frame, pointers.Get(data_cells))
-	callframe.Arg(frame, pointers.Get(distance_field))
-	callframe.Arg(frame, pointers.Get(level_counts))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells))))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data_cells))))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](distance_field))))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](level_counts))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGIData.Bind_allocate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -202,31 +206,31 @@ func (self class) GetToCellXform() gd.Transform3D { //gd:VoxelGIData.get_to_cell
 }
 
 //go:nosplit
-func (self class) GetOctreeCells() gd.PackedByteArray { //gd:VoxelGIData.get_octree_cells
+func (self class) GetOctreeCells() Packed.Bytes { //gd:VoxelGIData.get_octree_cells
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGIData.Bind_get_octree_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) GetDataCells() gd.PackedByteArray { //gd:VoxelGIData.get_data_cells
+func (self class) GetDataCells() Packed.Bytes { //gd:VoxelGIData.get_data_cells
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGIData.Bind_get_data_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) GetLevelCounts() gd.PackedInt32Array { //gd:VoxelGIData.get_level_counts
+func (self class) GetLevelCounts() Packed.Array[int32] { //gd:VoxelGIData.get_level_counts
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGIData.Bind_get_level_counts, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

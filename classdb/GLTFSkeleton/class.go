@@ -3,6 +3,7 @@ package GLTFSkeleton
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 type Instance [1]gdclass.GLTFSkeleton
 
@@ -72,19 +76,19 @@ func New() Instance {
 }
 
 func (self Instance) Joints() []int32 {
-	return []int32(class(self).GetJoints().AsSlice())
+	return []int32(slices.Collect(class(self).GetJoints().Values()))
 }
 
 func (self Instance) SetJoints(value []int32) {
-	class(self).SetJoints(gd.NewPackedInt32Slice(value))
+	class(self).SetJoints(Packed.New(value...))
 }
 
 func (self Instance) Roots() []int32 {
-	return []int32(class(self).GetRoots().AsSlice())
+	return []int32(slices.Collect(class(self).GetRoots().Values()))
 }
 
 func (self Instance) SetRoots(value []int32) {
-	class(self).SetRoots(gd.NewPackedInt32Slice(value))
+	class(self).SetRoots(Packed.New(value...))
 }
 
 func (self Instance) UniqueNames() []string {
@@ -104,38 +108,38 @@ func (self Instance) SetGodotBoneNode(value map[any]any) {
 }
 
 //go:nosplit
-func (self class) GetJoints() gd.PackedInt32Array { //gd:GLTFSkeleton.get_joints
+func (self class) GetJoints() Packed.Array[int32] { //gd:GLTFSkeleton.get_joints
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_get_joints, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetJoints(joints gd.PackedInt32Array) { //gd:GLTFSkeleton.set_joints
+func (self class) SetJoints(joints Packed.Array[int32]) { //gd:GLTFSkeleton.set_joints
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(joints))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](joints))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_set_joints, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetRoots() gd.PackedInt32Array { //gd:GLTFSkeleton.get_roots
+func (self class) GetRoots() Packed.Array[int32] { //gd:GLTFSkeleton.get_roots
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_get_roots, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetRoots(roots gd.PackedInt32Array) { //gd:GLTFSkeleton.set_roots
+func (self class) SetRoots(roots Packed.Array[int32]) { //gd:GLTFSkeleton.set_roots
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(roots))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](roots))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_set_roots, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

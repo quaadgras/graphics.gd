@@ -4,6 +4,7 @@ package IP
 import "unsafe"
 import "sync"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "net/netip"
 
 var _ Object.ID
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 IP contains support functions for the Internet Protocol (IP). TCP/IP support is in different classes (see [StreamPeerTCP] and [TCPServer]). IP provides DNS hostname resolution support, both blocking and threaded.
@@ -164,13 +168,13 @@ func (self class) ResolveHostname(host String.Readable, ip_type gdclass.IPType) 
 Resolves a given hostname in a blocking way. Addresses are returned as an [Array] of IPv4 or IPv6 addresses depending on [param ip_type].
 */
 //go:nosplit
-func (self class) ResolveHostnameAddresses(host String.Readable, ip_type gdclass.IPType) gd.PackedStringArray { //gd:IP.resolve_hostname_addresses
+func (self class) ResolveHostnameAddresses(host String.Readable, ip_type gdclass.IPType) Packed.Strings { //gd:IP.resolve_hostname_addresses
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, ip_type)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname_addresses, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -248,11 +252,11 @@ func (self class) EraseResolveItem(id gd.Int) { //gd:IP.erase_resolve_item
 Returns all the user's current IPv4 and IPv6 addresses as an array.
 */
 //go:nosplit
-func (self class) GetLocalAddresses() gd.PackedStringArray { //gd:IP.get_local_addresses
+func (self class) GetLocalAddresses() Packed.Strings { //gd:IP.get_local_addresses
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_local_addresses, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

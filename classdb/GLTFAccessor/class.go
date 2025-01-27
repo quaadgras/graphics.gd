@@ -3,6 +3,7 @@ package GLTFAccessor
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 GLTFAccessor is a data structure representing GLTF a [code]accessor[/code] that would be found in the [code]"accessors"[/code] array. A buffer is a blob of binary data. A buffer view is a slice of a buffer. An accessor is a typed interpretation of the data in a buffer view.
@@ -122,19 +126,19 @@ func (self Instance) SetType(value int) {
 }
 
 func (self Instance) Min() []float64 {
-	return []float64(class(self).GetMin().AsSlice())
+	return []float64(slices.Collect(class(self).GetMin().Values()))
 }
 
 func (self Instance) SetMin(value []float64) {
-	class(self).SetMin(gd.NewPackedFloat64Slice(value))
+	class(self).SetMin(Packed.New(value...))
 }
 
 func (self Instance) Max() []float64 {
-	return []float64(class(self).GetMax().AsSlice())
+	return []float64(slices.Collect(class(self).GetMax().Values()))
 }
 
 func (self Instance) SetMax(value []float64) {
-	class(self).SetMax(gd.NewPackedFloat64Slice(value))
+	class(self).SetMax(Packed.New(value...))
 }
 
 func (self Instance) SparseCount() int {
@@ -319,38 +323,38 @@ func (self class) SetType(atype gd.Int) { //gd:GLTFAccessor.set_type
 }
 
 //go:nosplit
-func (self class) GetMin() gd.PackedFloat64Array { //gd:GLTFAccessor.get_min
+func (self class) GetMin() Packed.Array[float64] { //gd:GLTFAccessor.get_min
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_min, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedFloat64Array](r_ret.Get())
+	var ret = Packed.Array[float64](Array.Through(gd.PackedProxy[gd.PackedFloat64Array, float64]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetMin(min gd.PackedFloat64Array) { //gd:GLTFAccessor.set_min
+func (self class) SetMin(min Packed.Array[float64]) { //gd:GLTFAccessor.set_min
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(min))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat64Array, float64](min))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetMax() gd.PackedFloat64Array { //gd:GLTFAccessor.get_max
+func (self class) GetMax() Packed.Array[float64] { //gd:GLTFAccessor.get_max
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_max, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedFloat64Array](r_ret.Get())
+	var ret = Packed.Array[float64](Array.Through(gd.PackedProxy[gd.PackedFloat64Array, float64]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetMax(max gd.PackedFloat64Array) { //gd:GLTFAccessor.set_max
+func (self class) SetMax(max Packed.Array[float64]) { //gd:GLTFAccessor.set_max
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(max))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat64Array, float64](max))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -3,6 +3,7 @@ package GraphEdit
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -36,6 +38,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [GraphEdit] provides tools for creation, manipulation, and display of various graphs. Its main purpose in the engine is to power the visual programming systems, such as visual shaders, but it is also available for use in user projects.
@@ -186,7 +190,7 @@ func (Instance) _get_connection_line(impl func(ptr unsafe.Pointer, from_position
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_position, to_position)
-		ptr, ok := pointers.End(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&ret))))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -360,7 +364,7 @@ func (self Instance) IsValidConnectionType(from_type int, to_type int) bool { //
 Returns the points which would make up a connection between [param from_node] and [param to_node].
 */
 func (self Instance) GetConnectionLine(from_node Vector2.XY, to_node Vector2.XY) []Vector2.XY { //gd:GraphEdit.get_connection_line
-	return []Vector2.XY(class(self).GetConnectionLine(gd.Vector2(from_node), gd.Vector2(to_node)).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).GetConnectionLine(gd.Vector2(from_node), gd.Vector2(to_node)).Values()))
 }
 
 /*
@@ -675,7 +679,7 @@ func (class) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.O
 /*
 Virtual method which can be overridden to customize how connections are drawn.
 */
-func (class) _get_connection_line(impl func(ptr unsafe.Pointer, from_position gd.Vector2, to_position gd.Vector2) gd.PackedVector2Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_connection_line(impl func(ptr unsafe.Pointer, from_position gd.Vector2, to_position gd.Vector2) Packed.Array[Vector2.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
 
@@ -683,7 +687,7 @@ func (class) _get_connection_line(impl func(ptr unsafe.Pointer, from_position gd
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_position, to_position)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](ret))
 
 		if !ok {
 			return
@@ -982,13 +986,13 @@ func (self class) IsValidConnectionType(from_type gd.Int, to_type gd.Int) bool {
 Returns the points which would make up a connection between [param from_node] and [param to_node].
 */
 //go:nosplit
-func (self class) GetConnectionLine(from_node gd.Vector2, to_node gd.Vector2) gd.PackedVector2Array { //gd:GraphEdit.get_connection_line
+func (self class) GetConnectionLine(from_node gd.Vector2, to_node gd.Vector2) Packed.Array[Vector2.XY] { //gd:GraphEdit.get_connection_line
 	var frame = callframe.New()
 	callframe.Arg(frame, from_node)
 	callframe.Arg(frame, to_node)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connection_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

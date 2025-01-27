@@ -3,6 +3,7 @@ package VisualShaderNodeFrame
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/VisualShaderNodeResizableBase"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/Resource"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A rectangular frame that can be used to group visual shader nodes together to improve organization.
@@ -116,11 +120,11 @@ func (self Instance) SetAutoshrink(value bool) {
 }
 
 func (self Instance) AttachedNodes() []int32 {
-	return []int32(class(self).GetAttachedNodes().AsSlice())
+	return []int32(slices.Collect(class(self).GetAttachedNodes().Values()))
 }
 
 func (self Instance) SetAttachedNodes(value []int32) {
-	class(self).SetAttachedNodes(gd.NewPackedInt32Slice(value))
+	class(self).SetAttachedNodes(Packed.New(value...))
 }
 
 //go:nosplit
@@ -224,20 +228,20 @@ func (self class) RemoveAttachedNode(node gd.Int) { //gd:VisualShaderNodeFrame.r
 }
 
 //go:nosplit
-func (self class) SetAttachedNodes(attached_nodes gd.PackedInt32Array) { //gd:VisualShaderNodeFrame.set_attached_nodes
+func (self class) SetAttachedNodes(attached_nodes Packed.Array[int32]) { //gd:VisualShaderNodeFrame.set_attached_nodes
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(attached_nodes))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](attached_nodes))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFrame.Bind_set_attached_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAttachedNodes() gd.PackedInt32Array { //gd:VisualShaderNodeFrame.get_attached_nodes
+func (self class) GetAttachedNodes() Packed.Array[int32] { //gd:VisualShaderNodeFrame.get_attached_nodes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFrame.Bind_get_attached_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

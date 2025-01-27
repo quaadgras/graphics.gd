@@ -3,6 +3,7 @@ package PacketPeer
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +32,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 PacketPeer is an abstraction and base class for packet-based protocols (such as UDP). It provides an API for sending and receiving packets both as raw data or variables. This makes it easy to transfer data over a protocol, without having to encode data as low-level bytes or having to worry about network ordering.
@@ -73,7 +77,7 @@ func (self Instance) GetPacket() []byte { //gd:PacketPeer.get_packet
 Sends a raw packet.
 */
 func (self Instance) PutPacket(buffer []byte) error { //gd:PacketPeer.put_packet
-	return error(gd.ToError(class(self).PutPacket(gd.NewPackedByteSlice(buffer))))
+	return error(gd.ToError(class(self).PutPacket(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 /*
@@ -153,11 +157,11 @@ func (self class) PutVar(v gd.Variant, full_objects bool) gd.Error { //gd:Packet
 Gets a raw packet.
 */
 //go:nosplit
-func (self class) GetPacket() gd.PackedByteArray { //gd:PacketPeer.get_packet
+func (self class) GetPacket() Packed.Bytes { //gd:PacketPeer.get_packet
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_packet, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -166,9 +170,9 @@ func (self class) GetPacket() gd.PackedByteArray { //gd:PacketPeer.get_packet
 Sends a raw packet.
 */
 //go:nosplit
-func (self class) PutPacket(buffer gd.PackedByteArray) gd.Error { //gd:PacketPeer.put_packet
+func (self class) PutPacket(buffer Packed.Bytes) gd.Error { //gd:PacketPeer.put_packet
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_put_packet, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

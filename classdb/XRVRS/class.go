@@ -3,6 +3,7 @@ package XRVRS
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This class is used by various XR interfaces to generate VRS textures that can be used to speed up rendering.
@@ -51,7 +55,7 @@ Generates the VRS texture based on a render [param target_size] adjusted by our 
 The result will be cached, requesting a VRS texture with unchanged parameters and settings will return the cached RID.
 */
 func (self Instance) MakeVrsTexture(target_size Vector2.XY, eye_foci []Vector2.XY) RID.Texture { //gd:XRVRS.make_vrs_texture
-	return RID.Texture(class(self).MakeVrsTexture(gd.Vector2(target_size), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&eye_foci)))))
+	return RID.Texture(class(self).MakeVrsTexture(gd.Vector2(target_size), Packed.New(eye_foci...)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -131,10 +135,10 @@ Generates the VRS texture based on a render [param target_size] adjusted by our 
 The result will be cached, requesting a VRS texture with unchanged parameters and settings will return the cached RID.
 */
 //go:nosplit
-func (self class) MakeVrsTexture(target_size gd.Vector2, eye_foci gd.PackedVector2Array) gd.RID { //gd:XRVRS.make_vrs_texture
+func (self class) MakeVrsTexture(target_size gd.Vector2, eye_foci Packed.Array[Vector2.XY]) gd.RID { //gd:XRVRS.make_vrs_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, target_size)
-	callframe.Arg(frame, pointers.Get(eye_foci))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](eye_foci))
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRVRS.Bind_make_vrs_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

@@ -3,6 +3,7 @@ package RichTextLabel
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -37,6 +39,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A control for displaying text that can contain custom fonts, images, and basic formatting. [RichTextLabel] manages these as an internal tag stack. It also adapts itself to given width/heights.
@@ -186,7 +190,7 @@ func (self Instance) PushOutlineColor(color Color.RGBA) { //gd:RichTextLabel.pus
 Adds a [code skip-lint][p][/code] tag to the tag stack.
 */
 func (self Instance) PushParagraph(alignment HorizontalAlignment) { //gd:RichTextLabel.push_paragraph
-	class(self).PushParagraph(alignment, 0, String.New(""), 0, 163, gd.NewPackedFloat32Slice([1][]float32{}[0]))
+	class(self).PushParagraph(alignment, 0, String.New(""), 0, 163, Packed.New([1][]float32{}[0]...))
 }
 
 /*
@@ -532,7 +536,7 @@ func (self Instance) GetParagraphOffset(paragraph int) Float.X { //gd:RichTextLa
 Parses BBCode parameter [param expressions] into a dictionary.
 */
 func (self Instance) ParseExpressionsForValues(expressions []string) map[string]interface{} { //gd:RichTextLabel.parse_expressions_for_values
-	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).ParseExpressionsForValues(gd.NewPackedStringSlice(expressions))))
+	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).ParseExpressionsForValues(Packed.MakeStrings(expressions...))))
 }
 
 /*
@@ -1087,14 +1091,14 @@ func (self class) PushOutlineColor(color gd.Color) { //gd:RichTextLabel.push_out
 Adds a [code skip-lint][p][/code] tag to the tag stack.
 */
 //go:nosplit
-func (self class) PushParagraph(alignment HorizontalAlignment, base_direction gdclass.ControlTextDirection, language String.Readable, st_parser gdclass.TextServerStructuredTextParser, justification_flags gdclass.TextServerJustificationFlag, tab_stops gd.PackedFloat32Array) { //gd:RichTextLabel.push_paragraph
+func (self class) PushParagraph(alignment HorizontalAlignment, base_direction gdclass.ControlTextDirection, language String.Readable, st_parser gdclass.TextServerStructuredTextParser, justification_flags gdclass.TextServerJustificationFlag, tab_stops Packed.Array[float32]) { //gd:RichTextLabel.push_paragraph
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	callframe.Arg(frame, base_direction)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	callframe.Arg(frame, st_parser)
 	callframe.Arg(frame, justification_flags)
-	callframe.Arg(frame, pointers.Get(tab_stops))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_paragraph, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2127,9 +2131,9 @@ func (self class) GetParagraphOffset(paragraph gd.Int) gd.Float { //gd:RichTextL
 Parses BBCode parameter [param expressions] into a dictionary.
 */
 //go:nosplit
-func (self class) ParseExpressionsForValues(expressions gd.PackedStringArray) Dictionary.Any { //gd:RichTextLabel.parse_expressions_for_values
+func (self class) ParseExpressionsForValues(expressions Packed.Strings) Dictionary.Any { //gd:RichTextLabel.parse_expressions_for_values
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(expressions))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(expressions)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_parse_expressions_for_values, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))

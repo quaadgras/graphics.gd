@@ -3,6 +3,7 @@ package Curve2D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This class describes a Bézier curve in 2D space. It is mainly used to give a shape to a [Path2D], but can be manually sampled for other purposes.
@@ -163,7 +167,7 @@ func (self Instance) SampleBakedWithRotation() Transform2D.OriginXY { //gd:Curve
 Returns the cache of points as a [PackedVector2Array].
 */
 func (self Instance) GetBakedPoints() []Vector2.XY { //gd:Curve2D.get_baked_points
-	return []Vector2.XY(class(self).GetBakedPoints().AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).GetBakedPoints().Values()))
 }
 
 /*
@@ -189,7 +193,7 @@ This approximation makes straight segments between each point, then subdivides t
 [param tolerance_degrees] controls how many degrees the midpoint of a segment may deviate from the real curve, before the segment has to be subdivided.
 */
 func (self Instance) Tessellate() []Vector2.XY { //gd:Curve2D.tessellate
-	return []Vector2.XY(class(self).Tessellate(gd.Int(5), gd.Float(4)).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).Tessellate(gd.Int(5), gd.Float(4)).Values()))
 }
 
 /*
@@ -197,7 +201,7 @@ Returns a list of points along the curve, with almost uniform density. [param ma
 [param tolerance_length] controls the maximal distance between two neighboring points, before the segment has to be subdivided.
 */
 func (self Instance) TessellateEvenLength() []Vector2.XY { //gd:Curve2D.tessellate_even_length
-	return []Vector2.XY(class(self).TessellateEvenLength(gd.Int(5), gd.Float(20.0)).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).TessellateEvenLength(gd.Int(5), gd.Float(20.0)).Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -480,11 +484,11 @@ func (self class) SampleBakedWithRotation(offset gd.Float, cubic bool) gd.Transf
 Returns the cache of points as a [PackedVector2Array].
 */
 //go:nosplit
-func (self class) GetBakedPoints() gd.PackedVector2Array { //gd:Curve2D.get_baked_points
+func (self class) GetBakedPoints() Packed.Array[Vector2.XY] { //gd:Curve2D.get_baked_points
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_get_baked_points, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -526,13 +530,13 @@ This approximation makes straight segments between each point, then subdivides t
 [param tolerance_degrees] controls how many degrees the midpoint of a segment may deviate from the real curve, before the segment has to be subdivided.
 */
 //go:nosplit
-func (self class) Tessellate(max_stages gd.Int, tolerance_degrees gd.Float) gd.PackedVector2Array { //gd:Curve2D.tessellate
+func (self class) Tessellate(max_stages gd.Int, tolerance_degrees gd.Float) Packed.Array[Vector2.XY] { //gd:Curve2D.tessellate
 	var frame = callframe.New()
 	callframe.Arg(frame, max_stages)
 	callframe.Arg(frame, tolerance_degrees)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_tessellate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -542,13 +546,13 @@ Returns a list of points along the curve, with almost uniform density. [param ma
 [param tolerance_length] controls the maximal distance between two neighboring points, before the segment has to be subdivided.
 */
 //go:nosplit
-func (self class) TessellateEvenLength(max_stages gd.Int, tolerance_length gd.Float) gd.PackedVector2Array { //gd:Curve2D.tessellate_even_length
+func (self class) TessellateEvenLength(max_stages gd.Int, tolerance_length gd.Float) Packed.Array[Vector2.XY] { //gd:Curve2D.tessellate_even_length
 	var frame = callframe.New()
 	callframe.Arg(frame, max_stages)
 	callframe.Arg(frame, tolerance_length)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_tessellate_even_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

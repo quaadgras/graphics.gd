@@ -3,6 +3,7 @@ package Window
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Viewport"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
@@ -37,6 +39,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A node that creates a window. The window can either be a native system window or embedded inside another [Window] (see [member Viewport.gui_embed_subwindows]).
@@ -670,11 +674,11 @@ func (self Instance) SetCurrentScreen(value int) {
 }
 
 func (self Instance) MousePassthroughPolygon() []Vector2.XY {
-	return []Vector2.XY(class(self).GetMousePassthroughPolygon().AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).GetMousePassthroughPolygon().Values()))
 }
 
 func (self Instance) SetMousePassthroughPolygon(value []Vector2.XY) {
-	class(self).SetMousePassthroughPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
+	class(self).SetMousePassthroughPolygon(Packed.New(value...))
 }
 
 func (self Instance) Visible() bool {
@@ -1523,20 +1527,20 @@ func (self class) IsUsingFontOversampling() bool { //gd:Window.is_using_font_ove
 }
 
 //go:nosplit
-func (self class) SetMousePassthroughPolygon(polygon gd.PackedVector2Array) { //gd:Window.set_mouse_passthrough_polygon
+func (self class) SetMousePassthroughPolygon(polygon Packed.Array[Vector2.XY]) { //gd:Window.set_mouse_passthrough_polygon
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(polygon))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_mouse_passthrough_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetMousePassthroughPolygon() gd.PackedVector2Array { //gd:Window.get_mouse_passthrough_polygon
+func (self class) GetMousePassthroughPolygon() Packed.Array[Vector2.XY] { //gd:Window.get_mouse_passthrough_polygon
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_mouse_passthrough_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

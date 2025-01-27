@@ -3,6 +3,7 @@ package OpenXRAction
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This resource defines an OpenXR action. Actions can be used both for inputs (buttons, joysticks, triggers, etc.) and outputs (haptics).
@@ -88,7 +92,7 @@ func (self Instance) ToplevelPaths() []string {
 }
 
 func (self Instance) SetToplevelPaths(value []string) {
-	class(self).SetToplevelPaths(gd.NewPackedStringSlice(value))
+	class(self).SetToplevelPaths(Packed.MakeStrings(value...))
 }
 
 //go:nosplit
@@ -130,20 +134,20 @@ func (self class) GetActionType() gdclass.OpenXRActionActionType { //gd:OpenXRAc
 }
 
 //go:nosplit
-func (self class) SetToplevelPaths(toplevel_paths gd.PackedStringArray) { //gd:OpenXRAction.set_toplevel_paths
+func (self class) SetToplevelPaths(toplevel_paths Packed.Strings) { //gd:OpenXRAction.set_toplevel_paths
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(toplevel_paths))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(toplevel_paths)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAction.Bind_set_toplevel_paths, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetToplevelPaths() gd.PackedStringArray { //gd:OpenXRAction.get_toplevel_paths
+func (self class) GetToplevelPaths() Packed.Strings { //gd:OpenXRAction.get_toplevel_paths
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAction.Bind_get_toplevel_paths, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -3,6 +3,7 @@ package Theme
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A resource used for styling/skinning [Control] and [Window] nodes. While individual controls can be styled using their local theme overrides (see [method Control.add_theme_color_override]), theme resources allow you to store and apply the same settings across all controls sharing the same type (e.g. style all [Button]s the same). One theme resource can be used for the entire project, but you can also set a separate theme resource to a branch of control nodes. A theme resource assigned to a control applies to the control itself, as well as all of its direct and indirect children (as long as a chain of controls is uninterrupted).
@@ -651,12 +655,12 @@ func (self class) ClearIcon(name String.Name, theme_type String.Name) { //gd:The
 Returns a list of names for icon properties defined with [param theme_type]. Use [method get_icon_type_list] to get a list of possible theme type names.
 */
 //go:nosplit
-func (self class) GetIconList(theme_type String.Readable) gd.PackedStringArray { //gd:Theme.get_icon_list
+func (self class) GetIconList(theme_type String.Readable) Packed.Strings { //gd:Theme.get_icon_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(theme_type)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_icon_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -665,11 +669,11 @@ func (self class) GetIconList(theme_type String.Readable) gd.PackedStringArray {
 Returns a list of all unique theme type names for icon properties. Use [method get_type_list] to get a list of all unique theme types.
 */
 //go:nosplit
-func (self class) GetIconTypeList() gd.PackedStringArray { //gd:Theme.get_icon_type_list
+func (self class) GetIconTypeList() Packed.Strings { //gd:Theme.get_icon_type_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_icon_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -753,12 +757,12 @@ func (self class) ClearStylebox(name String.Name, theme_type String.Name) { //gd
 Returns a list of names for [StyleBox] properties defined with [param theme_type]. Use [method get_stylebox_type_list] to get a list of possible theme type names.
 */
 //go:nosplit
-func (self class) GetStyleboxList(theme_type String.Readable) gd.PackedStringArray { //gd:Theme.get_stylebox_list
+func (self class) GetStyleboxList(theme_type String.Readable) Packed.Strings { //gd:Theme.get_stylebox_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(theme_type)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_stylebox_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -767,11 +771,11 @@ func (self class) GetStyleboxList(theme_type String.Readable) gd.PackedStringArr
 Returns a list of all unique theme type names for [StyleBox] properties. Use [method get_type_list] to get a list of all unique theme types.
 */
 //go:nosplit
-func (self class) GetStyleboxTypeList() gd.PackedStringArray { //gd:Theme.get_stylebox_type_list
+func (self class) GetStyleboxTypeList() Packed.Strings { //gd:Theme.get_stylebox_type_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_stylebox_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -856,12 +860,12 @@ func (self class) ClearFont(name String.Name, theme_type String.Name) { //gd:The
 Returns a list of names for [Font] properties defined with [param theme_type]. Use [method get_font_type_list] to get a list of possible theme type names.
 */
 //go:nosplit
-func (self class) GetFontList(theme_type String.Readable) gd.PackedStringArray { //gd:Theme.get_font_list
+func (self class) GetFontList(theme_type String.Readable) Packed.Strings { //gd:Theme.get_font_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(theme_type)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_font_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -870,11 +874,11 @@ func (self class) GetFontList(theme_type String.Readable) gd.PackedStringArray {
 Returns a list of all unique theme type names for [Font] properties. Use [method get_type_list] to get a list of all unique theme types.
 */
 //go:nosplit
-func (self class) GetFontTypeList() gd.PackedStringArray { //gd:Theme.get_font_type_list
+func (self class) GetFontTypeList() Packed.Strings { //gd:Theme.get_font_type_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_font_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -959,12 +963,12 @@ func (self class) ClearFontSize(name String.Name, theme_type String.Name) { //gd
 Returns a list of names for font size properties defined with [param theme_type]. Use [method get_font_size_type_list] to get a list of possible theme type names.
 */
 //go:nosplit
-func (self class) GetFontSizeList(theme_type String.Readable) gd.PackedStringArray { //gd:Theme.get_font_size_list
+func (self class) GetFontSizeList(theme_type String.Readable) Packed.Strings { //gd:Theme.get_font_size_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(theme_type)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_font_size_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -973,11 +977,11 @@ func (self class) GetFontSizeList(theme_type String.Readable) gd.PackedStringArr
 Returns a list of all unique theme type names for font size properties. Use [method get_type_list] to get a list of all unique theme types.
 */
 //go:nosplit
-func (self class) GetFontSizeTypeList() gd.PackedStringArray { //gd:Theme.get_font_size_type_list
+func (self class) GetFontSizeTypeList() Packed.Strings { //gd:Theme.get_font_size_type_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_font_size_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1061,12 +1065,12 @@ func (self class) ClearColor(name String.Name, theme_type String.Name) { //gd:Th
 Returns a list of names for [Color] properties defined with [param theme_type]. Use [method get_color_type_list] to get a list of possible theme type names.
 */
 //go:nosplit
-func (self class) GetColorList(theme_type String.Readable) gd.PackedStringArray { //gd:Theme.get_color_list
+func (self class) GetColorList(theme_type String.Readable) Packed.Strings { //gd:Theme.get_color_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(theme_type)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_color_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1075,11 +1079,11 @@ func (self class) GetColorList(theme_type String.Readable) gd.PackedStringArray 
 Returns a list of all unique theme type names for [Color] properties. Use [method get_type_list] to get a list of all unique theme types.
 */
 //go:nosplit
-func (self class) GetColorTypeList() gd.PackedStringArray { //gd:Theme.get_color_type_list
+func (self class) GetColorTypeList() Packed.Strings { //gd:Theme.get_color_type_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_color_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1163,12 +1167,12 @@ func (self class) ClearConstant(name String.Name, theme_type String.Name) { //gd
 Returns a list of names for constant properties defined with [param theme_type]. Use [method get_constant_type_list] to get a list of possible theme type names.
 */
 //go:nosplit
-func (self class) GetConstantList(theme_type String.Readable) gd.PackedStringArray { //gd:Theme.get_constant_list
+func (self class) GetConstantList(theme_type String.Readable) Packed.Strings { //gd:Theme.get_constant_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(theme_type)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_constant_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1177,11 +1181,11 @@ func (self class) GetConstantList(theme_type String.Readable) gd.PackedStringArr
 Returns a list of all unique theme type names for constant properties. Use [method get_type_list] to get a list of all unique theme types.
 */
 //go:nosplit
-func (self class) GetConstantTypeList() gd.PackedStringArray { //gd:Theme.get_constant_type_list
+func (self class) GetConstantTypeList() Packed.Strings { //gd:Theme.get_constant_type_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_constant_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1376,13 +1380,13 @@ Returns a list of names for properties of [param data_type] defined with [param 
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) GetThemeItemList(data_type gdclass.ThemeDataType, theme_type String.Readable) gd.PackedStringArray { //gd:Theme.get_theme_item_list
+func (self class) GetThemeItemList(data_type gdclass.ThemeDataType, theme_type String.Readable) Packed.Strings { //gd:Theme.get_theme_item_list
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(theme_type)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_theme_item_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1392,12 +1396,12 @@ Returns a list of all unique theme type names for [param data_type] properties. 
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) GetThemeItemTypeList(data_type gdclass.ThemeDataType) gd.PackedStringArray { //gd:Theme.get_theme_item_type_list
+func (self class) GetThemeItemTypeList(data_type gdclass.ThemeDataType) Packed.Strings { //gd:Theme.get_theme_item_type_list
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_theme_item_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1463,12 +1467,12 @@ func (self class) GetTypeVariationBase(theme_type String.Name) String.Name { //g
 Returns a list of all type variations for the given [param base_type].
 */
 //go:nosplit
-func (self class) GetTypeVariationList(base_type String.Name) gd.PackedStringArray { //gd:Theme.get_type_variation_list
+func (self class) GetTypeVariationList(base_type String.Name) Packed.Strings { //gd:Theme.get_type_variation_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(base_type)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_type_variation_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1502,11 +1506,11 @@ func (self class) RemoveType(theme_type String.Name) { //gd:Theme.remove_type
 Returns a list of all unique theme type names. Use the appropriate [code]get_*_type_list[/code] method to get a list of unique theme types for a single data type.
 */
 //go:nosplit
-func (self class) GetTypeList() gd.PackedStringArray { //gd:Theme.get_type_list
+func (self class) GetTypeList() Packed.Strings { //gd:Theme.get_type_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

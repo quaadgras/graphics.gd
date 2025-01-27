@@ -3,6 +3,7 @@ package HTTPRequest
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A node with the ability to send HTTP requests. Uses [HTTPClient] internally.
@@ -211,7 +215,7 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 [b]Note:[/b] It's recommended to use transport encryption (TLS) and to avoid sending sensitive information (such as login credentials) in HTTP GET URL parameters. Consider using HTTP POST requests or HTTP headers for such information instead.
 */
 func (self Instance) Request(url string) error { //gd:HTTPRequest.request
-	return error(gd.ToError(class(self).Request(String.New(url), gd.NewPackedStringSlice([1][]string{}[0]), 0, String.New(""))))
+	return error(gd.ToError(class(self).Request(String.New(url), Packed.MakeStrings([1][]string{}[0]...), 0, String.New(""))))
 }
 
 /*
@@ -219,7 +223,7 @@ Creates request on the underlying [HTTPClient] using a raw array of bytes for th
 Returns [constant OK] if request is successfully created. (Does not imply that the server has responded), [constant ERR_UNCONFIGURED] if not in the tree, [constant ERR_BUSY] if still processing previous request, [constant ERR_INVALID_PARAMETER] if given string is not a valid URL format, or [constant ERR_CANT_CONNECT] if not using thread and the [HTTPClient] cannot connect to host.
 */
 func (self Instance) RequestRaw(url string) error { //gd:HTTPRequest.request_raw
-	return error(gd.ToError(class(self).RequestRaw(String.New(url), gd.NewPackedStringSlice([1][]string{}[0]), 0, gd.NewPackedByteSlice([1][]byte{}[0]))))
+	return error(gd.ToError(class(self).RequestRaw(String.New(url), Packed.MakeStrings([1][]string{}[0]...), 0, Packed.Bytes(Packed.New([1][]byte{}[0]...)))))
 }
 
 /*
@@ -355,10 +359,10 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 [b]Note:[/b] It's recommended to use transport encryption (TLS) and to avoid sending sensitive information (such as login credentials) in HTTP GET URL parameters. Consider using HTTP POST requests or HTTP headers for such information instead.
 */
 //go:nosplit
-func (self class) Request(url String.Readable, custom_headers gd.PackedStringArray, method gdclass.HTTPClientMethod, request_data String.Readable) gd.Error { //gd:HTTPRequest.request
+func (self class) Request(url String.Readable, custom_headers Packed.Strings, method gdclass.HTTPClientMethod, request_data String.Readable) gd.Error { //gd:HTTPRequest.request
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
-	callframe.Arg(frame, pointers.Get(custom_headers))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(custom_headers)))
 	callframe.Arg(frame, method)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(request_data)))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -373,12 +377,12 @@ Creates request on the underlying [HTTPClient] using a raw array of bytes for th
 Returns [constant OK] if request is successfully created. (Does not imply that the server has responded), [constant ERR_UNCONFIGURED] if not in the tree, [constant ERR_BUSY] if still processing previous request, [constant ERR_INVALID_PARAMETER] if given string is not a valid URL format, or [constant ERR_CANT_CONNECT] if not using thread and the [HTTPClient] cannot connect to host.
 */
 //go:nosplit
-func (self class) RequestRaw(url String.Readable, custom_headers gd.PackedStringArray, method gdclass.HTTPClientMethod, request_data_raw gd.PackedByteArray) gd.Error { //gd:HTTPRequest.request_raw
+func (self class) RequestRaw(url String.Readable, custom_headers Packed.Strings, method gdclass.HTTPClientMethod, request_data_raw Packed.Bytes) gd.Error { //gd:HTTPRequest.request_raw
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
-	callframe.Arg(frame, pointers.Get(custom_headers))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(custom_headers)))
 	callframe.Arg(frame, method)
-	callframe.Arg(frame, pointers.Get(request_data_raw))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](request_data_raw))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_request_raw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

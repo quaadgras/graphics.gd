@@ -3,6 +3,7 @@ package WebSocketMultiplayerPeer
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/classdb/PacketPeer"
 import "graphics.gd/variant/Float"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Base class for WebSocket server and client, allowing them to be used as multiplayer peer for the [MultiplayerAPI].
@@ -108,7 +112,7 @@ func (self Instance) SupportedProtocols() []string {
 }
 
 func (self Instance) SetSupportedProtocols(value []string) {
-	class(self).SetSupportedProtocols(gd.NewPackedStringSlice(value))
+	class(self).SetSupportedProtocols(Packed.MakeStrings(value...))
 }
 
 func (self Instance) HandshakeHeaders() []string {
@@ -116,7 +120,7 @@ func (self Instance) HandshakeHeaders() []string {
 }
 
 func (self Instance) SetHandshakeHeaders(value []string) {
-	class(self).SetHandshakeHeaders(gd.NewPackedStringSlice(value))
+	class(self).SetHandshakeHeaders(Packed.MakeStrings(value...))
 }
 
 func (self Instance) InboundBufferSize() int {
@@ -226,38 +230,38 @@ func (self class) GetPeerPort(id gd.Int) gd.Int { //gd:WebSocketMultiplayerPeer.
 }
 
 //go:nosplit
-func (self class) GetSupportedProtocols() gd.PackedStringArray { //gd:WebSocketMultiplayerPeer.get_supported_protocols
+func (self class) GetSupportedProtocols() Packed.Strings { //gd:WebSocketMultiplayerPeer.get_supported_protocols
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_get_supported_protocols, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetSupportedProtocols(protocols gd.PackedStringArray) { //gd:WebSocketMultiplayerPeer.set_supported_protocols
+func (self class) SetSupportedProtocols(protocols Packed.Strings) { //gd:WebSocketMultiplayerPeer.set_supported_protocols
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(protocols))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(protocols)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_set_supported_protocols, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetHandshakeHeaders() gd.PackedStringArray { //gd:WebSocketMultiplayerPeer.get_handshake_headers
+func (self class) GetHandshakeHeaders() Packed.Strings { //gd:WebSocketMultiplayerPeer.get_handshake_headers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_get_handshake_headers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetHandshakeHeaders(protocols gd.PackedStringArray) { //gd:WebSocketMultiplayerPeer.set_handshake_headers
+func (self class) SetHandshakeHeaders(protocols Packed.Strings) { //gd:WebSocketMultiplayerPeer.set_handshake_headers
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(protocols))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(protocols)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_set_handshake_headers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

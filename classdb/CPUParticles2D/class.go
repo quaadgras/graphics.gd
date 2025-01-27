@@ -3,6 +3,7 @@ package CPUParticles2D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -36,6 +38,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 CPU-based 2D particle node used to create a variety of particle systems and effects.
@@ -220,27 +224,27 @@ func (self Instance) SetEmissionRectExtents(value Vector2.XY) {
 }
 
 func (self Instance) EmissionPoints() []Vector2.XY {
-	return []Vector2.XY(class(self).GetEmissionPoints().AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).GetEmissionPoints().Values()))
 }
 
 func (self Instance) SetEmissionPoints(value []Vector2.XY) {
-	class(self).SetEmissionPoints(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
+	class(self).SetEmissionPoints(Packed.New(value...))
 }
 
 func (self Instance) EmissionNormals() []Vector2.XY {
-	return []Vector2.XY(class(self).GetEmissionNormals().AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).GetEmissionNormals().Values()))
 }
 
 func (self Instance) SetEmissionNormals(value []Vector2.XY) {
-	class(self).SetEmissionNormals(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
+	class(self).SetEmissionNormals(Packed.New(value...))
 }
 
 func (self Instance) EmissionColors() []Color.RGBA {
-	return []Color.RGBA(class(self).GetEmissionColors().AsSlice())
+	return []Color.RGBA(slices.Collect(class(self).GetEmissionColors().Values()))
 }
 
 func (self Instance) SetEmissionColors(value []Color.RGBA) {
-	class(self).SetEmissionColors(gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&value))))
+	class(self).SetEmissionColors(Packed.New(value...))
 }
 
 func (self Instance) ParticleFlagAlignY() bool {
@@ -1141,58 +1145,58 @@ func (self class) GetEmissionRectExtents() gd.Vector2 { //gd:CPUParticles2D.get_
 }
 
 //go:nosplit
-func (self class) SetEmissionPoints(array gd.PackedVector2Array) { //gd:CPUParticles2D.set_emission_points
+func (self class) SetEmissionPoints(array Packed.Array[Vector2.XY]) { //gd:CPUParticles2D.set_emission_points
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(array))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](array))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_set_emission_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetEmissionPoints() gd.PackedVector2Array { //gd:CPUParticles2D.get_emission_points
+func (self class) GetEmissionPoints() Packed.Array[Vector2.XY] { //gd:CPUParticles2D.get_emission_points
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_emission_points, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetEmissionNormals(array gd.PackedVector2Array) { //gd:CPUParticles2D.set_emission_normals
+func (self class) SetEmissionNormals(array Packed.Array[Vector2.XY]) { //gd:CPUParticles2D.set_emission_normals
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(array))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](array))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_set_emission_normals, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetEmissionNormals() gd.PackedVector2Array { //gd:CPUParticles2D.get_emission_normals
+func (self class) GetEmissionNormals() Packed.Array[Vector2.XY] { //gd:CPUParticles2D.get_emission_normals
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_emission_normals, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetEmissionColors(array gd.PackedColorArray) { //gd:CPUParticles2D.set_emission_colors
+func (self class) SetEmissionColors(array Packed.Array[Color.RGBA]) { //gd:CPUParticles2D.set_emission_colors
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(array))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](array))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_set_emission_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetEmissionColors() gd.PackedColorArray { //gd:CPUParticles2D.get_emission_colors
+func (self class) GetEmissionColors() Packed.Array[Color.RGBA] { //gd:CPUParticles2D.get_emission_colors
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_emission_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedColorArray](r_ret.Get())
+	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

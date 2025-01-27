@@ -4,6 +4,7 @@ package ResourceSaver
 import "unsafe"
 import "sync"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A singleton for saving resource types to the filesystem.
@@ -113,12 +117,12 @@ func (self class) Save(resource [1]gdclass.Resource, path String.Readable, flags
 Returns the list of extensions available for saving a resource of a given type.
 */
 //go:nosplit
-func (self class) GetRecognizedExtensions(atype [1]gdclass.Resource) gd.PackedStringArray { //gd:ResourceSaver.get_recognized_extensions
+func (self class) GetRecognizedExtensions(atype [1]gdclass.Resource) Packed.Strings { //gd:ResourceSaver.get_recognized_extensions
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(atype[0])[0])
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_get_recognized_extensions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

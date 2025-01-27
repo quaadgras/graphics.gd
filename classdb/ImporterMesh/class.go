@@ -3,6 +3,7 @@ package ImporterMesh
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2i"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 ImporterMesh is a type of [Resource] analogous to [ArrayMesh]. It contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials.
@@ -149,7 +153,7 @@ func (self Instance) GetSurfaceLodSize(surface_idx int, lod_idx int) Float.X { /
 Returns the index buffer of a lod for a surface.
 */
 func (self Instance) GetSurfaceLodIndices(surface_idx int, lod_idx int) []int32 { //gd:ImporterMesh.get_surface_lod_indices
-	return []int32(class(self).GetSurfaceLodIndices(gd.Int(surface_idx), gd.Int(lod_idx)).AsSlice())
+	return []int32(slices.Collect(class(self).GetSurfaceLodIndices(gd.Int(surface_idx), gd.Int(lod_idx)).Values()))
 }
 
 /*
@@ -430,13 +434,13 @@ func (self class) GetSurfaceLodSize(surface_idx gd.Int, lod_idx gd.Int) gd.Float
 Returns the index buffer of a lod for a surface.
 */
 //go:nosplit
-func (self class) GetSurfaceLodIndices(surface_idx gd.Int, lod_idx gd.Int) gd.PackedInt32Array { //gd:ImporterMesh.get_surface_lod_indices
+func (self class) GetSurfaceLodIndices(surface_idx gd.Int, lod_idx gd.Int) Packed.Array[int32] { //gd:ImporterMesh.get_surface_lod_indices
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	callframe.Arg(frame, lod_idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_surface_lod_indices, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

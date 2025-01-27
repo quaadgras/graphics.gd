@@ -3,6 +3,7 @@ package TextParagraph
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Rect2"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Abstraction over [TextServer] for handling a single paragraph of text.
@@ -102,7 +106,7 @@ func (self Instance) ResizeObject(key any, size Vector2.XY) bool { //gd:TextPara
 Aligns paragraph to the given tab-stops.
 */
 func (self Instance) TabAlign(tab_stops []float32) { //gd:TextParagraph.tab_align
-	class(self).TabAlign(gd.NewPackedFloat32Slice(tab_stops))
+	class(self).TabAlign(Packed.New(tab_stops...))
 }
 
 /*
@@ -612,9 +616,9 @@ func (self class) GetAlignment() HorizontalAlignment { //gd:TextParagraph.get_al
 Aligns paragraph to the given tab-stops.
 */
 //go:nosplit
-func (self class) TabAlign(tab_stops gd.PackedFloat32Array) { //gd:TextParagraph.tab_align
+func (self class) TabAlign(tab_stops Packed.Array[float32]) { //gd:TextParagraph.tab_align
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(tab_stops))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_tab_align, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

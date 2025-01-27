@@ -3,6 +3,7 @@ package ColorPicker
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/VBoxContainer"
 import "graphics.gd/classdb/BoxContainer"
 import "graphics.gd/classdb/Container"
@@ -37,6 +39,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A widget that provides an interface for selecting or modifying a color. It can optionally provide functionalities like a color sampler (eyedropper), color modes, and presets.
@@ -71,7 +75,7 @@ func (self Instance) ErasePreset(color Color.RGBA) { //gd:ColorPicker.erase_pres
 Returns the list of colors in the presets of the color picker.
 */
 func (self Instance) GetPresets() []Color.RGBA { //gd:ColorPicker.get_presets
-	return []Color.RGBA(class(self).GetPresets().AsSlice())
+	return []Color.RGBA(slices.Collect(class(self).GetPresets().Values()))
 }
 
 /*
@@ -93,7 +97,7 @@ func (self Instance) EraseRecentPreset(color Color.RGBA) { //gd:ColorPicker.eras
 Returns the list of colors in the recent presets of the color picker.
 */
 func (self Instance) GetRecentPresets() []Color.RGBA { //gd:ColorPicker.get_recent_presets
-	return []Color.RGBA(class(self).GetRecentPresets().AsSlice())
+	return []Color.RGBA(slices.Collect(class(self).GetRecentPresets().Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -421,11 +425,11 @@ func (self class) ErasePreset(color gd.Color) { //gd:ColorPicker.erase_preset
 Returns the list of colors in the presets of the color picker.
 */
 //go:nosplit
-func (self class) GetPresets() gd.PackedColorArray { //gd:ColorPicker.get_presets
+func (self class) GetPresets() Packed.Array[Color.RGBA] { //gd:ColorPicker.get_presets
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_get_presets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedColorArray](r_ret.Get())
+	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -459,11 +463,11 @@ func (self class) EraseRecentPreset(color gd.Color) { //gd:ColorPicker.erase_rec
 Returns the list of colors in the recent presets of the color picker.
 */
 //go:nosplit
-func (self class) GetRecentPresets() gd.PackedColorArray { //gd:ColorPicker.get_recent_presets
+func (self class) GetRecentPresets() Packed.Array[Color.RGBA] { //gd:ColorPicker.get_recent_presets
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_get_recent_presets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedColorArray](r_ret.Get())
+	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -3,6 +3,7 @@ package RandomNumberGenerator
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 RandomNumberGenerator is a class for generating pseudo-random numbers. It currently uses [url=https://www.pcg-random.org/]PCG32[/url].
@@ -106,7 +110,7 @@ print(my_array[rng.rand_weighted(weights)])
 [/codeblocks]
 */
 func (self Instance) RandWeighted(weights []float32) int { //gd:RandomNumberGenerator.rand_weighted
-	return int(int(class(self).RandWeighted(gd.NewPackedFloat32Slice(weights))))
+	return int(int(class(self).RandWeighted(Packed.New(weights...))))
 }
 
 /*
@@ -277,9 +281,9 @@ print(my_array[rng.rand_weighted(weights)])
 [/codeblocks]
 */
 //go:nosplit
-func (self class) RandWeighted(weights gd.PackedFloat32Array) gd.Int { //gd:RandomNumberGenerator.rand_weighted
+func (self class) RandWeighted(weights Packed.Array[float32]) gd.Int { //gd:RandomNumberGenerator.rand_weighted
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(weights))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](weights))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RandomNumberGenerator.Bind_rand_weighted, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

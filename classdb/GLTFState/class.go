@@ -3,6 +3,7 @@ package GLTFState
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Contains all nodes and resources of a GLTF file. This is used by [GLTFDocument] as data storage, which allows [GLTFDocument] and all [GLTFDocumentExtension] classes to remain stateless.
@@ -58,7 +62,7 @@ func (self Instance) AddUsedExtension(extension_name string, required bool) { //
 Appends the given byte array data to the buffers and creates a [GLTFBufferView] for it. The index of the destination [GLTFBufferView] is returned. If [param deduplication] is true, the buffers will first be searched for duplicate data, otherwise new bytes will always be appended.
 */
 func (self Instance) AppendDataToBuffers(data []byte, deduplication bool) int { //gd:GLTFState.append_data_to_buffers
-	return int(int(class(self).AppendDataToBuffers(gd.NewPackedByteSlice(data), deduplication)))
+	return int(int(class(self).AppendDataToBuffers(Packed.Bytes(Packed.New(data...)), deduplication)))
 }
 
 /*
@@ -163,7 +167,7 @@ func (self Instance) GlbData() []byte {
 }
 
 func (self Instance) SetGlbData(value []byte) {
-	class(self).SetGlbData(gd.NewPackedByteSlice(value))
+	class(self).SetGlbData(Packed.Bytes(Packed.New(value...)))
 }
 
 func (self Instance) UseNamedSkinBinds() bool {
@@ -187,7 +191,7 @@ func (self Instance) Buffers() [][]byte {
 }
 
 func (self Instance) SetBuffers(value [][]byte) {
-	class(self).SetBuffers(gd.ArrayFromSlice[Array.Contains[gd.PackedByteArray]](value))
+	class(self).SetBuffers(gd.ArrayFromSlice[Array.Contains[Packed.Bytes]](value))
 }
 
 func (self Instance) BufferViews() [][1]gdclass.GLTFBufferView {
@@ -247,11 +251,11 @@ func (self Instance) SetFilename(value string) {
 }
 
 func (self Instance) RootNodes() []int32 {
-	return []int32(class(self).GetRootNodes().AsSlice())
+	return []int32(slices.Collect(class(self).GetRootNodes().Values()))
 }
 
 func (self Instance) SetRootNodes(value []int32) {
-	class(self).SetRootNodes(gd.NewPackedInt32Slice(value))
+	class(self).SetRootNodes(Packed.New(value...))
 }
 
 func (self Instance) Textures() [][1]gdclass.GLTFTexture {
@@ -383,9 +387,9 @@ func (self class) AddUsedExtension(extension_name String.Readable, required bool
 Appends the given byte array data to the buffers and creates a [GLTFBufferView] for it. The index of the destination [GLTFBufferView] is returned. If [param deduplication] is true, the buffers will first be searched for duplicate data, otherwise new bytes will always be appended.
 */
 //go:nosplit
-func (self class) AppendDataToBuffers(data gd.PackedByteArray, deduplication bool) gd.Int { //gd:GLTFState.append_data_to_buffers
+func (self class) AppendDataToBuffers(data Packed.Bytes, deduplication bool) gd.Int { //gd:GLTFState.append_data_to_buffers
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	callframe.Arg(frame, deduplication)
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_append_data_to_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -471,19 +475,19 @@ func (self class) SetCopyright(copyright String.Readable) { //gd:GLTFState.set_c
 }
 
 //go:nosplit
-func (self class) GetGlbData() gd.PackedByteArray { //gd:GLTFState.get_glb_data
+func (self class) GetGlbData() Packed.Bytes { //gd:GLTFState.get_glb_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_glb_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetGlbData(glb_data gd.PackedByteArray) { //gd:GLTFState.set_glb_data
+func (self class) SetGlbData(glb_data Packed.Bytes) { //gd:GLTFState.set_glb_data
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(glb_data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](glb_data))))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_glb_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -534,17 +538,17 @@ func (self class) SetNodes(nodes Array.Contains[[1]gdclass.GLTFNode]) { //gd:GLT
 }
 
 //go:nosplit
-func (self class) GetBuffers() Array.Contains[gd.PackedByteArray] { //gd:GLTFState.get_buffers
+func (self class) GetBuffers() Array.Contains[Packed.Bytes] { //gd:GLTFState.get_buffers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.PackedByteArray]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Packed.Bytes]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetBuffers(buffers Array.Contains[gd.PackedByteArray]) { //gd:GLTFState.set_buffers
+func (self class) SetBuffers(buffers Array.Contains[Packed.Bytes]) { //gd:GLTFState.set_buffers
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(buffers)))
 	var r_ret = callframe.Nil
@@ -720,19 +724,19 @@ func (self class) SetFilename(filename String.Readable) { //gd:GLTFState.set_fil
 }
 
 //go:nosplit
-func (self class) GetRootNodes() gd.PackedInt32Array { //gd:GLTFState.get_root_nodes
+func (self class) GetRootNodes() Packed.Array[int32] { //gd:GLTFState.get_root_nodes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_root_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetRootNodes(root_nodes gd.PackedInt32Array) { //gd:GLTFState.set_root_nodes
+func (self class) SetRootNodes(root_nodes Packed.Array[int32]) { //gd:GLTFState.set_root_nodes
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(root_nodes))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](root_nodes))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_root_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

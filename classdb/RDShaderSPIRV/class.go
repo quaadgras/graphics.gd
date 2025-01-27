@@ -3,6 +3,7 @@ package RDShaderSPIRV
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [RDShaderSPIRV] represents a [RDShaderFile]'s [url=https://www.khronos.org/spir/]SPIR-V[/url] code for various shader stages, as well as possible compilation error messages. SPIR-V is a low-level intermediate shader representation. This intermediate representation is not used directly by GPUs for rendering, but it can be compiled into binary shaders that GPUs can understand. Unlike compiled shaders, SPIR-V is portable across GPU models and driver versions.
@@ -70,7 +74,7 @@ func (self Instance) BytecodeVertex() []byte {
 }
 
 func (self Instance) SetBytecodeVertex(value []byte) {
-	class(self).SetStageBytecode(0, gd.NewPackedByteSlice(value))
+	class(self).SetStageBytecode(0, Packed.Bytes(Packed.New(value...)))
 }
 
 func (self Instance) BytecodeFragment() []byte {
@@ -78,7 +82,7 @@ func (self Instance) BytecodeFragment() []byte {
 }
 
 func (self Instance) SetBytecodeFragment(value []byte) {
-	class(self).SetStageBytecode(1, gd.NewPackedByteSlice(value))
+	class(self).SetStageBytecode(1, Packed.Bytes(Packed.New(value...)))
 }
 
 func (self Instance) BytecodeTesselationControl() []byte {
@@ -86,7 +90,7 @@ func (self Instance) BytecodeTesselationControl() []byte {
 }
 
 func (self Instance) SetBytecodeTesselationControl(value []byte) {
-	class(self).SetStageBytecode(2, gd.NewPackedByteSlice(value))
+	class(self).SetStageBytecode(2, Packed.Bytes(Packed.New(value...)))
 }
 
 func (self Instance) BytecodeTesselationEvaluation() []byte {
@@ -94,7 +98,7 @@ func (self Instance) BytecodeTesselationEvaluation() []byte {
 }
 
 func (self Instance) SetBytecodeTesselationEvaluation(value []byte) {
-	class(self).SetStageBytecode(3, gd.NewPackedByteSlice(value))
+	class(self).SetStageBytecode(3, Packed.Bytes(Packed.New(value...)))
 }
 
 func (self Instance) BytecodeCompute() []byte {
@@ -102,7 +106,7 @@ func (self Instance) BytecodeCompute() []byte {
 }
 
 func (self Instance) SetBytecodeCompute(value []byte) {
-	class(self).SetStageBytecode(4, gd.NewPackedByteSlice(value))
+	class(self).SetStageBytecode(4, Packed.Bytes(Packed.New(value...)))
 }
 
 func (self Instance) CompileErrorVertex() string {
@@ -149,10 +153,10 @@ func (self Instance) SetCompileErrorCompute(value string) {
 Sets the SPIR-V [param bytecode] for the given shader [param stage]. Equivalent to setting one of [member bytecode_compute], [member bytecode_fragment], [member bytecode_tesselation_control], [member bytecode_tesselation_evaluation], [member bytecode_vertex].
 */
 //go:nosplit
-func (self class) SetStageBytecode(stage gdclass.RenderingDeviceShaderStage, bytecode gd.PackedByteArray) { //gd:RDShaderSPIRV.set_stage_bytecode
+func (self class) SetStageBytecode(stage gdclass.RenderingDeviceShaderStage, bytecode Packed.Bytes) { //gd:RDShaderSPIRV.set_stage_bytecode
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
-	callframe.Arg(frame, pointers.Get(bytecode))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytecode))))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSPIRV.Bind_set_stage_bytecode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -162,12 +166,12 @@ func (self class) SetStageBytecode(stage gdclass.RenderingDeviceShaderStage, byt
 Equivalent to getting one of [member bytecode_compute], [member bytecode_fragment], [member bytecode_tesselation_control], [member bytecode_tesselation_evaluation], [member bytecode_vertex].
 */
 //go:nosplit
-func (self class) GetStageBytecode(stage gdclass.RenderingDeviceShaderStage) gd.PackedByteArray { //gd:RDShaderSPIRV.get_stage_bytecode
+func (self class) GetStageBytecode(stage gdclass.RenderingDeviceShaderStage) Packed.Bytes { //gd:RDShaderSPIRV.get_stage_bytecode
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSPIRV.Bind_get_stage_bytecode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

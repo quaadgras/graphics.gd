@@ -3,6 +3,7 @@ package Mesh
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Vector2i"
@@ -35,6 +37,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Mesh is a type of [Resource] that contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials. The maximum number of surfaces per mesh is [constant RenderingServer.MAX_MESH_SURFACES].
@@ -319,7 +323,7 @@ func (self Instance) GetAabb() AABB.PositionSize { //gd:Mesh.get_aabb
 Returns all the vertices that make up the faces of the mesh. Each three vertices represent one triangle.
 */
 func (self Instance) GetFaces() []Vector3.XYZ { //gd:Mesh.get_faces
-	return []Vector3.XYZ(class(self).GetFaces().AsSlice())
+	return []Vector3.XYZ(slices.Collect(class(self).GetFaces().Values()))
 }
 
 /*
@@ -665,11 +669,11 @@ func (self class) GetAabb() gd.AABB { //gd:Mesh.get_aabb
 Returns all the vertices that make up the faces of the mesh. Each three vertices represent one triangle.
 */
 //go:nosplit
-func (self class) GetFaces() gd.PackedVector3Array { //gd:Mesh.get_faces
+func (self class) GetFaces() Packed.Array[Vector3.XYZ] { //gd:Mesh.get_faces
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_get_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

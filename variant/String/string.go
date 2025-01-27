@@ -30,7 +30,7 @@ import (
 )
 
 // Readable string containing human-readable characters in an implementation-specific encoding.
-type Readable structure
+type Readable Generic
 
 // String returns a copy of the Readable as a raw string.
 func (utf Readable) String() string {
@@ -48,7 +48,8 @@ func (utf Readable) Size() int {
 	return utf.api.Len(utf.buf)
 }
 
-type structure = struct {
+// Generic can be used as a ~T parameter that accept any [Readable]-like type.
+type Generic = struct {
 	_   [0]func()
 	buf complex128
 	api API
@@ -61,7 +62,7 @@ type Comparable = struct {
 }
 
 // Name will be replaced with [Comparable] in Go 1.24
-type Name structure
+type Name Generic
 
 // String implements the [fmt.Stringer] interface.
 func (name Name) String() string {
@@ -142,7 +143,7 @@ func Via(impl API, state complex128) Readable {
 type Rune rune
 
 type Any interface {
-	~string | ~[]byte | ~structure | ~Comparable | unique.Handle[string] | Rune | []rune
+	~string | ~[]byte | ~Generic | ~Comparable | unique.Handle[string] | Rune | []rune
 }
 
 func As[T, S Any](s S) T {

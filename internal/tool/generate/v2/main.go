@@ -142,6 +142,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintln(file, `import "sync"`)
 	}
 	fmt.Fprintln(file, `import "reflect"`)
+	fmt.Fprintln(file, `import "slices"`)
 	fmt.Fprintln(file, `import "graphics.gd/internal/pointers"`)
 	fmt.Fprintln(file, `import "graphics.gd/internal/callframe"`)
 	fmt.Fprintln(file, `import gd "graphics.gd/internal"`)
@@ -155,6 +156,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import "graphics.gd/variant/RID"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant/String"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant/Path"`)
+	fmt.Fprintln(file, `import "graphics.gd/variant/Packed"`)
 	var imported = make(map[string]bool)
 	if class.Name == "TextEdit" {
 		imported["graphics.gd/variant/Rect2"] = true
@@ -225,6 +227,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, "var _ RID.Any")
 	fmt.Fprintln(file, "var _ String.Readable")
 	fmt.Fprintln(file, "var _ Path.ToNode")
+	fmt.Fprintln(file, "var _ Packed.Bytes")
+	fmt.Fprintln(file, "var _ = slices.Delete[[]struct{}, struct{}]")
 	fmt.Fprintln(file)
 	var local_enums = make(map[string]bool)
 	var hasVirtual bool

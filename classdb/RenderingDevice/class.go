@@ -3,6 +3,7 @@ package RenderingDevice
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2i"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [RenderingDevice] is an abstraction for working with modern low-level graphics APIs such as Vulkan. Compared to [RenderingServer] (which works with Godot's own rendering subsystems), [RenderingDevice] is much lower-level and allows working more directly with the underlying graphics APIs. [RenderingDevice] is used in Godot to provide support for several modern low-level graphics APIs while reducing the amount of code duplication required. [RenderingDevice] can also be used in your own projects to perform things that are not exposed by [RenderingServer] or high-level nodes, such as using compute shaders.
@@ -57,7 +61,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 [b]Note:[/b] Not to be confused with [method RenderingServer.texture_2d_create], which creates the Godot-specific [Texture2D] resource as opposed to the graphics API's own texture type.
 */
 func (self Instance) TextureCreate(format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView) RID.Texture { //gd:RenderingDevice.texture_create
-	return RID.Texture(class(self).TextureCreate(format, view, gd.ArrayFromSlice[Array.Contains[gd.PackedByteArray]]([1][][]byte{}[0])))
+	return RID.Texture(class(self).TextureCreate(format, view, gd.ArrayFromSlice[Array.Contains[Packed.Bytes]]([1][][]byte{}[0])))
 }
 
 /*
@@ -90,7 +94,7 @@ Updates texture data with new data, replacing the previous data in place. The up
 [b]Note:[/b] The existing [param texture] requires the [constant TEXTURE_USAGE_CAN_UPDATE_BIT] to be updatable.
 */
 func (self Instance) TextureUpdate(texture RID.Texture, layer int, data []byte) error { //gd:RenderingDevice.texture_update
-	return error(gd.ToError(class(self).TextureUpdate(gd.RID(texture), gd.Int(layer), gd.NewPackedByteSlice(data))))
+	return error(gd.ToError(class(self).TextureUpdate(gd.RID(texture), gd.Int(layer), Packed.Bytes(Packed.New(data...)))))
 }
 
 /*
@@ -259,7 +263,7 @@ It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) VertexBufferCreate(size_bytes int) RID.VertexBuffer { //gd:RenderingDevice.vertex_buffer_create
-	return RID.VertexBuffer(class(self).VertexBufferCreate(gd.Int(size_bytes), gd.NewPackedByteSlice([1][]byte{}[0]), false))
+	return RID.VertexBuffer(class(self).VertexBufferCreate(gd.Int(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), false))
 }
 
 /*
@@ -273,7 +277,7 @@ func (self Instance) VertexFormatCreate(vertex_descriptions [][1]gdclass.RDVerte
 Creates a vertex array based on the specified buffers. Optionally, [param offsets] (in bytes) may be defined for each buffer.
 */
 func (self Instance) VertexArrayCreate(vertex_count int, vertex_format int, src_buffers [][]RID.VertexBuffer) RID.VertexArray { //gd:RenderingDevice.vertex_array_create
-	return RID.VertexArray(class(self).VertexArrayCreate(gd.Int(vertex_count), gd.Int(vertex_format), gd.ArrayFromSlice[Array.Contains[gd.RID]](src_buffers), gd.NewPackedInt64Slice([1][]int64{}[0])))
+	return RID.VertexArray(class(self).VertexArrayCreate(gd.Int(vertex_count), gd.Int(vertex_format), gd.ArrayFromSlice[Array.Contains[gd.RID]](src_buffers), Packed.New([1][]int64{}[0]...)))
 }
 
 /*
@@ -281,7 +285,7 @@ Creates a new index buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) IndexBufferCreate(size_indices int, format gdclass.RenderingDeviceIndexBufferFormat) RID.IndexBuffer { //gd:RenderingDevice.index_buffer_create
-	return RID.IndexBuffer(class(self).IndexBufferCreate(gd.Int(size_indices), format, gd.NewPackedByteSlice([1][]byte{}[0]), false))
+	return RID.IndexBuffer(class(self).IndexBufferCreate(gd.Int(size_indices), format, Packed.Bytes(Packed.New([1][]byte{}[0]...)), false))
 }
 
 /*
@@ -321,7 +325,7 @@ Creates a new shader instance from a binary compiled shader. It can be accessed 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method. See also [method shader_compile_binary_from_spirv] and [method shader_create_from_spirv].
 */
 func (self Instance) ShaderCreateFromBytecode(binary_data []byte) RID.Shader { //gd:RenderingDevice.shader_create_from_bytecode
-	return RID.Shader(class(self).ShaderCreateFromBytecode(gd.NewPackedByteSlice(binary_data), gd.RID([1]RID.Any{}[0])))
+	return RID.Shader(class(self).ShaderCreateFromBytecode(Packed.Bytes(Packed.New(binary_data...)), gd.RID([1]RID.Any{}[0])))
 }
 
 /*
@@ -343,7 +347,7 @@ Creates a new uniform buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) UniformBufferCreate(size_bytes int) RID.UniformBuffer { //gd:RenderingDevice.uniform_buffer_create
-	return RID.UniformBuffer(class(self).UniformBufferCreate(gd.Int(size_bytes), gd.NewPackedByteSlice([1][]byte{}[0])))
+	return RID.UniformBuffer(class(self).UniformBufferCreate(gd.Int(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...))))
 }
 
 /*
@@ -351,7 +355,7 @@ Creates a [url=https://vkguide.dev/docs/chapter-4/storage_buffers/]storage buffe
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) StorageBufferCreate(size_bytes int) RID.StorageBuffer { //gd:RenderingDevice.storage_buffer_create
-	return RID.StorageBuffer(class(self).StorageBufferCreate(gd.Int(size_bytes), gd.NewPackedByteSlice([1][]byte{}[0]), 0))
+	return RID.StorageBuffer(class(self).StorageBufferCreate(gd.Int(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), 0))
 }
 
 /*
@@ -359,7 +363,7 @@ Creates a new texture buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) TextureBufferCreate(size_bytes int, format gdclass.RenderingDeviceDataFormat) RID.TextureBuffer { //gd:RenderingDevice.texture_buffer_create
-	return RID.TextureBuffer(class(self).TextureBufferCreate(gd.Int(size_bytes), format, gd.NewPackedByteSlice([1][]byte{}[0])))
+	return RID.TextureBuffer(class(self).TextureBufferCreate(gd.Int(size_bytes), format, Packed.Bytes(Packed.New([1][]byte{}[0]...))))
 }
 
 /*
@@ -396,7 +400,7 @@ Prints an error if:
 - a compute list is currently active (created by [method compute_list_begin])
 */
 func (self Instance) BufferUpdate(buffer RID.Buffer, offset int, size_bytes int, data []byte) error { //gd:RenderingDevice.buffer_update
-	return error(gd.ToError(class(self).BufferUpdate(gd.RID(buffer), gd.Int(offset), gd.Int(size_bytes), gd.NewPackedByteSlice(data))))
+	return error(gd.ToError(class(self).BufferUpdate(gd.RID(buffer), gd.Int(offset), gd.Int(size_bytes), Packed.Bytes(Packed.New(data...)))))
 }
 
 /*
@@ -504,14 +508,14 @@ rd.draw_list_end()
 [/codeblock]
 */
 func (self Instance) DrawListBegin(framebuffer RID.Framebuffer, initial_color_action gdclass.RenderingDeviceInitialAction, final_color_action gdclass.RenderingDeviceFinalAction, initial_depth_action gdclass.RenderingDeviceInitialAction, final_depth_action gdclass.RenderingDeviceFinalAction) int { //gd:RenderingDevice.draw_list_begin
-	return int(int(class(self).DrawListBegin(gd.RID(framebuffer), initial_color_action, final_color_action, initial_depth_action, final_depth_action, gd.NewPackedColorSlice(nil), gd.Float(1.0), gd.Int(0), gd.Rect2(gd.NewRect2(0, 0, 0, 0)))))
+	return int(int(class(self).DrawListBegin(gd.RID(framebuffer), initial_color_action, final_color_action, initial_depth_action, final_depth_action, Packed.New([1][]Color.RGBA{}[0]...), gd.Float(1.0), gd.Int(0), gd.Rect2(gd.NewRect2(0, 0, 0, 0)))))
 }
 
 /*
 This method does nothing and always returns an empty [PackedInt64Array].
 */
 func (self Instance) DrawListBeginSplit(framebuffer RID.Framebuffer, splits int, initial_color_action gdclass.RenderingDeviceInitialAction, final_color_action gdclass.RenderingDeviceFinalAction, initial_depth_action gdclass.RenderingDeviceInitialAction, final_depth_action gdclass.RenderingDeviceFinalAction) []int64 { //gd:RenderingDevice.draw_list_begin_split
-	return []int64(class(self).DrawListBeginSplit(gd.RID(framebuffer), gd.Int(splits), initial_color_action, final_color_action, initial_depth_action, final_depth_action, gd.NewPackedColorSlice(nil), gd.Float(1.0), gd.Int(0), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.ArrayFromSlice[Array.Contains[gd.RID]]([1][]RID.Any{}[0])).AsSlice())
+	return []int64(slices.Collect(class(self).DrawListBeginSplit(gd.RID(framebuffer), gd.Int(splits), initial_color_action, final_color_action, initial_depth_action, final_depth_action, Packed.New([1][]Color.RGBA{}[0]...), gd.Float(1.0), gd.Int(0), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.ArrayFromSlice[Array.Contains[gd.RID]]([1][]RID.Any{}[0])).Values()))
 }
 
 /*
@@ -553,7 +557,7 @@ func (self Instance) DrawListBindIndexArray(draw_list int, index_array RID.Index
 Sets the push constant data to [param buffer] for the specified [param draw_list]. The shader determines how this binary data is used. The buffer's size in bytes must also be specified in [param size_bytes] (this can be obtained by calling the [method PackedByteArray.size] method on the passed [param buffer]).
 */
 func (self Instance) DrawListSetPushConstant(draw_list int, buffer []byte, size_bytes int) { //gd:RenderingDevice.draw_list_set_push_constant
-	class(self).DrawListSetPushConstant(gd.Int(draw_list), gd.NewPackedByteSlice(buffer), gd.Int(size_bytes))
+	class(self).DrawListSetPushConstant(gd.Int(draw_list), Packed.Bytes(Packed.New(buffer...)), gd.Int(size_bytes))
 }
 
 /*
@@ -589,7 +593,7 @@ func (self Instance) DrawListSwitchToNextPass() int { //gd:RenderingDevice.draw_
 This method does nothing and always returns an empty [PackedInt64Array].
 */
 func (self Instance) DrawListSwitchToNextPassSplit(splits int) []int64 { //gd:RenderingDevice.draw_list_switch_to_next_pass_split
-	return []int64(class(self).DrawListSwitchToNextPassSplit(gd.Int(splits)).AsSlice())
+	return []int64(slices.Collect(class(self).DrawListSwitchToNextPassSplit(gd.Int(splits)).Values()))
 }
 
 /*
@@ -635,7 +639,7 @@ func (self Instance) ComputeListBindComputePipeline(compute_list int, compute_pi
 Sets the push constant data to [param buffer] for the specified [param compute_list]. The shader determines how this binary data is used. The buffer's size in bytes must also be specified in [param size_bytes] (this can be obtained by calling the [method PackedByteArray.size] method on the passed [param buffer]).
 */
 func (self Instance) ComputeListSetPushConstant(compute_list int, buffer []byte, size_bytes int) { //gd:RenderingDevice.compute_list_set_push_constant
-	class(self).ComputeListSetPushConstant(gd.Int(compute_list), gd.NewPackedByteSlice(buffer), gd.Int(size_bytes))
+	class(self).ComputeListSetPushConstant(gd.Int(compute_list), Packed.Bytes(Packed.New(buffer...)), gd.Int(size_bytes))
 }
 
 /*
@@ -865,7 +869,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 [b]Note:[/b] Not to be confused with [method RenderingServer.texture_2d_create], which creates the Godot-specific [Texture2D] resource as opposed to the graphics API's own texture type.
 */
 //go:nosplit
-func (self class) TextureCreate(format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView, data Array.Contains[gd.PackedByteArray]) gd.RID { //gd:RenderingDevice.texture_create
+func (self class) TextureCreate(format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView, data Array.Contains[Packed.Bytes]) gd.RID { //gd:RenderingDevice.texture_create
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(format[0])[0])
 	callframe.Arg(frame, pointers.Get(view[0])[0])
@@ -942,11 +946,11 @@ Updates texture data with new data, replacing the previous data in place. The up
 [b]Note:[/b] The existing [param texture] requires the [constant TEXTURE_USAGE_CAN_UPDATE_BIT] to be updatable.
 */
 //go:nosplit
-func (self class) TextureUpdate(texture gd.RID, layer gd.Int, data gd.PackedByteArray) gd.Error { //gd:RenderingDevice.texture_update
+func (self class) TextureUpdate(texture gd.RID, layer gd.Int, data Packed.Bytes) gd.Error { //gd:RenderingDevice.texture_update
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, layer)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -960,13 +964,13 @@ Returns the [param texture] data for the specified [param layer] as raw binary d
 [b]Note:[/b] [param texture] requires the [constant TEXTURE_USAGE_CAN_COPY_FROM_BIT] to be retrieved. Otherwise, an error is printed and a empty [PackedByteArray] is returned.
 */
 //go:nosplit
-func (self class) TextureGetData(texture gd.RID, layer gd.Int) gd.PackedByteArray { //gd:RenderingDevice.texture_get_data
+func (self class) TextureGetData(texture gd.RID, layer gd.Int) Packed.Bytes { //gd:RenderingDevice.texture_get_data
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1288,10 +1292,10 @@ It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 //go:nosplit
-func (self class) VertexBufferCreate(size_bytes gd.Int, data gd.PackedByteArray, use_as_storage bool) gd.RID { //gd:RenderingDevice.vertex_buffer_create
+func (self class) VertexBufferCreate(size_bytes gd.Int, data Packed.Bytes, use_as_storage bool) gd.RID { //gd:RenderingDevice.vertex_buffer_create
 	var frame = callframe.New()
 	callframe.Arg(frame, size_bytes)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	callframe.Arg(frame, use_as_storage)
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_vertex_buffer_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1318,12 +1322,12 @@ func (self class) VertexFormatCreate(vertex_descriptions Array.Contains[[1]gdcla
 Creates a vertex array based on the specified buffers. Optionally, [param offsets] (in bytes) may be defined for each buffer.
 */
 //go:nosplit
-func (self class) VertexArrayCreate(vertex_count gd.Int, vertex_format gd.Int, src_buffers Array.Contains[gd.RID], offsets gd.PackedInt64Array) gd.RID { //gd:RenderingDevice.vertex_array_create
+func (self class) VertexArrayCreate(vertex_count gd.Int, vertex_format gd.Int, src_buffers Array.Contains[gd.RID], offsets Packed.Array[int64]) gd.RID { //gd:RenderingDevice.vertex_array_create
 	var frame = callframe.New()
 	callframe.Arg(frame, vertex_count)
 	callframe.Arg(frame, vertex_format)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(src_buffers)))
-	callframe.Arg(frame, pointers.Get(offsets))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt64Array, int64](offsets))
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_vertex_array_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1336,11 +1340,11 @@ Creates a new index buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 //go:nosplit
-func (self class) IndexBufferCreate(size_indices gd.Int, format gdclass.RenderingDeviceIndexBufferFormat, data gd.PackedByteArray, use_restart_indices bool) gd.RID { //gd:RenderingDevice.index_buffer_create
+func (self class) IndexBufferCreate(size_indices gd.Int, format gdclass.RenderingDeviceIndexBufferFormat, data Packed.Bytes, use_restart_indices bool) gd.RID { //gd:RenderingDevice.index_buffer_create
 	var frame = callframe.New()
 	callframe.Arg(frame, size_indices)
 	callframe.Arg(frame, format)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	callframe.Arg(frame, use_restart_indices)
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_index_buffer_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1387,13 +1391,13 @@ Compiles a binary shader from [param spirv_data] and returns the compiled binary
 [param name] is an optional human-readable name that can be given to the compiled shader for organizational purposes.
 */
 //go:nosplit
-func (self class) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV, name String.Readable) gd.PackedByteArray { //gd:RenderingDevice.shader_compile_binary_from_spirv
+func (self class) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV, name String.Readable) Packed.Bytes { //gd:RenderingDevice.shader_compile_binary_from_spirv
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(spirv_data[0])[0])
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_shader_compile_binary_from_spirv, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1419,9 +1423,9 @@ Creates a new shader instance from a binary compiled shader. It can be accessed 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method. See also [method shader_compile_binary_from_spirv] and [method shader_create_from_spirv].
 */
 //go:nosplit
-func (self class) ShaderCreateFromBytecode(binary_data gd.PackedByteArray, placeholder_rid gd.RID) gd.RID { //gd:RenderingDevice.shader_create_from_bytecode
+func (self class) ShaderCreateFromBytecode(binary_data Packed.Bytes, placeholder_rid gd.RID) gd.RID { //gd:RenderingDevice.shader_create_from_bytecode
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(binary_data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](binary_data))))
 	callframe.Arg(frame, placeholder_rid)
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_shader_create_from_bytecode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1462,10 +1466,10 @@ Creates a new uniform buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 //go:nosplit
-func (self class) UniformBufferCreate(size_bytes gd.Int, data gd.PackedByteArray) gd.RID { //gd:RenderingDevice.uniform_buffer_create
+func (self class) UniformBufferCreate(size_bytes gd.Int, data Packed.Bytes) gd.RID { //gd:RenderingDevice.uniform_buffer_create
 	var frame = callframe.New()
 	callframe.Arg(frame, size_bytes)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_uniform_buffer_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1478,10 +1482,10 @@ Creates a [url=https://vkguide.dev/docs/chapter-4/storage_buffers/]storage buffe
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 //go:nosplit
-func (self class) StorageBufferCreate(size_bytes gd.Int, data gd.PackedByteArray, usage gdclass.RenderingDeviceStorageBufferUsage) gd.RID { //gd:RenderingDevice.storage_buffer_create
+func (self class) StorageBufferCreate(size_bytes gd.Int, data Packed.Bytes, usage gdclass.RenderingDeviceStorageBufferUsage) gd.RID { //gd:RenderingDevice.storage_buffer_create
 	var frame = callframe.New()
 	callframe.Arg(frame, size_bytes)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	callframe.Arg(frame, usage)
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_storage_buffer_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1495,11 +1499,11 @@ Creates a new texture buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 //go:nosplit
-func (self class) TextureBufferCreate(size_bytes gd.Int, format gdclass.RenderingDeviceDataFormat, data gd.PackedByteArray) gd.RID { //gd:RenderingDevice.texture_buffer_create
+func (self class) TextureBufferCreate(size_bytes gd.Int, format gdclass.RenderingDeviceDataFormat, data Packed.Bytes) gd.RID { //gd:RenderingDevice.texture_buffer_create
 	var frame = callframe.New()
 	callframe.Arg(frame, size_bytes)
 	callframe.Arg(frame, format)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_buffer_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1568,12 +1572,12 @@ Prints an error if:
 - a compute list is currently active (created by [method compute_list_begin])
 */
 //go:nosplit
-func (self class) BufferUpdate(buffer gd.RID, offset gd.Int, size_bytes gd.Int, data gd.PackedByteArray) gd.Error { //gd:RenderingDevice.buffer_update
+func (self class) BufferUpdate(buffer gd.RID, offset gd.Int, size_bytes gd.Int, data Packed.Bytes) gd.Error { //gd:RenderingDevice.buffer_update
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer)
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, size_bytes)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_buffer_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1606,14 +1610,14 @@ func (self class) BufferClear(buffer gd.RID, offset gd.Int, size_bytes gd.Int) g
 Returns a copy of the data of the specified [param buffer], optionally [param offset_bytes] and [param size_bytes] can be set to copy only a portion of the buffer.
 */
 //go:nosplit
-func (self class) BufferGetData(buffer gd.RID, offset_bytes gd.Int, size_bytes gd.Int) gd.PackedByteArray { //gd:RenderingDevice.buffer_get_data
+func (self class) BufferGetData(buffer gd.RID, offset_bytes gd.Int, size_bytes gd.Int) Packed.Bytes { //gd:RenderingDevice.buffer_get_data
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer)
 	callframe.Arg(frame, offset_bytes)
 	callframe.Arg(frame, size_bytes)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_buffer_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1772,14 +1776,14 @@ rd.draw_list_end()
 [/codeblock]
 */
 //go:nosplit
-func (self class) DrawListBegin(framebuffer gd.RID, initial_color_action gdclass.RenderingDeviceInitialAction, final_color_action gdclass.RenderingDeviceFinalAction, initial_depth_action gdclass.RenderingDeviceInitialAction, final_depth_action gdclass.RenderingDeviceFinalAction, clear_color_values gd.PackedColorArray, clear_depth gd.Float, clear_stencil gd.Int, region gd.Rect2) gd.Int { //gd:RenderingDevice.draw_list_begin
+func (self class) DrawListBegin(framebuffer gd.RID, initial_color_action gdclass.RenderingDeviceInitialAction, final_color_action gdclass.RenderingDeviceFinalAction, initial_depth_action gdclass.RenderingDeviceInitialAction, final_depth_action gdclass.RenderingDeviceFinalAction, clear_color_values Packed.Array[Color.RGBA], clear_depth gd.Float, clear_stencil gd.Int, region gd.Rect2) gd.Int { //gd:RenderingDevice.draw_list_begin
 	var frame = callframe.New()
 	callframe.Arg(frame, framebuffer)
 	callframe.Arg(frame, initial_color_action)
 	callframe.Arg(frame, final_color_action)
 	callframe.Arg(frame, initial_depth_action)
 	callframe.Arg(frame, final_depth_action)
-	callframe.Arg(frame, pointers.Get(clear_color_values))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](clear_color_values))
 	callframe.Arg(frame, clear_depth)
 	callframe.Arg(frame, clear_stencil)
 	callframe.Arg(frame, region)
@@ -1794,7 +1798,7 @@ func (self class) DrawListBegin(framebuffer gd.RID, initial_color_action gdclass
 This method does nothing and always returns an empty [PackedInt64Array].
 */
 //go:nosplit
-func (self class) DrawListBeginSplit(framebuffer gd.RID, splits gd.Int, initial_color_action gdclass.RenderingDeviceInitialAction, final_color_action gdclass.RenderingDeviceFinalAction, initial_depth_action gdclass.RenderingDeviceInitialAction, final_depth_action gdclass.RenderingDeviceFinalAction, clear_color_values gd.PackedColorArray, clear_depth gd.Float, clear_stencil gd.Int, region gd.Rect2, storage_textures Array.Contains[gd.RID]) gd.PackedInt64Array { //gd:RenderingDevice.draw_list_begin_split
+func (self class) DrawListBeginSplit(framebuffer gd.RID, splits gd.Int, initial_color_action gdclass.RenderingDeviceInitialAction, final_color_action gdclass.RenderingDeviceFinalAction, initial_depth_action gdclass.RenderingDeviceInitialAction, final_depth_action gdclass.RenderingDeviceFinalAction, clear_color_values Packed.Array[Color.RGBA], clear_depth gd.Float, clear_stencil gd.Int, region gd.Rect2, storage_textures Array.Contains[gd.RID]) Packed.Array[int64] { //gd:RenderingDevice.draw_list_begin_split
 	var frame = callframe.New()
 	callframe.Arg(frame, framebuffer)
 	callframe.Arg(frame, splits)
@@ -1802,14 +1806,14 @@ func (self class) DrawListBeginSplit(framebuffer gd.RID, splits gd.Int, initial_
 	callframe.Arg(frame, final_color_action)
 	callframe.Arg(frame, initial_depth_action)
 	callframe.Arg(frame, final_depth_action)
-	callframe.Arg(frame, pointers.Get(clear_color_values))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](clear_color_values))
 	callframe.Arg(frame, clear_depth)
 	callframe.Arg(frame, clear_stencil)
 	callframe.Arg(frame, region)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(storage_textures)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_draw_list_begin_split, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
+	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1884,10 +1888,10 @@ func (self class) DrawListBindIndexArray(draw_list gd.Int, index_array gd.RID) {
 Sets the push constant data to [param buffer] for the specified [param draw_list]. The shader determines how this binary data is used. The buffer's size in bytes must also be specified in [param size_bytes] (this can be obtained by calling the [method PackedByteArray.size] method on the passed [param buffer]).
 */
 //go:nosplit
-func (self class) DrawListSetPushConstant(draw_list gd.Int, buffer gd.PackedByteArray, size_bytes gd.Int) { //gd:RenderingDevice.draw_list_set_push_constant
+func (self class) DrawListSetPushConstant(draw_list gd.Int, buffer Packed.Bytes, size_bytes gd.Int) { //gd:RenderingDevice.draw_list_set_push_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, draw_list)
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	callframe.Arg(frame, size_bytes)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_draw_list_set_push_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1952,12 +1956,12 @@ func (self class) DrawListSwitchToNextPass() gd.Int { //gd:RenderingDevice.draw_
 This method does nothing and always returns an empty [PackedInt64Array].
 */
 //go:nosplit
-func (self class) DrawListSwitchToNextPassSplit(splits gd.Int) gd.PackedInt64Array { //gd:RenderingDevice.draw_list_switch_to_next_pass_split
+func (self class) DrawListSwitchToNextPassSplit(splits gd.Int) Packed.Array[int64] { //gd:RenderingDevice.draw_list_switch_to_next_pass_split
 	var frame = callframe.New()
 	callframe.Arg(frame, splits)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_draw_list_switch_to_next_pass_split, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
+	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -2020,10 +2024,10 @@ func (self class) ComputeListBindComputePipeline(compute_list gd.Int, compute_pi
 Sets the push constant data to [param buffer] for the specified [param compute_list]. The shader determines how this binary data is used. The buffer's size in bytes must also be specified in [param size_bytes] (this can be obtained by calling the [method PackedByteArray.size] method on the passed [param buffer]).
 */
 //go:nosplit
-func (self class) ComputeListSetPushConstant(compute_list gd.Int, buffer gd.PackedByteArray, size_bytes gd.Int) { //gd:RenderingDevice.compute_list_set_push_constant
+func (self class) ComputeListSetPushConstant(compute_list gd.Int, buffer Packed.Bytes, size_bytes gd.Int) { //gd:RenderingDevice.compute_list_set_push_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, compute_list)
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	callframe.Arg(frame, size_bytes)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_compute_list_set_push_constant, self.AsObject(), frame.Array(0), r_ret.Addr())

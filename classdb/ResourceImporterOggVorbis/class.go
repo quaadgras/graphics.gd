@@ -3,6 +3,7 @@ package ResourceImporterOggVorbis
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/ResourceImporter"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Ogg Vorbis is a lossy audio format, with better audio quality compared to [ResourceImporterMP3] at a given bitrate.
@@ -52,7 +56,7 @@ This method loads audio data from a PackedByteArray buffer into an AudioStreamOg
 */
 func LoadFromBuffer(buffer []byte) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_buffer
 	self := Instance{}
-	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromBuffer(gd.NewPackedByteSlice(buffer)))
+	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromBuffer(Packed.Bytes(Packed.New(buffer...))))
 }
 
 /*
@@ -86,9 +90,9 @@ func New() Instance {
 This method loads audio data from a PackedByteArray buffer into an AudioStreamOggVorbis object.
 */
 //go:nosplit
-func (self class) LoadFromBuffer(buffer gd.PackedByteArray) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_buffer
+func (self class) LoadFromBuffer(buffer Packed.Bytes) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceImporterOggVorbis.Bind_load_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamOggVorbis](r_ret.Get())}

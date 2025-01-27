@@ -4,6 +4,7 @@ package JavaScriptBridge
 import "unsafe"
 import "sync"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 The JavaScriptBridge singleton is implemented only in the Web export. It's used to access the browser's JavaScript context. This allows interaction with embedding pages or calling third-party JavaScript APIs.
@@ -77,7 +81,7 @@ Prompts the user to download a file containing the specified [param buffer]. The
 */
 func DownloadBuffer(buffer []byte, name string) { //gd:JavaScriptBridge.download_buffer
 	once.Do(singleton)
-	class(self).DownloadBuffer(gd.NewPackedByteSlice(buffer), String.New(name), String.New("application/octet-stream"))
+	class(self).DownloadBuffer(Packed.Bytes(Packed.New(buffer...)), String.New(name), String.New("application/octet-stream"))
 }
 
 /*
@@ -169,9 +173,9 @@ Prompts the user to download a file containing the specified [param buffer]. The
 [b]Note:[/b] Browsers might ask the user for permission or block the download if multiple download requests are made in a quick succession.
 */
 //go:nosplit
-func (self class) DownloadBuffer(buffer gd.PackedByteArray, name String.Readable, mime String.Readable) { //gd:JavaScriptBridge.download_buffer
+func (self class) DownloadBuffer(buffer Packed.Bytes, name String.Readable, mime String.Readable) { //gd:JavaScriptBridge.download_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(mime)))
 	var r_ret = callframe.Nil

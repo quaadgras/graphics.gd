@@ -3,6 +3,7 @@ package EditorNode3DGizmo
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Node3DGizmo"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Plane"
@@ -35,6 +37,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Gizmo that is used for providing custom visualization and editing (handles and subgizmos) for [Node3D] objects. Can be overridden to create custom gizmos, but for simple gizmos creating a [EditorNode3DGizmoPlugin] is usually recommended.
@@ -257,7 +261,7 @@ func (Instance) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camer
 		defer pointers.End(gd.InternalArray(frustum))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, camera, gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(frustum)))
-		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -299,14 +303,14 @@ If the [param cancel] argument is [code]true[/code], the [param restores] transf
 */
 func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids []int32, restores []Transform3D.BasisOrigin, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var ids = pointers.New[gd.PackedInt32Array](gd.UnsafeGet[gd.PackedPointers](p_args, 0))
-		defer pointers.End(ids)
+		var ids = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ids))
 		var restores = Array.Through(gd.ArrayProxy[gd.Transform3D]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalArray(restores))
 		var cancel = gd.UnsafeGet[bool](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, ids.AsSlice(), gd.ArrayAs[[]Transform3D.BasisOrigin](gd.InternalArray(restores)), cancel)
+		impl(self, slices.Collect(ids.Values()), gd.ArrayAs[[]Transform3D.BasisOrigin](gd.InternalArray(restores)), cancel)
 	}
 }
 
@@ -314,7 +318,7 @@ func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids []int32, res
 Adds lines to the gizmo (as sets of 2 points), with a given material. The lines are used for visualizing the gizmo. Call this method during [method _redraw].
 */
 func (self Instance) AddLines(lines []Vector3.XYZ, material [1]gdclass.Material) { //gd:EditorNode3DGizmo.add_lines
-	class(self).AddLines(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&lines))), material, false, gd.Color(gd.Color{1, 1, 1, 1}))
+	class(self).AddLines(Packed.New(lines...), material, false, gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
@@ -328,7 +332,7 @@ func (self Instance) AddMesh(mesh [1]gdclass.Mesh) { //gd:EditorNode3DGizmo.add_
 Adds the specified [param segments] to the gizmo's collision shape for picking. Call this method during [method _redraw].
 */
 func (self Instance) AddCollisionSegments(segments []Vector3.XYZ) { //gd:EditorNode3DGizmo.add_collision_segments
-	class(self).AddCollisionSegments(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&segments))))
+	class(self).AddCollisionSegments(Packed.New(segments...))
 }
 
 /*
@@ -351,7 +355,7 @@ The [param secondary] argument marks the added handles as secondary, meaning the
 There are virtual methods which will be called upon editing of these handles. Call this method during [method _redraw].
 */
 func (self Instance) AddHandles(handles []Vector3.XYZ, material [1]gdclass.Material, ids []int32) { //gd:EditorNode3DGizmo.add_handles
-	class(self).AddHandles(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&handles))), material, gd.NewPackedInt32Slice(ids), false, false)
+	class(self).AddHandles(Packed.New(handles...), material, Packed.New(ids...), false, false)
 }
 
 /*
@@ -400,7 +404,7 @@ func (self Instance) IsSubgizmoSelected(id int) bool { //gd:EditorNode3DGizmo.is
 Returns a list of the currently selected subgizmos. Can be used to highlight selected elements during [method _redraw].
 */
 func (self Instance) GetSubgizmoSelection() []int32 { //gd:EditorNode3DGizmo.get_subgizmo_selection
-	return []int32(class(self).GetSubgizmoSelection().AsSlice())
+	return []int32(slices.Collect(class(self).GetSubgizmoSelection().Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -560,7 +564,7 @@ func (class) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, camera [1]gd
 /*
 Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and a [param frustum], this method should return which subgizmos are contained within the frustum. The [param frustum] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 */
-func (class) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera3D, frustum Array.Contains[gd.Plane]) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera3D, frustum Array.Contains[gd.Plane]) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -569,7 +573,7 @@ func (class) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camera [
 		defer pointers.End(gd.InternalArray(frustum))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, camera, frustum)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
 		if !ok {
 			return
@@ -609,10 +613,10 @@ func (class) _get_subgizmo_transform(impl func(ptr unsafe.Pointer, id gd.Int) gd
 Override this method to commit a group of subgizmos being edited (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the [param restores] transforms as "undo".
 If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action.
 */
-func (class) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids gd.PackedInt32Array, restores Array.Contains[gd.Transform3D], cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids Packed.Array[int32], restores Array.Contains[gd.Transform3D], cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var ids = pointers.New[gd.PackedInt32Array](gd.UnsafeGet[gd.PackedPointers](p_args, 0))
-		defer pointers.End(ids)
+		var ids = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ids))
 		var restores = Array.Through(gd.ArrayProxy[gd.Transform3D]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalArray(restores))
 		var cancel = gd.UnsafeGet[bool](p_args, 2)
@@ -626,9 +630,9 @@ func (class) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids gd.PackedInt32A
 Adds lines to the gizmo (as sets of 2 points), with a given material. The lines are used for visualizing the gizmo. Call this method during [method _redraw].
 */
 //go:nosplit
-func (self class) AddLines(lines gd.PackedVector3Array, material [1]gdclass.Material, billboard bool, modulate gd.Color) { //gd:EditorNode3DGizmo.add_lines
+func (self class) AddLines(lines Packed.Array[Vector3.XYZ], material [1]gdclass.Material, billboard bool, modulate gd.Color) { //gd:EditorNode3DGizmo.add_lines
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(lines))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](lines))
 	callframe.Arg(frame, pointers.Get(material[0])[0])
 	callframe.Arg(frame, billboard)
 	callframe.Arg(frame, modulate)
@@ -656,9 +660,9 @@ func (self class) AddMesh(mesh [1]gdclass.Mesh, material [1]gdclass.Material, tr
 Adds the specified [param segments] to the gizmo's collision shape for picking. Call this method during [method _redraw].
 */
 //go:nosplit
-func (self class) AddCollisionSegments(segments gd.PackedVector3Array) { //gd:EditorNode3DGizmo.add_collision_segments
+func (self class) AddCollisionSegments(segments Packed.Array[Vector3.XYZ]) { //gd:EditorNode3DGizmo.add_collision_segments
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(segments))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](segments))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_add_collision_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -696,11 +700,11 @@ The [param secondary] argument marks the added handles as secondary, meaning the
 There are virtual methods which will be called upon editing of these handles. Call this method during [method _redraw].
 */
 //go:nosplit
-func (self class) AddHandles(handles gd.PackedVector3Array, material [1]gdclass.Material, ids gd.PackedInt32Array, billboard bool, secondary bool) { //gd:EditorNode3DGizmo.add_handles
+func (self class) AddHandles(handles Packed.Array[Vector3.XYZ], material [1]gdclass.Material, ids Packed.Array[int32], billboard bool, secondary bool) { //gd:EditorNode3DGizmo.add_handles
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(handles))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](handles))
 	callframe.Arg(frame, pointers.Get(material[0])[0])
-	callframe.Arg(frame, pointers.Get(ids))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](ids))
 	callframe.Arg(frame, billboard)
 	callframe.Arg(frame, secondary)
 	var r_ret = callframe.Nil
@@ -787,11 +791,11 @@ func (self class) IsSubgizmoSelected(id gd.Int) bool { //gd:EditorNode3DGizmo.is
 Returns a list of the currently selected subgizmos. Can be used to highlight selected elements during [method _redraw].
 */
 //go:nosplit
-func (self class) GetSubgizmoSelection() gd.PackedInt32Array { //gd:EditorNode3DGizmo.get_subgizmo_selection
+func (self class) GetSubgizmoSelection() Packed.Array[int32] { //gd:EditorNode3DGizmo.get_subgizmo_selection
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_get_subgizmo_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -4,6 +4,7 @@ package Engine
 import "unsafe"
 import "sync"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 The [Engine] singleton allows you to query and modify the project's run-time parameters, such as frames per second, time scale, and others. It also stores information about the current build of Godot, such as the current version.
@@ -931,11 +935,11 @@ func (self class) UnregisterSingleton(name String.Name) { //gd:Engine.unregister
 Returns a list of names of all available global singletons. See also [method get_singleton].
 */
 //go:nosplit
-func (self class) GetSingletonList() gd.PackedStringArray { //gd:Engine.get_singleton_list
+func (self class) GetSingletonList() Packed.Strings { //gd:Engine.get_singleton_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_singleton_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1188,6 +1192,10 @@ const (
 	ErrPrinterOnFire Error = 48
 )
 
+type Copyright struct {
+	Name  string `gd:"name"`
+	Parts []Part `gd:"parts"`
+}
 type Part struct {
 	Files     []string `gd:"files"`
 	Copyright []string `gd:"copyright"`
@@ -1219,8 +1227,4 @@ type AuthorInfo struct {
 	Founders        []string `gd:"founders"`
 	ProjectManagers []string `gd:"project_managers"`
 	Developers      []string `gd:"developers"`
-}
-type Copyright struct {
-	Name  string `gd:"name"`
-	Parts []Part `gd:"parts"`
 }

@@ -3,6 +3,7 @@ package TileSetAtlasSource
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/TileSetSource"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2i"
@@ -36,6 +38,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 An atlas is a grid of tiles laid out on a texture. Each tile in the grid must be exposed using [method create_tile]. Those tiles are then indexed using their coordinates in the grid.
@@ -95,7 +99,7 @@ func (self Instance) HasRoomForTile(atlas_coords Vector2i.XY, size Vector2i.XY, 
 Returns an array of tiles coordinates ID that will be automatically removed when modifying one or several of those properties: [param texture], [param margins], [param separation] or [param texture_region_size]. This can be used to undo changes that would have caused tiles data loss.
 */
 func (self Instance) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, margins Vector2i.XY, separation Vector2i.XY, texture_region_size Vector2i.XY) []Vector2.XY { //gd:TileSetAtlasSource.get_tiles_to_be_removed_on_change
-	return []Vector2.XY(class(self).GetTilesToBeRemovedOnChange(texture, gd.Vector2i(margins), gd.Vector2i(separation), gd.Vector2i(texture_region_size)).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).GetTilesToBeRemovedOnChange(texture, gd.Vector2i(margins), gd.Vector2i(separation), gd.Vector2i(texture_region_size)).Values()))
 }
 
 /*
@@ -509,7 +513,7 @@ func (self class) HasRoomForTile(atlas_coords gd.Vector2i, size gd.Vector2i, ani
 Returns an array of tiles coordinates ID that will be automatically removed when modifying one or several of those properties: [param texture], [param margins], [param separation] or [param texture_region_size]. This can be used to undo changes that would have caused tiles data loss.
 */
 //go:nosplit
-func (self class) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, margins gd.Vector2i, separation gd.Vector2i, texture_region_size gd.Vector2i) gd.PackedVector2Array { //gd:TileSetAtlasSource.get_tiles_to_be_removed_on_change
+func (self class) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, margins gd.Vector2i, separation gd.Vector2i, texture_region_size gd.Vector2i) Packed.Array[Vector2.XY] { //gd:TileSetAtlasSource.get_tiles_to_be_removed_on_change
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, margins)
@@ -517,7 +521,7 @@ func (self class) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, marg
 	callframe.Arg(frame, texture_region_size)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tiles_to_be_removed_on_change, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

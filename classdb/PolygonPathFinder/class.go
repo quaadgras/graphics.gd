@@ -3,6 +3,7 @@ package PolygonPathFinder
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 type Instance [1]gdclass.PolygonPathFinder
 
@@ -46,13 +50,13 @@ type Any interface {
 }
 
 func (self Instance) Setup(points []Vector2.XY, connections []int32) { //gd:PolygonPathFinder.setup
-	class(self).Setup(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedInt32Slice(connections))
+	class(self).Setup(Packed.New(points...), Packed.New(connections...))
 }
 func (self Instance) FindPath(from Vector2.XY, to Vector2.XY) []Vector2.XY { //gd:PolygonPathFinder.find_path
-	return []Vector2.XY(class(self).FindPath(gd.Vector2(from), gd.Vector2(to)).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).FindPath(gd.Vector2(from), gd.Vector2(to)).Values()))
 }
 func (self Instance) GetIntersections(from Vector2.XY, to Vector2.XY) []Vector2.XY { //gd:PolygonPathFinder.get_intersections
-	return []Vector2.XY(class(self).GetIntersections(gd.Vector2(from), gd.Vector2(to)).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).GetIntersections(gd.Vector2(from), gd.Vector2(to)).Values()))
 }
 func (self Instance) GetClosestPoint(point Vector2.XY) Vector2.XY { //gd:PolygonPathFinder.get_closest_point
 	return Vector2.XY(class(self).GetClosestPoint(gd.Vector2(point)))
@@ -90,35 +94,35 @@ func New() Instance {
 }
 
 //go:nosplit
-func (self class) Setup(points gd.PackedVector2Array, connections gd.PackedInt32Array) { //gd:PolygonPathFinder.setup
+func (self class) Setup(points Packed.Array[Vector2.XY], connections Packed.Array[int32]) { //gd:PolygonPathFinder.setup
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(points))
-	callframe.Arg(frame, pointers.Get(connections))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](connections))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonPathFinder.Bind_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) FindPath(from gd.Vector2, to gd.Vector2) gd.PackedVector2Array { //gd:PolygonPathFinder.find_path
+func (self class) FindPath(from gd.Vector2, to gd.Vector2) Packed.Array[Vector2.XY] { //gd:PolygonPathFinder.find_path
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonPathFinder.Bind_find_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) GetIntersections(from gd.Vector2, to gd.Vector2) gd.PackedVector2Array { //gd:PolygonPathFinder.get_intersections
+func (self class) GetIntersections(from gd.Vector2, to gd.Vector2) Packed.Array[Vector2.XY] { //gd:PolygonPathFinder.get_intersections
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonPathFinder.Bind_get_intersections, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

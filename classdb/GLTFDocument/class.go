@@ -3,6 +3,7 @@ package GLTFDocument
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 GLTFDocument supports reading data from a glTF file, buffer, or Godot scene. This data can then be written to the filesystem, buffer, or used to create a Godot scene.
@@ -61,7 +65,7 @@ Takes a [PackedByteArray] defining a GLTF and imports the data to the given [GLT
 [b]Note:[/b] The [param base_path] tells [method append_from_buffer] where to find dependencies and can be empty.
 */
 func (self Instance) AppendFromBuffer(bytes []byte, base_path string, state [1]gdclass.GLTFState) error { //gd:GLTFDocument.append_from_buffer
-	return error(gd.ToError(class(self).AppendFromBuffer(gd.NewPackedByteSlice(bytes), String.New(base_path), state, gd.Int(0))))
+	return error(gd.ToError(class(self).AppendFromBuffer(Packed.Bytes(Packed.New(bytes...)), String.New(base_path), state, gd.Int(0))))
 }
 
 /*
@@ -234,9 +238,9 @@ Takes a [PackedByteArray] defining a GLTF and imports the data to the given [GLT
 [b]Note:[/b] The [param base_path] tells [method append_from_buffer] where to find dependencies and can be empty.
 */
 //go:nosplit
-func (self class) AppendFromBuffer(bytes gd.PackedByteArray, base_path String.Readable, state [1]gdclass.GLTFState, flags gd.Int) gd.Error { //gd:GLTFDocument.append_from_buffer
+func (self class) AppendFromBuffer(bytes Packed.Bytes, base_path String.Readable, state [1]gdclass.GLTFState, flags gd.Int) gd.Error { //gd:GLTFDocument.append_from_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bytes))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes))))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(base_path)))
 	callframe.Arg(frame, pointers.Get(state[0])[0])
 	callframe.Arg(frame, flags)
@@ -285,12 +289,12 @@ func (self class) GenerateScene(state [1]gdclass.GLTFState, bake_fps gd.Float, t
 Takes a [GLTFState] object through the [param state] parameter and returns a GLTF [PackedByteArray].
 */
 //go:nosplit
-func (self class) GenerateBuffer(state [1]gdclass.GLTFState) gd.PackedByteArray { //gd:GLTFDocument.generate_buffer
+func (self class) GenerateBuffer(state [1]gdclass.GLTFState) Packed.Bytes { //gd:GLTFDocument.generate_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(state[0])[0])
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_generate_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

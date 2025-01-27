@@ -3,6 +3,7 @@ package VisualShader
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Shader"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This class provides a graph-like visual editor for creating a [Shader]. Although [VisualShader]s do not require coding, they share the same logic with script shaders. They use [VisualShaderNode]s that can be connected to each other to control the flow of the shader. The visual shader graph is converted to a script shader behind the scenes.
@@ -86,7 +90,7 @@ func (self Instance) GetNodePosition(atype gdclass.VisualShaderType, id int) Vec
 Returns the list of all nodes in the shader with the specified type.
 */
 func (self Instance) GetNodeList(atype gdclass.VisualShaderType) []int32 { //gd:VisualShader.get_node_list
-	return []int32(class(self).GetNodeList(atype).AsSlice())
+	return []int32(slices.Collect(class(self).GetNodeList(atype).Values()))
 }
 
 /*
@@ -289,12 +293,12 @@ func (self class) GetNodePosition(atype gdclass.VisualShaderType, id gd.Int) gd.
 Returns the list of all nodes in the shader with the specified type.
 */
 //go:nosplit
-func (self class) GetNodeList(atype gdclass.VisualShaderType) gd.PackedInt32Array { //gd:VisualShader.get_node_list
+func (self class) GetNodeList(atype gdclass.VisualShaderType) Packed.Array[int32] { //gd:VisualShader.get_node_list
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShader.Bind_get_node_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

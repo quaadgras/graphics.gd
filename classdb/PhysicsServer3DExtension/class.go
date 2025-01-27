@@ -3,6 +3,7 @@ package PhysicsServer3DExtension
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Transform3D"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This class extends [PhysicsServer3D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
@@ -768,7 +772,7 @@ func (Instance) _space_get_contacts(impl func(ptr unsafe.Pointer, space RID.Any)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space)
-		ptr, ok := pointers.End(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&ret))))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -2749,13 +2753,13 @@ func (class) _space_set_debug_contacts(impl func(ptr unsafe.Pointer, space gd.RI
 	}
 }
 
-func (class) _space_get_contacts(impl func(ptr unsafe.Pointer, space gd.RID) gd.PackedVector3Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _space_get_contacts(impl func(ptr unsafe.Pointer, space gd.RID) Packed.Array[Vector3.XYZ]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var space = gd.UnsafeGet[gd.RID](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](ret))
 
 		if !ok {
 			return

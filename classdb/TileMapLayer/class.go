@@ -3,6 +3,7 @@ package TileMapLayer
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -36,6 +38,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Node for 2D tile-based maps. A [TileMapLayer] uses a [TileSet] which contain a list of tiles which are used to create grid-based maps. Unlike the [TileMap] node, which is deprecated, [TileMapLayer] has only one layer of tiles. You can use several [TileMapLayer] to achieve the same result as a [TileMap] node.
@@ -342,7 +346,7 @@ func (self Instance) TileMapData() []byte {
 }
 
 func (self Instance) SetTileMapData(value []byte) {
-	class(self).SetTileMapDataFromArray(gd.NewPackedByteSlice(value))
+	class(self).SetTileMapDataFromArray(Packed.Bytes(Packed.New(value...)))
 }
 
 func (self Instance) Enabled() bool {
@@ -810,20 +814,20 @@ func (self class) LocalToMap(local_position gd.Vector2) gd.Vector2i { //gd:TileM
 }
 
 //go:nosplit
-func (self class) SetTileMapDataFromArray(tile_map_layer_data gd.PackedByteArray) { //gd:TileMapLayer.set_tile_map_data_from_array
+func (self class) SetTileMapDataFromArray(tile_map_layer_data Packed.Bytes) { //gd:TileMapLayer.set_tile_map_data_from_array
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(tile_map_layer_data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](tile_map_layer_data))))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_set_tile_map_data_from_array, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetTileMapDataAsArray() gd.PackedByteArray { //gd:TileMapLayer.get_tile_map_data_as_array
+func (self class) GetTileMapDataAsArray() Packed.Bytes { //gd:TileMapLayer.get_tile_map_data_as_array
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_tile_map_data_as_array, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

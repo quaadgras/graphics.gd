@@ -3,6 +3,7 @@ package MeshLibrary
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A library of meshes. Contains a list of [Mesh] resources, each with a name and ID. Each item can also include collision and navigation shapes. This resource is used in [GridMap].
@@ -194,7 +198,7 @@ func (self Instance) Clear() { //gd:MeshLibrary.clear
 Returns the list of item IDs in use.
 */
 func (self Instance) GetItemList() []int32 { //gd:MeshLibrary.get_item_list
-	return []int32(class(self).GetItemList().AsSlice())
+	return []int32(slices.Collect(class(self).GetItemList().Values()))
 }
 
 /*
@@ -496,11 +500,11 @@ func (self class) Clear() { //gd:MeshLibrary.clear
 Returns the list of item IDs in use.
 */
 //go:nosplit
-func (self class) GetItemList() gd.PackedInt32Array { //gd:MeshLibrary.get_item_list
+func (self class) GetItemList() Packed.Array[int32] { //gd:MeshLibrary.get_item_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

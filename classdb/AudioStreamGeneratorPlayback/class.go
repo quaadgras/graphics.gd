@@ -3,6 +3,7 @@ package AudioStreamGeneratorPlayback
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/AudioStreamPlaybackResampled"
 import "graphics.gd/classdb/AudioStreamPlayback"
 import "graphics.gd/variant/Vector2"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This class is meant to be used with [AudioStreamGenerator] to play back the generated audio in real-time.
@@ -65,7 +69,7 @@ func (self Instance) CanPushBuffer(amount int) bool { //gd:AudioStreamGeneratorP
 Pushes several audio data frames to the buffer. This is usually more efficient than [method push_frame] in C# and compiled languages via GDExtension, but [method push_buffer] may be [i]less[/i] efficient in GDScript.
 */
 func (self Instance) PushBuffer(frames []Vector2.XY) bool { //gd:AudioStreamGeneratorPlayback.push_buffer
-	return bool(class(self).PushBuffer(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&frames)))))
+	return bool(class(self).PushBuffer(Packed.New(frames...)))
 }
 
 /*
@@ -140,9 +144,9 @@ func (self class) CanPushBuffer(amount gd.Int) bool { //gd:AudioStreamGeneratorP
 Pushes several audio data frames to the buffer. This is usually more efficient than [method push_frame] in C# and compiled languages via GDExtension, but [method push_buffer] may be [i]less[/i] efficient in GDScript.
 */
 //go:nosplit
-func (self class) PushBuffer(frames gd.PackedVector2Array) bool { //gd:AudioStreamGeneratorPlayback.push_buffer
+func (self class) PushBuffer(frames Packed.Array[Vector2.XY]) bool { //gd:AudioStreamGeneratorPlayback.push_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(frames))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](frames))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_push_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

@@ -3,6 +3,7 @@ package XRInterfaceExtension
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Vector2"
@@ -37,6 +39,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 External XR interface plugins should inherit from this class.
@@ -284,7 +288,7 @@ func (Instance) _get_play_area(impl func(ptr unsafe.Pointer) []Vector3.XYZ) (cb 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&ret))))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -356,7 +360,7 @@ func (Instance) _get_projection_for_view(impl func(ptr unsafe.Pointer, view int,
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(view), Float.X(aspect), Float.X(z_near), Float.X(z_far))
-		ptr, ok := pointers.End(gd.NewPackedFloat64Slice(ret))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](Packed.New(ret...)))
 
 		if !ok {
 			return
@@ -436,7 +440,7 @@ func (Instance) _get_suggested_tracker_names(impl func(ptr unsafe.Pointer) []str
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
 			return
@@ -454,7 +458,7 @@ func (Instance) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_
 		defer pointers.End(gd.InternalStringName(tracker_name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, tracker_name.String())
-		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
 			return
@@ -720,11 +724,11 @@ func (class) _set_play_area_mode(impl func(ptr unsafe.Pointer, mode gdclass.XRIn
 /*
 Returns a [PackedVector3Array] that represents the play areas boundaries (if applicable).
 */
-func (class) _get_play_area(impl func(ptr unsafe.Pointer) gd.PackedVector3Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_play_area(impl func(ptr unsafe.Pointer) Packed.Array[Vector3.XYZ]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](ret))
 
 		if !ok {
 			return
@@ -784,7 +788,7 @@ func (class) _get_transform_for_view(impl func(ptr unsafe.Pointer, view gd.Int, 
 /*
 Returns the projection matrix for the given view as a [PackedFloat64Array].
 */
-func (class) _get_projection_for_view(impl func(ptr unsafe.Pointer, view gd.Int, aspect gd.Float, z_near gd.Float, z_far gd.Float) gd.PackedFloat64Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_projection_for_view(impl func(ptr unsafe.Pointer, view gd.Int, aspect gd.Float, z_near gd.Float, z_far gd.Float) Packed.Array[float64]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view = gd.UnsafeGet[gd.Int](p_args, 0)
 
@@ -796,7 +800,7 @@ func (class) _get_projection_for_view(impl func(ptr unsafe.Pointer, view gd.Int,
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, view, aspect, z_near, z_far)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](ret))
 
 		if !ok {
 			return
@@ -873,11 +877,11 @@ func (class) _end_frame(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCall
 /*
 Returns a [PackedStringArray] with tracker names configured by this interface. Note that user configuration can override this list.
 */
-func (class) _get_suggested_tracker_names(impl func(ptr unsafe.Pointer) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_suggested_tracker_names(impl func(ptr unsafe.Pointer) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
 		if !ok {
 			return
@@ -889,13 +893,13 @@ func (class) _get_suggested_tracker_names(impl func(ptr unsafe.Pointer) gd.Packe
 /*
 Returns a [PackedStringArray] with pose names configured by this interface. Note that user configuration can override this list.
 */
-func (class) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_name String.Name) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_name String.Name) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(tracker_name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, tracker_name)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
 		if !ok {
 			return

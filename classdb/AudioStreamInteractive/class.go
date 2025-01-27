@@ -3,6 +3,7 @@ package AudioStreamInteractive
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This is an audio stream that can playback music interactively, combining clips and a transition table. Clips must be added first, and the transition rules via the [method add_transition]. Additionally, this stream export a property parameter to control the playback via [AudioStreamPlayer], [AudioStreamPlayer2D], or [AudioStreamPlayer3D].
@@ -136,7 +140,7 @@ func (self Instance) EraseTransition(from_clip int, to_clip int) { //gd:AudioStr
 Return the list of transitions (from, to interleaved).
 */
 func (self Instance) GetTransitionList() []int32 { //gd:AudioStreamInteractive.get_transition_list
-	return []int32(class(self).GetTransitionList().AsSlice())
+	return []int32(slices.Collect(class(self).GetTransitionList().Values()))
 }
 
 /*
@@ -428,11 +432,11 @@ func (self class) EraseTransition(from_clip gd.Int, to_clip gd.Int) { //gd:Audio
 Return the list of transitions (from, to interleaved).
 */
 //go:nosplit
-func (self class) GetTransitionList() gd.PackedInt32Array { //gd:AudioStreamInteractive.get_transition_list
+func (self class) GetTransitionList() Packed.Array[int32] { //gd:AudioStreamInteractive.get_transition_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamInteractive.Bind_get_transition_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

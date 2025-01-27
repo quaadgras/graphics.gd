@@ -441,6 +441,7 @@ import (
 	internal "graphics.gd/internal"
 	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/Packed"
 )
 
 func btoi(b bool) int {
@@ -2346,7 +2347,7 @@ func linkCGO(API *gd.API) {
 	}
 }
 
-func makePackedFunctions[T gd.Packed[T], V comparable](prefix string) gd.PackedFunctionsFor[T, V] {
+func makePackedFunctions[T gd.Packed[T, V], V Packed.Type](prefix string) gd.PackedFunctionsFor[T, V] {
 	var API gd.PackedFunctionsFor[T, V]
 	packed_T_operator_index := dlsymGD("packed_" + prefix + "_operator_index")
 	API.SetIndex = func(t T, i gd.Int, v V) {

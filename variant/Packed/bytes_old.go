@@ -1,6 +1,7 @@
 // Package Packed provides functions for working with packed arrays.
 package Packed
 
+/*
 import (
 	"encoding/binary"
 	"encoding/hex"
@@ -471,3 +472,4 @@ func (array ByteArray) ToInt64Array() Int64Array { //gd:PackedByteArray.to_int64
 	}
 	return converted
 }
+*/

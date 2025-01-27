@@ -3,6 +3,7 @@ package ConcavePolygonShape2D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Shape2D"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
@@ -33,6 +35,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A 2D polyline shape, intended for use in physics. Used internally in [CollisionPolygon2D] when it's in [constant CollisionPolygon2D.BUILD_SEGMENTS] mode.
@@ -71,28 +75,28 @@ func New() Instance {
 }
 
 func (self Instance) Segments() []Vector2.XY {
-	return []Vector2.XY(class(self).GetSegments().AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).GetSegments().Values()))
 }
 
 func (self Instance) SetSegments(value []Vector2.XY) {
-	class(self).SetSegments(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
+	class(self).SetSegments(Packed.New(value...))
 }
 
 //go:nosplit
-func (self class) SetSegments(segments gd.PackedVector2Array) { //gd:ConcavePolygonShape2D.set_segments
+func (self class) SetSegments(segments Packed.Array[Vector2.XY]) { //gd:ConcavePolygonShape2D.set_segments
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(segments))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](segments))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConcavePolygonShape2D.Bind_set_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSegments() gd.PackedVector2Array { //gd:ConcavePolygonShape2D.get_segments
+func (self class) GetSegments() Packed.Array[Vector2.XY] { //gd:ConcavePolygonShape2D.get_segments
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConcavePolygonShape2D.Bind_get_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

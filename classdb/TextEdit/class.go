@@ -3,6 +3,7 @@ package TextEdit
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -39,6 +41,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A multiline text editor. It also has limited facilities for editing code, such as syntax highlighting support. For more advanced facilities for editing code, see [CodeEdit].
@@ -604,7 +608,7 @@ Returns the carets sorted by selection beginning from lowest line and column to 
 If [param include_ignored_carets] is [code]false[/code], carets from [method multicaret_edit_ignore_caret] will be ignored.
 */
 func (self Instance) GetSortedCarets() []int32 { //gd:TextEdit.get_sorted_carets
-	return []int32(class(self).GetSortedCarets(false).AsSlice())
+	return []int32(slices.Collect(class(self).GetSortedCarets(false).Values()))
 }
 
 /*
@@ -1312,7 +1316,7 @@ func (self Instance) AdjustCaretsAfterEdit(caret int, from_line int, from_col in
 Returns a list of caret indexes in their edit order, this done from bottom to top. Edit order refers to the way actions such as [method insert_text_at_caret] are applied.
 */
 func (self Instance) GetCaretIndexEditOrder() []int32 { //gd:TextEdit.get_caret_index_edit_order
-	return []int32(class(self).GetCaretIndexEditOrder().AsSlice())
+	return []int32(slices.Collect(class(self).GetCaretIndexEditOrder().Values()))
 }
 
 /*
@@ -2894,12 +2898,12 @@ Returns the carets sorted by selection beginning from lowest line and column to 
 If [param include_ignored_carets] is [code]false[/code], carets from [method multicaret_edit_ignore_caret] will be ignored.
 */
 //go:nosplit
-func (self class) GetSortedCarets(include_ignored_carets bool) gd.PackedInt32Array { //gd:TextEdit.get_sorted_carets
+func (self class) GetSortedCarets(include_ignored_carets bool) Packed.Array[int32] { //gd:TextEdit.get_sorted_carets
 	var frame = callframe.New()
 	callframe.Arg(frame, include_ignored_carets)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_sorted_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -3619,12 +3623,12 @@ func (self class) GetLineWrapIndexAtColumn(line gd.Int, column gd.Int) gd.Int { 
 Returns an array of [String]s representing each wrapped index.
 */
 //go:nosplit
-func (self class) GetLineWrappedText(line gd.Int) gd.PackedStringArray { //gd:TextEdit.get_line_wrapped_text
+func (self class) GetLineWrappedText(line gd.Int) Packed.Strings { //gd:TextEdit.get_line_wrapped_text
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrapped_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -4600,11 +4604,11 @@ func (self class) AdjustCaretsAfterEdit(caret gd.Int, from_line gd.Int, from_col
 Returns a list of caret indexes in their edit order, this done from bottom to top. Edit order refers to the way actions such as [method insert_text_at_caret] are applied.
 */
 //go:nosplit
-func (self class) GetCaretIndexEditOrder() gd.PackedInt32Array { //gd:TextEdit.get_caret_index_edit_order
+func (self class) GetCaretIndexEditOrder() Packed.Array[int32] { //gd:TextEdit.get_caret_index_edit_order
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_index_edit_order, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

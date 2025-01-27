@@ -5,11 +5,13 @@ package gd
 import (
 	"fmt"
 	"reflect"
+	"slices"
 
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
 	DictionaryType "graphics.gd/variant/Dictionary"
+	PackedType "graphics.gd/variant/Packed"
 	"graphics.gd/variant/Path"
 	StringType "graphics.gd/variant/String"
 	"runtime.link/api/xray"
@@ -413,40 +415,40 @@ func convertToGoSliceOf(rtype reflect.Type, value any) (reflect.Value, error) {
 	}
 	switch rtype.Kind() {
 	case reflect.Uint8:
-		packed, ok := value.(PackedByteArray)
+		packed, ok := value.(PackedType.Bytes)
 		if !ok {
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}
 		return reflect.ValueOf(packed.Bytes()).Convert(reflect.SliceOf(rtype)), nil
 	case reflect.Int32:
-		packed, ok := value.(PackedInt32Array)
+		packed, ok := value.(PackedType.Array[int32])
 		if !ok {
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}
-		return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
+		return reflect.ValueOf(slices.Collect(packed.Values())).Convert(reflect.SliceOf(rtype)), nil
 	case reflect.Int64:
-		packed, ok := value.(PackedInt64Array)
+		packed, ok := value.(PackedType.Array[int64])
 		if !ok {
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}
-		return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
+		return reflect.ValueOf(slices.Collect(packed.Values())).Convert(reflect.SliceOf(rtype)), nil
 	case reflect.Float32:
-		packed, ok := value.(PackedFloat32Array)
+		packed, ok := value.(PackedType.Array[float32])
 		if !ok {
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}
-		return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
+		return reflect.ValueOf(slices.Collect(packed.Values())).Convert(reflect.SliceOf(rtype)), nil
 	case reflect.Float64:
-		packed, ok := value.(PackedFloat64Array)
+		packed, ok := value.(PackedType.Array[float64])
 		if !ok {
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}
-		return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
+		return reflect.ValueOf(slices.Collect(packed.Values())).Convert(reflect.SliceOf(rtype)), nil
 	case reflect.String:
 		if value == nil {
 			return reflect.Zero(rtype), nil
 		}
-		packed, ok := value.(PackedStringArray)
+		packed, ok := value.(PackedType.Strings)
 		if !ok {
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}
@@ -454,29 +456,29 @@ func convertToGoSliceOf(rtype reflect.Type, value any) (reflect.Value, error) {
 	case reflect.Struct:
 		switch rtype {
 		case reflect.TypeFor[Vector2]():
-			packed, ok := value.(PackedVector2Array)
+			packed, ok := value.(PackedType.Array[Vector2])
 			if !ok {
 				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 			}
-			return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
+			return reflect.ValueOf(slices.Collect(packed.Values())).Convert(reflect.SliceOf(rtype)), nil
 		case reflect.TypeFor[Vector3]():
-			packed, ok := value.(PackedVector3Array)
+			packed, ok := value.(PackedType.Array[Vector3])
 			if !ok {
 				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 			}
-			return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
+			return reflect.ValueOf(slices.Collect(packed.Values())).Convert(reflect.SliceOf(rtype)), nil
 		case reflect.TypeFor[Color]():
-			packed, ok := value.(PackedColorArray)
+			packed, ok := value.(PackedType.Array[Color])
 			if !ok {
 				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 			}
-			return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
+			return reflect.ValueOf(slices.Collect(packed.Values())).Convert(reflect.SliceOf(rtype)), nil
 		case reflect.TypeFor[Vector4]():
-			packed, ok := value.(PackedVector4Array)
+			packed, ok := value.(PackedType.Array[Vector4])
 			if !ok {
 				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 			}
-			return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
+			return reflect.ValueOf(slices.Collect(packed.Values())).Convert(reflect.SliceOf(rtype)), nil
 		default:
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}

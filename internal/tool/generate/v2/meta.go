@@ -157,9 +157,27 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		return maybeInternal("GDExtensionInitializationLevel")
 	case "enum::GDExtensionManager.LoadStatus":
 		return "gdclass.GDExtensionManagerLoadStatus"
-	case "PackedStringArray", "PackedInt32Array", "PackedInt64Array", "PackedFloat32Array",
-		"PackedFloat64Array", "PackedVector2Array", "PackedVector3Array", "PackedVector4Array", "PackedColorArray", "PackedByteArray",
-		"Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
+	case "PackedInt32Array":
+		return "Packed.Array[int32]"
+	case "PackedInt64Array":
+		return "Packed.Array[int64]"
+	case "PackedFloat32Array":
+		return "Packed.Array[float32]"
+	case "PackedFloat64Array":
+		return "Packed.Array[float64]"
+	case "PackedVector2Array":
+		return "Packed.Array[Vector2.XY]"
+	case "PackedVector3Array":
+		return "Packed.Array[Vector3.XYZ]"
+	case "PackedVector4Array":
+		return "Packed.Array[Vector4.XYZW]"
+	case "PackedColorArray":
+		return "Packed.Array[Color.RGBA]"
+	case "PackedStringArray":
+		return "Packed.Strings"
+	case "PackedByteArray":
+		return "Packed.Bytes"
+	case "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
 		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "RID":
 		return maybeInternal(gdType)
 	case "NodePath":

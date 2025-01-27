@@ -3,6 +3,7 @@ package GLTFDocumentExtension
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Extends the functionality of the [GLTFDocument] class by allowing you to run arbitrary code at various stages of GLTF import or export.
@@ -172,8 +176,8 @@ func (Instance) _import_preflight(impl func(ptr unsafe.Pointer, state [1]gdclass
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(state[0])
-		var extensions = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
-		defer pointers.End(extensions)
+		var extensions = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPackedStrings(extensions))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, extensions.Strings())
 		gd.UnsafeSet(p_back, ret)
@@ -188,7 +192,7 @@ func (Instance) _get_supported_extensions(impl func(ptr unsafe.Pointer) []string
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
 			return
@@ -226,8 +230,8 @@ func (Instance) _parse_image_data(impl func(ptr unsafe.Pointer, state [1]gdclass
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(state[0])
-		var image_data = pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
-		defer pointers.End(image_data)
+		var image_data = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](image_data)))
 		var mime_type = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(mime_type))
 		var ret_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 3))})}
@@ -419,7 +423,7 @@ func (Instance) _get_saveable_image_formats(impl func(ptr unsafe.Pointer) []stri
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
 			return
@@ -449,7 +453,7 @@ func (Instance) _serialize_image_to_bytes(impl func(ptr unsafe.Pointer, state [1
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, image, gd.DictionaryAs[map[any]any](image_dict), image_format.String(), Float.X(lossy_quality))
-		ptr, ok := pointers.End(gd.NewPackedByteSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](Packed.Bytes(Packed.New(ret...)))))
 
 		if !ok {
 			return
@@ -565,13 +569,13 @@ func New() Instance {
 Part of the import process. This method is run first, before all other parts of the import process.
 The return value is used to determine if this [GLTFDocumentExtension] instance should be used for importing a given GLTF file. If [constant OK], the import will use this [GLTFDocumentExtension] instance. If not overridden, [constant OK] is returned.
 */
-func (class) _import_preflight(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, extensions gd.PackedStringArray) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _import_preflight(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, extensions Packed.Strings) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(state[0])
-		var extensions = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
-		defer pointers.End(extensions)
+		var extensions = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPackedStrings(extensions))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, extensions)
 		gd.UnsafeSet(p_back, ret)
@@ -582,11 +586,11 @@ func (class) _import_preflight(impl func(ptr unsafe.Pointer, state [1]gdclass.GL
 Part of the import process. This method is run after [method _import_preflight] and before [method _parse_node_extensions].
 Returns an array of the GLTF extensions supported by this GLTFDocumentExtension class. This is used to validate if a GLTF file with required extensions can be loaded.
 */
-func (class) _get_supported_extensions(impl func(ptr unsafe.Pointer) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_supported_extensions(impl func(ptr unsafe.Pointer) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
 		if !ok {
 			return
@@ -619,13 +623,13 @@ func (class) _parse_node_extensions(impl func(ptr unsafe.Pointer, state [1]gdcla
 Part of the import process. This method is run after [method _parse_node_extensions] and before [method _parse_texture_json].
 Runs when parsing image data from a GLTF file. The data could be sourced from a separate file, a URI, or a buffer, and then is passed as a byte array.
 */
-func (class) _parse_image_data(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, image_data gd.PackedByteArray, mime_type String.Readable, ret_image [1]gdclass.Image) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_image_data(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, image_data Packed.Bytes, mime_type String.Readable, ret_image [1]gdclass.Image) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(state[0])
-		var image_data = pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
-		defer pointers.End(image_data)
+		var image_data = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](image_data)))
 		var mime_type = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(mime_type))
 		var ret_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 3))})}
@@ -813,11 +817,11 @@ func (class) _export_preserialize(impl func(ptr unsafe.Pointer, state [1]gdclass
 Part of the export process. This method is run after [method _convert_scene_node] and before [method _export_node].
 Returns an array of the image formats that can be saved/exported by this extension. This extension will only be selected as the image exporter if the [GLTFDocument]'s [member GLTFDocument.image_format] is in this array. If this [GLTFDocumentExtension] is selected as the image exporter, one of the [method _save_image_at_path] or [method _serialize_image_to_bytes] methods will run next, otherwise [method _export_node] will run next. If the format name contains [code]"Lossy"[/code], the lossy quality slider will be displayed.
 */
-func (class) _get_saveable_image_formats(impl func(ptr unsafe.Pointer) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_saveable_image_formats(impl func(ptr unsafe.Pointer) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
 		if !ok {
 			return
@@ -831,7 +835,7 @@ Part of the export process. This method is run after [method _get_saveable_image
 This method is run when embedding images in the GLTF file. When images are saved separately, [method _save_image_at_path] runs instead. Note that these methods only run when this [GLTFDocumentExtension] is selected as the image exporter.
 This method must set the image MIME type in the [param image_dict] with the [code]"mimeType"[/code] key. For example, for a PNG image, it would be set to [code]"image/png"[/code]. The return value must be a [PackedByteArray] containing the image data.
 */
-func (class) _serialize_image_to_bytes(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, image [1]gdclass.Image, image_dict Dictionary.Any, image_format String.Readable, lossy_quality gd.Float) gd.PackedByteArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _serialize_image_to_bytes(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, image [1]gdclass.Image, image_dict Dictionary.Any, image_format String.Readable, lossy_quality gd.Float) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -847,7 +851,7 @@ func (class) _serialize_image_to_bytes(impl func(ptr unsafe.Pointer, state [1]gd
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, image, image_dict, image_format, lossy_quality)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ret)))
 
 		if !ok {
 			return

@@ -3,6 +3,7 @@ package SceneMultiplayer
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/MultiplayerAPI"
 import "graphics.gd/variant/Float"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This class is the default implementation of [MultiplayerAPI], used to provide multiplayer functionalities in Godot Engine.
@@ -68,14 +72,14 @@ func (self Instance) DisconnectPeer(id int) { //gd:SceneMultiplayer.disconnect_p
 Returns the IDs of the peers currently trying to authenticate with this [MultiplayerAPI].
 */
 func (self Instance) GetAuthenticatingPeers() []int32 { //gd:SceneMultiplayer.get_authenticating_peers
-	return []int32(class(self).GetAuthenticatingPeers().AsSlice())
+	return []int32(slices.Collect(class(self).GetAuthenticatingPeers().Values()))
 }
 
 /*
 Sends the specified [param data] to the remote peer identified by [param id] as part of an authentication message. This can be used to authenticate peers, and control when [signal MultiplayerAPI.peer_connected] is emitted (and the remote peer accepted as one of the connected peers).
 */
 func (self Instance) SendAuth(id int, data []byte) error { //gd:SceneMultiplayer.send_auth
-	return error(gd.ToError(class(self).SendAuth(gd.Int(id), gd.NewPackedByteSlice(data))))
+	return error(gd.ToError(class(self).SendAuth(gd.Int(id), Packed.Bytes(Packed.New(data...)))))
 }
 
 /*
@@ -90,7 +94,7 @@ func (self Instance) CompleteAuth(id int) error { //gd:SceneMultiplayer.complete
 Sends the given raw [param bytes] to a specific peer identified by [param id] (see [method MultiplayerPeer.set_target_peer]). Default ID is [code]0[/code], i.e. broadcast to all peers.
 */
 func (self Instance) SendBytes(bytes []byte) error { //gd:SceneMultiplayer.send_bytes
-	return error(gd.ToError(class(self).SendBytes(gd.NewPackedByteSlice(bytes), gd.Int(0), 2, gd.Int(0))))
+	return error(gd.ToError(class(self).SendBytes(Packed.Bytes(Packed.New(bytes...)), gd.Int(0), 2, gd.Int(0))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -222,11 +226,11 @@ func (self class) DisconnectPeer(id gd.Int) { //gd:SceneMultiplayer.disconnect_p
 Returns the IDs of the peers currently trying to authenticate with this [MultiplayerAPI].
 */
 //go:nosplit
-func (self class) GetAuthenticatingPeers() gd.PackedInt32Array { //gd:SceneMultiplayer.get_authenticating_peers
+func (self class) GetAuthenticatingPeers() Packed.Array[int32] { //gd:SceneMultiplayer.get_authenticating_peers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneMultiplayer.Bind_get_authenticating_peers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -235,10 +239,10 @@ func (self class) GetAuthenticatingPeers() gd.PackedInt32Array { //gd:SceneMulti
 Sends the specified [param data] to the remote peer identified by [param id] as part of an authentication message. This can be used to authenticate peers, and control when [signal MultiplayerAPI.peer_connected] is emitted (and the remote peer accepted as one of the connected peers).
 */
 //go:nosplit
-func (self class) SendAuth(id gd.Int, data gd.PackedByteArray) gd.Error { //gd:SceneMultiplayer.send_auth
+func (self class) SendAuth(id gd.Int, data Packed.Bytes) gd.Error { //gd:SceneMultiplayer.send_auth
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneMultiplayer.Bind_send_auth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -360,9 +364,9 @@ func (self class) IsServerRelayEnabled() bool { //gd:SceneMultiplayer.is_server_
 Sends the given raw [param bytes] to a specific peer identified by [param id] (see [method MultiplayerPeer.set_target_peer]). Default ID is [code]0[/code], i.e. broadcast to all peers.
 */
 //go:nosplit
-func (self class) SendBytes(bytes gd.PackedByteArray, id gd.Int, mode gdclass.MultiplayerPeerTransferMode, channel gd.Int) gd.Error { //gd:SceneMultiplayer.send_bytes
+func (self class) SendBytes(bytes Packed.Bytes, id gd.Int, mode gdclass.MultiplayerPeerTransferMode, channel gd.Int) gd.Error { //gd:SceneMultiplayer.send_bytes
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bytes))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes))))
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, channel)

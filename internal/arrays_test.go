@@ -18,15 +18,15 @@ func TestArrays(t *testing.T) {
 	if numbers.Index(0) != 1 {
 		t.Error("expected 1")
 	}
-	var packed Packed.Vector3Array
+	var packed Packed.Array[Vector3.XYZ]
 	packed.Append(Vector3.XYZ{1, 2, 3})
 	if packed.Index(0) != (Vector3.XYZ{1, 2, 3}) {
 		t.Error("expected 1, 2, 3")
 	}
-	var float32s Packed.Float32Array
+	var float32s Packed.Array[float32]
 	float32s.Resize(2)
-	float32s.Set(0, 1)
-	float32s.Set(1, 2)
+	float32s.SetIndex(0, 1)
+	float32s.SetIndex(1, 2)
 	if float32s.Index(0) != 1 {
 		t.Error("expected 1")
 	}

@@ -3,6 +3,7 @@ package ScriptLanguageExtension
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/ScriptLanguage"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 type Instance [1]gdclass.ScriptLanguageExtension
 
@@ -245,7 +249,7 @@ func (Instance) _get_reserved_words(impl func(ptr unsafe.Pointer) []string) (cb 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
 			return
@@ -266,7 +270,7 @@ func (Instance) _get_comment_delimiters(impl func(ptr unsafe.Pointer) []string) 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
 			return
@@ -278,7 +282,7 @@ func (Instance) _get_doc_comment_delimiters(impl func(ptr unsafe.Pointer) []stri
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
 			return
@@ -290,7 +294,7 @@ func (Instance) _get_string_delimiters(impl func(ptr unsafe.Pointer) []string) (
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
 			return
@@ -436,8 +440,8 @@ func (Instance) _make_function(impl func(ptr unsafe.Pointer, class_name string, 
 		defer pointers.End(gd.InternalString(class_name))
 		var function_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalString(function_name))
-		var function_args = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 2))
-		defer pointers.End(function_args)
+		var function_args = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 2)))))
+		defer pointers.End(gd.InternalPackedStrings(function_args))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, class_name.String(), function_name.String(), function_args.Strings())
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -753,7 +757,7 @@ func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer) []strin
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
 			return
@@ -940,11 +944,11 @@ func (class) _finish(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVir
 	}
 }
 
-func (class) _get_reserved_words(impl func(ptr unsafe.Pointer) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_reserved_words(impl func(ptr unsafe.Pointer) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
 		if !ok {
 			return
@@ -963,11 +967,11 @@ func (class) _is_control_flow_keyword(impl func(ptr unsafe.Pointer, keyword Stri
 	}
 }
 
-func (class) _get_comment_delimiters(impl func(ptr unsafe.Pointer) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_comment_delimiters(impl func(ptr unsafe.Pointer) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
 		if !ok {
 			return
@@ -976,11 +980,11 @@ func (class) _get_comment_delimiters(impl func(ptr unsafe.Pointer) gd.PackedStri
 	}
 }
 
-func (class) _get_doc_comment_delimiters(impl func(ptr unsafe.Pointer) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_doc_comment_delimiters(impl func(ptr unsafe.Pointer) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
 		if !ok {
 			return
@@ -989,11 +993,11 @@ func (class) _get_doc_comment_delimiters(impl func(ptr unsafe.Pointer) gd.Packed
 	}
 }
 
-func (class) _get_string_delimiters(impl func(ptr unsafe.Pointer) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_string_delimiters(impl func(ptr unsafe.Pointer) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
 		if !ok {
 			return
@@ -1144,14 +1148,14 @@ func (class) _find_function(impl func(ptr unsafe.Pointer, function String.Readab
 	}
 }
 
-func (class) _make_function(impl func(ptr unsafe.Pointer, class_name String.Readable, function_name String.Readable, function_args gd.PackedStringArray) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _make_function(impl func(ptr unsafe.Pointer, class_name String.Readable, function_name String.Readable, function_args Packed.Strings) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var class_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(class_name))
 		var function_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalString(function_name))
-		var function_args = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 2))
-		defer pointers.End(function_args)
+		var function_args = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 2)))))
+		defer pointers.End(gd.InternalPackedStrings(function_args))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, class_name, function_name, function_args)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -1488,11 +1492,11 @@ func (class) _reload_tool_script(impl func(ptr unsafe.Pointer, script [1]gdclass
 	}
 }
 
-func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
 		if !ok {
 			return

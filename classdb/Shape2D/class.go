@@ -3,6 +3,7 @@ package Shape2D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
@@ -36,6 +38,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Abstract base class for all 2D shapes, intended for use in physics.
@@ -74,7 +78,7 @@ A collision pair A, B can be used to calculate the collision normal with [code](
 This method needs the transformation matrix for this shape ([param local_xform]), the shape to check collisions with ([param with_shape]), and the transformation matrix of that shape ([param shape_xform]).
 */
 func (self Instance) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) []Vector2.XY { //gd:Shape2D.collide_and_get_contacts
-	return []Vector2.XY(class(self).CollideAndGetContacts(gd.Transform2D(local_xform), with_shape, gd.Transform2D(shape_xform)).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).CollideAndGetContacts(gd.Transform2D(local_xform), with_shape, gd.Transform2D(shape_xform)).Values()))
 }
 
 /*
@@ -84,7 +88,7 @@ A collision pair A, B can be used to calculate the collision normal with [code](
 This method needs the transformation matrix for this shape ([param local_xform]), the movement to test on this shape ([param local_motion]), the shape to check collisions with ([param with_shape]), the transformation matrix of that shape ([param shape_xform]), and the movement to test onto the other object ([param shape_motion]).
 */
 func (self Instance) CollideWithMotionAndGetContacts(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) []Vector2.XY { //gd:Shape2D.collide_with_motion_and_get_contacts
-	return []Vector2.XY(class(self).CollideWithMotionAndGetContacts(gd.Transform2D(local_xform), gd.Vector2(local_motion), with_shape, gd.Transform2D(shape_xform), gd.Vector2(shape_motion)).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).CollideWithMotionAndGetContacts(gd.Transform2D(local_xform), gd.Vector2(local_motion), with_shape, gd.Transform2D(shape_xform), gd.Vector2(shape_motion)).Values()))
 }
 
 /*
@@ -190,14 +194,14 @@ A collision pair A, B can be used to calculate the collision normal with [code](
 This method needs the transformation matrix for this shape ([param local_xform]), the shape to check collisions with ([param with_shape]), and the transformation matrix of that shape ([param shape_xform]).
 */
 //go:nosplit
-func (self class) CollideAndGetContacts(local_xform gd.Transform2D, with_shape [1]gdclass.Shape2D, shape_xform gd.Transform2D) gd.PackedVector2Array { //gd:Shape2D.collide_and_get_contacts
+func (self class) CollideAndGetContacts(local_xform gd.Transform2D, with_shape [1]gdclass.Shape2D, shape_xform gd.Transform2D) Packed.Array[Vector2.XY] { //gd:Shape2D.collide_and_get_contacts
 	var frame = callframe.New()
 	callframe.Arg(frame, local_xform)
 	callframe.Arg(frame, pointers.Get(with_shape[0])[0])
 	callframe.Arg(frame, shape_xform)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_collide_and_get_contacts, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -209,7 +213,7 @@ A collision pair A, B can be used to calculate the collision normal with [code](
 This method needs the transformation matrix for this shape ([param local_xform]), the movement to test on this shape ([param local_motion]), the shape to check collisions with ([param with_shape]), the transformation matrix of that shape ([param shape_xform]), and the movement to test onto the other object ([param shape_motion]).
 */
 //go:nosplit
-func (self class) CollideWithMotionAndGetContacts(local_xform gd.Transform2D, local_motion gd.Vector2, with_shape [1]gdclass.Shape2D, shape_xform gd.Transform2D, shape_motion gd.Vector2) gd.PackedVector2Array { //gd:Shape2D.collide_with_motion_and_get_contacts
+func (self class) CollideWithMotionAndGetContacts(local_xform gd.Transform2D, local_motion gd.Vector2, with_shape [1]gdclass.Shape2D, shape_xform gd.Transform2D, shape_motion gd.Vector2) Packed.Array[Vector2.XY] { //gd:Shape2D.collide_with_motion_and_get_contacts
 	var frame = callframe.New()
 	callframe.Arg(frame, local_xform)
 	callframe.Arg(frame, local_motion)
@@ -218,7 +222,7 @@ func (self class) CollideWithMotionAndGetContacts(local_xform gd.Transform2D, lo
 	callframe.Arg(frame, shape_motion)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_collide_with_motion_and_get_contacts, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -3,6 +3,7 @@ package NavigationPathQueryResult3D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This class stores the result of a 3D navigation path query from the [NavigationServer3D].
@@ -72,19 +76,19 @@ func New() Instance {
 }
 
 func (self Instance) Path() []Vector3.XYZ {
-	return []Vector3.XYZ(class(self).GetPath().AsSlice())
+	return []Vector3.XYZ(slices.Collect(class(self).GetPath().Values()))
 }
 
 func (self Instance) SetPath(value []Vector3.XYZ) {
-	class(self).SetPath(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&value))))
+	class(self).SetPath(Packed.New(value...))
 }
 
 func (self Instance) PathTypes() []int32 {
-	return []int32(class(self).GetPathTypes().AsSlice())
+	return []int32(slices.Collect(class(self).GetPathTypes().Values()))
 }
 
 func (self Instance) SetPathTypes(value []int32) {
-	class(self).SetPathTypes(gd.NewPackedInt32Slice(value))
+	class(self).SetPathTypes(Packed.New(value...))
 }
 
 func (self Instance) PathRids() []RID.Any {
@@ -96,47 +100,47 @@ func (self Instance) SetPathRids(value []RID.Any) {
 }
 
 func (self Instance) PathOwnerIds() []int64 {
-	return []int64(class(self).GetPathOwnerIds().AsSlice())
+	return []int64(slices.Collect(class(self).GetPathOwnerIds().Values()))
 }
 
 func (self Instance) SetPathOwnerIds(value []int64) {
-	class(self).SetPathOwnerIds(gd.NewPackedInt64Slice(value))
+	class(self).SetPathOwnerIds(Packed.New(value...))
 }
 
 //go:nosplit
-func (self class) SetPath(path gd.PackedVector3Array) { //gd:NavigationPathQueryResult3D.set_path
+func (self class) SetPath(path Packed.Array[Vector3.XYZ]) { //gd:NavigationPathQueryResult3D.set_path
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](path))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult3D.Bind_set_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPath() gd.PackedVector3Array { //gd:NavigationPathQueryResult3D.get_path
+func (self class) GetPath() Packed.Array[Vector3.XYZ] { //gd:NavigationPathQueryResult3D.get_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult3D.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetPathTypes(path_types gd.PackedInt32Array) { //gd:NavigationPathQueryResult3D.set_path_types
+func (self class) SetPathTypes(path_types Packed.Array[int32]) { //gd:NavigationPathQueryResult3D.set_path_types
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path_types))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](path_types))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult3D.Bind_set_path_types, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPathTypes() gd.PackedInt32Array { //gd:NavigationPathQueryResult3D.get_path_types
+func (self class) GetPathTypes() Packed.Array[int32] { //gd:NavigationPathQueryResult3D.get_path_types
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult3D.Bind_get_path_types, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -161,20 +165,20 @@ func (self class) GetPathRids() Array.Contains[gd.RID] { //gd:NavigationPathQuer
 }
 
 //go:nosplit
-func (self class) SetPathOwnerIds(path_owner_ids gd.PackedInt64Array) { //gd:NavigationPathQueryResult3D.set_path_owner_ids
+func (self class) SetPathOwnerIds(path_owner_ids Packed.Array[int64]) { //gd:NavigationPathQueryResult3D.set_path_owner_ids
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path_owner_ids))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt64Array, int64](path_owner_ids))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult3D.Bind_set_path_owner_ids, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPathOwnerIds() gd.PackedInt64Array { //gd:NavigationPathQueryResult3D.get_path_owner_ids
+func (self class) GetPathOwnerIds() Packed.Array[int64] { //gd:NavigationPathQueryResult3D.get_path_owner_ids
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult3D.Bind_get_path_owner_ids, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
+	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

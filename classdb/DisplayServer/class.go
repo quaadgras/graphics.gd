@@ -4,6 +4,7 @@ package DisplayServer
 import "unsafe"
 import "sync"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Rect2"
@@ -38,6 +40,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [DisplayServer] handles everything related to window management. It is separated from [OS] as a single operating system may support multiple display servers.
@@ -1096,7 +1100,7 @@ Returns the list of Godot window IDs belonging to this process.
 */
 func GetWindowList() []int32 { //gd:DisplayServer.get_window_list
 	once.Do(singleton)
-	return []int32(class(self).GetWindowList().AsSlice())
+	return []int32(slices.Collect(class(self).GetWindowList().Values()))
 }
 
 /*
@@ -1198,7 +1202,7 @@ DisplayServer.WindowSetMousePassthrough(new Vector2[] {});
 */
 func WindowSetMousePassthrough(region []Vector2.XY) { //gd:DisplayServer.window_set_mouse_passthrough
 	once.Do(singleton)
-	class(self).WindowSetMousePassthrough(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&region))), gd.Int(0))
+	class(self).WindowSetMousePassthrough(Packed.New(region...), gd.Int(0))
 }
 
 /*
@@ -1630,7 +1634,7 @@ Shows a text dialog which uses the operating system's native look-and-feel. [par
 */
 func DialogShow(title string, description string, buttons []string, callback func(button int)) error { //gd:DisplayServer.dialog_show
 	once.Do(singleton)
-	return error(gd.ToError(class(self).DialogShow(String.New(title), String.New(description), gd.NewPackedStringSlice(buttons), Callable.New(callback))))
+	return error(gd.ToError(class(self).DialogShow(String.New(title), String.New(description), Packed.MakeStrings(buttons...), Callable.New(callback))))
 }
 
 /*
@@ -1654,7 +1658,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 */
 func FileDialogShow(title string, current_directory string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int)) error { //gd:DisplayServer.file_dialog_show
 	once.Do(singleton)
-	return error(gd.ToError(class(self).FileDialogShow(String.New(title), String.New(current_directory), String.New(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), Callable.New(callback))))
+	return error(gd.ToError(class(self).FileDialogShow(String.New(title), String.New(current_directory), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), Callable.New(callback))))
 }
 
 /*
@@ -1673,7 +1677,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 */
 func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, options []FileDialogOption, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any)) error { //gd:DisplayServer.file_dialog_with_options_show
 	once.Do(singleton)
-	return error(gd.ToError(class(self).FileDialogWithOptionsShow(String.New(title), String.New(current_directory), String.New(root), String.New(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback))))
+	return error(gd.ToError(class(self).FileDialogWithOptionsShow(String.New(title), String.New(current_directory), String.New(root), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback))))
 }
 
 /*
@@ -2936,12 +2940,12 @@ Returns an [PackedStringArray] of voice identifiers for the [param language].
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsGetVoicesForLanguage(language String.Readable) gd.PackedStringArray { //gd:DisplayServer.tts_get_voices_for_language
+func (self class) TtsGetVoicesForLanguage(language String.Readable) Packed.Strings { //gd:DisplayServer.tts_get_voices_for_language
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_get_voices_for_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -3569,11 +3573,11 @@ Returns the list of Godot window IDs belonging to this process.
 [b]Note:[/b] Native dialogs are not included in this list.
 */
 //go:nosplit
-func (self class) GetWindowList() gd.PackedInt32Array { //gd:DisplayServer.get_window_list
+func (self class) GetWindowList() Packed.Array[int32] { //gd:DisplayServer.get_window_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_window_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -3716,9 +3720,9 @@ DisplayServer.WindowSetMousePassthrough(new Vector2[] {});
 [b]Note:[/b] This method is implemented on Linux (X11), macOS and Windows.
 */
 //go:nosplit
-func (self class) WindowSetMousePassthrough(region gd.PackedVector2Array, window_id gd.Int) { //gd:DisplayServer.window_set_mouse_passthrough
+func (self class) WindowSetMousePassthrough(region Packed.Array[Vector2.XY], window_id gd.Int) { //gd:DisplayServer.window_set_mouse_passthrough
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(region))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](region))
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_mouse_passthrough, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4403,11 +4407,11 @@ Shows a text dialog which uses the operating system's native look-and-feel. [par
 [b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG] feature. Supported platforms include macOS and Windows.
 */
 //go:nosplit
-func (self class) DialogShow(title String.Readable, description String.Readable, buttons gd.PackedStringArray, callback Callable.Function) gd.Error { //gd:DisplayServer.dialog_show
+func (self class) DialogShow(title String.Readable, description String.Readable, buttons Packed.Strings, callback Callable.Function) gd.Error { //gd:DisplayServer.dialog_show
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(description)))
-	callframe.Arg(frame, pointers.Get(buttons))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(buttons)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_dialog_show, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4445,14 +4449,14 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogShow(title String.Readable, current_directory String.Readable, filename String.Readable, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, callback Callable.Function) gd.Error { //gd:DisplayServer.file_dialog_show
+func (self class) FileDialogShow(title String.Readable, current_directory String.Readable, filename String.Readable, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters Packed.Strings, callback Callable.Function) gd.Error { //gd:DisplayServer.file_dialog_show
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(current_directory)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
 	callframe.Arg(frame, show_hidden)
 	callframe.Arg(frame, mode)
-	callframe.Arg(frame, pointers.Get(filters))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(filters)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_file_dialog_show, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4476,7 +4480,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogWithOptionsShow(title String.Readable, current_directory String.Readable, root String.Readable, filename String.Readable, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, options Array.Contains[Dictionary.Any], callback Callable.Function) gd.Error { //gd:DisplayServer.file_dialog_with_options_show
+func (self class) FileDialogWithOptionsShow(title String.Readable, current_directory String.Readable, root String.Readable, filename String.Readable, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters Packed.Strings, options Array.Contains[Dictionary.Any], callback Callable.Function) gd.Error { //gd:DisplayServer.file_dialog_with_options_show
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(current_directory)))
@@ -4484,7 +4488,7 @@ func (self class) FileDialogWithOptionsShow(title String.Readable, current_direc
 	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
 	callframe.Arg(frame, show_hidden)
 	callframe.Arg(frame, mode)
-	callframe.Arg(frame, pointers.Get(filters))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(filters)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(options)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -5713,13 +5717,13 @@ const (
 	MouseButtonMaskMbXbutton2 MouseButtonMask = 256
 )
 
-type FileDialogOption struct {
-	Name    string   `gd:"name"`
-	Values  []string `gd:"values"`
-	Default int      `gd:"default"`
-}
 type TextToSpeechVoice struct {
 	Name     string `gd:"name"`
 	ID       string `gd:"id"`
 	Language string `gd:"language"`
+}
+type FileDialogOption struct {
+	Name    string   `gd:"name"`
+	Values  []string `gd:"values"`
+	Default int      `gd:"default"`
 }

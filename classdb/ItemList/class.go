@@ -3,6 +3,7 @@ package ItemList
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -38,6 +40,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This control provides a vertical list of selectable items that may be in a single or in multiple columns, with each item having options for text and an icon. Tooltips are supported and may be different for every item in the list.
@@ -310,7 +314,7 @@ func (self Instance) IsSelected(idx int) bool { //gd:ItemList.is_selected
 Returns an array with the indexes of the selected items.
 */
 func (self Instance) GetSelectedItems() []int32 { //gd:ItemList.get_selected_items
-	return []int32(class(self).GetSelectedItems().AsSlice())
+	return []int32(slices.Collect(class(self).GetSelectedItems().Values()))
 }
 
 /*
@@ -992,11 +996,11 @@ func (self class) IsSelected(idx gd.Int) bool { //gd:ItemList.is_selected
 Returns an array with the indexes of the selected items.
 */
 //go:nosplit
-func (self class) GetSelectedItems() gd.PackedInt32Array { //gd:ItemList.get_selected_items
+func (self class) GetSelectedItems() Packed.Array[int32] { //gd:ItemList.get_selected_items
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_selected_items, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

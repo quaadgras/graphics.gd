@@ -33,12 +33,12 @@ func (p PackedStringArray) Strings() []string {
 	return s
 }
 
-func (p PackedByteArray) Index(idx Int) Int {
-	return Int(Global.PackedByteArray.Index(p, idx))
+func (p PackedByteArray) Index(idx Int) byte {
+	return Global.PackedByteArray.Index(p, idx)
 }
 func (p PackedByteArray) ToByteArray() PackedByteArray { return p.Duplicate() }
-func (p PackedByteArray) SetIndex(idx Int, value Int) {
-	Global.PackedByteArray.SetIndex(p, idx, byte(value))
+func (p PackedByteArray) SetIndex(idx Int, value byte) {
+	Global.PackedByteArray.SetIndex(p, idx, value)
 }
 
 // Bytes returns a copy of the byte array as a byte slice.
@@ -57,12 +57,11 @@ func (p PackedByteArray) Free() {
 	}
 }
 
-func (p PackedInt32Array) Index(idx Int) Int {
-	return Int(Global.PackedInt32Array.Index(p, idx))
+func (p PackedInt32Array) Index(idx Int) int32 {
+	return Global.PackedInt32Array.Index(p, idx)
 }
-
-func (p PackedInt32Array) SetIndex(idx Int, value Int) {
-	Global.PackedInt32Array.SetIndex(p, idx, int32(value))
+func (p PackedInt32Array) SetIndex(idx Int, value int32) {
+	Global.PackedInt32Array.SetIndex(p, idx, value)
 }
 
 func (p PackedInt32Array) Free() {
@@ -76,12 +75,12 @@ func (p PackedInt32Array) Free() {
 func (p PackedInt32Array) Len() int { return int(p.Size()) }
 func (p PackedInt32Array) Cap() int { return int(p.Size()) }
 
-func (p PackedInt64Array) Index(idx Int) Int {
-	return Int(Global.PackedInt64Array.Index(p, idx))
+func (p PackedInt64Array) Index(idx Int) int64 {
+	return Global.PackedInt64Array.Index(p, idx)
 }
 
-func (p PackedInt64Array) SetIndex(idx Int, value Int) {
-	Global.PackedInt64Array.SetIndex(p, idx, int64(value))
+func (p PackedInt64Array) SetIndex(idx Int, value int64) {
+	Global.PackedInt64Array.SetIndex(p, idx, value)
 }
 
 func (p PackedInt64Array) Free() {
@@ -95,12 +94,12 @@ func (p PackedInt64Array) Free() {
 func (p PackedInt64Array) Len() int { return int(p.Size()) }
 func (p PackedInt64Array) Cap() int { return int(p.Size()) }
 
-func (p PackedFloat32Array) Index(idx Int) Float {
-	return Float(Global.PackedFloat32Array.Index(p, idx))
+func (p PackedFloat32Array) Index(idx Int) float32 {
+	return float32(Global.PackedFloat32Array.Index(p, idx))
 }
 
-func (p PackedFloat32Array) SetIndex(idx Int, value Float) {
-	Global.PackedFloat32Array.SetIndex(p, idx, float32(value))
+func (p PackedFloat32Array) SetIndex(idx Int, value float32) {
+	Global.PackedFloat32Array.SetIndex(p, idx, value)
 }
 
 func (p PackedFloat32Array) Free() {
@@ -114,12 +113,12 @@ func (p PackedFloat32Array) Free() {
 func (p PackedFloat32Array) Len() int { return int(p.Size()) }
 func (p PackedFloat32Array) Cap() int { return int(p.Size()) }
 
-func (p PackedFloat64Array) Index(idx Int) Float {
-	return Float(Global.PackedFloat64Array.Index(p, idx))
+func (p PackedFloat64Array) Index(idx Int) float64 {
+	return Global.PackedFloat64Array.Index(p, idx)
 }
 
-func (p PackedFloat64Array) SetIndex(idx Int, value Float) {
-	Global.PackedFloat64Array.SetIndex(p, idx, float64(value))
+func (p PackedFloat64Array) SetIndex(idx Int, value float64) {
+	Global.PackedFloat64Array.SetIndex(p, idx, value)
 }
 
 func (p PackedFloat64Array) Free() {

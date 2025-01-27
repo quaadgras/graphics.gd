@@ -3,6 +3,7 @@ package AESContext
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +32,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This class holds the context information required for encryption and decryption operations with AES (Advanced Encryption Standard). Both AES-ECB and AES-CBC modes are supported.
@@ -122,7 +126,7 @@ type Any interface {
 Start the AES context in the given [param mode]. A [param key] of either 16 or 32 bytes must always be provided, while an [param iv] (initialization vector) of exactly 16 bytes, is only needed when [param mode] is either [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
 func (self Instance) Start(mode gdclass.AESContextMode, key []byte) error { //gd:AESContext.start
-	return error(gd.ToError(class(self).Start(mode, gd.NewPackedByteSlice(key), gd.NewPackedByteSlice([1][]byte{}[0]))))
+	return error(gd.ToError(class(self).Start(mode, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New([1][]byte{}[0]...)))))
 }
 
 /*
@@ -130,7 +134,7 @@ Run the desired operation for this AES context. Will return a [PackedByteArray] 
 [b]Note:[/b] The size of [param src] must be a multiple of 16. Apply some padding if needed.
 */
 func (self Instance) Update(src []byte) []byte { //gd:AESContext.update
-	return []byte(class(self).Update(gd.NewPackedByteSlice(src)).Bytes())
+	return []byte(class(self).Update(Packed.Bytes(Packed.New(src...))).Bytes())
 }
 
 /*
@@ -171,11 +175,11 @@ func New() Instance {
 Start the AES context in the given [param mode]. A [param key] of either 16 or 32 bytes must always be provided, while an [param iv] (initialization vector) of exactly 16 bytes, is only needed when [param mode] is either [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
 //go:nosplit
-func (self class) Start(mode gdclass.AESContextMode, key gd.PackedByteArray, iv gd.PackedByteArray) gd.Error { //gd:AESContext.start
+func (self class) Start(mode gdclass.AESContextMode, key Packed.Bytes, iv Packed.Bytes) gd.Error { //gd:AESContext.start
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	callframe.Arg(frame, pointers.Get(key))
-	callframe.Arg(frame, pointers.Get(iv))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](iv))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_start, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -188,12 +192,12 @@ Run the desired operation for this AES context. Will return a [PackedByteArray] 
 [b]Note:[/b] The size of [param src] must be a multiple of 16. Apply some padding if needed.
 */
 //go:nosplit
-func (self class) Update(src gd.PackedByteArray) gd.PackedByteArray { //gd:AESContext.update
+func (self class) Update(src Packed.Bytes) Packed.Bytes { //gd:AESContext.update
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(src))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](src))))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_update, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -203,11 +207,11 @@ Get the current IV state for this context (IV gets updated when calling [method 
 [b]Note:[/b] This function only makes sense when the context is started with [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
 //go:nosplit
-func (self class) GetIvState() gd.PackedByteArray { //gd:AESContext.get_iv_state
+func (self class) GetIvState() Packed.Bytes { //gd:AESContext.get_iv_state
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_get_iv_state, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

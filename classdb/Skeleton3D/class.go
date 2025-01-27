@@ -3,6 +3,7 @@ package Skeleton3D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Transform3D"
@@ -36,6 +38,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [Skeleton3D] provides an interface for managing a hierarchy of bones, including pose, rest and animation (see [Animation]). It can also use ragdoll physics.
@@ -132,14 +136,14 @@ func (self Instance) UnparentBoneAndRest(bone_idx int) { //gd:Skeleton3D.unparen
 Returns an array containing the bone indexes of all the child node of the passed in bone, [param bone_idx].
 */
 func (self Instance) GetBoneChildren(bone_idx int) []int32 { //gd:Skeleton3D.get_bone_children
-	return []int32(class(self).GetBoneChildren(gd.Int(bone_idx)).AsSlice())
+	return []int32(slices.Collect(class(self).GetBoneChildren(gd.Int(bone_idx)).Values()))
 }
 
 /*
 Returns an array with all of the bones that are parentless. Another way to look at this is that it returns the indexes of all the bones that are not dependent or modified by other bones in the Skeleton.
 */
 func (self Instance) GetParentlessBones() []int32 { //gd:Skeleton3D.get_parentless_bones
-	return []int32(class(self).GetParentlessBones().AsSlice())
+	return []int32(slices.Collect(class(self).GetParentlessBones().Values()))
 }
 
 /*
@@ -556,12 +560,12 @@ func (self class) UnparentBoneAndRest(bone_idx gd.Int) { //gd:Skeleton3D.unparen
 Returns an array containing the bone indexes of all the child node of the passed in bone, [param bone_idx].
 */
 //go:nosplit
-func (self class) GetBoneChildren(bone_idx gd.Int) gd.PackedInt32Array { //gd:Skeleton3D.get_bone_children
+func (self class) GetBoneChildren(bone_idx gd.Int) Packed.Array[int32] { //gd:Skeleton3D.get_bone_children
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_children, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -570,11 +574,11 @@ func (self class) GetBoneChildren(bone_idx gd.Int) gd.PackedInt32Array { //gd:Sk
 Returns an array with all of the bones that are parentless. Another way to look at this is that it returns the indexes of all the bones that are not dependent or modified by other bones in the Skeleton.
 */
 //go:nosplit
-func (self class) GetParentlessBones() gd.PackedInt32Array { //gd:Skeleton3D.get_parentless_bones
+func (self class) GetParentlessBones() Packed.Array[int32] { //gd:Skeleton3D.get_parentless_bones
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_parentless_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

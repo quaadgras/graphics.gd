@@ -3,6 +3,7 @@ package Image
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Rect2i"
@@ -35,6 +37,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Native image datatype. Contains image data which can be converted to an [ImageTexture] and provides commonly used [i]image processing[/i] methods. The maximum width and height for an [Image] are [constant MAX_WIDTH] and [constant MAX_HEIGHT].
@@ -199,14 +203,14 @@ Creates a new image of given size and format. See [enum Format] constants. Fills
 */
 func CreateFromData(width int, height int, use_mipmaps bool, format gdclass.ImageFormat, data []byte) [1]gdclass.Image { //gd:Image.create_from_data
 	self := Instance{}
-	return [1]gdclass.Image(class(self).CreateFromData(gd.Int(width), gd.Int(height), use_mipmaps, format, gd.NewPackedByteSlice(data)))
+	return [1]gdclass.Image(class(self).CreateFromData(gd.Int(width), gd.Int(height), use_mipmaps, format, Packed.Bytes(Packed.New(data...))))
 }
 
 /*
 Overwrites data of an existing [Image]. Non-static equivalent of [method create_from_data].
 */
 func (self Instance) SetData(width int, height int, use_mipmaps bool, format gdclass.ImageFormat, data []byte) { //gd:Image.set_data
-	class(self).SetData(gd.Int(width), gd.Int(height), use_mipmaps, format, gd.NewPackedByteSlice(data))
+	class(self).SetData(gd.Int(width), gd.Int(height), use_mipmaps, format, Packed.Bytes(Packed.New(data...)))
 }
 
 /*
@@ -553,21 +557,21 @@ func (self Instance) AdjustBcs(brightness Float.X, contrast Float.X, saturation 
 Loads an image from the binary contents of a PNG file.
 */
 func (self Instance) LoadPngFromBuffer(buffer []byte) error { //gd:Image.load_png_from_buffer
-	return error(gd.ToError(class(self).LoadPngFromBuffer(gd.NewPackedByteSlice(buffer))))
+	return error(gd.ToError(class(self).LoadPngFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 /*
 Loads an image from the binary contents of a JPEG file.
 */
 func (self Instance) LoadJpgFromBuffer(buffer []byte) error { //gd:Image.load_jpg_from_buffer
-	return error(gd.ToError(class(self).LoadJpgFromBuffer(gd.NewPackedByteSlice(buffer))))
+	return error(gd.ToError(class(self).LoadJpgFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 /*
 Loads an image from the binary contents of a WebP file.
 */
 func (self Instance) LoadWebpFromBuffer(buffer []byte) error { //gd:Image.load_webp_from_buffer
-	return error(gd.ToError(class(self).LoadWebpFromBuffer(gd.NewPackedByteSlice(buffer))))
+	return error(gd.ToError(class(self).LoadWebpFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 /*
@@ -575,7 +579,7 @@ Loads an image from the binary contents of a TGA file.
 [b]Note:[/b] This method is only available in engine builds with the TGA module enabled. By default, the TGA module is enabled, but it can be disabled at build-time using the [code]module_tga_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadTgaFromBuffer(buffer []byte) error { //gd:Image.load_tga_from_buffer
-	return error(gd.ToError(class(self).LoadTgaFromBuffer(gd.NewPackedByteSlice(buffer))))
+	return error(gd.ToError(class(self).LoadTgaFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 /*
@@ -584,7 +588,7 @@ Loads an image from the binary contents of a BMP file.
 [b]Note:[/b] This method is only available in engine builds with the BMP module enabled. By default, the BMP module is enabled, but it can be disabled at build-time using the [code]module_bmp_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadBmpFromBuffer(buffer []byte) error { //gd:Image.load_bmp_from_buffer
-	return error(gd.ToError(class(self).LoadBmpFromBuffer(gd.NewPackedByteSlice(buffer))))
+	return error(gd.ToError(class(self).LoadBmpFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 /*
@@ -593,7 +597,7 @@ Loads an image from the binary contents of a [url=https://github.com/KhronosGrou
 [b]Note:[/b] This method is only available in engine builds with the KTX module enabled. By default, the KTX module is enabled, but it can be disabled at build-time using the [code]module_ktx_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadKtxFromBuffer(buffer []byte) error { //gd:Image.load_ktx_from_buffer
-	return error(gd.ToError(class(self).LoadKtxFromBuffer(gd.NewPackedByteSlice(buffer))))
+	return error(gd.ToError(class(self).LoadKtxFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 /*
@@ -602,7 +606,7 @@ Loads an image from the UTF-8 binary contents of an [b]uncompressed[/b] SVG file
 [b]Note:[/b] This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the [code]module_svg_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadSvgFromBuffer(buffer []byte) error { //gd:Image.load_svg_from_buffer
-	return error(gd.ToError(class(self).LoadSvgFromBuffer(gd.NewPackedByteSlice(buffer), gd.Float(1.0))))
+	return error(gd.ToError(class(self).LoadSvgFromBuffer(Packed.Bytes(Packed.New(buffer...)), gd.Float(1.0))))
 }
 
 /*
@@ -701,11 +705,11 @@ func (self class) GetFormat() gdclass.ImageFormat { //gd:Image.get_format
 Returns a copy of the image's raw data.
 */
 //go:nosplit
-func (self class) GetData() gd.PackedByteArray { //gd:Image.get_data
+func (self class) GetData() Packed.Bytes { //gd:Image.get_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -899,13 +903,13 @@ func (self class) CreateEmpty(width gd.Int, height gd.Int, use_mipmaps bool, for
 Creates a new image of given size and format. See [enum Format] constants. Fills the image with the given raw data. If [param use_mipmaps] is [code]true[/code] then loads mipmaps for this image from [param data]. See [method generate_mipmaps].
 */
 //go:nosplit
-func (self class) CreateFromData(width gd.Int, height gd.Int, use_mipmaps bool, format gdclass.ImageFormat, data gd.PackedByteArray) [1]gdclass.Image { //gd:Image.create_from_data
+func (self class) CreateFromData(width gd.Int, height gd.Int, use_mipmaps bool, format gdclass.ImageFormat, data Packed.Bytes) [1]gdclass.Image { //gd:Image.create_from_data
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
 	callframe.Arg(frame, use_mipmaps)
 	callframe.Arg(frame, format)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_create_from_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
@@ -917,13 +921,13 @@ func (self class) CreateFromData(width gd.Int, height gd.Int, use_mipmaps bool, 
 Overwrites data of an existing [Image]. Non-static equivalent of [method create_from_data].
 */
 //go:nosplit
-func (self class) SetData(width gd.Int, height gd.Int, use_mipmaps bool, format gdclass.ImageFormat, data gd.PackedByteArray) { //gd:Image.set_data
+func (self class) SetData(width gd.Int, height gd.Int, use_mipmaps bool, format gdclass.ImageFormat, data Packed.Bytes) { //gd:Image.set_data
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
 	callframe.Arg(frame, use_mipmaps)
 	callframe.Arg(frame, format)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_set_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -990,11 +994,11 @@ func (self class) SavePng(path String.Readable) gd.Error { //gd:Image.save_png
 Saves the image as a PNG file to a byte array.
 */
 //go:nosplit
-func (self class) SavePngToBuffer() gd.PackedByteArray { //gd:Image.save_png_to_buffer
+func (self class) SavePngToBuffer() Packed.Bytes { //gd:Image.save_png_to_buffer
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_png_to_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1020,12 +1024,12 @@ Saves the image as a JPEG file to a byte array with the specified [param quality
 [b]Note:[/b] JPEG does not save an alpha channel. If the [Image] contains an alpha channel, the image will still be saved, but the resulting byte array won't contain the alpha channel.
 */
 //go:nosplit
-func (self class) SaveJpgToBuffer(quality gd.Float) gd.PackedByteArray { //gd:Image.save_jpg_to_buffer
+func (self class) SaveJpgToBuffer(quality gd.Float) Packed.Bytes { //gd:Image.save_jpg_to_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_jpg_to_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1051,12 +1055,12 @@ Saves the image as an EXR file to a byte array. If [param grayscale] is [code]tr
 [b]Note:[/b] The TinyEXR module is disabled in non-editor builds, which means [method save_exr] will return an empty byte array when it is called from an exported project.
 */
 //go:nosplit
-func (self class) SaveExrToBuffer(grayscale bool) gd.PackedByteArray { //gd:Image.save_exr_to_buffer
+func (self class) SaveExrToBuffer(grayscale bool) Packed.Bytes { //gd:Image.save_exr_to_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, grayscale)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_exr_to_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1083,13 +1087,13 @@ Saves the image as a WebP (Web Picture) file to a byte array. By default it will
 [b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 //go:nosplit
-func (self class) SaveWebpToBuffer(lossy bool, quality gd.Float) gd.PackedByteArray { //gd:Image.save_webp_to_buffer
+func (self class) SaveWebpToBuffer(lossy bool, quality gd.Float) Packed.Bytes { //gd:Image.save_webp_to_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, lossy)
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_webp_to_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1539,9 +1543,9 @@ func (self class) AdjustBcs(brightness gd.Float, contrast gd.Float, saturation g
 Loads an image from the binary contents of a PNG file.
 */
 //go:nosplit
-func (self class) LoadPngFromBuffer(buffer gd.PackedByteArray) gd.Error { //gd:Image.load_png_from_buffer
+func (self class) LoadPngFromBuffer(buffer Packed.Bytes) gd.Error { //gd:Image.load_png_from_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_png_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1553,9 +1557,9 @@ func (self class) LoadPngFromBuffer(buffer gd.PackedByteArray) gd.Error { //gd:I
 Loads an image from the binary contents of a JPEG file.
 */
 //go:nosplit
-func (self class) LoadJpgFromBuffer(buffer gd.PackedByteArray) gd.Error { //gd:Image.load_jpg_from_buffer
+func (self class) LoadJpgFromBuffer(buffer Packed.Bytes) gd.Error { //gd:Image.load_jpg_from_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_jpg_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1567,9 +1571,9 @@ func (self class) LoadJpgFromBuffer(buffer gd.PackedByteArray) gd.Error { //gd:I
 Loads an image from the binary contents of a WebP file.
 */
 //go:nosplit
-func (self class) LoadWebpFromBuffer(buffer gd.PackedByteArray) gd.Error { //gd:Image.load_webp_from_buffer
+func (self class) LoadWebpFromBuffer(buffer Packed.Bytes) gd.Error { //gd:Image.load_webp_from_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_webp_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1582,9 +1586,9 @@ Loads an image from the binary contents of a TGA file.
 [b]Note:[/b] This method is only available in engine builds with the TGA module enabled. By default, the TGA module is enabled, but it can be disabled at build-time using the [code]module_tga_enabled=no[/code] SCons option.
 */
 //go:nosplit
-func (self class) LoadTgaFromBuffer(buffer gd.PackedByteArray) gd.Error { //gd:Image.load_tga_from_buffer
+func (self class) LoadTgaFromBuffer(buffer Packed.Bytes) gd.Error { //gd:Image.load_tga_from_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_tga_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1598,9 +1602,9 @@ Loads an image from the binary contents of a BMP file.
 [b]Note:[/b] This method is only available in engine builds with the BMP module enabled. By default, the BMP module is enabled, but it can be disabled at build-time using the [code]module_bmp_enabled=no[/code] SCons option.
 */
 //go:nosplit
-func (self class) LoadBmpFromBuffer(buffer gd.PackedByteArray) gd.Error { //gd:Image.load_bmp_from_buffer
+func (self class) LoadBmpFromBuffer(buffer Packed.Bytes) gd.Error { //gd:Image.load_bmp_from_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_bmp_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1614,9 +1618,9 @@ Loads an image from the binary contents of a [url=https://github.com/KhronosGrou
 [b]Note:[/b] This method is only available in engine builds with the KTX module enabled. By default, the KTX module is enabled, but it can be disabled at build-time using the [code]module_ktx_enabled=no[/code] SCons option.
 */
 //go:nosplit
-func (self class) LoadKtxFromBuffer(buffer gd.PackedByteArray) gd.Error { //gd:Image.load_ktx_from_buffer
+func (self class) LoadKtxFromBuffer(buffer Packed.Bytes) gd.Error { //gd:Image.load_ktx_from_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_ktx_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1630,9 +1634,9 @@ Loads an image from the UTF-8 binary contents of an [b]uncompressed[/b] SVG file
 [b]Note:[/b] This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the [code]module_svg_enabled=no[/code] SCons option.
 */
 //go:nosplit
-func (self class) LoadSvgFromBuffer(buffer gd.PackedByteArray, scale gd.Float) gd.Error { //gd:Image.load_svg_from_buffer
+func (self class) LoadSvgFromBuffer(buffer Packed.Bytes, scale gd.Float) gd.Error { //gd:Image.load_svg_from_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_svg_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())

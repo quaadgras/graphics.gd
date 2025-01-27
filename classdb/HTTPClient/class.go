@@ -3,6 +3,7 @@ package HTTPClient
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +32,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Hyper-text transfer protocol client (sometimes called "User Agent"). Used to make HTTP requests to download web content, upload files and other data or to communicate with various services, among other use cases.
@@ -68,7 +72,7 @@ Headers are HTTP request headers. For available HTTP methods, see [enum Method].
 Sends the body data raw, as a byte array and does not encode it in any way.
 */
 func (self Instance) RequestRaw(method gdclass.HTTPClientMethod, url string, headers []string, body []byte) error { //gd:HTTPClient.request_raw
-	return error(gd.ToError(class(self).RequestRaw(method, String.New(url), gd.NewPackedStringSlice(headers), gd.NewPackedByteSlice(body))))
+	return error(gd.ToError(class(self).RequestRaw(method, String.New(url), Packed.MakeStrings(headers...), Packed.Bytes(Packed.New(body...)))))
 }
 
 /*
@@ -93,7 +97,7 @@ var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", heade
 [b]Note:[/b] The [param body] parameter is ignored if [param method] is [constant HTTPClient.METHOD_GET]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [method String.uri_encode] for an example.
 */
 func (self Instance) Request(method gdclass.HTTPClientMethod, url string, headers []string) error { //gd:HTTPClient.request
-	return error(gd.ToError(class(self).Request(method, String.New(url), gd.NewPackedStringSlice(headers), String.New(""))))
+	return error(gd.ToError(class(self).Request(method, String.New(url), Packed.MakeStrings(headers...), String.New(""))))
 }
 
 /*
@@ -318,12 +322,12 @@ Headers are HTTP request headers. For available HTTP methods, see [enum Method].
 Sends the body data raw, as a byte array and does not encode it in any way.
 */
 //go:nosplit
-func (self class) RequestRaw(method gdclass.HTTPClientMethod, url String.Readable, headers gd.PackedStringArray, body gd.PackedByteArray) gd.Error { //gd:HTTPClient.request_raw
+func (self class) RequestRaw(method gdclass.HTTPClientMethod, url String.Readable, headers Packed.Strings, body Packed.Bytes) gd.Error { //gd:HTTPClient.request_raw
 	var frame = callframe.New()
 	callframe.Arg(frame, method)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
-	callframe.Arg(frame, pointers.Get(headers))
-	callframe.Arg(frame, pointers.Get(body))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(headers)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](body))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_request_raw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -353,11 +357,11 @@ var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", heade
 [b]Note:[/b] The [param body] parameter is ignored if [param method] is [constant HTTPClient.METHOD_GET]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [method String.uri_encode] for an example.
 */
 //go:nosplit
-func (self class) Request(method gdclass.HTTPClientMethod, url String.Readable, headers gd.PackedStringArray, body String.Readable) gd.Error { //gd:HTTPClient.request
+func (self class) Request(method gdclass.HTTPClientMethod, url String.Readable, headers Packed.Strings, body String.Readable) gd.Error { //gd:HTTPClient.request
 	var frame = callframe.New()
 	callframe.Arg(frame, method)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
-	callframe.Arg(frame, pointers.Get(headers))
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(headers)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(body)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_request, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -420,11 +424,11 @@ func (self class) GetResponseCode() gd.Int { //gd:HTTPClient.get_response_code
 Returns the response headers.
 */
 //go:nosplit
-func (self class) GetResponseHeaders() gd.PackedStringArray { //gd:HTTPClient.get_response_headers
+func (self class) GetResponseHeaders() Packed.Strings { //gd:HTTPClient.get_response_headers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_headers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -468,11 +472,11 @@ func (self class) GetResponseBodyLength() gd.Int { //gd:HTTPClient.get_response_
 Reads one chunk from the response.
 */
 //go:nosplit
-func (self class) ReadResponseBodyChunk() gd.PackedByteArray { //gd:HTTPClient.read_response_body_chunk
+func (self class) ReadResponseBodyChunk() Packed.Bytes { //gd:HTTPClient.read_response_body_chunk
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_read_response_body_chunk, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

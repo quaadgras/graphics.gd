@@ -3,6 +3,7 @@ package ZIPPacker
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -30,6 +32,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This class implements a writer that allows storing the multiple blobs in a zip archive.
@@ -80,7 +84,7 @@ Write the given [param data] to the file.
 Needs to be called after [method start_file].
 */
 func (self Instance) WriteFile(data []byte) error { //gd:ZIPPacker.write_file
-	return error(gd.ToError(class(self).WriteFile(gd.NewPackedByteSlice(data))))
+	return error(gd.ToError(class(self).WriteFile(Packed.Bytes(Packed.New(data...)))))
 }
 
 /*
@@ -153,9 +157,9 @@ Write the given [param data] to the file.
 Needs to be called after [method start_file].
 */
 //go:nosplit
-func (self class) WriteFile(data gd.PackedByteArray) gd.Error { //gd:ZIPPacker.write_file
+func (self class) WriteFile(data Packed.Bytes) gd.Error { //gd:ZIPPacker.write_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPPacker.Bind_write_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

@@ -3,6 +3,7 @@ package OggPacketSequence
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A sequence of Ogg packets.
@@ -81,11 +85,11 @@ func (self Instance) SetPacketData(value [][]any) {
 }
 
 func (self Instance) GranulePositions() []int64 {
-	return []int64(class(self).GetPacketGranulePositions().AsSlice())
+	return []int64(slices.Collect(class(self).GetPacketGranulePositions().Values()))
 }
 
 func (self Instance) SetGranulePositions(value []int64) {
-	class(self).SetPacketGranulePositions(gd.NewPackedInt64Slice(value))
+	class(self).SetPacketGranulePositions(Packed.New(value...))
 }
 
 func (self Instance) SamplingRate() Float.X {
@@ -116,20 +120,20 @@ func (self class) GetPacketData() Array.Contains[Array.Any] { //gd:OggPacketSequ
 }
 
 //go:nosplit
-func (self class) SetPacketGranulePositions(granule_positions gd.PackedInt64Array) { //gd:OggPacketSequence.set_packet_granule_positions
+func (self class) SetPacketGranulePositions(granule_positions Packed.Array[int64]) { //gd:OggPacketSequence.set_packet_granule_positions
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(granule_positions))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt64Array, int64](granule_positions))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OggPacketSequence.Bind_set_packet_granule_positions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPacketGranulePositions() gd.PackedInt64Array { //gd:OggPacketSequence.get_packet_granule_positions
+func (self class) GetPacketGranulePositions() Packed.Array[int64] { //gd:OggPacketSequence.get_packet_granule_positions
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OggPacketSequence.Bind_get_packet_granule_positions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
+	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

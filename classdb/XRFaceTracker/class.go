@@ -3,6 +3,7 @@ package XRFaceTracker
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/XRTracker"
 import "graphics.gd/variant/Float"
 
@@ -32,6 +34,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 An instance of this object represents a tracked face and its corresponding blend shapes. The blend shapes come from the [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/unified-blendshapes]Unified Expressions[/url] standard, and contain extended details and visuals for each blend shape. Additionally the [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/compatibility/overview]Tracking Standard Comparison[/url] page documents the relationship between Unified Expressions and other standards.
@@ -81,11 +85,11 @@ func New() Instance {
 }
 
 func (self Instance) BlendShapes() []float32 {
-	return []float32(class(self).GetBlendShapes().AsSlice())
+	return []float32(slices.Collect(class(self).GetBlendShapes().Values()))
 }
 
 func (self Instance) SetBlendShapes(value []float32) {
-	class(self).SetBlendShapes(gd.NewPackedFloat32Slice(value))
+	class(self).SetBlendShapes(Packed.New(value...))
 }
 
 /*
@@ -116,19 +120,19 @@ func (self class) SetBlendShape(blend_shape gdclass.XRFaceTrackerBlendShapeEntry
 }
 
 //go:nosplit
-func (self class) GetBlendShapes() gd.PackedFloat32Array { //gd:XRFaceTracker.get_blend_shapes
+func (self class) GetBlendShapes() Packed.Array[float32] { //gd:XRFaceTracker.get_blend_shapes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_get_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedFloat32Array](r_ret.Get())
+	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetBlendShapes(weights gd.PackedFloat32Array) { //gd:XRFaceTracker.set_blend_shapes
+func (self class) SetBlendShapes(weights Packed.Array[float32]) { //gd:XRFaceTracker.set_blend_shapes
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(weights))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](weights))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_set_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

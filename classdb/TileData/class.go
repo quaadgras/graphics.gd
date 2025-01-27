@@ -3,6 +3,7 @@ package TileData
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [TileData] object represents a single tile in a [TileSet]. It is usually edited using the tileset editor, but it can be modified at runtime using [method TileMap._tile_data_runtime_update].
@@ -123,14 +127,14 @@ func (self Instance) RemoveCollisionPolygon(layer_id int, polygon_index int) { /
 Sets the points of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 func (self Instance) SetCollisionPolygonPoints(layer_id int, polygon_index int, polygon []Vector2.XY) { //gd:TileData.set_collision_polygon_points
-	class(self).SetCollisionPolygonPoints(gd.Int(layer_id), gd.Int(polygon_index), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon))))
+	class(self).SetCollisionPolygonPoints(gd.Int(layer_id), gd.Int(polygon_index), Packed.New(polygon...))
 }
 
 /*
 Returns the points of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 func (self Instance) GetCollisionPolygonPoints(layer_id int, polygon_index int) []Vector2.XY { //gd:TileData.get_collision_polygon_points
-	return []Vector2.XY(class(self).GetCollisionPolygonPoints(gd.Int(layer_id), gd.Int(polygon_index)).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).GetCollisionPolygonPoints(gd.Int(layer_id), gd.Int(polygon_index)).Values()))
 }
 
 /*
@@ -624,11 +628,11 @@ func (self class) RemoveCollisionPolygon(layer_id gd.Int, polygon_index gd.Int) 
 Sets the points of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 //go:nosplit
-func (self class) SetCollisionPolygonPoints(layer_id gd.Int, polygon_index gd.Int, polygon gd.PackedVector2Array) { //gd:TileData.set_collision_polygon_points
+func (self class) SetCollisionPolygonPoints(layer_id gd.Int, polygon_index gd.Int, polygon Packed.Array[Vector2.XY]) { //gd:TileData.set_collision_polygon_points
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_id)
 	callframe.Arg(frame, polygon_index)
-	callframe.Arg(frame, pointers.Get(polygon))
+	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_set_collision_polygon_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -638,13 +642,13 @@ func (self class) SetCollisionPolygonPoints(layer_id gd.Int, polygon_index gd.In
 Returns the points of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 //go:nosplit
-func (self class) GetCollisionPolygonPoints(layer_id gd.Int, polygon_index gd.Int) gd.PackedVector2Array { //gd:TileData.get_collision_polygon_points
+func (self class) GetCollisionPolygonPoints(layer_id gd.Int, polygon_index gd.Int) Packed.Array[Vector2.XY] { //gd:TileData.get_collision_polygon_points
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_id)
 	callframe.Arg(frame, polygon_index)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_collision_polygon_points, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

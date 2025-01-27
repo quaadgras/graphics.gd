@@ -3,6 +3,7 @@ package AudioEffectCapture
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/AudioEffect"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
@@ -34,6 +36,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 AudioEffectCapture is an AudioEffect which copies all audio frames from the attached audio effect bus into its internal ring buffer.
@@ -63,7 +67,7 @@ Returns a [PackedVector2Array] containing exactly [param frames] audio samples i
 The samples are signed floating-point PCM between [code]-1[/code] and [code]1[/code]. You will have to scale them if you want to use them as 8 or 16-bit integer samples. ([code]v = 0x7fff * samples[0].x[/code])
 */
 func (self Instance) GetBuffer(frames int) []Vector2.XY { //gd:AudioEffectCapture.get_buffer
-	return []Vector2.XY(class(self).GetBuffer(gd.Int(frames)).AsSlice())
+	return []Vector2.XY(slices.Collect(class(self).GetBuffer(gd.Int(frames)).Values()))
 }
 
 /*
@@ -149,12 +153,12 @@ Returns a [PackedVector2Array] containing exactly [param frames] audio samples i
 The samples are signed floating-point PCM between [code]-1[/code] and [code]1[/code]. You will have to scale them if you want to use them as 8 or 16-bit integer samples. ([code]v = 0x7fff * samples[0].x[/code])
 */
 //go:nosplit
-func (self class) GetBuffer(frames gd.Int) gd.PackedVector2Array { //gd:AudioEffectCapture.get_buffer
+func (self class) GetBuffer(frames gd.Int) Packed.Array[Vector2.XY] { //gd:AudioEffectCapture.get_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectCapture.Bind_get_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -3,6 +3,7 @@ package CodeEdit
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/TextEdit"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -35,6 +37,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 CodeEdit is a specialized [TextEdit] designed for editing plain text code files. It has many features commonly found in code editors such as line numbers, line folding, code completion, indent management, and string/comment management.
@@ -200,7 +204,7 @@ func (self Instance) ClearBreakpointedLines() { //gd:CodeEdit.clear_breakpointed
 Gets all breakpointed lines.
 */
 func (self Instance) GetBreakpointedLines() []int32 { //gd:CodeEdit.get_breakpointed_lines
-	return []int32(class(self).GetBreakpointedLines().AsSlice())
+	return []int32(slices.Collect(class(self).GetBreakpointedLines().Values()))
 }
 
 /*
@@ -228,7 +232,7 @@ func (self Instance) ClearBookmarkedLines() { //gd:CodeEdit.clear_bookmarked_lin
 Gets all bookmarked lines.
 */
 func (self Instance) GetBookmarkedLines() []int32 { //gd:CodeEdit.get_bookmarked_lines
-	return []int32(class(self).GetBookmarkedLines().AsSlice())
+	return []int32(slices.Collect(class(self).GetBookmarkedLines().Values()))
 }
 
 /*
@@ -256,7 +260,7 @@ func (self Instance) ClearExecutingLines() { //gd:CodeEdit.clear_executing_lines
 Gets all executing lines.
 */
 func (self Instance) GetExecutingLines() []int32 { //gd:CodeEdit.get_executing_lines
-	return []int32(class(self).GetExecutingLines().AsSlice())
+	return []int32(slices.Collect(class(self).GetExecutingLines().Values()))
 }
 
 /*
@@ -1172,11 +1176,11 @@ func (self class) ClearBreakpointedLines() { //gd:CodeEdit.clear_breakpointed_li
 Gets all breakpointed lines.
 */
 //go:nosplit
-func (self class) GetBreakpointedLines() gd.PackedInt32Array { //gd:CodeEdit.get_breakpointed_lines
+func (self class) GetBreakpointedLines() Packed.Array[int32] { //gd:CodeEdit.get_breakpointed_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_breakpointed_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1223,11 +1227,11 @@ func (self class) ClearBookmarkedLines() { //gd:CodeEdit.clear_bookmarked_lines
 Gets all bookmarked lines.
 */
 //go:nosplit
-func (self class) GetBookmarkedLines() gd.PackedInt32Array { //gd:CodeEdit.get_bookmarked_lines
+func (self class) GetBookmarkedLines() Packed.Array[int32] { //gd:CodeEdit.get_bookmarked_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_bookmarked_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1274,11 +1278,11 @@ func (self class) ClearExecutingLines() { //gd:CodeEdit.clear_executing_lines
 Gets all executing lines.
 */
 //go:nosplit
-func (self class) GetExecutingLines() gd.PackedInt32Array { //gd:CodeEdit.get_executing_lines
+func (self class) GetExecutingLines() Packed.Array[int32] { //gd:CodeEdit.get_executing_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_executing_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

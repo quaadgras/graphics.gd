@@ -4,6 +4,7 @@ package ClassDB
 import "unsafe"
 import "sync"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -31,6 +33,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Provides access to metadata stored for every available class.
@@ -266,11 +270,11 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Returns the names of all the classes available.
 */
 //go:nosplit
-func (self class) GetClassList() gd.PackedStringArray { //gd:ClassDB.get_class_list
+func (self class) GetClassList() Packed.Strings { //gd:ClassDB.get_class_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_get_class_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -279,12 +283,12 @@ func (self class) GetClassList() gd.PackedStringArray { //gd:ClassDB.get_class_l
 Returns the names of all the classes that directly or indirectly inherit from [param class].
 */
 //go:nosplit
-func (self class) GetInheritersFromClass(class_ String.Name) gd.PackedStringArray { //gd:ClassDB.get_inheriters_from_class
+func (self class) GetInheritersFromClass(class_ String.Name) Packed.Strings { //gd:ClassDB.get_inheriters_from_class
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_get_inheriters_from_class, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -518,13 +522,13 @@ func (self class) ClassGetMethodList(class_ String.Name, no_inheritance bool) Ar
 Returns an array with the names all the integer constants of [param class] or its ancestry.
 */
 //go:nosplit
-func (self class) ClassGetIntegerConstantList(class_ String.Name, no_inheritance bool) gd.PackedStringArray { //gd:ClassDB.class_get_integer_constant_list
+func (self class) ClassGetIntegerConstantList(class_ String.Name, no_inheritance bool) Packed.Strings { //gd:ClassDB.class_get_integer_constant_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_)))
 	callframe.Arg(frame, no_inheritance)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_integer_constant_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -579,13 +583,13 @@ func (self class) ClassHasEnum(class_ String.Name, name String.Name, no_inherita
 Returns an array with all the enums of [param class] or its ancestry.
 */
 //go:nosplit
-func (self class) ClassGetEnumList(class_ String.Name, no_inheritance bool) gd.PackedStringArray { //gd:ClassDB.class_get_enum_list
+func (self class) ClassGetEnumList(class_ String.Name, no_inheritance bool) Packed.Strings { //gd:ClassDB.class_get_enum_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_)))
 	callframe.Arg(frame, no_inheritance)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_enum_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -594,14 +598,14 @@ func (self class) ClassGetEnumList(class_ String.Name, no_inheritance bool) gd.P
 Returns an array with all the keys in [param enum] of [param class] or its ancestry.
 */
 //go:nosplit
-func (self class) ClassGetEnumConstants(class_ String.Name, enum String.Name, no_inheritance bool) gd.PackedStringArray { //gd:ClassDB.class_get_enum_constants
+func (self class) ClassGetEnumConstants(class_ String.Name, enum String.Name, no_inheritance bool) Packed.Strings { //gd:ClassDB.class_get_enum_constants
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(enum)))
 	callframe.Arg(frame, no_inheritance)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_enum_constants, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

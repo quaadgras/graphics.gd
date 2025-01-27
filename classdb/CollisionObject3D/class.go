@@ -3,6 +3,7 @@ package CollisionObject3D
 
 import "unsafe"
 import "reflect"
+import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector3"
@@ -35,6 +37,8 @@ var _ Dictionary.Any
 var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
+var _ Packed.Bytes
+var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Abstract base class for 3D physics objects. [CollisionObject3D] can hold any number of [Shape3D]s for collision. Each shape must be assigned to a [i]shape owner[/i]. Shape owners are not nodes and do not appear in the editor, but are accessible through code using the [code]shape_owner_*[/code] methods.
@@ -170,7 +174,7 @@ func (self Instance) RemoveShapeOwner(owner_id int) { //gd:CollisionObject3D.rem
 Returns an [Array] of [code]owner_id[/code] identifiers. You can use these ids in other methods that take [code]owner_id[/code] as an argument.
 */
 func (self Instance) GetShapeOwners() []int32 { //gd:CollisionObject3D.get_shape_owners
-	return []int32(class(self).GetShapeOwners().AsSlice())
+	return []int32(slices.Collect(class(self).GetShapeOwners().Values()))
 }
 
 /*
@@ -577,11 +581,11 @@ func (self class) RemoveShapeOwner(owner_id gd.Int) { //gd:CollisionObject3D.rem
 Returns an [Array] of [code]owner_id[/code] identifiers. You can use these ids in other methods that take [code]owner_id[/code] as an argument.
 */
 //go:nosplit
-func (self class) GetShapeOwners() gd.PackedInt32Array { //gd:CollisionObject3D.get_shape_owners
+func (self class) GetShapeOwners() Packed.Array[int32] { //gd:CollisionObject3D.get_shape_owners
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_shape_owners, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
