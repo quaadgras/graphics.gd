@@ -13,9 +13,7 @@ import (
 
 	EditorPluginClass "graphics.gd/classdb/EditorPlugin"
 	EngineClass "graphics.gd/classdb/Engine"
-	MainLoopClass "graphics.gd/classdb/MainLoop"
 	NodeClass "graphics.gd/classdb/Node"
-	ProjectSettingsClass "graphics.gd/classdb/ProjectSettings"
 	ScriptClass "graphics.gd/classdb/Script"
 	ScriptLanguageClass "graphics.gd/classdb/ScriptLanguage"
 	ShaderMaterialClass "graphics.gd/classdb/ShaderMaterial"
@@ -166,22 +164,11 @@ func Register[T Class]() {
 		var className = pointers.Pin(gd.NewStringName(rename))
 		var superName = pointers.Pin(gd.NewStringName(nameOf(superType)))
 
-		var isMainLoop = false
-		if _, ok := any(super).(interface {
-			AsMainLoop() MainLoopClass.Instance
-		}); ok {
-			main_loop_type := String.New("application/run/main_loop_type")
-			ProjectSettingsClass.Advanced().SetInitialValue(main_loop_type, gd.NewVariant(className))
-			ProjectSettingsClass.Advanced().SetSetting(main_loop_type, gd.NewVariant(className))
-			isMainLoop = true
-		}
-
 		var impl = &classImplementation{
 			Name:           className,
 			Super:          superName,
 			Type:           classType,
 			Tool:           tool,
-			IsMainLoop:     isMainLoop,
 			VirtualMethods: reference.Virtual,
 		}
 		registered.Store(classType, impl)
@@ -291,8 +278,7 @@ type classImplementation struct {
 	Name  gd.StringName
 	Super gd.StringName
 
-	Tool       bool
-	IsMainLoop bool
+	Tool bool
 
 	Type reflect.Type
 
@@ -426,8 +412,7 @@ type instanceImplementation struct {
 	signals []signalChan
 
 	// FIXME use a bitfield for these booleans.
-	isEditor   bool
-	isMainLoop bool
+	isEditor bool
 }
 
 var lastGC int

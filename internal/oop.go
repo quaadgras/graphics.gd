@@ -16,10 +16,16 @@ var ExtensionInstances sync.Map
 type NotificationType int32
 
 func PointerWithOwnershipTransferredToGo[T pointers.Generic[T, [3]uint64]](ptr EnginePointer) T {
+	if ptr == 0 {
+		return T{}
+	}
 	return pointers.New[T]([3]uint64{uint64(ptr)})
 }
 
 func PointerBorrowedTemporarily[T pointers.Generic[T, [3]uint64]](ptr EnginePointer) T {
+	if ptr == 0 {
+		return T{}
+	}
 	return pointers.Let[T]([3]uint64{uint64(ptr)})
 }
 
@@ -41,6 +47,9 @@ func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uint64]](ptr EnginePoi
 }
 
 func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uint64]](obj [1]Object, ptr EnginePointer) T {
+	if ptr == 0 {
+		return T{}
+	}
 	return pointers.Let[T]([3]uint64{uint64(ptr), 0})
 }
 

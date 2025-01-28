@@ -8,6 +8,7 @@ import (
 	EngineClass "graphics.gd/classdb/Engine"
 	MainLoopClass "graphics.gd/classdb/MainLoop"
 	"graphics.gd/classdb/ProjectSettings"
+	"graphics.gd/classdb/SceneTree"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Callable"
@@ -22,22 +23,28 @@ var shutdown = make(chan struct{})
 // MainLoop uses the given struct as the main loop implementation. This will take care of initialising
 // the Go runtime correctly, blocks until the main loop has shutdown.
 func MainLoop(loop MainLoopClass.Interface) {
-	if EngineClass.IsEditorHint() {
-		stop_main()
+	if pause_main != nil {
+		if EngineClass.IsEditorHint() {
+			stop_main()
+		}
+		theMainFunctionIsWaitingForTheEngineToShutDown = true
+	} else {
+		<-intialized
 	}
-	theMainFunctionIsWaitingForTheEngineToShutDown = true
 	classdb.Register[goMainLoop]()
-	className := classdb.NameFor[goMainLoop]()
-	ProjectSettings.SetInitialValue("application/run/main_loop_type", className)
-	ProjectSettings.SetSetting("application/run/main_loop_type", className)
 	mainloop = loop
-	pause_main(false) // We pause here until the engine has fully started up.
+	if pause_main != nil {
+		pause_main(false) // We pause here until the engine has fully started up.
+	} else {
+		<-shutdown
+	}
 }
 
 var theMainFunctionIsWaitingForTheEngineToShutDown = false
 
 // Engine starts up the engine and blocks until it shuts down.
 func Engine() {
+	classdb.Register[goSceneTree]()
 	if pause_main != nil {
 		theMainFunctionIsWaitingForTheEngineToShutDown = true
 		pause_main(false)
@@ -72,8 +79,14 @@ func Loader() {
 	}
 }
 
+// There are two main loop implementations, we decide on which one to use based on
+// what startup functions are called in the main function.
+
 type goMainLoop struct {
 	classdb.Extension[goMainLoop, MainLoopClass.Instance] `gd:"GoMainLoop"`
+}
+type goSceneTree struct {
+	classdb.Extension[goSceneTree, SceneTree.Instance] `gd:"GoMainLoop"`
 }
 
 // Called once during initialization.

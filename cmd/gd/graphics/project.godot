@@ -11,3 +11,4 @@ config_version=5
 [application]
 config/name="%v"
 run/main_scene="res://main.tscn"
+run/main_loop_type="GoMainLoop"

@@ -284,6 +284,9 @@ func linkJS(API *gd.API) {
 	}
 	object_method_bind_ptrcall := dlsym("object_method_bind_ptrcall")
 	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj [1]gd.Object, arg callframe.Args, ret callframe.Addr) {
+		if obj == ([1]gd.Object{}) {
+			panic("object is nil")
+		}
 		writeCallFrameArguments(0, arg)
 		object_method_bind_ptrcall.Invoke(uint32(method), uint32(pointers.Get(obj[0])[0]))
 		readCallFrameResult(0, ret)
@@ -566,6 +569,9 @@ func linkJS(API *gd.API) {
 	var scratch [16 * 16]uint32
 	memory_index := dlsym("mem_index")
 	API.Memory.Index = func(frame gd.Address, index int, size uintptr) unsafe.Pointer {
+		if index < 0 {
+			return unsafe.Pointer(&scratch)
+		}
 		memory_index.Invoke(uint32(frame), uint32(index), uint32(size))
 		for i := uintptr(0); i < size/4; i++ {
 			scratch[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
