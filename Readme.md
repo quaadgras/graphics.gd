@@ -139,7 +139,7 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 | Object             | `T.Instance`              | `T.Advanced`                    |
 | Callable           | `func(...T) (...T)`       | `Callable.Function`             |
 | Dictionary         | `struct/map[T]T`          | `Dictionary.Any`                |
-| Array              | `[]T`                     | `Array.Contains[T]`             |
+| Array              | `[]T`                     | `Array.Any`                     |
 | PackedByteArray    | `[]byte`                  | `Packed.Bytes`                  |
 | PackedInt32Array   | `[]int32`                 | `Packed.Array[int32]`           |
 | PackedInt64Array   | `[]int64`                 | `Packed.Array[int64]`           |
