@@ -8,6 +8,7 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/Packed"
 )
 
 func init() {
@@ -619,7 +620,7 @@ func linkJS(API *gd.API) {
 	}
 }
 
-func makePackedFunctions[T gd.Packed[T], V comparable](prefix string) gd.PackedFunctionsFor[T, V] {
+func makePackedFunctions[T gd.Packed[T, V], V Packed.Type](prefix string) gd.PackedFunctionsFor[T, V] {
 	var API gd.PackedFunctionsFor[T, V]
 	packed_int32_array_operator_index := dlsym("packed_" + prefix + "_operator_index")
 	API.Index = func(pia T, index gd.Int) V {
