@@ -160,6 +160,10 @@ func Register[T Class]() {
 			}:
 			tool = true
 		}
+		switch any(([1]T{})[0]).(type) {
+		case Tool:
+			tool = true
+		}
 		var reference T
 		var className = pointers.Pin(gd.NewStringName(rename))
 		var superName = pointers.Pin(gd.NewStringName(nameOf(superType)))
