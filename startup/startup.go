@@ -7,7 +7,6 @@ import (
 	"graphics.gd/classdb"
 	EngineClass "graphics.gd/classdb/Engine"
 	MainLoopClass "graphics.gd/classdb/MainLoop"
-	"graphics.gd/classdb/ProjectSettings"
 	"graphics.gd/classdb/SceneTree"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
@@ -89,12 +88,16 @@ type goSceneTree struct {
 	classdb.Extension[goSceneTree, SceneTree.Instance] `gd:"GoMainLoop"`
 }
 
+var main_loop_initialized = make(chan struct{})
+
 // Called once during initialization.
 func (loop goMainLoop) Initialize() {
 	if mainloop != nil {
 		mainloop.Initialize()
-	} else {
+	} else if pause_main != nil {
 		resume_main()
+	} else {
+		close(main_loop_initialized)
 	}
 }
 
@@ -109,6 +112,9 @@ func (loop goMainLoop) PhysicsProcess(delta Float.X) bool {
 
 var dt Float.X
 
+var close_main_loop bool
+var frame_ready = make(chan struct{})
+
 // Called each process (idle) frame with the time since the last process frame as argument (in seconds). Equivalent to [method Node._process].
 // If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
 func (loop goMainLoop) Process(delta Float.X) bool {
@@ -118,16 +124,24 @@ func (loop goMainLoop) Process(delta Float.X) bool {
 		return mainloop.Process(delta)
 	}
 	dt = delta
-	close, _ := resume_main()
-	return close
+	if pause_main != nil {
+		close, _ := resume_main()
+		return close
+	}
+	frame_ready <- struct{}{}
+	return close_main_loop
 }
+
+var main_loop_shutdown = make(chan struct{})
 
 // Called before the program exits.
 func (loop goMainLoop) Finalize() {
 	if mainloop != nil {
 		mainloop.Finalize()
-	} else {
+	} else if pause_main != nil {
 		resume_main()
+	} else {
+		close(main_loop_shutdown)
 	}
 }
 
@@ -143,23 +157,38 @@ func (loop goMainLoop) Finalize() {
 //			// finalize
 //		}
 func Rendering() iter.Seq[Float.X] {
-	if EngineClass.IsEditorHint() {
-		stop_main()
-	}
 	classdb.Register[goMainLoop]()
-	className := classdb.NameFor[goMainLoop]()
-	ProjectSettings.SetInitialValue("application/run/main_loop_type", className)
-	ProjectSettings.SetSetting("application/run/main_loop_type", className)
-	pause_main(false) // We pause here until the engine has fully started up.
-	return func(yield func(Float.X) bool) {
-		pause_main(false) // we pause here until the MainLoop initialize function is called.
-		for {
-			pause_main(false) // we pause here until the next frame is ready (next Process callback).
-			if !yield(dt) {
-				break
-			}
+	if pause_main != nil {
+		if EngineClass.IsEditorHint() {
+			stop_main()
 		}
-		pause_main(true) // we pause here until the engine has fully shut down.
+		pause_main(false) // We pause here until the engine has fully started up.
+	} else {
+		<-intialized
+	}
+	if pause_main != nil {
+		return func(yield func(Float.X) bool) {
+			pause_main(false) // we pause here until the MainLoop initialize function is called.
+			for {
+				pause_main(false) // we pause here until the next frame is ready (next Process callback).
+				if !yield(dt) {
+					break
+				}
+			}
+			pause_main(true) // we pause here until the engine has fully shut down.
+		}
+	} else {
+		<-main_loop_initialized
+		return func(yield func(Float.X) bool) {
+			for {
+				<-frame_ready // we pause here until the next frame is ready (next Process callback).
+				if !yield(dt) {
+					close_main_loop = true
+					break
+				}
+			}
+			<-main_loop_shutdown
+		}
 	}
 }
 
