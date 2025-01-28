@@ -40,6 +40,17 @@ func (utf Readable) String() string {
 	return utf.api.String(utf.buf)
 }
 
+// MarshalText implements the [encoding.TextMarshaler] interface.
+func (utf Readable) MarshalText() ([]byte, error) {
+	return []byte(utf.String()), nil
+}
+
+// UnmarshalText implements the [encoding.TextUnmarshaler] interface.
+func (utf *Readable) UnmarshalText(text []byte) error {
+	*utf = New(string(text))
+	return nil
+}
+
 // Size returns the number of bytes of data stored in the Readable.
 func (utf Readable) Size() int {
 	if utf.api == nil {

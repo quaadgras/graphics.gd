@@ -25,8 +25,16 @@ import (
 //	"/root"     		  // Points to the root element.
 type ToFile String.Readable
 
-// String implements the [fmt.Stringer] interface.
-func (s ToFile) String() string { return String.Readable(s).String() }
+// AsFile returns the given path as a directory.
+func AsFile[T String.Any](path T) ToFile {
+	return ToFile(String.New(path))
+}
+
+func (s ToFile) String() string               { return String.Readable(s).String() }
+func (s ToFile) MarshalText() ([]byte, error) { return String.Readable(s).MarshalText() }
+func (s *ToFile) UnmarshalText(text []byte) error {
+	return (*String.Readable)(s).UnmarshalText(text)
+}
 
 // WithoutExtension returns the path before the last period character (.) in the path.
 func (s ToFile) WithoutExtension() ToFile { //gd:String.get_basename
@@ -49,9 +57,9 @@ func (s ToFile) IsRelative() bool { //gd:String.is_relative_path
 	return !path.IsAbs(s.String())
 }
 
-// Directory returns the base directory name if the string is a valid file path.
-func (s ToFile) Directory() String.Readable { //gd:String.get_base_dir
-	return String.New(filepath.Dir(s.String()))
+// Directory returns the directory if the string is a valid file path.
+func (s ToFile) Directory() ToDirectory { //gd:String.get_base_dir
+	return ToDirectory(String.New(filepath.Dir(s.String())))
 }
 
 // FileExtension returns the file extension without the leading period (.) if the string is a

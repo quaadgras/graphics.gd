@@ -29,8 +29,16 @@ import (
 //	"/root:Size:X"        // Points to the root Window and its width.
 type ToNode String.Readable
 
-// String implements the [fmt.Stringer] interface.
-func (s ToNode) String() string { return String.Readable(s).String() }
+// AsNode returns the given path as a node path.
+func AsNode[T String.Any](path T) ToNode {
+	return ToNode(String.New(path))
+}
+
+func (s ToNode) String() string               { return String.Readable(s).String() }
+func (s ToNode) MarshalText() ([]byte, error) { return String.Readable(s).MarshalText() }
+func (s *ToNode) UnmarshalText(text []byte) error {
+	return (*String.Readable)(s).UnmarshalText(text)
+}
 
 // PrefixedWithSelector returns a copy of this path with a period character (.) prefixed,
 // transforming it to a pure selector with no items (relative to the current item).

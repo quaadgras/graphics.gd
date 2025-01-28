@@ -1,6 +1,7 @@
 package String
 
 import (
+	"strings"
 	"unicode/utf8"
 	"unsafe"
 )
@@ -15,6 +16,12 @@ func fromGoString(s string) Readable {
 	if len(s) > maxSafeInt {
 		panic("string too long")
 	}
+	s = strings.Map(func(r rune) rune {
+		if utf8.ValidRune(r) {
+			return r
+		}
+		return utf8.RuneError
+	}, s)
 	return Via(goString{ptr: unsafe.StringData(s)}, complex(float64(len(s)), 0))
 }
 
