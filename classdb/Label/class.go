@@ -442,7 +442,7 @@ func (self class) IsClippingText() bool { //gd:Label.is_clipping_text
 //go:nosplit
 func (self class) SetTabStops(tab_stops Packed.Array[float32]) { //gd:Label.set_tab_stops
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_set_tab_stops, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

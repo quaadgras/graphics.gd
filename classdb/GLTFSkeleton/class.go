@@ -120,7 +120,7 @@ func (self class) GetJoints() Packed.Array[int32] { //gd:GLTFSkeleton.get_joints
 //go:nosplit
 func (self class) SetJoints(joints Packed.Array[int32]) { //gd:GLTFSkeleton.set_joints
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](joints))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](joints)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_set_joints, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -139,7 +139,7 @@ func (self class) GetRoots() Packed.Array[int32] { //gd:GLTFSkeleton.get_roots
 //go:nosplit
 func (self class) SetRoots(roots Packed.Array[int32]) { //gd:GLTFSkeleton.set_roots
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](roots))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](roots)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_set_roots, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

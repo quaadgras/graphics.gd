@@ -172,7 +172,7 @@ func (self class) GetMapDepth() gd.Int { //gd:HeightMapShape3D.get_map_depth
 //go:nosplit
 func (self class) SetMapData(data Packed.Array[float32]) { //gd:HeightMapShape3D.set_map_data
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](data))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](data)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HeightMapShape3D.Bind_set_map_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

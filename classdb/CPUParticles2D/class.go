@@ -1147,7 +1147,7 @@ func (self class) GetEmissionRectExtents() gd.Vector2 { //gd:CPUParticles2D.get_
 //go:nosplit
 func (self class) SetEmissionPoints(array Packed.Array[Vector2.XY]) { //gd:CPUParticles2D.set_emission_points
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](array))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](array)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_set_emission_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1166,7 +1166,7 @@ func (self class) GetEmissionPoints() Packed.Array[Vector2.XY] { //gd:CPUParticl
 //go:nosplit
 func (self class) SetEmissionNormals(array Packed.Array[Vector2.XY]) { //gd:CPUParticles2D.set_emission_normals
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](array))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](array)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_set_emission_normals, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1185,7 +1185,7 @@ func (self class) GetEmissionNormals() Packed.Array[Vector2.XY] { //gd:CPUPartic
 //go:nosplit
 func (self class) SetEmissionColors(array Packed.Array[Color.RGBA]) { //gd:CPUParticles2D.set_emission_colors
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](array))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](array)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_set_emission_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

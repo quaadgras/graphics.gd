@@ -165,7 +165,7 @@ Sets the parsed source geometry data vertices. The vertices need to be matched w
 //go:nosplit
 func (self class) SetVertices(vertices Packed.Array[float32]) { //gd:NavigationMeshSourceGeometryData3D.set_vertices
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](vertices))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](vertices)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_set_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -191,7 +191,7 @@ Sets the parsed source geometry data indices. The indices need to be matched wit
 //go:nosplit
 func (self class) SetIndices(indices Packed.Array[int32]) { //gd:NavigationMeshSourceGeometryData3D.set_indices
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](indices))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_set_indices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -216,8 +216,8 @@ Appends arrays of [param vertices] and [param indices] at the end of the existin
 //go:nosplit
 func (self class) AppendArrays(vertices Packed.Array[float32], indices Packed.Array[int32]) { //gd:NavigationMeshSourceGeometryData3D.append_arrays
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](vertices))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](indices))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](vertices)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_append_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -279,7 +279,7 @@ Adds an array of vertex positions to the geometry data for navigation mesh bakin
 //go:nosplit
 func (self class) AddFaces(faces Packed.Array[Vector3.XYZ], xform gd.Transform3D) { //gd:NavigationMeshSourceGeometryData3D.add_faces
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](faces))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](faces)))
 	callframe.Arg(frame, xform)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_add_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -304,7 +304,7 @@ Adds a projected obstruction shape to the source geometry. The [param vertices] 
 //go:nosplit
 func (self class) AddProjectedObstruction(vertices Packed.Array[Vector3.XYZ], elevation gd.Float, height gd.Float, carve bool) { //gd:NavigationMeshSourceGeometryData3D.add_projected_obstruction
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)))
 	callframe.Arg(frame, elevation)
 	callframe.Arg(frame, height)
 	callframe.Arg(frame, carve)

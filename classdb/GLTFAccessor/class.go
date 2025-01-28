@@ -335,7 +335,7 @@ func (self class) GetMin() Packed.Array[float64] { //gd:GLTFAccessor.get_min
 //go:nosplit
 func (self class) SetMin(min Packed.Array[float64]) { //gd:GLTFAccessor.set_min
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat64Array, float64](min))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat64Array, float64](min)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -354,7 +354,7 @@ func (self class) GetMax() Packed.Array[float64] { //gd:GLTFAccessor.get_max
 //go:nosplit
 func (self class) SetMax(max Packed.Array[float64]) { //gd:GLTFAccessor.set_max
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat64Array, float64](max))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat64Array, float64](max)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

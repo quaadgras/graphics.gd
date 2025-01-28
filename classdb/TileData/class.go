@@ -632,7 +632,7 @@ func (self class) SetCollisionPolygonPoints(layer_id gd.Int, polygon_index gd.In
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_id)
 	callframe.Arg(frame, polygon_index)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_set_collision_polygon_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

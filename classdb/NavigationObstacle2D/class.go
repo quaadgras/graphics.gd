@@ -262,7 +262,7 @@ func (self class) GetVelocity() gd.Vector2 { //gd:NavigationObstacle2D.get_veloc
 //go:nosplit
 func (self class) SetVertices(vertices Packed.Array[Vector2.XY]) { //gd:NavigationObstacle2D.set_vertices
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_set_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -122,7 +122,7 @@ func (self class) GetPacketData() Array.Contains[Array.Any] { //gd:OggPacketSequ
 //go:nosplit
 func (self class) SetPacketGranulePositions(granule_positions Packed.Array[int64]) { //gd:OggPacketSequence.set_packet_granule_positions
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt64Array, int64](granule_positions))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](granule_positions)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OggPacketSequence.Bind_set_packet_granule_positions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

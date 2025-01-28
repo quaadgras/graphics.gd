@@ -414,7 +414,7 @@ func (self class) GetChildren() Packed.Array[int32] { //gd:GLTFNode.get_children
 //go:nosplit
 func (self class) SetChildren(children Packed.Array[int32]) { //gd:GLTFNode.set_children
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](children))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](children)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_children, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

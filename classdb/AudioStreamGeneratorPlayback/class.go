@@ -146,7 +146,7 @@ Pushes several audio data frames to the buffer. This is usually more efficient t
 //go:nosplit
 func (self class) PushBuffer(frames Packed.Array[Vector2.XY]) bool { //gd:AudioStreamGeneratorPlayback.push_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](frames))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](frames)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_push_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

@@ -132,7 +132,7 @@ func (self class) GetBlendShapes() Packed.Array[float32] { //gd:XRFaceTracker.ge
 //go:nosplit
 func (self class) SetBlendShapes(weights Packed.Array[float32]) { //gd:XRFaceTracker.set_blend_shapes
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](weights))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_set_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

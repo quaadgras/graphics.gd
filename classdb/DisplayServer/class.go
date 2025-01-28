@@ -3722,7 +3722,7 @@ DisplayServer.WindowSetMousePassthrough(new Vector2[] {});
 //go:nosplit
 func (self class) WindowSetMousePassthrough(region Packed.Array[Vector2.XY], window_id gd.Int) { //gd:DisplayServer.window_set_mouse_passthrough
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](region))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](region)))
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_mouse_passthrough, self.AsObject(), frame.Array(0), r_ret.Addr())

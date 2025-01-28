@@ -283,7 +283,7 @@ print(my_array[rng.rand_weighted(weights)])
 //go:nosplit
 func (self class) RandWeighted(weights Packed.Array[float32]) gd.Int { //gd:RandomNumberGenerator.rand_weighted
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](weights))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RandomNumberGenerator.Bind_rand_weighted, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

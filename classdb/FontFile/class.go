@@ -1521,7 +1521,7 @@ func (self class) SetTextureOffsets(cache_index gd.Int, size gd.Vector2i, textur
 	callframe.Arg(frame, cache_index)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, texture_index)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](offset))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](offset)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_texture_offsets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

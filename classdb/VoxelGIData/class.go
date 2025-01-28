@@ -165,7 +165,7 @@ func (self class) Allocate(to_cell_xform gd.Transform3D, aabb gd.AABB, octree_si
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells))))
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data_cells))))
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](distance_field))))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](level_counts))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](level_counts)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGIData.Bind_allocate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -230,7 +230,7 @@ func (self class) RemoveAttachedNode(node gd.Int) { //gd:VisualShaderNodeFrame.r
 //go:nosplit
 func (self class) SetAttachedNodes(attached_nodes Packed.Array[int32]) { //gd:VisualShaderNodeFrame.set_attached_nodes
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](attached_nodes))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](attached_nodes)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFrame.Bind_set_attached_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

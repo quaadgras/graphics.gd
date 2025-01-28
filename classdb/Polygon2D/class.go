@@ -251,7 +251,7 @@ func (self Instance) SetInternalVertexCount(value int) {
 //go:nosplit
 func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:Polygon2D.set_polygon
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_set_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -270,7 +270,7 @@ func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:Polygon2D.get_pol
 //go:nosplit
 func (self class) SetUv(uv Packed.Array[Vector2.XY]) { //gd:Polygon2D.set_uv
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uv))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uv)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_set_uv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -327,7 +327,7 @@ func (self class) GetPolygons() Array.Any { //gd:Polygon2D.get_polygons
 //go:nosplit
 func (self class) SetVertexColors(vertex_colors Packed.Array[Color.RGBA]) { //gd:Polygon2D.set_vertex_colors
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](vertex_colors))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](vertex_colors)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_set_vertex_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -502,7 +502,7 @@ Adds a bone with the specified [param path] and [param weights].
 func (self class) AddBone(path Path.ToNode, weights Packed.Array[float32]) { //gd:Polygon2D.add_bone
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](weights))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_add_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -592,7 +592,7 @@ Sets the weight values for the specified bone.
 func (self class) SetBoneWeights(index gd.Int, weights Packed.Array[float32]) { //gd:Polygon2D.set_bone_weights
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](weights))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_set_bone_weights, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

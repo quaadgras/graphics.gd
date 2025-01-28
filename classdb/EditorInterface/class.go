@@ -951,7 +951,7 @@ func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Func
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](type_filter))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](type_filter)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_property_selector, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

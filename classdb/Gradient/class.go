@@ -288,7 +288,7 @@ func (self class) GetPointCount() gd.Int { //gd:Gradient.get_point_count
 //go:nosplit
 func (self class) SetOffsets(offsets Packed.Array[float32]) { //gd:Gradient.set_offsets
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](offsets))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](offsets)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_offsets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -307,7 +307,7 @@ func (self class) GetOffsets() Packed.Array[float32] { //gd:Gradient.get_offsets
 //go:nosplit
 func (self class) SetColors(colors Packed.Array[Color.RGBA]) { //gd:Gradient.set_colors
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

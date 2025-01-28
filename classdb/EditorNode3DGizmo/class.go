@@ -632,7 +632,7 @@ Adds lines to the gizmo (as sets of 2 points), with a given material. The lines 
 //go:nosplit
 func (self class) AddLines(lines Packed.Array[Vector3.XYZ], material [1]gdclass.Material, billboard bool, modulate gd.Color) { //gd:EditorNode3DGizmo.add_lines
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](lines))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](lines)))
 	callframe.Arg(frame, pointers.Get(material[0])[0])
 	callframe.Arg(frame, billboard)
 	callframe.Arg(frame, modulate)
@@ -662,7 +662,7 @@ Adds the specified [param segments] to the gizmo's collision shape for picking. 
 //go:nosplit
 func (self class) AddCollisionSegments(segments Packed.Array[Vector3.XYZ]) { //gd:EditorNode3DGizmo.add_collision_segments
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](segments))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](segments)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_add_collision_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -702,9 +702,9 @@ There are virtual methods which will be called upon editing of these handles. Ca
 //go:nosplit
 func (self class) AddHandles(handles Packed.Array[Vector3.XYZ], material [1]gdclass.Material, ids Packed.Array[int32], billboard bool, secondary bool) { //gd:EditorNode3DGizmo.add_handles
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](handles))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](handles)))
 	callframe.Arg(frame, pointers.Get(material[0])[0])
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](ids))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](ids)))
 	callframe.Arg(frame, billboard)
 	callframe.Arg(frame, secondary)
 	var r_ret = callframe.Nil

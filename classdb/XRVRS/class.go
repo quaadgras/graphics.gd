@@ -138,7 +138,7 @@ The result will be cached, requesting a VRS texture with unchanged parameters an
 func (self class) MakeVrsTexture(target_size gd.Vector2, eye_foci Packed.Array[Vector2.XY]) gd.RID { //gd:XRVRS.make_vrs_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, target_size)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](eye_foci))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](eye_foci)))
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRVRS.Bind_make_vrs_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

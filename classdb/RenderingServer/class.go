@@ -5207,7 +5207,7 @@ The per-instance data size and expected data order is:
 func (self class) MultimeshSetBuffer(multimesh gd.RID, buffer Packed.Array[float32]) { //gd:RenderingServer.multimesh_set_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_set_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -6014,7 +6014,7 @@ func (self class) VoxelGiAllocateData(voxel_gi gd.RID, to_cell_xform gd.Transfor
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells))))
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data_cells))))
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](distance_field))))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](level_counts))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](level_counts)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_allocate_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -6255,10 +6255,10 @@ func (self class) LightmapSetProbeInterior(lightmap gd.RID, interior bool) { //g
 func (self class) LightmapSetProbeCaptureData(lightmap gd.RID, points Packed.Array[Vector3.XYZ], point_sh Packed.Array[Color.RGBA], tetrahedra Packed.Array[int32], bsp_tree Packed.Array[int32]) { //gd:RenderingServer.lightmap_set_probe_capture_data
 	var frame = callframe.New()
 	callframe.Arg(frame, lightmap)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](point_sh))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](tetrahedra))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](bsp_tree))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](point_sh)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](tetrahedra)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bsp_tree)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_capture_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -7025,8 +7025,8 @@ Sets the mesh data for the given occluder RID, which controls the shape of the o
 func (self class) OccluderSetMesh(occluder gd.RID, vertices Packed.Array[Vector3.XYZ], indices Packed.Array[int32]) { //gd:RenderingServer.occluder_set_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, occluder)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](indices))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_occluder_set_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -8182,7 +8182,7 @@ func (self class) EnvironmentSetGlow(env gd.RID, enable bool, levels Packed.Arra
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, enable)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](levels))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](levels)))
 	callframe.Arg(frame, intensity)
 	callframe.Arg(frame, strength)
 	callframe.Arg(frame, mix)
@@ -9517,8 +9517,8 @@ Draws a 2D polyline on the [CanvasItem] pointed to by the [param item] [RID]. Se
 func (self class) CanvasItemAddPolyline(item gd.RID, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width gd.Float, antialiased bool) { //gd:RenderingServer.canvas_item_add_polyline
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
 	var r_ret = callframe.Nil
@@ -9533,8 +9533,8 @@ Draws a 2D multiline on the [CanvasItem] pointed to by the [param item] [RID]. S
 func (self class) CanvasItemAddMultiline(item gd.RID, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width gd.Float, antialiased bool) { //gd:RenderingServer.canvas_item_add_multiline
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
 	var r_ret = callframe.Nil
@@ -9671,9 +9671,9 @@ Draws a 2D primitive on the [CanvasItem] pointed to by the [param item] [RID]. S
 func (self class) CanvasItemAddPrimitive(item gd.RID, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture gd.RID) { //gd:RenderingServer.canvas_item_add_primitive
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)))
 	callframe.Arg(frame, texture)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_primitive, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -9687,9 +9687,9 @@ Draws a 2D polygon on the [CanvasItem] pointed to by the [param item] [RID]. If 
 func (self class) CanvasItemAddPolygon(item gd.RID, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture gd.RID) { //gd:RenderingServer.canvas_item_add_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)))
 	callframe.Arg(frame, texture)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -9704,12 +9704,12 @@ Draws a triangle array on the [CanvasItem] pointed to by the [param item] [RID].
 func (self class) CanvasItemAddTriangleArray(item gd.RID, indices Packed.Array[int32], points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], bones Packed.Array[int32], weights Packed.Array[float32], texture gd.RID, count gd.Int) { //gd:RenderingServer.canvas_item_add_triangle_array
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](indices))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](bones))
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](weights))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bones)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)))
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -10413,7 +10413,7 @@ Sets the shape of the occluder polygon.
 func (self class) CanvasOccluderPolygonSetShape(occluder_polygon gd.RID, shape Packed.Array[Vector2.XY], closed bool) { //gd:RenderingServer.canvas_occluder_polygon_set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, occluder_polygon)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](shape))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](shape)))
 	callframe.Arg(frame, closed)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_occluder_polygon_set_shape, self.AsObject(), frame.Array(0), r_ret.Addr())

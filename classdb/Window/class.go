@@ -1529,7 +1529,7 @@ func (self class) IsUsingFontOversampling() bool { //gd:Window.is_using_font_ove
 //go:nosplit
 func (self class) SetMousePassthroughPolygon(polygon Packed.Array[Vector2.XY]) { //gd:Window.set_mouse_passthrough_polygon
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_mouse_passthrough_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

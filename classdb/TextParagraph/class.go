@@ -618,7 +618,7 @@ Aligns paragraph to the given tab-stops.
 //go:nosplit
 func (self class) TabAlign(tab_stops Packed.Array[float32]) { //gd:TextParagraph.tab_align
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_tab_align, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -1098,7 +1098,7 @@ func (self class) PushParagraph(alignment HorizontalAlignment, base_direction gd
 	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
 	callframe.Arg(frame, st_parser)
 	callframe.Arg(frame, justification_flags)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_paragraph, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

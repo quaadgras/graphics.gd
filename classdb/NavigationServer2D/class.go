@@ -2617,7 +2617,7 @@ Sets the outline vertices for the obstacle. If the vertices are winded in clockw
 func (self class) ObstacleSetVertices(obstacle gd.RID, vertices Packed.Array[Vector2.XY]) { //gd:NavigationServer2D.obstacle_set_vertices
 	var frame = callframe.New()
 	callframe.Arg(frame, obstacle)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_obstacle_set_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2759,7 +2759,7 @@ Path simplification can be helpful to mitigate various path following issues tha
 //go:nosplit
 func (self class) SimplifyPath(path Packed.Array[Vector2.XY], epsilon gd.Float) Packed.Array[Vector2.XY] { //gd:NavigationServer2D.simplify_path
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](path))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](path)))
 	callframe.Arg(frame, epsilon)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_simplify_path, self.AsObject(), frame.Array(0), r_ret.Addr())

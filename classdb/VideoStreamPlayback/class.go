@@ -434,7 +434,7 @@ Render [param num_frames] audio frames (of [method _get_channels] floats each) f
 func (self class) MixAudio(num_frames gd.Int, buffer Packed.Array[float32], offset gd.Int) gd.Int { //gd:VideoStreamPlayback.mix_audio
 	var frame = callframe.New()
 	callframe.Arg(frame, num_frames)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](buffer))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer)))
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayback.Bind_mix_audio, self.AsObject(), frame.Array(0), r_ret.Addr())

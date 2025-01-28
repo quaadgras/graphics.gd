@@ -2819,7 +2819,7 @@ func (self class) FontSetTextureOffsets(font_rid gd.RID, size gd.Vector2i, textu
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, texture_index)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](offset))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](offset)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_set_texture_offsets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3958,7 +3958,7 @@ Aligns shaped text to the given tab-stops.
 func (self class) ShapedTextTabAlign(shaped gd.RID, tab_stops Packed.Array[float32]) gd.Float { //gd:TextServer.shaped_text_tab_align
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops)))
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_tab_align, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -4072,7 +4072,7 @@ Breaks text to the lines and columns. Returns character ranges for each segment.
 func (self class) ShapedTextGetLineBreaksAdv(shaped gd.RID, width Packed.Array[float32], start gd.Int, once bool, break_flags gdclass.TextServerLineBreakFlag) Packed.Array[int32] { //gd:TextServer.shaped_text_get_line_breaks_adv
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](width))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](width)))
 	callframe.Arg(frame, start)
 	callframe.Arg(frame, once)
 	callframe.Arg(frame, break_flags)

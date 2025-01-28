@@ -629,6 +629,11 @@ const (
 	WeekdaySaturday Weekday = 6
 )
 
+type OnTheClock struct {
+	Hour   int `gd:"hour"`
+	Minute int `gd:"minute"`
+	Second int `gd:"second"`
+}
 type Date struct {
 	Year    int `gd:"year"`
 	Month   int `gd:"month"`
@@ -643,9 +648,4 @@ type DateOnly struct {
 	Month   int `gd:"month"`
 	Day     int `gd:"day"`
 	Weekday int `gd:"weekday"`
-}
-type OnTheClock struct {
-	Hour   int `gd:"hour"`
-	Minute int `gd:"minute"`
-	Second int `gd:"second"`
 }

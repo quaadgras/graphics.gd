@@ -110,7 +110,7 @@ func (self Instance) SetPathOwnerIds(value []int64) {
 //go:nosplit
 func (self class) SetPath(path Packed.Array[Vector2.XY]) { //gd:NavigationPathQueryResult2D.set_path
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](path))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](path)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_set_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -129,7 +129,7 @@ func (self class) GetPath() Packed.Array[Vector2.XY] { //gd:NavigationPathQueryR
 //go:nosplit
 func (self class) SetPathTypes(path_types Packed.Array[int32]) { //gd:NavigationPathQueryResult2D.set_path_types
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](path_types))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](path_types)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_set_path_types, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -167,7 +167,7 @@ func (self class) GetPathRids() Array.Contains[gd.RID] { //gd:NavigationPathQuer
 //go:nosplit
 func (self class) SetPathOwnerIds(path_owner_ids Packed.Array[int64]) { //gd:NavigationPathQueryResult2D.set_path_owner_ids
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt64Array, int64](path_owner_ids))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](path_owner_ids)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_set_path_owner_ids, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

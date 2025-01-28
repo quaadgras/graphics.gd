@@ -1259,7 +1259,7 @@ func (self class) GetEmissionBoxExtents() gd.Vector3 { //gd:CPUParticles3D.get_e
 //go:nosplit
 func (self class) SetEmissionPoints(array Packed.Array[Vector3.XYZ]) { //gd:CPUParticles3D.set_emission_points
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](array))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](array)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_set_emission_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1278,7 +1278,7 @@ func (self class) GetEmissionPoints() Packed.Array[Vector3.XYZ] { //gd:CPUPartic
 //go:nosplit
 func (self class) SetEmissionNormals(array Packed.Array[Vector3.XYZ]) { //gd:CPUParticles3D.set_emission_normals
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](array))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](array)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_set_emission_normals, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1297,7 +1297,7 @@ func (self class) GetEmissionNormals() Packed.Array[Vector3.XYZ] { //gd:CPUParti
 //go:nosplit
 func (self class) SetEmissionColors(array Packed.Array[Color.RGBA]) { //gd:CPUParticles3D.set_emission_colors
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedColorArray, Color.RGBA](array))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](array)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_set_emission_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

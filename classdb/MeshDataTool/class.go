@@ -663,7 +663,7 @@ Sets the bones of the given vertex.
 func (self class) SetVertexBones(idx gd.Int, bones Packed.Array[int32]) { //gd:MeshDataTool.set_vertex_bones
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](bones))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bones)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_set_vertex_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -690,7 +690,7 @@ Sets the bone weights of the given vertex.
 func (self class) SetVertexWeights(idx gd.Int, weights Packed.Array[float32]) { //gd:MeshDataTool.set_vertex_weights
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedFloat32Array, float32](weights))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_set_vertex_weights, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

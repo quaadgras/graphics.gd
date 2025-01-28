@@ -305,7 +305,7 @@ Sets the vertices that can be then indexed to create polygons with the [method a
 //go:nosplit
 func (self class) SetVertices(vertices Packed.Array[Vector2.XY]) { //gd:NavigationPolygon.set_vertices
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_set_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -330,7 +330,7 @@ Adds a polygon using the indices of the vertices you get when calling [method ge
 //go:nosplit
 func (self class) AddPolygon(polygon Packed.Array[int32]) { //gd:NavigationPolygon.add_polygon
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedInt32Array, int32](polygon))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](polygon)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_add_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -393,7 +393,7 @@ Appends a [PackedVector2Array] that contains the vertices of an outline to the i
 //go:nosplit
 func (self class) AddOutline(outline Packed.Array[Vector2.XY]) { //gd:NavigationPolygon.add_outline
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](outline))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](outline)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_add_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -405,7 +405,7 @@ Adds a [PackedVector2Array] that contains the vertices of an outline to the inte
 //go:nosplit
 func (self class) AddOutlineAtIndex(outline Packed.Array[Vector2.XY], index gd.Int) { //gd:NavigationPolygon.add_outline_at_index
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](outline))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](outline)))
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_add_outline_at_index, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -432,7 +432,7 @@ Changes an outline created in the editor or by script. You have to call [method 
 func (self class) SetOutline(idx gd.Int, outline Packed.Array[Vector2.XY]) { //gd:NavigationPolygon.set_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](outline))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](outline)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_set_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

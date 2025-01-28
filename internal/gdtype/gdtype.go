@@ -266,7 +266,7 @@ func (name Name) LoadOntoCallFrame(val string) string {
 		elem = strings.TrimSuffix(elem, "]")
 		title, _, _ := strings.Cut(elem, ".")
 		title = strings.Title(title)
-		return fmt.Sprintf("\tcallframe.Arg(frame, gd.InternalPacked[gd.Packed%sArray, %s](%v))\n", title, elem, val)
+		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.Packed%sArray, %s](%v)))\n", title, elem, val)
 	}
 	_, argIsPtr := name.IsPointer()
 	if argIsPtr {
