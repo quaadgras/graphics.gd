@@ -559,7 +559,7 @@ func ContainsStrict[S Any](what S, s S) bool { //gd:String.contains
 
 // Contains returns true if the string contains what, ignoring case.
 // If you need to know where what is within the string, use findn. See also [Contains].
-func Contains[S Any](what S, s S) bool { //gd:String.containsn
+func Contains[A, B Any](what A, s B) bool { //gd:String.containsn
 	return strings.Contains(strings.ToLower(As[string](s)), strings.ToLower(As[string](what)))
 }
 
@@ -926,6 +926,9 @@ func First[S Any, I Int.Any](n I, s S) S { //gd:String.left
 // Length returns the number of characters in the string.
 func Length[S Any](s S) int { //gd:String.length
 	utf := New(s)
+	if utf.api == nil {
+		return 0
+	}
 	return utf.api.Len(utf.buf)
 }
 
