@@ -114,7 +114,7 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 | Variant            | `any`                     | `variant.Any`                   |
 | bool               | `bool`                    | `bool`                          |
 | int                | `int`                     | `int64`                         |
-| float              | `float`                   | `float64`                       |
+| float              | `Float.X`                 | `Float.X`                       |
 | String             | `string`                  | `String.Readable`               |
 | Vector2            | `Vector2.XY`              | `Vector2.XY`                    |
 | Vector2i           | `Vector2i.XY`             | `Vector2i.XY`                   |
