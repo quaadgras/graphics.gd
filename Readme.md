@@ -109,9 +109,8 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 
 ## Variant Type Table
 
-+--------------------+---------------------------+---------------------------------+
 | Engine Type        | Default Convenience Type  | Allocation Efficient Type       |
-+--------------------+---------------------------+---------------------------------+
+| ------------------ | ------------------------- | ------------------------------- |
 | Variant            | `any`                     | `variant.Any`                   |
 | bool               | `bool`                    | `bool`                          |
 | int                | `int`                     | `int64`                         |
@@ -151,7 +150,6 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 | PackedVector3Array | `[]Vector3.XYZ`           | `Packed.Array[Vector3.XYZ]`     |
 | PackedColorArray   | `[]Color.RGBA`            | `Packed.Array[Color.RGBA]`      |
 | PackedVector4Array | `[]Vector4.XYZW`          | `Packed.Array[Vector4.XYZW]`    |
-+--------------------+---------------------------+---------------------------------+
 
 
 
