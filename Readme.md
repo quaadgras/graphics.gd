@@ -12,7 +12,7 @@ _Why use graphics.gd?_
 * Recompile your code quickly, with a build experience similar to working in a scripting language.
 
 We would love you to take part in our [active discussions](https://github.com/grow-graphics/gd/discussions) 
-section with any questions, comments or feedback you may have. Show us what you are building!
+section with any questions, comments or feedback you may have. Show us what you're building!
 
 ```go
 // This file is all you need to start a project.
