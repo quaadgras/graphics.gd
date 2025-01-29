@@ -39,7 +39,7 @@ func main() {
 We would love you to take part in our [active discussions](https://github.com/grow-graphics/gd/discussions) 
 section with any questions, comments or feedback you may have. Show us what you are building!
 
-You can also help to fund the project and prioritise issues [here](https://buy.stripe.com/4gw14maETbnX3vOcMM)
+You can help fund the project, motivate development and prioritise issues [here](https://buy.stripe.com/4gw14maETbnX3vOcMM)
 
 ## Getting Started
 The module includes a drop-in replacement for the go command called `gd` that
