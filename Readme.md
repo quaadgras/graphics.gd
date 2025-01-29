@@ -1,7 +1,7 @@
 # Graphics GD [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd)
 
-This module provides a safe performant way to work with graphics and game development in Go via the GDExtension
-interface of any supported graphics/game engine (ie. Godot 4.3).
+This project aims to provide a safe performant way to work with graphics and game development in Go via 
+the GDExtension interface of any supported graphics/game engine (ie. Godot 4.3).
 
 _Why use graphics.gd?_
 
@@ -12,8 +12,7 @@ _Why use graphics.gd?_
 * Recompile your code quickly, with a build experience similar to working in a scripting language.
 
 We would love you to take part in our [active discussions](https://github.com/grow-graphics/gd/discussions) 
-section with any questions, comments or feedback you may have. Show us what you're building! Open an issue if
-you run into any unexpected panics or crashes.
+section with any questions, comments or feedback you may have. Show us what you're building!
 
 ```go
 // This file is all you need to start a project.
@@ -92,6 +91,9 @@ extension class and don't hold onto references across frames. If you get an
 "expired pointer" error, it means either the reference has outlived its frame and
 has not been used since or the ownership of the value was transferred to the engine.
 
+The project aims to provide as much memory safety as possible for working with the
+Engine, please open an issue if you determine there to be any issues here.
+
 ## Recommendations
 
 Start with a main.go file, model your project in Go using structs to represent the
@@ -155,8 +157,6 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 | PackedColorArray   | `[]Color.RGBA`            | `Packed.Array[Color.RGBA]`      |
 | PackedVector4Array | `[]Vector4.XYZW`          | `Packed.Array[Vector4.XYZW]`    |
 
-
-
 ## Performance
 It's feasible to write high performance code using this module, keep to Engine types where possible and avoid
 allocating memory on the heap in frequently called functions. `Advanced` instances are available for each class
@@ -201,11 +201,16 @@ packages inspired by the Godot engine's Variant type. Specifically any changes y
 optimise functionality and/or improve test converage of these packages is more than welcome
 (such as specialised assembly routines for vector operations, anyone?).
 
+If you enjoy hunting down memory-safety issues, we would appreciate any issues being opened on 
+this front.
+
 Thirdly, the project needs more tests to ensure that everything is working, the best way you can
 guarantee that graphics.gd won't break on you is to contribute tests that cover the functionality
 you need!
 
 To run the go tests for graphics.gd, cd into the repo and run `cd internal && gd test`.
+
+
 
 ## See Also
 
