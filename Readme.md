@@ -11,7 +11,9 @@ _Why use graphics.gd?_
 * General-purpose pure-Go 'variant' packages, reuse them in any Go project.
 * Recompile your code quickly, with a build experience similar to working in a scripting language.
 
-You can support the project and prioritise issues [here](https://buy.stripe.com/4gw14maETbnX3vOcMM)
+You can support the project and prioritise issues [here](https://buy.stripe.com/4gw14maETbnX3vOcMM) also consider
+joining the [active discussions](https://github.com/grow-graphics/gd/discussions) section with any questions, comments
+or feedback you may have.
 
 ```go
 // This file is all you need to start a project.
