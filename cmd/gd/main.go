@@ -11,6 +11,7 @@ package main
 
 import (
 	"archive/zip"
+	"bufio"
 	"bytes"
 	"errors"
 	"fmt"
@@ -314,6 +315,8 @@ func wrap() error {
 	args := make([]string, len(os.Args)-1)
 	builds := [][]string{}
 	switch os.Args[1] {
+	case "fix":
+		return fix()
 	case "run", "build":
 		copy(args, os.Args[1:])
 		args[0] = "build"
@@ -346,16 +349,38 @@ func wrap() error {
 		arches = append(arches, missingArch)
 	}
 	for i, commandArgs := range builds {
+		var undefinedSymbols []string
+		var parsingDone = make(chan struct{})
+		stderr, capture, err := os.Pipe()
+		if err != nil {
+			return xray.New(err)
+		}
+		go func() {
+			defer stderr.Close()
+			defer close(parsingDone)
+			scanner := bufio.NewScanner(stderr)
+			for scanner.Scan() {
+				line := scanner.Text()
+				fmt.Fprintln(os.Stderr, line)
+				_, ident, ok := strings.Cut(line, "undefined: ")
+				if ok {
+					undefinedSymbols = append(undefinedSymbols, ident)
+				}
+			}
+		}()
 		golang := exec.Command("go", commandArgs...)
 		golang.Env = os.Environ()
 		if GOOS != "js" {
 			golang.Env = append(os.Environ(), "CGO_ENABLED=1")
 		}
 		golang.Env = append(golang.Env, "GOARCH="+arches[i])
-		golang.Stderr = os.Stderr
+		golang.Stderr = capture
 		golang.Stdout = os.Stdout
 		golang.Stdin = os.Stdin
 		if err := golang.Run(); err != nil {
+			capture.Close()
+			<-parsingDone
+			checkForFixes(undefinedSymbols)
 			return err
 		}
 	}

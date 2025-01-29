@@ -1,0 +1,9 @@
+package P
+import "graphics.gd/startup"
+func before() { startup.Loader() }
+func after()  { startup.LoadingScene() }
+
+package P
+import "graphics.gd/startup"
+func before() { startup.Engine() }
+func after()  { startup.Scene() }

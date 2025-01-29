@@ -42,9 +42,14 @@ func MainLoop(loop MainLoopClass.Interface) {
 
 var theMainFunctionIsWaitingForTheEngineToShutDown = false
 
-// Engine starts up the engine and blocks until it shuts down.
-func Engine() {
-	classdb.Register[goSceneTree]()
+// Deprecated: Use [Scene] instead.
+func Engine() { Scene() }
+
+// Deprecated: Use [LoadingScene] instead.
+func Loader() { LoadingScene() }
+
+// Scene starts up the SceneTree and blocks until the engine shuts down.
+func Scene() {
 	if pause_main != nil {
 		theMainFunctionIsWaitingForTheEngineToShutDown = true
 		pause_main(false)
@@ -53,14 +58,16 @@ func Engine() {
 	}
 }
 
-// Loader starts up the loading and initialization process of the graphics engine.
-// After this function is called, all graphics functions will be available to use.
-// A subsequent call to [Engine] is required to continue to the default main loop.
+// LoadingScene starts up loading the main scene after this function is called, all
+// graphics functions will be available to use.
+//
+// A subsequent call to [Scene] is required to startup the scene.
 //
 // Blocks indefinitely if the editor is running. As such, make sure to register all
-// of your classes before calling this function if you want them to be available in
-// the editor.
-func Loader() {
+// editor-accessible classes before calling this function if you want them to be
+// available in the editor.
+func LoadingScene() {
+	classdb.Register[goSceneTree]()
 	if pause_main != nil {
 		gd.NewCallable(func() {
 			resume_main()
