@@ -3,6 +3,7 @@ package startup
 
 import (
 	"iter"
+	"time"
 
 	"graphics.gd/classdb"
 	EngineClass "graphics.gd/classdb/Engine"
@@ -96,8 +97,6 @@ func (loop goMainLoop) Initialize() {
 		mainloop.Initialize()
 	} else if pause_main != nil {
 		resume_main()
-	} else {
-		close(main_loop_initialized)
 	}
 }
 
@@ -112,8 +111,7 @@ func (loop goMainLoop) PhysicsProcess(delta Float.X) bool {
 
 var dt Float.X
 
-var close_main_loop bool
-var frame_ready = make(chan struct{})
+var frame_ready = make(chan bool)
 
 // Called each process (idle) frame with the time since the last process frame as argument (in seconds). Equivalent to [method Node._process].
 // If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
@@ -128,8 +126,8 @@ func (loop goMainLoop) Process(delta Float.X) bool {
 		close, _ := resume_main()
 		return close
 	}
-	frame_ready <- struct{}{}
-	return close_main_loop
+	frame_ready <- false
+	return <-frame_ready
 }
 
 var main_loop_shutdown = make(chan struct{})
@@ -163,10 +161,6 @@ func Rendering() iter.Seq[Float.X] {
 			stop_main()
 		}
 		pause_main(false) // We pause here until the engine has fully started up.
-	} else {
-		<-intialized
-	}
-	if pause_main != nil {
 		return func(yield func(Float.X) bool) {
 			pause_main(false) // we pause here until the MainLoop initialize function is called.
 			for {
@@ -178,14 +172,17 @@ func Rendering() iter.Seq[Float.X] {
 			pause_main(true) // we pause here until the engine has fully shut down.
 		}
 	} else {
-		<-main_loop_initialized
+		<-frame_ready
+		time.Sleep(5 * time.Second)
 		return func(yield func(Float.X) bool) {
+			frame_ready <- true
 			for {
 				<-frame_ready // we pause here until the next frame is ready (next Process callback).
 				if !yield(dt) {
-					close_main_loop = true
+					frame_ready <- true
 					break
 				}
+				frame_ready <- false
 			}
 			<-main_loop_shutdown
 		}

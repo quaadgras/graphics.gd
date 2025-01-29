@@ -580,7 +580,7 @@ func linkJS(API *gd.API) {
 	}
 	memory_write := dlsym("mem_write")
 	API.Memory.Write = func(frame gd.Address, ptr unsafe.Pointer, size uintptr) {
-		for i := uintptr(0); i < size/4; i++ {
+		for i := uintptr(0); i < (size/4)+1; i++ {
 			write_params_buffer.Invoke(0, 0, i, scratch[i])
 		}
 		memory_write.Invoke(uint32(frame), uint32(size))
