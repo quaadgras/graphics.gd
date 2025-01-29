@@ -112,7 +112,7 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 
 ## Variant Type Table
 
-| Engine Type        | Default Convenience Type  | Allocation Efficient Type       |
+| Engine Type        | Convenience Type          | Best Performance Type           |
 | ------------------ | ------------------------- | ------------------------------- |
 | Variant            | `any`                     | `variant.Any`                   |
 | bool               | `bool`                    | `bool`                          |
