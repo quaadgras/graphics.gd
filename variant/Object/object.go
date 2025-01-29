@@ -7,6 +7,7 @@ import (
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
+	"graphics.gd/variant"
 )
 
 // ID uniquely and opaquely identifies an Object instance.
@@ -134,3 +135,6 @@ func (obj Instance) Translate(message string) string {
 func (obj Instance) Translation(message string, plural_message string, n int, context string) string {
 	return obj[0].TrN(gd.NewStringName(message), gd.NewStringName(plural_message), gd.Int(n), gd.NewStringName(context)).String()
 }
+
+// Use keeps an object alive, preventing it from being garbage collected until the next frame.
+func Use(obj interface{ AsObject() [1]gdclass.Object }) { variant.Use(obj.AsObject()[0]) }
