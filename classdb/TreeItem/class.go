@@ -1362,7 +1362,7 @@ func (self class) GetMetadata(column int64) variant.Any { //gd:TreeItem.get_meta
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -426,7 +426,7 @@ func (self class) GetInstanceShaderParameter(name String.Name) variant.Any { //g
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -556,7 +556,7 @@ func (Instance) _add_global_constant(impl func(ptr unsafe.Pointer, name string, 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
-		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, name.String(), value.Interface())
@@ -566,7 +566,7 @@ func (Instance) _add_named_global_constant(impl func(ptr unsafe.Pointer, name st
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
-		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, name.String(), value.Interface())
@@ -1283,7 +1283,7 @@ func (class) _add_global_constant(impl func(ptr unsafe.Pointer, name String.Name
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
-		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, name, value)
@@ -1294,7 +1294,7 @@ func (class) _add_named_global_constant(impl func(ptr unsafe.Pointer, name Strin
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
-		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, name, value)

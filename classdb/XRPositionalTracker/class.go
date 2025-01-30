@@ -238,7 +238,7 @@ func (self class) GetInput(name String.Name) variant.Any { //gd:XRPositionalTrac
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_input, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

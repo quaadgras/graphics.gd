@@ -1059,7 +1059,7 @@ func (self class) TrackGetKeyValue(track_idx int64, key_idx int64) variant.Any {
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_key_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1207,7 +1207,7 @@ func (self class) ValueTrackInterpolate(track_idx int64, time_sec float64, backw
 	callframe.Arg(frame, backward)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_value_track_interpolate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

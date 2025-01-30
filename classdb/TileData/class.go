@@ -865,7 +865,7 @@ func (self class) GetCustomData(layer_name String.Readable) variant.Any { //gd:T
 	callframe.Arg(frame, pointers.Get(gd.InternalString(layer_name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_custom_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -892,7 +892,7 @@ func (self class) GetCustomDataByLayerId(layer_id int64) variant.Any { //gd:Tile
 	callframe.Arg(frame, layer_id)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_custom_data_by_layer_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

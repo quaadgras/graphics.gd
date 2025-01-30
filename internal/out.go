@@ -1501,15 +1501,15 @@ type typeset struct {
 			}
 			Module struct {
 				Dictionary         func(a, b, ret callframe.Addr)
-				PackedStringArray  func(a, b, ret callframe.Addr)
-				int                func(a, b, ret callframe.Addr)
+				PackedInt32Array   func(a, b, ret callframe.Addr)
+				Transform3D        func(a, b, ret callframe.Addr)
 				float              func(a, b, ret callframe.Addr)
 				PackedVector4Array func(a, b, ret callframe.Addr)
 				PackedColorArray   func(a, b, ret callframe.Addr)
 				PackedVector3Array func(a, b, ret callframe.Addr)
 				PackedVector2Array func(a, b, ret callframe.Addr)
 				Projection         func(a, b, ret callframe.Addr)
-				Color              func(a, b, ret callframe.Addr)
+				PackedStringArray  func(a, b, ret callframe.Addr)
 				PackedFloat64Array func(a, b, ret callframe.Addr)
 				String             func(a, b, ret callframe.Addr)
 				PackedFloat32Array func(a, b, ret callframe.Addr)
@@ -1526,10 +1526,10 @@ type typeset struct {
 				Quaternion         func(a, b, ret callframe.Addr)
 				AABB               func(a, b, ret callframe.Addr)
 				Basis              func(a, b, ret callframe.Addr)
-				bool               func(a, b, ret callframe.Addr)
-				Transform3D        func(a, b, ret callframe.Addr)
+				int                func(a, b, ret callframe.Addr)
 				PackedInt64Array   func(a, b, ret callframe.Addr)
-				PackedInt32Array   func(a, b, ret callframe.Addr)
+				bool               func(a, b, ret callframe.Addr)
+				Color              func(a, b, ret callframe.Addr)
 				PackedByteArray    func(a, b, ret callframe.Addr)
 				StringName         func(a, b, ret callframe.Addr)
 				Array              func(a, b, ret callframe.Addr)
@@ -1539,8 +1539,8 @@ type typeset struct {
 				Callable           func(a, b, ret callframe.Addr)
 			}
 			Add struct {
-				String     func(a, b, ret callframe.Addr)
 				StringName func(a, b, ret callframe.Addr)
+				String     func(a, b, ret callframe.Addr)
 			}
 			Less struct {
 				String func(a, b, ret callframe.Addr)
@@ -1549,8 +1549,8 @@ type typeset struct {
 				String func(a, b, ret callframe.Addr)
 			}
 			Equals struct {
-				String     func(a, b, ret callframe.Addr)
 				StringName func(a, b, ret callframe.Addr)
+				String     func(a, b, ret callframe.Addr)
 			}
 			Greater struct {
 				String func(a, b, ret callframe.Addr)
@@ -1560,11 +1560,11 @@ type typeset struct {
 			}
 			In struct {
 				Array             func(a, b, ret callframe.Addr)
-				String            func(a, b, ret callframe.Addr)
-				PackedStringArray func(a, b, ret callframe.Addr)
-				Object            func(a, b, ret callframe.Addr)
 				StringName        func(a, b, ret callframe.Addr)
+				Object            func(a, b, ret callframe.Addr)
+				String            func(a, b, ret callframe.Addr)
 				Dictionary        func(a, b, ret callframe.Addr)
+				PackedStringArray func(a, b, ret callframe.Addr)
 			}
 			Not func(a, b, ret callframe.Addr)
 		}
@@ -2061,15 +2061,14 @@ type typeset struct {
 			}
 			Module struct {
 				Color              func(a, b, ret callframe.Addr)
-				PackedStringArray  func(a, b, ret callframe.Addr)
-				int                func(a, b, ret callframe.Addr)
+				PackedInt32Array   func(a, b, ret callframe.Addr)
 				float              func(a, b, ret callframe.Addr)
 				PackedVector4Array func(a, b, ret callframe.Addr)
 				PackedColorArray   func(a, b, ret callframe.Addr)
 				PackedVector3Array func(a, b, ret callframe.Addr)
 				String             func(a, b, ret callframe.Addr)
 				PackedVector2Array func(a, b, ret callframe.Addr)
-				PackedFloat64Array func(a, b, ret callframe.Addr)
+				Vector2            func(a, b, ret callframe.Addr)
 				Vector2i           func(a, b, ret callframe.Addr)
 				Rect2              func(a, b, ret callframe.Addr)
 				Rect2i             func(a, b, ret callframe.Addr)
@@ -2084,11 +2083,12 @@ type typeset struct {
 				Basis              func(a, b, ret callframe.Addr)
 				Transform3D        func(a, b, ret callframe.Addr)
 				Projection         func(a, b, ret callframe.Addr)
+				PackedStringArray  func(a, b, ret callframe.Addr)
+				PackedFloat64Array func(a, b, ret callframe.Addr)
+				int                func(a, b, ret callframe.Addr)
 				PackedFloat32Array func(a, b, ret callframe.Addr)
-				PackedInt64Array   func(a, b, ret callframe.Addr)
 				bool               func(a, b, ret callframe.Addr)
-				Vector2            func(a, b, ret callframe.Addr)
-				PackedInt32Array   func(a, b, ret callframe.Addr)
+				PackedInt64Array   func(a, b, ret callframe.Addr)
 				PackedByteArray    func(a, b, ret callframe.Addr)
 				Array              func(a, b, ret callframe.Addr)
 				StringName         func(a, b, ret callframe.Addr)
@@ -2109,8 +2109,8 @@ type typeset struct {
 				StringName func(a, b, ret callframe.Addr)
 			}
 			Equals struct {
-				StringName func(a, b, ret callframe.Addr)
 				String     func(a, b, ret callframe.Addr)
+				StringName func(a, b, ret callframe.Addr)
 			}
 			Greater struct {
 				StringName func(a, b, ret callframe.Addr)
@@ -2120,11 +2120,11 @@ type typeset struct {
 			}
 			In struct {
 				Array             func(a, b, ret callframe.Addr)
-				Object            func(a, b, ret callframe.Addr)
-				PackedStringArray func(a, b, ret callframe.Addr)
-				String            func(a, b, ret callframe.Addr)
-				Dictionary        func(a, b, ret callframe.Addr)
 				StringName        func(a, b, ret callframe.Addr)
+				Object            func(a, b, ret callframe.Addr)
+				String            func(a, b, ret callframe.Addr)
+				PackedStringArray func(a, b, ret callframe.Addr)
+				Dictionary        func(a, b, ret callframe.Addr)
 			}
 			Not func(a, b, ret callframe.Addr)
 		}

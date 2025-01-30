@@ -1,13 +1,5 @@
 package gd
 
-import VariantPkg "graphics.gd/variant"
-
-func InternalVariant(vary VariantPkg.Any) Variant {
-	return NewVariant(vary)
-}
-
-type VariantProxy struct{}
-
 // Bool returns the variant as a bool. Panics if the variant is not a bool.
 func (variant Variant) Bool() bool { return variant.Interface().(bool) }
 

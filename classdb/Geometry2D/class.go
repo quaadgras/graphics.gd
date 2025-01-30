@@ -317,7 +317,7 @@ func (self class) SegmentIntersectsSegment(from_a Vector2.XY, to_a Vector2.XY, f
 	callframe.Arg(frame, to_b)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_segment_intersects_segment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -335,7 +335,7 @@ func (self class) LineIntersectsLine(from_a Vector2.XY, dir_a Vector2.XY, from_b
 	callframe.Arg(frame, dir_b)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_line_intersects_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

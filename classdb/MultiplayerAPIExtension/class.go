@@ -292,7 +292,7 @@ func (Instance) _object_configuration_add(impl func(ptr unsafe.Pointer, obj Obje
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
-		var configuration = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(configuration))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj, configuration.Interface())
@@ -312,7 +312,7 @@ func (Instance) _object_configuration_remove(impl func(ptr unsafe.Pointer, obj O
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
-		var configuration = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(configuration))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj, configuration.Interface())
@@ -458,7 +458,7 @@ func (class) _object_configuration_add(impl func(ptr unsafe.Pointer, obj [1]gd.O
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
-		var configuration = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(configuration))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj, configuration)
@@ -478,7 +478,7 @@ func (class) _object_configuration_remove(impl func(ptr unsafe.Pointer, obj [1]g
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
-		var configuration = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(configuration))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj, configuration)

@@ -2654,14 +2654,14 @@ const (
 	KeySection Key = 167
 )
 
+type Pipe struct {
+	Stdio  [1]gdclass.FileAccess `gd:"stdio"`
+	Stderr [1]gdclass.FileAccess `gd:"stderr"`
+	PID    int                   `gd:"pid"`
+}
 type MemoryInfo struct {
 	Physical  int `gd:"physical"`
 	Free      int `gd:"free"`
 	Available int `gd:"available"`
 	Stack     int `gd:"stack"`
-}
-type Pipe struct {
-	Stdio  [1]gdclass.FileAccess `gd:"stdio"`
-	Stderr [1]gdclass.FileAccess `gd:"stderr"`
-	PID    int                   `gd:"pid"`
 }

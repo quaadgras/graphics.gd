@@ -146,7 +146,7 @@ func (self class) ProcessAction(action variant.Any, recurse bool) variant.Any { 
 	callframe.Arg(frame, recurse)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_process_action, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -268,6 +268,11 @@ const (
 	InternalError ErrorCode = -32603
 )
 
+type Request struct {
+	Method string      `gd:"method"`
+	Params interface{} `gd:"params"`
+	ID     string      `gd:"id"`
+}
 type Response struct {
 	Result interface{} `gd:"result"`
 	ID     string      `gd:"id"`
@@ -280,9 +285,4 @@ type ResponseError struct {
 	Code    int    `gd:"code"`
 	Message string `gd:"message"`
 	ID      int    `gd:"id"`
-}
-type Request struct {
-	Method string      `gd:"method"`
-	Params interface{} `gd:"params"`
-	ID     string      `gd:"id"`
 }

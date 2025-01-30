@@ -1322,7 +1322,7 @@ func (self class) GetThemeItem(data_type gdclass.ThemeDataType, name String.Name
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_theme_item, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

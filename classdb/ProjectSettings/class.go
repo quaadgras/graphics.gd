@@ -360,7 +360,7 @@ func (self class) GetSetting(name String.Readable, default_value variant.Any) va
 	callframe.Arg(frame, pointers.Get(gd.InternalVariant(default_value)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_get_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -385,7 +385,7 @@ func (self class) GetSettingWithOverride(name String.Name) variant.Any { //gd:Pr
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_get_setting_with_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

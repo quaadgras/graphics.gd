@@ -406,7 +406,7 @@ func (self class) GetPropertyDefaultValue(property String.Name) variant.Any { //
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_property_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -468,6 +468,13 @@ func init() {
 	gdclass.Register("Script", func(ptr gd.Object) any { return [1]gdclass.Script{*(*gdclass.Script)(unsafe.Pointer(&ptr))} })
 }
 
+type SignalInfo struct {
+	Name        string         `gd:"name"`
+	Flags       int            `gd:"flags"`
+	ID          int            `gd:"id"`
+	DefaultArgs []interface{}  `gd:"default_args"`
+	Args        []PropertyInfo `gd:"args"`
+}
 type PropertyInfo struct {
 	ClassName  string       `gd:"class_name"`
 	Name       string       `gd:"name"`
@@ -475,11 +482,4 @@ type PropertyInfo struct {
 	HintString string       `gd:"hint_string"`
 	Type       reflect.Type `gd:"type"`
 	Usage      int          `gd:"usage"`
-}
-type SignalInfo struct {
-	Name        string         `gd:"name"`
-	Flags       int            `gd:"flags"`
-	ID          int            `gd:"id"`
-	DefaultArgs []interface{}  `gd:"default_args"`
-	Args        []PropertyInfo `gd:"args"`
 }

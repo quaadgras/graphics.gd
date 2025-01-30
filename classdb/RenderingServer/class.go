@@ -4476,7 +4476,7 @@ func (self class) ShaderGetParameterDefault(shader RID.Any, name String.Name) va
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_get_parameter_default, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4566,7 +4566,7 @@ func (self class) MaterialGetParam(material RID.Any, parameter String.Name) vari
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(parameter)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -9037,7 +9037,7 @@ func (self class) InstanceGeometryGetShaderParameter(instance RID.Any, parameter
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(parameter)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -9052,7 +9052,7 @@ func (self class) InstanceGeometryGetShaderParameterDefaultValue(instance RID.An
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(parameter)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -10525,7 +10525,7 @@ func (self class) GlobalShaderParameterGet(name String.Name) variant.Any { //gd:
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

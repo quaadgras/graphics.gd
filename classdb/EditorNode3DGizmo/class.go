@@ -229,7 +229,7 @@ func (Instance) _commit_handle(impl func(ptr unsafe.Pointer, id int, secondary b
 
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 
-		var restore = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		var restore = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(restore))
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
 
@@ -541,7 +541,7 @@ func (class) _commit_handle(impl func(ptr unsafe.Pointer, id int64, secondary bo
 
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 
-		var restore = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		var restore = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(restore))
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
 

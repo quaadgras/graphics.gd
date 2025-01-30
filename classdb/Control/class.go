@@ -367,7 +367,7 @@ func (Instance) _can_drop_data(impl func(ptr unsafe.Pointer, at_position Vector2
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
-		var data = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position, data.Interface())
@@ -408,7 +408,7 @@ func (Instance) _drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY,
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
-		var data = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, at_position, data.Interface())
@@ -1634,7 +1634,7 @@ func (class) _can_drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
-		var data = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position, data)
@@ -1675,7 +1675,7 @@ func (class) _drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, da
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
-		var data = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, at_position, data)

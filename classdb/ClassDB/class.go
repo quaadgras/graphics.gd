@@ -363,7 +363,7 @@ func (self class) Instantiate(class_ String.Name) variant.Any { //gd:ClassDB.ins
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_instantiate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -438,7 +438,7 @@ func (self class) ClassGetProperty(obj [1]gd.Object, property String.Name) varia
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -469,7 +469,7 @@ func (self class) ClassGetPropertyDefaultValue(class_ String.Name, property Stri
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -669,6 +669,13 @@ func init() {
 	gdclass.Register("ClassDB", func(ptr gd.Object) any { return [1]gdclass.ClassDB{*(*gdclass.ClassDB)(unsafe.Pointer(&ptr))} })
 }
 
+type SignalInfo struct {
+	Name        string         `gd:"name"`
+	Flags       int            `gd:"flags"`
+	ID          int            `gd:"id"`
+	DefaultArgs []interface{}  `gd:"default_args"`
+	Args        []PropertyInfo `gd:"args"`
+}
 type PropertyInfo struct {
 	ClassName  string       `gd:"class_name"`
 	Name       string       `gd:"name"`
@@ -676,11 +683,4 @@ type PropertyInfo struct {
 	HintString string       `gd:"hint_string"`
 	Type       reflect.Type `gd:"type"`
 	Usage      int          `gd:"usage"`
-}
-type SignalInfo struct {
-	Name        string         `gd:"name"`
-	Flags       int            `gd:"flags"`
-	ID          int            `gd:"id"`
-	DefaultArgs []interface{}  `gd:"default_args"`
-	Args        []PropertyInfo `gd:"args"`
 }

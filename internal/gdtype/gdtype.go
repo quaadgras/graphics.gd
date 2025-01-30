@@ -194,7 +194,7 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 		return fmt.Sprintf("Packed.Array[%s](Array.Through(gd.PackedProxy[gd.Packed%sArray, %s]{}, pointers.Pack(pointers.New[gd.PackedStringArray](%s))))",
 			elem, title, elem, val)
 	case "variant.Any":
-		return fmt.Sprintf("variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](%s)))", val)
+		return fmt.Sprintf("variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](%s)))", val)
 	case "Error.Code":
 		return fmt.Sprintf("Error.Code(%s)", val)
 	default:

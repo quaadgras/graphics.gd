@@ -1079,11 +1079,6 @@ func init() {
 	gdclass.Register("Engine", func(ptr gd.Object) any { return [1]gdclass.Engine{*(*gdclass.Engine)(unsafe.Pointer(&ptr))} })
 }
 
-type Part struct {
-	Files     []string `gd:"files"`
-	Copyright []string `gd:"copyright"`
-	License   string   `gd:"license"`
-}
 type DonorInfo struct {
 	PlatinumSponsors []string `gd:"platinum_sponsors"`
 	GoldSponsors     []string `gd:"gold_sponsors"`
@@ -1114,4 +1109,9 @@ type AuthorInfo struct {
 type Copyright struct {
 	Name  string `gd:"name"`
 	Parts []Part `gd:"parts"`
+}
+type Part struct {
+	Files     []string `gd:"files"`
+	Copyright []string `gd:"copyright"`
+	License   string   `gd:"license"`
 }

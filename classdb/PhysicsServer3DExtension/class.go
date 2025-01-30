@@ -629,7 +629,7 @@ func (Instance) _shape_set_data(impl func(ptr unsafe.Pointer, shape RID.Any, dat
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var data = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shape, data.Interface())
@@ -942,7 +942,7 @@ func (Instance) _area_set_param(impl func(ptr unsafe.Pointer, area RID.Any, para
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer3DAreaParameter](p_args, 1)
 
-		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, param, value.Interface())
@@ -1325,7 +1325,7 @@ func (Instance) _body_set_param(impl func(ptr unsafe.Pointer, body RID.Any, para
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer3DBodyParameter](p_args, 1)
 
-		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, param, value.Interface())
@@ -1361,7 +1361,7 @@ func (Instance) _body_set_state(impl func(ptr unsafe.Pointer, body RID.Any, stat
 
 		var state = gd.UnsafeGet[gdclass.PhysicsServer3DBodyState](p_args, 1)
 
-		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, state, value.Interface())
@@ -1657,7 +1657,7 @@ func (Instance) _body_set_force_integration_callback(impl func(ptr unsafe.Pointe
 
 		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callable))
-		var userdata = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		var userdata = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(userdata))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, callable, userdata.Interface())
@@ -1835,7 +1835,7 @@ func (Instance) _soft_body_set_state(impl func(ptr unsafe.Pointer, body RID.Any,
 
 		var state = gd.UnsafeGet[gdclass.PhysicsServer3DBodyState](p_args, 1)
 
-		var v = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		var v = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(v))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, state, v.Interface())
@@ -2602,7 +2602,7 @@ func (class) _shape_set_data(impl func(ptr unsafe.Pointer, shape RID.Any, data v
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var data = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shape, data)
@@ -2945,7 +2945,7 @@ func (class) _area_set_param(impl func(ptr unsafe.Pointer, area RID.Any, param g
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer3DAreaParameter](p_args, 1)
 
-		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, param, value)
@@ -3366,7 +3366,7 @@ func (class) _body_set_param(impl func(ptr unsafe.Pointer, body RID.Any, param g
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer3DBodyParameter](p_args, 1)
 
-		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, param, value)
@@ -3405,7 +3405,7 @@ func (class) _body_set_state(impl func(ptr unsafe.Pointer, body RID.Any, state g
 
 		var state = gd.UnsafeGet[gdclass.PhysicsServer3DBodyState](p_args, 1)
 
-		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, state, value)
@@ -3729,7 +3729,7 @@ func (class) _body_set_force_integration_callback(impl func(ptr unsafe.Pointer, 
 
 		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callable))
-		var userdata = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		var userdata = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(userdata))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, callable, userdata)
@@ -3923,7 +3923,7 @@ func (class) _soft_body_set_state(impl func(ptr unsafe.Pointer, body RID.Any, st
 
 		var state = gd.UnsafeGet[gdclass.PhysicsServer3DBodyState](p_args, 1)
 
-		var v = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		var v = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(v))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, state, v)

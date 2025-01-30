@@ -320,6 +320,33 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 	return *(*P)(unsafe.Pointer(&ptrs))
 }
 
+// Bad returns true if the pointer is nil, or freed.
+func Bad[T Generic[T, P], P Size](ptr T) bool {
+	p := (struct {
+		_ [0]*T
+
+		sentinal uint64
+		revision revision
+		checksum P
+	})(ptr)
+	if p.revision == 0 && p.sentinal == 0 {
+		return p.checksum != [1]P{}[0]
+	}
+	if p.revision == 0 {
+		return true
+	}
+	page, addr := uint64(p.sentinal/pageSize), uint64(p.sentinal%pageSize)
+	arr := tables[len(p.checksum)].Index(page)
+	rev := revision(arr[addr+offsetRevision].Load())
+	if rev.matches(p.revision) {
+		if !rev.isActive() {
+			arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active()))
+		}
+		return true
+	}
+	return false
+}
+
 // Add allocates a new pointer that can be mutated with [Set].
 func Add[T Generic[T, P], P Size](val P) T {
 	addr := counts[len(val)].Add(uint64(len(val)))

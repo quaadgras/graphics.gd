@@ -206,7 +206,7 @@ func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(extension_name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_additional_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

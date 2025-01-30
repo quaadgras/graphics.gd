@@ -3549,7 +3549,7 @@ func (Instance) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped RID
 		defer pointers.End(gd.InternalDictionary(opentype_features))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 5))))
 		defer pointers.End(gd.InternalString(language))
-		var meta = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 6))))
+		var meta = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 6))))
 		defer pointers.End(gd.InternalVariant(meta))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, text.String(), gd.ArrayAs[[]RID.Any](gd.InternalArray(fonts)), int(size), gd.DictionaryAs[map[any]any](opentype_features), language.String(), meta.Interface())
@@ -3565,7 +3565,7 @@ func (Instance) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped RID
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var key = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
 		var size = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
@@ -3589,7 +3589,7 @@ func (Instance) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var key = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
 		var size = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
@@ -4012,7 +4012,7 @@ func (Instance) _shaped_text_get_object_rect(impl func(ptr unsafe.Pointer, shape
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var key = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, key.Interface())
@@ -4028,7 +4028,7 @@ func (Instance) _shaped_text_get_object_range(impl func(ptr unsafe.Pointer, shap
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var key = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, key.Interface())
@@ -4044,7 +4044,7 @@ func (Instance) _shaped_text_get_object_glyph(impl func(ptr unsafe.Pointer, shap
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var key = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, key.Interface())
@@ -7143,7 +7143,7 @@ func (class) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped RID.An
 		defer pointers.End(gd.InternalDictionary(opentype_features))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 5))))
 		defer pointers.End(gd.InternalString(language))
-		var meta = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 6))))
+		var meta = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 6))))
 		defer pointers.End(gd.InternalVariant(meta))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, text, fonts, size, opentype_features, language, meta)
@@ -7159,7 +7159,7 @@ func (class) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped RID.An
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var key = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
 		var size = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
@@ -7183,7 +7183,7 @@ func (class) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped RID
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var key = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
 		var size = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
@@ -7606,7 +7606,7 @@ func (class) _shaped_text_get_object_rect(impl func(ptr unsafe.Pointer, shaped R
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var key = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, key)
@@ -7622,7 +7622,7 @@ func (class) _shaped_text_get_object_range(impl func(ptr unsafe.Pointer, shaped 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var key = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, key)
@@ -7638,7 +7638,7 @@ func (class) _shaped_text_get_object_glyph(impl func(ptr unsafe.Pointer, shaped 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var key = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, key)

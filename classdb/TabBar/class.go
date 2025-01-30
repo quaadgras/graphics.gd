@@ -739,7 +739,7 @@ func (self class) GetTabMetadata(tab_idx int64) variant.Any { //gd:TabBar.get_ta
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
