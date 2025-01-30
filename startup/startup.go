@@ -50,6 +50,9 @@ func Loader() { LoadingScene() }
 
 // Scene starts up the SceneTree and blocks until the engine shuts down.
 func Scene() {
+	if !loadingSceneWasCalled {
+		LoadingScene()
+	}
 	if pause_main != nil {
 		theMainFunctionIsWaitingForTheEngineToShutDown = true
 		pause_main(false)
@@ -57,6 +60,8 @@ func Scene() {
 		<-shutdown
 	}
 }
+
+var loadingSceneWasCalled bool
 
 // LoadingScene starts up loading the main scene after this function is called, all
 // graphics functions will be available to use.
@@ -67,6 +72,7 @@ func Scene() {
 // editor-accessible classes before calling this function if you want them to be
 // available in the editor.
 func LoadingScene() {
+	loadingSceneWasCalled = true
 	classdb.Register[goSceneTree]()
 	if pause_main != nil {
 		gd.NewCallable(func() {
