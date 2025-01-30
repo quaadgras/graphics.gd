@@ -19,7 +19,7 @@ import (
 	_ "embed"
 )
 
-//go:embed fixes.txt
+//go:embed deprecated.txt
 var fixes string
 
 func checkForFixes(undefined []string) {
