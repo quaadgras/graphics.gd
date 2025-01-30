@@ -1,6 +1,6 @@
 # Graphics GD [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd)
 
-This project aims to provide a safe performant way to work with graphics and game development in Go via 
+This project aims to provide a safe performant way to work with graphics and game development in Go via
 the GDExtension interface of any supported graphics/game engine (ie. Godot 4.3).
 
 _Why use graphics.gd?_
@@ -11,7 +11,7 @@ _Why use graphics.gd?_
 * General-purpose pure-Go 'variant' packages, reuse them in any Go project.
 * Recompile your code quickly, with a build experience similar to working in a scripting language.
 
-We would love you to take part in our [active discussions](https://github.com/grow-graphics/gd/discussions) 
+We would love you to take part in our [active discussions](https://github.com/grow-graphics/gd/discussions)
 section with any questions, comments or feedback you may have. Show us what you're building!
 
 ```go
@@ -28,14 +28,14 @@ import (
 )
 
 func main() {
-	startup.Loader() // wait for the graphics/game engine to start up.
+	startup.LoadingScene() // setup the SceneTree and wait until we have access to engine functionality
 	hello := Label.New()
 	hello.AsControl().SetAnchorsPreset(Control.PresetFullRect) // expand the label to take up the whole screen.
 	hello.SetHorizontalAlignment(Label.HorizontalAlignmentCenter)
 	hello.SetVerticalAlignment(Label.VerticalAlignmentCenter)
 	hello.SetText("Hello, World!")
 	SceneTree.Add(hello)
-	startup.Engine()
+	startup.Scene() // starts up the scene and blocks until the engine shuts down.
 }
 ```
 
@@ -201,7 +201,7 @@ packages inspired by the Godot engine's Variant type. Specifically any changes y
 optimise functionality and/or improve test converage of these packages is more than welcome
 (such as specialised assembly routines for vector operations, anyone?).
 
-If you enjoy hunting down memory-safety issues, we would appreciate any issues being opened on 
+If you enjoy hunting down memory-safety issues, we would appreciate any issues being opened on
 this front.
 
 Thirdly, the project needs more tests to ensure that everything is working, the best way you can
@@ -217,6 +217,6 @@ To run the go tests for graphics.gd, cd into the repo and run `cd internal && gd
 * [godot-go](https://github.com/godot-go/godot-go) (Another project aiming to support Go + Godot integration)
 
 ## Licensing
-This project is licensed under an MIT license (the same license as Godot), you can use it in any manner 
-you can use the Godot engine. If you use this project for any commercially successful products, please 
+This project is licensed under an MIT license (the same license as Godot), you can use it in any manner
+you can use the Godot engine. If you use this project for any commercially successful products, please
 consider [financially supporting us](https://buy.stripe.com/4gw14maETbnX3vOcMM) to show your appreciation!
