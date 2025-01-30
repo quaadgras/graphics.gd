@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Texture2D"
-import "graphics.gd/classdb/Texture"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -76,7 +80,7 @@ func (self Instance) CameraFeedId() int {
 }
 
 func (self Instance) SetCameraFeedId(value int) {
-	class(self).SetCameraFeedId(gd.Int(value))
+	class(self).SetCameraFeedId(int64(value))
 }
 
 func (self Instance) WhichFeed() gdclass.CameraServerFeedImage {
@@ -96,7 +100,7 @@ func (self Instance) SetCameraIsActive(value bool) {
 }
 
 //go:nosplit
-func (self class) SetCameraFeedId(feed_id gd.Int) { //gd:CameraTexture.set_camera_feed_id
+func (self class) SetCameraFeedId(feed_id int64) { //gd:CameraTexture.set_camera_feed_id
 	var frame = callframe.New()
 	callframe.Arg(frame, feed_id)
 	var r_ret = callframe.Nil
@@ -105,9 +109,9 @@ func (self class) SetCameraFeedId(feed_id gd.Int) { //gd:CameraTexture.set_camer
 }
 
 //go:nosplit
-func (self class) GetCameraFeedId() gd.Int { //gd:CameraTexture.get_camera_feed_id
+func (self class) GetCameraFeedId() int64 { //gd:CameraTexture.get_camera_feed_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraTexture.Bind_get_camera_feed_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

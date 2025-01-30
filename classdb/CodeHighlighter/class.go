@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/SyntaxHighlighter"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/SyntaxHighlighter"
-import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,7 +60,7 @@ Sets the color for a keyword.
 The keyword cannot contain any symbols except '_'.
 */
 func (self Instance) AddKeywordColor(keyword string, color Color.RGBA) { //gd:CodeHighlighter.add_keyword_color
-	class(self).AddKeywordColor(String.New(keyword), gd.Color(color))
+	class(self).AddKeywordColor(String.New(keyword), Color.RGBA(color))
 }
 
 /*
@@ -93,7 +97,7 @@ The member keyword cannot contain any symbols except '_'.
 It will not be highlighted if preceded by a '.'.
 */
 func (self Instance) AddMemberKeywordColor(member_keyword string, color Color.RGBA) { //gd:CodeHighlighter.add_member_keyword_color
-	class(self).AddMemberKeywordColor(String.New(member_keyword), gd.Color(color))
+	class(self).AddMemberKeywordColor(String.New(member_keyword), Color.RGBA(color))
 }
 
 /*
@@ -129,7 +133,7 @@ Adds a color region (such as for comments or strings) from [param start_key] to 
 If [param line_only] is [code]true[/code] or [param end_key] is an empty [String], the region does not carry over to the next line.
 */
 func (self Instance) AddColorRegion(start_key string, end_key string, color Color.RGBA) { //gd:CodeHighlighter.add_color_region
-	class(self).AddColorRegion(String.New(start_key), String.New(end_key), gd.Color(color), false)
+	class(self).AddColorRegion(String.New(start_key), String.New(end_key), Color.RGBA(color), false)
 }
 
 /*
@@ -177,7 +181,7 @@ func (self Instance) NumberColor() Color.RGBA {
 }
 
 func (self Instance) SetNumberColor(value Color.RGBA) {
-	class(self).SetNumberColor(gd.Color(value))
+	class(self).SetNumberColor(Color.RGBA(value))
 }
 
 func (self Instance) SymbolColor() Color.RGBA {
@@ -185,7 +189,7 @@ func (self Instance) SymbolColor() Color.RGBA {
 }
 
 func (self Instance) SetSymbolColor(value Color.RGBA) {
-	class(self).SetSymbolColor(gd.Color(value))
+	class(self).SetSymbolColor(Color.RGBA(value))
 }
 
 func (self Instance) FunctionColor() Color.RGBA {
@@ -193,7 +197,7 @@ func (self Instance) FunctionColor() Color.RGBA {
 }
 
 func (self Instance) SetFunctionColor(value Color.RGBA) {
-	class(self).SetFunctionColor(gd.Color(value))
+	class(self).SetFunctionColor(Color.RGBA(value))
 }
 
 func (self Instance) MemberVariableColor() Color.RGBA {
@@ -201,7 +205,7 @@ func (self Instance) MemberVariableColor() Color.RGBA {
 }
 
 func (self Instance) SetMemberVariableColor(value Color.RGBA) {
-	class(self).SetMemberVariableColor(gd.Color(value))
+	class(self).SetMemberVariableColor(Color.RGBA(value))
 }
 
 func (self Instance) KeywordColors() map[any]any {
@@ -233,7 +237,7 @@ Sets the color for a keyword.
 The keyword cannot contain any symbols except '_'.
 */
 //go:nosplit
-func (self class) AddKeywordColor(keyword String.Readable, color gd.Color) { //gd:CodeHighlighter.add_keyword_color
+func (self class) AddKeywordColor(keyword String.Readable, color Color.RGBA) { //gd:CodeHighlighter.add_keyword_color
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(keyword)))
 	callframe.Arg(frame, color)
@@ -272,10 +276,10 @@ func (self class) HasKeywordColor(keyword String.Readable) bool { //gd:CodeHighl
 Returns the color for a keyword.
 */
 //go:nosplit
-func (self class) GetKeywordColor(keyword String.Readable) gd.Color { //gd:CodeHighlighter.get_keyword_color
+func (self class) GetKeywordColor(keyword String.Readable) Color.RGBA { //gd:CodeHighlighter.get_keyword_color
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(keyword)))
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeHighlighter.Bind_get_keyword_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -318,7 +322,7 @@ The member keyword cannot contain any symbols except '_'.
 It will not be highlighted if preceded by a '.'.
 */
 //go:nosplit
-func (self class) AddMemberKeywordColor(member_keyword String.Readable, color gd.Color) { //gd:CodeHighlighter.add_member_keyword_color
+func (self class) AddMemberKeywordColor(member_keyword String.Readable, color Color.RGBA) { //gd:CodeHighlighter.add_member_keyword_color
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(member_keyword)))
 	callframe.Arg(frame, color)
@@ -357,10 +361,10 @@ func (self class) HasMemberKeywordColor(member_keyword String.Readable) bool { /
 Returns the color for a member keyword.
 */
 //go:nosplit
-func (self class) GetMemberKeywordColor(member_keyword String.Readable) gd.Color { //gd:CodeHighlighter.get_member_keyword_color
+func (self class) GetMemberKeywordColor(member_keyword String.Readable) Color.RGBA { //gd:CodeHighlighter.get_member_keyword_color
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(member_keyword)))
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeHighlighter.Bind_get_member_keyword_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -402,7 +406,7 @@ Adds a color region (such as for comments or strings) from [param start_key] to 
 If [param line_only] is [code]true[/code] or [param end_key] is an empty [String], the region does not carry over to the next line.
 */
 //go:nosplit
-func (self class) AddColorRegion(start_key String.Readable, end_key String.Readable, color gd.Color, line_only bool) { //gd:CodeHighlighter.add_color_region
+func (self class) AddColorRegion(start_key String.Readable, end_key String.Readable, color Color.RGBA, line_only bool) { //gd:CodeHighlighter.add_color_region
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(start_key)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(end_key)))
@@ -470,7 +474,7 @@ func (self class) GetColorRegions() Dictionary.Any { //gd:CodeHighlighter.get_co
 }
 
 //go:nosplit
-func (self class) SetFunctionColor(color gd.Color) { //gd:CodeHighlighter.set_function_color
+func (self class) SetFunctionColor(color Color.RGBA) { //gd:CodeHighlighter.set_function_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -479,9 +483,9 @@ func (self class) SetFunctionColor(color gd.Color) { //gd:CodeHighlighter.set_fu
 }
 
 //go:nosplit
-func (self class) GetFunctionColor() gd.Color { //gd:CodeHighlighter.get_function_color
+func (self class) GetFunctionColor() Color.RGBA { //gd:CodeHighlighter.get_function_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeHighlighter.Bind_get_function_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -489,7 +493,7 @@ func (self class) GetFunctionColor() gd.Color { //gd:CodeHighlighter.get_functio
 }
 
 //go:nosplit
-func (self class) SetNumberColor(color gd.Color) { //gd:CodeHighlighter.set_number_color
+func (self class) SetNumberColor(color Color.RGBA) { //gd:CodeHighlighter.set_number_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -498,9 +502,9 @@ func (self class) SetNumberColor(color gd.Color) { //gd:CodeHighlighter.set_numb
 }
 
 //go:nosplit
-func (self class) GetNumberColor() gd.Color { //gd:CodeHighlighter.get_number_color
+func (self class) GetNumberColor() Color.RGBA { //gd:CodeHighlighter.get_number_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeHighlighter.Bind_get_number_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -508,7 +512,7 @@ func (self class) GetNumberColor() gd.Color { //gd:CodeHighlighter.get_number_co
 }
 
 //go:nosplit
-func (self class) SetSymbolColor(color gd.Color) { //gd:CodeHighlighter.set_symbol_color
+func (self class) SetSymbolColor(color Color.RGBA) { //gd:CodeHighlighter.set_symbol_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -517,9 +521,9 @@ func (self class) SetSymbolColor(color gd.Color) { //gd:CodeHighlighter.set_symb
 }
 
 //go:nosplit
-func (self class) GetSymbolColor() gd.Color { //gd:CodeHighlighter.get_symbol_color
+func (self class) GetSymbolColor() Color.RGBA { //gd:CodeHighlighter.get_symbol_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeHighlighter.Bind_get_symbol_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -527,7 +531,7 @@ func (self class) GetSymbolColor() gd.Color { //gd:CodeHighlighter.get_symbol_co
 }
 
 //go:nosplit
-func (self class) SetMemberVariableColor(color gd.Color) { //gd:CodeHighlighter.set_member_variable_color
+func (self class) SetMemberVariableColor(color Color.RGBA) { //gd:CodeHighlighter.set_member_variable_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -536,9 +540,9 @@ func (self class) SetMemberVariableColor(color gd.Color) { //gd:CodeHighlighter.
 }
 
 //go:nosplit
-func (self class) GetMemberVariableColor() gd.Color { //gd:CodeHighlighter.get_member_variable_color
+func (self class) GetMemberVariableColor() Color.RGBA { //gd:CodeHighlighter.get_member_variable_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeHighlighter.Bind_get_member_variable_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

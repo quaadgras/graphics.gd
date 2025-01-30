@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/InputEvent"
+import "graphics.gd/classdb/InputEventFromWindow"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/InputEventFromWindow"
-import "graphics.gd/classdb/InputEvent"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*

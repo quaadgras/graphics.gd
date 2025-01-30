@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,28 +59,28 @@ type Any interface {
 Adds the specified color to the gradient, with the specified offset.
 */
 func (self Instance) AddPoint(offset Float.X, color Color.RGBA) { //gd:Gradient.add_point
-	class(self).AddPoint(gd.Float(offset), gd.Color(color))
+	class(self).AddPoint(float64(offset), Color.RGBA(color))
 }
 
 /*
 Removes the color at index [param point].
 */
 func (self Instance) RemovePoint(point int) { //gd:Gradient.remove_point
-	class(self).RemovePoint(gd.Int(point))
+	class(self).RemovePoint(int64(point))
 }
 
 /*
 Sets the offset for the gradient color at index [param point].
 */
 func (self Instance) SetOffset(point int, offset Float.X) { //gd:Gradient.set_offset
-	class(self).SetOffset(gd.Int(point), gd.Float(offset))
+	class(self).SetOffset(int64(point), float64(offset))
 }
 
 /*
 Returns the offset of the gradient color at index [param point].
 */
 func (self Instance) GetOffset(point int) Float.X { //gd:Gradient.get_offset
-	return Float.X(Float.X(class(self).GetOffset(gd.Int(point))))
+	return Float.X(Float.X(class(self).GetOffset(int64(point))))
 }
 
 /*
@@ -92,21 +95,21 @@ func (self Instance) Reverse() { //gd:Gradient.reverse
 Sets the color of the gradient color at index [param point].
 */
 func (self Instance) SetColor(point int, color Color.RGBA) { //gd:Gradient.set_color
-	class(self).SetColor(gd.Int(point), gd.Color(color))
+	class(self).SetColor(int64(point), Color.RGBA(color))
 }
 
 /*
 Returns the color of the gradient color at index [param point].
 */
 func (self Instance) GetColor(point int) Color.RGBA { //gd:Gradient.get_color
-	return Color.RGBA(class(self).GetColor(gd.Int(point)))
+	return Color.RGBA(class(self).GetColor(int64(point)))
 }
 
 /*
 Returns the interpolated color specified by [param offset].
 */
 func (self Instance) Sample(offset Float.X) Color.RGBA { //gd:Gradient.sample
-	return Color.RGBA(class(self).Sample(gd.Float(offset)))
+	return Color.RGBA(class(self).Sample(float64(offset)))
 }
 
 /*
@@ -171,7 +174,7 @@ func (self Instance) SetColors(value []Color.RGBA) {
 Adds the specified color to the gradient, with the specified offset.
 */
 //go:nosplit
-func (self class) AddPoint(offset gd.Float, color gd.Color) { //gd:Gradient.add_point
+func (self class) AddPoint(offset float64, color Color.RGBA) { //gd:Gradient.add_point
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, color)
@@ -184,7 +187,7 @@ func (self class) AddPoint(offset gd.Float, color gd.Color) { //gd:Gradient.add_
 Removes the color at index [param point].
 */
 //go:nosplit
-func (self class) RemovePoint(point gd.Int) { //gd:Gradient.remove_point
+func (self class) RemovePoint(point int64) { //gd:Gradient.remove_point
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	var r_ret = callframe.Nil
@@ -196,7 +199,7 @@ func (self class) RemovePoint(point gd.Int) { //gd:Gradient.remove_point
 Sets the offset for the gradient color at index [param point].
 */
 //go:nosplit
-func (self class) SetOffset(point gd.Int, offset gd.Float) { //gd:Gradient.set_offset
+func (self class) SetOffset(point int64, offset float64) { //gd:Gradient.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, offset)
@@ -209,10 +212,10 @@ func (self class) SetOffset(point gd.Int, offset gd.Float) { //gd:Gradient.set_o
 Returns the offset of the gradient color at index [param point].
 */
 //go:nosplit
-func (self class) GetOffset(point gd.Int) gd.Float { //gd:Gradient.get_offset
+func (self class) GetOffset(point int64) float64 { //gd:Gradient.get_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -235,7 +238,7 @@ func (self class) Reverse() { //gd:Gradient.reverse
 Sets the color of the gradient color at index [param point].
 */
 //go:nosplit
-func (self class) SetColor(point gd.Int, color gd.Color) { //gd:Gradient.set_color
+func (self class) SetColor(point int64, color Color.RGBA) { //gd:Gradient.set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, color)
@@ -248,10 +251,10 @@ func (self class) SetColor(point gd.Int, color gd.Color) { //gd:Gradient.set_col
 Returns the color of the gradient color at index [param point].
 */
 //go:nosplit
-func (self class) GetColor(point gd.Int) gd.Color { //gd:Gradient.get_color
+func (self class) GetColor(point int64) Color.RGBA { //gd:Gradient.get_color
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -262,10 +265,10 @@ func (self class) GetColor(point gd.Int) gd.Color { //gd:Gradient.get_color
 Returns the interpolated color specified by [param offset].
 */
 //go:nosplit
-func (self class) Sample(offset gd.Float) gd.Color { //gd:Gradient.sample
+func (self class) Sample(offset float64) Color.RGBA { //gd:Gradient.sample
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_sample, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -276,9 +279,9 @@ func (self class) Sample(offset gd.Float) gd.Color { //gd:Gradient.sample
 Returns the number of colors in the gradient.
 */
 //go:nosplit
-func (self class) GetPointCount() gd.Int { //gd:Gradient.get_point_count
+func (self class) GetPointCount() int64 { //gd:Gradient.get_point_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

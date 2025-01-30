@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
@@ -35,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,7 +59,7 @@ Creates a new item in the library with the given ID.
 You can get an unused ID from [method get_last_unused_item_id].
 */
 func (self Instance) CreateItem(id int) { //gd:MeshLibrary.create_item
-	class(self).CreateItem(gd.Int(id))
+	class(self).CreateItem(int64(id))
 }
 
 /*
@@ -63,42 +67,42 @@ Sets the item's name.
 This name is shown in the editor. It can also be used to look up the item later using [method find_item_by_name].
 */
 func (self Instance) SetItemName(id int, name string) { //gd:MeshLibrary.set_item_name
-	class(self).SetItemName(gd.Int(id), String.New(name))
+	class(self).SetItemName(int64(id), String.New(name))
 }
 
 /*
 Sets the item's mesh.
 */
 func (self Instance) SetItemMesh(id int, mesh [1]gdclass.Mesh) { //gd:MeshLibrary.set_item_mesh
-	class(self).SetItemMesh(gd.Int(id), mesh)
+	class(self).SetItemMesh(int64(id), mesh)
 }
 
 /*
 Sets the transform to apply to the item's mesh.
 */
 func (self Instance) SetItemMeshTransform(id int, mesh_transform Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_mesh_transform
-	class(self).SetItemMeshTransform(gd.Int(id), gd.Transform3D(mesh_transform))
+	class(self).SetItemMeshTransform(int64(id), Transform3D.BasisOrigin(mesh_transform))
 }
 
 /*
 Sets the item's navigation mesh.
 */
 func (self Instance) SetItemNavigationMesh(id int, navigation_mesh [1]gdclass.NavigationMesh) { //gd:MeshLibrary.set_item_navigation_mesh
-	class(self).SetItemNavigationMesh(gd.Int(id), navigation_mesh)
+	class(self).SetItemNavigationMesh(int64(id), navigation_mesh)
 }
 
 /*
 Sets the transform to apply to the item's navigation mesh.
 */
 func (self Instance) SetItemNavigationMeshTransform(id int, navigation_mesh Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_navigation_mesh_transform
-	class(self).SetItemNavigationMeshTransform(gd.Int(id), gd.Transform3D(navigation_mesh))
+	class(self).SetItemNavigationMeshTransform(int64(id), Transform3D.BasisOrigin(navigation_mesh))
 }
 
 /*
 Sets the item's navigation layers bitmask.
 */
 func (self Instance) SetItemNavigationLayers(id int, navigation_layers int) { //gd:MeshLibrary.set_item_navigation_layers
-	class(self).SetItemNavigationLayers(gd.Int(id), gd.Int(navigation_layers))
+	class(self).SetItemNavigationLayers(int64(id), int64(navigation_layers))
 }
 
 /*
@@ -106,56 +110,56 @@ Sets an item's collision shapes.
 The array should consist of [Shape3D] objects, each followed by a [Transform3D] that will be applied to it. For shapes that should not have a transform, use [constant Transform3D.IDENTITY].
 */
 func (self Instance) SetItemShapes(id int, shapes []any) { //gd:MeshLibrary.set_item_shapes
-	class(self).SetItemShapes(gd.Int(id), gd.EngineArrayFromSlice(shapes))
+	class(self).SetItemShapes(int64(id), gd.EngineArrayFromSlice(shapes))
 }
 
 /*
 Sets a texture to use as the item's preview icon in the editor.
 */
 func (self Instance) SetItemPreview(id int, texture [1]gdclass.Texture2D) { //gd:MeshLibrary.set_item_preview
-	class(self).SetItemPreview(gd.Int(id), texture)
+	class(self).SetItemPreview(int64(id), texture)
 }
 
 /*
 Returns the item's name.
 */
 func (self Instance) GetItemName(id int) string { //gd:MeshLibrary.get_item_name
-	return string(class(self).GetItemName(gd.Int(id)).String())
+	return string(class(self).GetItemName(int64(id)).String())
 }
 
 /*
 Returns the item's mesh.
 */
 func (self Instance) GetItemMesh(id int) [1]gdclass.Mesh { //gd:MeshLibrary.get_item_mesh
-	return [1]gdclass.Mesh(class(self).GetItemMesh(gd.Int(id)))
+	return [1]gdclass.Mesh(class(self).GetItemMesh(int64(id)))
 }
 
 /*
 Returns the transform applied to the item's mesh.
 */
 func (self Instance) GetItemMeshTransform(id int) Transform3D.BasisOrigin { //gd:MeshLibrary.get_item_mesh_transform
-	return Transform3D.BasisOrigin(class(self).GetItemMeshTransform(gd.Int(id)))
+	return Transform3D.BasisOrigin(class(self).GetItemMeshTransform(int64(id)))
 }
 
 /*
 Returns the item's navigation mesh.
 */
 func (self Instance) GetItemNavigationMesh(id int) [1]gdclass.NavigationMesh { //gd:MeshLibrary.get_item_navigation_mesh
-	return [1]gdclass.NavigationMesh(class(self).GetItemNavigationMesh(gd.Int(id)))
+	return [1]gdclass.NavigationMesh(class(self).GetItemNavigationMesh(int64(id)))
 }
 
 /*
 Returns the transform applied to the item's navigation mesh.
 */
 func (self Instance) GetItemNavigationMeshTransform(id int) Transform3D.BasisOrigin { //gd:MeshLibrary.get_item_navigation_mesh_transform
-	return Transform3D.BasisOrigin(class(self).GetItemNavigationMeshTransform(gd.Int(id)))
+	return Transform3D.BasisOrigin(class(self).GetItemNavigationMeshTransform(int64(id)))
 }
 
 /*
 Returns the item's navigation layers bitmask.
 */
 func (self Instance) GetItemNavigationLayers(id int) int { //gd:MeshLibrary.get_item_navigation_layers
-	return int(int(class(self).GetItemNavigationLayers(gd.Int(id))))
+	return int(int(class(self).GetItemNavigationLayers(int64(id))))
 }
 
 /*
@@ -163,21 +167,21 @@ Returns an item's collision shapes.
 The array consists of each [Shape3D] followed by its [Transform3D].
 */
 func (self Instance) GetItemShapes(id int) []any { //gd:MeshLibrary.get_item_shapes
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetItemShapes(gd.Int(id)))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetItemShapes(int64(id)))))
 }
 
 /*
 When running in the editor, returns a generated item preview (a 3D rendering in isometric perspective). When used in a running project, returns the manually-defined item preview which can be set using [method set_item_preview]. Returns an empty [Texture2D] if no preview was manually set in a running project.
 */
 func (self Instance) GetItemPreview(id int) [1]gdclass.Texture2D { //gd:MeshLibrary.get_item_preview
-	return [1]gdclass.Texture2D(class(self).GetItemPreview(gd.Int(id)))
+	return [1]gdclass.Texture2D(class(self).GetItemPreview(int64(id)))
 }
 
 /*
 Removes the item.
 */
 func (self Instance) RemoveItem(id int) { //gd:MeshLibrary.remove_item
-	class(self).RemoveItem(gd.Int(id))
+	class(self).RemoveItem(int64(id))
 }
 
 /*
@@ -232,7 +236,7 @@ Creates a new item in the library with the given ID.
 You can get an unused ID from [method get_last_unused_item_id].
 */
 //go:nosplit
-func (self class) CreateItem(id gd.Int) { //gd:MeshLibrary.create_item
+func (self class) CreateItem(id int64) { //gd:MeshLibrary.create_item
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
@@ -245,7 +249,7 @@ Sets the item's name.
 This name is shown in the editor. It can also be used to look up the item later using [method find_item_by_name].
 */
 //go:nosplit
-func (self class) SetItemName(id gd.Int, name String.Readable) { //gd:MeshLibrary.set_item_name
+func (self class) SetItemName(id int64, name String.Readable) { //gd:MeshLibrary.set_item_name
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
@@ -258,7 +262,7 @@ func (self class) SetItemName(id gd.Int, name String.Readable) { //gd:MeshLibrar
 Sets the item's mesh.
 */
 //go:nosplit
-func (self class) SetItemMesh(id gd.Int, mesh [1]gdclass.Mesh) { //gd:MeshLibrary.set_item_mesh
+func (self class) SetItemMesh(id int64, mesh [1]gdclass.Mesh) { //gd:MeshLibrary.set_item_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
@@ -271,7 +275,7 @@ func (self class) SetItemMesh(id gd.Int, mesh [1]gdclass.Mesh) { //gd:MeshLibrar
 Sets the transform to apply to the item's mesh.
 */
 //go:nosplit
-func (self class) SetItemMeshTransform(id gd.Int, mesh_transform gd.Transform3D) { //gd:MeshLibrary.set_item_mesh_transform
+func (self class) SetItemMeshTransform(id int64, mesh_transform Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_mesh_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, mesh_transform)
@@ -284,7 +288,7 @@ func (self class) SetItemMeshTransform(id gd.Int, mesh_transform gd.Transform3D)
 Sets the item's navigation mesh.
 */
 //go:nosplit
-func (self class) SetItemNavigationMesh(id gd.Int, navigation_mesh [1]gdclass.NavigationMesh) { //gd:MeshLibrary.set_item_navigation_mesh
+func (self class) SetItemNavigationMesh(id int64, navigation_mesh [1]gdclass.NavigationMesh) { //gd:MeshLibrary.set_item_navigation_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
@@ -297,7 +301,7 @@ func (self class) SetItemNavigationMesh(id gd.Int, navigation_mesh [1]gdclass.Na
 Sets the transform to apply to the item's navigation mesh.
 */
 //go:nosplit
-func (self class) SetItemNavigationMeshTransform(id gd.Int, navigation_mesh gd.Transform3D) { //gd:MeshLibrary.set_item_navigation_mesh_transform
+func (self class) SetItemNavigationMeshTransform(id int64, navigation_mesh Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_navigation_mesh_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, navigation_mesh)
@@ -310,7 +314,7 @@ func (self class) SetItemNavigationMeshTransform(id gd.Int, navigation_mesh gd.T
 Sets the item's navigation layers bitmask.
 */
 //go:nosplit
-func (self class) SetItemNavigationLayers(id gd.Int, navigation_layers gd.Int) { //gd:MeshLibrary.set_item_navigation_layers
+func (self class) SetItemNavigationLayers(id int64, navigation_layers int64) { //gd:MeshLibrary.set_item_navigation_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, navigation_layers)
@@ -324,7 +328,7 @@ Sets an item's collision shapes.
 The array should consist of [Shape3D] objects, each followed by a [Transform3D] that will be applied to it. For shapes that should not have a transform, use [constant Transform3D.IDENTITY].
 */
 //go:nosplit
-func (self class) SetItemShapes(id gd.Int, shapes Array.Any) { //gd:MeshLibrary.set_item_shapes
+func (self class) SetItemShapes(id int64, shapes Array.Any) { //gd:MeshLibrary.set_item_shapes
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(shapes)))
@@ -337,7 +341,7 @@ func (self class) SetItemShapes(id gd.Int, shapes Array.Any) { //gd:MeshLibrary.
 Sets a texture to use as the item's preview icon in the editor.
 */
 //go:nosplit
-func (self class) SetItemPreview(id gd.Int, texture [1]gdclass.Texture2D) { //gd:MeshLibrary.set_item_preview
+func (self class) SetItemPreview(id int64, texture [1]gdclass.Texture2D) { //gd:MeshLibrary.set_item_preview
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
@@ -350,7 +354,7 @@ func (self class) SetItemPreview(id gd.Int, texture [1]gdclass.Texture2D) { //gd
 Returns the item's name.
 */
 //go:nosplit
-func (self class) GetItemName(id gd.Int) String.Readable { //gd:MeshLibrary.get_item_name
+func (self class) GetItemName(id int64) String.Readable { //gd:MeshLibrary.get_item_name
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -364,7 +368,7 @@ func (self class) GetItemName(id gd.Int) String.Readable { //gd:MeshLibrary.get_
 Returns the item's mesh.
 */
 //go:nosplit
-func (self class) GetItemMesh(id gd.Int) [1]gdclass.Mesh { //gd:MeshLibrary.get_item_mesh
+func (self class) GetItemMesh(id int64) [1]gdclass.Mesh { //gd:MeshLibrary.get_item_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -378,10 +382,10 @@ func (self class) GetItemMesh(id gd.Int) [1]gdclass.Mesh { //gd:MeshLibrary.get_
 Returns the transform applied to the item's mesh.
 */
 //go:nosplit
-func (self class) GetItemMeshTransform(id gd.Int) gd.Transform3D { //gd:MeshLibrary.get_item_mesh_transform
+func (self class) GetItemMeshTransform(id int64) Transform3D.BasisOrigin { //gd:MeshLibrary.get_item_mesh_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_mesh_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -392,7 +396,7 @@ func (self class) GetItemMeshTransform(id gd.Int) gd.Transform3D { //gd:MeshLibr
 Returns the item's navigation mesh.
 */
 //go:nosplit
-func (self class) GetItemNavigationMesh(id gd.Int) [1]gdclass.NavigationMesh { //gd:MeshLibrary.get_item_navigation_mesh
+func (self class) GetItemNavigationMesh(id int64) [1]gdclass.NavigationMesh { //gd:MeshLibrary.get_item_navigation_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -406,10 +410,10 @@ func (self class) GetItemNavigationMesh(id gd.Int) [1]gdclass.NavigationMesh { /
 Returns the transform applied to the item's navigation mesh.
 */
 //go:nosplit
-func (self class) GetItemNavigationMeshTransform(id gd.Int) gd.Transform3D { //gd:MeshLibrary.get_item_navigation_mesh_transform
+func (self class) GetItemNavigationMeshTransform(id int64) Transform3D.BasisOrigin { //gd:MeshLibrary.get_item_navigation_mesh_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_navigation_mesh_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -420,10 +424,10 @@ func (self class) GetItemNavigationMeshTransform(id gd.Int) gd.Transform3D { //g
 Returns the item's navigation layers bitmask.
 */
 //go:nosplit
-func (self class) GetItemNavigationLayers(id gd.Int) gd.Int { //gd:MeshLibrary.get_item_navigation_layers
+func (self class) GetItemNavigationLayers(id int64) int64 { //gd:MeshLibrary.get_item_navigation_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -435,7 +439,7 @@ Returns an item's collision shapes.
 The array consists of each [Shape3D] followed by its [Transform3D].
 */
 //go:nosplit
-func (self class) GetItemShapes(id gd.Int) Array.Any { //gd:MeshLibrary.get_item_shapes
+func (self class) GetItemShapes(id int64) Array.Any { //gd:MeshLibrary.get_item_shapes
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -449,7 +453,7 @@ func (self class) GetItemShapes(id gd.Int) Array.Any { //gd:MeshLibrary.get_item
 When running in the editor, returns a generated item preview (a 3D rendering in isometric perspective). When used in a running project, returns the manually-defined item preview which can be set using [method set_item_preview]. Returns an empty [Texture2D] if no preview was manually set in a running project.
 */
 //go:nosplit
-func (self class) GetItemPreview(id gd.Int) [1]gdclass.Texture2D { //gd:MeshLibrary.get_item_preview
+func (self class) GetItemPreview(id int64) [1]gdclass.Texture2D { //gd:MeshLibrary.get_item_preview
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -463,7 +467,7 @@ func (self class) GetItemPreview(id gd.Int) [1]gdclass.Texture2D { //gd:MeshLibr
 Removes the item.
 */
 //go:nosplit
-func (self class) RemoveItem(id gd.Int) { //gd:MeshLibrary.remove_item
+func (self class) RemoveItem(id int64) { //gd:MeshLibrary.remove_item
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
@@ -475,10 +479,10 @@ func (self class) RemoveItem(id gd.Int) { //gd:MeshLibrary.remove_item
 Returns the first item with the given name, or [code]-1[/code] if no item is found.
 */
 //go:nosplit
-func (self class) FindItemByName(name String.Readable) gd.Int { //gd:MeshLibrary.find_item_by_name
+func (self class) FindItemByName(name String.Readable) int64 { //gd:MeshLibrary.find_item_by_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_find_item_by_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -513,9 +517,9 @@ func (self class) GetItemList() Packed.Array[int32] { //gd:MeshLibrary.get_item_
 Gets an unused ID for a new item.
 */
 //go:nosplit
-func (self class) GetLastUnusedItemId() gd.Int { //gd:MeshLibrary.get_last_unused_item_id
+func (self class) GetLastUnusedItemId() int64 { //gd:MeshLibrary.get_last_unused_item_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_last_unused_item_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

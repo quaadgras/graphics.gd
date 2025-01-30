@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -162,7 +165,7 @@ func (Instance) _get_length(impl func(ptr unsafe.Pointer) Float.X) (cb gd.Extens
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
@@ -173,7 +176,7 @@ func (Instance) _get_playback_position(impl func(ptr unsafe.Pointer) Float.X) (c
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
@@ -182,7 +185,7 @@ Seeks to [param time] seconds. Called in response to the [member VideoStreamPlay
 */
 func (Instance) _seek(impl func(ptr unsafe.Pointer, time Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var time = gd.UnsafeGet[gd.Float](p_args, 0)
+		var time = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(time))
@@ -194,7 +197,7 @@ Select the audio track [param idx]. Called when playback starts, and in response
 */
 func (Instance) _set_audio_track(impl func(ptr unsafe.Pointer, idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var idx = gd.UnsafeGet[gd.Int](p_args, 0)
+		var idx = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(idx))
@@ -222,7 +225,7 @@ Ticks video playback for [param delta] seconds. Called every frame as long as [m
 */
 func (Instance) _update(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+		var delta = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(delta))
@@ -236,7 +239,7 @@ func (Instance) _get_channels(impl func(ptr unsafe.Pointer) int) (cb gd.Extensio
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -247,7 +250,7 @@ func (Instance) _get_mix_rate(impl func(ptr unsafe.Pointer) int) (cb gd.Extensio
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -255,7 +258,7 @@ func (Instance) _get_mix_rate(impl func(ptr unsafe.Pointer) int) (cb gd.Extensio
 Render [param num_frames] audio frames (of [method _get_channels] floats each) from [param buffer], starting from index [param offset] in the array. Returns the number of audio frames rendered, or -1 on error.
 */
 func (self Instance) MixAudio(num_frames int) int { //gd:VideoStreamPlayback.mix_audio
-	return int(int(class(self).MixAudio(gd.Int(num_frames), Packed.New([1][]float32{}[0]...), gd.Int(0))))
+	return int(int(class(self).MixAudio(int64(num_frames), Packed.New([1][]float32{}[0]...), int64(0))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -334,7 +337,7 @@ func (class) _is_paused(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClas
 /*
 Returns the video duration in seconds, if known, or 0 if unknown.
 */
-func (class) _get_length(impl func(ptr unsafe.Pointer) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_length(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -345,7 +348,7 @@ func (class) _get_length(impl func(ptr unsafe.Pointer) gd.Float) (cb gd.Extensio
 /*
 Return the current playback timestamp. Called in response to the [member VideoStreamPlayer.stream_position] getter.
 */
-func (class) _get_playback_position(impl func(ptr unsafe.Pointer) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_playback_position(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -356,9 +359,9 @@ func (class) _get_playback_position(impl func(ptr unsafe.Pointer) gd.Float) (cb 
 /*
 Seeks to [param time] seconds. Called in response to the [member VideoStreamPlayer.stream_position] setter.
 */
-func (class) _seek(impl func(ptr unsafe.Pointer, time gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _seek(impl func(ptr unsafe.Pointer, time float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var time = gd.UnsafeGet[gd.Float](p_args, 0)
+		var time = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, time)
@@ -368,9 +371,9 @@ func (class) _seek(impl func(ptr unsafe.Pointer, time gd.Float)) (cb gd.Extensio
 /*
 Select the audio track [param idx]. Called when playback starts, and in response to the [member VideoStreamPlayer.audio_track] setter.
 */
-func (class) _set_audio_track(impl func(ptr unsafe.Pointer, idx gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_audio_track(impl func(ptr unsafe.Pointer, idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var idx = gd.UnsafeGet[gd.Int](p_args, 0)
+		var idx = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, idx)
@@ -396,9 +399,9 @@ func (class) _get_texture(impl func(ptr unsafe.Pointer) [1]gdclass.Texture2D) (c
 /*
 Ticks video playback for [param delta] seconds. Called every frame as long as [method _is_paused] and [method _is_playing] return true.
 */
-func (class) _update(impl func(ptr unsafe.Pointer, delta gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _update(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+		var delta = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, delta)
@@ -408,7 +411,7 @@ func (class) _update(impl func(ptr unsafe.Pointer, delta gd.Float)) (cb gd.Exten
 /*
 Returns the number of audio channels.
 */
-func (class) _get_channels(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_channels(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -419,7 +422,7 @@ func (class) _get_channels(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.Extensio
 /*
 Returns the audio sample rate used for mixing.
 */
-func (class) _get_mix_rate(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_mix_rate(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -431,12 +434,12 @@ func (class) _get_mix_rate(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.Extensio
 Render [param num_frames] audio frames (of [method _get_channels] floats each) from [param buffer], starting from index [param offset] in the array. Returns the number of audio frames rendered, or -1 on error.
 */
 //go:nosplit
-func (self class) MixAudio(num_frames gd.Int, buffer Packed.Array[float32], offset gd.Int) gd.Int { //gd:VideoStreamPlayback.mix_audio
+func (self class) MixAudio(num_frames int64, buffer Packed.Array[float32], offset int64) int64 { //gd:VideoStreamPlayback.mix_audio
 	var frame = callframe.New()
 	callframe.Arg(frame, num_frames)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer)))
 	callframe.Arg(frame, offset)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayback.Bind_mix_audio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

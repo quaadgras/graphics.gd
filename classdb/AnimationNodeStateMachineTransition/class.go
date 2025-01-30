@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,7 +78,7 @@ func (self Instance) XfadeTime() Float.X {
 }
 
 func (self Instance) SetXfadeTime(value Float.X) {
-	class(self).SetXfadeTime(gd.Float(value))
+	class(self).SetXfadeTime(float64(value))
 }
 
 func (self Instance) XfadeCurve() [1]gdclass.Curve {
@@ -107,7 +110,7 @@ func (self Instance) Priority() int {
 }
 
 func (self Instance) SetPriority(value int) {
-	class(self).SetPriority(gd.Int(value))
+	class(self).SetPriority(int64(value))
 }
 
 func (self Instance) SwitchMode() gdclass.AnimationNodeStateMachineTransitionSwitchMode {
@@ -200,7 +203,7 @@ func (self class) GetAdvanceCondition() String.Name { //gd:AnimationNodeStateMac
 }
 
 //go:nosplit
-func (self class) SetXfadeTime(secs gd.Float) { //gd:AnimationNodeStateMachineTransition.set_xfade_time
+func (self class) SetXfadeTime(secs float64) { //gd:AnimationNodeStateMachineTransition.set_xfade_time
 	var frame = callframe.New()
 	callframe.Arg(frame, secs)
 	var r_ret = callframe.Nil
@@ -209,9 +212,9 @@ func (self class) SetXfadeTime(secs gd.Float) { //gd:AnimationNodeStateMachineTr
 }
 
 //go:nosplit
-func (self class) GetXfadeTime() gd.Float { //gd:AnimationNodeStateMachineTransition.get_xfade_time
+func (self class) GetXfadeTime() float64 { //gd:AnimationNodeStateMachineTransition.get_xfade_time
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_xfade_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -276,7 +279,7 @@ func (self class) IsReset() bool { //gd:AnimationNodeStateMachineTransition.is_r
 }
 
 //go:nosplit
-func (self class) SetPriority(priority gd.Int) { //gd:AnimationNodeStateMachineTransition.set_priority
+func (self class) SetPriority(priority int64) { //gd:AnimationNodeStateMachineTransition.set_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -285,9 +288,9 @@ func (self class) SetPriority(priority gd.Int) { //gd:AnimationNodeStateMachineT
 }
 
 //go:nosplit
-func (self class) GetPriority() gd.Int { //gd:AnimationNodeStateMachineTransition.get_priority
+func (self class) GetPriority() int64 { //gd:AnimationNodeStateMachineTransition.get_priority
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

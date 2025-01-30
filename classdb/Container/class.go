@@ -9,19 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -117,7 +121,7 @@ func (self Instance) QueueSort() { //gd:Container.queue_sort
 Fit a child control in a given rect. This is mainly a helper for creating custom container classes.
 */
 func (self Instance) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSize) { //gd:Container.fit_child_in_rect
-	class(self).FitChildInRect(child, gd.Rect2(rect))
+	class(self).FitChildInRect(child, Rect2.PositionSize(rect))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -187,7 +191,7 @@ func (self class) QueueSort() { //gd:Container.queue_sort
 Fit a child control in a given rect. This is mainly a helper for creating custom container classes.
 */
 //go:nosplit
-func (self class) FitChildInRect(child [1]gdclass.Control, rect gd.Rect2) { //gd:Container.fit_child_in_rect
+func (self class) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSize) { //gd:Container.fit_child_in_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(child[0])[0])
 	callframe.Arg(frame, rect)

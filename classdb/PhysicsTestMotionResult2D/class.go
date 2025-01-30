@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -164,9 +167,9 @@ func New() Instance {
 Returns the moving object's travel before collision.
 */
 //go:nosplit
-func (self class) GetTravel() gd.Vector2 { //gd:PhysicsTestMotionResult2D.get_travel
+func (self class) GetTravel() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_travel
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionResult2D.Bind_get_travel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -177,9 +180,9 @@ func (self class) GetTravel() gd.Vector2 { //gd:PhysicsTestMotionResult2D.get_tr
 Returns the moving object's remaining movement vector.
 */
 //go:nosplit
-func (self class) GetRemainder() gd.Vector2 { //gd:PhysicsTestMotionResult2D.get_remainder
+func (self class) GetRemainder() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_remainder
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionResult2D.Bind_get_remainder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -190,9 +193,9 @@ func (self class) GetRemainder() gd.Vector2 { //gd:PhysicsTestMotionResult2D.get
 Returns the point of collision in global coordinates, if a collision occurred.
 */
 //go:nosplit
-func (self class) GetCollisionPoint() gd.Vector2 { //gd:PhysicsTestMotionResult2D.get_collision_point
+func (self class) GetCollisionPoint() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_collision_point
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionResult2D.Bind_get_collision_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -203,9 +206,9 @@ func (self class) GetCollisionPoint() gd.Vector2 { //gd:PhysicsTestMotionResult2
 Returns the colliding body's shape's normal at the point of collision, if a collision occurred.
 */
 //go:nosplit
-func (self class) GetCollisionNormal() gd.Vector2 { //gd:PhysicsTestMotionResult2D.get_collision_normal
+func (self class) GetCollisionNormal() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_collision_normal
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionResult2D.Bind_get_collision_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -216,9 +219,9 @@ func (self class) GetCollisionNormal() gd.Vector2 { //gd:PhysicsTestMotionResult
 Returns the colliding body's velocity, if a collision occurred.
 */
 //go:nosplit
-func (self class) GetColliderVelocity() gd.Vector2 { //gd:PhysicsTestMotionResult2D.get_collider_velocity
+func (self class) GetColliderVelocity() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_collider_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionResult2D.Bind_get_collider_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -229,9 +232,9 @@ func (self class) GetColliderVelocity() gd.Vector2 { //gd:PhysicsTestMotionResul
 Returns the unique instance ID of the colliding body's attached [Object], if a collision occurred. See [method Object.get_instance_id].
 */
 //go:nosplit
-func (self class) GetColliderId() gd.Int { //gd:PhysicsTestMotionResult2D.get_collider_id
+func (self class) GetColliderId() int64 { //gd:PhysicsTestMotionResult2D.get_collider_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionResult2D.Bind_get_collider_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -242,9 +245,9 @@ func (self class) GetColliderId() gd.Int { //gd:PhysicsTestMotionResult2D.get_co
 Returns the colliding body's [RID] used by the [PhysicsServer2D], if a collision occurred.
 */
 //go:nosplit
-func (self class) GetColliderRid() gd.RID { //gd:PhysicsTestMotionResult2D.get_collider_rid
+func (self class) GetColliderRid() RID.Any { //gd:PhysicsTestMotionResult2D.get_collider_rid
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionResult2D.Bind_get_collider_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -268,9 +271,9 @@ func (self class) GetCollider() [1]gd.Object { //gd:PhysicsTestMotionResult2D.ge
 Returns the colliding body's shape index, if a collision occurred. See [CollisionObject2D].
 */
 //go:nosplit
-func (self class) GetColliderShape() gd.Int { //gd:PhysicsTestMotionResult2D.get_collider_shape
+func (self class) GetColliderShape() int64 { //gd:PhysicsTestMotionResult2D.get_collider_shape
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionResult2D.Bind_get_collider_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -281,9 +284,9 @@ func (self class) GetColliderShape() gd.Int { //gd:PhysicsTestMotionResult2D.get
 Returns the moving object's colliding shape, if a collision occurred.
 */
 //go:nosplit
-func (self class) GetCollisionLocalShape() gd.Int { //gd:PhysicsTestMotionResult2D.get_collision_local_shape
+func (self class) GetCollisionLocalShape() int64 { //gd:PhysicsTestMotionResult2D.get_collision_local_shape
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionResult2D.Bind_get_collision_local_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -294,9 +297,9 @@ func (self class) GetCollisionLocalShape() gd.Int { //gd:PhysicsTestMotionResult
 Returns the length of overlap along the collision normal, if a collision occurred.
 */
 //go:nosplit
-func (self class) GetCollisionDepth() gd.Float { //gd:PhysicsTestMotionResult2D.get_collision_depth
+func (self class) GetCollisionDepth() float64 { //gd:PhysicsTestMotionResult2D.get_collision_depth
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionResult2D.Bind_get_collision_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -307,9 +310,9 @@ func (self class) GetCollisionDepth() gd.Float { //gd:PhysicsTestMotionResult2D.
 Returns the maximum fraction of the motion that can occur without a collision, between [code]0[/code] and [code]1[/code].
 */
 //go:nosplit
-func (self class) GetCollisionSafeFraction() gd.Float { //gd:PhysicsTestMotionResult2D.get_collision_safe_fraction
+func (self class) GetCollisionSafeFraction() float64 { //gd:PhysicsTestMotionResult2D.get_collision_safe_fraction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionResult2D.Bind_get_collision_safe_fraction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -320,9 +323,9 @@ func (self class) GetCollisionSafeFraction() gd.Float { //gd:PhysicsTestMotionRe
 Returns the minimum fraction of the motion needed to collide, if a collision occurred, between [code]0[/code] and [code]1[/code].
 */
 //go:nosplit
-func (self class) GetCollisionUnsafeFraction() gd.Float { //gd:PhysicsTestMotionResult2D.get_collision_unsafe_fraction
+func (self class) GetCollisionUnsafeFraction() float64 { //gd:PhysicsTestMotionResult2D.get_collision_unsafe_fraction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionResult2D.Bind_get_collision_unsafe_fraction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

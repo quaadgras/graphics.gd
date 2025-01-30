@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/VisualShaderNode"
+import "graphics.gd/classdb/VisualShaderNodeParameter"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/VisualShaderNodeParameter"
-import "graphics.gd/classdb/VisualShaderNode"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector4"
 
 var _ Object.ID
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -84,7 +88,7 @@ func (self Instance) DefaultValue() Vector4.XYZW {
 }
 
 func (self Instance) SetDefaultValue(value Vector4.XYZW) {
-	class(self).SetDefaultValue(gd.Vector4(value))
+	class(self).SetDefaultValue(Vector4.XYZW(value))
 }
 
 //go:nosplit
@@ -107,7 +111,7 @@ func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeVec4Parame
 }
 
 //go:nosplit
-func (self class) SetDefaultValue(value gd.Vector4) { //gd:VisualShaderNodeVec4Parameter.set_default_value
+func (self class) SetDefaultValue(value Vector4.XYZW) { //gd:VisualShaderNodeVec4Parameter.set_default_value
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -116,9 +120,9 @@ func (self class) SetDefaultValue(value gd.Vector4) { //gd:VisualShaderNodeVec4P
 }
 
 //go:nosplit
-func (self class) GetDefaultValue() gd.Vector4 { //gd:VisualShaderNodeVec4Parameter.get_default_value
+func (self class) GetDefaultValue() Vector4.XYZW { //gd:VisualShaderNodeVec4Parameter.get_default_value
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector4](frame)
+	var r_ret = callframe.Ret[Vector4.XYZW](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVec4Parameter.Bind_get_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

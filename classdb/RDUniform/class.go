@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,7 +56,7 @@ type Any interface {
 Binds the given id to the uniform. The data associated with the id is then used when the uniform is passed to a shader.
 */
 func (self Instance) AddId(id RID.Any) { //gd:RDUniform.add_id
-	class(self).AddId(gd.RID(id))
+	class(self).AddId(RID.Any(id))
 }
 
 /*
@@ -101,7 +105,7 @@ func (self Instance) Binding() int {
 }
 
 func (self Instance) SetBinding(value int) {
-	class(self).SetBinding(gd.Int(value))
+	class(self).SetBinding(int64(value))
 }
 
 //go:nosplit
@@ -124,7 +128,7 @@ func (self class) GetUniformType() gdclass.RenderingDeviceUniformType { //gd:RDU
 }
 
 //go:nosplit
-func (self class) SetBinding(p_member gd.Int) { //gd:RDUniform.set_binding
+func (self class) SetBinding(p_member int64) { //gd:RDUniform.set_binding
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -133,9 +137,9 @@ func (self class) SetBinding(p_member gd.Int) { //gd:RDUniform.set_binding
 }
 
 //go:nosplit
-func (self class) GetBinding() gd.Int { //gd:RDUniform.get_binding
+func (self class) GetBinding() int64 { //gd:RDUniform.get_binding
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_get_binding, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -146,7 +150,7 @@ func (self class) GetBinding() gd.Int { //gd:RDUniform.get_binding
 Binds the given id to the uniform. The data associated with the id is then used when the uniform is passed to a shader.
 */
 //go:nosplit
-func (self class) AddId(id gd.RID) { //gd:RDUniform.add_id
+func (self class) AddId(id RID.Any) { //gd:RDUniform.add_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
@@ -169,11 +173,11 @@ func (self class) ClearIds() { //gd:RDUniform.clear_ids
 Returns an array of all ids currently bound to the uniform.
 */
 //go:nosplit
-func (self class) GetIds() Array.Contains[gd.RID] { //gd:RDUniform.get_ids
+func (self class) GetIds() Array.Contains[RID.Any] { //gd:RDUniform.get_ids
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_get_ids, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

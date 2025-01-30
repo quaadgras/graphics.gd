@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Range"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Range"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -76,11 +79,11 @@ func (self Instance) CustomStep() Float.X {
 }
 
 func (self Instance) SetCustomStep(value Float.X) {
-	class(self).SetCustomStep(gd.Float(value))
+	class(self).SetCustomStep(float64(value))
 }
 
 //go:nosplit
-func (self class) SetCustomStep(step gd.Float) { //gd:ScrollBar.set_custom_step
+func (self class) SetCustomStep(step float64) { //gd:ScrollBar.set_custom_step
 	var frame = callframe.New()
 	callframe.Arg(frame, step)
 	var r_ret = callframe.Nil
@@ -89,9 +92,9 @@ func (self class) SetCustomStep(step gd.Float) { //gd:ScrollBar.set_custom_step
 }
 
 //go:nosplit
-func (self class) GetCustomStep() gd.Float { //gd:ScrollBar.get_custom_step
+func (self class) GetCustomStep() float64 { //gd:ScrollBar.get_custom_step
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollBar.Bind_get_custom_step, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

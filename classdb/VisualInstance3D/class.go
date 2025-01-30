@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/AABB"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -69,7 +72,7 @@ func (Instance) _get_aabb(impl func(ptr unsafe.Pointer) AABB.PositionSize) (cb g
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.AABB(ret))
+		gd.UnsafeSet(p_back, AABB.PositionSize(ret))
 	}
 }
 
@@ -77,7 +80,7 @@ func (Instance) _get_aabb(impl func(ptr unsafe.Pointer) AABB.PositionSize) (cb g
 Sets the resource that is instantiated by this [VisualInstance3D], which changes how the engine handles the [VisualInstance3D] under the hood. Equivalent to [method RenderingServer.instance_set_base].
 */
 func (self Instance) SetBase(base RID.VisualInstance) { //gd:VisualInstance3D.set_base
-	class(self).SetBase(gd.RID(base))
+	class(self).SetBase(RID.Any(base))
 }
 
 /*
@@ -98,14 +101,14 @@ func (self Instance) GetInstance() RID.VisualInstance { //gd:VisualInstance3D.ge
 Based on [param value], enables or disables the specified layer in the [member layers], given a [param layer_number] between 1 and 20.
 */
 func (self Instance) SetLayerMaskValue(layer_number int, value bool) { //gd:VisualInstance3D.set_layer_mask_value
-	class(self).SetLayerMaskValue(gd.Int(layer_number), value)
+	class(self).SetLayerMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member layers] is enabled, given a [param layer_number] between 1 and 20.
 */
 func (self Instance) GetLayerMaskValue(layer_number int) bool { //gd:VisualInstance3D.get_layer_mask_value
-	return bool(class(self).GetLayerMaskValue(gd.Int(layer_number)))
+	return bool(class(self).GetLayerMaskValue(int64(layer_number)))
 }
 
 /*
@@ -138,7 +141,7 @@ func (self Instance) Layers() int {
 }
 
 func (self Instance) SetLayers(value int) {
-	class(self).SetLayerMask(gd.Int(value))
+	class(self).SetLayerMask(int64(value))
 }
 
 func (self Instance) SortingOffset() Float.X {
@@ -146,7 +149,7 @@ func (self Instance) SortingOffset() Float.X {
 }
 
 func (self Instance) SetSortingOffset(value Float.X) {
-	class(self).SetSortingOffset(gd.Float(value))
+	class(self).SetSortingOffset(float64(value))
 }
 
 func (self Instance) SortingUseAabbCenter() bool {
@@ -157,7 +160,7 @@ func (self Instance) SetSortingUseAabbCenter(value bool) {
 	class(self).SetSortingUseAabbCenter(value)
 }
 
-func (class) _get_aabb(impl func(ptr unsafe.Pointer) gd.AABB) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_aabb(impl func(ptr unsafe.Pointer) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -169,7 +172,7 @@ func (class) _get_aabb(impl func(ptr unsafe.Pointer) gd.AABB) (cb gd.ExtensionCl
 Sets the resource that is instantiated by this [VisualInstance3D], which changes how the engine handles the [VisualInstance3D] under the hood. Equivalent to [method RenderingServer.instance_set_base].
 */
 //go:nosplit
-func (self class) SetBase(base gd.RID) { //gd:VisualInstance3D.set_base
+func (self class) SetBase(base RID.Any) { //gd:VisualInstance3D.set_base
 	var frame = callframe.New()
 	callframe.Arg(frame, base)
 	var r_ret = callframe.Nil
@@ -181,9 +184,9 @@ func (self class) SetBase(base gd.RID) { //gd:VisualInstance3D.set_base
 Returns the RID of the resource associated with this [VisualInstance3D]. For example, if the Node is a [MeshInstance3D], this will return the RID of the associated [Mesh].
 */
 //go:nosplit
-func (self class) GetBase() gd.RID { //gd:VisualInstance3D.get_base
+func (self class) GetBase() RID.Any { //gd:VisualInstance3D.get_base
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualInstance3D.Bind_get_base, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -194,9 +197,9 @@ func (self class) GetBase() gd.RID { //gd:VisualInstance3D.get_base
 Returns the RID of this instance. This RID is the same as the RID returned by [method RenderingServer.instance_create]. This RID is needed if you want to call [RenderingServer] functions directly on this [VisualInstance3D].
 */
 //go:nosplit
-func (self class) GetInstance() gd.RID { //gd:VisualInstance3D.get_instance
+func (self class) GetInstance() RID.Any { //gd:VisualInstance3D.get_instance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualInstance3D.Bind_get_instance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -204,7 +207,7 @@ func (self class) GetInstance() gd.RID { //gd:VisualInstance3D.get_instance
 }
 
 //go:nosplit
-func (self class) SetLayerMask(mask gd.Int) { //gd:VisualInstance3D.set_layer_mask
+func (self class) SetLayerMask(mask int64) { //gd:VisualInstance3D.set_layer_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -213,9 +216,9 @@ func (self class) SetLayerMask(mask gd.Int) { //gd:VisualInstance3D.set_layer_ma
 }
 
 //go:nosplit
-func (self class) GetLayerMask() gd.Int { //gd:VisualInstance3D.get_layer_mask
+func (self class) GetLayerMask() int64 { //gd:VisualInstance3D.get_layer_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualInstance3D.Bind_get_layer_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -226,7 +229,7 @@ func (self class) GetLayerMask() gd.Int { //gd:VisualInstance3D.get_layer_mask
 Based on [param value], enables or disables the specified layer in the [member layers], given a [param layer_number] between 1 and 20.
 */
 //go:nosplit
-func (self class) SetLayerMaskValue(layer_number gd.Int, value bool) { //gd:VisualInstance3D.set_layer_mask_value
+func (self class) SetLayerMaskValue(layer_number int64, value bool) { //gd:VisualInstance3D.set_layer_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -239,7 +242,7 @@ func (self class) SetLayerMaskValue(layer_number gd.Int, value bool) { //gd:Visu
 Returns whether or not the specified layer of the [member layers] is enabled, given a [param layer_number] between 1 and 20.
 */
 //go:nosplit
-func (self class) GetLayerMaskValue(layer_number gd.Int) bool { //gd:VisualInstance3D.get_layer_mask_value
+func (self class) GetLayerMaskValue(layer_number int64) bool { //gd:VisualInstance3D.get_layer_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -250,7 +253,7 @@ func (self class) GetLayerMaskValue(layer_number gd.Int) bool { //gd:VisualInsta
 }
 
 //go:nosplit
-func (self class) SetSortingOffset(offset gd.Float) { //gd:VisualInstance3D.set_sorting_offset
+func (self class) SetSortingOffset(offset float64) { //gd:VisualInstance3D.set_sorting_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -259,9 +262,9 @@ func (self class) SetSortingOffset(offset gd.Float) { //gd:VisualInstance3D.set_
 }
 
 //go:nosplit
-func (self class) GetSortingOffset() gd.Float { //gd:VisualInstance3D.get_sorting_offset
+func (self class) GetSortingOffset() float64 { //gd:VisualInstance3D.get_sorting_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualInstance3D.Bind_get_sorting_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -291,9 +294,9 @@ func (self class) IsSortingUseAabbCenter() bool { //gd:VisualInstance3D.is_sorti
 Returns the [AABB] (also known as the bounding box) for this [VisualInstance3D].
 */
 //go:nosplit
-func (self class) GetAabb() gd.AABB { //gd:VisualInstance3D.get_aabb
+func (self class) GetAabb() AABB.PositionSize { //gd:VisualInstance3D.get_aabb
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.AABB](frame)
+	var r_ret = callframe.Ret[AABB.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualInstance3D.Bind_get_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

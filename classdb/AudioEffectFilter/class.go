@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioEffect"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioEffect"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,7 +78,7 @@ func (self Instance) CutoffHz() Float.X {
 }
 
 func (self Instance) SetCutoffHz(value Float.X) {
-	class(self).SetCutoff(gd.Float(value))
+	class(self).SetCutoff(float64(value))
 }
 
 func (self Instance) Resonance() Float.X {
@@ -83,7 +86,7 @@ func (self Instance) Resonance() Float.X {
 }
 
 func (self Instance) SetResonance(value Float.X) {
-	class(self).SetResonance(gd.Float(value))
+	class(self).SetResonance(float64(value))
 }
 
 func (self Instance) Gain() Float.X {
@@ -91,7 +94,7 @@ func (self Instance) Gain() Float.X {
 }
 
 func (self Instance) SetGain(value Float.X) {
-	class(self).SetGain(gd.Float(value))
+	class(self).SetGain(float64(value))
 }
 
 func (self Instance) Db() gdclass.AudioEffectFilterFilterDB {
@@ -103,7 +106,7 @@ func (self Instance) SetDb(value gdclass.AudioEffectFilterFilterDB) {
 }
 
 //go:nosplit
-func (self class) SetCutoff(freq gd.Float) { //gd:AudioEffectFilter.set_cutoff
+func (self class) SetCutoff(freq float64) { //gd:AudioEffectFilter.set_cutoff
 	var frame = callframe.New()
 	callframe.Arg(frame, freq)
 	var r_ret = callframe.Nil
@@ -112,9 +115,9 @@ func (self class) SetCutoff(freq gd.Float) { //gd:AudioEffectFilter.set_cutoff
 }
 
 //go:nosplit
-func (self class) GetCutoff() gd.Float { //gd:AudioEffectFilter.get_cutoff
+func (self class) GetCutoff() float64 { //gd:AudioEffectFilter.get_cutoff
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectFilter.Bind_get_cutoff, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -122,7 +125,7 @@ func (self class) GetCutoff() gd.Float { //gd:AudioEffectFilter.get_cutoff
 }
 
 //go:nosplit
-func (self class) SetResonance(amount gd.Float) { //gd:AudioEffectFilter.set_resonance
+func (self class) SetResonance(amount float64) { //gd:AudioEffectFilter.set_resonance
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -131,9 +134,9 @@ func (self class) SetResonance(amount gd.Float) { //gd:AudioEffectFilter.set_res
 }
 
 //go:nosplit
-func (self class) GetResonance() gd.Float { //gd:AudioEffectFilter.get_resonance
+func (self class) GetResonance() float64 { //gd:AudioEffectFilter.get_resonance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectFilter.Bind_get_resonance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -141,7 +144,7 @@ func (self class) GetResonance() gd.Float { //gd:AudioEffectFilter.get_resonance
 }
 
 //go:nosplit
-func (self class) SetGain(amount gd.Float) { //gd:AudioEffectFilter.set_gain
+func (self class) SetGain(amount float64) { //gd:AudioEffectFilter.set_gain
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -150,9 +153,9 @@ func (self class) SetGain(amount gd.Float) { //gd:AudioEffectFilter.set_gain
 }
 
 //go:nosplit
-func (self class) GetGain() gd.Float { //gd:AudioEffectFilter.get_gain
+func (self class) GetGain() float64 { //gd:AudioEffectFilter.get_gain
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectFilter.Bind_get_gain, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

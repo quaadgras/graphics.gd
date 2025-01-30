@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Light2D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Light2D"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -77,11 +80,11 @@ func (self Instance) MaxDistance() Float.X {
 }
 
 func (self Instance) SetMaxDistance(value Float.X) {
-	class(self).SetMaxDistance(gd.Float(value))
+	class(self).SetMaxDistance(float64(value))
 }
 
 //go:nosplit
-func (self class) SetMaxDistance(pixels gd.Float) { //gd:DirectionalLight2D.set_max_distance
+func (self class) SetMaxDistance(pixels float64) { //gd:DirectionalLight2D.set_max_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, pixels)
 	var r_ret = callframe.Nil
@@ -90,9 +93,9 @@ func (self class) SetMaxDistance(pixels gd.Float) { //gd:DirectionalLight2D.set_
 }
 
 //go:nosplit
-func (self class) GetMaxDistance() gd.Float { //gd:DirectionalLight2D.get_max_distance
+func (self class) GetMaxDistance() float64 { //gd:DirectionalLight2D.get_max_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirectionalLight2D.Bind_get_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

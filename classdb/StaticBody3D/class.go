@@ -9,19 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CollisionObject3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/PhysicsBody3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/PhysicsBody3D"
-import "graphics.gd/classdb/CollisionObject3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -38,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -86,7 +90,7 @@ func (self Instance) ConstantLinearVelocity() Vector3.XYZ {
 }
 
 func (self Instance) SetConstantLinearVelocity(value Vector3.XYZ) {
-	class(self).SetConstantLinearVelocity(gd.Vector3(value))
+	class(self).SetConstantLinearVelocity(Vector3.XYZ(value))
 }
 
 func (self Instance) ConstantAngularVelocity() Vector3.XYZ {
@@ -94,11 +98,11 @@ func (self Instance) ConstantAngularVelocity() Vector3.XYZ {
 }
 
 func (self Instance) SetConstantAngularVelocity(value Vector3.XYZ) {
-	class(self).SetConstantAngularVelocity(gd.Vector3(value))
+	class(self).SetConstantAngularVelocity(Vector3.XYZ(value))
 }
 
 //go:nosplit
-func (self class) SetConstantLinearVelocity(vel gd.Vector3) { //gd:StaticBody3D.set_constant_linear_velocity
+func (self class) SetConstantLinearVelocity(vel Vector3.XYZ) { //gd:StaticBody3D.set_constant_linear_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, vel)
 	var r_ret = callframe.Nil
@@ -107,7 +111,7 @@ func (self class) SetConstantLinearVelocity(vel gd.Vector3) { //gd:StaticBody3D.
 }
 
 //go:nosplit
-func (self class) SetConstantAngularVelocity(vel gd.Vector3) { //gd:StaticBody3D.set_constant_angular_velocity
+func (self class) SetConstantAngularVelocity(vel Vector3.XYZ) { //gd:StaticBody3D.set_constant_angular_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, vel)
 	var r_ret = callframe.Nil
@@ -116,9 +120,9 @@ func (self class) SetConstantAngularVelocity(vel gd.Vector3) { //gd:StaticBody3D
 }
 
 //go:nosplit
-func (self class) GetConstantLinearVelocity() gd.Vector3 { //gd:StaticBody3D.get_constant_linear_velocity
+func (self class) GetConstantLinearVelocity() Vector3.XYZ { //gd:StaticBody3D.get_constant_linear_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody3D.Bind_get_constant_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -126,9 +130,9 @@ func (self class) GetConstantLinearVelocity() gd.Vector3 { //gd:StaticBody3D.get
 }
 
 //go:nosplit
-func (self class) GetConstantAngularVelocity() gd.Vector3 { //gd:StaticBody3D.get_constant_angular_velocity
+func (self class) GetConstantAngularVelocity() Vector3.XYZ { //gd:StaticBody3D.get_constant_angular_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody3D.Bind_get_constant_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

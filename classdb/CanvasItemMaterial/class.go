@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Material"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Material"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -98,7 +102,7 @@ func (self Instance) ParticlesAnimHFrames() int {
 }
 
 func (self Instance) SetParticlesAnimHFrames(value int) {
-	class(self).SetParticlesAnimHFrames(gd.Int(value))
+	class(self).SetParticlesAnimHFrames(int64(value))
 }
 
 func (self Instance) ParticlesAnimVFrames() int {
@@ -106,7 +110,7 @@ func (self Instance) ParticlesAnimVFrames() int {
 }
 
 func (self Instance) SetParticlesAnimVFrames(value int) {
-	class(self).SetParticlesAnimVFrames(gd.Int(value))
+	class(self).SetParticlesAnimVFrames(int64(value))
 }
 
 func (self Instance) ParticlesAnimLoop() bool {
@@ -175,7 +179,7 @@ func (self class) GetParticlesAnimation() bool { //gd:CanvasItemMaterial.get_par
 }
 
 //go:nosplit
-func (self class) SetParticlesAnimHFrames(frames gd.Int) { //gd:CanvasItemMaterial.set_particles_anim_h_frames
+func (self class) SetParticlesAnimHFrames(frames int64) { //gd:CanvasItemMaterial.set_particles_anim_h_frames
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
 	var r_ret = callframe.Nil
@@ -184,9 +188,9 @@ func (self class) SetParticlesAnimHFrames(frames gd.Int) { //gd:CanvasItemMateri
 }
 
 //go:nosplit
-func (self class) GetParticlesAnimHFrames() gd.Int { //gd:CanvasItemMaterial.get_particles_anim_h_frames
+func (self class) GetParticlesAnimHFrames() int64 { //gd:CanvasItemMaterial.get_particles_anim_h_frames
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_anim_h_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -194,7 +198,7 @@ func (self class) GetParticlesAnimHFrames() gd.Int { //gd:CanvasItemMaterial.get
 }
 
 //go:nosplit
-func (self class) SetParticlesAnimVFrames(frames gd.Int) { //gd:CanvasItemMaterial.set_particles_anim_v_frames
+func (self class) SetParticlesAnimVFrames(frames int64) { //gd:CanvasItemMaterial.set_particles_anim_v_frames
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
 	var r_ret = callframe.Nil
@@ -203,9 +207,9 @@ func (self class) SetParticlesAnimVFrames(frames gd.Int) { //gd:CanvasItemMateri
 }
 
 //go:nosplit
-func (self class) GetParticlesAnimVFrames() gd.Int { //gd:CanvasItemMaterial.get_particles_anim_v_frames
+func (self class) GetParticlesAnimVFrames() int64 { //gd:CanvasItemMaterial.get_particles_anim_v_frames
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_anim_v_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

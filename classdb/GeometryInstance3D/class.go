@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
+import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/AABB"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -60,7 +63,7 @@ Set the value of a shader uniform for this instance only ([url=$DOCS_URL/tutoria
 [b]Note:[/b] Per-instance shader uniforms are currently only available in 3D, so there is no 2D equivalent of this method.
 */
 func (self Instance) SetInstanceShaderParameter(name string, value any) { //gd:GeometryInstance3D.set_instance_shader_parameter
-	class(self).SetInstanceShaderParameter(String.Name(String.New(name)), gd.NewVariant(value))
+	class(self).SetInstanceShaderParameter(String.Name(String.New(name)), variant.New(value))
 }
 
 /*
@@ -109,7 +112,7 @@ func (self Instance) Transparency() Float.X {
 }
 
 func (self Instance) SetTransparency(value Float.X) {
-	class(self).SetTransparency(gd.Float(value))
+	class(self).SetTransparency(float64(value))
 }
 
 func (self Instance) CastShadow() gdclass.GeometryInstance3DShadowCastingSetting {
@@ -125,7 +128,7 @@ func (self Instance) ExtraCullMargin() Float.X {
 }
 
 func (self Instance) SetExtraCullMargin(value Float.X) {
-	class(self).SetExtraCullMargin(gd.Float(value))
+	class(self).SetExtraCullMargin(float64(value))
 }
 
 func (self Instance) CustomAabb() AABB.PositionSize {
@@ -133,7 +136,7 @@ func (self Instance) CustomAabb() AABB.PositionSize {
 }
 
 func (self Instance) SetCustomAabb(value AABB.PositionSize) {
-	class(self).SetCustomAabb(gd.AABB(value))
+	class(self).SetCustomAabb(AABB.PositionSize(value))
 }
 
 func (self Instance) LodBias() Float.X {
@@ -141,7 +144,7 @@ func (self Instance) LodBias() Float.X {
 }
 
 func (self Instance) SetLodBias(value Float.X) {
-	class(self).SetLodBias(gd.Float(value))
+	class(self).SetLodBias(float64(value))
 }
 
 func (self Instance) IgnoreOcclusionCulling() bool {
@@ -173,7 +176,7 @@ func (self Instance) VisibilityRangeBegin() Float.X {
 }
 
 func (self Instance) SetVisibilityRangeBegin(value Float.X) {
-	class(self).SetVisibilityRangeBegin(gd.Float(value))
+	class(self).SetVisibilityRangeBegin(float64(value))
 }
 
 func (self Instance) VisibilityRangeBeginMargin() Float.X {
@@ -181,7 +184,7 @@ func (self Instance) VisibilityRangeBeginMargin() Float.X {
 }
 
 func (self Instance) SetVisibilityRangeBeginMargin(value Float.X) {
-	class(self).SetVisibilityRangeBeginMargin(gd.Float(value))
+	class(self).SetVisibilityRangeBeginMargin(float64(value))
 }
 
 func (self Instance) VisibilityRangeEnd() Float.X {
@@ -189,7 +192,7 @@ func (self Instance) VisibilityRangeEnd() Float.X {
 }
 
 func (self Instance) SetVisibilityRangeEnd(value Float.X) {
-	class(self).SetVisibilityRangeEnd(gd.Float(value))
+	class(self).SetVisibilityRangeEnd(float64(value))
 }
 
 func (self Instance) VisibilityRangeEndMargin() Float.X {
@@ -197,7 +200,7 @@ func (self Instance) VisibilityRangeEndMargin() Float.X {
 }
 
 func (self Instance) SetVisibilityRangeEndMargin(value Float.X) {
-	class(self).SetVisibilityRangeEndMargin(gd.Float(value))
+	class(self).SetVisibilityRangeEndMargin(float64(value))
 }
 
 func (self Instance) VisibilityRangeFadeMode() gdclass.GeometryInstance3DVisibilityRangeFadeMode {
@@ -266,7 +269,7 @@ func (self class) GetCastShadowsSetting() gdclass.GeometryInstance3DShadowCastin
 }
 
 //go:nosplit
-func (self class) SetLodBias(bias gd.Float) { //gd:GeometryInstance3D.set_lod_bias
+func (self class) SetLodBias(bias float64) { //gd:GeometryInstance3D.set_lod_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, bias)
 	var r_ret = callframe.Nil
@@ -275,9 +278,9 @@ func (self class) SetLodBias(bias gd.Float) { //gd:GeometryInstance3D.set_lod_bi
 }
 
 //go:nosplit
-func (self class) GetLodBias() gd.Float { //gd:GeometryInstance3D.get_lod_bias
+func (self class) GetLodBias() float64 { //gd:GeometryInstance3D.get_lod_bias
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_lod_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -285,7 +288,7 @@ func (self class) GetLodBias() gd.Float { //gd:GeometryInstance3D.get_lod_bias
 }
 
 //go:nosplit
-func (self class) SetTransparency(transparency gd.Float) { //gd:GeometryInstance3D.set_transparency
+func (self class) SetTransparency(transparency float64) { //gd:GeometryInstance3D.set_transparency
 	var frame = callframe.New()
 	callframe.Arg(frame, transparency)
 	var r_ret = callframe.Nil
@@ -294,9 +297,9 @@ func (self class) SetTransparency(transparency gd.Float) { //gd:GeometryInstance
 }
 
 //go:nosplit
-func (self class) GetTransparency() gd.Float { //gd:GeometryInstance3D.get_transparency
+func (self class) GetTransparency() float64 { //gd:GeometryInstance3D.get_transparency
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_transparency, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -304,7 +307,7 @@ func (self class) GetTransparency() gd.Float { //gd:GeometryInstance3D.get_trans
 }
 
 //go:nosplit
-func (self class) SetVisibilityRangeEndMargin(distance gd.Float) { //gd:GeometryInstance3D.set_visibility_range_end_margin
+func (self class) SetVisibilityRangeEndMargin(distance float64) { //gd:GeometryInstance3D.set_visibility_range_end_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -313,9 +316,9 @@ func (self class) SetVisibilityRangeEndMargin(distance gd.Float) { //gd:Geometry
 }
 
 //go:nosplit
-func (self class) GetVisibilityRangeEndMargin() gd.Float { //gd:GeometryInstance3D.get_visibility_range_end_margin
+func (self class) GetVisibilityRangeEndMargin() float64 { //gd:GeometryInstance3D.get_visibility_range_end_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_visibility_range_end_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -323,7 +326,7 @@ func (self class) GetVisibilityRangeEndMargin() gd.Float { //gd:GeometryInstance
 }
 
 //go:nosplit
-func (self class) SetVisibilityRangeEnd(distance gd.Float) { //gd:GeometryInstance3D.set_visibility_range_end
+func (self class) SetVisibilityRangeEnd(distance float64) { //gd:GeometryInstance3D.set_visibility_range_end
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -332,9 +335,9 @@ func (self class) SetVisibilityRangeEnd(distance gd.Float) { //gd:GeometryInstan
 }
 
 //go:nosplit
-func (self class) GetVisibilityRangeEnd() gd.Float { //gd:GeometryInstance3D.get_visibility_range_end
+func (self class) GetVisibilityRangeEnd() float64 { //gd:GeometryInstance3D.get_visibility_range_end
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_visibility_range_end, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -342,7 +345,7 @@ func (self class) GetVisibilityRangeEnd() gd.Float { //gd:GeometryInstance3D.get
 }
 
 //go:nosplit
-func (self class) SetVisibilityRangeBeginMargin(distance gd.Float) { //gd:GeometryInstance3D.set_visibility_range_begin_margin
+func (self class) SetVisibilityRangeBeginMargin(distance float64) { //gd:GeometryInstance3D.set_visibility_range_begin_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -351,9 +354,9 @@ func (self class) SetVisibilityRangeBeginMargin(distance gd.Float) { //gd:Geomet
 }
 
 //go:nosplit
-func (self class) GetVisibilityRangeBeginMargin() gd.Float { //gd:GeometryInstance3D.get_visibility_range_begin_margin
+func (self class) GetVisibilityRangeBeginMargin() float64 { //gd:GeometryInstance3D.get_visibility_range_begin_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_visibility_range_begin_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -361,7 +364,7 @@ func (self class) GetVisibilityRangeBeginMargin() gd.Float { //gd:GeometryInstan
 }
 
 //go:nosplit
-func (self class) SetVisibilityRangeBegin(distance gd.Float) { //gd:GeometryInstance3D.set_visibility_range_begin
+func (self class) SetVisibilityRangeBegin(distance float64) { //gd:GeometryInstance3D.set_visibility_range_begin
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -370,9 +373,9 @@ func (self class) SetVisibilityRangeBegin(distance gd.Float) { //gd:GeometryInst
 }
 
 //go:nosplit
-func (self class) GetVisibilityRangeBegin() gd.Float { //gd:GeometryInstance3D.get_visibility_range_begin
+func (self class) GetVisibilityRangeBegin() float64 { //gd:GeometryInstance3D.get_visibility_range_begin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_visibility_range_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -405,10 +408,10 @@ Set the value of a shader uniform for this instance only ([url=$DOCS_URL/tutoria
 [b]Note:[/b] Per-instance shader uniforms are currently only available in 3D, so there is no 2D equivalent of this method.
 */
 //go:nosplit
-func (self class) SetInstanceShaderParameter(name String.Name, value gd.Variant) { //gd:GeometryInstance3D.set_instance_shader_parameter
+func (self class) SetInstanceShaderParameter(name String.Name, value variant.Any) { //gd:GeometryInstance3D.set_instance_shader_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_set_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -418,18 +421,18 @@ func (self class) SetInstanceShaderParameter(name String.Name, value gd.Variant)
 Get the value of a shader parameter as set on this instance.
 */
 //go:nosplit
-func (self class) GetInstanceShaderParameter(name String.Name) gd.Variant { //gd:GeometryInstance3D.get_instance_shader_parameter
+func (self class) GetInstanceShaderParameter(name String.Name) variant.Any { //gd:GeometryInstance3D.get_instance_shader_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetExtraCullMargin(margin gd.Float) { //gd:GeometryInstance3D.set_extra_cull_margin
+func (self class) SetExtraCullMargin(margin float64) { //gd:GeometryInstance3D.set_extra_cull_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -438,9 +441,9 @@ func (self class) SetExtraCullMargin(margin gd.Float) { //gd:GeometryInstance3D.
 }
 
 //go:nosplit
-func (self class) GetExtraCullMargin() gd.Float { //gd:GeometryInstance3D.get_extra_cull_margin
+func (self class) GetExtraCullMargin() float64 { //gd:GeometryInstance3D.get_extra_cull_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_extra_cull_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -505,7 +508,7 @@ func (self class) IsIgnoringOcclusionCulling() bool { //gd:GeometryInstance3D.is
 }
 
 //go:nosplit
-func (self class) SetCustomAabb(aabb gd.AABB) { //gd:GeometryInstance3D.set_custom_aabb
+func (self class) SetCustomAabb(aabb AABB.PositionSize) { //gd:GeometryInstance3D.set_custom_aabb
 	var frame = callframe.New()
 	callframe.Arg(frame, aabb)
 	var r_ret = callframe.Nil
@@ -514,9 +517,9 @@ func (self class) SetCustomAabb(aabb gd.AABB) { //gd:GeometryInstance3D.set_cust
 }
 
 //go:nosplit
-func (self class) GetCustomAabb() gd.AABB { //gd:GeometryInstance3D.get_custom_aabb
+func (self class) GetCustomAabb() AABB.PositionSize { //gd:GeometryInstance3D.get_custom_aabb
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.AABB](frame)
+	var r_ret = callframe.Ret[AABB.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

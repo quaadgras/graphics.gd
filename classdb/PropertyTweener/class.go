@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Tweener"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Tweener"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -60,7 +63,7 @@ tween.tween_property(self, "position", Vector2(200, 100), 1).from(Vector2(100, 1
 [/codeblock]
 */
 func (self Instance) From(value any) [1]gdclass.PropertyTweener { //gd:PropertyTweener.from
-	return [1]gdclass.PropertyTweener(class(self).From(gd.NewVariant(value)))
+	return [1]gdclass.PropertyTweener(class(self).From(variant.New(value)))
 }
 
 /*
@@ -126,7 +129,7 @@ func (self Instance) SetCustomInterpolator(interpolator_method func(Float.X) Flo
 Sets the time in seconds after which the [PropertyTweener] will start interpolating. By default there's no delay.
 */
 func (self Instance) SetDelay(delay Float.X) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_delay
-	return [1]gdclass.PropertyTweener(class(self).SetDelay(gd.Float(delay)))
+	return [1]gdclass.PropertyTweener(class(self).SetDelay(float64(delay)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -157,9 +160,9 @@ tween.tween_property(self, "position", Vector2(200, 100), 1).from(Vector2(100, 1
 [/codeblock]
 */
 //go:nosplit
-func (self class) From(value gd.Variant) [1]gdclass.PropertyTweener { //gd:PropertyTweener.from
+func (self class) From(value variant.Any) [1]gdclass.PropertyTweener { //gd:PropertyTweener.from
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
@@ -260,7 +263,7 @@ func (self class) SetCustomInterpolator(interpolator_method Callable.Function) [
 Sets the time in seconds after which the [PropertyTweener] will start interpolating. By default there's no delay.
 */
 //go:nosplit
-func (self class) SetDelay(delay gd.Float) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_delay
+func (self class) SetDelay(delay float64) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_delay
 	var frame = callframe.New()
 	callframe.Arg(frame, delay)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

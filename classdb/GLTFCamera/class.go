@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -112,7 +115,7 @@ func (self Instance) Fov() Float.X {
 }
 
 func (self Instance) SetFov(value Float.X) {
-	class(self).SetFov(gd.Float(value))
+	class(self).SetFov(float64(value))
 }
 
 func (self Instance) SizeMag() Float.X {
@@ -120,7 +123,7 @@ func (self Instance) SizeMag() Float.X {
 }
 
 func (self Instance) SetSizeMag(value Float.X) {
-	class(self).SetSizeMag(gd.Float(value))
+	class(self).SetSizeMag(float64(value))
 }
 
 func (self Instance) DepthFar() Float.X {
@@ -128,7 +131,7 @@ func (self Instance) DepthFar() Float.X {
 }
 
 func (self Instance) SetDepthFar(value Float.X) {
-	class(self).SetDepthFar(gd.Float(value))
+	class(self).SetDepthFar(float64(value))
 }
 
 func (self Instance) DepthNear() Float.X {
@@ -136,7 +139,7 @@ func (self Instance) DepthNear() Float.X {
 }
 
 func (self Instance) SetDepthNear(value Float.X) {
-	class(self).SetDepthNear(gd.Float(value))
+	class(self).SetDepthNear(float64(value))
 }
 
 /*
@@ -213,9 +216,9 @@ func (self class) SetPerspective(perspective bool) { //gd:GLTFCamera.set_perspec
 }
 
 //go:nosplit
-func (self class) GetFov() gd.Float { //gd:GLTFCamera.get_fov
+func (self class) GetFov() float64 { //gd:GLTFCamera.get_fov
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFCamera.Bind_get_fov, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -223,7 +226,7 @@ func (self class) GetFov() gd.Float { //gd:GLTFCamera.get_fov
 }
 
 //go:nosplit
-func (self class) SetFov(fov gd.Float) { //gd:GLTFCamera.set_fov
+func (self class) SetFov(fov float64) { //gd:GLTFCamera.set_fov
 	var frame = callframe.New()
 	callframe.Arg(frame, fov)
 	var r_ret = callframe.Nil
@@ -232,9 +235,9 @@ func (self class) SetFov(fov gd.Float) { //gd:GLTFCamera.set_fov
 }
 
 //go:nosplit
-func (self class) GetSizeMag() gd.Float { //gd:GLTFCamera.get_size_mag
+func (self class) GetSizeMag() float64 { //gd:GLTFCamera.get_size_mag
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFCamera.Bind_get_size_mag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -242,7 +245,7 @@ func (self class) GetSizeMag() gd.Float { //gd:GLTFCamera.get_size_mag
 }
 
 //go:nosplit
-func (self class) SetSizeMag(size_mag gd.Float) { //gd:GLTFCamera.set_size_mag
+func (self class) SetSizeMag(size_mag float64) { //gd:GLTFCamera.set_size_mag
 	var frame = callframe.New()
 	callframe.Arg(frame, size_mag)
 	var r_ret = callframe.Nil
@@ -251,9 +254,9 @@ func (self class) SetSizeMag(size_mag gd.Float) { //gd:GLTFCamera.set_size_mag
 }
 
 //go:nosplit
-func (self class) GetDepthFar() gd.Float { //gd:GLTFCamera.get_depth_far
+func (self class) GetDepthFar() float64 { //gd:GLTFCamera.get_depth_far
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFCamera.Bind_get_depth_far, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -261,7 +264,7 @@ func (self class) GetDepthFar() gd.Float { //gd:GLTFCamera.get_depth_far
 }
 
 //go:nosplit
-func (self class) SetDepthFar(zdepth_far gd.Float) { //gd:GLTFCamera.set_depth_far
+func (self class) SetDepthFar(zdepth_far float64) { //gd:GLTFCamera.set_depth_far
 	var frame = callframe.New()
 	callframe.Arg(frame, zdepth_far)
 	var r_ret = callframe.Nil
@@ -270,9 +273,9 @@ func (self class) SetDepthFar(zdepth_far gd.Float) { //gd:GLTFCamera.set_depth_f
 }
 
 //go:nosplit
-func (self class) GetDepthNear() gd.Float { //gd:GLTFCamera.get_depth_near
+func (self class) GetDepthNear() float64 { //gd:GLTFCamera.get_depth_near
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFCamera.Bind_get_depth_near, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -280,7 +283,7 @@ func (self class) GetDepthNear() gd.Float { //gd:GLTFCamera.get_depth_near
 }
 
 //go:nosplit
-func (self class) SetDepthNear(zdepth_near gd.Float) { //gd:GLTFCamera.set_depth_near
+func (self class) SetDepthNear(zdepth_near float64) { //gd:GLTFCamera.set_depth_near
 	var frame = callframe.New()
 	callframe.Arg(frame, zdepth_near)
 	var r_ret = callframe.Nil

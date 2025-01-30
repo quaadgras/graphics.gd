@@ -9,19 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Range"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Range"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,7 +79,7 @@ func (self Instance) FillMode() int {
 }
 
 func (self Instance) SetFillMode(value int) {
-	class(self).SetFillMode(gd.Int(value))
+	class(self).SetFillMode(int64(value))
 }
 
 func (self Instance) ShowPercentage() bool {
@@ -103,7 +107,7 @@ func (self Instance) SetEditorPreviewIndeterminate(value bool) {
 }
 
 //go:nosplit
-func (self class) SetFillMode(mode gd.Int) { //gd:ProgressBar.set_fill_mode
+func (self class) SetFillMode(mode int64) { //gd:ProgressBar.set_fill_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -112,9 +116,9 @@ func (self class) SetFillMode(mode gd.Int) { //gd:ProgressBar.set_fill_mode
 }
 
 //go:nosplit
-func (self class) GetFillMode() gd.Int { //gd:ProgressBar.get_fill_mode
+func (self class) GetFillMode() int64 { //gd:ProgressBar.get_fill_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProgressBar.Bind_get_fill_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

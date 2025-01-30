@@ -10,16 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -100,7 +103,7 @@ Returns [code]true[/code] if you are pressing the joypad button (see [enum JoyBu
 */
 func IsJoyButtonPressed(device int, button JoyButton) bool { //gd:Input.is_joy_button_pressed
 	once.Do(singleton)
-	return bool(class(self).IsJoyButtonPressed(gd.Int(device), button))
+	return bool(class(self).IsJoyButtonPressed(int64(device), button))
 }
 
 /*
@@ -171,7 +174,7 @@ By default, the deadzone is automatically calculated from the average of the act
 */
 func GetVector(negative_x string, positive_x string, negative_y string, positive_y string) Vector2.XY { //gd:Input.get_vector
 	once.Do(singleton)
-	return Vector2.XY(class(self).GetVector(String.Name(String.New(negative_x)), String.Name(String.New(positive_x)), String.Name(String.New(negative_y)), String.Name(String.New(positive_y)), gd.Float(-1.0)))
+	return Vector2.XY(class(self).GetVector(String.Name(String.New(negative_x)), String.Name(String.New(positive_x)), String.Name(String.New(negative_y)), String.Name(String.New(positive_y)), float64(-1.0)))
 }
 
 /*
@@ -195,7 +198,7 @@ Returns [code]true[/code] if the system knows the specified device. This means t
 */
 func IsJoyKnown(device int) bool { //gd:Input.is_joy_known
 	once.Do(singleton)
-	return bool(class(self).IsJoyKnown(gd.Int(device)))
+	return bool(class(self).IsJoyKnown(int64(device)))
 }
 
 /*
@@ -203,7 +206,7 @@ Returns the current value of the joypad axis at given index (see [enum JoyAxis])
 */
 func GetJoyAxis(device int, axis JoyAxis) Float.X { //gd:Input.get_joy_axis
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).GetJoyAxis(gd.Int(device), axis)))
+	return Float.X(Float.X(class(self).GetJoyAxis(int64(device), axis)))
 }
 
 /*
@@ -211,7 +214,7 @@ Returns the name of the joypad at the specified device index, e.g. [code]PS4 Con
 */
 func GetJoyName(device int) string { //gd:Input.get_joy_name
 	once.Do(singleton)
-	return string(class(self).GetJoyName(gd.Int(device)).String())
+	return string(class(self).GetJoyName(int64(device)).String())
 }
 
 /*
@@ -219,7 +222,7 @@ Returns an SDL2-compatible device GUID on platforms that use gamepad remapping, 
 */
 func GetJoyGuid(device int) string { //gd:Input.get_joy_guid
 	once.Do(singleton)
-	return string(class(self).GetJoyGuid(gd.Int(device)).String())
+	return string(class(self).GetJoyGuid(int64(device)).String())
 }
 
 /*
@@ -234,7 +237,7 @@ On Linux:
 */
 func GetJoyInfo(device int) JoyInfo { //gd:Input.get_joy_info
 	once.Do(singleton)
-	return JoyInfo(gd.DictionaryAs[JoyInfo](class(self).GetJoyInfo(gd.Int(device))))
+	return JoyInfo(gd.DictionaryAs[JoyInfo](class(self).GetJoyInfo(int64(device))))
 }
 
 /*
@@ -243,7 +246,7 @@ Queries whether an input device should be ignored or not. Devices can be ignored
 */
 func ShouldIgnoreDevice(vendor_id int, product_id int) bool { //gd:Input.should_ignore_device
 	once.Do(singleton)
-	return bool(class(self).ShouldIgnoreDevice(gd.Int(vendor_id), gd.Int(product_id)))
+	return bool(class(self).ShouldIgnoreDevice(int64(vendor_id), int64(product_id)))
 }
 
 /*
@@ -259,7 +262,7 @@ Returns the strength of the joypad vibration: x is the strength of the weak moto
 */
 func GetJoyVibrationStrength(device int) Vector2.XY { //gd:Input.get_joy_vibration_strength
 	once.Do(singleton)
-	return Vector2.XY(class(self).GetJoyVibrationStrength(gd.Int(device)))
+	return Vector2.XY(class(self).GetJoyVibrationStrength(int64(device)))
 }
 
 /*
@@ -267,7 +270,7 @@ Returns the duration of the current vibration effect in seconds.
 */
 func GetJoyVibrationDuration(device int) Float.X { //gd:Input.get_joy_vibration_duration
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).GetJoyVibrationDuration(gd.Int(device))))
+	return Float.X(Float.X(class(self).GetJoyVibrationDuration(int64(device))))
 }
 
 /*
@@ -277,7 +280,7 @@ Starts to vibrate the joypad. Joypads usually come with two rumble motors, a str
 */
 func StartJoyVibration(device int, weak_magnitude Float.X, strong_magnitude Float.X) { //gd:Input.start_joy_vibration
 	once.Do(singleton)
-	class(self).StartJoyVibration(gd.Int(device), gd.Float(weak_magnitude), gd.Float(strong_magnitude), gd.Float(0))
+	class(self).StartJoyVibration(int64(device), float64(weak_magnitude), float64(strong_magnitude), float64(0))
 }
 
 /*
@@ -285,7 +288,7 @@ Stops the vibration of the joypad started with [method start_joy_vibration].
 */
 func StopJoyVibration(device int) { //gd:Input.stop_joy_vibration
 	once.Do(singleton)
-	class(self).StopJoyVibration(gd.Int(device))
+	class(self).StopJoyVibration(int64(device))
 }
 
 /*
@@ -299,7 +302,7 @@ Vibrate the handheld device for the specified duration in milliseconds.
 */
 func VibrateHandheld() { //gd:Input.vibrate_handheld
 	once.Do(singleton)
-	class(self).VibrateHandheld(gd.Int(500), gd.Float(-1.0))
+	class(self).VibrateHandheld(int64(500), float64(-1.0))
 }
 
 /*
@@ -345,7 +348,7 @@ Sets the gravity value of the accelerometer sensor. Can be used for debugging on
 */
 func SetGravity(value Vector3.XYZ) { //gd:Input.set_gravity
 	once.Do(singleton)
-	class(self).SetGravity(gd.Vector3(value))
+	class(self).SetGravity(Vector3.XYZ(value))
 }
 
 /*
@@ -354,7 +357,7 @@ Sets the acceleration value of the accelerometer sensor. Can be used for debuggi
 */
 func SetAccelerometer(value Vector3.XYZ) { //gd:Input.set_accelerometer
 	once.Do(singleton)
-	class(self).SetAccelerometer(gd.Vector3(value))
+	class(self).SetAccelerometer(Vector3.XYZ(value))
 }
 
 /*
@@ -363,7 +366,7 @@ Sets the value of the magnetic field of the magnetometer sensor. Can be used for
 */
 func SetMagnetometer(value Vector3.XYZ) { //gd:Input.set_magnetometer
 	once.Do(singleton)
-	class(self).SetMagnetometer(gd.Vector3(value))
+	class(self).SetMagnetometer(Vector3.XYZ(value))
 }
 
 /*
@@ -372,7 +375,7 @@ Sets the value of the rotation rate of the gyroscope sensor. Can be used for deb
 */
 func SetGyroscope(value Vector3.XYZ) { //gd:Input.set_gyroscope
 	once.Do(singleton)
-	class(self).SetGyroscope(gd.Vector3(value))
+	class(self).SetGyroscope(Vector3.XYZ(value))
 }
 
 /*
@@ -406,7 +409,7 @@ Mouse position is clipped to the limits of the screen resolution, or to the limi
 */
 func WarpMouse(position Vector2.XY) { //gd:Input.warp_mouse
 	once.Do(singleton)
-	class(self).WarpMouse(gd.Vector2(position))
+	class(self).WarpMouse(Vector2.XY(position))
 }
 
 /*
@@ -416,7 +419,7 @@ The strength can be used for non-boolean actions, it's ranged between 0 and 1 re
 */
 func ActionPress(action string) { //gd:Input.action_press
 	once.Do(singleton)
-	class(self).ActionPress(String.Name(String.New(action)), gd.Float(1.0))
+	class(self).ActionPress(String.Name(String.New(action)), float64(1.0))
 }
 
 /*
@@ -455,7 +458,7 @@ Sets a custom mouse cursor image, which is only visible inside the game window. 
 */
 func SetCustomMouseCursor(image [1]gdclass.Resource) { //gd:Input.set_custom_mouse_cursor
 	once.Do(singleton)
-	class(self).SetCustomMouseCursor(image, 0, gd.Vector2(gd.Vector2{0, 0}))
+	class(self).SetCustomMouseCursor(image, 0, Vector2.XY(gd.Vector2{0, 0}))
 }
 
 /*
@@ -610,7 +613,7 @@ func (self class) IsMouseButtonPressed(button MouseButton) bool { //gd:Input.is_
 Returns [code]true[/code] if you are pressing the joypad button (see [enum JoyButton]).
 */
 //go:nosplit
-func (self class) IsJoyButtonPressed(device gd.Int, button JoyButton) bool { //gd:Input.is_joy_button_pressed
+func (self class) IsJoyButtonPressed(device int64, button JoyButton) bool { //gd:Input.is_joy_button_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	callframe.Arg(frame, button)
@@ -681,11 +684,11 @@ Returns a value between 0 and 1 representing the intensity of the given action. 
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 //go:nosplit
-func (self class) GetActionStrength(action String.Name, exact_match bool) gd.Float { //gd:Input.get_action_strength
+func (self class) GetActionStrength(action String.Name, exact_match bool) float64 { //gd:Input.get_action_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, exact_match)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_action_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -697,11 +700,11 @@ Returns a value between 0 and 1 representing the raw intensity of the given acti
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 //go:nosplit
-func (self class) GetActionRawStrength(action String.Name, exact_match bool) gd.Float { //gd:Input.get_action_raw_strength
+func (self class) GetActionRawStrength(action String.Name, exact_match bool) float64 { //gd:Input.get_action_raw_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, exact_match)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_action_raw_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -713,11 +716,11 @@ Get axis input by specifying two actions, one negative and one positive.
 This is a shorthand for writing [code]Input.get_action_strength("positive_action") - Input.get_action_strength("negative_action")[/code].
 */
 //go:nosplit
-func (self class) GetAxis(negative_action String.Name, positive_action String.Name) gd.Float { //gd:Input.get_axis
+func (self class) GetAxis(negative_action String.Name, positive_action String.Name) float64 { //gd:Input.get_axis
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(negative_action)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(positive_action)))
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -730,14 +733,14 @@ This method is useful when getting vector input, such as from a joystick, direct
 By default, the deadzone is automatically calculated from the average of the action deadzones. However, you can override the deadzone to be whatever you want (on the range of 0 to 1).
 */
 //go:nosplit
-func (self class) GetVector(negative_x String.Name, positive_x String.Name, negative_y String.Name, positive_y String.Name, deadzone gd.Float) gd.Vector2 { //gd:Input.get_vector
+func (self class) GetVector(negative_x String.Name, positive_x String.Name, negative_y String.Name, positive_y String.Name, deadzone float64) Vector2.XY { //gd:Input.get_vector
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(negative_x)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(positive_x)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(negative_y)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(positive_y)))
 	callframe.Arg(frame, deadzone)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_vector, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -773,7 +776,7 @@ func (self class) RemoveJoyMapping(guid String.Readable) { //gd:Input.remove_joy
 Returns [code]true[/code] if the system knows the specified device. This means that it sets all button and axis indices. Unknown joypads are not expected to match these constants, but you can still retrieve events from them.
 */
 //go:nosplit
-func (self class) IsJoyKnown(device gd.Int) bool { //gd:Input.is_joy_known
+func (self class) IsJoyKnown(device int64) bool { //gd:Input.is_joy_known
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[bool](frame)
@@ -787,11 +790,11 @@ func (self class) IsJoyKnown(device gd.Int) bool { //gd:Input.is_joy_known
 Returns the current value of the joypad axis at given index (see [enum JoyAxis]).
 */
 //go:nosplit
-func (self class) GetJoyAxis(device gd.Int, axis JoyAxis) gd.Float { //gd:Input.get_joy_axis
+func (self class) GetJoyAxis(device int64, axis JoyAxis) float64 { //gd:Input.get_joy_axis
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	callframe.Arg(frame, axis)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -802,7 +805,7 @@ func (self class) GetJoyAxis(device gd.Int, axis JoyAxis) gd.Float { //gd:Input.
 Returns the name of the joypad at the specified device index, e.g. [code]PS4 Controller[/code]. Godot uses the [url=https://github.com/gabomdq/SDL_GameControllerDB]SDL2 game controller database[/url] to determine gamepad names.
 */
 //go:nosplit
-func (self class) GetJoyName(device gd.Int) String.Readable { //gd:Input.get_joy_name
+func (self class) GetJoyName(device int64) String.Readable { //gd:Input.get_joy_name
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -816,7 +819,7 @@ func (self class) GetJoyName(device gd.Int) String.Readable { //gd:Input.get_joy
 Returns an SDL2-compatible device GUID on platforms that use gamepad remapping, e.g. [code]030000004c050000c405000000010000[/code]. Returns [code]"Default Gamepad"[/code] otherwise. Godot uses the [url=https://github.com/gabomdq/SDL_GameControllerDB]SDL2 game controller database[/url] to determine gamepad names and mappings based on this GUID.
 */
 //go:nosplit
-func (self class) GetJoyGuid(device gd.Int) String.Readable { //gd:Input.get_joy_guid
+func (self class) GetJoyGuid(device int64) String.Readable { //gd:Input.get_joy_guid
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -837,7 +840,7 @@ On Linux:
 [code]steam_input_index[/code]: The Steam Input gamepad index, if the device is not a Steam Input device this key won't be present.
 */
 //go:nosplit
-func (self class) GetJoyInfo(device gd.Int) Dictionary.Any { //gd:Input.get_joy_info
+func (self class) GetJoyInfo(device int64) Dictionary.Any { //gd:Input.get_joy_info
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -852,7 +855,7 @@ Queries whether an input device should be ignored or not. Devices can be ignored
 [b]Note:[/b] Some 3rd party tools can contribute to the list of ignored devices. For example, [i]SteamInput[/i] creates virtual devices from physical devices for remapping purposes. To avoid handling the same input device twice, the original device is added to the ignore list.
 */
 //go:nosplit
-func (self class) ShouldIgnoreDevice(vendor_id gd.Int, product_id gd.Int) bool { //gd:Input.should_ignore_device
+func (self class) ShouldIgnoreDevice(vendor_id int64, product_id int64) bool { //gd:Input.should_ignore_device
 	var frame = callframe.New()
 	callframe.Arg(frame, vendor_id)
 	callframe.Arg(frame, product_id)
@@ -867,11 +870,11 @@ func (self class) ShouldIgnoreDevice(vendor_id gd.Int, product_id gd.Int) bool {
 Returns an [Array] containing the device IDs of all currently connected joypads.
 */
 //go:nosplit
-func (self class) GetConnectedJoypads() Array.Contains[gd.Int] { //gd:Input.get_connected_joypads
+func (self class) GetConnectedJoypads() Array.Contains[int64] { //gd:Input.get_connected_joypads
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_connected_joypads, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Int]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -880,10 +883,10 @@ func (self class) GetConnectedJoypads() Array.Contains[gd.Int] { //gd:Input.get_
 Returns the strength of the joypad vibration: x is the strength of the weak motor, and y is the strength of the strong motor.
 */
 //go:nosplit
-func (self class) GetJoyVibrationStrength(device gd.Int) gd.Vector2 { //gd:Input.get_joy_vibration_strength
+func (self class) GetJoyVibrationStrength(device int64) Vector2.XY { //gd:Input.get_joy_vibration_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_vibration_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -894,10 +897,10 @@ func (self class) GetJoyVibrationStrength(device gd.Int) gd.Vector2 { //gd:Input
 Returns the duration of the current vibration effect in seconds.
 */
 //go:nosplit
-func (self class) GetJoyVibrationDuration(device gd.Int) gd.Float { //gd:Input.get_joy_vibration_duration
+func (self class) GetJoyVibrationDuration(device int64) float64 { //gd:Input.get_joy_vibration_duration
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_vibration_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -910,7 +913,7 @@ Starts to vibrate the joypad. Joypads usually come with two rumble motors, a str
 [b]Note:[/b] For macOS, vibration is only supported in macOS 11 and later.
 */
 //go:nosplit
-func (self class) StartJoyVibration(device gd.Int, weak_magnitude gd.Float, strong_magnitude gd.Float, duration gd.Float) { //gd:Input.start_joy_vibration
+func (self class) StartJoyVibration(device int64, weak_magnitude float64, strong_magnitude float64, duration float64) { //gd:Input.start_joy_vibration
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	callframe.Arg(frame, weak_magnitude)
@@ -925,7 +928,7 @@ func (self class) StartJoyVibration(device gd.Int, weak_magnitude gd.Float, stro
 Stops the vibration of the joypad started with [method start_joy_vibration].
 */
 //go:nosplit
-func (self class) StopJoyVibration(device gd.Int) { //gd:Input.stop_joy_vibration
+func (self class) StopJoyVibration(device int64) { //gd:Input.stop_joy_vibration
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Nil
@@ -943,7 +946,7 @@ Vibrate the handheld device for the specified duration in milliseconds.
 [b]Note:[/b] Some web browsers such as Safari and Firefox for Android do not support [method vibrate_handheld].
 */
 //go:nosplit
-func (self class) VibrateHandheld(duration_ms gd.Int, amplitude gd.Float) { //gd:Input.vibrate_handheld
+func (self class) VibrateHandheld(duration_ms int64, amplitude float64) { //gd:Input.vibrate_handheld
 	var frame = callframe.New()
 	callframe.Arg(frame, duration_ms)
 	callframe.Arg(frame, amplitude)
@@ -957,9 +960,9 @@ Returns the gravity in m/s² of the device's accelerometer sensor, if the device
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
 */
 //go:nosplit
-func (self class) GetGravity() gd.Vector3 { //gd:Input.get_gravity
+func (self class) GetGravity() Vector3.XYZ { //gd:Input.get_gravity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -972,9 +975,9 @@ Note this method returns an empty [Vector3] when running from the editor even wh
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
 */
 //go:nosplit
-func (self class) GetAccelerometer() gd.Vector3 { //gd:Input.get_accelerometer
+func (self class) GetAccelerometer() Vector3.XYZ { //gd:Input.get_accelerometer
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_accelerometer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -986,9 +989,9 @@ Returns the magnetic field strength in micro-Tesla for all axes of the device's 
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
 */
 //go:nosplit
-func (self class) GetMagnetometer() gd.Vector3 { //gd:Input.get_magnetometer
+func (self class) GetMagnetometer() Vector3.XYZ { //gd:Input.get_magnetometer
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_magnetometer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1000,9 +1003,9 @@ Returns the rotation rate in rad/s around a device's X, Y, and Z axes of the gyr
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
 */
 //go:nosplit
-func (self class) GetGyroscope() gd.Vector3 { //gd:Input.get_gyroscope
+func (self class) GetGyroscope() Vector3.XYZ { //gd:Input.get_gyroscope
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_gyroscope, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1014,7 +1017,7 @@ Sets the gravity value of the accelerometer sensor. Can be used for debugging on
 [b]Note:[/b] This value can be immediately overwritten by the hardware sensor value on Android and iOS.
 */
 //go:nosplit
-func (self class) SetGravity(value gd.Vector3) { //gd:Input.set_gravity
+func (self class) SetGravity(value Vector3.XYZ) { //gd:Input.set_gravity
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -1027,7 +1030,7 @@ Sets the acceleration value of the accelerometer sensor. Can be used for debuggi
 [b]Note:[/b] This value can be immediately overwritten by the hardware sensor value on Android and iOS.
 */
 //go:nosplit
-func (self class) SetAccelerometer(value gd.Vector3) { //gd:Input.set_accelerometer
+func (self class) SetAccelerometer(value Vector3.XYZ) { //gd:Input.set_accelerometer
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -1040,7 +1043,7 @@ Sets the value of the magnetic field of the magnetometer sensor. Can be used for
 [b]Note:[/b] This value can be immediately overwritten by the hardware sensor value on Android and iOS.
 */
 //go:nosplit
-func (self class) SetMagnetometer(value gd.Vector3) { //gd:Input.set_magnetometer
+func (self class) SetMagnetometer(value Vector3.XYZ) { //gd:Input.set_magnetometer
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -1053,7 +1056,7 @@ Sets the value of the rotation rate of the gyroscope sensor. Can be used for deb
 [b]Note:[/b] This value can be immediately overwritten by the hardware sensor value on Android and iOS.
 */
 //go:nosplit
-func (self class) SetGyroscope(value gd.Vector3) { //gd:Input.set_gyroscope
+func (self class) SetGyroscope(value Vector3.XYZ) { //gd:Input.set_gyroscope
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -1065,9 +1068,9 @@ func (self class) SetGyroscope(value gd.Vector3) { //gd:Input.set_gyroscope
 Returns the last mouse velocity. To provide a precise and jitter-free velocity, mouse velocity is only calculated every 0.1s. Therefore, mouse velocity will lag mouse movements.
 */
 //go:nosplit
-func (self class) GetLastMouseVelocity() gd.Vector2 { //gd:Input.get_last_mouse_velocity
+func (self class) GetLastMouseVelocity() Vector2.XY { //gd:Input.get_last_mouse_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_last_mouse_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1078,9 +1081,9 @@ func (self class) GetLastMouseVelocity() gd.Vector2 { //gd:Input.get_last_mouse_
 Returns the last mouse velocity in screen coordinates. To provide a precise and jitter-free velocity, mouse velocity is only calculated every 0.1s. Therefore, mouse velocity will lag mouse movements.
 */
 //go:nosplit
-func (self class) GetLastMouseScreenVelocity() gd.Vector2 { //gd:Input.get_last_mouse_screen_velocity
+func (self class) GetLastMouseScreenVelocity() Vector2.XY { //gd:Input.get_last_mouse_screen_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_last_mouse_screen_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1125,7 +1128,7 @@ Mouse position is clipped to the limits of the screen resolution, or to the limi
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 */
 //go:nosplit
-func (self class) WarpMouse(position gd.Vector2) { //gd:Input.warp_mouse
+func (self class) WarpMouse(position Vector2.XY) { //gd:Input.warp_mouse
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -1139,7 +1142,7 @@ The strength can be used for non-boolean actions, it's ranged between 0 and 1 re
 [b]Note:[/b] This method will not cause any [method Node._input] calls. It is intended to be used with [method is_action_pressed] and [method is_action_just_pressed]. If you want to simulate [code]_input[/code], use [method parse_input_event] instead.
 */
 //go:nosplit
-func (self class) ActionPress(action String.Name, strength gd.Float) { //gd:Input.action_press
+func (self class) ActionPress(action String.Name, strength float64) { //gd:Input.action_press
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, strength)
@@ -1196,7 +1199,7 @@ Sets a custom mouse cursor image, which is only visible inside the game window. 
 [b]Note:[/b] On the web platform, the maximum allowed cursor image size is 128×128. Cursor images larger than 32×32 will also only be displayed if the mouse cursor image is entirely located within the page for [url=https://chromestatus.com/feature/5825971391299584]security reasons[/url].
 */
 //go:nosplit
-func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape gdclass.InputCursorShape, hotspot gd.Vector2) { //gd:Input.set_custom_mouse_cursor
+func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape gdclass.InputCursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, shape)

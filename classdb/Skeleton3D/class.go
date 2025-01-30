@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Quaternion"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
-import "graphics.gd/variant/Quaternion"
-import "graphics.gd/variant/Float"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,14 +78,14 @@ func (self Instance) FindBone(name string) int { //gd:Skeleton3D.find_bone
 Returns the name of the bone at index [param bone_idx].
 */
 func (self Instance) GetBoneName(bone_idx int) string { //gd:Skeleton3D.get_bone_name
-	return string(class(self).GetBoneName(gd.Int(bone_idx)).String())
+	return string(class(self).GetBoneName(int64(bone_idx)).String())
 }
 
 /*
 Sets the bone name, [param name], for the bone at [param bone_idx].
 */
 func (self Instance) SetBoneName(bone_idx int, name string) { //gd:Skeleton3D.set_bone_name
-	class(self).SetBoneName(gd.Int(bone_idx), String.New(name))
+	class(self).SetBoneName(int64(bone_idx), String.New(name))
 }
 
 /*
@@ -98,7 +101,7 @@ Returns the bone index which is the parent of the bone at [param bone_idx]. If -
 [b]Note:[/b] The parent bone returned will always be less than [param bone_idx].
 */
 func (self Instance) GetBoneParent(bone_idx int) int { //gd:Skeleton3D.get_bone_parent
-	return int(int(class(self).GetBoneParent(gd.Int(bone_idx))))
+	return int(int(class(self).GetBoneParent(int64(bone_idx))))
 }
 
 /*
@@ -106,7 +109,7 @@ Sets the bone index [param parent_idx] as the parent of the bone at [param bone_
 [b]Note:[/b] [param parent_idx] must be less than [param bone_idx].
 */
 func (self Instance) SetBoneParent(bone_idx int, parent_idx int) { //gd:Skeleton3D.set_bone_parent
-	class(self).SetBoneParent(gd.Int(bone_idx), gd.Int(parent_idx))
+	class(self).SetBoneParent(int64(bone_idx), int64(parent_idx))
 }
 
 /*
@@ -129,14 +132,14 @@ func (self Instance) GetVersion() int { //gd:Skeleton3D.get_version
 Unparents the bone at [param bone_idx] and sets its rest position to that of its parent prior to being reset.
 */
 func (self Instance) UnparentBoneAndRest(bone_idx int) { //gd:Skeleton3D.unparent_bone_and_rest
-	class(self).UnparentBoneAndRest(gd.Int(bone_idx))
+	class(self).UnparentBoneAndRest(int64(bone_idx))
 }
 
 /*
 Returns an array containing the bone indexes of all the child node of the passed in bone, [param bone_idx].
 */
 func (self Instance) GetBoneChildren(bone_idx int) []int32 { //gd:Skeleton3D.get_bone_children
-	return []int32(slices.Collect(class(self).GetBoneChildren(gd.Int(bone_idx)).Values()))
+	return []int32(slices.Collect(class(self).GetBoneChildren(int64(bone_idx)).Values()))
 }
 
 /*
@@ -150,21 +153,21 @@ func (self Instance) GetParentlessBones() []int32 { //gd:Skeleton3D.get_parentle
 Returns the rest transform for a bone [param bone_idx].
 */
 func (self Instance) GetBoneRest(bone_idx int) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_rest
-	return Transform3D.BasisOrigin(class(self).GetBoneRest(gd.Int(bone_idx)))
+	return Transform3D.BasisOrigin(class(self).GetBoneRest(int64(bone_idx)))
 }
 
 /*
 Sets the rest transform for bone [param bone_idx].
 */
 func (self Instance) SetBoneRest(bone_idx int, rest Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_rest
-	class(self).SetBoneRest(gd.Int(bone_idx), gd.Transform3D(rest))
+	class(self).SetBoneRest(int64(bone_idx), Transform3D.BasisOrigin(rest))
 }
 
 /*
 Returns the global rest transform for [param bone_idx].
 */
 func (self Instance) GetBoneGlobalRest(bone_idx int) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_rest
-	return Transform3D.BasisOrigin(class(self).GetBoneGlobalRest(gd.Int(bone_idx)))
+	return Transform3D.BasisOrigin(class(self).GetBoneGlobalRest(int64(bone_idx)))
 }
 func (self Instance) CreateSkinFromRestTransforms() [1]gdclass.Skin { //gd:Skeleton3D.create_skin_from_rest_transforms
 	return [1]gdclass.Skin(class(self).CreateSkinFromRestTransforms())
@@ -196,63 +199,63 @@ Returns the pose transform of the specified bone.
 [b]Note:[/b] This is the pose you set to the skeleton in the process, the final pose can get overridden by modifiers in the deferred process, if you want to access the final pose, use [signal SkeletonModifier3D.modification_processed].
 */
 func (self Instance) GetBonePose(bone_idx int) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_pose
-	return Transform3D.BasisOrigin(class(self).GetBonePose(gd.Int(bone_idx)))
+	return Transform3D.BasisOrigin(class(self).GetBonePose(int64(bone_idx)))
 }
 
 /*
 Sets the pose transform, [param pose], for the bone at [param bone_idx].
 */
 func (self Instance) SetBonePose(bone_idx int, pose Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_pose
-	class(self).SetBonePose(gd.Int(bone_idx), gd.Transform3D(pose))
+	class(self).SetBonePose(int64(bone_idx), Transform3D.BasisOrigin(pose))
 }
 
 /*
 Sets the pose position of the bone at [param bone_idx] to [param position]. [param position] is a [Vector3] describing a position local to the [Skeleton3D] node.
 */
 func (self Instance) SetBonePosePosition(bone_idx int, position Vector3.XYZ) { //gd:Skeleton3D.set_bone_pose_position
-	class(self).SetBonePosePosition(gd.Int(bone_idx), gd.Vector3(position))
+	class(self).SetBonePosePosition(int64(bone_idx), Vector3.XYZ(position))
 }
 
 /*
 Sets the pose rotation of the bone at [param bone_idx] to [param rotation]. [param rotation] is a [Quaternion] describing a rotation in the bone's local coordinate space with respect to the rotation of any parent bones.
 */
 func (self Instance) SetBonePoseRotation(bone_idx int, rotation Quaternion.IJKX) { //gd:Skeleton3D.set_bone_pose_rotation
-	class(self).SetBonePoseRotation(gd.Int(bone_idx), gd.Quaternion(rotation))
+	class(self).SetBonePoseRotation(int64(bone_idx), rotation)
 }
 
 /*
 Sets the pose scale of the bone at [param bone_idx] to [param scale].
 */
 func (self Instance) SetBonePoseScale(bone_idx int, scale Vector3.XYZ) { //gd:Skeleton3D.set_bone_pose_scale
-	class(self).SetBonePoseScale(gd.Int(bone_idx), gd.Vector3(scale))
+	class(self).SetBonePoseScale(int64(bone_idx), Vector3.XYZ(scale))
 }
 
 /*
 Returns the pose position of the bone at [param bone_idx]. The returned [Vector3] is in the local coordinate space of the [Skeleton3D] node.
 */
 func (self Instance) GetBonePosePosition(bone_idx int) Vector3.XYZ { //gd:Skeleton3D.get_bone_pose_position
-	return Vector3.XYZ(class(self).GetBonePosePosition(gd.Int(bone_idx)))
+	return Vector3.XYZ(class(self).GetBonePosePosition(int64(bone_idx)))
 }
 
 /*
 Returns the pose rotation of the bone at [param bone_idx]. The returned [Quaternion] is local to the bone with respect to the rotation of any parent bones.
 */
 func (self Instance) GetBonePoseRotation(bone_idx int) Quaternion.IJKX { //gd:Skeleton3D.get_bone_pose_rotation
-	return Quaternion.IJKX(class(self).GetBonePoseRotation(gd.Int(bone_idx)))
+	return Quaternion.IJKX(class(self).GetBonePoseRotation(int64(bone_idx)))
 }
 
 /*
 Returns the pose scale of the bone at [param bone_idx].
 */
 func (self Instance) GetBonePoseScale(bone_idx int) Vector3.XYZ { //gd:Skeleton3D.get_bone_pose_scale
-	return Vector3.XYZ(class(self).GetBonePoseScale(gd.Int(bone_idx)))
+	return Vector3.XYZ(class(self).GetBonePoseScale(int64(bone_idx)))
 }
 
 /*
 Sets the bone pose to rest for [param bone_idx].
 */
 func (self Instance) ResetBonePose(bone_idx int) { //gd:Skeleton3D.reset_bone_pose
-	class(self).ResetBonePose(gd.Int(bone_idx))
+	class(self).ResetBonePose(int64(bone_idx))
 }
 
 /*
@@ -266,14 +269,14 @@ func (self Instance) ResetBonePoses() { //gd:Skeleton3D.reset_bone_poses
 Returns whether the bone pose for the bone at [param bone_idx] is enabled.
 */
 func (self Instance) IsBoneEnabled(bone_idx int) bool { //gd:Skeleton3D.is_bone_enabled
-	return bool(class(self).IsBoneEnabled(gd.Int(bone_idx)))
+	return bool(class(self).IsBoneEnabled(int64(bone_idx)))
 }
 
 /*
 Disables the pose for the bone at [param bone_idx] if [code]false[/code], enables the bone pose if [code]true[/code].
 */
 func (self Instance) SetBoneEnabled(bone_idx int) { //gd:Skeleton3D.set_bone_enabled
-	class(self).SetBoneEnabled(gd.Int(bone_idx), true)
+	class(self).SetBoneEnabled(int64(bone_idx), true)
 }
 
 /*
@@ -281,7 +284,7 @@ Returns the overall transform of the specified bone, with respect to the skeleto
 [b]Note:[/b] This is the global pose you set to the skeleton in the process, the final global pose can get overridden by modifiers in the deferred process, if you want to access the final global pose, use [signal SkeletonModifier3D.modification_processed].
 */
 func (self Instance) GetBoneGlobalPose(bone_idx int) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose
-	return Transform3D.BasisOrigin(class(self).GetBoneGlobalPose(gd.Int(bone_idx)))
+	return Transform3D.BasisOrigin(class(self).GetBoneGlobalPose(int64(bone_idx)))
 }
 
 /*
@@ -289,7 +292,7 @@ Sets the global pose transform, [param pose], for the bone at [param bone_idx].
 [b]Note:[/b] If other bone poses have been changed, this method executes a dirty poses recalculation and will cause performance to deteriorate. If you know that multiple global poses will be applied, consider using [method set_bone_pose] with precalculation.
 */
 func (self Instance) SetBoneGlobalPose(bone_idx int, pose Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_global_pose
-	class(self).SetBoneGlobalPose(gd.Int(bone_idx), gd.Transform3D(pose))
+	class(self).SetBoneGlobalPose(int64(bone_idx), Transform3D.BasisOrigin(pose))
 }
 
 /*
@@ -303,7 +306,7 @@ func (self Instance) ForceUpdateAllBoneTransforms() { //gd:Skeleton3D.force_upda
 Force updates the bone transform for the bone at [param bone_idx] and all of its children.
 */
 func (self Instance) ForceUpdateBoneChildTransform(bone_idx int) { //gd:Skeleton3D.force_update_bone_child_transform
-	class(self).ForceUpdateBoneChildTransform(gd.Int(bone_idx))
+	class(self).ForceUpdateBoneChildTransform(int64(bone_idx))
 }
 
 /*
@@ -319,21 +322,21 @@ Sets the global pose transform, [param pose], for the bone at [param bone_idx].
 [b]Note:[/b] The pose transform needs to be a global pose! To convert a world transform from a [Node3D] to a global bone pose, multiply the [method Transform3D.affine_inverse] of the node's [member Node3D.global_transform] by the desired world transform.
 */
 func (self Instance) SetBoneGlobalPoseOverride(bone_idx int, pose Transform3D.BasisOrigin, amount Float.X) { //gd:Skeleton3D.set_bone_global_pose_override
-	class(self).SetBoneGlobalPoseOverride(gd.Int(bone_idx), gd.Transform3D(pose), gd.Float(amount), false)
+	class(self).SetBoneGlobalPoseOverride(int64(bone_idx), Transform3D.BasisOrigin(pose), float64(amount), false)
 }
 
 /*
 Returns the global pose override transform for [param bone_idx].
 */
 func (self Instance) GetBoneGlobalPoseOverride(bone_idx int) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose_override
-	return Transform3D.BasisOrigin(class(self).GetBoneGlobalPoseOverride(gd.Int(bone_idx)))
+	return Transform3D.BasisOrigin(class(self).GetBoneGlobalPoseOverride(int64(bone_idx)))
 }
 
 /*
 Returns the overall transform of the specified bone, with respect to the skeleton, but without any global pose overrides. Being relative to the skeleton frame, this is not the actual "global" transform of the bone.
 */
 func (self Instance) GetBoneGlobalPoseNoOverride(bone_idx int) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose_no_override
-	return Transform3D.BasisOrigin(class(self).GetBoneGlobalPoseNoOverride(gd.Int(bone_idx)))
+	return Transform3D.BasisOrigin(class(self).GetBoneGlobalPoseNoOverride(int64(bone_idx)))
 }
 
 /*
@@ -356,7 +359,7 @@ Adds a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
 func (self Instance) PhysicalBonesAddCollisionException(exception RID.Body3D) { //gd:Skeleton3D.physical_bones_add_collision_exception
-	class(self).PhysicalBonesAddCollisionException(gd.RID(exception))
+	class(self).PhysicalBonesAddCollisionException(RID.Any(exception))
 }
 
 /*
@@ -364,7 +367,7 @@ Removes a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
 func (self Instance) PhysicalBonesRemoveCollisionException(exception RID.Body3D) { //gd:Skeleton3D.physical_bones_remove_collision_exception
-	class(self).PhysicalBonesRemoveCollisionException(gd.RID(exception))
+	class(self).PhysicalBonesRemoveCollisionException(RID.Any(exception))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -390,7 +393,7 @@ func (self Instance) MotionScale() Float.X {
 }
 
 func (self Instance) SetMotionScale(value Float.X) {
-	class(self).SetMotionScale(gd.Float(value))
+	class(self).SetMotionScale(float64(value))
 }
 
 func (self Instance) ShowRestOnly() bool {
@@ -422,10 +425,10 @@ Adds a new bone with the given name. Returns the new bone's index, or [code]-1[/
 [b]Note:[/b] Bone names should be unique, non empty, and cannot include the [code]:[/code] and [code]/[/code] characters.
 */
 //go:nosplit
-func (self class) AddBone(name String.Readable) gd.Int { //gd:Skeleton3D.add_bone
+func (self class) AddBone(name String.Readable) int64 { //gd:Skeleton3D.add_bone
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_add_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -436,10 +439,10 @@ func (self class) AddBone(name String.Readable) gd.Int { //gd:Skeleton3D.add_bon
 Returns the bone index that matches [param name] as its name. Returns [code]-1[/code] if no bone with this name exists.
 */
 //go:nosplit
-func (self class) FindBone(name String.Readable) gd.Int { //gd:Skeleton3D.find_bone
+func (self class) FindBone(name String.Readable) int64 { //gd:Skeleton3D.find_bone
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_find_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -450,7 +453,7 @@ func (self class) FindBone(name String.Readable) gd.Int { //gd:Skeleton3D.find_b
 Returns the name of the bone at index [param bone_idx].
 */
 //go:nosplit
-func (self class) GetBoneName(bone_idx gd.Int) String.Readable { //gd:Skeleton3D.get_bone_name
+func (self class) GetBoneName(bone_idx int64) String.Readable { //gd:Skeleton3D.get_bone_name
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -464,7 +467,7 @@ func (self class) GetBoneName(bone_idx gd.Int) String.Readable { //gd:Skeleton3D
 Sets the bone name, [param name], for the bone at [param bone_idx].
 */
 //go:nosplit
-func (self class) SetBoneName(bone_idx gd.Int, name String.Readable) { //gd:Skeleton3D.set_bone_name
+func (self class) SetBoneName(bone_idx int64, name String.Readable) { //gd:Skeleton3D.set_bone_name
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
@@ -492,10 +495,10 @@ Returns the bone index which is the parent of the bone at [param bone_idx]. If -
 [b]Note:[/b] The parent bone returned will always be less than [param bone_idx].
 */
 //go:nosplit
-func (self class) GetBoneParent(bone_idx gd.Int) gd.Int { //gd:Skeleton3D.get_bone_parent
+func (self class) GetBoneParent(bone_idx int64) int64 { //gd:Skeleton3D.get_bone_parent
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -507,7 +510,7 @@ Sets the bone index [param parent_idx] as the parent of the bone at [param bone_
 [b]Note:[/b] [param parent_idx] must be less than [param bone_idx].
 */
 //go:nosplit
-func (self class) SetBoneParent(bone_idx gd.Int, parent_idx gd.Int) { //gd:Skeleton3D.set_bone_parent
+func (self class) SetBoneParent(bone_idx int64, parent_idx int64) { //gd:Skeleton3D.set_bone_parent
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, parent_idx)
@@ -520,9 +523,9 @@ func (self class) SetBoneParent(bone_idx gd.Int, parent_idx gd.Int) { //gd:Skele
 Returns the number of bones in the skeleton.
 */
 //go:nosplit
-func (self class) GetBoneCount() gd.Int { //gd:Skeleton3D.get_bone_count
+func (self class) GetBoneCount() int64 { //gd:Skeleton3D.get_bone_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -535,9 +538,9 @@ The Skeleton version is not serialized: only use within a single instance of Ske
 Use for invalidating caches in IK solvers and other nodes which process bones.
 */
 //go:nosplit
-func (self class) GetVersion() gd.Int { //gd:Skeleton3D.get_version
+func (self class) GetVersion() int64 { //gd:Skeleton3D.get_version
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -548,7 +551,7 @@ func (self class) GetVersion() gd.Int { //gd:Skeleton3D.get_version
 Unparents the bone at [param bone_idx] and sets its rest position to that of its parent prior to being reset.
 */
 //go:nosplit
-func (self class) UnparentBoneAndRest(bone_idx gd.Int) { //gd:Skeleton3D.unparent_bone_and_rest
+func (self class) UnparentBoneAndRest(bone_idx int64) { //gd:Skeleton3D.unparent_bone_and_rest
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Nil
@@ -560,7 +563,7 @@ func (self class) UnparentBoneAndRest(bone_idx gd.Int) { //gd:Skeleton3D.unparen
 Returns an array containing the bone indexes of all the child node of the passed in bone, [param bone_idx].
 */
 //go:nosplit
-func (self class) GetBoneChildren(bone_idx gd.Int) Packed.Array[int32] { //gd:Skeleton3D.get_bone_children
+func (self class) GetBoneChildren(bone_idx int64) Packed.Array[int32] { //gd:Skeleton3D.get_bone_children
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -587,10 +590,10 @@ func (self class) GetParentlessBones() Packed.Array[int32] { //gd:Skeleton3D.get
 Returns the rest transform for a bone [param bone_idx].
 */
 //go:nosplit
-func (self class) GetBoneRest(bone_idx gd.Int) gd.Transform3D { //gd:Skeleton3D.get_bone_rest
+func (self class) GetBoneRest(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_rest
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -601,7 +604,7 @@ func (self class) GetBoneRest(bone_idx gd.Int) gd.Transform3D { //gd:Skeleton3D.
 Sets the rest transform for bone [param bone_idx].
 */
 //go:nosplit
-func (self class) SetBoneRest(bone_idx gd.Int, rest gd.Transform3D) { //gd:Skeleton3D.set_bone_rest
+func (self class) SetBoneRest(bone_idx int64, rest Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_rest
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, rest)
@@ -614,10 +617,10 @@ func (self class) SetBoneRest(bone_idx gd.Int, rest gd.Transform3D) { //gd:Skele
 Returns the global rest transform for [param bone_idx].
 */
 //go:nosplit
-func (self class) GetBoneGlobalRest(bone_idx gd.Int) gd.Transform3D { //gd:Skeleton3D.get_bone_global_rest
+func (self class) GetBoneGlobalRest(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_rest
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -675,10 +678,10 @@ Returns the pose transform of the specified bone.
 [b]Note:[/b] This is the pose you set to the skeleton in the process, the final pose can get overridden by modifiers in the deferred process, if you want to access the final pose, use [signal SkeletonModifier3D.modification_processed].
 */
 //go:nosplit
-func (self class) GetBonePose(bone_idx gd.Int) gd.Transform3D { //gd:Skeleton3D.get_bone_pose
+func (self class) GetBonePose(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -689,7 +692,7 @@ func (self class) GetBonePose(bone_idx gd.Int) gd.Transform3D { //gd:Skeleton3D.
 Sets the pose transform, [param pose], for the bone at [param bone_idx].
 */
 //go:nosplit
-func (self class) SetBonePose(bone_idx gd.Int, pose gd.Transform3D) { //gd:Skeleton3D.set_bone_pose
+func (self class) SetBonePose(bone_idx int64, pose Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, pose)
@@ -702,7 +705,7 @@ func (self class) SetBonePose(bone_idx gd.Int, pose gd.Transform3D) { //gd:Skele
 Sets the pose position of the bone at [param bone_idx] to [param position]. [param position] is a [Vector3] describing a position local to the [Skeleton3D] node.
 */
 //go:nosplit
-func (self class) SetBonePosePosition(bone_idx gd.Int, position gd.Vector3) { //gd:Skeleton3D.set_bone_pose_position
+func (self class) SetBonePosePosition(bone_idx int64, position Vector3.XYZ) { //gd:Skeleton3D.set_bone_pose_position
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, position)
@@ -715,7 +718,7 @@ func (self class) SetBonePosePosition(bone_idx gd.Int, position gd.Vector3) { //
 Sets the pose rotation of the bone at [param bone_idx] to [param rotation]. [param rotation] is a [Quaternion] describing a rotation in the bone's local coordinate space with respect to the rotation of any parent bones.
 */
 //go:nosplit
-func (self class) SetBonePoseRotation(bone_idx gd.Int, rotation gd.Quaternion) { //gd:Skeleton3D.set_bone_pose_rotation
+func (self class) SetBonePoseRotation(bone_idx int64, rotation Quaternion.IJKX) { //gd:Skeleton3D.set_bone_pose_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, rotation)
@@ -728,7 +731,7 @@ func (self class) SetBonePoseRotation(bone_idx gd.Int, rotation gd.Quaternion) {
 Sets the pose scale of the bone at [param bone_idx] to [param scale].
 */
 //go:nosplit
-func (self class) SetBonePoseScale(bone_idx gd.Int, scale gd.Vector3) { //gd:Skeleton3D.set_bone_pose_scale
+func (self class) SetBonePoseScale(bone_idx int64, scale Vector3.XYZ) { //gd:Skeleton3D.set_bone_pose_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, scale)
@@ -741,10 +744,10 @@ func (self class) SetBonePoseScale(bone_idx gd.Int, scale gd.Vector3) { //gd:Ske
 Returns the pose position of the bone at [param bone_idx]. The returned [Vector3] is in the local coordinate space of the [Skeleton3D] node.
 */
 //go:nosplit
-func (self class) GetBonePosePosition(bone_idx gd.Int) gd.Vector3 { //gd:Skeleton3D.get_bone_pose_position
+func (self class) GetBonePosePosition(bone_idx int64) Vector3.XYZ { //gd:Skeleton3D.get_bone_pose_position
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -755,10 +758,10 @@ func (self class) GetBonePosePosition(bone_idx gd.Int) gd.Vector3 { //gd:Skeleto
 Returns the pose rotation of the bone at [param bone_idx]. The returned [Quaternion] is local to the bone with respect to the rotation of any parent bones.
 */
 //go:nosplit
-func (self class) GetBonePoseRotation(bone_idx gd.Int) gd.Quaternion { //gd:Skeleton3D.get_bone_pose_rotation
+func (self class) GetBonePoseRotation(bone_idx int64) Quaternion.IJKX { //gd:Skeleton3D.get_bone_pose_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[gd.Quaternion](frame)
+	var r_ret = callframe.Ret[Quaternion.IJKX](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -769,10 +772,10 @@ func (self class) GetBonePoseRotation(bone_idx gd.Int) gd.Quaternion { //gd:Skel
 Returns the pose scale of the bone at [param bone_idx].
 */
 //go:nosplit
-func (self class) GetBonePoseScale(bone_idx gd.Int) gd.Vector3 { //gd:Skeleton3D.get_bone_pose_scale
+func (self class) GetBonePoseScale(bone_idx int64) Vector3.XYZ { //gd:Skeleton3D.get_bone_pose_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -783,7 +786,7 @@ func (self class) GetBonePoseScale(bone_idx gd.Int) gd.Vector3 { //gd:Skeleton3D
 Sets the bone pose to rest for [param bone_idx].
 */
 //go:nosplit
-func (self class) ResetBonePose(bone_idx gd.Int) { //gd:Skeleton3D.reset_bone_pose
+func (self class) ResetBonePose(bone_idx int64) { //gd:Skeleton3D.reset_bone_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Nil
@@ -806,7 +809,7 @@ func (self class) ResetBonePoses() { //gd:Skeleton3D.reset_bone_poses
 Returns whether the bone pose for the bone at [param bone_idx] is enabled.
 */
 //go:nosplit
-func (self class) IsBoneEnabled(bone_idx gd.Int) bool { //gd:Skeleton3D.is_bone_enabled
+func (self class) IsBoneEnabled(bone_idx int64) bool { //gd:Skeleton3D.is_bone_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -820,7 +823,7 @@ func (self class) IsBoneEnabled(bone_idx gd.Int) bool { //gd:Skeleton3D.is_bone_
 Disables the pose for the bone at [param bone_idx] if [code]false[/code], enables the bone pose if [code]true[/code].
 */
 //go:nosplit
-func (self class) SetBoneEnabled(bone_idx gd.Int, enabled bool) { //gd:Skeleton3D.set_bone_enabled
+func (self class) SetBoneEnabled(bone_idx int64, enabled bool) { //gd:Skeleton3D.set_bone_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, enabled)
@@ -834,10 +837,10 @@ Returns the overall transform of the specified bone, with respect to the skeleto
 [b]Note:[/b] This is the global pose you set to the skeleton in the process, the final global pose can get overridden by modifiers in the deferred process, if you want to access the final global pose, use [signal SkeletonModifier3D.modification_processed].
 */
 //go:nosplit
-func (self class) GetBoneGlobalPose(bone_idx gd.Int) gd.Transform3D { //gd:Skeleton3D.get_bone_global_pose
+func (self class) GetBoneGlobalPose(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -849,7 +852,7 @@ Sets the global pose transform, [param pose], for the bone at [param bone_idx].
 [b]Note:[/b] If other bone poses have been changed, this method executes a dirty poses recalculation and will cause performance to deteriorate. If you know that multiple global poses will be applied, consider using [method set_bone_pose] with precalculation.
 */
 //go:nosplit
-func (self class) SetBoneGlobalPose(bone_idx gd.Int, pose gd.Transform3D) { //gd:Skeleton3D.set_bone_global_pose
+func (self class) SetBoneGlobalPose(bone_idx int64, pose Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_global_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, pose)
@@ -873,7 +876,7 @@ func (self class) ForceUpdateAllBoneTransforms() { //gd:Skeleton3D.force_update_
 Force updates the bone transform for the bone at [param bone_idx] and all of its children.
 */
 //go:nosplit
-func (self class) ForceUpdateBoneChildTransform(bone_idx gd.Int) { //gd:Skeleton3D.force_update_bone_child_transform
+func (self class) ForceUpdateBoneChildTransform(bone_idx int64) { //gd:Skeleton3D.force_update_bone_child_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Nil
@@ -882,7 +885,7 @@ func (self class) ForceUpdateBoneChildTransform(bone_idx gd.Int) { //gd:Skeleton
 }
 
 //go:nosplit
-func (self class) SetMotionScale(motion_scale gd.Float) { //gd:Skeleton3D.set_motion_scale
+func (self class) SetMotionScale(motion_scale float64) { //gd:Skeleton3D.set_motion_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, motion_scale)
 	var r_ret = callframe.Nil
@@ -891,9 +894,9 @@ func (self class) SetMotionScale(motion_scale gd.Float) { //gd:Skeleton3D.set_mo
 }
 
 //go:nosplit
-func (self class) GetMotionScale() gd.Float { //gd:Skeleton3D.get_motion_scale
+func (self class) GetMotionScale() float64 { //gd:Skeleton3D.get_motion_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_motion_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -955,7 +958,7 @@ Sets the global pose transform, [param pose], for the bone at [param bone_idx].
 [b]Note:[/b] The pose transform needs to be a global pose! To convert a world transform from a [Node3D] to a global bone pose, multiply the [method Transform3D.affine_inverse] of the node's [member Node3D.global_transform] by the desired world transform.
 */
 //go:nosplit
-func (self class) SetBoneGlobalPoseOverride(bone_idx gd.Int, pose gd.Transform3D, amount gd.Float, persistent bool) { //gd:Skeleton3D.set_bone_global_pose_override
+func (self class) SetBoneGlobalPoseOverride(bone_idx int64, pose Transform3D.BasisOrigin, amount float64, persistent bool) { //gd:Skeleton3D.set_bone_global_pose_override
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, pose)
@@ -970,10 +973,10 @@ func (self class) SetBoneGlobalPoseOverride(bone_idx gd.Int, pose gd.Transform3D
 Returns the global pose override transform for [param bone_idx].
 */
 //go:nosplit
-func (self class) GetBoneGlobalPoseOverride(bone_idx gd.Int) gd.Transform3D { //gd:Skeleton3D.get_bone_global_pose_override
+func (self class) GetBoneGlobalPoseOverride(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose_override
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -984,10 +987,10 @@ func (self class) GetBoneGlobalPoseOverride(bone_idx gd.Int) gd.Transform3D { //
 Returns the overall transform of the specified bone, with respect to the skeleton, but without any global pose overrides. Being relative to the skeleton frame, this is not the actual "global" transform of the bone.
 */
 //go:nosplit
-func (self class) GetBoneGlobalPoseNoOverride(bone_idx gd.Int) gd.Transform3D { //gd:Skeleton3D.get_bone_global_pose_no_override
+func (self class) GetBoneGlobalPoseNoOverride(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose_no_override
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose_no_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1042,7 +1045,7 @@ Adds a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
 //go:nosplit
-func (self class) PhysicalBonesAddCollisionException(exception gd.RID) { //gd:Skeleton3D.physical_bones_add_collision_exception
+func (self class) PhysicalBonesAddCollisionException(exception RID.Any) { //gd:Skeleton3D.physical_bones_add_collision_exception
 	var frame = callframe.New()
 	callframe.Arg(frame, exception)
 	var r_ret = callframe.Nil
@@ -1055,7 +1058,7 @@ Removes a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
 //go:nosplit
-func (self class) PhysicalBonesRemoveCollisionException(exception gd.RID) { //gd:Skeleton3D.physical_bones_remove_collision_exception
+func (self class) PhysicalBonesRemoveCollisionException(exception RID.Any) { //gd:Skeleton3D.physical_bones_remove_collision_exception
 	var frame = callframe.New()
 	callframe.Arg(frame, exception)
 	var r_ret = callframe.Nil

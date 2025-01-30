@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -118,14 +122,14 @@ type Any interface {
 Generates a [PackedByteArray] of cryptographically secure random bytes with given [param size].
 */
 func (self Instance) GenerateRandomBytes(size int) []byte { //gd:Crypto.generate_random_bytes
-	return []byte(class(self).GenerateRandomBytes(gd.Int(size)).Bytes())
+	return []byte(class(self).GenerateRandomBytes(int64(size)).Bytes())
 }
 
 /*
 Generates an RSA [CryptoKey] that can be used for creating self-signed certificates and passed to [method StreamPeerTLS.accept_stream].
 */
 func (self Instance) GenerateRsa(size int) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
-	return [1]gdclass.CryptoKey(class(self).GenerateRsa(gd.Int(size)))
+	return [1]gdclass.CryptoKey(class(self).GenerateRsa(int64(size)))
 }
 
 /*
@@ -221,7 +225,7 @@ func New() Instance {
 Generates a [PackedByteArray] of cryptographically secure random bytes with given [param size].
 */
 //go:nosplit
-func (self class) GenerateRandomBytes(size gd.Int) Packed.Bytes { //gd:Crypto.generate_random_bytes
+func (self class) GenerateRandomBytes(size int64) Packed.Bytes { //gd:Crypto.generate_random_bytes
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -235,7 +239,7 @@ func (self class) GenerateRandomBytes(size gd.Int) Packed.Bytes { //gd:Crypto.ge
 Generates an RSA [CryptoKey] that can be used for creating self-signed certificates and passed to [method StreamPeerTLS.accept_stream].
 */
 //go:nosplit
-func (self class) GenerateRsa(size gd.Int) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
+func (self class) GenerateRsa(size int64) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -104,7 +107,7 @@ func (self Instance) EngineForce() Float.X {
 }
 
 func (self Instance) SetEngineForce(value Float.X) {
-	class(self).SetEngineForce(gd.Float(value))
+	class(self).SetEngineForce(float64(value))
 }
 
 func (self Instance) Brake() Float.X {
@@ -112,7 +115,7 @@ func (self Instance) Brake() Float.X {
 }
 
 func (self Instance) SetBrake(value Float.X) {
-	class(self).SetBrake(gd.Float(value))
+	class(self).SetBrake(float64(value))
 }
 
 func (self Instance) Steering() Float.X {
@@ -120,7 +123,7 @@ func (self Instance) Steering() Float.X {
 }
 
 func (self Instance) SetSteering(value Float.X) {
-	class(self).SetSteering(gd.Float(value))
+	class(self).SetSteering(float64(value))
 }
 
 func (self Instance) UseAsTraction() bool {
@@ -144,7 +147,7 @@ func (self Instance) WheelRollInfluence() Float.X {
 }
 
 func (self Instance) SetWheelRollInfluence(value Float.X) {
-	class(self).SetRollInfluence(gd.Float(value))
+	class(self).SetRollInfluence(float64(value))
 }
 
 func (self Instance) WheelRadius() Float.X {
@@ -152,7 +155,7 @@ func (self Instance) WheelRadius() Float.X {
 }
 
 func (self Instance) SetWheelRadius(value Float.X) {
-	class(self).SetRadius(gd.Float(value))
+	class(self).SetRadius(float64(value))
 }
 
 func (self Instance) WheelRestLength() Float.X {
@@ -160,7 +163,7 @@ func (self Instance) WheelRestLength() Float.X {
 }
 
 func (self Instance) SetWheelRestLength(value Float.X) {
-	class(self).SetSuspensionRestLength(gd.Float(value))
+	class(self).SetSuspensionRestLength(float64(value))
 }
 
 func (self Instance) WheelFrictionSlip() Float.X {
@@ -168,7 +171,7 @@ func (self Instance) WheelFrictionSlip() Float.X {
 }
 
 func (self Instance) SetWheelFrictionSlip(value Float.X) {
-	class(self).SetFrictionSlip(gd.Float(value))
+	class(self).SetFrictionSlip(float64(value))
 }
 
 func (self Instance) SuspensionTravel() Float.X {
@@ -176,7 +179,7 @@ func (self Instance) SuspensionTravel() Float.X {
 }
 
 func (self Instance) SetSuspensionTravel(value Float.X) {
-	class(self).SetSuspensionTravel(gd.Float(value))
+	class(self).SetSuspensionTravel(float64(value))
 }
 
 func (self Instance) SuspensionStiffness() Float.X {
@@ -184,7 +187,7 @@ func (self Instance) SuspensionStiffness() Float.X {
 }
 
 func (self Instance) SetSuspensionStiffness(value Float.X) {
-	class(self).SetSuspensionStiffness(gd.Float(value))
+	class(self).SetSuspensionStiffness(float64(value))
 }
 
 func (self Instance) SuspensionMaxForce() Float.X {
@@ -192,7 +195,7 @@ func (self Instance) SuspensionMaxForce() Float.X {
 }
 
 func (self Instance) SetSuspensionMaxForce(value Float.X) {
-	class(self).SetSuspensionMaxForce(gd.Float(value))
+	class(self).SetSuspensionMaxForce(float64(value))
 }
 
 func (self Instance) DampingCompression() Float.X {
@@ -200,7 +203,7 @@ func (self Instance) DampingCompression() Float.X {
 }
 
 func (self Instance) SetDampingCompression(value Float.X) {
-	class(self).SetDampingCompression(gd.Float(value))
+	class(self).SetDampingCompression(float64(value))
 }
 
 func (self Instance) DampingRelaxation() Float.X {
@@ -208,11 +211,11 @@ func (self Instance) DampingRelaxation() Float.X {
 }
 
 func (self Instance) SetDampingRelaxation(value Float.X) {
-	class(self).SetDampingRelaxation(gd.Float(value))
+	class(self).SetDampingRelaxation(float64(value))
 }
 
 //go:nosplit
-func (self class) SetRadius(length gd.Float) { //gd:VehicleWheel3D.set_radius
+func (self class) SetRadius(length float64) { //gd:VehicleWheel3D.set_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -221,9 +224,9 @@ func (self class) SetRadius(length gd.Float) { //gd:VehicleWheel3D.set_radius
 }
 
 //go:nosplit
-func (self class) GetRadius() gd.Float { //gd:VehicleWheel3D.get_radius
+func (self class) GetRadius() float64 { //gd:VehicleWheel3D.get_radius
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -231,7 +234,7 @@ func (self class) GetRadius() gd.Float { //gd:VehicleWheel3D.get_radius
 }
 
 //go:nosplit
-func (self class) SetSuspensionRestLength(length gd.Float) { //gd:VehicleWheel3D.set_suspension_rest_length
+func (self class) SetSuspensionRestLength(length float64) { //gd:VehicleWheel3D.set_suspension_rest_length
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -240,9 +243,9 @@ func (self class) SetSuspensionRestLength(length gd.Float) { //gd:VehicleWheel3D
 }
 
 //go:nosplit
-func (self class) GetSuspensionRestLength() gd.Float { //gd:VehicleWheel3D.get_suspension_rest_length
+func (self class) GetSuspensionRestLength() float64 { //gd:VehicleWheel3D.get_suspension_rest_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_suspension_rest_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -250,7 +253,7 @@ func (self class) GetSuspensionRestLength() gd.Float { //gd:VehicleWheel3D.get_s
 }
 
 //go:nosplit
-func (self class) SetSuspensionTravel(length gd.Float) { //gd:VehicleWheel3D.set_suspension_travel
+func (self class) SetSuspensionTravel(length float64) { //gd:VehicleWheel3D.set_suspension_travel
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -259,9 +262,9 @@ func (self class) SetSuspensionTravel(length gd.Float) { //gd:VehicleWheel3D.set
 }
 
 //go:nosplit
-func (self class) GetSuspensionTravel() gd.Float { //gd:VehicleWheel3D.get_suspension_travel
+func (self class) GetSuspensionTravel() float64 { //gd:VehicleWheel3D.get_suspension_travel
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_suspension_travel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -269,7 +272,7 @@ func (self class) GetSuspensionTravel() gd.Float { //gd:VehicleWheel3D.get_suspe
 }
 
 //go:nosplit
-func (self class) SetSuspensionStiffness(length gd.Float) { //gd:VehicleWheel3D.set_suspension_stiffness
+func (self class) SetSuspensionStiffness(length float64) { //gd:VehicleWheel3D.set_suspension_stiffness
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -278,9 +281,9 @@ func (self class) SetSuspensionStiffness(length gd.Float) { //gd:VehicleWheel3D.
 }
 
 //go:nosplit
-func (self class) GetSuspensionStiffness() gd.Float { //gd:VehicleWheel3D.get_suspension_stiffness
+func (self class) GetSuspensionStiffness() float64 { //gd:VehicleWheel3D.get_suspension_stiffness
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_suspension_stiffness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -288,7 +291,7 @@ func (self class) GetSuspensionStiffness() gd.Float { //gd:VehicleWheel3D.get_su
 }
 
 //go:nosplit
-func (self class) SetSuspensionMaxForce(length gd.Float) { //gd:VehicleWheel3D.set_suspension_max_force
+func (self class) SetSuspensionMaxForce(length float64) { //gd:VehicleWheel3D.set_suspension_max_force
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -297,9 +300,9 @@ func (self class) SetSuspensionMaxForce(length gd.Float) { //gd:VehicleWheel3D.s
 }
 
 //go:nosplit
-func (self class) GetSuspensionMaxForce() gd.Float { //gd:VehicleWheel3D.get_suspension_max_force
+func (self class) GetSuspensionMaxForce() float64 { //gd:VehicleWheel3D.get_suspension_max_force
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_suspension_max_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -307,7 +310,7 @@ func (self class) GetSuspensionMaxForce() gd.Float { //gd:VehicleWheel3D.get_sus
 }
 
 //go:nosplit
-func (self class) SetDampingCompression(length gd.Float) { //gd:VehicleWheel3D.set_damping_compression
+func (self class) SetDampingCompression(length float64) { //gd:VehicleWheel3D.set_damping_compression
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -316,9 +319,9 @@ func (self class) SetDampingCompression(length gd.Float) { //gd:VehicleWheel3D.s
 }
 
 //go:nosplit
-func (self class) GetDampingCompression() gd.Float { //gd:VehicleWheel3D.get_damping_compression
+func (self class) GetDampingCompression() float64 { //gd:VehicleWheel3D.get_damping_compression
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_damping_compression, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -326,7 +329,7 @@ func (self class) GetDampingCompression() gd.Float { //gd:VehicleWheel3D.get_dam
 }
 
 //go:nosplit
-func (self class) SetDampingRelaxation(length gd.Float) { //gd:VehicleWheel3D.set_damping_relaxation
+func (self class) SetDampingRelaxation(length float64) { //gd:VehicleWheel3D.set_damping_relaxation
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -335,9 +338,9 @@ func (self class) SetDampingRelaxation(length gd.Float) { //gd:VehicleWheel3D.se
 }
 
 //go:nosplit
-func (self class) GetDampingRelaxation() gd.Float { //gd:VehicleWheel3D.get_damping_relaxation
+func (self class) GetDampingRelaxation() float64 { //gd:VehicleWheel3D.get_damping_relaxation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_damping_relaxation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -383,7 +386,7 @@ func (self class) IsUsedAsSteering() bool { //gd:VehicleWheel3D.is_used_as_steer
 }
 
 //go:nosplit
-func (self class) SetFrictionSlip(length gd.Float) { //gd:VehicleWheel3D.set_friction_slip
+func (self class) SetFrictionSlip(length float64) { //gd:VehicleWheel3D.set_friction_slip
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -392,9 +395,9 @@ func (self class) SetFrictionSlip(length gd.Float) { //gd:VehicleWheel3D.set_fri
 }
 
 //go:nosplit
-func (self class) GetFrictionSlip() gd.Float { //gd:VehicleWheel3D.get_friction_slip
+func (self class) GetFrictionSlip() float64 { //gd:VehicleWheel3D.get_friction_slip
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_friction_slip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -429,7 +432,7 @@ func (self class) GetContactBody() [1]gdclass.Node3D { //gd:VehicleWheel3D.get_c
 }
 
 //go:nosplit
-func (self class) SetRollInfluence(roll_influence gd.Float) { //gd:VehicleWheel3D.set_roll_influence
+func (self class) SetRollInfluence(roll_influence float64) { //gd:VehicleWheel3D.set_roll_influence
 	var frame = callframe.New()
 	callframe.Arg(frame, roll_influence)
 	var r_ret = callframe.Nil
@@ -438,9 +441,9 @@ func (self class) SetRollInfluence(roll_influence gd.Float) { //gd:VehicleWheel3
 }
 
 //go:nosplit
-func (self class) GetRollInfluence() gd.Float { //gd:VehicleWheel3D.get_roll_influence
+func (self class) GetRollInfluence() float64 { //gd:VehicleWheel3D.get_roll_influence
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_roll_influence, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -451,9 +454,9 @@ func (self class) GetRollInfluence() gd.Float { //gd:VehicleWheel3D.get_roll_inf
 Returns a value between 0.0 and 1.0 that indicates whether this wheel is skidding. 0.0 is skidding (the wheel has lost grip, e.g. icy terrain), 1.0 means not skidding (the wheel has full grip, e.g. dry asphalt road).
 */
 //go:nosplit
-func (self class) GetSkidinfo() gd.Float { //gd:VehicleWheel3D.get_skidinfo
+func (self class) GetSkidinfo() float64 { //gd:VehicleWheel3D.get_skidinfo
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_skidinfo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -464,9 +467,9 @@ func (self class) GetSkidinfo() gd.Float { //gd:VehicleWheel3D.get_skidinfo
 Returns the rotational speed of the wheel in revolutions per minute.
 */
 //go:nosplit
-func (self class) GetRpm() gd.Float { //gd:VehicleWheel3D.get_rpm
+func (self class) GetRpm() float64 { //gd:VehicleWheel3D.get_rpm
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_rpm, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -474,7 +477,7 @@ func (self class) GetRpm() gd.Float { //gd:VehicleWheel3D.get_rpm
 }
 
 //go:nosplit
-func (self class) SetEngineForce(engine_force gd.Float) { //gd:VehicleWheel3D.set_engine_force
+func (self class) SetEngineForce(engine_force float64) { //gd:VehicleWheel3D.set_engine_force
 	var frame = callframe.New()
 	callframe.Arg(frame, engine_force)
 	var r_ret = callframe.Nil
@@ -483,9 +486,9 @@ func (self class) SetEngineForce(engine_force gd.Float) { //gd:VehicleWheel3D.se
 }
 
 //go:nosplit
-func (self class) GetEngineForce() gd.Float { //gd:VehicleWheel3D.get_engine_force
+func (self class) GetEngineForce() float64 { //gd:VehicleWheel3D.get_engine_force
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_engine_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -493,7 +496,7 @@ func (self class) GetEngineForce() gd.Float { //gd:VehicleWheel3D.get_engine_for
 }
 
 //go:nosplit
-func (self class) SetBrake(brake gd.Float) { //gd:VehicleWheel3D.set_brake
+func (self class) SetBrake(brake float64) { //gd:VehicleWheel3D.set_brake
 	var frame = callframe.New()
 	callframe.Arg(frame, brake)
 	var r_ret = callframe.Nil
@@ -502,9 +505,9 @@ func (self class) SetBrake(brake gd.Float) { //gd:VehicleWheel3D.set_brake
 }
 
 //go:nosplit
-func (self class) GetBrake() gd.Float { //gd:VehicleWheel3D.get_brake
+func (self class) GetBrake() float64 { //gd:VehicleWheel3D.get_brake
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_brake, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -512,7 +515,7 @@ func (self class) GetBrake() gd.Float { //gd:VehicleWheel3D.get_brake
 }
 
 //go:nosplit
-func (self class) SetSteering(steering gd.Float) { //gd:VehicleWheel3D.set_steering
+func (self class) SetSteering(steering float64) { //gd:VehicleWheel3D.set_steering
 	var frame = callframe.New()
 	callframe.Arg(frame, steering)
 	var r_ret = callframe.Nil
@@ -521,9 +524,9 @@ func (self class) SetSteering(steering gd.Float) { //gd:VehicleWheel3D.set_steer
 }
 
 //go:nosplit
-func (self class) GetSteering() gd.Float { //gd:VehicleWheel3D.get_steering
+func (self class) GetSteering() float64 { //gd:VehicleWheel3D.get_steering
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_steering, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

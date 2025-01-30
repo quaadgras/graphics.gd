@@ -9,22 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Range"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Range"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Color"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -78,7 +81,7 @@ func (self Instance) FillMode() int {
 }
 
 func (self Instance) SetFillMode(value int) {
-	class(self).SetFillMode(gd.Int(value))
+	class(self).SetFillMode(int64(value))
 }
 
 func (self Instance) RadialInitialAngle() Float.X {
@@ -86,7 +89,7 @@ func (self Instance) RadialInitialAngle() Float.X {
 }
 
 func (self Instance) SetRadialInitialAngle(value Float.X) {
-	class(self).SetRadialInitialAngle(gd.Float(value))
+	class(self).SetRadialInitialAngle(float64(value))
 }
 
 func (self Instance) RadialFillDegrees() Float.X {
@@ -94,7 +97,7 @@ func (self Instance) RadialFillDegrees() Float.X {
 }
 
 func (self Instance) SetRadialFillDegrees(value Float.X) {
-	class(self).SetFillDegrees(gd.Float(value))
+	class(self).SetFillDegrees(float64(value))
 }
 
 func (self Instance) RadialCenterOffset() Vector2.XY {
@@ -102,7 +105,7 @@ func (self Instance) RadialCenterOffset() Vector2.XY {
 }
 
 func (self Instance) SetRadialCenterOffset(value Vector2.XY) {
-	class(self).SetRadialCenterOffset(gd.Vector2(value))
+	class(self).SetRadialCenterOffset(Vector2.XY(value))
 }
 
 func (self Instance) NinePatchStretch() bool {
@@ -118,7 +121,7 @@ func (self Instance) StretchMarginLeft() int {
 }
 
 func (self Instance) SetStretchMarginLeft(value int) {
-	class(self).SetStretchMargin(0, gd.Int(value))
+	class(self).SetStretchMargin(0, int64(value))
 }
 
 func (self Instance) StretchMarginTop() int {
@@ -126,7 +129,7 @@ func (self Instance) StretchMarginTop() int {
 }
 
 func (self Instance) SetStretchMarginTop(value int) {
-	class(self).SetStretchMargin(1, gd.Int(value))
+	class(self).SetStretchMargin(1, int64(value))
 }
 
 func (self Instance) StretchMarginRight() int {
@@ -134,7 +137,7 @@ func (self Instance) StretchMarginRight() int {
 }
 
 func (self Instance) SetStretchMarginRight(value int) {
-	class(self).SetStretchMargin(2, gd.Int(value))
+	class(self).SetStretchMargin(2, int64(value))
 }
 
 func (self Instance) StretchMarginBottom() int {
@@ -142,7 +145,7 @@ func (self Instance) StretchMarginBottom() int {
 }
 
 func (self Instance) SetStretchMarginBottom(value int) {
-	class(self).SetStretchMargin(3, gd.Int(value))
+	class(self).SetStretchMargin(3, int64(value))
 }
 
 func (self Instance) TextureUnder() [1]gdclass.Texture2D {
@@ -174,7 +177,7 @@ func (self Instance) TextureProgressOffset() Vector2.XY {
 }
 
 func (self Instance) SetTextureProgressOffset(value Vector2.XY) {
-	class(self).SetTextureProgressOffset(gd.Vector2(value))
+	class(self).SetTextureProgressOffset(Vector2.XY(value))
 }
 
 func (self Instance) TintUnder() Color.RGBA {
@@ -182,7 +185,7 @@ func (self Instance) TintUnder() Color.RGBA {
 }
 
 func (self Instance) SetTintUnder(value Color.RGBA) {
-	class(self).SetTintUnder(gd.Color(value))
+	class(self).SetTintUnder(Color.RGBA(value))
 }
 
 func (self Instance) TintOver() Color.RGBA {
@@ -190,7 +193,7 @@ func (self Instance) TintOver() Color.RGBA {
 }
 
 func (self Instance) SetTintOver(value Color.RGBA) {
-	class(self).SetTintOver(gd.Color(value))
+	class(self).SetTintOver(Color.RGBA(value))
 }
 
 func (self Instance) TintProgress() Color.RGBA {
@@ -198,7 +201,7 @@ func (self Instance) TintProgress() Color.RGBA {
 }
 
 func (self Instance) SetTintProgress(value Color.RGBA) {
-	class(self).SetTintProgress(gd.Color(value))
+	class(self).SetTintProgress(Color.RGBA(value))
 }
 
 //go:nosplit
@@ -259,7 +262,7 @@ func (self class) GetOverTexture() [1]gdclass.Texture2D { //gd:TextureProgressBa
 }
 
 //go:nosplit
-func (self class) SetFillMode(mode gd.Int) { //gd:TextureProgressBar.set_fill_mode
+func (self class) SetFillMode(mode int64) { //gd:TextureProgressBar.set_fill_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -268,9 +271,9 @@ func (self class) SetFillMode(mode gd.Int) { //gd:TextureProgressBar.set_fill_mo
 }
 
 //go:nosplit
-func (self class) GetFillMode() gd.Int { //gd:TextureProgressBar.get_fill_mode
+func (self class) GetFillMode() int64 { //gd:TextureProgressBar.get_fill_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_fill_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -278,7 +281,7 @@ func (self class) GetFillMode() gd.Int { //gd:TextureProgressBar.get_fill_mode
 }
 
 //go:nosplit
-func (self class) SetTintUnder(tint gd.Color) { //gd:TextureProgressBar.set_tint_under
+func (self class) SetTintUnder(tint Color.RGBA) { //gd:TextureProgressBar.set_tint_under
 	var frame = callframe.New()
 	callframe.Arg(frame, tint)
 	var r_ret = callframe.Nil
@@ -287,9 +290,9 @@ func (self class) SetTintUnder(tint gd.Color) { //gd:TextureProgressBar.set_tint
 }
 
 //go:nosplit
-func (self class) GetTintUnder() gd.Color { //gd:TextureProgressBar.get_tint_under
+func (self class) GetTintUnder() Color.RGBA { //gd:TextureProgressBar.get_tint_under
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_tint_under, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -297,7 +300,7 @@ func (self class) GetTintUnder() gd.Color { //gd:TextureProgressBar.get_tint_und
 }
 
 //go:nosplit
-func (self class) SetTintProgress(tint gd.Color) { //gd:TextureProgressBar.set_tint_progress
+func (self class) SetTintProgress(tint Color.RGBA) { //gd:TextureProgressBar.set_tint_progress
 	var frame = callframe.New()
 	callframe.Arg(frame, tint)
 	var r_ret = callframe.Nil
@@ -306,9 +309,9 @@ func (self class) SetTintProgress(tint gd.Color) { //gd:TextureProgressBar.set_t
 }
 
 //go:nosplit
-func (self class) GetTintProgress() gd.Color { //gd:TextureProgressBar.get_tint_progress
+func (self class) GetTintProgress() Color.RGBA { //gd:TextureProgressBar.get_tint_progress
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_tint_progress, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -316,7 +319,7 @@ func (self class) GetTintProgress() gd.Color { //gd:TextureProgressBar.get_tint_
 }
 
 //go:nosplit
-func (self class) SetTintOver(tint gd.Color) { //gd:TextureProgressBar.set_tint_over
+func (self class) SetTintOver(tint Color.RGBA) { //gd:TextureProgressBar.set_tint_over
 	var frame = callframe.New()
 	callframe.Arg(frame, tint)
 	var r_ret = callframe.Nil
@@ -325,9 +328,9 @@ func (self class) SetTintOver(tint gd.Color) { //gd:TextureProgressBar.set_tint_
 }
 
 //go:nosplit
-func (self class) GetTintOver() gd.Color { //gd:TextureProgressBar.get_tint_over
+func (self class) GetTintOver() Color.RGBA { //gd:TextureProgressBar.get_tint_over
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_tint_over, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -335,7 +338,7 @@ func (self class) GetTintOver() gd.Color { //gd:TextureProgressBar.get_tint_over
 }
 
 //go:nosplit
-func (self class) SetTextureProgressOffset(offset gd.Vector2) { //gd:TextureProgressBar.set_texture_progress_offset
+func (self class) SetTextureProgressOffset(offset Vector2.XY) { //gd:TextureProgressBar.set_texture_progress_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -344,9 +347,9 @@ func (self class) SetTextureProgressOffset(offset gd.Vector2) { //gd:TextureProg
 }
 
 //go:nosplit
-func (self class) GetTextureProgressOffset() gd.Vector2 { //gd:TextureProgressBar.get_texture_progress_offset
+func (self class) GetTextureProgressOffset() Vector2.XY { //gd:TextureProgressBar.get_texture_progress_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_texture_progress_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -354,7 +357,7 @@ func (self class) GetTextureProgressOffset() gd.Vector2 { //gd:TextureProgressBa
 }
 
 //go:nosplit
-func (self class) SetRadialInitialAngle(mode gd.Float) { //gd:TextureProgressBar.set_radial_initial_angle
+func (self class) SetRadialInitialAngle(mode float64) { //gd:TextureProgressBar.set_radial_initial_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -363,9 +366,9 @@ func (self class) SetRadialInitialAngle(mode gd.Float) { //gd:TextureProgressBar
 }
 
 //go:nosplit
-func (self class) GetRadialInitialAngle() gd.Float { //gd:TextureProgressBar.get_radial_initial_angle
+func (self class) GetRadialInitialAngle() float64 { //gd:TextureProgressBar.get_radial_initial_angle
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_radial_initial_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -373,7 +376,7 @@ func (self class) GetRadialInitialAngle() gd.Float { //gd:TextureProgressBar.get
 }
 
 //go:nosplit
-func (self class) SetRadialCenterOffset(mode gd.Vector2) { //gd:TextureProgressBar.set_radial_center_offset
+func (self class) SetRadialCenterOffset(mode Vector2.XY) { //gd:TextureProgressBar.set_radial_center_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -382,9 +385,9 @@ func (self class) SetRadialCenterOffset(mode gd.Vector2) { //gd:TextureProgressB
 }
 
 //go:nosplit
-func (self class) GetRadialCenterOffset() gd.Vector2 { //gd:TextureProgressBar.get_radial_center_offset
+func (self class) GetRadialCenterOffset() Vector2.XY { //gd:TextureProgressBar.get_radial_center_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_radial_center_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -392,7 +395,7 @@ func (self class) GetRadialCenterOffset() gd.Vector2 { //gd:TextureProgressBar.g
 }
 
 //go:nosplit
-func (self class) SetFillDegrees(mode gd.Float) { //gd:TextureProgressBar.set_fill_degrees
+func (self class) SetFillDegrees(mode float64) { //gd:TextureProgressBar.set_fill_degrees
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -401,9 +404,9 @@ func (self class) SetFillDegrees(mode gd.Float) { //gd:TextureProgressBar.set_fi
 }
 
 //go:nosplit
-func (self class) GetFillDegrees() gd.Float { //gd:TextureProgressBar.get_fill_degrees
+func (self class) GetFillDegrees() float64 { //gd:TextureProgressBar.get_fill_degrees
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_fill_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -414,7 +417,7 @@ func (self class) GetFillDegrees() gd.Float { //gd:TextureProgressBar.get_fill_d
 Sets the stretch margin with the specified index. See [member stretch_margin_bottom] and related properties.
 */
 //go:nosplit
-func (self class) SetStretchMargin(margin Side, value gd.Int) { //gd:TextureProgressBar.set_stretch_margin
+func (self class) SetStretchMargin(margin Side, value int64) { //gd:TextureProgressBar.set_stretch_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, value)
@@ -427,10 +430,10 @@ func (self class) SetStretchMargin(margin Side, value gd.Int) { //gd:TextureProg
 Returns the stretch margin with the specified index. See [member stretch_margin_bottom] and related properties.
 */
 //go:nosplit
-func (self class) GetStretchMargin(margin Side) gd.Int { //gd:TextureProgressBar.get_stretch_margin
+func (self class) GetStretchMargin(margin Side) int64 { //gd:TextureProgressBar.get_stretch_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_stretch_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

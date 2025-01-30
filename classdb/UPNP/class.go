@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -113,7 +117,7 @@ func (self Instance) GetDeviceCount() int { //gd:UPNP.get_device_count
 Returns the [UPNPDevice] at the given [param index].
 */
 func (self Instance) GetDevice(index int) [1]gdclass.UPNPDevice { //gd:UPNP.get_device
-	return [1]gdclass.UPNPDevice(class(self).GetDevice(gd.Int(index)))
+	return [1]gdclass.UPNPDevice(class(self).GetDevice(int64(index)))
 }
 
 /*
@@ -127,14 +131,14 @@ func (self Instance) AddDevice(device [1]gdclass.UPNPDevice) { //gd:UPNP.add_dev
 Sets the device at [param index] from the list of discovered devices to [param device].
 */
 func (self Instance) SetDevice(index int, device [1]gdclass.UPNPDevice) { //gd:UPNP.set_device
-	class(self).SetDevice(gd.Int(index), device)
+	class(self).SetDevice(int64(index), device)
 }
 
 /*
 Removes the device at [param index] from the list of discovered devices.
 */
 func (self Instance) RemoveDevice(index int) { //gd:UPNP.remove_device
-	class(self).RemoveDevice(gd.Int(index))
+	class(self).RemoveDevice(int64(index))
 }
 
 /*
@@ -157,7 +161,7 @@ Filters for IGD (InternetGatewayDevice) type devices by default, as those manage
 See [enum UPNPResult] for possible return values.
 */
 func (self Instance) Discover() int { //gd:UPNP.discover
-	return int(int(class(self).Discover(gd.Int(2000), gd.Int(2), String.New("InternetGatewayDevice"))))
+	return int(int(class(self).Discover(int64(2000), int64(2), String.New("InternetGatewayDevice"))))
 }
 
 /*
@@ -176,14 +180,14 @@ The mapping's lease [param duration] can be limited by specifying a duration in 
 See [enum UPNPResult] for possible return values.
 */
 func (self Instance) AddPortMapping(port int) int { //gd:UPNP.add_port_mapping
-	return int(int(class(self).AddPortMapping(gd.Int(port), gd.Int(0), String.New(""), String.New("UDP"), gd.Int(0))))
+	return int(int(class(self).AddPortMapping(int64(port), int64(0), String.New(""), String.New("UDP"), int64(0))))
 }
 
 /*
 Deletes the port mapping for the given port and protocol combination on the default gateway (see [method get_gateway]) if one exists. [param port] must be a valid port between 1 and 65535, [param proto] can be either [code]"TCP"[/code] or [code]"UDP"[/code]. May be refused for mappings pointing to addresses other than this one, for well-known ports (below 1024), or for mappings not added via UPnP. See [enum UPNPResult] for possible return values.
 */
 func (self Instance) DeletePortMapping(port int) int { //gd:UPNP.delete_port_mapping
-	return int(int(class(self).DeletePortMapping(gd.Int(port), String.New("UDP"))))
+	return int(int(class(self).DeletePortMapping(int64(port), String.New("UDP"))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -218,7 +222,7 @@ func (self Instance) DiscoverLocalPort() int {
 }
 
 func (self Instance) SetDiscoverLocalPort(value int) {
-	class(self).SetDiscoverLocalPort(gd.Int(value))
+	class(self).SetDiscoverLocalPort(int64(value))
 }
 
 func (self Instance) DiscoverIpv6() bool {
@@ -233,9 +237,9 @@ func (self Instance) SetDiscoverIpv6(value bool) {
 Returns the number of discovered [UPNPDevice]s.
 */
 //go:nosplit
-func (self class) GetDeviceCount() gd.Int { //gd:UPNP.get_device_count
+func (self class) GetDeviceCount() int64 { //gd:UPNP.get_device_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_device_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -246,7 +250,7 @@ func (self class) GetDeviceCount() gd.Int { //gd:UPNP.get_device_count
 Returns the [UPNPDevice] at the given [param index].
 */
 //go:nosplit
-func (self class) GetDevice(index gd.Int) [1]gdclass.UPNPDevice { //gd:UPNP.get_device
+func (self class) GetDevice(index int64) [1]gdclass.UPNPDevice { //gd:UPNP.get_device
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -272,7 +276,7 @@ func (self class) AddDevice(device [1]gdclass.UPNPDevice) { //gd:UPNP.add_device
 Sets the device at [param index] from the list of discovered devices to [param device].
 */
 //go:nosplit
-func (self class) SetDevice(index gd.Int, device [1]gdclass.UPNPDevice) { //gd:UPNP.set_device
+func (self class) SetDevice(index int64, device [1]gdclass.UPNPDevice) { //gd:UPNP.set_device
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(device[0])[0])
@@ -285,7 +289,7 @@ func (self class) SetDevice(index gd.Int, device [1]gdclass.UPNPDevice) { //gd:U
 Removes the device at [param index] from the list of discovered devices.
 */
 //go:nosplit
-func (self class) RemoveDevice(index gd.Int) { //gd:UPNP.remove_device
+func (self class) RemoveDevice(index int64) { //gd:UPNP.remove_device
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -323,12 +327,12 @@ Filters for IGD (InternetGatewayDevice) type devices by default, as those manage
 See [enum UPNPResult] for possible return values.
 */
 //go:nosplit
-func (self class) Discover(timeout gd.Int, ttl gd.Int, device_filter String.Readable) gd.Int { //gd:UPNP.discover
+func (self class) Discover(timeout int64, ttl int64, device_filter String.Readable) int64 { //gd:UPNP.discover
 	var frame = callframe.New()
 	callframe.Arg(frame, timeout)
 	callframe.Arg(frame, ttl)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(device_filter)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_discover, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -357,14 +361,14 @@ The mapping's lease [param duration] can be limited by specifying a duration in 
 See [enum UPNPResult] for possible return values.
 */
 //go:nosplit
-func (self class) AddPortMapping(port gd.Int, port_internal gd.Int, desc String.Readable, proto String.Readable, duration gd.Int) gd.Int { //gd:UPNP.add_port_mapping
+func (self class) AddPortMapping(port int64, port_internal int64, desc String.Readable, proto String.Readable, duration int64) int64 { //gd:UPNP.add_port_mapping
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, port_internal)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(desc)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(proto)))
 	callframe.Arg(frame, duration)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_add_port_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -375,11 +379,11 @@ func (self class) AddPortMapping(port gd.Int, port_internal gd.Int, desc String.
 Deletes the port mapping for the given port and protocol combination on the default gateway (see [method get_gateway]) if one exists. [param port] must be a valid port between 1 and 65535, [param proto] can be either [code]"TCP"[/code] or [code]"UDP"[/code]. May be refused for mappings pointing to addresses other than this one, for well-known ports (below 1024), or for mappings not added via UPnP. See [enum UPNPResult] for possible return values.
 */
 //go:nosplit
-func (self class) DeletePortMapping(port gd.Int, proto String.Readable) gd.Int { //gd:UPNP.delete_port_mapping
+func (self class) DeletePortMapping(port int64, proto String.Readable) int64 { //gd:UPNP.delete_port_mapping
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(proto)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_delete_port_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -406,7 +410,7 @@ func (self class) GetDiscoverMulticastIf() String.Readable { //gd:UPNP.get_disco
 }
 
 //go:nosplit
-func (self class) SetDiscoverLocalPort(port gd.Int) { //gd:UPNP.set_discover_local_port
+func (self class) SetDiscoverLocalPort(port int64) { //gd:UPNP.set_discover_local_port
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	var r_ret = callframe.Nil
@@ -415,9 +419,9 @@ func (self class) SetDiscoverLocalPort(port gd.Int) { //gd:UPNP.set_discover_loc
 }
 
 //go:nosplit
-func (self class) GetDiscoverLocalPort() gd.Int { //gd:UPNP.get_discover_local_port
+func (self class) GetDiscoverLocalPort() int64 { //gd:UPNP.get_discover_local_port
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_discover_local_port, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

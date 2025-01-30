@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/GeometryInstance3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/SpriteBase3D"
+import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/SpriteBase3D"
-import "graphics.gd/classdb/GeometryInstance3D"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -66,7 +69,7 @@ Plays the animation with key [param name]. If [param custom_speed] is negative a
 If this method is called with that same animation [param name], or with no [param name] parameter, the assigned animation will resume playing if it was paused.
 */
 func (self Instance) Play() { //gd:AnimatedSprite3D.play
-	class(self).Play(String.Name(String.New("")), gd.Float(1.0), false)
+	class(self).Play(String.Name(String.New("")), float64(1.0), false)
 }
 
 /*
@@ -107,7 +110,7 @@ animated_sprite.set_frame_and_progress(current_frame, current_progress)
 [/codeblocks]
 */
 func (self Instance) SetFrameAndProgress(frame_ int, progress Float.X) { //gd:AnimatedSprite3D.set_frame_and_progress
-	class(self).SetFrameAndProgress(gd.Int(frame_), gd.Float(progress))
+	class(self).SetFrameAndProgress(int64(frame_), float64(progress))
 }
 
 /*
@@ -165,7 +168,7 @@ func (self Instance) Frame() int {
 }
 
 func (self Instance) SetFrame(value int) {
-	class(self).SetFrame(gd.Int(value))
+	class(self).SetFrame(int64(value))
 }
 
 func (self Instance) FrameProgress() Float.X {
@@ -173,7 +176,7 @@ func (self Instance) FrameProgress() Float.X {
 }
 
 func (self Instance) SetFrameProgress(value Float.X) {
-	class(self).SetFrameProgress(gd.Float(value))
+	class(self).SetFrameProgress(float64(value))
 }
 
 func (self Instance) SpeedScale() Float.X {
@@ -181,7 +184,7 @@ func (self Instance) SpeedScale() Float.X {
 }
 
 func (self Instance) SetSpeedScale(value Float.X) {
-	class(self).SetSpeedScale(gd.Float(value))
+	class(self).SetSpeedScale(float64(value))
 }
 
 //go:nosplit
@@ -259,7 +262,7 @@ Plays the animation with key [param name]. If [param custom_speed] is negative a
 If this method is called with that same animation [param name], or with no [param name] parameter, the assigned animation will resume playing if it was paused.
 */
 //go:nosplit
-func (self class) Play(name String.Name, custom_speed gd.Float, from_end bool) { //gd:AnimatedSprite3D.play
+func (self class) Play(name String.Name, custom_speed float64, from_end bool) { //gd:AnimatedSprite3D.play
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, custom_speed)
@@ -306,7 +309,7 @@ func (self class) Stop() { //gd:AnimatedSprite3D.stop
 }
 
 //go:nosplit
-func (self class) SetFrame(frame_ gd.Int) { //gd:AnimatedSprite3D.set_frame
+func (self class) SetFrame(frame_ int64) { //gd:AnimatedSprite3D.set_frame
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	var r_ret = callframe.Nil
@@ -315,9 +318,9 @@ func (self class) SetFrame(frame_ gd.Int) { //gd:AnimatedSprite3D.set_frame
 }
 
 //go:nosplit
-func (self class) GetFrame() gd.Int { //gd:AnimatedSprite3D.get_frame
+func (self class) GetFrame() int64 { //gd:AnimatedSprite3D.get_frame
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -325,7 +328,7 @@ func (self class) GetFrame() gd.Int { //gd:AnimatedSprite3D.get_frame
 }
 
 //go:nosplit
-func (self class) SetFrameProgress(progress gd.Float) { //gd:AnimatedSprite3D.set_frame_progress
+func (self class) SetFrameProgress(progress float64) { //gd:AnimatedSprite3D.set_frame_progress
 	var frame = callframe.New()
 	callframe.Arg(frame, progress)
 	var r_ret = callframe.Nil
@@ -334,9 +337,9 @@ func (self class) SetFrameProgress(progress gd.Float) { //gd:AnimatedSprite3D.se
 }
 
 //go:nosplit
-func (self class) GetFrameProgress() gd.Float { //gd:AnimatedSprite3D.get_frame_progress
+func (self class) GetFrameProgress() float64 { //gd:AnimatedSprite3D.get_frame_progress
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_frame_progress, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -358,7 +361,7 @@ animated_sprite.set_frame_and_progress(current_frame, current_progress)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) SetFrameAndProgress(frame_ gd.Int, progress gd.Float) { //gd:AnimatedSprite3D.set_frame_and_progress
+func (self class) SetFrameAndProgress(frame_ int64, progress float64) { //gd:AnimatedSprite3D.set_frame_and_progress
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	callframe.Arg(frame, progress)
@@ -368,7 +371,7 @@ func (self class) SetFrameAndProgress(frame_ gd.Int, progress gd.Float) { //gd:A
 }
 
 //go:nosplit
-func (self class) SetSpeedScale(speed_scale gd.Float) { //gd:AnimatedSprite3D.set_speed_scale
+func (self class) SetSpeedScale(speed_scale float64) { //gd:AnimatedSprite3D.set_speed_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, speed_scale)
 	var r_ret = callframe.Nil
@@ -377,9 +380,9 @@ func (self class) SetSpeedScale(speed_scale gd.Float) { //gd:AnimatedSprite3D.se
 }
 
 //go:nosplit
-func (self class) GetSpeedScale() gd.Float { //gd:AnimatedSprite3D.get_speed_scale
+func (self class) GetSpeedScale() float64 { //gd:AnimatedSprite3D.get_speed_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -391,9 +394,9 @@ Returns the actual playing speed of current animation or [code]0[/code] if not p
 Returns a negative value if the current animation is playing backwards.
 */
 //go:nosplit
-func (self class) GetPlayingSpeed() gd.Float { //gd:AnimatedSprite3D.get_playing_speed
+func (self class) GetPlayingSpeed() float64 { //gd:AnimatedSprite3D.get_playing_speed
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_playing_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

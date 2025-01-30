@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -98,7 +101,7 @@ func (self Instance) Bias() Float.X {
 }
 
 func (self Instance) SetBias(value Float.X) {
-	class(self).SetBias(gd.Float(value))
+	class(self).SetBias(float64(value))
 }
 
 func (self Instance) DisableCollision() bool {
@@ -148,7 +151,7 @@ func (self class) GetNodeB() Path.ToNode { //gd:Joint2D.get_node_b
 }
 
 //go:nosplit
-func (self class) SetBias(bias gd.Float) { //gd:Joint2D.set_bias
+func (self class) SetBias(bias float64) { //gd:Joint2D.set_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, bias)
 	var r_ret = callframe.Nil
@@ -157,9 +160,9 @@ func (self class) SetBias(bias gd.Float) { //gd:Joint2D.set_bias
 }
 
 //go:nosplit
-func (self class) GetBias() gd.Float { //gd:Joint2D.get_bias
+func (self class) GetBias() float64 { //gd:Joint2D.get_bias
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint2D.Bind_get_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -189,9 +192,9 @@ func (self class) GetExcludeNodesFromCollision() bool { //gd:Joint2D.get_exclude
 Returns the joint's internal [RID] from the [PhysicsServer2D].
 */
 //go:nosplit
-func (self class) GetRid() gd.RID { //gd:Joint2D.get_rid
+func (self class) GetRid() RID.Any { //gd:Joint2D.get_rid
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint2D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

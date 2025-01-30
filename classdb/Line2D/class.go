@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector2"
-import "graphics.gd/variant/Float"
+import "graphics.gd/classdb/Node2D"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -60,14 +63,14 @@ type Any interface {
 Overwrites the position of the point at the given [param index] with the supplied [param position].
 */
 func (self Instance) SetPointPosition(index int, position Vector2.XY) { //gd:Line2D.set_point_position
-	class(self).SetPointPosition(gd.Int(index), gd.Vector2(position))
+	class(self).SetPointPosition(int64(index), Vector2.XY(position))
 }
 
 /*
 Returns the position of the point at index [param index].
 */
 func (self Instance) GetPointPosition(index int) Vector2.XY { //gd:Line2D.get_point_position
-	return Vector2.XY(class(self).GetPointPosition(gd.Int(index)))
+	return Vector2.XY(class(self).GetPointPosition(int64(index)))
 }
 
 /*
@@ -82,14 +85,14 @@ Adds a point with the specified [param position] relative to the polyline's own 
 If [param index] is given, the new point is inserted before the existing point identified by index [param index]. The indices of the points after the new point get increased by 1. The provided [param index] must not exceed the number of existing points in the polyline. See [method get_point_count].
 */
 func (self Instance) AddPoint(position Vector2.XY) { //gd:Line2D.add_point
-	class(self).AddPoint(gd.Vector2(position), gd.Int(-1))
+	class(self).AddPoint(Vector2.XY(position), int64(-1))
 }
 
 /*
 Removes the point at index [param index] from the polyline.
 */
 func (self Instance) RemovePoint(index int) { //gd:Line2D.remove_point
-	class(self).RemovePoint(gd.Int(index))
+	class(self).RemovePoint(int64(index))
 }
 
 /*
@@ -138,7 +141,7 @@ func (self Instance) Width() Float.X {
 }
 
 func (self Instance) SetWidth(value Float.X) {
-	class(self).SetWidth(gd.Float(value))
+	class(self).SetWidth(float64(value))
 }
 
 func (self Instance) WidthCurve() [1]gdclass.Curve {
@@ -154,7 +157,7 @@ func (self Instance) DefaultColor() Color.RGBA {
 }
 
 func (self Instance) SetDefaultColor(value Color.RGBA) {
-	class(self).SetDefaultColor(gd.Color(value))
+	class(self).SetDefaultColor(Color.RGBA(value))
 }
 
 func (self Instance) Gradient() [1]gdclass.Gradient {
@@ -210,7 +213,7 @@ func (self Instance) SharpLimit() Float.X {
 }
 
 func (self Instance) SetSharpLimit(value Float.X) {
-	class(self).SetSharpLimit(gd.Float(value))
+	class(self).SetSharpLimit(float64(value))
 }
 
 func (self Instance) RoundPrecision() int {
@@ -218,7 +221,7 @@ func (self Instance) RoundPrecision() int {
 }
 
 func (self Instance) SetRoundPrecision(value int) {
-	class(self).SetRoundPrecision(gd.Int(value))
+	class(self).SetRoundPrecision(int64(value))
 }
 
 func (self Instance) Antialiased() bool {
@@ -252,7 +255,7 @@ func (self class) GetPoints() Packed.Array[Vector2.XY] { //gd:Line2D.get_points
 Overwrites the position of the point at the given [param index] with the supplied [param position].
 */
 //go:nosplit
-func (self class) SetPointPosition(index gd.Int, position gd.Vector2) { //gd:Line2D.set_point_position
+func (self class) SetPointPosition(index int64, position Vector2.XY) { //gd:Line2D.set_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, position)
@@ -265,10 +268,10 @@ func (self class) SetPointPosition(index gd.Int, position gd.Vector2) { //gd:Lin
 Returns the position of the point at index [param index].
 */
 //go:nosplit
-func (self class) GetPointPosition(index gd.Int) gd.Vector2 { //gd:Line2D.get_point_position
+func (self class) GetPointPosition(index int64) Vector2.XY { //gd:Line2D.get_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -279,9 +282,9 @@ func (self class) GetPointPosition(index gd.Int) gd.Vector2 { //gd:Line2D.get_po
 Returns the number of points in the polyline.
 */
 //go:nosplit
-func (self class) GetPointCount() gd.Int { //gd:Line2D.get_point_count
+func (self class) GetPointCount() int64 { //gd:Line2D.get_point_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -293,7 +296,7 @@ Adds a point with the specified [param position] relative to the polyline's own 
 If [param index] is given, the new point is inserted before the existing point identified by index [param index]. The indices of the points after the new point get increased by 1. The provided [param index] must not exceed the number of existing points in the polyline. See [method get_point_count].
 */
 //go:nosplit
-func (self class) AddPoint(position gd.Vector2, index gd.Int) { //gd:Line2D.add_point
+func (self class) AddPoint(position Vector2.XY, index int64) { //gd:Line2D.add_point
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, index)
@@ -306,7 +309,7 @@ func (self class) AddPoint(position gd.Vector2, index gd.Int) { //gd:Line2D.add_
 Removes the point at index [param index] from the polyline.
 */
 //go:nosplit
-func (self class) RemovePoint(index gd.Int) { //gd:Line2D.remove_point
+func (self class) RemovePoint(index int64) { //gd:Line2D.remove_point
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -345,7 +348,7 @@ func (self class) IsClosed() bool { //gd:Line2D.is_closed
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Float) { //gd:Line2D.set_width
+func (self class) SetWidth(width float64) { //gd:Line2D.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -354,9 +357,9 @@ func (self class) SetWidth(width gd.Float) { //gd:Line2D.set_width
 }
 
 //go:nosplit
-func (self class) GetWidth() gd.Float { //gd:Line2D.get_width
+func (self class) GetWidth() float64 { //gd:Line2D.get_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -383,7 +386,7 @@ func (self class) GetCurve() [1]gdclass.Curve { //gd:Line2D.get_curve
 }
 
 //go:nosplit
-func (self class) SetDefaultColor(color gd.Color) { //gd:Line2D.set_default_color
+func (self class) SetDefaultColor(color Color.RGBA) { //gd:Line2D.set_default_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -392,9 +395,9 @@ func (self class) SetDefaultColor(color gd.Color) { //gd:Line2D.set_default_colo
 }
 
 //go:nosplit
-func (self class) GetDefaultColor() gd.Color { //gd:Line2D.get_default_color
+func (self class) GetDefaultColor() Color.RGBA { //gd:Line2D.get_default_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_default_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -516,7 +519,7 @@ func (self class) GetEndCapMode() gdclass.Line2DLineCapMode { //gd:Line2D.get_en
 }
 
 //go:nosplit
-func (self class) SetSharpLimit(limit gd.Float) { //gd:Line2D.set_sharp_limit
+func (self class) SetSharpLimit(limit float64) { //gd:Line2D.set_sharp_limit
 	var frame = callframe.New()
 	callframe.Arg(frame, limit)
 	var r_ret = callframe.Nil
@@ -525,9 +528,9 @@ func (self class) SetSharpLimit(limit gd.Float) { //gd:Line2D.set_sharp_limit
 }
 
 //go:nosplit
-func (self class) GetSharpLimit() gd.Float { //gd:Line2D.get_sharp_limit
+func (self class) GetSharpLimit() float64 { //gd:Line2D.get_sharp_limit
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_sharp_limit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -535,7 +538,7 @@ func (self class) GetSharpLimit() gd.Float { //gd:Line2D.get_sharp_limit
 }
 
 //go:nosplit
-func (self class) SetRoundPrecision(precision gd.Int) { //gd:Line2D.set_round_precision
+func (self class) SetRoundPrecision(precision int64) { //gd:Line2D.set_round_precision
 	var frame = callframe.New()
 	callframe.Arg(frame, precision)
 	var r_ret = callframe.Nil
@@ -544,9 +547,9 @@ func (self class) SetRoundPrecision(precision gd.Int) { //gd:Line2D.set_round_pr
 }
 
 //go:nosplit
-func (self class) GetRoundPrecision() gd.Int { //gd:Line2D.get_round_precision
+func (self class) GetRoundPrecision() int64 { //gd:Line2D.get_round_precision
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_round_precision, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

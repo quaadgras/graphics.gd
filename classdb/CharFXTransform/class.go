@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/variant/Transform2D"
-import "graphics.gd/variant/Vector2i"
-import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform2D"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -77,7 +80,7 @@ func (self Instance) Transform() Transform2D.OriginXY {
 }
 
 func (self Instance) SetTransform(value Transform2D.OriginXY) {
-	class(self).SetTransform(gd.Transform2D(value))
+	class(self).SetTransform(Transform2D.OriginXY(value))
 }
 
 func (self Instance) Range() Vector2i.XY {
@@ -85,7 +88,7 @@ func (self Instance) Range() Vector2i.XY {
 }
 
 func (self Instance) SetRange(value Vector2i.XY) {
-	class(self).SetRange(gd.Vector2i(value))
+	class(self).SetRange(Vector2i.XY(value))
 }
 
 func (self Instance) ElapsedTime() Float.X {
@@ -93,7 +96,7 @@ func (self Instance) ElapsedTime() Float.X {
 }
 
 func (self Instance) SetElapsedTime(value Float.X) {
-	class(self).SetElapsedTime(gd.Float(value))
+	class(self).SetElapsedTime(float64(value))
 }
 
 func (self Instance) Visible() bool {
@@ -117,7 +120,7 @@ func (self Instance) Offset() Vector2.XY {
 }
 
 func (self Instance) SetOffset(value Vector2.XY) {
-	class(self).SetOffset(gd.Vector2(value))
+	class(self).SetOffset(Vector2.XY(value))
 }
 
 func (self Instance) Color() Color.RGBA {
@@ -125,7 +128,7 @@ func (self Instance) Color() Color.RGBA {
 }
 
 func (self Instance) SetColor(value Color.RGBA) {
-	class(self).SetColor(gd.Color(value))
+	class(self).SetColor(Color.RGBA(value))
 }
 
 func (self Instance) Env() map[any]any {
@@ -141,7 +144,7 @@ func (self Instance) GlyphIndex() int {
 }
 
 func (self Instance) SetGlyphIndex(value int) {
-	class(self).SetGlyphIndex(gd.Int(value))
+	class(self).SetGlyphIndex(int64(value))
 }
 
 func (self Instance) GlyphCount() int {
@@ -149,7 +152,7 @@ func (self Instance) GlyphCount() int {
 }
 
 func (self Instance) SetGlyphCount(value int) {
-	class(self).SetGlyphCount(gd.Int(value))
+	class(self).SetGlyphCount(int64(value))
 }
 
 func (self Instance) GlyphFlags() int {
@@ -157,7 +160,7 @@ func (self Instance) GlyphFlags() int {
 }
 
 func (self Instance) SetGlyphFlags(value int) {
-	class(self).SetGlyphFlags(gd.Int(value))
+	class(self).SetGlyphFlags(int64(value))
 }
 
 func (self Instance) RelativeIndex() int {
@@ -165,7 +168,7 @@ func (self Instance) RelativeIndex() int {
 }
 
 func (self Instance) SetRelativeIndex(value int) {
-	class(self).SetRelativeIndex(gd.Int(value))
+	class(self).SetRelativeIndex(int64(value))
 }
 
 func (self Instance) Font() RID.Any {
@@ -173,13 +176,13 @@ func (self Instance) Font() RID.Any {
 }
 
 func (self Instance) SetFont(value RID.Any) {
-	class(self).SetFont(gd.RID(value))
+	class(self).SetFont(RID.Any(value))
 }
 
 //go:nosplit
-func (self class) GetTransform() gd.Transform2D { //gd:CharFXTransform.get_transform
+func (self class) GetTransform() Transform2D.OriginXY { //gd:CharFXTransform.get_transform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform2D](frame)
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharFXTransform.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -187,7 +190,7 @@ func (self class) GetTransform() gd.Transform2D { //gd:CharFXTransform.get_trans
 }
 
 //go:nosplit
-func (self class) SetTransform(transform gd.Transform2D) { //gd:CharFXTransform.set_transform
+func (self class) SetTransform(transform Transform2D.OriginXY) { //gd:CharFXTransform.set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
 	var r_ret = callframe.Nil
@@ -196,9 +199,9 @@ func (self class) SetTransform(transform gd.Transform2D) { //gd:CharFXTransform.
 }
 
 //go:nosplit
-func (self class) GetRange() gd.Vector2i { //gd:CharFXTransform.get_range
+func (self class) GetRange() Vector2i.XY { //gd:CharFXTransform.get_range
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharFXTransform.Bind_get_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -206,7 +209,7 @@ func (self class) GetRange() gd.Vector2i { //gd:CharFXTransform.get_range
 }
 
 //go:nosplit
-func (self class) SetRange(arange gd.Vector2i) { //gd:CharFXTransform.set_range
+func (self class) SetRange(arange Vector2i.XY) { //gd:CharFXTransform.set_range
 	var frame = callframe.New()
 	callframe.Arg(frame, arange)
 	var r_ret = callframe.Nil
@@ -215,9 +218,9 @@ func (self class) SetRange(arange gd.Vector2i) { //gd:CharFXTransform.set_range
 }
 
 //go:nosplit
-func (self class) GetElapsedTime() gd.Float { //gd:CharFXTransform.get_elapsed_time
+func (self class) GetElapsedTime() float64 { //gd:CharFXTransform.get_elapsed_time
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharFXTransform.Bind_get_elapsed_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -225,7 +228,7 @@ func (self class) GetElapsedTime() gd.Float { //gd:CharFXTransform.get_elapsed_t
 }
 
 //go:nosplit
-func (self class) SetElapsedTime(time gd.Float) { //gd:CharFXTransform.set_elapsed_time
+func (self class) SetElapsedTime(time float64) { //gd:CharFXTransform.set_elapsed_time
 	var frame = callframe.New()
 	callframe.Arg(frame, time)
 	var r_ret = callframe.Nil
@@ -272,9 +275,9 @@ func (self class) SetOutline(outline bool) { //gd:CharFXTransform.set_outline
 }
 
 //go:nosplit
-func (self class) GetOffset() gd.Vector2 { //gd:CharFXTransform.get_offset
+func (self class) GetOffset() Vector2.XY { //gd:CharFXTransform.get_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharFXTransform.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -282,7 +285,7 @@ func (self class) GetOffset() gd.Vector2 { //gd:CharFXTransform.get_offset
 }
 
 //go:nosplit
-func (self class) SetOffset(offset gd.Vector2) { //gd:CharFXTransform.set_offset
+func (self class) SetOffset(offset Vector2.XY) { //gd:CharFXTransform.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -291,9 +294,9 @@ func (self class) SetOffset(offset gd.Vector2) { //gd:CharFXTransform.set_offset
 }
 
 //go:nosplit
-func (self class) GetColor() gd.Color { //gd:CharFXTransform.get_color
+func (self class) GetColor() Color.RGBA { //gd:CharFXTransform.get_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharFXTransform.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -301,7 +304,7 @@ func (self class) GetColor() gd.Color { //gd:CharFXTransform.get_color
 }
 
 //go:nosplit
-func (self class) SetColor(color gd.Color) { //gd:CharFXTransform.set_color
+func (self class) SetColor(color Color.RGBA) { //gd:CharFXTransform.set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -329,9 +332,9 @@ func (self class) SetEnvironment(environment Dictionary.Any) { //gd:CharFXTransf
 }
 
 //go:nosplit
-func (self class) GetGlyphIndex() gd.Int { //gd:CharFXTransform.get_glyph_index
+func (self class) GetGlyphIndex() int64 { //gd:CharFXTransform.get_glyph_index
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharFXTransform.Bind_get_glyph_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -339,7 +342,7 @@ func (self class) GetGlyphIndex() gd.Int { //gd:CharFXTransform.get_glyph_index
 }
 
 //go:nosplit
-func (self class) SetGlyphIndex(glyph_index gd.Int) { //gd:CharFXTransform.set_glyph_index
+func (self class) SetGlyphIndex(glyph_index int64) { //gd:CharFXTransform.set_glyph_index
 	var frame = callframe.New()
 	callframe.Arg(frame, glyph_index)
 	var r_ret = callframe.Nil
@@ -348,9 +351,9 @@ func (self class) SetGlyphIndex(glyph_index gd.Int) { //gd:CharFXTransform.set_g
 }
 
 //go:nosplit
-func (self class) GetRelativeIndex() gd.Int { //gd:CharFXTransform.get_relative_index
+func (self class) GetRelativeIndex() int64 { //gd:CharFXTransform.get_relative_index
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharFXTransform.Bind_get_relative_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -358,7 +361,7 @@ func (self class) GetRelativeIndex() gd.Int { //gd:CharFXTransform.get_relative_
 }
 
 //go:nosplit
-func (self class) SetRelativeIndex(relative_index gd.Int) { //gd:CharFXTransform.set_relative_index
+func (self class) SetRelativeIndex(relative_index int64) { //gd:CharFXTransform.set_relative_index
 	var frame = callframe.New()
 	callframe.Arg(frame, relative_index)
 	var r_ret = callframe.Nil
@@ -367,9 +370,9 @@ func (self class) SetRelativeIndex(relative_index gd.Int) { //gd:CharFXTransform
 }
 
 //go:nosplit
-func (self class) GetGlyphCount() gd.Int { //gd:CharFXTransform.get_glyph_count
+func (self class) GetGlyphCount() int64 { //gd:CharFXTransform.get_glyph_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharFXTransform.Bind_get_glyph_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -377,7 +380,7 @@ func (self class) GetGlyphCount() gd.Int { //gd:CharFXTransform.get_glyph_count
 }
 
 //go:nosplit
-func (self class) SetGlyphCount(glyph_count gd.Int) { //gd:CharFXTransform.set_glyph_count
+func (self class) SetGlyphCount(glyph_count int64) { //gd:CharFXTransform.set_glyph_count
 	var frame = callframe.New()
 	callframe.Arg(frame, glyph_count)
 	var r_ret = callframe.Nil
@@ -386,9 +389,9 @@ func (self class) SetGlyphCount(glyph_count gd.Int) { //gd:CharFXTransform.set_g
 }
 
 //go:nosplit
-func (self class) GetGlyphFlags() gd.Int { //gd:CharFXTransform.get_glyph_flags
+func (self class) GetGlyphFlags() int64 { //gd:CharFXTransform.get_glyph_flags
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharFXTransform.Bind_get_glyph_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -396,7 +399,7 @@ func (self class) GetGlyphFlags() gd.Int { //gd:CharFXTransform.get_glyph_flags
 }
 
 //go:nosplit
-func (self class) SetGlyphFlags(glyph_flags gd.Int) { //gd:CharFXTransform.set_glyph_flags
+func (self class) SetGlyphFlags(glyph_flags int64) { //gd:CharFXTransform.set_glyph_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, glyph_flags)
 	var r_ret = callframe.Nil
@@ -405,9 +408,9 @@ func (self class) SetGlyphFlags(glyph_flags gd.Int) { //gd:CharFXTransform.set_g
 }
 
 //go:nosplit
-func (self class) GetFont() gd.RID { //gd:CharFXTransform.get_font
+func (self class) GetFont() RID.Any { //gd:CharFXTransform.get_font
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharFXTransform.Bind_get_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -415,7 +418,7 @@ func (self class) GetFont() gd.RID { //gd:CharFXTransform.get_font
 }
 
 //go:nosplit
-func (self class) SetFont(font gd.RID) { //gd:CharFXTransform.set_font
+func (self class) SetFont(font RID.Any) { //gd:CharFXTransform.set_font
 	var frame = callframe.New()
 	callframe.Arg(frame, font)
 	var r_ret = callframe.Nil

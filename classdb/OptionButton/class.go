@@ -9,20 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/BaseButton"
+import "graphics.gd/classdb/Button"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Button"
-import "graphics.gd/classdb/BaseButton"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -60,28 +64,28 @@ type Any interface {
 Adds an item, with text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.
 */
 func (self Instance) AddItem(label string) { //gd:OptionButton.add_item
-	class(self).AddItem(String.New(label), gd.Int(-1))
+	class(self).AddItem(String.New(label), int64(-1))
 }
 
 /*
 Adds an item, with a [param texture] icon, text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.
 */
 func (self Instance) AddIconItem(texture [1]gdclass.Texture2D, label string) { //gd:OptionButton.add_icon_item
-	class(self).AddIconItem(texture, String.New(label), gd.Int(-1))
+	class(self).AddIconItem(texture, String.New(label), int64(-1))
 }
 
 /*
 Sets the text of the item at index [param idx].
 */
 func (self Instance) SetItemText(idx int, text string) { //gd:OptionButton.set_item_text
-	class(self).SetItemText(gd.Int(idx), String.New(text))
+	class(self).SetItemText(int64(idx), String.New(text))
 }
 
 /*
 Sets the icon of the item at index [param idx].
 */
 func (self Instance) SetItemIcon(idx int, texture [1]gdclass.Texture2D) { //gd:OptionButton.set_item_icon
-	class(self).SetItemIcon(gd.Int(idx), texture)
+	class(self).SetItemIcon(int64(idx), texture)
 }
 
 /*
@@ -89,84 +93,84 @@ Sets whether the item at index [param idx] is disabled.
 Disabled items are drawn differently in the dropdown and are not selectable by the user. If the current selected item is set as disabled, it will remain selected.
 */
 func (self Instance) SetItemDisabled(idx int, disabled bool) { //gd:OptionButton.set_item_disabled
-	class(self).SetItemDisabled(gd.Int(idx), disabled)
+	class(self).SetItemDisabled(int64(idx), disabled)
 }
 
 /*
 Sets the ID of the item at index [param idx].
 */
 func (self Instance) SetItemId(idx int, id int) { //gd:OptionButton.set_item_id
-	class(self).SetItemId(gd.Int(idx), gd.Int(id))
+	class(self).SetItemId(int64(idx), int64(id))
 }
 
 /*
 Sets the metadata of an item. Metadata may be of any type and can be used to store extra information about an item, such as an external string ID.
 */
 func (self Instance) SetItemMetadata(idx int, metadata any) { //gd:OptionButton.set_item_metadata
-	class(self).SetItemMetadata(gd.Int(idx), gd.NewVariant(metadata))
+	class(self).SetItemMetadata(int64(idx), variant.New(metadata))
 }
 
 /*
 Sets the tooltip of the item at index [param idx].
 */
 func (self Instance) SetItemTooltip(idx int, tooltip string) { //gd:OptionButton.set_item_tooltip
-	class(self).SetItemTooltip(gd.Int(idx), String.New(tooltip))
+	class(self).SetItemTooltip(int64(idx), String.New(tooltip))
 }
 
 /*
 Returns the text of the item at index [param idx].
 */
 func (self Instance) GetItemText(idx int) string { //gd:OptionButton.get_item_text
-	return string(class(self).GetItemText(gd.Int(idx)).String())
+	return string(class(self).GetItemText(int64(idx)).String())
 }
 
 /*
 Returns the icon of the item at index [param idx].
 */
 func (self Instance) GetItemIcon(idx int) [1]gdclass.Texture2D { //gd:OptionButton.get_item_icon
-	return [1]gdclass.Texture2D(class(self).GetItemIcon(gd.Int(idx)))
+	return [1]gdclass.Texture2D(class(self).GetItemIcon(int64(idx)))
 }
 
 /*
 Returns the ID of the item at index [param idx].
 */
 func (self Instance) GetItemId(idx int) int { //gd:OptionButton.get_item_id
-	return int(int(class(self).GetItemId(gd.Int(idx))))
+	return int(int(class(self).GetItemId(int64(idx))))
 }
 
 /*
 Returns the index of the item with the given [param id].
 */
 func (self Instance) GetItemIndex(id int) int { //gd:OptionButton.get_item_index
-	return int(int(class(self).GetItemIndex(gd.Int(id))))
+	return int(int(class(self).GetItemIndex(int64(id))))
 }
 
 /*
 Retrieves the metadata of an item. Metadata may be any type and can be used to store extra information about an item, such as an external string ID.
 */
 func (self Instance) GetItemMetadata(idx int) any { //gd:OptionButton.get_item_metadata
-	return any(class(self).GetItemMetadata(gd.Int(idx)).Interface())
+	return any(class(self).GetItemMetadata(int64(idx)).Interface())
 }
 
 /*
 Returns the tooltip of the item at index [param idx].
 */
 func (self Instance) GetItemTooltip(idx int) string { //gd:OptionButton.get_item_tooltip
-	return string(class(self).GetItemTooltip(gd.Int(idx)).String())
+	return string(class(self).GetItemTooltip(int64(idx)).String())
 }
 
 /*
 Returns [code]true[/code] if the item at index [param idx] is disabled.
 */
 func (self Instance) IsItemDisabled(idx int) bool { //gd:OptionButton.is_item_disabled
-	return bool(class(self).IsItemDisabled(gd.Int(idx)))
+	return bool(class(self).IsItemDisabled(int64(idx)))
 }
 
 /*
 Returns [code]true[/code] if the item at index [param idx] is marked as a separator.
 */
 func (self Instance) IsItemSeparator(idx int) bool { //gd:OptionButton.is_item_separator
-	return bool(class(self).IsItemSeparator(gd.Int(idx)))
+	return bool(class(self).IsItemSeparator(int64(idx)))
 }
 
 /*
@@ -188,7 +192,7 @@ Selects an item by index and makes it the current item. This will work even if t
 Passing [code]-1[/code] as the index deselects any currently selected item.
 */
 func (self Instance) Select(idx int) { //gd:OptionButton.select
-	class(self).Select(gd.Int(idx))
+	class(self).Select(int64(idx))
 }
 
 /*
@@ -209,7 +213,7 @@ func (self Instance) GetSelectedMetadata() any { //gd:OptionButton.get_selected_
 Removes the item at index [param idx].
 */
 func (self Instance) RemoveItem(idx int) { //gd:OptionButton.remove_item
-	class(self).RemoveItem(gd.Int(idx))
+	class(self).RemoveItem(int64(idx))
 }
 
 /*
@@ -292,14 +296,14 @@ func (self Instance) ItemCount() int {
 }
 
 func (self Instance) SetItemCount(value int) {
-	class(self).SetItemCount(gd.Int(value))
+	class(self).SetItemCount(int64(value))
 }
 
 /*
 Adds an item, with text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.
 */
 //go:nosplit
-func (self class) AddItem(label String.Readable, id gd.Int) { //gd:OptionButton.add_item
+func (self class) AddItem(label String.Readable, id int64) { //gd:OptionButton.add_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, id)
@@ -312,7 +316,7 @@ func (self class) AddItem(label String.Readable, id gd.Int) { //gd:OptionButton.
 Adds an item, with a [param texture] icon, text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.
 */
 //go:nosplit
-func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readable, id gd.Int) { //gd:OptionButton.add_icon_item
+func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readable, id int64) { //gd:OptionButton.add_icon_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
@@ -326,7 +330,7 @@ func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readabl
 Sets the text of the item at index [param idx].
 */
 //go:nosplit
-func (self class) SetItemText(idx gd.Int, text String.Readable) { //gd:OptionButton.set_item_text
+func (self class) SetItemText(idx int64, text String.Readable) { //gd:OptionButton.set_item_text
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
@@ -339,7 +343,7 @@ func (self class) SetItemText(idx gd.Int, text String.Readable) { //gd:OptionBut
 Sets the icon of the item at index [param idx].
 */
 //go:nosplit
-func (self class) SetItemIcon(idx gd.Int, texture [1]gdclass.Texture2D) { //gd:OptionButton.set_item_icon
+func (self class) SetItemIcon(idx int64, texture [1]gdclass.Texture2D) { //gd:OptionButton.set_item_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
@@ -353,7 +357,7 @@ Sets whether the item at index [param idx] is disabled.
 Disabled items are drawn differently in the dropdown and are not selectable by the user. If the current selected item is set as disabled, it will remain selected.
 */
 //go:nosplit
-func (self class) SetItemDisabled(idx gd.Int, disabled bool) { //gd:OptionButton.set_item_disabled
+func (self class) SetItemDisabled(idx int64, disabled bool) { //gd:OptionButton.set_item_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, disabled)
@@ -366,7 +370,7 @@ func (self class) SetItemDisabled(idx gd.Int, disabled bool) { //gd:OptionButton
 Sets the ID of the item at index [param idx].
 */
 //go:nosplit
-func (self class) SetItemId(idx gd.Int, id gd.Int) { //gd:OptionButton.set_item_id
+func (self class) SetItemId(idx int64, id int64) { //gd:OptionButton.set_item_id
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, id)
@@ -379,10 +383,10 @@ func (self class) SetItemId(idx gd.Int, id gd.Int) { //gd:OptionButton.set_item_
 Sets the metadata of an item. Metadata may be of any type and can be used to store extra information about an item, such as an external string ID.
 */
 //go:nosplit
-func (self class) SetItemMetadata(idx gd.Int, metadata gd.Variant) { //gd:OptionButton.set_item_metadata
+func (self class) SetItemMetadata(idx int64, metadata variant.Any) { //gd:OptionButton.set_item_metadata
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(metadata))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(metadata)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_set_item_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -392,7 +396,7 @@ func (self class) SetItemMetadata(idx gd.Int, metadata gd.Variant) { //gd:Option
 Sets the tooltip of the item at index [param idx].
 */
 //go:nosplit
-func (self class) SetItemTooltip(idx gd.Int, tooltip String.Readable) { //gd:OptionButton.set_item_tooltip
+func (self class) SetItemTooltip(idx int64, tooltip String.Readable) { //gd:OptionButton.set_item_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
@@ -405,7 +409,7 @@ func (self class) SetItemTooltip(idx gd.Int, tooltip String.Readable) { //gd:Opt
 Returns the text of the item at index [param idx].
 */
 //go:nosplit
-func (self class) GetItemText(idx gd.Int) String.Readable { //gd:OptionButton.get_item_text
+func (self class) GetItemText(idx int64) String.Readable { //gd:OptionButton.get_item_text
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -419,7 +423,7 @@ func (self class) GetItemText(idx gd.Int) String.Readable { //gd:OptionButton.ge
 Returns the icon of the item at index [param idx].
 */
 //go:nosplit
-func (self class) GetItemIcon(idx gd.Int) [1]gdclass.Texture2D { //gd:OptionButton.get_item_icon
+func (self class) GetItemIcon(idx int64) [1]gdclass.Texture2D { //gd:OptionButton.get_item_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -433,10 +437,10 @@ func (self class) GetItemIcon(idx gd.Int) [1]gdclass.Texture2D { //gd:OptionButt
 Returns the ID of the item at index [param idx].
 */
 //go:nosplit
-func (self class) GetItemId(idx gd.Int) gd.Int { //gd:OptionButton.get_item_id
+func (self class) GetItemId(idx int64) int64 { //gd:OptionButton.get_item_id
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_get_item_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -447,10 +451,10 @@ func (self class) GetItemId(idx gd.Int) gd.Int { //gd:OptionButton.get_item_id
 Returns the index of the item with the given [param id].
 */
 //go:nosplit
-func (self class) GetItemIndex(id gd.Int) gd.Int { //gd:OptionButton.get_item_index
+func (self class) GetItemIndex(id int64) int64 { //gd:OptionButton.get_item_index
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_get_item_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -461,12 +465,12 @@ func (self class) GetItemIndex(id gd.Int) gd.Int { //gd:OptionButton.get_item_in
 Retrieves the metadata of an item. Metadata may be any type and can be used to store extra information about an item, such as an external string ID.
 */
 //go:nosplit
-func (self class) GetItemMetadata(idx gd.Int) gd.Variant { //gd:OptionButton.get_item_metadata
+func (self class) GetItemMetadata(idx int64) variant.Any { //gd:OptionButton.get_item_metadata
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_get_item_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -475,7 +479,7 @@ func (self class) GetItemMetadata(idx gd.Int) gd.Variant { //gd:OptionButton.get
 Returns the tooltip of the item at index [param idx].
 */
 //go:nosplit
-func (self class) GetItemTooltip(idx gd.Int) String.Readable { //gd:OptionButton.get_item_tooltip
+func (self class) GetItemTooltip(idx int64) String.Readable { //gd:OptionButton.get_item_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -489,7 +493,7 @@ func (self class) GetItemTooltip(idx gd.Int) String.Readable { //gd:OptionButton
 Returns [code]true[/code] if the item at index [param idx] is disabled.
 */
 //go:nosplit
-func (self class) IsItemDisabled(idx gd.Int) bool { //gd:OptionButton.is_item_disabled
+func (self class) IsItemDisabled(idx int64) bool { //gd:OptionButton.is_item_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -503,7 +507,7 @@ func (self class) IsItemDisabled(idx gd.Int) bool { //gd:OptionButton.is_item_di
 Returns [code]true[/code] if the item at index [param idx] is marked as a separator.
 */
 //go:nosplit
-func (self class) IsItemSeparator(idx gd.Int) bool { //gd:OptionButton.is_item_separator
+func (self class) IsItemSeparator(idx int64) bool { //gd:OptionButton.is_item_separator
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -541,7 +545,7 @@ Selects an item by index and makes it the current item. This will work even if t
 Passing [code]-1[/code] as the index deselects any currently selected item.
 */
 //go:nosplit
-func (self class) Select(idx gd.Int) { //gd:OptionButton.select_
+func (self class) Select(idx int64) { //gd:OptionButton.select_
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Nil
@@ -550,9 +554,9 @@ func (self class) Select(idx gd.Int) { //gd:OptionButton.select_
 }
 
 //go:nosplit
-func (self class) GetSelected() gd.Int { //gd:OptionButton.get_selected
+func (self class) GetSelected() int64 { //gd:OptionButton.get_selected
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_get_selected, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -563,9 +567,9 @@ func (self class) GetSelected() gd.Int { //gd:OptionButton.get_selected
 Returns the ID of the selected item, or [code]-1[/code] if no item is selected.
 */
 //go:nosplit
-func (self class) GetSelectedId() gd.Int { //gd:OptionButton.get_selected_id
+func (self class) GetSelectedId() int64 { //gd:OptionButton.get_selected_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_get_selected_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -576,11 +580,11 @@ func (self class) GetSelectedId() gd.Int { //gd:OptionButton.get_selected_id
 Gets the metadata of the selected item. Metadata for items can be set using [method set_item_metadata].
 */
 //go:nosplit
-func (self class) GetSelectedMetadata() gd.Variant { //gd:OptionButton.get_selected_metadata
+func (self class) GetSelectedMetadata() variant.Any { //gd:OptionButton.get_selected_metadata
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_get_selected_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -589,7 +593,7 @@ func (self class) GetSelectedMetadata() gd.Variant { //gd:OptionButton.get_selec
 Removes the item at index [param idx].
 */
 //go:nosplit
-func (self class) RemoveItem(idx gd.Int) { //gd:OptionButton.remove_item
+func (self class) RemoveItem(idx int64) { //gd:OptionButton.remove_item
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Nil
@@ -623,7 +627,7 @@ func (self class) ShowPopup() { //gd:OptionButton.show_popup
 }
 
 //go:nosplit
-func (self class) SetItemCount(count gd.Int) { //gd:OptionButton.set_item_count
+func (self class) SetItemCount(count int64) { //gd:OptionButton.set_item_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -632,9 +636,9 @@ func (self class) SetItemCount(count gd.Int) { //gd:OptionButton.set_item_count
 }
 
 //go:nosplit
-func (self class) GetItemCount() gd.Int { //gd:OptionButton.get_item_count
+func (self class) GetItemCount() int64 { //gd:OptionButton.get_item_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_get_item_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -659,10 +663,10 @@ Returns the index of the first item which is not disabled, or marked as a separa
 Returns [code]-1[/code] if no item is found.
 */
 //go:nosplit
-func (self class) GetSelectableItem(from_last bool) gd.Int { //gd:OptionButton.get_selectable_item
+func (self class) GetSelectableItem(from_last bool) int64 { //gd:OptionButton.get_selectable_item
 	var frame = callframe.New()
 	callframe.Arg(frame, from_last)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_get_selectable_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

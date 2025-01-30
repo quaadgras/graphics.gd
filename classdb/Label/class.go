@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -59,7 +62,7 @@ If [param line] is set to [code]-1[/code], returns the biggest line height.
 If there are no lines, returns font size in pixels.
 */
 func (self Instance) GetLineHeight() int { //gd:Label.get_line_height
-	return int(int(class(self).GetLineHeight(gd.Int(-1))))
+	return int(int(class(self).GetLineHeight(int64(-1))))
 }
 
 /*
@@ -87,7 +90,7 @@ func (self Instance) GetTotalCharacterCount() int { //gd:Label.get_total_charact
 Returns the bounding rectangle of the character at position [param pos]. If the character is a non-visual character or [param pos] is outside the valid range, an empty [Rect2] is returned. If the character is a part of a composite grapheme, the bounding rectangle of the whole grapheme is returned.
 */
 func (self Instance) GetCharacterBounds(pos int) Rect2.PositionSize { //gd:Label.get_character_bounds
-	return Rect2.PositionSize(class(self).GetCharacterBounds(gd.Int(pos)))
+	return Rect2.PositionSize(class(self).GetCharacterBounds(int64(pos)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -201,7 +204,7 @@ func (self Instance) LinesSkipped() int {
 }
 
 func (self Instance) SetLinesSkipped(value int) {
-	class(self).SetLinesSkipped(gd.Int(value))
+	class(self).SetLinesSkipped(int64(value))
 }
 
 func (self Instance) MaxLinesVisible() int {
@@ -209,7 +212,7 @@ func (self Instance) MaxLinesVisible() int {
 }
 
 func (self Instance) SetMaxLinesVisible(value int) {
-	class(self).SetMaxLinesVisible(gd.Int(value))
+	class(self).SetMaxLinesVisible(int64(value))
 }
 
 func (self Instance) VisibleCharacters() int {
@@ -217,7 +220,7 @@ func (self Instance) VisibleCharacters() int {
 }
 
 func (self Instance) SetVisibleCharacters(value int) {
-	class(self).SetVisibleCharacters(gd.Int(value))
+	class(self).SetVisibleCharacters(int64(value))
 }
 
 func (self Instance) VisibleCharactersBehavior() gdclass.TextServerVisibleCharactersBehavior {
@@ -233,7 +236,7 @@ func (self Instance) VisibleRatio() Float.X {
 }
 
 func (self Instance) SetVisibleRatio(value Float.X) {
-	class(self).SetVisibleRatio(gd.Float(value))
+	class(self).SetVisibleRatio(float64(value))
 }
 
 func (self Instance) TextDirection() gdclass.ControlTextDirection {
@@ -521,10 +524,10 @@ If [param line] is set to [code]-1[/code], returns the biggest line height.
 If there are no lines, returns font size in pixels.
 */
 //go:nosplit
-func (self class) GetLineHeight(line gd.Int) gd.Int { //gd:Label.get_line_height
+func (self class) GetLineHeight(line int64) int64 { //gd:Label.get_line_height
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_line_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -535,9 +538,9 @@ func (self class) GetLineHeight(line gd.Int) gd.Int { //gd:Label.get_line_height
 Returns the number of lines of text the Label has.
 */
 //go:nosplit
-func (self class) GetLineCount() gd.Int { //gd:Label.get_line_count
+func (self class) GetLineCount() int64 { //gd:Label.get_line_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -548,9 +551,9 @@ func (self class) GetLineCount() gd.Int { //gd:Label.get_line_count
 Returns the number of lines shown. Useful if the [Label]'s height cannot currently display all lines.
 */
 //go:nosplit
-func (self class) GetVisibleLineCount() gd.Int { //gd:Label.get_visible_line_count
+func (self class) GetVisibleLineCount() int64 { //gd:Label.get_visible_line_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_visible_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -561,9 +564,9 @@ func (self class) GetVisibleLineCount() gd.Int { //gd:Label.get_visible_line_cou
 Returns the total number of printable characters in the text (excluding spaces and newlines).
 */
 //go:nosplit
-func (self class) GetTotalCharacterCount() gd.Int { //gd:Label.get_total_character_count
+func (self class) GetTotalCharacterCount() int64 { //gd:Label.get_total_character_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_total_character_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -571,7 +574,7 @@ func (self class) GetTotalCharacterCount() gd.Int { //gd:Label.get_total_charact
 }
 
 //go:nosplit
-func (self class) SetVisibleCharacters(amount gd.Int) { //gd:Label.set_visible_characters
+func (self class) SetVisibleCharacters(amount int64) { //gd:Label.set_visible_characters
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -580,9 +583,9 @@ func (self class) SetVisibleCharacters(amount gd.Int) { //gd:Label.set_visible_c
 }
 
 //go:nosplit
-func (self class) GetVisibleCharacters() gd.Int { //gd:Label.get_visible_characters
+func (self class) GetVisibleCharacters() int64 { //gd:Label.get_visible_characters
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_visible_characters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -609,7 +612,7 @@ func (self class) SetVisibleCharactersBehavior(behavior gdclass.TextServerVisibl
 }
 
 //go:nosplit
-func (self class) SetVisibleRatio(ratio gd.Float) { //gd:Label.set_visible_ratio
+func (self class) SetVisibleRatio(ratio float64) { //gd:Label.set_visible_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -618,9 +621,9 @@ func (self class) SetVisibleRatio(ratio gd.Float) { //gd:Label.set_visible_ratio
 }
 
 //go:nosplit
-func (self class) GetVisibleRatio() gd.Float { //gd:Label.get_visible_ratio
+func (self class) GetVisibleRatio() float64 { //gd:Label.get_visible_ratio
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_visible_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -628,7 +631,7 @@ func (self class) GetVisibleRatio() gd.Float { //gd:Label.get_visible_ratio
 }
 
 //go:nosplit
-func (self class) SetLinesSkipped(lines_skipped gd.Int) { //gd:Label.set_lines_skipped
+func (self class) SetLinesSkipped(lines_skipped int64) { //gd:Label.set_lines_skipped
 	var frame = callframe.New()
 	callframe.Arg(frame, lines_skipped)
 	var r_ret = callframe.Nil
@@ -637,9 +640,9 @@ func (self class) SetLinesSkipped(lines_skipped gd.Int) { //gd:Label.set_lines_s
 }
 
 //go:nosplit
-func (self class) GetLinesSkipped() gd.Int { //gd:Label.get_lines_skipped
+func (self class) GetLinesSkipped() int64 { //gd:Label.get_lines_skipped
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_lines_skipped, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -647,7 +650,7 @@ func (self class) GetLinesSkipped() gd.Int { //gd:Label.get_lines_skipped
 }
 
 //go:nosplit
-func (self class) SetMaxLinesVisible(lines_visible gd.Int) { //gd:Label.set_max_lines_visible
+func (self class) SetMaxLinesVisible(lines_visible int64) { //gd:Label.set_max_lines_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, lines_visible)
 	var r_ret = callframe.Nil
@@ -656,9 +659,9 @@ func (self class) SetMaxLinesVisible(lines_visible gd.Int) { //gd:Label.set_max_
 }
 
 //go:nosplit
-func (self class) GetMaxLinesVisible() gd.Int { //gd:Label.get_max_lines_visible
+func (self class) GetMaxLinesVisible() int64 { //gd:Label.get_max_lines_visible
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_max_lines_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -707,10 +710,10 @@ func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:Label.
 Returns the bounding rectangle of the character at position [param pos]. If the character is a non-visual character or [param pos] is outside the valid range, an empty [Rect2] is returned. If the character is a part of a composite grapheme, the bounding rectangle of the whole grapheme is returned.
 */
 //go:nosplit
-func (self class) GetCharacterBounds(pos gd.Int) gd.Rect2 { //gd:Label.get_character_bounds
+func (self class) GetCharacterBounds(pos int64) Rect2.PositionSize { //gd:Label.get_character_bounds
 	var frame = callframe.New()
 	callframe.Arg(frame, pos)
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_character_bounds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

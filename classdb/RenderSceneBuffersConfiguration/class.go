@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/variant/Vector2i"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -74,7 +77,7 @@ func (self Instance) RenderTarget() RID.Any {
 }
 
 func (self Instance) SetRenderTarget(value RID.Any) {
-	class(self).SetRenderTarget(gd.RID(value))
+	class(self).SetRenderTarget(RID.Any(value))
 }
 
 func (self Instance) InternalSize() Vector2i.XY {
@@ -82,7 +85,7 @@ func (self Instance) InternalSize() Vector2i.XY {
 }
 
 func (self Instance) SetInternalSize(value Vector2i.XY) {
-	class(self).SetInternalSize(gd.Vector2i(value))
+	class(self).SetInternalSize(Vector2i.XY(value))
 }
 
 func (self Instance) TargetSize() Vector2i.XY {
@@ -90,7 +93,7 @@ func (self Instance) TargetSize() Vector2i.XY {
 }
 
 func (self Instance) SetTargetSize(value Vector2i.XY) {
-	class(self).SetTargetSize(gd.Vector2i(value))
+	class(self).SetTargetSize(Vector2i.XY(value))
 }
 
 func (self Instance) ViewCount() int {
@@ -98,7 +101,7 @@ func (self Instance) ViewCount() int {
 }
 
 func (self Instance) SetViewCount(value int) {
-	class(self).SetViewCount(gd.Int(value))
+	class(self).SetViewCount(int64(value))
 }
 
 func (self Instance) Scaling3dMode() gdclass.RenderingServerViewportScaling3DMode {
@@ -130,7 +133,7 @@ func (self Instance) FsrSharpness() Float.X {
 }
 
 func (self Instance) SetFsrSharpness(value Float.X) {
-	class(self).SetFsrSharpness(gd.Float(value))
+	class(self).SetFsrSharpness(float64(value))
 }
 
 func (self Instance) TextureMipmapBias() Float.X {
@@ -138,13 +141,13 @@ func (self Instance) TextureMipmapBias() Float.X {
 }
 
 func (self Instance) SetTextureMipmapBias(value Float.X) {
-	class(self).SetTextureMipmapBias(gd.Float(value))
+	class(self).SetTextureMipmapBias(float64(value))
 }
 
 //go:nosplit
-func (self class) GetRenderTarget() gd.RID { //gd:RenderSceneBuffersConfiguration.get_render_target
+func (self class) GetRenderTarget() RID.Any { //gd:RenderSceneBuffersConfiguration.get_render_target
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_render_target, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -152,7 +155,7 @@ func (self class) GetRenderTarget() gd.RID { //gd:RenderSceneBuffersConfiguratio
 }
 
 //go:nosplit
-func (self class) SetRenderTarget(render_target gd.RID) { //gd:RenderSceneBuffersConfiguration.set_render_target
+func (self class) SetRenderTarget(render_target RID.Any) { //gd:RenderSceneBuffersConfiguration.set_render_target
 	var frame = callframe.New()
 	callframe.Arg(frame, render_target)
 	var r_ret = callframe.Nil
@@ -161,9 +164,9 @@ func (self class) SetRenderTarget(render_target gd.RID) { //gd:RenderSceneBuffer
 }
 
 //go:nosplit
-func (self class) GetInternalSize() gd.Vector2i { //gd:RenderSceneBuffersConfiguration.get_internal_size
+func (self class) GetInternalSize() Vector2i.XY { //gd:RenderSceneBuffersConfiguration.get_internal_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_internal_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -171,7 +174,7 @@ func (self class) GetInternalSize() gd.Vector2i { //gd:RenderSceneBuffersConfigu
 }
 
 //go:nosplit
-func (self class) SetInternalSize(internal_size gd.Vector2i) { //gd:RenderSceneBuffersConfiguration.set_internal_size
+func (self class) SetInternalSize(internal_size Vector2i.XY) { //gd:RenderSceneBuffersConfiguration.set_internal_size
 	var frame = callframe.New()
 	callframe.Arg(frame, internal_size)
 	var r_ret = callframe.Nil
@@ -180,9 +183,9 @@ func (self class) SetInternalSize(internal_size gd.Vector2i) { //gd:RenderSceneB
 }
 
 //go:nosplit
-func (self class) GetTargetSize() gd.Vector2i { //gd:RenderSceneBuffersConfiguration.get_target_size
+func (self class) GetTargetSize() Vector2i.XY { //gd:RenderSceneBuffersConfiguration.get_target_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_target_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -190,7 +193,7 @@ func (self class) GetTargetSize() gd.Vector2i { //gd:RenderSceneBuffersConfigura
 }
 
 //go:nosplit
-func (self class) SetTargetSize(target_size gd.Vector2i) { //gd:RenderSceneBuffersConfiguration.set_target_size
+func (self class) SetTargetSize(target_size Vector2i.XY) { //gd:RenderSceneBuffersConfiguration.set_target_size
 	var frame = callframe.New()
 	callframe.Arg(frame, target_size)
 	var r_ret = callframe.Nil
@@ -199,9 +202,9 @@ func (self class) SetTargetSize(target_size gd.Vector2i) { //gd:RenderSceneBuffe
 }
 
 //go:nosplit
-func (self class) GetViewCount() gd.Int { //gd:RenderSceneBuffersConfiguration.get_view_count
+func (self class) GetViewCount() int64 { //gd:RenderSceneBuffersConfiguration.get_view_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_view_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -209,7 +212,7 @@ func (self class) GetViewCount() gd.Int { //gd:RenderSceneBuffersConfiguration.g
 }
 
 //go:nosplit
-func (self class) SetViewCount(view_count gd.Int) { //gd:RenderSceneBuffersConfiguration.set_view_count
+func (self class) SetViewCount(view_count int64) { //gd:RenderSceneBuffersConfiguration.set_view_count
 	var frame = callframe.New()
 	callframe.Arg(frame, view_count)
 	var r_ret = callframe.Nil
@@ -275,9 +278,9 @@ func (self class) SetScreenSpaceAa(screen_space_aa gdclass.RenderingServerViewpo
 }
 
 //go:nosplit
-func (self class) GetFsrSharpness() gd.Float { //gd:RenderSceneBuffersConfiguration.get_fsr_sharpness
+func (self class) GetFsrSharpness() float64 { //gd:RenderSceneBuffersConfiguration.get_fsr_sharpness
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_fsr_sharpness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -285,7 +288,7 @@ func (self class) GetFsrSharpness() gd.Float { //gd:RenderSceneBuffersConfigurat
 }
 
 //go:nosplit
-func (self class) SetFsrSharpness(fsr_sharpness gd.Float) { //gd:RenderSceneBuffersConfiguration.set_fsr_sharpness
+func (self class) SetFsrSharpness(fsr_sharpness float64) { //gd:RenderSceneBuffersConfiguration.set_fsr_sharpness
 	var frame = callframe.New()
 	callframe.Arg(frame, fsr_sharpness)
 	var r_ret = callframe.Nil
@@ -294,9 +297,9 @@ func (self class) SetFsrSharpness(fsr_sharpness gd.Float) { //gd:RenderSceneBuff
 }
 
 //go:nosplit
-func (self class) GetTextureMipmapBias() gd.Float { //gd:RenderSceneBuffersConfiguration.get_texture_mipmap_bias
+func (self class) GetTextureMipmapBias() float64 { //gd:RenderSceneBuffersConfiguration.get_texture_mipmap_bias
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_texture_mipmap_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -304,7 +307,7 @@ func (self class) GetTextureMipmapBias() gd.Float { //gd:RenderSceneBuffersConfi
 }
 
 //go:nosplit
-func (self class) SetTextureMipmapBias(texture_mipmap_bias gd.Float) { //gd:RenderSceneBuffersConfiguration.set_texture_mipmap_bias
+func (self class) SetTextureMipmapBias(texture_mipmap_bias float64) { //gd:RenderSceneBuffersConfiguration.set_texture_mipmap_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_mipmap_bias)
 	var r_ret = callframe.Nil

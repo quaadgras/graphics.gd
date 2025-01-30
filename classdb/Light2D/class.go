@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,7 +60,7 @@ type Any interface {
 Sets the light's height, which is used in 2D normal mapping. See [member PointLight2D.height] and [member DirectionalLight2D.height].
 */
 func (self Instance) SetHeight(height Float.X) { //gd:Light2D.set_height
-	class(self).SetHeight(gd.Float(height))
+	class(self).SetHeight(float64(height))
 }
 
 /*
@@ -106,7 +109,7 @@ func (self Instance) Color() Color.RGBA {
 }
 
 func (self Instance) SetColor(value Color.RGBA) {
-	class(self).SetColor(gd.Color(value))
+	class(self).SetColor(Color.RGBA(value))
 }
 
 func (self Instance) Energy() Float.X {
@@ -114,7 +117,7 @@ func (self Instance) Energy() Float.X {
 }
 
 func (self Instance) SetEnergy(value Float.X) {
-	class(self).SetEnergy(gd.Float(value))
+	class(self).SetEnergy(float64(value))
 }
 
 func (self Instance) BlendMode() gdclass.Light2DBlendMode {
@@ -130,7 +133,7 @@ func (self Instance) RangeZMin() int {
 }
 
 func (self Instance) SetRangeZMin(value int) {
-	class(self).SetZRangeMin(gd.Int(value))
+	class(self).SetZRangeMin(int64(value))
 }
 
 func (self Instance) RangeZMax() int {
@@ -138,7 +141,7 @@ func (self Instance) RangeZMax() int {
 }
 
 func (self Instance) SetRangeZMax(value int) {
-	class(self).SetZRangeMax(gd.Int(value))
+	class(self).SetZRangeMax(int64(value))
 }
 
 func (self Instance) RangeLayerMin() int {
@@ -146,7 +149,7 @@ func (self Instance) RangeLayerMin() int {
 }
 
 func (self Instance) SetRangeLayerMin(value int) {
-	class(self).SetLayerRangeMin(gd.Int(value))
+	class(self).SetLayerRangeMin(int64(value))
 }
 
 func (self Instance) RangeLayerMax() int {
@@ -154,7 +157,7 @@ func (self Instance) RangeLayerMax() int {
 }
 
 func (self Instance) SetRangeLayerMax(value int) {
-	class(self).SetLayerRangeMax(gd.Int(value))
+	class(self).SetLayerRangeMax(int64(value))
 }
 
 func (self Instance) RangeItemCullMask() int {
@@ -162,7 +165,7 @@ func (self Instance) RangeItemCullMask() int {
 }
 
 func (self Instance) SetRangeItemCullMask(value int) {
-	class(self).SetItemCullMask(gd.Int(value))
+	class(self).SetItemCullMask(int64(value))
 }
 
 func (self Instance) ShadowEnabled() bool {
@@ -178,7 +181,7 @@ func (self Instance) ShadowColor() Color.RGBA {
 }
 
 func (self Instance) SetShadowColor(value Color.RGBA) {
-	class(self).SetShadowColor(gd.Color(value))
+	class(self).SetShadowColor(Color.RGBA(value))
 }
 
 func (self Instance) ShadowFilter() gdclass.Light2DShadowFilter {
@@ -194,7 +197,7 @@ func (self Instance) ShadowFilterSmooth() Float.X {
 }
 
 func (self Instance) SetShadowFilterSmooth(value Float.X) {
-	class(self).SetShadowSmooth(gd.Float(value))
+	class(self).SetShadowSmooth(float64(value))
 }
 
 func (self Instance) ShadowItemCullMask() int {
@@ -202,7 +205,7 @@ func (self Instance) ShadowItemCullMask() int {
 }
 
 func (self Instance) SetShadowItemCullMask(value int) {
-	class(self).SetItemShadowCullMask(gd.Int(value))
+	class(self).SetItemShadowCullMask(int64(value))
 }
 
 //go:nosplit
@@ -244,7 +247,7 @@ func (self class) IsEditorOnly() bool { //gd:Light2D.is_editor_only
 }
 
 //go:nosplit
-func (self class) SetColor(color gd.Color) { //gd:Light2D.set_color
+func (self class) SetColor(color Color.RGBA) { //gd:Light2D.set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -253,9 +256,9 @@ func (self class) SetColor(color gd.Color) { //gd:Light2D.set_color
 }
 
 //go:nosplit
-func (self class) GetColor() gd.Color { //gd:Light2D.get_color
+func (self class) GetColor() Color.RGBA { //gd:Light2D.get_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light2D.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -263,7 +266,7 @@ func (self class) GetColor() gd.Color { //gd:Light2D.get_color
 }
 
 //go:nosplit
-func (self class) SetEnergy(energy gd.Float) { //gd:Light2D.set_energy
+func (self class) SetEnergy(energy float64) { //gd:Light2D.set_energy
 	var frame = callframe.New()
 	callframe.Arg(frame, energy)
 	var r_ret = callframe.Nil
@@ -272,9 +275,9 @@ func (self class) SetEnergy(energy gd.Float) { //gd:Light2D.set_energy
 }
 
 //go:nosplit
-func (self class) GetEnergy() gd.Float { //gd:Light2D.get_energy
+func (self class) GetEnergy() float64 { //gd:Light2D.get_energy
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light2D.Bind_get_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -282,7 +285,7 @@ func (self class) GetEnergy() gd.Float { //gd:Light2D.get_energy
 }
 
 //go:nosplit
-func (self class) SetZRangeMin(z gd.Int) { //gd:Light2D.set_z_range_min
+func (self class) SetZRangeMin(z int64) { //gd:Light2D.set_z_range_min
 	var frame = callframe.New()
 	callframe.Arg(frame, z)
 	var r_ret = callframe.Nil
@@ -291,9 +294,9 @@ func (self class) SetZRangeMin(z gd.Int) { //gd:Light2D.set_z_range_min
 }
 
 //go:nosplit
-func (self class) GetZRangeMin() gd.Int { //gd:Light2D.get_z_range_min
+func (self class) GetZRangeMin() int64 { //gd:Light2D.get_z_range_min
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light2D.Bind_get_z_range_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -301,7 +304,7 @@ func (self class) GetZRangeMin() gd.Int { //gd:Light2D.get_z_range_min
 }
 
 //go:nosplit
-func (self class) SetZRangeMax(z gd.Int) { //gd:Light2D.set_z_range_max
+func (self class) SetZRangeMax(z int64) { //gd:Light2D.set_z_range_max
 	var frame = callframe.New()
 	callframe.Arg(frame, z)
 	var r_ret = callframe.Nil
@@ -310,9 +313,9 @@ func (self class) SetZRangeMax(z gd.Int) { //gd:Light2D.set_z_range_max
 }
 
 //go:nosplit
-func (self class) GetZRangeMax() gd.Int { //gd:Light2D.get_z_range_max
+func (self class) GetZRangeMax() int64 { //gd:Light2D.get_z_range_max
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light2D.Bind_get_z_range_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -320,7 +323,7 @@ func (self class) GetZRangeMax() gd.Int { //gd:Light2D.get_z_range_max
 }
 
 //go:nosplit
-func (self class) SetLayerRangeMin(layer gd.Int) { //gd:Light2D.set_layer_range_min
+func (self class) SetLayerRangeMin(layer int64) { //gd:Light2D.set_layer_range_min
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -329,9 +332,9 @@ func (self class) SetLayerRangeMin(layer gd.Int) { //gd:Light2D.set_layer_range_
 }
 
 //go:nosplit
-func (self class) GetLayerRangeMin() gd.Int { //gd:Light2D.get_layer_range_min
+func (self class) GetLayerRangeMin() int64 { //gd:Light2D.get_layer_range_min
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light2D.Bind_get_layer_range_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -339,7 +342,7 @@ func (self class) GetLayerRangeMin() gd.Int { //gd:Light2D.get_layer_range_min
 }
 
 //go:nosplit
-func (self class) SetLayerRangeMax(layer gd.Int) { //gd:Light2D.set_layer_range_max
+func (self class) SetLayerRangeMax(layer int64) { //gd:Light2D.set_layer_range_max
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -348,9 +351,9 @@ func (self class) SetLayerRangeMax(layer gd.Int) { //gd:Light2D.set_layer_range_
 }
 
 //go:nosplit
-func (self class) GetLayerRangeMax() gd.Int { //gd:Light2D.get_layer_range_max
+func (self class) GetLayerRangeMax() int64 { //gd:Light2D.get_layer_range_max
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light2D.Bind_get_layer_range_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -358,7 +361,7 @@ func (self class) GetLayerRangeMax() gd.Int { //gd:Light2D.get_layer_range_max
 }
 
 //go:nosplit
-func (self class) SetItemCullMask(item_cull_mask gd.Int) { //gd:Light2D.set_item_cull_mask
+func (self class) SetItemCullMask(item_cull_mask int64) { //gd:Light2D.set_item_cull_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, item_cull_mask)
 	var r_ret = callframe.Nil
@@ -367,9 +370,9 @@ func (self class) SetItemCullMask(item_cull_mask gd.Int) { //gd:Light2D.set_item
 }
 
 //go:nosplit
-func (self class) GetItemCullMask() gd.Int { //gd:Light2D.get_item_cull_mask
+func (self class) GetItemCullMask() int64 { //gd:Light2D.get_item_cull_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light2D.Bind_get_item_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -377,7 +380,7 @@ func (self class) GetItemCullMask() gd.Int { //gd:Light2D.get_item_cull_mask
 }
 
 //go:nosplit
-func (self class) SetItemShadowCullMask(item_shadow_cull_mask gd.Int) { //gd:Light2D.set_item_shadow_cull_mask
+func (self class) SetItemShadowCullMask(item_shadow_cull_mask int64) { //gd:Light2D.set_item_shadow_cull_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, item_shadow_cull_mask)
 	var r_ret = callframe.Nil
@@ -386,9 +389,9 @@ func (self class) SetItemShadowCullMask(item_shadow_cull_mask gd.Int) { //gd:Lig
 }
 
 //go:nosplit
-func (self class) GetItemShadowCullMask() gd.Int { //gd:Light2D.get_item_shadow_cull_mask
+func (self class) GetItemShadowCullMask() int64 { //gd:Light2D.get_item_shadow_cull_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light2D.Bind_get_item_shadow_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -415,7 +418,7 @@ func (self class) IsShadowEnabled() bool { //gd:Light2D.is_shadow_enabled
 }
 
 //go:nosplit
-func (self class) SetShadowSmooth(smooth gd.Float) { //gd:Light2D.set_shadow_smooth
+func (self class) SetShadowSmooth(smooth float64) { //gd:Light2D.set_shadow_smooth
 	var frame = callframe.New()
 	callframe.Arg(frame, smooth)
 	var r_ret = callframe.Nil
@@ -424,9 +427,9 @@ func (self class) SetShadowSmooth(smooth gd.Float) { //gd:Light2D.set_shadow_smo
 }
 
 //go:nosplit
-func (self class) GetShadowSmooth() gd.Float { //gd:Light2D.get_shadow_smooth
+func (self class) GetShadowSmooth() float64 { //gd:Light2D.get_shadow_smooth
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light2D.Bind_get_shadow_smooth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -453,7 +456,7 @@ func (self class) GetShadowFilter() gdclass.Light2DShadowFilter { //gd:Light2D.g
 }
 
 //go:nosplit
-func (self class) SetShadowColor(shadow_color gd.Color) { //gd:Light2D.set_shadow_color
+func (self class) SetShadowColor(shadow_color Color.RGBA) { //gd:Light2D.set_shadow_color
 	var frame = callframe.New()
 	callframe.Arg(frame, shadow_color)
 	var r_ret = callframe.Nil
@@ -462,9 +465,9 @@ func (self class) SetShadowColor(shadow_color gd.Color) { //gd:Light2D.set_shado
 }
 
 //go:nosplit
-func (self class) GetShadowColor() gd.Color { //gd:Light2D.get_shadow_color
+func (self class) GetShadowColor() Color.RGBA { //gd:Light2D.get_shadow_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light2D.Bind_get_shadow_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -494,7 +497,7 @@ func (self class) GetBlendMode() gdclass.Light2DBlendMode { //gd:Light2D.get_ble
 Sets the light's height, which is used in 2D normal mapping. See [member PointLight2D.height] and [member DirectionalLight2D.height].
 */
 //go:nosplit
-func (self class) SetHeight(height gd.Float) { //gd:Light2D.set_height
+func (self class) SetHeight(height float64) { //gd:Light2D.set_height
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -506,9 +509,9 @@ func (self class) SetHeight(height gd.Float) { //gd:Light2D.set_height
 Returns the light's height, which is used in 2D normal mapping. See [member PointLight2D.height] and [member DirectionalLight2D.height].
 */
 //go:nosplit
-func (self class) GetHeight() gd.Float { //gd:Light2D.get_height
+func (self class) GetHeight() float64 { //gd:Light2D.get_height
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light2D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

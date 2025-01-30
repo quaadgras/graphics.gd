@@ -9,20 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AcceptDialog"
+import "graphics.gd/classdb/ConfirmationDialog"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Viewport"
+import "graphics.gd/classdb/Window"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/ConfirmationDialog"
-import "graphics.gd/classdb/AcceptDialog"
-import "graphics.gd/classdb/Window"
-import "graphics.gd/classdb/Viewport"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -73,42 +77,42 @@ func (self Instance) AddFilter(filter string) { //gd:EditorFileDialog.add_filter
 Returns the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) GetOptionName(option int) string { //gd:EditorFileDialog.get_option_name
-	return string(class(self).GetOptionName(gd.Int(option)).String())
+	return string(class(self).GetOptionName(int64(option)).String())
 }
 
 /*
 Returns an array of values of the [OptionButton] with index [param option].
 */
 func (self Instance) GetOptionValues(option int) []string { //gd:EditorFileDialog.get_option_values
-	return []string(class(self).GetOptionValues(gd.Int(option)).Strings())
+	return []string(class(self).GetOptionValues(int64(option)).Strings())
 }
 
 /*
 Returns the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) GetOptionDefault(option int) int { //gd:EditorFileDialog.get_option_default
-	return int(int(class(self).GetOptionDefault(gd.Int(option))))
+	return int(int(class(self).GetOptionDefault(int64(option))))
 }
 
 /*
 Sets the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) SetOptionName(option int, name string) { //gd:EditorFileDialog.set_option_name
-	class(self).SetOptionName(gd.Int(option), String.New(name))
+	class(self).SetOptionName(int64(option), String.New(name))
 }
 
 /*
 Sets the option values of the [OptionButton] with index [param option].
 */
 func (self Instance) SetOptionValues(option int, values []string) { //gd:EditorFileDialog.set_option_values
-	class(self).SetOptionValues(gd.Int(option), Packed.MakeStrings(values...))
+	class(self).SetOptionValues(int64(option), Packed.MakeStrings(values...))
 }
 
 /*
 Sets the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) SetOptionDefault(option int, default_value_index int) { //gd:EditorFileDialog.set_option_default
-	class(self).SetOptionDefault(gd.Int(option), gd.Int(default_value_index))
+	class(self).SetOptionDefault(int64(option), int64(default_value_index))
 }
 
 /*
@@ -116,7 +120,7 @@ Adds an additional [OptionButton] to the file dialog. If [param values] is empty
 [param default_value_index] should be an index of the value in the [param values]. If [param values] is empty it should be either [code]1[/code] (checked), or [code]0[/code] (unchecked).
 */
 func (self Instance) AddOption(name string, values []string, default_value_index int) { //gd:EditorFileDialog.add_option
-	class(self).AddOption(String.New(name), Packed.MakeStrings(values...), gd.Int(default_value_index))
+	class(self).AddOption(String.New(name), Packed.MakeStrings(values...), int64(default_value_index))
 }
 
 /*
@@ -242,7 +246,7 @@ func (self Instance) OptionCount() int {
 }
 
 func (self Instance) SetOptionCount(value int) {
-	class(self).SetOptionCount(gd.Int(value))
+	class(self).SetOptionCount(int64(value))
 }
 
 func (self Instance) ShowHiddenFiles() bool {
@@ -310,7 +314,7 @@ func (self class) GetFilters() Packed.Strings { //gd:EditorFileDialog.get_filter
 Returns the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) GetOptionName(option gd.Int) String.Readable { //gd:EditorFileDialog.get_option_name
+func (self class) GetOptionName(option int64) String.Readable { //gd:EditorFileDialog.get_option_name
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -324,7 +328,7 @@ func (self class) GetOptionName(option gd.Int) String.Readable { //gd:EditorFile
 Returns an array of values of the [OptionButton] with index [param option].
 */
 //go:nosplit
-func (self class) GetOptionValues(option gd.Int) Packed.Strings { //gd:EditorFileDialog.get_option_values
+func (self class) GetOptionValues(option int64) Packed.Strings { //gd:EditorFileDialog.get_option_values
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -338,10 +342,10 @@ func (self class) GetOptionValues(option gd.Int) Packed.Strings { //gd:EditorFil
 Returns the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) GetOptionDefault(option gd.Int) gd.Int { //gd:EditorFileDialog.get_option_default
+func (self class) GetOptionDefault(option int64) int64 { //gd:EditorFileDialog.get_option_default
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_option_default, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -352,7 +356,7 @@ func (self class) GetOptionDefault(option gd.Int) gd.Int { //gd:EditorFileDialog
 Sets the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) SetOptionName(option gd.Int, name String.Readable) { //gd:EditorFileDialog.set_option_name
+func (self class) SetOptionName(option int64, name String.Readable) { //gd:EditorFileDialog.set_option_name
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
@@ -365,7 +369,7 @@ func (self class) SetOptionName(option gd.Int, name String.Readable) { //gd:Edit
 Sets the option values of the [OptionButton] with index [param option].
 */
 //go:nosplit
-func (self class) SetOptionValues(option gd.Int, values Packed.Strings) { //gd:EditorFileDialog.set_option_values
+func (self class) SetOptionValues(option int64, values Packed.Strings) { //gd:EditorFileDialog.set_option_values
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(values)))
@@ -378,7 +382,7 @@ func (self class) SetOptionValues(option gd.Int, values Packed.Strings) { //gd:E
 Sets the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) SetOptionDefault(option gd.Int, default_value_index gd.Int) { //gd:EditorFileDialog.set_option_default
+func (self class) SetOptionDefault(option int64, default_value_index int64) { //gd:EditorFileDialog.set_option_default
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	callframe.Arg(frame, default_value_index)
@@ -388,7 +392,7 @@ func (self class) SetOptionDefault(option gd.Int, default_value_index gd.Int) { 
 }
 
 //go:nosplit
-func (self class) SetOptionCount(count gd.Int) { //gd:EditorFileDialog.set_option_count
+func (self class) SetOptionCount(count int64) { //gd:EditorFileDialog.set_option_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -397,9 +401,9 @@ func (self class) SetOptionCount(count gd.Int) { //gd:EditorFileDialog.set_optio
 }
 
 //go:nosplit
-func (self class) GetOptionCount() gd.Int { //gd:EditorFileDialog.get_option_count
+func (self class) GetOptionCount() int64 { //gd:EditorFileDialog.get_option_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_option_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -411,7 +415,7 @@ Adds an additional [OptionButton] to the file dialog. If [param values] is empty
 [param default_value_index] should be an index of the value in the [param values]. If [param values] is empty it should be either [code]1[/code] (checked), or [code]0[/code] (unchecked).
 */
 //go:nosplit
-func (self class) AddOption(name String.Readable, values Packed.Strings, default_value_index gd.Int) { //gd:EditorFileDialog.add_option
+func (self class) AddOption(name String.Readable, values Packed.Strings, default_value_index int64) { //gd:EditorFileDialog.add_option
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(values)))

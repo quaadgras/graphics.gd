@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Joint2D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Joint2D"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -76,7 +79,7 @@ func (self Instance) Length() Float.X {
 }
 
 func (self Instance) SetLength(value Float.X) {
-	class(self).SetLength(gd.Float(value))
+	class(self).SetLength(float64(value))
 }
 
 func (self Instance) InitialOffset() Float.X {
@@ -84,11 +87,11 @@ func (self Instance) InitialOffset() Float.X {
 }
 
 func (self Instance) SetInitialOffset(value Float.X) {
-	class(self).SetInitialOffset(gd.Float(value))
+	class(self).SetInitialOffset(float64(value))
 }
 
 //go:nosplit
-func (self class) SetLength(length gd.Float) { //gd:GrooveJoint2D.set_length
+func (self class) SetLength(length float64) { //gd:GrooveJoint2D.set_length
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -97,9 +100,9 @@ func (self class) SetLength(length gd.Float) { //gd:GrooveJoint2D.set_length
 }
 
 //go:nosplit
-func (self class) GetLength() gd.Float { //gd:GrooveJoint2D.get_length
+func (self class) GetLength() float64 { //gd:GrooveJoint2D.get_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GrooveJoint2D.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -107,7 +110,7 @@ func (self class) GetLength() gd.Float { //gd:GrooveJoint2D.get_length
 }
 
 //go:nosplit
-func (self class) SetInitialOffset(offset gd.Float) { //gd:GrooveJoint2D.set_initial_offset
+func (self class) SetInitialOffset(offset float64) { //gd:GrooveJoint2D.set_initial_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -116,9 +119,9 @@ func (self class) SetInitialOffset(offset gd.Float) { //gd:GrooveJoint2D.set_ini
 }
 
 //go:nosplit
-func (self class) GetInitialOffset() gd.Float { //gd:GrooveJoint2D.get_initial_offset
+func (self class) GetInitialOffset() float64 { //gd:GrooveJoint2D.get_initial_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GrooveJoint2D.Bind_get_initial_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -89,7 +92,7 @@ func (self Instance) Bounces() int {
 }
 
 func (self Instance) SetBounces(value int) {
-	class(self).SetBounces(gd.Int(value))
+	class(self).SetBounces(int64(value))
 }
 
 func (self Instance) BounceIndirectEnergy() Float.X {
@@ -97,7 +100,7 @@ func (self Instance) BounceIndirectEnergy() Float.X {
 }
 
 func (self Instance) SetBounceIndirectEnergy(value Float.X) {
-	class(self).SetBounceIndirectEnergy(gd.Float(value))
+	class(self).SetBounceIndirectEnergy(float64(value))
 }
 
 func (self Instance) Directional() bool {
@@ -137,7 +140,7 @@ func (self Instance) DenoiserStrength() Float.X {
 }
 
 func (self Instance) SetDenoiserStrength(value Float.X) {
-	class(self).SetDenoiserStrength(gd.Float(value))
+	class(self).SetDenoiserStrength(float64(value))
 }
 
 func (self Instance) DenoiserRange() int {
@@ -145,7 +148,7 @@ func (self Instance) DenoiserRange() int {
 }
 
 func (self Instance) SetDenoiserRange(value int) {
-	class(self).SetDenoiserRange(gd.Int(value))
+	class(self).SetDenoiserRange(int64(value))
 }
 
 func (self Instance) Bias() Float.X {
@@ -153,7 +156,7 @@ func (self Instance) Bias() Float.X {
 }
 
 func (self Instance) SetBias(value Float.X) {
-	class(self).SetBias(gd.Float(value))
+	class(self).SetBias(float64(value))
 }
 
 func (self Instance) TexelScale() Float.X {
@@ -161,7 +164,7 @@ func (self Instance) TexelScale() Float.X {
 }
 
 func (self Instance) SetTexelScale(value Float.X) {
-	class(self).SetTexelScale(gd.Float(value))
+	class(self).SetTexelScale(float64(value))
 }
 
 func (self Instance) MaxTextureSize() int {
@@ -169,7 +172,7 @@ func (self Instance) MaxTextureSize() int {
 }
 
 func (self Instance) SetMaxTextureSize(value int) {
-	class(self).SetMaxTextureSize(gd.Int(value))
+	class(self).SetMaxTextureSize(int64(value))
 }
 
 func (self Instance) EnvironmentMode() gdclass.LightmapGIEnvironmentMode {
@@ -193,7 +196,7 @@ func (self Instance) EnvironmentCustomColor() Color.RGBA {
 }
 
 func (self Instance) SetEnvironmentCustomColor(value Color.RGBA) {
-	class(self).SetEnvironmentCustomColor(gd.Color(value))
+	class(self).SetEnvironmentCustomColor(Color.RGBA(value))
 }
 
 func (self Instance) EnvironmentCustomEnergy() Float.X {
@@ -201,7 +204,7 @@ func (self Instance) EnvironmentCustomEnergy() Float.X {
 }
 
 func (self Instance) SetEnvironmentCustomEnergy(value Float.X) {
-	class(self).SetEnvironmentCustomEnergy(gd.Float(value))
+	class(self).SetEnvironmentCustomEnergy(float64(value))
 }
 
 func (self Instance) CameraAttributes() [1]gdclass.CameraAttributes {
@@ -267,7 +270,7 @@ func (self class) GetBakeQuality() gdclass.LightmapGIBakeQuality { //gd:Lightmap
 }
 
 //go:nosplit
-func (self class) SetBounces(bounces gd.Int) { //gd:LightmapGI.set_bounces
+func (self class) SetBounces(bounces int64) { //gd:LightmapGI.set_bounces
 	var frame = callframe.New()
 	callframe.Arg(frame, bounces)
 	var r_ret = callframe.Nil
@@ -276,9 +279,9 @@ func (self class) SetBounces(bounces gd.Int) { //gd:LightmapGI.set_bounces
 }
 
 //go:nosplit
-func (self class) GetBounces() gd.Int { //gd:LightmapGI.get_bounces
+func (self class) GetBounces() int64 { //gd:LightmapGI.get_bounces
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_bounces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -286,7 +289,7 @@ func (self class) GetBounces() gd.Int { //gd:LightmapGI.get_bounces
 }
 
 //go:nosplit
-func (self class) SetBounceIndirectEnergy(bounce_indirect_energy gd.Float) { //gd:LightmapGI.set_bounce_indirect_energy
+func (self class) SetBounceIndirectEnergy(bounce_indirect_energy float64) { //gd:LightmapGI.set_bounce_indirect_energy
 	var frame = callframe.New()
 	callframe.Arg(frame, bounce_indirect_energy)
 	var r_ret = callframe.Nil
@@ -295,9 +298,9 @@ func (self class) SetBounceIndirectEnergy(bounce_indirect_energy gd.Float) { //g
 }
 
 //go:nosplit
-func (self class) GetBounceIndirectEnergy() gd.Float { //gd:LightmapGI.get_bounce_indirect_energy
+func (self class) GetBounceIndirectEnergy() float64 { //gd:LightmapGI.get_bounce_indirect_energy
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_bounce_indirect_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -324,7 +327,7 @@ func (self class) GetGenerateProbes() gdclass.LightmapGIGenerateProbes { //gd:Li
 }
 
 //go:nosplit
-func (self class) SetBias(bias gd.Float) { //gd:LightmapGI.set_bias
+func (self class) SetBias(bias float64) { //gd:LightmapGI.set_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, bias)
 	var r_ret = callframe.Nil
@@ -333,9 +336,9 @@ func (self class) SetBias(bias gd.Float) { //gd:LightmapGI.set_bias
 }
 
 //go:nosplit
-func (self class) GetBias() gd.Float { //gd:LightmapGI.get_bias
+func (self class) GetBias() float64 { //gd:LightmapGI.get_bias
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -381,7 +384,7 @@ func (self class) GetEnvironmentCustomSky() [1]gdclass.Sky { //gd:LightmapGI.get
 }
 
 //go:nosplit
-func (self class) SetEnvironmentCustomColor(color gd.Color) { //gd:LightmapGI.set_environment_custom_color
+func (self class) SetEnvironmentCustomColor(color Color.RGBA) { //gd:LightmapGI.set_environment_custom_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -390,9 +393,9 @@ func (self class) SetEnvironmentCustomColor(color gd.Color) { //gd:LightmapGI.se
 }
 
 //go:nosplit
-func (self class) GetEnvironmentCustomColor() gd.Color { //gd:LightmapGI.get_environment_custom_color
+func (self class) GetEnvironmentCustomColor() Color.RGBA { //gd:LightmapGI.get_environment_custom_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_environment_custom_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -400,7 +403,7 @@ func (self class) GetEnvironmentCustomColor() gd.Color { //gd:LightmapGI.get_env
 }
 
 //go:nosplit
-func (self class) SetEnvironmentCustomEnergy(energy gd.Float) { //gd:LightmapGI.set_environment_custom_energy
+func (self class) SetEnvironmentCustomEnergy(energy float64) { //gd:LightmapGI.set_environment_custom_energy
 	var frame = callframe.New()
 	callframe.Arg(frame, energy)
 	var r_ret = callframe.Nil
@@ -409,9 +412,9 @@ func (self class) SetEnvironmentCustomEnergy(energy gd.Float) { //gd:LightmapGI.
 }
 
 //go:nosplit
-func (self class) GetEnvironmentCustomEnergy() gd.Float { //gd:LightmapGI.get_environment_custom_energy
+func (self class) GetEnvironmentCustomEnergy() float64 { //gd:LightmapGI.get_environment_custom_energy
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_environment_custom_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -419,7 +422,7 @@ func (self class) GetEnvironmentCustomEnergy() gd.Float { //gd:LightmapGI.get_en
 }
 
 //go:nosplit
-func (self class) SetTexelScale(texel_scale gd.Float) { //gd:LightmapGI.set_texel_scale
+func (self class) SetTexelScale(texel_scale float64) { //gd:LightmapGI.set_texel_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, texel_scale)
 	var r_ret = callframe.Nil
@@ -428,9 +431,9 @@ func (self class) SetTexelScale(texel_scale gd.Float) { //gd:LightmapGI.set_texe
 }
 
 //go:nosplit
-func (self class) GetTexelScale() gd.Float { //gd:LightmapGI.get_texel_scale
+func (self class) GetTexelScale() float64 { //gd:LightmapGI.get_texel_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_texel_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -438,7 +441,7 @@ func (self class) GetTexelScale() gd.Float { //gd:LightmapGI.get_texel_scale
 }
 
 //go:nosplit
-func (self class) SetMaxTextureSize(max_texture_size gd.Int) { //gd:LightmapGI.set_max_texture_size
+func (self class) SetMaxTextureSize(max_texture_size int64) { //gd:LightmapGI.set_max_texture_size
 	var frame = callframe.New()
 	callframe.Arg(frame, max_texture_size)
 	var r_ret = callframe.Nil
@@ -447,9 +450,9 @@ func (self class) SetMaxTextureSize(max_texture_size gd.Int) { //gd:LightmapGI.s
 }
 
 //go:nosplit
-func (self class) GetMaxTextureSize() gd.Int { //gd:LightmapGI.get_max_texture_size
+func (self class) GetMaxTextureSize() int64 { //gd:LightmapGI.get_max_texture_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_max_texture_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -476,7 +479,7 @@ func (self class) IsUsingDenoiser() bool { //gd:LightmapGI.is_using_denoiser
 }
 
 //go:nosplit
-func (self class) SetDenoiserStrength(denoiser_strength gd.Float) { //gd:LightmapGI.set_denoiser_strength
+func (self class) SetDenoiserStrength(denoiser_strength float64) { //gd:LightmapGI.set_denoiser_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, denoiser_strength)
 	var r_ret = callframe.Nil
@@ -485,9 +488,9 @@ func (self class) SetDenoiserStrength(denoiser_strength gd.Float) { //gd:Lightma
 }
 
 //go:nosplit
-func (self class) GetDenoiserStrength() gd.Float { //gd:LightmapGI.get_denoiser_strength
+func (self class) GetDenoiserStrength() float64 { //gd:LightmapGI.get_denoiser_strength
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_denoiser_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -495,7 +498,7 @@ func (self class) GetDenoiserStrength() gd.Float { //gd:LightmapGI.get_denoiser_
 }
 
 //go:nosplit
-func (self class) SetDenoiserRange(denoiser_range gd.Int) { //gd:LightmapGI.set_denoiser_range
+func (self class) SetDenoiserRange(denoiser_range int64) { //gd:LightmapGI.set_denoiser_range
 	var frame = callframe.New()
 	callframe.Arg(frame, denoiser_range)
 	var r_ret = callframe.Nil
@@ -504,9 +507,9 @@ func (self class) SetDenoiserRange(denoiser_range gd.Int) { //gd:LightmapGI.set_
 }
 
 //go:nosplit
-func (self class) GetDenoiserRange() gd.Int { //gd:LightmapGI.get_denoiser_range
+func (self class) GetDenoiserRange() int64 { //gd:LightmapGI.get_denoiser_range
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_denoiser_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

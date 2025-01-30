@@ -10,16 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -195,10 +198,10 @@ GD.Print(Performance.GetMonitor(Performance.Monitor.TimeFps)); // Prints the FPS
 See [method get_custom_monitor] to query custom performance monitors' values.
 */
 //go:nosplit
-func (self class) GetMonitor(monitor gdclass.PerformanceMonitor) gd.Float { //gd:Performance.get_monitor
+func (self class) GetMonitor(monitor gdclass.PerformanceMonitor) float64 { //gd:Performance.get_monitor
 	var frame = callframe.New()
 	callframe.Arg(frame, monitor)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -298,12 +301,12 @@ func (self class) HasCustomMonitor(id String.Name) bool { //gd:Performance.has_c
 Returns the value of custom monitor with given [param id]. The callable is called to get the value of custom monitor. See also [method has_custom_monitor]. Prints an error if the given [param id] is absent.
 */
 //go:nosplit
-func (self class) GetCustomMonitor(id String.Name) gd.Variant { //gd:Performance.get_custom_monitor
+func (self class) GetCustomMonitor(id String.Name) variant.Any { //gd:Performance.get_custom_monitor
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(id)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -312,9 +315,9 @@ func (self class) GetCustomMonitor(id String.Name) gd.Variant { //gd:Performance
 Returns the last tick in which custom monitor was added/removed (in microseconds since the engine started). This is set to [method Time.get_ticks_usec] when the monitor is updated.
 */
 //go:nosplit
-func (self class) GetMonitorModificationTime() gd.Int { //gd:Performance.get_monitor_modification_time
+func (self class) GetMonitorModificationTime() int64 { //gd:Performance.get_monitor_modification_time
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_monitor_modification_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

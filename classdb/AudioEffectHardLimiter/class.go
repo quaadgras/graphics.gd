@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioEffect"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioEffect"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,7 +78,7 @@ func (self Instance) PreGainDb() Float.X {
 }
 
 func (self Instance) SetPreGainDb(value Float.X) {
-	class(self).SetPreGainDb(gd.Float(value))
+	class(self).SetPreGainDb(float64(value))
 }
 
 func (self Instance) CeilingDb() Float.X {
@@ -83,7 +86,7 @@ func (self Instance) CeilingDb() Float.X {
 }
 
 func (self Instance) SetCeilingDb(value Float.X) {
-	class(self).SetCeilingDb(gd.Float(value))
+	class(self).SetCeilingDb(float64(value))
 }
 
 func (self Instance) Release() Float.X {
@@ -91,11 +94,11 @@ func (self Instance) Release() Float.X {
 }
 
 func (self Instance) SetRelease(value Float.X) {
-	class(self).SetRelease(gd.Float(value))
+	class(self).SetRelease(float64(value))
 }
 
 //go:nosplit
-func (self class) SetCeilingDb(ceiling gd.Float) { //gd:AudioEffectHardLimiter.set_ceiling_db
+func (self class) SetCeilingDb(ceiling float64) { //gd:AudioEffectHardLimiter.set_ceiling_db
 	var frame = callframe.New()
 	callframe.Arg(frame, ceiling)
 	var r_ret = callframe.Nil
@@ -104,9 +107,9 @@ func (self class) SetCeilingDb(ceiling gd.Float) { //gd:AudioEffectHardLimiter.s
 }
 
 //go:nosplit
-func (self class) GetCeilingDb() gd.Float { //gd:AudioEffectHardLimiter.get_ceiling_db
+func (self class) GetCeilingDb() float64 { //gd:AudioEffectHardLimiter.get_ceiling_db
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectHardLimiter.Bind_get_ceiling_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -114,7 +117,7 @@ func (self class) GetCeilingDb() gd.Float { //gd:AudioEffectHardLimiter.get_ceil
 }
 
 //go:nosplit
-func (self class) SetPreGainDb(p_pre_gain gd.Float) { //gd:AudioEffectHardLimiter.set_pre_gain_db
+func (self class) SetPreGainDb(p_pre_gain float64) { //gd:AudioEffectHardLimiter.set_pre_gain_db
 	var frame = callframe.New()
 	callframe.Arg(frame, p_pre_gain)
 	var r_ret = callframe.Nil
@@ -123,9 +126,9 @@ func (self class) SetPreGainDb(p_pre_gain gd.Float) { //gd:AudioEffectHardLimite
 }
 
 //go:nosplit
-func (self class) GetPreGainDb() gd.Float { //gd:AudioEffectHardLimiter.get_pre_gain_db
+func (self class) GetPreGainDb() float64 { //gd:AudioEffectHardLimiter.get_pre_gain_db
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectHardLimiter.Bind_get_pre_gain_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -133,7 +136,7 @@ func (self class) GetPreGainDb() gd.Float { //gd:AudioEffectHardLimiter.get_pre_
 }
 
 //go:nosplit
-func (self class) SetRelease(p_release gd.Float) { //gd:AudioEffectHardLimiter.set_release
+func (self class) SetRelease(p_release float64) { //gd:AudioEffectHardLimiter.set_release
 	var frame = callframe.New()
 	callframe.Arg(frame, p_release)
 	var r_ret = callframe.Nil
@@ -142,9 +145,9 @@ func (self class) SetRelease(p_release gd.Float) { //gd:AudioEffectHardLimiter.s
 }
 
 //go:nosplit
-func (self class) GetRelease() gd.Float { //gd:AudioEffectHardLimiter.get_release
+func (self class) GetRelease() float64 { //gd:AudioEffectHardLimiter.get_release
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectHardLimiter.Bind_get_release, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

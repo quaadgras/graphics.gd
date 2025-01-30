@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/InputEvent"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/InputEvent"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -83,7 +86,7 @@ func (self Instance) AxisValue() Float.X {
 }
 
 func (self Instance) SetAxisValue(value Float.X) {
-	class(self).SetAxisValue(gd.Float(value))
+	class(self).SetAxisValue(float64(value))
 }
 
 //go:nosplit
@@ -106,7 +109,7 @@ func (self class) GetAxis() JoyAxis { //gd:InputEventJoypadMotion.get_axis
 }
 
 //go:nosplit
-func (self class) SetAxisValue(axis_value gd.Float) { //gd:InputEventJoypadMotion.set_axis_value
+func (self class) SetAxisValue(axis_value float64) { //gd:InputEventJoypadMotion.set_axis_value
 	var frame = callframe.New()
 	callframe.Arg(frame, axis_value)
 	var r_ret = callframe.Nil
@@ -115,9 +118,9 @@ func (self class) SetAxisValue(axis_value gd.Float) { //gd:InputEventJoypadMotio
 }
 
 //go:nosplit
-func (self class) GetAxisValue() gd.Float { //gd:InputEventJoypadMotion.get_axis_value
+func (self class) GetAxisValue() float64 { //gd:InputEventJoypadMotion.get_axis_value
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventJoypadMotion.Bind_get_axis_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

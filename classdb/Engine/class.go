@@ -10,16 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -382,7 +385,7 @@ Returns an instance of a [ScriptLanguage] with the given [param index].
 */
 func GetScriptLanguage(index int) [1]gdclass.ScriptLanguage { //gd:Engine.get_script_language
 	once.Do(singleton)
-	return [1]gdclass.ScriptLanguage(class(self).GetScriptLanguage(gd.Int(index)))
+	return [1]gdclass.ScriptLanguage(class(self).GetScriptLanguage(int64(index)))
 }
 
 /*
@@ -448,7 +451,7 @@ func PhysicsTicksPerSecond() int {
 }
 
 func SetPhysicsTicksPerSecond(value int) {
-	class(self).SetPhysicsTicksPerSecond(gd.Int(value))
+	class(self).SetPhysicsTicksPerSecond(int64(value))
 }
 
 func MaxPhysicsStepsPerFrame() int {
@@ -456,7 +459,7 @@ func MaxPhysicsStepsPerFrame() int {
 }
 
 func SetMaxPhysicsStepsPerFrame(value int) {
-	class(self).SetMaxPhysicsStepsPerFrame(gd.Int(value))
+	class(self).SetMaxPhysicsStepsPerFrame(int64(value))
 }
 
 func MaxFps() int {
@@ -464,7 +467,7 @@ func MaxFps() int {
 }
 
 func SetMaxFps(value int) {
-	class(self).SetMaxFps(gd.Int(value))
+	class(self).SetMaxFps(int64(value))
 }
 
 func TimeScale() Float.X {
@@ -472,7 +475,7 @@ func TimeScale() Float.X {
 }
 
 func SetTimeScale(value Float.X) {
-	class(self).SetTimeScale(gd.Float(value))
+	class(self).SetTimeScale(float64(value))
 }
 
 func PhysicsJitterFix() Float.X {
@@ -480,11 +483,11 @@ func PhysicsJitterFix() Float.X {
 }
 
 func SetPhysicsJitterFix(value Float.X) {
-	class(self).SetPhysicsJitterFix(gd.Float(value))
+	class(self).SetPhysicsJitterFix(float64(value))
 }
 
 //go:nosplit
-func (self class) SetPhysicsTicksPerSecond(physics_ticks_per_second gd.Int) { //gd:Engine.set_physics_ticks_per_second
+func (self class) SetPhysicsTicksPerSecond(physics_ticks_per_second int64) { //gd:Engine.set_physics_ticks_per_second
 	var frame = callframe.New()
 	callframe.Arg(frame, physics_ticks_per_second)
 	var r_ret = callframe.Nil
@@ -493,9 +496,9 @@ func (self class) SetPhysicsTicksPerSecond(physics_ticks_per_second gd.Int) { //
 }
 
 //go:nosplit
-func (self class) GetPhysicsTicksPerSecond() gd.Int { //gd:Engine.get_physics_ticks_per_second
+func (self class) GetPhysicsTicksPerSecond() int64 { //gd:Engine.get_physics_ticks_per_second
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_physics_ticks_per_second, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -503,7 +506,7 @@ func (self class) GetPhysicsTicksPerSecond() gd.Int { //gd:Engine.get_physics_ti
 }
 
 //go:nosplit
-func (self class) SetMaxPhysicsStepsPerFrame(max_physics_steps gd.Int) { //gd:Engine.set_max_physics_steps_per_frame
+func (self class) SetMaxPhysicsStepsPerFrame(max_physics_steps int64) { //gd:Engine.set_max_physics_steps_per_frame
 	var frame = callframe.New()
 	callframe.Arg(frame, max_physics_steps)
 	var r_ret = callframe.Nil
@@ -512,9 +515,9 @@ func (self class) SetMaxPhysicsStepsPerFrame(max_physics_steps gd.Int) { //gd:En
 }
 
 //go:nosplit
-func (self class) GetMaxPhysicsStepsPerFrame() gd.Int { //gd:Engine.get_max_physics_steps_per_frame
+func (self class) GetMaxPhysicsStepsPerFrame() int64 { //gd:Engine.get_max_physics_steps_per_frame
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_max_physics_steps_per_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -522,7 +525,7 @@ func (self class) GetMaxPhysicsStepsPerFrame() gd.Int { //gd:Engine.get_max_phys
 }
 
 //go:nosplit
-func (self class) SetPhysicsJitterFix(physics_jitter_fix gd.Float) { //gd:Engine.set_physics_jitter_fix
+func (self class) SetPhysicsJitterFix(physics_jitter_fix float64) { //gd:Engine.set_physics_jitter_fix
 	var frame = callframe.New()
 	callframe.Arg(frame, physics_jitter_fix)
 	var r_ret = callframe.Nil
@@ -531,9 +534,9 @@ func (self class) SetPhysicsJitterFix(physics_jitter_fix gd.Float) { //gd:Engine
 }
 
 //go:nosplit
-func (self class) GetPhysicsJitterFix() gd.Float { //gd:Engine.get_physics_jitter_fix
+func (self class) GetPhysicsJitterFix() float64 { //gd:Engine.get_physics_jitter_fix
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_physics_jitter_fix, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -544,9 +547,9 @@ func (self class) GetPhysicsJitterFix() gd.Float { //gd:Engine.get_physics_jitte
 Returns the fraction through the current physics tick we are at the time of rendering the frame. This can be used to implement fixed timestep interpolation.
 */
 //go:nosplit
-func (self class) GetPhysicsInterpolationFraction() gd.Float { //gd:Engine.get_physics_interpolation_fraction
+func (self class) GetPhysicsInterpolationFraction() float64 { //gd:Engine.get_physics_interpolation_fraction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_physics_interpolation_fraction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -554,7 +557,7 @@ func (self class) GetPhysicsInterpolationFraction() gd.Float { //gd:Engine.get_p
 }
 
 //go:nosplit
-func (self class) SetMaxFps(max_fps gd.Int) { //gd:Engine.set_max_fps
+func (self class) SetMaxFps(max_fps int64) { //gd:Engine.set_max_fps
 	var frame = callframe.New()
 	callframe.Arg(frame, max_fps)
 	var r_ret = callframe.Nil
@@ -563,9 +566,9 @@ func (self class) SetMaxFps(max_fps gd.Int) { //gd:Engine.set_max_fps
 }
 
 //go:nosplit
-func (self class) GetMaxFps() gd.Int { //gd:Engine.get_max_fps
+func (self class) GetMaxFps() int64 { //gd:Engine.get_max_fps
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_max_fps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -573,7 +576,7 @@ func (self class) GetMaxFps() gd.Int { //gd:Engine.get_max_fps
 }
 
 //go:nosplit
-func (self class) SetTimeScale(time_scale gd.Float) { //gd:Engine.set_time_scale
+func (self class) SetTimeScale(time_scale float64) { //gd:Engine.set_time_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, time_scale)
 	var r_ret = callframe.Nil
@@ -582,9 +585,9 @@ func (self class) SetTimeScale(time_scale gd.Float) { //gd:Engine.set_time_scale
 }
 
 //go:nosplit
-func (self class) GetTimeScale() gd.Float { //gd:Engine.get_time_scale
+func (self class) GetTimeScale() float64 { //gd:Engine.get_time_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_time_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -596,9 +599,9 @@ Returns the total number of frames drawn since the engine started.
 [b]Note:[/b] On headless platforms, or if rendering is disabled with [code]--disable-render-loop[/code] via command line, this method always returns [code]0[/code]. See also [method get_process_frames].
 */
 //go:nosplit
-func (self class) GetFramesDrawn() gd.Int { //gd:Engine.get_frames_drawn
+func (self class) GetFramesDrawn() int64 { //gd:Engine.get_frames_drawn
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_frames_drawn, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -609,9 +612,9 @@ func (self class) GetFramesDrawn() gd.Int { //gd:Engine.get_frames_drawn
 Returns the average frames rendered every second (FPS), also known as the framerate.
 */
 //go:nosplit
-func (self class) GetFramesPerSecond() gd.Float { //gd:Engine.get_frames_per_second
+func (self class) GetFramesPerSecond() float64 { //gd:Engine.get_frames_per_second
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_frames_per_second, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -641,9 +644,9 @@ public override void _PhysicsProcess(double delta)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetPhysicsFrames() gd.Int { //gd:Engine.get_physics_frames
+func (self class) GetPhysicsFrames() int64 { //gd:Engine.get_physics_frames
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_physics_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -673,9 +676,9 @@ public override void _Process(double delta)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetProcessFrames() gd.Int { //gd:Engine.get_process_frames
+func (self class) GetProcessFrames() int64 { //gd:Engine.get_process_frames
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_process_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -952,12 +955,12 @@ Returns:
 - [constant ERR_ALREADY_EXISTS] if [code]ScriptServer[/code] already contains a language with similar extension/name/type.
 */
 //go:nosplit
-func (self class) RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) gd.Error { //gd:Engine.register_script_language
+func (self class) RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) Error.Code { //gd:Engine.register_script_language
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(language[0].AsObject()[0]))
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_register_script_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -969,12 +972,12 @@ Returns:
 - [constant ERR_DOES_NOT_EXIST] if the language is not registered in [code]ScriptServer[/code].
 */
 //go:nosplit
-func (self class) UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) gd.Error { //gd:Engine.unregister_script_language
+func (self class) UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) Error.Code { //gd:Engine.unregister_script_language
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language[0])[0])
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_unregister_script_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -983,9 +986,9 @@ func (self class) UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) g
 Returns the number of available script languages. Use with [method get_script_language].
 */
 //go:nosplit
-func (self class) GetScriptLanguageCount() gd.Int { //gd:Engine.get_script_language_count
+func (self class) GetScriptLanguageCount() int64 { //gd:Engine.get_script_language_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_script_language_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -996,7 +999,7 @@ func (self class) GetScriptLanguageCount() gd.Int { //gd:Engine.get_script_langu
 Returns an instance of a [ScriptLanguage] with the given [param index].
 */
 //go:nosplit
-func (self class) GetScriptLanguage(index gd.Int) [1]gdclass.ScriptLanguage { //gd:Engine.get_script_language
+func (self class) GetScriptLanguage(index int64) [1]gdclass.ScriptLanguage { //gd:Engine.get_script_language
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1076,126 +1079,6 @@ func init() {
 	gdclass.Register("Engine", func(ptr gd.Object) any { return [1]gdclass.Engine{*(*gdclass.Engine)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
-)
-
-type Copyright struct {
-	Name  string `gd:"name"`
-	Parts []Part `gd:"parts"`
-}
 type Part struct {
 	Files     []string `gd:"files"`
 	Copyright []string `gd:"copyright"`
@@ -1227,4 +1110,8 @@ type AuthorInfo struct {
 	Founders        []string `gd:"founders"`
 	ProjectManagers []string `gd:"project_managers"`
 	Developers      []string `gd:"developers"`
+}
+type Copyright struct {
+	Name  string `gd:"name"`
+	Parts []Part `gd:"parts"`
 }

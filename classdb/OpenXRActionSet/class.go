@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -103,7 +107,7 @@ func (self Instance) Priority() int {
 }
 
 func (self Instance) SetPriority(value int) {
-	class(self).SetPriority(gd.Int(value))
+	class(self).SetPriority(int64(value))
 }
 
 func (self Instance) Actions() []any {
@@ -134,7 +138,7 @@ func (self class) GetLocalizedName() String.Readable { //gd:OpenXRActionSet.get_
 }
 
 //go:nosplit
-func (self class) SetPriority(priority gd.Int) { //gd:OpenXRActionSet.set_priority
+func (self class) SetPriority(priority int64) { //gd:OpenXRActionSet.set_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -143,9 +147,9 @@ func (self class) SetPriority(priority gd.Int) { //gd:OpenXRActionSet.set_priori
 }
 
 //go:nosplit
-func (self class) GetPriority() gd.Int { //gd:OpenXRActionSet.get_priority
+func (self class) GetPriority() int64 { //gd:OpenXRActionSet.get_priority
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionSet.Bind_get_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -156,9 +160,9 @@ func (self class) GetPriority() gd.Int { //gd:OpenXRActionSet.get_priority
 Retrieve the number of actions in our action set.
 */
 //go:nosplit
-func (self class) GetActionCount() gd.Int { //gd:OpenXRActionSet.get_action_count
+func (self class) GetActionCount() int64 { //gd:OpenXRActionSet.get_action_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionSet.Bind_get_action_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

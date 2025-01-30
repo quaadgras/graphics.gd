@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/InputEvent"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/InputEvent"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -88,7 +91,7 @@ func (self Instance) Strength() Float.X {
 }
 
 func (self Instance) SetStrength(value Float.X) {
-	class(self).SetStrength(gd.Float(value))
+	class(self).SetStrength(float64(value))
 }
 
 func (self Instance) EventIndex() int {
@@ -96,7 +99,7 @@ func (self Instance) EventIndex() int {
 }
 
 func (self Instance) SetEventIndex(value int) {
-	class(self).SetEventIndex(gd.Int(value))
+	class(self).SetEventIndex(int64(value))
 }
 
 //go:nosplit
@@ -128,7 +131,7 @@ func (self class) SetPressed(pressed bool) { //gd:InputEventAction.set_pressed
 }
 
 //go:nosplit
-func (self class) SetStrength(strength gd.Float) { //gd:InputEventAction.set_strength
+func (self class) SetStrength(strength float64) { //gd:InputEventAction.set_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil
@@ -137,9 +140,9 @@ func (self class) SetStrength(strength gd.Float) { //gd:InputEventAction.set_str
 }
 
 //go:nosplit
-func (self class) GetStrength() gd.Float { //gd:InputEventAction.get_strength
+func (self class) GetStrength() float64 { //gd:InputEventAction.get_strength
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventAction.Bind_get_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -147,7 +150,7 @@ func (self class) GetStrength() gd.Float { //gd:InputEventAction.get_strength
 }
 
 //go:nosplit
-func (self class) SetEventIndex(index gd.Int) { //gd:InputEventAction.set_event_index
+func (self class) SetEventIndex(index int64) { //gd:InputEventAction.set_event_index
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -156,9 +159,9 @@ func (self class) SetEventIndex(index gd.Int) { //gd:InputEventAction.set_event_
 }
 
 //go:nosplit
-func (self class) GetEventIndex() gd.Int { //gd:InputEventAction.get_event_index
+func (self class) GetEventIndex() int64 { //gd:InputEventAction.get_event_index
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventAction.Bind_get_event_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

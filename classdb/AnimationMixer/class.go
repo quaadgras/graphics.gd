@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector3"
-import "graphics.gd/variant/Quaternion"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Quaternion"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -78,17 +81,17 @@ func (Instance) _post_process_key_value(impl func(ptr unsafe.Pointer, animation 
 		var animation = [1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(animation[0])
-		var track = gd.UnsafeGet[gd.Int](p_args, 1)
+		var track = gd.UnsafeGet[int64](p_args, 1)
 
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
-		defer pointers.End(value)
-		var object_id = gd.UnsafeGet[gd.Int](p_args, 3)
+		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		defer pointers.End(gd.InternalVariant(value))
+		var object_id = gd.UnsafeGet[int64](p_args, 3)
 
-		var object_sub_idx = gd.UnsafeGet[gd.Int](p_args, 4)
+		var object_sub_idx = gd.UnsafeGet[int64](p_args, 4)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, animation, int(track), value.Interface(), int(object_id), int(object_sub_idx))
-		ptr, ok := pointers.End(gd.NewVariant(ret))
+		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
 			return
@@ -339,7 +342,7 @@ func (self Instance) ClearCaches() { //gd:AnimationMixer.clear_caches
 Manually advance the animations by the specified time (in seconds).
 */
 func (self Instance) Advance(delta Float.X) { //gd:AnimationMixer.advance
-	class(self).Advance(gd.Float(delta))
+	class(self).Advance(float64(delta))
 }
 
 /*
@@ -348,7 +351,7 @@ After this it will interpolate with current animation blending result during the
 You can specify [param trans_type] as the curve for the interpolation. For better results, it may be appropriate to specify [constant Tween.TRANS_LINEAR] for cases where the first key of the track begins with a non-zero value or where the key value does not change, and [constant Tween.TRANS_QUAD] for cases where the key value changes linearly.
 */
 func (self Instance) Capture(name string, duration Float.X) { //gd:AnimationMixer.capture
-	class(self).Capture(String.Name(String.New(name)), gd.Float(duration), 0, 0)
+	class(self).Capture(String.Name(String.New(name)), float64(duration), 0, 0)
 }
 
 /*
@@ -428,7 +431,7 @@ func (self Instance) AudioMaxPolyphony() int {
 }
 
 func (self Instance) SetAudioMaxPolyphony(value int) {
-	class(self).SetAudioMaxPolyphony(gd.Int(value))
+	class(self).SetAudioMaxPolyphony(int64(value))
 }
 
 func (self Instance) CallbackModeProcess() gdclass.AnimationMixerAnimationCallbackModeProcess {
@@ -458,22 +461,22 @@ func (self Instance) SetCallbackModeDiscrete(value gdclass.AnimationMixerAnimati
 /*
 A virtual function for processing after getting a key during playback.
 */
-func (class) _post_process_key_value(impl func(ptr unsafe.Pointer, animation [1]gdclass.Animation, track gd.Int, value gd.Variant, object_id gd.Int, object_sub_idx gd.Int) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _post_process_key_value(impl func(ptr unsafe.Pointer, animation [1]gdclass.Animation, track int64, value variant.Any, object_id int64, object_sub_idx int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var animation = [1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(animation[0])
-		var track = gd.UnsafeGet[gd.Int](p_args, 1)
+		var track = gd.UnsafeGet[int64](p_args, 1)
 
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
-		defer pointers.End(value)
-		var object_id = gd.UnsafeGet[gd.Int](p_args, 3)
+		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		defer pointers.End(gd.InternalVariant(value))
+		var object_id = gd.UnsafeGet[int64](p_args, 3)
 
-		var object_sub_idx = gd.UnsafeGet[gd.Int](p_args, 4)
+		var object_sub_idx = gd.UnsafeGet[int64](p_args, 4)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, animation, track, value, object_id, object_sub_idx)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
 		if !ok {
 			return
@@ -493,13 +496,13 @@ global_library.add_animation("animation_name", animation_resource)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) AddAnimationLibrary(name String.Name, library [1]gdclass.AnimationLibrary) gd.Error { //gd:AnimationMixer.add_animation_library
+func (self class) AddAnimationLibrary(name String.Name, library [1]gdclass.AnimationLibrary) Error.Code { //gd:AnimationMixer.add_animation_library
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(library[0])[0])
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_add_animation_library, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -727,7 +730,7 @@ func (self class) GetCallbackModeDiscrete() gdclass.AnimationMixerAnimationCallb
 }
 
 //go:nosplit
-func (self class) SetAudioMaxPolyphony(max_polyphony gd.Int) { //gd:AnimationMixer.set_audio_max_polyphony
+func (self class) SetAudioMaxPolyphony(max_polyphony int64) { //gd:AnimationMixer.set_audio_max_polyphony
 	var frame = callframe.New()
 	callframe.Arg(frame, max_polyphony)
 	var r_ret = callframe.Nil
@@ -736,9 +739,9 @@ func (self class) SetAudioMaxPolyphony(max_polyphony gd.Int) { //gd:AnimationMix
 }
 
 //go:nosplit
-func (self class) GetAudioMaxPolyphony() gd.Int { //gd:AnimationMixer.get_audio_max_polyphony
+func (self class) GetAudioMaxPolyphony() int64 { //gd:AnimationMixer.get_audio_max_polyphony
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_audio_max_polyphony, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -796,9 +799,9 @@ func _process(delta):
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetRootMotionPosition() gd.Vector3 { //gd:AnimationMixer.get_root_motion_position
+func (self class) GetRootMotionPosition() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -820,9 +823,9 @@ func _process(delta):
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetRootMotionRotation() gd.Quaternion { //gd:AnimationMixer.get_root_motion_rotation
+func (self class) GetRootMotionRotation() Quaternion.IJKX { //gd:AnimationMixer.get_root_motion_rotation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Quaternion](frame)
+	var r_ret = callframe.Ret[Quaternion.IJKX](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -850,9 +853,9 @@ func _process(delta):
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetRootMotionScale() gd.Vector3 { //gd:AnimationMixer.get_root_motion_scale
+func (self class) GetRootMotionScale() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -879,9 +882,9 @@ func _process(delta):
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
 //go:nosplit
-func (self class) GetRootMotionPositionAccumulator() gd.Vector3 { //gd:AnimationMixer.get_root_motion_position_accumulator
+func (self class) GetRootMotionPositionAccumulator() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_position_accumulator
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_position_accumulator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -909,9 +912,9 @@ func _process(delta):
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
 //go:nosplit
-func (self class) GetRootMotionRotationAccumulator() gd.Quaternion { //gd:AnimationMixer.get_root_motion_rotation_accumulator
+func (self class) GetRootMotionRotationAccumulator() Quaternion.IJKX { //gd:AnimationMixer.get_root_motion_rotation_accumulator
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Quaternion](frame)
+	var r_ret = callframe.Ret[Quaternion.IJKX](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_rotation_accumulator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -937,9 +940,9 @@ func _process(delta):
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
 //go:nosplit
-func (self class) GetRootMotionScaleAccumulator() gd.Vector3 { //gd:AnimationMixer.get_root_motion_scale_accumulator
+func (self class) GetRootMotionScaleAccumulator() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_scale_accumulator
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_scale_accumulator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -961,7 +964,7 @@ func (self class) ClearCaches() { //gd:AnimationMixer.clear_caches
 Manually advance the animations by the specified time (in seconds).
 */
 //go:nosplit
-func (self class) Advance(delta gd.Float) { //gd:AnimationMixer.advance
+func (self class) Advance(delta float64) { //gd:AnimationMixer.advance
 	var frame = callframe.New()
 	callframe.Arg(frame, delta)
 	var r_ret = callframe.Nil
@@ -975,7 +978,7 @@ After this it will interpolate with current animation blending result during the
 You can specify [param trans_type] as the curve for the interpolation. For better results, it may be appropriate to specify [constant Tween.TRANS_LINEAR] for cases where the first key of the track begins with a non-zero value or where the key value does not change, and [constant Tween.TRANS_QUAD] for cases where the key value changes linearly.
 */
 //go:nosplit
-func (self class) Capture(name String.Name, duration gd.Float, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) { //gd:AnimationMixer.capture
+func (self class) Capture(name String.Name, duration float64, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) { //gd:AnimationMixer.capture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, duration)
@@ -1118,120 +1121,4 @@ const (
 	/*Always treat the [constant Animation.UPDATE_DISCRETE] track value as [constant Animation.UPDATE_CONTINUOUS] with [constant Animation.INTERPOLATION_NEAREST]. This is the default behavior for [AnimationTree].
 	  If a value track has non-numeric type key values, it is internally converted to use [constant ANIMATION_CALLBACK_MODE_DISCRETE_RECESSIVE] with [constant Animation.UPDATE_DISCRETE].*/
 	AnimationCallbackModeDiscreteForceContinuous AnimationCallbackModeDiscrete = 2
-)
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
 )

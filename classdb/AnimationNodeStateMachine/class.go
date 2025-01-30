@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AnimationNode"
+import "graphics.gd/classdb/AnimationRootNode"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AnimationRootNode"
-import "graphics.gd/classdb/AnimationNode"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -67,7 +71,7 @@ type Any interface {
 Adds a new animation node to the graph. The [param position] is used for display in the editor.
 */
 func (self Instance) AddNode(name string, node [1]gdclass.AnimationNode) { //gd:AnimationNodeStateMachine.add_node
-	class(self).AddNode(String.Name(String.New(name)), node, gd.Vector2(gd.Vector2{0, 0}))
+	class(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(gd.Vector2{0, 0}))
 }
 
 /*
@@ -116,7 +120,7 @@ func (self Instance) GetNodeName(node [1]gdclass.AnimationNode) string { //gd:An
 Sets the animation node's coordinates. Used for display in the editor.
 */
 func (self Instance) SetNodePosition(name string, position Vector2.XY) { //gd:AnimationNodeStateMachine.set_node_position
-	class(self).SetNodePosition(String.Name(String.New(name)), gd.Vector2(position))
+	class(self).SetNodePosition(String.Name(String.New(name)), Vector2.XY(position))
 }
 
 /*
@@ -144,21 +148,21 @@ func (self Instance) AddTransition(from string, to string, transition [1]gdclass
 Returns the given transition.
 */
 func (self Instance) GetTransition(idx int) [1]gdclass.AnimationNodeStateMachineTransition { //gd:AnimationNodeStateMachine.get_transition
-	return [1]gdclass.AnimationNodeStateMachineTransition(class(self).GetTransition(gd.Int(idx)))
+	return [1]gdclass.AnimationNodeStateMachineTransition(class(self).GetTransition(int64(idx)))
 }
 
 /*
 Returns the given transition's start node.
 */
 func (self Instance) GetTransitionFrom(idx int) string { //gd:AnimationNodeStateMachine.get_transition_from
-	return string(class(self).GetTransitionFrom(gd.Int(idx)).String())
+	return string(class(self).GetTransitionFrom(int64(idx)).String())
 }
 
 /*
 Returns the given transition's end node.
 */
 func (self Instance) GetTransitionTo(idx int) string { //gd:AnimationNodeStateMachine.get_transition_to
-	return string(class(self).GetTransitionTo(gd.Int(idx)).String())
+	return string(class(self).GetTransitionTo(int64(idx)).String())
 }
 
 /*
@@ -172,7 +176,7 @@ func (self Instance) GetTransitionCount() int { //gd:AnimationNodeStateMachine.g
 Deletes the given transition by index.
 */
 func (self Instance) RemoveTransitionByIndex(idx int) { //gd:AnimationNodeStateMachine.remove_transition_by_index
-	class(self).RemoveTransitionByIndex(gd.Int(idx))
+	class(self).RemoveTransitionByIndex(int64(idx))
 }
 
 /*
@@ -186,7 +190,7 @@ func (self Instance) RemoveTransition(from string, to string) { //gd:AnimationNo
 Sets the draw offset of the graph. Used for display in the editor.
 */
 func (self Instance) SetGraphOffset(offset Vector2.XY) { //gd:AnimationNodeStateMachine.set_graph_offset
-	class(self).SetGraphOffset(gd.Vector2(offset))
+	class(self).SetGraphOffset(Vector2.XY(offset))
 }
 
 /*
@@ -243,7 +247,7 @@ func (self Instance) SetResetEnds(value bool) {
 Adds a new animation node to the graph. The [param position] is used for display in the editor.
 */
 //go:nosplit
-func (self class) AddNode(name String.Name, node [1]gdclass.AnimationNode, position gd.Vector2) { //gd:AnimationNodeStateMachine.add_node
+func (self class) AddNode(name String.Name, node [1]gdclass.AnimationNode, position Vector2.XY) { //gd:AnimationNodeStateMachine.add_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(node[0])[0])
@@ -337,7 +341,7 @@ func (self class) GetNodeName(node [1]gdclass.AnimationNode) String.Name { //gd:
 Sets the animation node's coordinates. Used for display in the editor.
 */
 //go:nosplit
-func (self class) SetNodePosition(name String.Name, position gd.Vector2) { //gd:AnimationNodeStateMachine.set_node_position
+func (self class) SetNodePosition(name String.Name, position Vector2.XY) { //gd:AnimationNodeStateMachine.set_node_position
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, position)
@@ -350,10 +354,10 @@ func (self class) SetNodePosition(name String.Name, position gd.Vector2) { //gd:
 Returns the given animation node's coordinates. Used for display in the editor.
 */
 //go:nosplit
-func (self class) GetNodePosition(name String.Name) gd.Vector2 { //gd:AnimationNodeStateMachine.get_node_position
+func (self class) GetNodePosition(name String.Name) Vector2.XY { //gd:AnimationNodeStateMachine.get_node_position
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -393,7 +397,7 @@ func (self class) AddTransition(from String.Name, to String.Name, transition [1]
 Returns the given transition.
 */
 //go:nosplit
-func (self class) GetTransition(idx gd.Int) [1]gdclass.AnimationNodeStateMachineTransition { //gd:AnimationNodeStateMachine.get_transition
+func (self class) GetTransition(idx int64) [1]gdclass.AnimationNodeStateMachineTransition { //gd:AnimationNodeStateMachine.get_transition
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -407,7 +411,7 @@ func (self class) GetTransition(idx gd.Int) [1]gdclass.AnimationNodeStateMachine
 Returns the given transition's start node.
 */
 //go:nosplit
-func (self class) GetTransitionFrom(idx gd.Int) String.Name { //gd:AnimationNodeStateMachine.get_transition_from
+func (self class) GetTransitionFrom(idx int64) String.Name { //gd:AnimationNodeStateMachine.get_transition_from
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -421,7 +425,7 @@ func (self class) GetTransitionFrom(idx gd.Int) String.Name { //gd:AnimationNode
 Returns the given transition's end node.
 */
 //go:nosplit
-func (self class) GetTransitionTo(idx gd.Int) String.Name { //gd:AnimationNodeStateMachine.get_transition_to
+func (self class) GetTransitionTo(idx int64) String.Name { //gd:AnimationNodeStateMachine.get_transition_to
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -435,9 +439,9 @@ func (self class) GetTransitionTo(idx gd.Int) String.Name { //gd:AnimationNodeSt
 Returns the number of connections in the graph.
 */
 //go:nosplit
-func (self class) GetTransitionCount() gd.Int { //gd:AnimationNodeStateMachine.get_transition_count
+func (self class) GetTransitionCount() int64 { //gd:AnimationNodeStateMachine.get_transition_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -448,7 +452,7 @@ func (self class) GetTransitionCount() gd.Int { //gd:AnimationNodeStateMachine.g
 Deletes the given transition by index.
 */
 //go:nosplit
-func (self class) RemoveTransitionByIndex(idx gd.Int) { //gd:AnimationNodeStateMachine.remove_transition_by_index
+func (self class) RemoveTransitionByIndex(idx int64) { //gd:AnimationNodeStateMachine.remove_transition_by_index
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Nil
@@ -473,7 +477,7 @@ func (self class) RemoveTransition(from String.Name, to String.Name) { //gd:Anim
 Sets the draw offset of the graph. Used for display in the editor.
 */
 //go:nosplit
-func (self class) SetGraphOffset(offset gd.Vector2) { //gd:AnimationNodeStateMachine.set_graph_offset
+func (self class) SetGraphOffset(offset Vector2.XY) { //gd:AnimationNodeStateMachine.set_graph_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -485,9 +489,9 @@ func (self class) SetGraphOffset(offset gd.Vector2) { //gd:AnimationNodeStateMac
 Returns the draw offset of the graph. Used for display in the editor.
 */
 //go:nosplit
-func (self class) GetGraphOffset() gd.Vector2 { //gd:AnimationNodeStateMachine.get_graph_offset
+func (self class) GetGraphOffset() Vector2.XY { //gd:AnimationNodeStateMachine.get_graph_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_graph_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

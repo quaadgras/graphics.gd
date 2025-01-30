@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioStream"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioStream"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -107,7 +111,7 @@ func (self Instance) LoopBegin() int {
 }
 
 func (self Instance) SetLoopBegin(value int) {
-	class(self).SetLoopBegin(gd.Int(value))
+	class(self).SetLoopBegin(int64(value))
 }
 
 func (self Instance) LoopEnd() int {
@@ -115,7 +119,7 @@ func (self Instance) LoopEnd() int {
 }
 
 func (self Instance) SetLoopEnd(value int) {
-	class(self).SetLoopEnd(gd.Int(value))
+	class(self).SetLoopEnd(int64(value))
 }
 
 func (self Instance) MixRate() int {
@@ -123,7 +127,7 @@ func (self Instance) MixRate() int {
 }
 
 func (self Instance) SetMixRate(value int) {
-	class(self).SetMixRate(gd.Int(value))
+	class(self).SetMixRate(int64(value))
 }
 
 func (self Instance) Stereo() bool {
@@ -192,7 +196,7 @@ func (self class) GetLoopMode() gdclass.AudioStreamWAVLoopMode { //gd:AudioStrea
 }
 
 //go:nosplit
-func (self class) SetLoopBegin(loop_begin gd.Int) { //gd:AudioStreamWAV.set_loop_begin
+func (self class) SetLoopBegin(loop_begin int64) { //gd:AudioStreamWAV.set_loop_begin
 	var frame = callframe.New()
 	callframe.Arg(frame, loop_begin)
 	var r_ret = callframe.Nil
@@ -201,9 +205,9 @@ func (self class) SetLoopBegin(loop_begin gd.Int) { //gd:AudioStreamWAV.set_loop
 }
 
 //go:nosplit
-func (self class) GetLoopBegin() gd.Int { //gd:AudioStreamWAV.get_loop_begin
+func (self class) GetLoopBegin() int64 { //gd:AudioStreamWAV.get_loop_begin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_get_loop_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -211,7 +215,7 @@ func (self class) GetLoopBegin() gd.Int { //gd:AudioStreamWAV.get_loop_begin
 }
 
 //go:nosplit
-func (self class) SetLoopEnd(loop_end gd.Int) { //gd:AudioStreamWAV.set_loop_end
+func (self class) SetLoopEnd(loop_end int64) { //gd:AudioStreamWAV.set_loop_end
 	var frame = callframe.New()
 	callframe.Arg(frame, loop_end)
 	var r_ret = callframe.Nil
@@ -220,9 +224,9 @@ func (self class) SetLoopEnd(loop_end gd.Int) { //gd:AudioStreamWAV.set_loop_end
 }
 
 //go:nosplit
-func (self class) GetLoopEnd() gd.Int { //gd:AudioStreamWAV.get_loop_end
+func (self class) GetLoopEnd() int64 { //gd:AudioStreamWAV.get_loop_end
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_get_loop_end, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -230,7 +234,7 @@ func (self class) GetLoopEnd() gd.Int { //gd:AudioStreamWAV.get_loop_end
 }
 
 //go:nosplit
-func (self class) SetMixRate(mix_rate gd.Int) { //gd:AudioStreamWAV.set_mix_rate
+func (self class) SetMixRate(mix_rate int64) { //gd:AudioStreamWAV.set_mix_rate
 	var frame = callframe.New()
 	callframe.Arg(frame, mix_rate)
 	var r_ret = callframe.Nil
@@ -239,9 +243,9 @@ func (self class) SetMixRate(mix_rate gd.Int) { //gd:AudioStreamWAV.set_mix_rate
 }
 
 //go:nosplit
-func (self class) GetMixRate() gd.Int { //gd:AudioStreamWAV.get_mix_rate
+func (self class) GetMixRate() int64 { //gd:AudioStreamWAV.get_mix_rate
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_get_mix_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -272,12 +276,12 @@ Saves the AudioStreamWAV as a WAV file to [param path]. Samples with IMA ADPCM o
 [b]Note:[/b] A [code].wav[/code] extension is automatically appended to [param path] if it is missing.
 */
 //go:nosplit
-func (self class) SaveToWav(path String.Readable) gd.Error { //gd:AudioStreamWAV.save_to_wav
+func (self class) SaveToWav(path String.Readable) Error.Code { //gd:AudioStreamWAV.save_to_wav
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_save_to_wav, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -345,120 +349,4 @@ const (
 	LoopPingpong LoopMode = 2
 	/*Audio loops the data between [member loop_begin] and [member loop_end], playing backward only.*/
 	LoopBackward LoopMode = 3
-)
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
 )

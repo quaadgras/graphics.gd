@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Shape3D"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -85,7 +88,7 @@ The image needs to be in either [constant Image.FORMAT_RF] (32 bit), [constant I
 Each image pixel is read in as a float on the range from [code]0.0[/code] (black pixel) to [code]1.0[/code] (white pixel). This range value gets remapped to [param height_min] and [param height_max] to form the final height value.
 */
 func (self Instance) UpdateMapDataFromImage(image [1]gdclass.Image, height_min Float.X, height_max Float.X) { //gd:HeightMapShape3D.update_map_data_from_image
-	class(self).UpdateMapDataFromImage(image, gd.Float(height_min), gd.Float(height_max))
+	class(self).UpdateMapDataFromImage(image, float64(height_min), float64(height_max))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -112,7 +115,7 @@ func (self Instance) MapWidth() int {
 }
 
 func (self Instance) SetMapWidth(value int) {
-	class(self).SetMapWidth(gd.Int(value))
+	class(self).SetMapWidth(int64(value))
 }
 
 func (self Instance) MapDepth() int {
@@ -120,7 +123,7 @@ func (self Instance) MapDepth() int {
 }
 
 func (self Instance) SetMapDepth(value int) {
-	class(self).SetMapDepth(gd.Int(value))
+	class(self).SetMapDepth(int64(value))
 }
 
 func (self Instance) MapData() []float32 {
@@ -132,7 +135,7 @@ func (self Instance) SetMapData(value []float32) {
 }
 
 //go:nosplit
-func (self class) SetMapWidth(width gd.Int) { //gd:HeightMapShape3D.set_map_width
+func (self class) SetMapWidth(width int64) { //gd:HeightMapShape3D.set_map_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -141,9 +144,9 @@ func (self class) SetMapWidth(width gd.Int) { //gd:HeightMapShape3D.set_map_widt
 }
 
 //go:nosplit
-func (self class) GetMapWidth() gd.Int { //gd:HeightMapShape3D.get_map_width
+func (self class) GetMapWidth() int64 { //gd:HeightMapShape3D.get_map_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HeightMapShape3D.Bind_get_map_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -151,7 +154,7 @@ func (self class) GetMapWidth() gd.Int { //gd:HeightMapShape3D.get_map_width
 }
 
 //go:nosplit
-func (self class) SetMapDepth(height gd.Int) { //gd:HeightMapShape3D.set_map_depth
+func (self class) SetMapDepth(height int64) { //gd:HeightMapShape3D.set_map_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -160,9 +163,9 @@ func (self class) SetMapDepth(height gd.Int) { //gd:HeightMapShape3D.set_map_dep
 }
 
 //go:nosplit
-func (self class) GetMapDepth() gd.Int { //gd:HeightMapShape3D.get_map_depth
+func (self class) GetMapDepth() int64 { //gd:HeightMapShape3D.get_map_depth
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HeightMapShape3D.Bind_get_map_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -192,9 +195,9 @@ func (self class) GetMapData() Packed.Array[float32] { //gd:HeightMapShape3D.get
 Returns the smallest height value found in [member map_data]. Recalculates only when [member map_data] changes.
 */
 //go:nosplit
-func (self class) GetMinHeight() gd.Float { //gd:HeightMapShape3D.get_min_height
+func (self class) GetMinHeight() float64 { //gd:HeightMapShape3D.get_min_height
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HeightMapShape3D.Bind_get_min_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -205,9 +208,9 @@ func (self class) GetMinHeight() gd.Float { //gd:HeightMapShape3D.get_min_height
 Returns the largest height value found in [member map_data]. Recalculates only when [member map_data] changes.
 */
 //go:nosplit
-func (self class) GetMaxHeight() gd.Float { //gd:HeightMapShape3D.get_max_height
+func (self class) GetMaxHeight() float64 { //gd:HeightMapShape3D.get_max_height
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HeightMapShape3D.Bind_get_max_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -220,7 +223,7 @@ The image needs to be in either [constant Image.FORMAT_RF] (32 bit), [constant I
 Each image pixel is read in as a float on the range from [code]0.0[/code] (black pixel) to [code]1.0[/code] (white pixel). This range value gets remapped to [param height_min] and [param height_max] to form the final height value.
 */
 //go:nosplit
-func (self class) UpdateMapDataFromImage(image [1]gdclass.Image, height_min gd.Float, height_max gd.Float) { //gd:HeightMapShape3D.update_map_data_from_image
+func (self class) UpdateMapDataFromImage(image [1]gdclass.Image, height_min float64, height_max float64) { //gd:HeightMapShape3D.update_map_data_from_image
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, height_min)

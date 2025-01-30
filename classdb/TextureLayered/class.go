@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Texture"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -105,7 +109,7 @@ func (Instance) _get_layered_type(impl func(ptr unsafe.Pointer) int) (cb gd.Exte
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -116,7 +120,7 @@ func (Instance) _get_width(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionCl
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -127,7 +131,7 @@ func (Instance) _get_height(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionC
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -138,7 +142,7 @@ func (Instance) _get_layers(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionC
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -158,7 +162,7 @@ Called when the data for a layer in the [TextureLayered] is queried.
 */
 func (Instance) _get_layer_data(impl func(ptr unsafe.Pointer, layer_index int) [1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var layer_index = gd.UnsafeGet[gd.Int](p_args, 0)
+		var layer_index = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(layer_index))
@@ -217,7 +221,7 @@ func (self Instance) HasMipmaps() bool { //gd:TextureLayered.has_mipmaps
 Returns an [Image] resource with the data from specified [param layer].
 */
 func (self Instance) GetLayerData(layer int) [1]gdclass.Image { //gd:TextureLayered.get_layer_data
-	return [1]gdclass.Image(class(self).GetLayerData(gd.Int(layer)))
+	return [1]gdclass.Image(class(self).GetLayerData(int64(layer)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -253,7 +257,7 @@ func (class) _get_format(impl func(ptr unsafe.Pointer) gdclass.ImageFormat) (cb 
 /*
 Called when the layers' type in the [TextureLayered] is queried.
 */
-func (class) _get_layered_type(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_layered_type(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -264,7 +268,7 @@ func (class) _get_layered_type(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.Exte
 /*
 Called when the [TextureLayered]'s width queried.
 */
-func (class) _get_width(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_width(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -275,7 +279,7 @@ func (class) _get_width(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionCl
 /*
 Called when the [TextureLayered]'s height is queried.
 */
-func (class) _get_height(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_height(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -286,7 +290,7 @@ func (class) _get_height(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionC
 /*
 Called when the number of layers in the [TextureLayered] is queried.
 */
-func (class) _get_layers(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_layers(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -308,9 +312,9 @@ func (class) _has_mipmaps(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionCl
 /*
 Called when the data for a layer in the [TextureLayered] is queried.
 */
-func (class) _get_layer_data(impl func(ptr unsafe.Pointer, layer_index gd.Int) [1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_layer_data(impl func(ptr unsafe.Pointer, layer_index int64) [1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var layer_index = gd.UnsafeGet[gd.Int](p_args, 0)
+		var layer_index = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, layer_index)
@@ -353,9 +357,9 @@ func (self class) GetLayeredType() gdclass.TextureLayeredLayeredType { //gd:Text
 Returns the width of the texture in pixels. Width is typically represented by the X axis.
 */
 //go:nosplit
-func (self class) GetWidth() gd.Int { //gd:TextureLayered.get_width
+func (self class) GetWidth() int64 { //gd:TextureLayered.get_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -366,9 +370,9 @@ func (self class) GetWidth() gd.Int { //gd:TextureLayered.get_width
 Returns the height of the texture in pixels. Height is typically represented by the Y axis.
 */
 //go:nosplit
-func (self class) GetHeight() gd.Int { //gd:TextureLayered.get_height
+func (self class) GetHeight() int64 { //gd:TextureLayered.get_height
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -379,9 +383,9 @@ func (self class) GetHeight() gd.Int { //gd:TextureLayered.get_height
 Returns the number of referenced [Image]s.
 */
 //go:nosplit
-func (self class) GetLayers() gd.Int { //gd:TextureLayered.get_layers
+func (self class) GetLayers() int64 { //gd:TextureLayered.get_layers
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -405,7 +409,7 @@ func (self class) HasMipmaps() bool { //gd:TextureLayered.has_mipmaps
 Returns an [Image] resource with the data from specified [param layer].
 */
 //go:nosplit
-func (self class) GetLayerData(layer gd.Int) [1]gdclass.Image { //gd:TextureLayered.get_layer_data
+func (self class) GetLayerData(layer int64) [1]gdclass.Image { //gd:TextureLayered.get_layer_data
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

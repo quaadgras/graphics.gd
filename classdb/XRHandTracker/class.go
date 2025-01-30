@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/XRPositionalTracker"
+import "graphics.gd/classdb/XRTracker"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/XRPositionalTracker"
-import "graphics.gd/classdb/XRTracker"
-import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -72,7 +75,7 @@ func (self Instance) GetHandJointFlags(joint gdclass.XRHandTrackerHandJoint) gdc
 Sets the transform for the given hand joint.
 */
 func (self Instance) SetHandJointTransform(joint gdclass.XRHandTrackerHandJoint, transform Transform3D.BasisOrigin) { //gd:XRHandTracker.set_hand_joint_transform
-	class(self).SetHandJointTransform(joint, gd.Transform3D(transform))
+	class(self).SetHandJointTransform(joint, Transform3D.BasisOrigin(transform))
 }
 
 /*
@@ -86,7 +89,7 @@ func (self Instance) GetHandJointTransform(joint gdclass.XRHandTrackerHandJoint)
 Sets the radius of the given hand joint.
 */
 func (self Instance) SetHandJointRadius(joint gdclass.XRHandTrackerHandJoint, radius Float.X) { //gd:XRHandTracker.set_hand_joint_radius
-	class(self).SetHandJointRadius(joint, gd.Float(radius))
+	class(self).SetHandJointRadius(joint, float64(radius))
 }
 
 /*
@@ -100,7 +103,7 @@ func (self Instance) GetHandJointRadius(joint gdclass.XRHandTrackerHandJoint) Fl
 Sets the linear velocity for the given hand joint.
 */
 func (self Instance) SetHandJointLinearVelocity(joint gdclass.XRHandTrackerHandJoint, linear_velocity Vector3.XYZ) { //gd:XRHandTracker.set_hand_joint_linear_velocity
-	class(self).SetHandJointLinearVelocity(joint, gd.Vector3(linear_velocity))
+	class(self).SetHandJointLinearVelocity(joint, Vector3.XYZ(linear_velocity))
 }
 
 /*
@@ -114,7 +117,7 @@ func (self Instance) GetHandJointLinearVelocity(joint gdclass.XRHandTrackerHandJ
 Sets the angular velocity for the given hand joint.
 */
 func (self Instance) SetHandJointAngularVelocity(joint gdclass.XRHandTrackerHandJoint, angular_velocity Vector3.XYZ) { //gd:XRHandTracker.set_hand_joint_angular_velocity
-	class(self).SetHandJointAngularVelocity(joint, gd.Vector3(angular_velocity))
+	class(self).SetHandJointAngularVelocity(joint, Vector3.XYZ(angular_velocity))
 }
 
 /*
@@ -228,7 +231,7 @@ func (self class) GetHandJointFlags(joint gdclass.XRHandTrackerHandJoint) gdclas
 Sets the transform for the given hand joint.
 */
 //go:nosplit
-func (self class) SetHandJointTransform(joint gdclass.XRHandTrackerHandJoint, transform gd.Transform3D) { //gd:XRHandTracker.set_hand_joint_transform
+func (self class) SetHandJointTransform(joint gdclass.XRHandTrackerHandJoint, transform Transform3D.BasisOrigin) { //gd:XRHandTracker.set_hand_joint_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, transform)
@@ -241,10 +244,10 @@ func (self class) SetHandJointTransform(joint gdclass.XRHandTrackerHandJoint, tr
 Returns the transform for the given hand joint.
 */
 //go:nosplit
-func (self class) GetHandJointTransform(joint gdclass.XRHandTrackerHandJoint) gd.Transform3D { //gd:XRHandTracker.get_hand_joint_transform
+func (self class) GetHandJointTransform(joint gdclass.XRHandTrackerHandJoint) Transform3D.BasisOrigin { //gd:XRHandTracker.get_hand_joint_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -255,7 +258,7 @@ func (self class) GetHandJointTransform(joint gdclass.XRHandTrackerHandJoint) gd
 Sets the radius of the given hand joint.
 */
 //go:nosplit
-func (self class) SetHandJointRadius(joint gdclass.XRHandTrackerHandJoint, radius gd.Float) { //gd:XRHandTracker.set_hand_joint_radius
+func (self class) SetHandJointRadius(joint gdclass.XRHandTrackerHandJoint, radius float64) { //gd:XRHandTracker.set_hand_joint_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, radius)
@@ -268,10 +271,10 @@ func (self class) SetHandJointRadius(joint gdclass.XRHandTrackerHandJoint, radiu
 Returns the radius of the given hand joint.
 */
 //go:nosplit
-func (self class) GetHandJointRadius(joint gdclass.XRHandTrackerHandJoint) gd.Float { //gd:XRHandTracker.get_hand_joint_radius
+func (self class) GetHandJointRadius(joint gdclass.XRHandTrackerHandJoint) float64 { //gd:XRHandTracker.get_hand_joint_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -282,7 +285,7 @@ func (self class) GetHandJointRadius(joint gdclass.XRHandTrackerHandJoint) gd.Fl
 Sets the linear velocity for the given hand joint.
 */
 //go:nosplit
-func (self class) SetHandJointLinearVelocity(joint gdclass.XRHandTrackerHandJoint, linear_velocity gd.Vector3) { //gd:XRHandTracker.set_hand_joint_linear_velocity
+func (self class) SetHandJointLinearVelocity(joint gdclass.XRHandTrackerHandJoint, linear_velocity Vector3.XYZ) { //gd:XRHandTracker.set_hand_joint_linear_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, linear_velocity)
@@ -295,10 +298,10 @@ func (self class) SetHandJointLinearVelocity(joint gdclass.XRHandTrackerHandJoin
 Returns the linear velocity for the given hand joint.
 */
 //go:nosplit
-func (self class) GetHandJointLinearVelocity(joint gdclass.XRHandTrackerHandJoint) gd.Vector3 { //gd:XRHandTracker.get_hand_joint_linear_velocity
+func (self class) GetHandJointLinearVelocity(joint gdclass.XRHandTrackerHandJoint) Vector3.XYZ { //gd:XRHandTracker.get_hand_joint_linear_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -309,7 +312,7 @@ func (self class) GetHandJointLinearVelocity(joint gdclass.XRHandTrackerHandJoin
 Sets the angular velocity for the given hand joint.
 */
 //go:nosplit
-func (self class) SetHandJointAngularVelocity(joint gdclass.XRHandTrackerHandJoint, angular_velocity gd.Vector3) { //gd:XRHandTracker.set_hand_joint_angular_velocity
+func (self class) SetHandJointAngularVelocity(joint gdclass.XRHandTrackerHandJoint, angular_velocity Vector3.XYZ) { //gd:XRHandTracker.set_hand_joint_angular_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, angular_velocity)
@@ -322,10 +325,10 @@ func (self class) SetHandJointAngularVelocity(joint gdclass.XRHandTrackerHandJoi
 Returns the angular velocity for the given hand joint.
 */
 //go:nosplit
-func (self class) GetHandJointAngularVelocity(joint gdclass.XRHandTrackerHandJoint) gd.Vector3 { //gd:XRHandTracker.get_hand_joint_angular_velocity
+func (self class) GetHandJointAngularVelocity(joint gdclass.XRHandTrackerHandJoint) Vector3.XYZ { //gd:XRHandTracker.get_hand_joint_angular_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

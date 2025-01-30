@@ -10,16 +10,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2i"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -120,7 +125,7 @@ Returns mesh previews rendered at the given size as an [Array] of [Texture2D]s.
 */
 func MakeMeshPreviews(meshes [][1]gdclass.Mesh, preview_size int) [][1]gdclass.Texture2D { //gd:EditorInterface.make_mesh_previews
 	once.Do(singleton)
-	return [][1]gdclass.Texture2D(gd.ArrayAs[[][1]gdclass.Texture2D](gd.InternalArray(class(self).MakeMeshPreviews(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Mesh]](meshes), gd.Int(preview_size)))))
+	return [][1]gdclass.Texture2D(gd.ArrayAs[[][1]gdclass.Texture2D](gd.InternalArray(class(self).MakeMeshPreviews(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Mesh]](meshes), int64(preview_size)))))
 }
 
 /*
@@ -189,7 +194,7 @@ Returns the specified 3D editor [SubViewport], from [code]0[/code] to [code]3[/c
 */
 func GetEditorViewport3d() [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_3d
 	once.Do(singleton)
-	return [1]gdclass.SubViewport(class(self).GetEditorViewport3d(gd.Int(0)))
+	return [1]gdclass.SubViewport(class(self).GetEditorViewport3d(int64(0)))
 }
 
 /*
@@ -226,7 +231,7 @@ See also [method Window.set_unparent_when_invisible].
 */
 func PopupDialog(dialog [1]gdclass.Window) { //gd:EditorInterface.popup_dialog
 	once.Do(singleton)
-	class(self).PopupDialog(dialog, gd.Rect2i(gd.NewRect2i(0, 0, 0, 0)))
+	class(self).PopupDialog(dialog, Rect2i.PositionSize(gd.NewRect2i(0, 0, 0, 0)))
 }
 
 /*
@@ -235,7 +240,7 @@ See also [method Window.set_unparent_when_invisible].
 */
 func PopupDialogCentered(dialog [1]gdclass.Window) { //gd:EditorInterface.popup_dialog_centered
 	once.Do(singleton)
-	class(self).PopupDialogCentered(dialog, gd.Vector2i(gd.Vector2i{0, 0}))
+	class(self).PopupDialogCentered(dialog, Vector2i.XY(gd.Vector2i{0, 0}))
 }
 
 /*
@@ -244,7 +249,7 @@ See also [method Window.set_unparent_when_invisible].
 */
 func PopupDialogCenteredRatio(dialog [1]gdclass.Window) { //gd:EditorInterface.popup_dialog_centered_ratio
 	once.Do(singleton)
-	class(self).PopupDialogCenteredRatio(dialog, gd.Float(0.8))
+	class(self).PopupDialogCenteredRatio(dialog, float64(0.8))
 }
 
 /*
@@ -253,7 +258,7 @@ See also [method Window.set_unparent_when_invisible].
 */
 func PopupDialogCenteredClamped(dialog [1]gdclass.Window) { //gd:EditorInterface.popup_dialog_centered_clamped
 	once.Do(singleton)
-	class(self).PopupDialogCenteredClamped(dialog, gd.Vector2i(gd.Vector2i{0, 0}), gd.Float(0.75))
+	class(self).PopupDialogCenteredClamped(dialog, Vector2i.XY(gd.Vector2i{0, 0}), float64(0.75))
 }
 
 /*
@@ -401,7 +406,7 @@ Edits the given [Script]. The line and column on which to open the script can al
 */
 func EditScript(script [1]gdclass.Script) { //gd:EditorInterface.edit_script
 	once.Do(singleton)
-	class(self).EditScript(script, gd.Int(-1), gd.Int(0), true)
+	class(self).EditScript(script, int64(-1), int64(0), true)
 }
 
 /*
@@ -637,7 +642,7 @@ func (self class) GetEditorSettings() [1]gdclass.EditorSettings { //gd:EditorInt
 Returns mesh previews rendered at the given size as an [Array] of [Texture2D]s.
 */
 //go:nosplit
-func (self class) MakeMeshPreviews(meshes Array.Contains[[1]gdclass.Mesh], preview_size gd.Int) Array.Contains[[1]gdclass.Texture2D] { //gd:EditorInterface.make_mesh_previews
+func (self class) MakeMeshPreviews(meshes Array.Contains[[1]gdclass.Mesh], preview_size int64) Array.Contains[[1]gdclass.Texture2D] { //gd:EditorInterface.make_mesh_previews
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(meshes)))
 	callframe.Arg(frame, preview_size)
@@ -749,7 +754,7 @@ func (self class) GetEditorViewport2d() [1]gdclass.SubViewport { //gd:EditorInte
 Returns the specified 3D editor [SubViewport], from [code]0[/code] to [code]3[/code]. The viewport can be used to access the active editor cameras with [method Viewport.get_camera_3d].
 */
 //go:nosplit
-func (self class) GetEditorViewport3d(idx gd.Int) [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_3d
+func (self class) GetEditorViewport3d(idx int64) [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_3d
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -811,9 +816,9 @@ Returns the actual scale of the editor UI ([code]1.0[/code] being 100% scale). T
 [b]Note:[/b] This value is set via the [code]interface/editor/display_scale[/code] and [code]interface/editor/custom_display_scale[/code] editor settings. Editor must be restarted for changes to be properly applied.
 */
 //go:nosplit
-func (self class) GetEditorScale() gd.Float { //gd:EditorInterface.get_editor_scale
+func (self class) GetEditorScale() float64 { //gd:EditorInterface.get_editor_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -825,7 +830,7 @@ Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive]
 See also [method Window.set_unparent_when_invisible].
 */
 //go:nosplit
-func (self class) PopupDialog(dialog [1]gdclass.Window, rect gd.Rect2i) { //gd:EditorInterface.popup_dialog
+func (self class) PopupDialog(dialog [1]gdclass.Window, rect Rect2i.PositionSize) { //gd:EditorInterface.popup_dialog
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dialog[0])[0])
 	callframe.Arg(frame, rect)
@@ -839,7 +844,7 @@ Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive_
 See also [method Window.set_unparent_when_invisible].
 */
 //go:nosplit
-func (self class) PopupDialogCentered(dialog [1]gdclass.Window, minsize gd.Vector2i) { //gd:EditorInterface.popup_dialog_centered
+func (self class) PopupDialogCentered(dialog [1]gdclass.Window, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dialog[0])[0])
 	callframe.Arg(frame, minsize)
@@ -853,7 +858,7 @@ Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive_
 See also [method Window.set_unparent_when_invisible].
 */
 //go:nosplit
-func (self class) PopupDialogCenteredRatio(dialog [1]gdclass.Window, ratio gd.Float) { //gd:EditorInterface.popup_dialog_centered_ratio
+func (self class) PopupDialogCenteredRatio(dialog [1]gdclass.Window, ratio float64) { //gd:EditorInterface.popup_dialog_centered_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dialog[0])[0])
 	callframe.Arg(frame, ratio)
@@ -867,7 +872,7 @@ Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive_
 See also [method Window.set_unparent_when_invisible].
 */
 //go:nosplit
-func (self class) PopupDialogCenteredClamped(dialog [1]gdclass.Window, minsize gd.Vector2i, fallback_ratio gd.Float) { //gd:EditorInterface.popup_dialog_centered_clamped
+func (self class) PopupDialogCenteredClamped(dialog [1]gdclass.Window, minsize Vector2i.XY, fallback_ratio float64) { //gd:EditorInterface.popup_dialog_centered_clamped
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dialog[0])[0])
 	callframe.Arg(frame, minsize)
@@ -1078,7 +1083,7 @@ func (self class) EditNode(node [1]gdclass.Node) { //gd:EditorInterface.edit_nod
 Edits the given [Script]. The line and column on which to open the script can also be specified. The script will be open with the user-configured editor for the script's language which may be an external editor.
 */
 //go:nosplit
-func (self class) EditScript(script [1]gdclass.Script, line gd.Int, column gd.Int, grab_focus bool) { //gd:EditorInterface.edit_script
+func (self class) EditScript(script [1]gdclass.Script, line int64, column int64, grab_focus bool) { //gd:EditorInterface.edit_script
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(script[0])[0])
 	callframe.Arg(frame, line)
@@ -1143,11 +1148,11 @@ func (self class) GetEditedSceneRoot() [1]gdclass.Node { //gd:EditorInterface.ge
 Saves the currently active scene. Returns either [constant OK] or [constant ERR_CANT_CREATE].
 */
 //go:nosplit
-func (self class) SaveScene() gd.Error { //gd:EditorInterface.save_scene
+func (self class) SaveScene() Error.Code { //gd:EditorInterface.save_scene
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_save_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1287,119 +1292,3 @@ func init() {
 		return [1]gdclass.EditorInterface{*(*gdclass.EditorInterface)(unsafe.Pointer(&ptr))}
 	})
 }
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
-)

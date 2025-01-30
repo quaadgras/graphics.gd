@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -78,7 +82,7 @@ See [method get_line_syntax_highlighting] for more details.
 */
 func (Instance) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var line = gd.UnsafeGet[gd.Int](p_args, 0)
+		var line = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(line))
@@ -130,7 +134,7 @@ The return [Dictionary] is column number to [Dictionary]. The column number note
 This will color columns 0-4 red, and columns 5-eol in green.
 */
 func (self Instance) GetLineSyntaxHighlighting(line int) map[int]Entry { //gd:SyntaxHighlighter.get_line_syntax_highlighting
-	return map[int]Entry(gd.DictionaryAs[map[int]Entry](class(self).GetLineSyntaxHighlighting(gd.Int(line))))
+	return map[int]Entry(gd.DictionaryAs[map[int]Entry](class(self).GetLineSyntaxHighlighting(int64(line))))
 }
 
 /*
@@ -179,9 +183,9 @@ func New() Instance {
 Virtual method which can be overridden to return syntax highlighting data.
 See [method get_line_syntax_highlighting] for more details.
 */
-func (class) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line gd.Int) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var line = gd.UnsafeGet[gd.Int](p_args, 0)
+		var line = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, line)
@@ -231,7 +235,7 @@ var color_map = {
 This will color columns 0-4 red, and columns 5-eol in green.
 */
 //go:nosplit
-func (self class) GetLineSyntaxHighlighting(line gd.Int) Dictionary.Any { //gd:SyntaxHighlighter.get_line_syntax_highlighting
+func (self class) GetLineSyntaxHighlighting(line int64) Dictionary.Any { //gd:SyntaxHighlighter.get_line_syntax_highlighting
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)

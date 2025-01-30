@@ -9,19 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/VisualShaderNode"
+import "graphics.gd/classdb/VisualShaderNodeConstant"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/VisualShaderNodeConstant"
-import "graphics.gd/classdb/VisualShaderNode"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Quaternion"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -76,11 +80,11 @@ func (self Instance) Constant() Quaternion.IJKX {
 }
 
 func (self Instance) SetConstant(value Quaternion.IJKX) {
-	class(self).SetConstant(gd.Quaternion(value))
+	class(self).SetConstant(value)
 }
 
 //go:nosplit
-func (self class) SetConstant(constant gd.Quaternion) { //gd:VisualShaderNodeVec4Constant.set_constant
+func (self class) SetConstant(constant Quaternion.IJKX) { //gd:VisualShaderNodeVec4Constant.set_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, constant)
 	var r_ret = callframe.Nil
@@ -89,9 +93,9 @@ func (self class) SetConstant(constant gd.Quaternion) { //gd:VisualShaderNodeVec
 }
 
 //go:nosplit
-func (self class) GetConstant() gd.Quaternion { //gd:VisualShaderNodeVec4Constant.get_constant
+func (self class) GetConstant() Quaternion.IJKX { //gd:VisualShaderNodeVec4Constant.get_constant
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Quaternion](frame)
+	var r_ret = callframe.Ret[Quaternion.IJKX](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVec4Constant.Bind_get_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

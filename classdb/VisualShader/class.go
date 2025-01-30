@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Shader"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Shader"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -62,28 +66,28 @@ func (self Instance) SetMode(mode gdclass.ShaderMode) { //gd:VisualShader.set_mo
 Adds the specified [param node] to the shader.
 */
 func (self Instance) AddNode(atype gdclass.VisualShaderType, node [1]gdclass.VisualShaderNode, position Vector2.XY, id int) { //gd:VisualShader.add_node
-	class(self).AddNode(atype, node, gd.Vector2(position), gd.Int(id))
+	class(self).AddNode(atype, node, Vector2.XY(position), int64(id))
 }
 
 /*
 Returns the shader node instance with specified [param type] and [param id].
 */
 func (self Instance) GetNode(atype gdclass.VisualShaderType, id int) [1]gdclass.VisualShaderNode { //gd:VisualShader.get_node
-	return [1]gdclass.VisualShaderNode(class(self).GetNode(atype, gd.Int(id)))
+	return [1]gdclass.VisualShaderNode(class(self).GetNode(atype, int64(id)))
 }
 
 /*
 Sets the position of the specified node.
 */
 func (self Instance) SetNodePosition(atype gdclass.VisualShaderType, id int, position Vector2.XY) { //gd:VisualShader.set_node_position
-	class(self).SetNodePosition(atype, gd.Int(id), gd.Vector2(position))
+	class(self).SetNodePosition(atype, int64(id), Vector2.XY(position))
 }
 
 /*
 Returns the position of the specified node within the shader graph.
 */
 func (self Instance) GetNodePosition(atype gdclass.VisualShaderType, id int) Vector2.XY { //gd:VisualShader.get_node_position
-	return Vector2.XY(class(self).GetNodePosition(atype, gd.Int(id)))
+	return Vector2.XY(class(self).GetNodePosition(atype, int64(id)))
 }
 
 /*
@@ -104,49 +108,49 @@ func (self Instance) GetValidNodeId(atype gdclass.VisualShaderType) int { //gd:V
 Removes the specified node from the shader.
 */
 func (self Instance) RemoveNode(atype gdclass.VisualShaderType, id int) { //gd:VisualShader.remove_node
-	class(self).RemoveNode(atype, gd.Int(id))
+	class(self).RemoveNode(atype, int64(id))
 }
 
 /*
 Replaces the specified node with a node of new class type.
 */
 func (self Instance) ReplaceNode(atype gdclass.VisualShaderType, id int, new_class string) { //gd:VisualShader.replace_node
-	class(self).ReplaceNode(atype, gd.Int(id), String.Name(String.New(new_class)))
+	class(self).ReplaceNode(atype, int64(id), String.Name(String.New(new_class)))
 }
 
 /*
 Returns [code]true[/code] if the specified node and port connection exist.
 */
 func (self Instance) IsNodeConnection(atype gdclass.VisualShaderType, from_node int, from_port int, to_node int, to_port int) bool { //gd:VisualShader.is_node_connection
-	return bool(class(self).IsNodeConnection(atype, gd.Int(from_node), gd.Int(from_port), gd.Int(to_node), gd.Int(to_port)))
+	return bool(class(self).IsNodeConnection(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port)))
 }
 
 /*
 Returns [code]true[/code] if the specified nodes and ports can be connected together.
 */
 func (self Instance) CanConnectNodes(atype gdclass.VisualShaderType, from_node int, from_port int, to_node int, to_port int) bool { //gd:VisualShader.can_connect_nodes
-	return bool(class(self).CanConnectNodes(atype, gd.Int(from_node), gd.Int(from_port), gd.Int(to_node), gd.Int(to_port)))
+	return bool(class(self).CanConnectNodes(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port)))
 }
 
 /*
 Connects the specified nodes and ports.
 */
 func (self Instance) ConnectNodes(atype gdclass.VisualShaderType, from_node int, from_port int, to_node int, to_port int) error { //gd:VisualShader.connect_nodes
-	return error(gd.ToError(class(self).ConnectNodes(atype, gd.Int(from_node), gd.Int(from_port), gd.Int(to_node), gd.Int(to_port))))
+	return error(gd.ToError(class(self).ConnectNodes(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port))))
 }
 
 /*
 Connects the specified nodes and ports.
 */
 func (self Instance) DisconnectNodes(atype gdclass.VisualShaderType, from_node int, from_port int, to_node int, to_port int) { //gd:VisualShader.disconnect_nodes
-	class(self).DisconnectNodes(atype, gd.Int(from_node), gd.Int(from_port), gd.Int(to_node), gd.Int(to_port))
+	class(self).DisconnectNodes(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port))
 }
 
 /*
 Connects the specified nodes and ports, even if they can't be connected. Such connection is invalid and will not function properly.
 */
 func (self Instance) ConnectNodesForced(atype gdclass.VisualShaderType, from_node int, from_port int, to_node int, to_port int) { //gd:VisualShader.connect_nodes_forced
-	class(self).ConnectNodesForced(atype, gd.Int(from_node), gd.Int(from_port), gd.Int(to_node), gd.Int(to_port))
+	class(self).ConnectNodesForced(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port))
 }
 
 /*
@@ -160,14 +164,14 @@ func (self Instance) GetNodeConnections(atype gdclass.VisualShaderType) []map[st
 Attaches the given node to the given frame.
 */
 func (self Instance) AttachNodeToFrame(atype gdclass.VisualShaderType, id int, frame_ int) { //gd:VisualShader.attach_node_to_frame
-	class(self).AttachNodeToFrame(atype, gd.Int(id), gd.Int(frame_))
+	class(self).AttachNodeToFrame(atype, int64(id), int64(frame_))
 }
 
 /*
 Detaches the given node from the frame it is attached to.
 */
 func (self Instance) DetachNodeFromFrame(atype gdclass.VisualShaderType, id int) { //gd:VisualShader.detach_node_from_frame
-	class(self).DetachNodeFromFrame(atype, gd.Int(id))
+	class(self).DetachNodeFromFrame(atype, int64(id))
 }
 
 /*
@@ -215,7 +219,7 @@ func (self Instance) GraphOffset() Vector2.XY {
 }
 
 func (self Instance) SetGraphOffset(value Vector2.XY) {
-	class(self).SetGraphOffset(gd.Vector2(value))
+	class(self).SetGraphOffset(Vector2.XY(value))
 }
 
 /*
@@ -234,7 +238,7 @@ func (self class) SetMode(mode gdclass.ShaderMode) { //gd:VisualShader.set_mode
 Adds the specified [param node] to the shader.
 */
 //go:nosplit
-func (self class) AddNode(atype gdclass.VisualShaderType, node [1]gdclass.VisualShaderNode, position gd.Vector2, id gd.Int) { //gd:VisualShader.add_node
+func (self class) AddNode(atype gdclass.VisualShaderType, node [1]gdclass.VisualShaderNode, position Vector2.XY, id int64) { //gd:VisualShader.add_node
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, pointers.Get(node[0])[0])
@@ -249,7 +253,7 @@ func (self class) AddNode(atype gdclass.VisualShaderType, node [1]gdclass.Visual
 Returns the shader node instance with specified [param type] and [param id].
 */
 //go:nosplit
-func (self class) GetNode(atype gdclass.VisualShaderType, id gd.Int) [1]gdclass.VisualShaderNode { //gd:VisualShader.get_node
+func (self class) GetNode(atype gdclass.VisualShaderType, id int64) [1]gdclass.VisualShaderNode { //gd:VisualShader.get_node
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, id)
@@ -264,7 +268,7 @@ func (self class) GetNode(atype gdclass.VisualShaderType, id gd.Int) [1]gdclass.
 Sets the position of the specified node.
 */
 //go:nosplit
-func (self class) SetNodePosition(atype gdclass.VisualShaderType, id gd.Int, position gd.Vector2) { //gd:VisualShader.set_node_position
+func (self class) SetNodePosition(atype gdclass.VisualShaderType, id int64, position Vector2.XY) { //gd:VisualShader.set_node_position
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, id)
@@ -278,11 +282,11 @@ func (self class) SetNodePosition(atype gdclass.VisualShaderType, id gd.Int, pos
 Returns the position of the specified node within the shader graph.
 */
 //go:nosplit
-func (self class) GetNodePosition(atype gdclass.VisualShaderType, id gd.Int) gd.Vector2 { //gd:VisualShader.get_node_position
+func (self class) GetNodePosition(atype gdclass.VisualShaderType, id int64) Vector2.XY { //gd:VisualShader.get_node_position
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShader.Bind_get_node_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -307,10 +311,10 @@ func (self class) GetNodeList(atype gdclass.VisualShaderType) Packed.Array[int32
 Returns next valid node ID that can be added to the shader graph.
 */
 //go:nosplit
-func (self class) GetValidNodeId(atype gdclass.VisualShaderType) gd.Int { //gd:VisualShader.get_valid_node_id
+func (self class) GetValidNodeId(atype gdclass.VisualShaderType) int64 { //gd:VisualShader.get_valid_node_id
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShader.Bind_get_valid_node_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -321,7 +325,7 @@ func (self class) GetValidNodeId(atype gdclass.VisualShaderType) gd.Int { //gd:V
 Removes the specified node from the shader.
 */
 //go:nosplit
-func (self class) RemoveNode(atype gdclass.VisualShaderType, id gd.Int) { //gd:VisualShader.remove_node
+func (self class) RemoveNode(atype gdclass.VisualShaderType, id int64) { //gd:VisualShader.remove_node
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, id)
@@ -334,7 +338,7 @@ func (self class) RemoveNode(atype gdclass.VisualShaderType, id gd.Int) { //gd:V
 Replaces the specified node with a node of new class type.
 */
 //go:nosplit
-func (self class) ReplaceNode(atype gdclass.VisualShaderType, id gd.Int, new_class String.Name) { //gd:VisualShader.replace_node
+func (self class) ReplaceNode(atype gdclass.VisualShaderType, id int64, new_class String.Name) { //gd:VisualShader.replace_node
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, id)
@@ -348,7 +352,7 @@ func (self class) ReplaceNode(atype gdclass.VisualShaderType, id gd.Int, new_cla
 Returns [code]true[/code] if the specified node and port connection exist.
 */
 //go:nosplit
-func (self class) IsNodeConnection(atype gdclass.VisualShaderType, from_node gd.Int, from_port gd.Int, to_node gd.Int, to_port gd.Int) bool { //gd:VisualShader.is_node_connection
+func (self class) IsNodeConnection(atype gdclass.VisualShaderType, from_node int64, from_port int64, to_node int64, to_port int64) bool { //gd:VisualShader.is_node_connection
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, from_node)
@@ -366,7 +370,7 @@ func (self class) IsNodeConnection(atype gdclass.VisualShaderType, from_node gd.
 Returns [code]true[/code] if the specified nodes and ports can be connected together.
 */
 //go:nosplit
-func (self class) CanConnectNodes(atype gdclass.VisualShaderType, from_node gd.Int, from_port gd.Int, to_node gd.Int, to_port gd.Int) bool { //gd:VisualShader.can_connect_nodes
+func (self class) CanConnectNodes(atype gdclass.VisualShaderType, from_node int64, from_port int64, to_node int64, to_port int64) bool { //gd:VisualShader.can_connect_nodes
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, from_node)
@@ -384,16 +388,16 @@ func (self class) CanConnectNodes(atype gdclass.VisualShaderType, from_node gd.I
 Connects the specified nodes and ports.
 */
 //go:nosplit
-func (self class) ConnectNodes(atype gdclass.VisualShaderType, from_node gd.Int, from_port gd.Int, to_node gd.Int, to_port gd.Int) gd.Error { //gd:VisualShader.connect_nodes
+func (self class) ConnectNodes(atype gdclass.VisualShaderType, from_node int64, from_port int64, to_node int64, to_port int64) Error.Code { //gd:VisualShader.connect_nodes
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, from_node)
 	callframe.Arg(frame, from_port)
 	callframe.Arg(frame, to_node)
 	callframe.Arg(frame, to_port)
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShader.Bind_connect_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -402,7 +406,7 @@ func (self class) ConnectNodes(atype gdclass.VisualShaderType, from_node gd.Int,
 Connects the specified nodes and ports.
 */
 //go:nosplit
-func (self class) DisconnectNodes(atype gdclass.VisualShaderType, from_node gd.Int, from_port gd.Int, to_node gd.Int, to_port gd.Int) { //gd:VisualShader.disconnect_nodes
+func (self class) DisconnectNodes(atype gdclass.VisualShaderType, from_node int64, from_port int64, to_node int64, to_port int64) { //gd:VisualShader.disconnect_nodes
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, from_node)
@@ -418,7 +422,7 @@ func (self class) DisconnectNodes(atype gdclass.VisualShaderType, from_node gd.I
 Connects the specified nodes and ports, even if they can't be connected. Such connection is invalid and will not function properly.
 */
 //go:nosplit
-func (self class) ConnectNodesForced(atype gdclass.VisualShaderType, from_node gd.Int, from_port gd.Int, to_node gd.Int, to_port gd.Int) { //gd:VisualShader.connect_nodes_forced
+func (self class) ConnectNodesForced(atype gdclass.VisualShaderType, from_node int64, from_port int64, to_node int64, to_port int64) { //gd:VisualShader.connect_nodes_forced
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, from_node)
@@ -445,7 +449,7 @@ func (self class) GetNodeConnections(atype gdclass.VisualShaderType) Array.Conta
 }
 
 //go:nosplit
-func (self class) SetGraphOffset(offset gd.Vector2) { //gd:VisualShader.set_graph_offset
+func (self class) SetGraphOffset(offset Vector2.XY) { //gd:VisualShader.set_graph_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -454,9 +458,9 @@ func (self class) SetGraphOffset(offset gd.Vector2) { //gd:VisualShader.set_grap
 }
 
 //go:nosplit
-func (self class) GetGraphOffset() gd.Vector2 { //gd:VisualShader.get_graph_offset
+func (self class) GetGraphOffset() Vector2.XY { //gd:VisualShader.get_graph_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShader.Bind_get_graph_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -467,7 +471,7 @@ func (self class) GetGraphOffset() gd.Vector2 { //gd:VisualShader.get_graph_offs
 Attaches the given node to the given frame.
 */
 //go:nosplit
-func (self class) AttachNodeToFrame(atype gdclass.VisualShaderType, id gd.Int, frame_ gd.Int) { //gd:VisualShader.attach_node_to_frame
+func (self class) AttachNodeToFrame(atype gdclass.VisualShaderType, id int64, frame_ int64) { //gd:VisualShader.attach_node_to_frame
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, id)
@@ -481,7 +485,7 @@ func (self class) AttachNodeToFrame(atype gdclass.VisualShaderType, id gd.Int, f
 Detaches the given node from the frame it is attached to.
 */
 //go:nosplit
-func (self class) DetachNodeFromFrame(atype gdclass.VisualShaderType, id gd.Int) { //gd:VisualShader.detach_node_from_frame
+func (self class) DetachNodeFromFrame(atype gdclass.VisualShaderType, id int64) { //gd:VisualShader.detach_node_from_frame
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, id)
@@ -624,120 +628,4 @@ const (
 	VaryingTypeTransform VaryingType = 7
 	/*Represents the size of the [enum VaryingType] enum.*/
 	VaryingTypeMax VaryingType = 8
-)
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
 )

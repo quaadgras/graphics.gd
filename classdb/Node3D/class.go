@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Basis"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Quaternion"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
-import "graphics.gd/variant/Quaternion"
-import "graphics.gd/variant/Basis"
-import "graphics.gd/variant/Float"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -134,7 +137,7 @@ Set subgizmo selection for this node in the editor.
 [b]Note:[/b] The gizmo object would typically be an instance of [EditorNode3DGizmo], but the argument type is kept generic to avoid creating a dependency on editor classes in [Node3D].
 */
 func (self Instance) SetSubgizmoSelection(gizmo [1]gdclass.Node3DGizmo, id int, transform Transform3D.BasisOrigin) { //gd:Node3D.set_subgizmo_selection
-	class(self).SetSubgizmoSelection(gizmo, gd.Int(id), gd.Transform3D(transform))
+	class(self).SetSubgizmoSelection(gizmo, int64(id), Transform3D.BasisOrigin(transform))
 }
 
 /*
@@ -197,70 +200,70 @@ func (self Instance) IsTransformNotificationEnabled() bool { //gd:Node3D.is_tran
 Rotates the local transformation around axis, a unit [Vector3], by specified angle in radians.
 */
 func (self Instance) Rotate(axis Vector3.XYZ, angle Float.X) { //gd:Node3D.rotate
-	class(self).Rotate(gd.Vector3(axis), gd.Float(angle))
+	class(self).Rotate(Vector3.XYZ(axis), float64(angle))
 }
 
 /*
 Rotates the global (world) transformation around axis, a unit [Vector3], by specified angle in radians. The rotation axis is in global coordinate system.
 */
 func (self Instance) GlobalRotate(axis Vector3.XYZ, angle Float.X) { //gd:Node3D.global_rotate
-	class(self).GlobalRotate(gd.Vector3(axis), gd.Float(angle))
+	class(self).GlobalRotate(Vector3.XYZ(axis), float64(angle))
 }
 
 /*
 Scales the global (world) transformation by the given [Vector3] scale factors.
 */
 func (self Instance) GlobalScale(scale Vector3.XYZ) { //gd:Node3D.global_scale
-	class(self).GlobalScale(gd.Vector3(scale))
+	class(self).GlobalScale(Vector3.XYZ(scale))
 }
 
 /*
 Moves the global (world) transformation by [Vector3] offset. The offset is in global coordinate system.
 */
 func (self Instance) GlobalTranslate(offset Vector3.XYZ) { //gd:Node3D.global_translate
-	class(self).GlobalTranslate(gd.Vector3(offset))
+	class(self).GlobalTranslate(Vector3.XYZ(offset))
 }
 
 /*
 Rotates the local transformation around axis, a unit [Vector3], by specified angle in radians. The rotation axis is in object-local coordinate system.
 */
 func (self Instance) RotateObjectLocal(axis Vector3.XYZ, angle Float.X) { //gd:Node3D.rotate_object_local
-	class(self).RotateObjectLocal(gd.Vector3(axis), gd.Float(angle))
+	class(self).RotateObjectLocal(Vector3.XYZ(axis), float64(angle))
 }
 
 /*
 Scales the local transformation by given 3D scale factors in object-local coordinate system.
 */
 func (self Instance) ScaleObjectLocal(scale Vector3.XYZ) { //gd:Node3D.scale_object_local
-	class(self).ScaleObjectLocal(gd.Vector3(scale))
+	class(self).ScaleObjectLocal(Vector3.XYZ(scale))
 }
 
 /*
 Changes the node's position by the given offset [Vector3] in local space.
 */
 func (self Instance) TranslateObjectLocal(offset Vector3.XYZ) { //gd:Node3D.translate_object_local
-	class(self).TranslateObjectLocal(gd.Vector3(offset))
+	class(self).TranslateObjectLocal(Vector3.XYZ(offset))
 }
 
 /*
 Rotates the local transformation around the X axis by angle in radians.
 */
 func (self Instance) RotateX(angle Float.X) { //gd:Node3D.rotate_x
-	class(self).RotateX(gd.Float(angle))
+	class(self).RotateX(float64(angle))
 }
 
 /*
 Rotates the local transformation around the Y axis by angle in radians.
 */
 func (self Instance) RotateY(angle Float.X) { //gd:Node3D.rotate_y
-	class(self).RotateY(gd.Float(angle))
+	class(self).RotateY(float64(angle))
 }
 
 /*
 Rotates the local transformation around the Z axis by angle in radians.
 */
 func (self Instance) RotateZ(angle Float.X) { //gd:Node3D.rotate_z
-	class(self).RotateZ(gd.Float(angle))
+	class(self).RotateZ(float64(angle))
 }
 
 /*
@@ -268,7 +271,7 @@ Changes the node's position by the given offset [Vector3].
 Note that the translation [param offset] is affected by the node's scale, so if scaled by e.g. [code](10, 1, 1)[/code], a translation by an offset of [code](2, 0, 0)[/code] would actually add 20 ([code]2 * 10[/code]) to the X coordinate.
 */
 func (self Instance) Translate(offset Vector3.XYZ) { //gd:Node3D.translate
-	class(self).Translate(gd.Vector3(offset))
+	class(self).Translate(Vector3.XYZ(offset))
 }
 
 /*
@@ -293,28 +296,28 @@ Operations take place in global space, which means that the node must be in the 
 If [param use_model_front] is [code]true[/code], the +Z axis (asset front) is treated as forward (implies +X is left) and points toward the [param target] position. By default, the -Z axis (camera forward) is treated as forward (implies +X is right).
 */
 func (self Instance) LookAt(target Vector3.XYZ) { //gd:Node3D.look_at
-	class(self).LookAt(gd.Vector3(target), gd.Vector3(gd.Vector3{0, 1, 0}), false)
+	class(self).LookAt(Vector3.XYZ(target), Vector3.XYZ(gd.Vector3{0, 1, 0}), false)
 }
 
 /*
 Moves the node to the specified [param position], and then rotates the node to point toward the [param target] as per [method look_at]. Operations take place in global space.
 */
 func (self Instance) LookAtFromPosition(position Vector3.XYZ, target Vector3.XYZ) { //gd:Node3D.look_at_from_position
-	class(self).LookAtFromPosition(gd.Vector3(position), gd.Vector3(target), gd.Vector3(gd.Vector3{0, 1, 0}), false)
+	class(self).LookAtFromPosition(Vector3.XYZ(position), Vector3.XYZ(target), Vector3.XYZ(gd.Vector3{0, 1, 0}), false)
 }
 
 /*
 Transforms [param global_point] from world space to this node's local space.
 */
 func (self Instance) ToLocal(global_point Vector3.XYZ) Vector3.XYZ { //gd:Node3D.to_local
-	return Vector3.XYZ(class(self).ToLocal(gd.Vector3(global_point)))
+	return Vector3.XYZ(class(self).ToLocal(Vector3.XYZ(global_point)))
 }
 
 /*
 Transforms [param local_point] from this node's local space to world space.
 */
 func (self Instance) ToGlobal(local_point Vector3.XYZ) Vector3.XYZ { //gd:Node3D.to_global
-	return Vector3.XYZ(class(self).ToGlobal(gd.Vector3(local_point)))
+	return Vector3.XYZ(class(self).ToGlobal(Vector3.XYZ(local_point)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -340,7 +343,7 @@ func (self Instance) Transform() Transform3D.BasisOrigin {
 }
 
 func (self Instance) SetTransform(value Transform3D.BasisOrigin) {
-	class(self).SetTransform(gd.Transform3D(value))
+	class(self).SetTransform(Transform3D.BasisOrigin(value))
 }
 
 func (self Instance) GlobalTransform() Transform3D.BasisOrigin {
@@ -348,7 +351,7 @@ func (self Instance) GlobalTransform() Transform3D.BasisOrigin {
 }
 
 func (self Instance) SetGlobalTransform(value Transform3D.BasisOrigin) {
-	class(self).SetGlobalTransform(gd.Transform3D(value))
+	class(self).SetGlobalTransform(Transform3D.BasisOrigin(value))
 }
 
 func (self Instance) Position() Vector3.XYZ {
@@ -356,7 +359,7 @@ func (self Instance) Position() Vector3.XYZ {
 }
 
 func (self Instance) SetPosition(value Vector3.XYZ) {
-	class(self).SetPosition(gd.Vector3(value))
+	class(self).SetPosition(Vector3.XYZ(value))
 }
 
 func (self Instance) Rotation() Vector3.XYZ {
@@ -364,7 +367,7 @@ func (self Instance) Rotation() Vector3.XYZ {
 }
 
 func (self Instance) SetRotation(value Vector3.XYZ) {
-	class(self).SetRotation(gd.Vector3(value))
+	class(self).SetRotation(Vector3.XYZ(value))
 }
 
 func (self Instance) RotationDegrees() Vector3.XYZ {
@@ -372,7 +375,7 @@ func (self Instance) RotationDegrees() Vector3.XYZ {
 }
 
 func (self Instance) SetRotationDegrees(value Vector3.XYZ) {
-	class(self).SetRotationDegrees(gd.Vector3(value))
+	class(self).SetRotationDegrees(Vector3.XYZ(value))
 }
 
 func (self Instance) Quaternion() Quaternion.IJKX {
@@ -380,7 +383,7 @@ func (self Instance) Quaternion() Quaternion.IJKX {
 }
 
 func (self Instance) SetQuaternion(value Quaternion.IJKX) {
-	class(self).SetQuaternion(gd.Quaternion(value))
+	class(self).SetQuaternion(value)
 }
 
 func (self Instance) Basis() Basis.XYZ {
@@ -388,7 +391,7 @@ func (self Instance) Basis() Basis.XYZ {
 }
 
 func (self Instance) SetBasis(value Basis.XYZ) {
-	class(self).SetBasis(gd.Basis(value))
+	class(self).SetBasis(Basis.XYZ(value))
 }
 
 func (self Instance) Scale() Vector3.XYZ {
@@ -396,7 +399,7 @@ func (self Instance) Scale() Vector3.XYZ {
 }
 
 func (self Instance) SetScale(value Vector3.XYZ) {
-	class(self).SetScale(gd.Vector3(value))
+	class(self).SetScale(Vector3.XYZ(value))
 }
 
 func (self Instance) RotationEditMode() gdclass.Node3DRotationEditMode {
@@ -428,7 +431,7 @@ func (self Instance) GlobalPosition() Vector3.XYZ {
 }
 
 func (self Instance) SetGlobalPosition(value Vector3.XYZ) {
-	class(self).SetGlobalPosition(gd.Vector3(value))
+	class(self).SetGlobalPosition(Vector3.XYZ(value))
 }
 
 func (self Instance) GlobalBasis() Basis.XYZ {
@@ -436,7 +439,7 @@ func (self Instance) GlobalBasis() Basis.XYZ {
 }
 
 func (self Instance) SetGlobalBasis(value Basis.XYZ) {
-	class(self).SetGlobalBasis(gd.Basis(value))
+	class(self).SetGlobalBasis(Basis.XYZ(value))
 }
 
 func (self Instance) GlobalRotation() Vector3.XYZ {
@@ -444,7 +447,7 @@ func (self Instance) GlobalRotation() Vector3.XYZ {
 }
 
 func (self Instance) SetGlobalRotation(value Vector3.XYZ) {
-	class(self).SetGlobalRotation(gd.Vector3(value))
+	class(self).SetGlobalRotation(Vector3.XYZ(value))
 }
 
 func (self Instance) GlobalRotationDegrees() Vector3.XYZ {
@@ -452,7 +455,7 @@ func (self Instance) GlobalRotationDegrees() Vector3.XYZ {
 }
 
 func (self Instance) SetGlobalRotationDegrees(value Vector3.XYZ) {
-	class(self).SetGlobalRotationDegrees(gd.Vector3(value))
+	class(self).SetGlobalRotationDegrees(Vector3.XYZ(value))
 }
 
 func (self Instance) Visible() bool {
@@ -472,7 +475,7 @@ func (self Instance) SetVisibilityParent(value string) {
 }
 
 //go:nosplit
-func (self class) SetTransform(local gd.Transform3D) { //gd:Node3D.set_transform
+func (self class) SetTransform(local Transform3D.BasisOrigin) { //gd:Node3D.set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, local)
 	var r_ret = callframe.Nil
@@ -481,9 +484,9 @@ func (self class) SetTransform(local gd.Transform3D) { //gd:Node3D.set_transform
 }
 
 //go:nosplit
-func (self class) GetTransform() gd.Transform3D { //gd:Node3D.get_transform
+func (self class) GetTransform() Transform3D.BasisOrigin { //gd:Node3D.get_transform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -491,7 +494,7 @@ func (self class) GetTransform() gd.Transform3D { //gd:Node3D.get_transform
 }
 
 //go:nosplit
-func (self class) SetPosition(position gd.Vector3) { //gd:Node3D.set_position
+func (self class) SetPosition(position Vector3.XYZ) { //gd:Node3D.set_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -500,9 +503,9 @@ func (self class) SetPosition(position gd.Vector3) { //gd:Node3D.set_position
 }
 
 //go:nosplit
-func (self class) GetPosition() gd.Vector3 { //gd:Node3D.get_position
+func (self class) GetPosition() Vector3.XYZ { //gd:Node3D.get_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -510,7 +513,7 @@ func (self class) GetPosition() gd.Vector3 { //gd:Node3D.get_position
 }
 
 //go:nosplit
-func (self class) SetRotation(euler_radians gd.Vector3) { //gd:Node3D.set_rotation
+func (self class) SetRotation(euler_radians Vector3.XYZ) { //gd:Node3D.set_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, euler_radians)
 	var r_ret = callframe.Nil
@@ -519,9 +522,9 @@ func (self class) SetRotation(euler_radians gd.Vector3) { //gd:Node3D.set_rotati
 }
 
 //go:nosplit
-func (self class) GetRotation() gd.Vector3 { //gd:Node3D.get_rotation
+func (self class) GetRotation() Vector3.XYZ { //gd:Node3D.get_rotation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -529,7 +532,7 @@ func (self class) GetRotation() gd.Vector3 { //gd:Node3D.get_rotation
 }
 
 //go:nosplit
-func (self class) SetRotationDegrees(euler_degrees gd.Vector3) { //gd:Node3D.set_rotation_degrees
+func (self class) SetRotationDegrees(euler_degrees Vector3.XYZ) { //gd:Node3D.set_rotation_degrees
 	var frame = callframe.New()
 	callframe.Arg(frame, euler_degrees)
 	var r_ret = callframe.Nil
@@ -538,9 +541,9 @@ func (self class) SetRotationDegrees(euler_degrees gd.Vector3) { //gd:Node3D.set
 }
 
 //go:nosplit
-func (self class) GetRotationDegrees() gd.Vector3 { //gd:Node3D.get_rotation_degrees
+func (self class) GetRotationDegrees() Vector3.XYZ { //gd:Node3D.get_rotation_degrees
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -586,7 +589,7 @@ func (self class) GetRotationEditMode() gdclass.Node3DRotationEditMode { //gd:No
 }
 
 //go:nosplit
-func (self class) SetScale(scale gd.Vector3) { //gd:Node3D.set_scale
+func (self class) SetScale(scale Vector3.XYZ) { //gd:Node3D.set_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -595,9 +598,9 @@ func (self class) SetScale(scale gd.Vector3) { //gd:Node3D.set_scale
 }
 
 //go:nosplit
-func (self class) GetScale() gd.Vector3 { //gd:Node3D.get_scale
+func (self class) GetScale() Vector3.XYZ { //gd:Node3D.get_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -605,7 +608,7 @@ func (self class) GetScale() gd.Vector3 { //gd:Node3D.get_scale
 }
 
 //go:nosplit
-func (self class) SetQuaternion(quaternion gd.Quaternion) { //gd:Node3D.set_quaternion
+func (self class) SetQuaternion(quaternion Quaternion.IJKX) { //gd:Node3D.set_quaternion
 	var frame = callframe.New()
 	callframe.Arg(frame, quaternion)
 	var r_ret = callframe.Nil
@@ -614,9 +617,9 @@ func (self class) SetQuaternion(quaternion gd.Quaternion) { //gd:Node3D.set_quat
 }
 
 //go:nosplit
-func (self class) GetQuaternion() gd.Quaternion { //gd:Node3D.get_quaternion
+func (self class) GetQuaternion() Quaternion.IJKX { //gd:Node3D.get_quaternion
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Quaternion](frame)
+	var r_ret = callframe.Ret[Quaternion.IJKX](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_quaternion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -624,7 +627,7 @@ func (self class) GetQuaternion() gd.Quaternion { //gd:Node3D.get_quaternion
 }
 
 //go:nosplit
-func (self class) SetBasis(basis gd.Basis) { //gd:Node3D.set_basis
+func (self class) SetBasis(basis Basis.XYZ) { //gd:Node3D.set_basis
 	var frame = callframe.New()
 	callframe.Arg(frame, basis)
 	var r_ret = callframe.Nil
@@ -633,9 +636,9 @@ func (self class) SetBasis(basis gd.Basis) { //gd:Node3D.set_basis
 }
 
 //go:nosplit
-func (self class) GetBasis() gd.Basis { //gd:Node3D.get_basis
+func (self class) GetBasis() Basis.XYZ { //gd:Node3D.get_basis
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Basis](frame)
+	var r_ret = callframe.Ret[Basis.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -643,7 +646,7 @@ func (self class) GetBasis() gd.Basis { //gd:Node3D.get_basis
 }
 
 //go:nosplit
-func (self class) SetGlobalTransform(global gd.Transform3D) { //gd:Node3D.set_global_transform
+func (self class) SetGlobalTransform(global Transform3D.BasisOrigin) { //gd:Node3D.set_global_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, global)
 	var r_ret = callframe.Nil
@@ -652,9 +655,9 @@ func (self class) SetGlobalTransform(global gd.Transform3D) { //gd:Node3D.set_gl
 }
 
 //go:nosplit
-func (self class) GetGlobalTransform() gd.Transform3D { //gd:Node3D.get_global_transform
+func (self class) GetGlobalTransform() Transform3D.BasisOrigin { //gd:Node3D.get_global_transform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -662,7 +665,7 @@ func (self class) GetGlobalTransform() gd.Transform3D { //gd:Node3D.get_global_t
 }
 
 //go:nosplit
-func (self class) SetGlobalPosition(position gd.Vector3) { //gd:Node3D.set_global_position
+func (self class) SetGlobalPosition(position Vector3.XYZ) { //gd:Node3D.set_global_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -671,9 +674,9 @@ func (self class) SetGlobalPosition(position gd.Vector3) { //gd:Node3D.set_globa
 }
 
 //go:nosplit
-func (self class) GetGlobalPosition() gd.Vector3 { //gd:Node3D.get_global_position
+func (self class) GetGlobalPosition() Vector3.XYZ { //gd:Node3D.get_global_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -681,7 +684,7 @@ func (self class) GetGlobalPosition() gd.Vector3 { //gd:Node3D.get_global_positi
 }
 
 //go:nosplit
-func (self class) SetGlobalBasis(basis gd.Basis) { //gd:Node3D.set_global_basis
+func (self class) SetGlobalBasis(basis Basis.XYZ) { //gd:Node3D.set_global_basis
 	var frame = callframe.New()
 	callframe.Arg(frame, basis)
 	var r_ret = callframe.Nil
@@ -690,9 +693,9 @@ func (self class) SetGlobalBasis(basis gd.Basis) { //gd:Node3D.set_global_basis
 }
 
 //go:nosplit
-func (self class) GetGlobalBasis() gd.Basis { //gd:Node3D.get_global_basis
+func (self class) GetGlobalBasis() Basis.XYZ { //gd:Node3D.get_global_basis
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Basis](frame)
+	var r_ret = callframe.Ret[Basis.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -700,7 +703,7 @@ func (self class) GetGlobalBasis() gd.Basis { //gd:Node3D.get_global_basis
 }
 
 //go:nosplit
-func (self class) SetGlobalRotation(euler_radians gd.Vector3) { //gd:Node3D.set_global_rotation
+func (self class) SetGlobalRotation(euler_radians Vector3.XYZ) { //gd:Node3D.set_global_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, euler_radians)
 	var r_ret = callframe.Nil
@@ -709,9 +712,9 @@ func (self class) SetGlobalRotation(euler_radians gd.Vector3) { //gd:Node3D.set_
 }
 
 //go:nosplit
-func (self class) GetGlobalRotation() gd.Vector3 { //gd:Node3D.get_global_rotation
+func (self class) GetGlobalRotation() Vector3.XYZ { //gd:Node3D.get_global_rotation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -719,7 +722,7 @@ func (self class) GetGlobalRotation() gd.Vector3 { //gd:Node3D.get_global_rotati
 }
 
 //go:nosplit
-func (self class) SetGlobalRotationDegrees(euler_degrees gd.Vector3) { //gd:Node3D.set_global_rotation_degrees
+func (self class) SetGlobalRotationDegrees(euler_degrees Vector3.XYZ) { //gd:Node3D.set_global_rotation_degrees
 	var frame = callframe.New()
 	callframe.Arg(frame, euler_degrees)
 	var r_ret = callframe.Nil
@@ -728,9 +731,9 @@ func (self class) SetGlobalRotationDegrees(euler_degrees gd.Vector3) { //gd:Node
 }
 
 //go:nosplit
-func (self class) GetGlobalRotationDegrees() gd.Vector3 { //gd:Node3D.get_global_rotation_degrees
+func (self class) GetGlobalRotationDegrees() Vector3.XYZ { //gd:Node3D.get_global_rotation_degrees
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -903,7 +906,7 @@ Set subgizmo selection for this node in the editor.
 [b]Note:[/b] The gizmo object would typically be an instance of [EditorNode3DGizmo], but the argument type is kept generic to avoid creating a dependency on editor classes in [Node3D].
 */
 //go:nosplit
-func (self class) SetSubgizmoSelection(gizmo [1]gdclass.Node3DGizmo, id gd.Int, transform gd.Transform3D) { //gd:Node3D.set_subgizmo_selection
+func (self class) SetSubgizmoSelection(gizmo [1]gdclass.Node3DGizmo, id int64, transform Transform3D.BasisOrigin) { //gd:Node3D.set_subgizmo_selection
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gizmo[0])[0])
 	callframe.Arg(frame, id)
@@ -1032,7 +1035,7 @@ func (self class) IsTransformNotificationEnabled() bool { //gd:Node3D.is_transfo
 Rotates the local transformation around axis, a unit [Vector3], by specified angle in radians.
 */
 //go:nosplit
-func (self class) Rotate(axis gd.Vector3, angle gd.Float) { //gd:Node3D.rotate
+func (self class) Rotate(axis Vector3.XYZ, angle float64) { //gd:Node3D.rotate
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	callframe.Arg(frame, angle)
@@ -1045,7 +1048,7 @@ func (self class) Rotate(axis gd.Vector3, angle gd.Float) { //gd:Node3D.rotate
 Rotates the global (world) transformation around axis, a unit [Vector3], by specified angle in radians. The rotation axis is in global coordinate system.
 */
 //go:nosplit
-func (self class) GlobalRotate(axis gd.Vector3, angle gd.Float) { //gd:Node3D.global_rotate
+func (self class) GlobalRotate(axis Vector3.XYZ, angle float64) { //gd:Node3D.global_rotate
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	callframe.Arg(frame, angle)
@@ -1058,7 +1061,7 @@ func (self class) GlobalRotate(axis gd.Vector3, angle gd.Float) { //gd:Node3D.gl
 Scales the global (world) transformation by the given [Vector3] scale factors.
 */
 //go:nosplit
-func (self class) GlobalScale(scale gd.Vector3) { //gd:Node3D.global_scale
+func (self class) GlobalScale(scale Vector3.XYZ) { //gd:Node3D.global_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -1070,7 +1073,7 @@ func (self class) GlobalScale(scale gd.Vector3) { //gd:Node3D.global_scale
 Moves the global (world) transformation by [Vector3] offset. The offset is in global coordinate system.
 */
 //go:nosplit
-func (self class) GlobalTranslate(offset gd.Vector3) { //gd:Node3D.global_translate
+func (self class) GlobalTranslate(offset Vector3.XYZ) { //gd:Node3D.global_translate
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -1082,7 +1085,7 @@ func (self class) GlobalTranslate(offset gd.Vector3) { //gd:Node3D.global_transl
 Rotates the local transformation around axis, a unit [Vector3], by specified angle in radians. The rotation axis is in object-local coordinate system.
 */
 //go:nosplit
-func (self class) RotateObjectLocal(axis gd.Vector3, angle gd.Float) { //gd:Node3D.rotate_object_local
+func (self class) RotateObjectLocal(axis Vector3.XYZ, angle float64) { //gd:Node3D.rotate_object_local
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	callframe.Arg(frame, angle)
@@ -1095,7 +1098,7 @@ func (self class) RotateObjectLocal(axis gd.Vector3, angle gd.Float) { //gd:Node
 Scales the local transformation by given 3D scale factors in object-local coordinate system.
 */
 //go:nosplit
-func (self class) ScaleObjectLocal(scale gd.Vector3) { //gd:Node3D.scale_object_local
+func (self class) ScaleObjectLocal(scale Vector3.XYZ) { //gd:Node3D.scale_object_local
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -1107,7 +1110,7 @@ func (self class) ScaleObjectLocal(scale gd.Vector3) { //gd:Node3D.scale_object_
 Changes the node's position by the given offset [Vector3] in local space.
 */
 //go:nosplit
-func (self class) TranslateObjectLocal(offset gd.Vector3) { //gd:Node3D.translate_object_local
+func (self class) TranslateObjectLocal(offset Vector3.XYZ) { //gd:Node3D.translate_object_local
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -1119,7 +1122,7 @@ func (self class) TranslateObjectLocal(offset gd.Vector3) { //gd:Node3D.translat
 Rotates the local transformation around the X axis by angle in radians.
 */
 //go:nosplit
-func (self class) RotateX(angle gd.Float) { //gd:Node3D.rotate_x
+func (self class) RotateX(angle float64) { //gd:Node3D.rotate_x
 	var frame = callframe.New()
 	callframe.Arg(frame, angle)
 	var r_ret = callframe.Nil
@@ -1131,7 +1134,7 @@ func (self class) RotateX(angle gd.Float) { //gd:Node3D.rotate_x
 Rotates the local transformation around the Y axis by angle in radians.
 */
 //go:nosplit
-func (self class) RotateY(angle gd.Float) { //gd:Node3D.rotate_y
+func (self class) RotateY(angle float64) { //gd:Node3D.rotate_y
 	var frame = callframe.New()
 	callframe.Arg(frame, angle)
 	var r_ret = callframe.Nil
@@ -1143,7 +1146,7 @@ func (self class) RotateY(angle gd.Float) { //gd:Node3D.rotate_y
 Rotates the local transformation around the Z axis by angle in radians.
 */
 //go:nosplit
-func (self class) RotateZ(angle gd.Float) { //gd:Node3D.rotate_z
+func (self class) RotateZ(angle float64) { //gd:Node3D.rotate_z
 	var frame = callframe.New()
 	callframe.Arg(frame, angle)
 	var r_ret = callframe.Nil
@@ -1156,7 +1159,7 @@ Changes the node's position by the given offset [Vector3].
 Note that the translation [param offset] is affected by the node's scale, so if scaled by e.g. [code](10, 1, 1)[/code], a translation by an offset of [code](2, 0, 0)[/code] would actually add 20 ([code]2 * 10[/code]) to the X coordinate.
 */
 //go:nosplit
-func (self class) Translate(offset gd.Vector3) { //gd:Node3D.translate
+func (self class) Translate(offset Vector3.XYZ) { //gd:Node3D.translate
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -1194,7 +1197,7 @@ Operations take place in global space, which means that the node must be in the 
 If [param use_model_front] is [code]true[/code], the +Z axis (asset front) is treated as forward (implies +X is left) and points toward the [param target] position. By default, the -Z axis (camera forward) is treated as forward (implies +X is right).
 */
 //go:nosplit
-func (self class) LookAt(target gd.Vector3, up gd.Vector3, use_model_front bool) { //gd:Node3D.look_at
+func (self class) LookAt(target Vector3.XYZ, up Vector3.XYZ, use_model_front bool) { //gd:Node3D.look_at
 	var frame = callframe.New()
 	callframe.Arg(frame, target)
 	callframe.Arg(frame, up)
@@ -1208,7 +1211,7 @@ func (self class) LookAt(target gd.Vector3, up gd.Vector3, use_model_front bool)
 Moves the node to the specified [param position], and then rotates the node to point toward the [param target] as per [method look_at]. Operations take place in global space.
 */
 //go:nosplit
-func (self class) LookAtFromPosition(position gd.Vector3, target gd.Vector3, up gd.Vector3, use_model_front bool) { //gd:Node3D.look_at_from_position
+func (self class) LookAtFromPosition(position Vector3.XYZ, target Vector3.XYZ, up Vector3.XYZ, use_model_front bool) { //gd:Node3D.look_at_from_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, target)
@@ -1223,10 +1226,10 @@ func (self class) LookAtFromPosition(position gd.Vector3, target gd.Vector3, up 
 Transforms [param global_point] from world space to this node's local space.
 */
 //go:nosplit
-func (self class) ToLocal(global_point gd.Vector3) gd.Vector3 { //gd:Node3D.to_local
+func (self class) ToLocal(global_point Vector3.XYZ) Vector3.XYZ { //gd:Node3D.to_local
 	var frame = callframe.New()
 	callframe.Arg(frame, global_point)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_to_local, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1237,10 +1240,10 @@ func (self class) ToLocal(global_point gd.Vector3) gd.Vector3 { //gd:Node3D.to_l
 Transforms [param local_point] from this node's local space to world space.
 */
 //go:nosplit
-func (self class) ToGlobal(local_point gd.Vector3) gd.Vector3 { //gd:Node3D.to_global
+func (self class) ToGlobal(local_point Vector3.XYZ) Vector3.XYZ { //gd:Node3D.to_global
 	var frame = callframe.New()
 	callframe.Arg(frame, local_point)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_to_global, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

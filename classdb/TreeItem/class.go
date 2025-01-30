@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,14 +60,14 @@ type Any interface {
 Sets the given column's cell mode to [param mode]. This determines how the cell is displayed and edited. See [enum TreeCellMode] constants for details.
 */
 func (self Instance) SetCellMode(column int, mode gdclass.TreeItemTreeCellMode) { //gd:TreeItem.set_cell_mode
-	class(self).SetCellMode(gd.Int(column), mode)
+	class(self).SetCellMode(int64(column), mode)
 }
 
 /*
 Returns the column's cell mode.
 */
 func (self Instance) GetCellMode(column int) gdclass.TreeItemTreeCellMode { //gd:TreeItem.get_cell_mode
-	return gdclass.TreeItemTreeCellMode(class(self).GetCellMode(gd.Int(column)))
+	return gdclass.TreeItemTreeCellMode(class(self).GetCellMode(int64(column)))
 }
 
 /*
@@ -72,21 +75,21 @@ If [param multiline] is [code]true[/code], the given [param column] is multiline
 [b]Note:[/b] This option only affects the type of control ([LineEdit] or [TextEdit]) that appears when editing the column. You can set multiline values with [method set_text] even if the column is not multiline editable.
 */
 func (self Instance) SetEditMultiline(column int, multiline bool) { //gd:TreeItem.set_edit_multiline
-	class(self).SetEditMultiline(gd.Int(column), multiline)
+	class(self).SetEditMultiline(int64(column), multiline)
 }
 
 /*
 Returns [code]true[/code] if the given [param column] is multiline editable.
 */
 func (self Instance) IsEditMultiline(column int) bool { //gd:TreeItem.is_edit_multiline
-	return bool(class(self).IsEditMultiline(gd.Int(column)))
+	return bool(class(self).IsEditMultiline(int64(column)))
 }
 
 /*
 If [param checked] is [code]true[/code], the given [param column] is checked. Clears column's indeterminate status.
 */
 func (self Instance) SetChecked(column int, checked bool) { //gd:TreeItem.set_checked
-	class(self).SetChecked(gd.Int(column), checked)
+	class(self).SetChecked(int64(column), checked)
 }
 
 /*
@@ -94,210 +97,210 @@ If [param indeterminate] is [code]true[/code], the given [param column] is marke
 [b]Note:[/b] If set [code]true[/code] from [code]false[/code], then column is cleared of checked status.
 */
 func (self Instance) SetIndeterminate(column int, indeterminate bool) { //gd:TreeItem.set_indeterminate
-	class(self).SetIndeterminate(gd.Int(column), indeterminate)
+	class(self).SetIndeterminate(int64(column), indeterminate)
 }
 
 /*
 Returns [code]true[/code] if the given [param column] is checked.
 */
 func (self Instance) IsChecked(column int) bool { //gd:TreeItem.is_checked
-	return bool(class(self).IsChecked(gd.Int(column)))
+	return bool(class(self).IsChecked(int64(column)))
 }
 
 /*
 Returns [code]true[/code] if the given [param column] is indeterminate.
 */
 func (self Instance) IsIndeterminate(column int) bool { //gd:TreeItem.is_indeterminate
-	return bool(class(self).IsIndeterminate(gd.Int(column)))
+	return bool(class(self).IsIndeterminate(int64(column)))
 }
 
 /*
 Propagates this item's checked status to its children and parents for the given [param column]. It is possible to process the items affected by this method call by connecting to [signal Tree.check_propagated_to_item]. The order that the items affected will be processed is as follows: the item invoking this method, children of that item, and finally parents of that item. If [param emit_signal] is [code]false[/code], then [signal Tree.check_propagated_to_item] will not be emitted.
 */
 func (self Instance) PropagateCheck(column int) { //gd:TreeItem.propagate_check
-	class(self).PropagateCheck(gd.Int(column), true)
+	class(self).PropagateCheck(int64(column), true)
 }
 
 /*
 Sets the given column's text value.
 */
 func (self Instance) SetText(column int, text string) { //gd:TreeItem.set_text
-	class(self).SetText(gd.Int(column), String.New(text))
+	class(self).SetText(int64(column), String.New(text))
 }
 
 /*
 Returns the given column's text.
 */
 func (self Instance) GetText(column int) string { //gd:TreeItem.get_text
-	return string(class(self).GetText(gd.Int(column)).String())
+	return string(class(self).GetText(int64(column)).String())
 }
 
 /*
 Sets item's text base writing direction.
 */
 func (self Instance) SetTextDirection(column int, direction gdclass.ControlTextDirection) { //gd:TreeItem.set_text_direction
-	class(self).SetTextDirection(gd.Int(column), direction)
+	class(self).SetTextDirection(int64(column), direction)
 }
 
 /*
 Returns item's text base writing direction.
 */
 func (self Instance) GetTextDirection(column int) gdclass.ControlTextDirection { //gd:TreeItem.get_text_direction
-	return gdclass.ControlTextDirection(class(self).GetTextDirection(gd.Int(column)))
+	return gdclass.ControlTextDirection(class(self).GetTextDirection(int64(column)))
 }
 
 /*
 Sets the autowrap mode in the given [param column]. If set to something other than [constant TextServer.AUTOWRAP_OFF], the text gets wrapped inside the cell's bounding rectangle.
 */
 func (self Instance) SetAutowrapMode(column int, autowrap_mode gdclass.TextServerAutowrapMode) { //gd:TreeItem.set_autowrap_mode
-	class(self).SetAutowrapMode(gd.Int(column), autowrap_mode)
+	class(self).SetAutowrapMode(int64(column), autowrap_mode)
 }
 
 /*
 Returns the text autowrap mode in the given [param column]. By default it is [constant TextServer.AUTOWRAP_OFF].
 */
 func (self Instance) GetAutowrapMode(column int) gdclass.TextServerAutowrapMode { //gd:TreeItem.get_autowrap_mode
-	return gdclass.TextServerAutowrapMode(class(self).GetAutowrapMode(gd.Int(column)))
+	return gdclass.TextServerAutowrapMode(class(self).GetAutowrapMode(int64(column)))
 }
 
 /*
 Sets the clipping behavior when the text exceeds the item's bounding rectangle in the given [param column].
 */
 func (self Instance) SetTextOverrunBehavior(column int, overrun_behavior gdclass.TextServerOverrunBehavior) { //gd:TreeItem.set_text_overrun_behavior
-	class(self).SetTextOverrunBehavior(gd.Int(column), overrun_behavior)
+	class(self).SetTextOverrunBehavior(int64(column), overrun_behavior)
 }
 
 /*
 Returns the clipping behavior when the text exceeds the item's bounding rectangle in the given [param column]. By default it is [constant TextServer.OVERRUN_TRIM_ELLIPSIS].
 */
 func (self Instance) GetTextOverrunBehavior(column int) gdclass.TextServerOverrunBehavior { //gd:TreeItem.get_text_overrun_behavior
-	return gdclass.TextServerOverrunBehavior(class(self).GetTextOverrunBehavior(gd.Int(column)))
+	return gdclass.TextServerOverrunBehavior(class(self).GetTextOverrunBehavior(int64(column)))
 }
 
 /*
 Set BiDi algorithm override for the structured text. Has effect for cells that display text.
 */
 func (self Instance) SetStructuredTextBidiOverride(column int, parser gdclass.TextServerStructuredTextParser) { //gd:TreeItem.set_structured_text_bidi_override
-	class(self).SetStructuredTextBidiOverride(gd.Int(column), parser)
+	class(self).SetStructuredTextBidiOverride(int64(column), parser)
 }
 
 /*
 Returns the BiDi algorithm override set for this cell.
 */
 func (self Instance) GetStructuredTextBidiOverride(column int) gdclass.TextServerStructuredTextParser { //gd:TreeItem.get_structured_text_bidi_override
-	return gdclass.TextServerStructuredTextParser(class(self).GetStructuredTextBidiOverride(gd.Int(column)))
+	return gdclass.TextServerStructuredTextParser(class(self).GetStructuredTextBidiOverride(int64(column)))
 }
 
 /*
 Set additional options for BiDi override. Has effect for cells that display text.
 */
 func (self Instance) SetStructuredTextBidiOverrideOptions(column int, args []any) { //gd:TreeItem.set_structured_text_bidi_override_options
-	class(self).SetStructuredTextBidiOverrideOptions(gd.Int(column), gd.EngineArrayFromSlice(args))
+	class(self).SetStructuredTextBidiOverrideOptions(int64(column), gd.EngineArrayFromSlice(args))
 }
 
 /*
 Returns the additional BiDi options set for this cell.
 */
 func (self Instance) GetStructuredTextBidiOverrideOptions(column int) []any { //gd:TreeItem.get_structured_text_bidi_override_options
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions(gd.Int(column)))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions(int64(column)))))
 }
 
 /*
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 func (self Instance) SetLanguage(column int, language string) { //gd:TreeItem.set_language
-	class(self).SetLanguage(gd.Int(column), String.New(language))
+	class(self).SetLanguage(int64(column), String.New(language))
 }
 
 /*
 Returns item's text language code.
 */
 func (self Instance) GetLanguage(column int) string { //gd:TreeItem.get_language
-	return string(class(self).GetLanguage(gd.Int(column)).String())
+	return string(class(self).GetLanguage(int64(column)).String())
 }
 
 /*
 Sets a string to be shown after a column's value (for example, a unit abbreviation).
 */
 func (self Instance) SetSuffix(column int, text string) { //gd:TreeItem.set_suffix
-	class(self).SetSuffix(gd.Int(column), String.New(text))
+	class(self).SetSuffix(int64(column), String.New(text))
 }
 
 /*
 Gets the suffix string shown after the column value.
 */
 func (self Instance) GetSuffix(column int) string { //gd:TreeItem.get_suffix
-	return string(class(self).GetSuffix(gd.Int(column)).String())
+	return string(class(self).GetSuffix(int64(column)).String())
 }
 
 /*
 Sets the given cell's icon [Texture2D]. The cell has to be in [constant CELL_MODE_ICON] mode.
 */
 func (self Instance) SetIcon(column int, texture [1]gdclass.Texture2D) { //gd:TreeItem.set_icon
-	class(self).SetIcon(gd.Int(column), texture)
+	class(self).SetIcon(int64(column), texture)
 }
 
 /*
 Returns the given column's icon [Texture2D]. Error if no icon is set.
 */
 func (self Instance) GetIcon(column int) [1]gdclass.Texture2D { //gd:TreeItem.get_icon
-	return [1]gdclass.Texture2D(class(self).GetIcon(gd.Int(column)))
+	return [1]gdclass.Texture2D(class(self).GetIcon(int64(column)))
 }
 
 /*
 Sets the given column's icon's texture region.
 */
 func (self Instance) SetIconRegion(column int, region Rect2.PositionSize) { //gd:TreeItem.set_icon_region
-	class(self).SetIconRegion(gd.Int(column), gd.Rect2(region))
+	class(self).SetIconRegion(int64(column), Rect2.PositionSize(region))
 }
 
 /*
 Returns the icon [Texture2D] region as [Rect2].
 */
 func (self Instance) GetIconRegion(column int) Rect2.PositionSize { //gd:TreeItem.get_icon_region
-	return Rect2.PositionSize(class(self).GetIconRegion(gd.Int(column)))
+	return Rect2.PositionSize(class(self).GetIconRegion(int64(column)))
 }
 
 /*
 Sets the maximum allowed width of the icon in the given [param column]. This limit is applied on top of the default size of the icon and on top of [theme_item Tree.icon_max_width]. The height is adjusted according to the icon's ratio.
 */
 func (self Instance) SetIconMaxWidth(column int, width int) { //gd:TreeItem.set_icon_max_width
-	class(self).SetIconMaxWidth(gd.Int(column), gd.Int(width))
+	class(self).SetIconMaxWidth(int64(column), int64(width))
 }
 
 /*
 Returns the maximum allowed width of the icon in the given [param column].
 */
 func (self Instance) GetIconMaxWidth(column int) int { //gd:TreeItem.get_icon_max_width
-	return int(int(class(self).GetIconMaxWidth(gd.Int(column))))
+	return int(int(class(self).GetIconMaxWidth(int64(column))))
 }
 
 /*
 Modulates the given column's icon with [param modulate].
 */
 func (self Instance) SetIconModulate(column int, modulate Color.RGBA) { //gd:TreeItem.set_icon_modulate
-	class(self).SetIconModulate(gd.Int(column), gd.Color(modulate))
+	class(self).SetIconModulate(int64(column), Color.RGBA(modulate))
 }
 
 /*
 Returns the [Color] modulating the column's icon.
 */
 func (self Instance) GetIconModulate(column int) Color.RGBA { //gd:TreeItem.get_icon_modulate
-	return Color.RGBA(class(self).GetIconModulate(gd.Int(column)))
+	return Color.RGBA(class(self).GetIconModulate(int64(column)))
 }
 
 /*
 Sets the value of a [constant CELL_MODE_RANGE] column.
 */
 func (self Instance) SetRange(column int, value Float.X) { //gd:TreeItem.set_range
-	class(self).SetRange(gd.Int(column), gd.Float(value))
+	class(self).SetRange(int64(column), float64(value))
 }
 
 /*
 Returns the value of a [constant CELL_MODE_RANGE] column.
 */
 func (self Instance) GetRange(column int) Float.X { //gd:TreeItem.get_range
-	return Float.X(Float.X(class(self).GetRange(gd.Int(column))))
+	return Float.X(Float.X(class(self).GetRange(int64(column))))
 }
 
 /*
@@ -305,28 +308,28 @@ Sets the range of accepted values for a column. The column must be in the [const
 If [param expr] is [code]true[/code], the edit mode slider will use an exponential scale as with [member Range.exp_edit].
 */
 func (self Instance) SetRangeConfig(column int, min Float.X, max Float.X, step Float.X) { //gd:TreeItem.set_range_config
-	class(self).SetRangeConfig(gd.Int(column), gd.Float(min), gd.Float(max), gd.Float(step), false)
+	class(self).SetRangeConfig(int64(column), float64(min), float64(max), float64(step), false)
 }
 
 /*
 Returns a dictionary containing the range parameters for a given column. The keys are "min", "max", "step", and "expr".
 */
 func (self Instance) GetRangeConfig(column int) RangeConfig { //gd:TreeItem.get_range_config
-	return RangeConfig(gd.DictionaryAs[RangeConfig](class(self).GetRangeConfig(gd.Int(column))))
+	return RangeConfig(gd.DictionaryAs[RangeConfig](class(self).GetRangeConfig(int64(column))))
 }
 
 /*
 Sets the metadata value for the given column, which can be retrieved later using [method get_metadata]. This can be used, for example, to store a reference to the original data.
 */
 func (self Instance) SetMetadata(column int, meta any) { //gd:TreeItem.set_metadata
-	class(self).SetMetadata(gd.Int(column), gd.NewVariant(meta))
+	class(self).SetMetadata(int64(column), variant.New(meta))
 }
 
 /*
 Returns the metadata value that was set for the given column using [method set_metadata].
 */
 func (self Instance) GetMetadata(column int) any { //gd:TreeItem.get_metadata
-	return any(class(self).GetMetadata(gd.Int(column)).Interface())
+	return any(class(self).GetMetadata(int64(column)).Interface())
 }
 
 /*
@@ -334,7 +337,7 @@ Sets the given column's custom draw callback to the [param callback] method on [
 The method named [param callback] should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2].
 */
 func (self Instance) SetCustomDraw(column int, obj Object.Instance, callback string) { //gd:TreeItem.set_custom_draw
-	class(self).SetCustomDraw(gd.Int(column), obj, String.Name(String.New(callback)))
+	class(self).SetCustomDraw(int64(column), obj, String.Name(String.New(callback)))
 }
 
 /*
@@ -342,14 +345,14 @@ Sets the given column's custom draw callback. Use an empty [Callable] ([code ski
 The [param callback] should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2].
 */
 func (self Instance) SetCustomDrawCallback(column int, callback func(item [1]gdclass.TreeItem, rect Rect2.PositionSize)) { //gd:TreeItem.set_custom_draw_callback
-	class(self).SetCustomDrawCallback(gd.Int(column), Callable.New(callback))
+	class(self).SetCustomDrawCallback(int64(column), Callable.New(callback))
 }
 
 /*
 Returns the custom callback of column [param column].
 */
 func (self Instance) GetCustomDrawCallback(column int) Callable.Function { //gd:TreeItem.get_custom_draw_callback
-	return Callable.Function(class(self).GetCustomDrawCallback(gd.Int(column)))
+	return Callable.Function(class(self).GetCustomDrawCallback(int64(column)))
 }
 
 /*
@@ -385,266 +388,266 @@ func (self Instance) UncollapseTree() { //gd:TreeItem.uncollapse_tree
 If [param selectable] is [code]true[/code], the given [param column] is selectable.
 */
 func (self Instance) SetSelectable(column int, selectable bool) { //gd:TreeItem.set_selectable
-	class(self).SetSelectable(gd.Int(column), selectable)
+	class(self).SetSelectable(int64(column), selectable)
 }
 
 /*
 Returns [code]true[/code] if the given [param column] is selectable.
 */
 func (self Instance) IsSelectable(column int) bool { //gd:TreeItem.is_selectable
-	return bool(class(self).IsSelectable(gd.Int(column)))
+	return bool(class(self).IsSelectable(int64(column)))
 }
 
 /*
 Returns [code]true[/code] if the given [param column] is selected.
 */
 func (self Instance) IsSelected(column int) bool { //gd:TreeItem.is_selected
-	return bool(class(self).IsSelected(gd.Int(column)))
+	return bool(class(self).IsSelected(int64(column)))
 }
 
 /*
 Selects the given [param column].
 */
 func (self Instance) Select(column int) { //gd:TreeItem.select
-	class(self).Select(gd.Int(column))
+	class(self).Select(int64(column))
 }
 
 /*
 Deselects the given column.
 */
 func (self Instance) Deselect(column int) { //gd:TreeItem.deselect
-	class(self).Deselect(gd.Int(column))
+	class(self).Deselect(int64(column))
 }
 
 /*
 If [param enabled] is [code]true[/code], the given [param column] is editable.
 */
 func (self Instance) SetEditable(column int, enabled bool) { //gd:TreeItem.set_editable
-	class(self).SetEditable(gd.Int(column), enabled)
+	class(self).SetEditable(int64(column), enabled)
 }
 
 /*
 Returns [code]true[/code] if the given [param column] is editable.
 */
 func (self Instance) IsEditable(column int) bool { //gd:TreeItem.is_editable
-	return bool(class(self).IsEditable(gd.Int(column)))
+	return bool(class(self).IsEditable(int64(column)))
 }
 
 /*
 Sets the given column's custom color.
 */
 func (self Instance) SetCustomColor(column int, color Color.RGBA) { //gd:TreeItem.set_custom_color
-	class(self).SetCustomColor(gd.Int(column), gd.Color(color))
+	class(self).SetCustomColor(int64(column), Color.RGBA(color))
 }
 
 /*
 Returns the custom color of column [param column].
 */
 func (self Instance) GetCustomColor(column int) Color.RGBA { //gd:TreeItem.get_custom_color
-	return Color.RGBA(class(self).GetCustomColor(gd.Int(column)))
+	return Color.RGBA(class(self).GetCustomColor(int64(column)))
 }
 
 /*
 Resets the color for the given column to default.
 */
 func (self Instance) ClearCustomColor(column int) { //gd:TreeItem.clear_custom_color
-	class(self).ClearCustomColor(gd.Int(column))
+	class(self).ClearCustomColor(int64(column))
 }
 
 /*
 Sets custom font used to draw text in the given [param column].
 */
 func (self Instance) SetCustomFont(column int, font [1]gdclass.Font) { //gd:TreeItem.set_custom_font
-	class(self).SetCustomFont(gd.Int(column), font)
+	class(self).SetCustomFont(int64(column), font)
 }
 
 /*
 Returns custom font used to draw text in the column [param column].
 */
 func (self Instance) GetCustomFont(column int) [1]gdclass.Font { //gd:TreeItem.get_custom_font
-	return [1]gdclass.Font(class(self).GetCustomFont(gd.Int(column)))
+	return [1]gdclass.Font(class(self).GetCustomFont(int64(column)))
 }
 
 /*
 Sets custom font size used to draw text in the given [param column].
 */
 func (self Instance) SetCustomFontSize(column int, font_size int) { //gd:TreeItem.set_custom_font_size
-	class(self).SetCustomFontSize(gd.Int(column), gd.Int(font_size))
+	class(self).SetCustomFontSize(int64(column), int64(font_size))
 }
 
 /*
 Returns custom font size used to draw text in the column [param column].
 */
 func (self Instance) GetCustomFontSize(column int) int { //gd:TreeItem.get_custom_font_size
-	return int(int(class(self).GetCustomFontSize(gd.Int(column))))
+	return int(int(class(self).GetCustomFontSize(int64(column))))
 }
 
 /*
 Sets the given column's custom background color and whether to just use it as an outline.
 */
 func (self Instance) SetCustomBgColor(column int, color Color.RGBA) { //gd:TreeItem.set_custom_bg_color
-	class(self).SetCustomBgColor(gd.Int(column), gd.Color(color), false)
+	class(self).SetCustomBgColor(int64(column), Color.RGBA(color), false)
 }
 
 /*
 Resets the background color for the given column to default.
 */
 func (self Instance) ClearCustomBgColor(column int) { //gd:TreeItem.clear_custom_bg_color
-	class(self).ClearCustomBgColor(gd.Int(column))
+	class(self).ClearCustomBgColor(int64(column))
 }
 
 /*
 Returns the custom background color of column [param column].
 */
 func (self Instance) GetCustomBgColor(column int) Color.RGBA { //gd:TreeItem.get_custom_bg_color
-	return Color.RGBA(class(self).GetCustomBgColor(gd.Int(column)))
+	return Color.RGBA(class(self).GetCustomBgColor(int64(column)))
 }
 
 /*
 Makes a cell with [constant CELL_MODE_CUSTOM] display as a non-flat button with a [StyleBox].
 */
 func (self Instance) SetCustomAsButton(column int, enable bool) { //gd:TreeItem.set_custom_as_button
-	class(self).SetCustomAsButton(gd.Int(column), enable)
+	class(self).SetCustomAsButton(int64(column), enable)
 }
 
 /*
 Returns [code]true[/code] if the cell was made into a button with [method set_custom_as_button].
 */
 func (self Instance) IsCustomSetAsButton(column int) bool { //gd:TreeItem.is_custom_set_as_button
-	return bool(class(self).IsCustomSetAsButton(gd.Int(column)))
+	return bool(class(self).IsCustomSetAsButton(int64(column)))
 }
 
 /*
 Adds a button with [Texture2D] [param button] at column [param column]. The [param id] is used to identify the button in the according [signal Tree.button_clicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [method get_button_count] immediately before this method. Optionally, the button can be [param disabled] and have a [param tooltip_text].
 */
 func (self Instance) AddButton(column int, button [1]gdclass.Texture2D) { //gd:TreeItem.add_button
-	class(self).AddButton(gd.Int(column), button, gd.Int(-1), false, String.New(""))
+	class(self).AddButton(int64(column), button, int64(-1), false, String.New(""))
 }
 
 /*
 Returns the number of buttons in column [param column].
 */
 func (self Instance) GetButtonCount(column int) int { //gd:TreeItem.get_button_count
-	return int(int(class(self).GetButtonCount(gd.Int(column))))
+	return int(int(class(self).GetButtonCount(int64(column))))
 }
 
 /*
 Returns the tooltip text for the button at index [param button_index] in column [param column].
 */
 func (self Instance) GetButtonTooltipText(column int, button_index int) string { //gd:TreeItem.get_button_tooltip_text
-	return string(class(self).GetButtonTooltipText(gd.Int(column), gd.Int(button_index)).String())
+	return string(class(self).GetButtonTooltipText(int64(column), int64(button_index)).String())
 }
 
 /*
 Returns the ID for the button at index [param button_index] in column [param column].
 */
 func (self Instance) GetButtonId(column int, button_index int) int { //gd:TreeItem.get_button_id
-	return int(int(class(self).GetButtonId(gd.Int(column), gd.Int(button_index))))
+	return int(int(class(self).GetButtonId(int64(column), int64(button_index))))
 }
 
 /*
 Returns the button index if there is a button with ID [param id] in column [param column], otherwise returns -1.
 */
 func (self Instance) GetButtonById(column int, id int) int { //gd:TreeItem.get_button_by_id
-	return int(int(class(self).GetButtonById(gd.Int(column), gd.Int(id))))
+	return int(int(class(self).GetButtonById(int64(column), int64(id))))
 }
 
 /*
 Returns the color of the button with ID [param id] in column [param column]. If the specified button does not exist, returns [constant Color.BLACK].
 */
 func (self Instance) GetButtonColor(column int, id int) Color.RGBA { //gd:TreeItem.get_button_color
-	return Color.RGBA(class(self).GetButtonColor(gd.Int(column), gd.Int(id)))
+	return Color.RGBA(class(self).GetButtonColor(int64(column), int64(id)))
 }
 
 /*
 Returns the [Texture2D] of the button at index [param button_index] in column [param column].
 */
 func (self Instance) GetButton(column int, button_index int) [1]gdclass.Texture2D { //gd:TreeItem.get_button
-	return [1]gdclass.Texture2D(class(self).GetButton(gd.Int(column), gd.Int(button_index)))
+	return [1]gdclass.Texture2D(class(self).GetButton(int64(column), int64(button_index)))
 }
 
 /*
 Sets the tooltip text for the button at index [param button_index] in the given [param column].
 */
 func (self Instance) SetButtonTooltipText(column int, button_index int, tooltip string) { //gd:TreeItem.set_button_tooltip_text
-	class(self).SetButtonTooltipText(gd.Int(column), gd.Int(button_index), String.New(tooltip))
+	class(self).SetButtonTooltipText(int64(column), int64(button_index), String.New(tooltip))
 }
 
 /*
 Sets the given column's button [Texture2D] at index [param button_index] to [param button].
 */
 func (self Instance) SetButton(column int, button_index int, button [1]gdclass.Texture2D) { //gd:TreeItem.set_button
-	class(self).SetButton(gd.Int(column), gd.Int(button_index), button)
+	class(self).SetButton(int64(column), int64(button_index), button)
 }
 
 /*
 Removes the button at index [param button_index] in column [param column].
 */
 func (self Instance) EraseButton(column int, button_index int) { //gd:TreeItem.erase_button
-	class(self).EraseButton(gd.Int(column), gd.Int(button_index))
+	class(self).EraseButton(int64(column), int64(button_index))
 }
 
 /*
 If [code]true[/code], disables the button at index [param button_index] in the given [param column].
 */
 func (self Instance) SetButtonDisabled(column int, button_index int, disabled bool) { //gd:TreeItem.set_button_disabled
-	class(self).SetButtonDisabled(gd.Int(column), gd.Int(button_index), disabled)
+	class(self).SetButtonDisabled(int64(column), int64(button_index), disabled)
 }
 
 /*
 Sets the given column's button color at index [param button_index] to [param color].
 */
 func (self Instance) SetButtonColor(column int, button_index int, color Color.RGBA) { //gd:TreeItem.set_button_color
-	class(self).SetButtonColor(gd.Int(column), gd.Int(button_index), gd.Color(color))
+	class(self).SetButtonColor(int64(column), int64(button_index), Color.RGBA(color))
 }
 
 /*
 Returns [code]true[/code] if the button at index [param button_index] for the given [param column] is disabled.
 */
 func (self Instance) IsButtonDisabled(column int, button_index int) bool { //gd:TreeItem.is_button_disabled
-	return bool(class(self).IsButtonDisabled(gd.Int(column), gd.Int(button_index)))
+	return bool(class(self).IsButtonDisabled(int64(column), int64(button_index)))
 }
 
 /*
 Sets the given column's tooltip text.
 */
 func (self Instance) SetTooltipText(column int, tooltip string) { //gd:TreeItem.set_tooltip_text
-	class(self).SetTooltipText(gd.Int(column), String.New(tooltip))
+	class(self).SetTooltipText(int64(column), String.New(tooltip))
 }
 
 /*
 Returns the given column's tooltip text.
 */
 func (self Instance) GetTooltipText(column int) string { //gd:TreeItem.get_tooltip_text
-	return string(class(self).GetTooltipText(gd.Int(column)).String())
+	return string(class(self).GetTooltipText(int64(column)).String())
 }
 
 /*
 Sets the given column's text alignment. See [enum HorizontalAlignment] for possible values.
 */
 func (self Instance) SetTextAlignment(column int, text_alignment HorizontalAlignment) { //gd:TreeItem.set_text_alignment
-	class(self).SetTextAlignment(gd.Int(column), text_alignment)
+	class(self).SetTextAlignment(int64(column), text_alignment)
 }
 
 /*
 Returns the given column's text alignment.
 */
 func (self Instance) GetTextAlignment(column int) HorizontalAlignment { //gd:TreeItem.get_text_alignment
-	return HorizontalAlignment(class(self).GetTextAlignment(gd.Int(column)))
+	return HorizontalAlignment(class(self).GetTextAlignment(int64(column)))
 }
 
 /*
 If [param enable] is [code]true[/code], the given [param column] is expanded to the right.
 */
 func (self Instance) SetExpandRight(column int, enable bool) { //gd:TreeItem.set_expand_right
-	class(self).SetExpandRight(gd.Int(column), enable)
+	class(self).SetExpandRight(int64(column), enable)
 }
 
 /*
 Returns [code]true[/code] if [code]expand_right[/code] is set.
 */
 func (self Instance) GetExpandRight(column int) bool { //gd:TreeItem.get_expand_right
-	return bool(class(self).GetExpandRight(gd.Int(column)))
+	return bool(class(self).GetExpandRight(int64(column)))
 }
 
 /*
@@ -652,7 +655,7 @@ Creates an item and adds it as a child.
 The new item will be inserted as position [param index] (the default value [code]-1[/code] means the last position), or it will be the last child if [param index] is higher than the child count.
 */
 func (self Instance) CreateChild() [1]gdclass.TreeItem { //gd:TreeItem.create_child
-	return [1]gdclass.TreeItem(class(self).CreateChild(gd.Int(-1)))
+	return [1]gdclass.TreeItem(class(self).CreateChild(int64(-1)))
 }
 
 /*
@@ -742,7 +745,7 @@ Returns a child item by its [param index] (see [method get_child_count]). This m
 Negative indices access the children from the last one.
 */
 func (self Instance) GetChild(index int) [1]gdclass.TreeItem { //gd:TreeItem.get_child
-	return [1]gdclass.TreeItem(class(self).GetChild(gd.Int(index)))
+	return [1]gdclass.TreeItem(class(self).GetChild(int64(index)))
 }
 
 /*
@@ -829,14 +832,14 @@ func (self Instance) CustomMinimumHeight() int {
 }
 
 func (self Instance) SetCustomMinimumHeight(value int) {
-	class(self).SetCustomMinimumHeight(gd.Int(value))
+	class(self).SetCustomMinimumHeight(int64(value))
 }
 
 /*
 Sets the given column's cell mode to [param mode]. This determines how the cell is displayed and edited. See [enum TreeCellMode] constants for details.
 */
 //go:nosplit
-func (self class) SetCellMode(column gd.Int, mode gdclass.TreeItemTreeCellMode) { //gd:TreeItem.set_cell_mode
+func (self class) SetCellMode(column int64, mode gdclass.TreeItemTreeCellMode) { //gd:TreeItem.set_cell_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, mode)
@@ -849,7 +852,7 @@ func (self class) SetCellMode(column gd.Int, mode gdclass.TreeItemTreeCellMode) 
 Returns the column's cell mode.
 */
 //go:nosplit
-func (self class) GetCellMode(column gd.Int) gdclass.TreeItemTreeCellMode { //gd:TreeItem.get_cell_mode
+func (self class) GetCellMode(column int64) gdclass.TreeItemTreeCellMode { //gd:TreeItem.get_cell_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gdclass.TreeItemTreeCellMode](frame)
@@ -864,7 +867,7 @@ If [param multiline] is [code]true[/code], the given [param column] is multiline
 [b]Note:[/b] This option only affects the type of control ([LineEdit] or [TextEdit]) that appears when editing the column. You can set multiline values with [method set_text] even if the column is not multiline editable.
 */
 //go:nosplit
-func (self class) SetEditMultiline(column gd.Int, multiline bool) { //gd:TreeItem.set_edit_multiline
+func (self class) SetEditMultiline(column int64, multiline bool) { //gd:TreeItem.set_edit_multiline
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, multiline)
@@ -877,7 +880,7 @@ func (self class) SetEditMultiline(column gd.Int, multiline bool) { //gd:TreeIte
 Returns [code]true[/code] if the given [param column] is multiline editable.
 */
 //go:nosplit
-func (self class) IsEditMultiline(column gd.Int) bool { //gd:TreeItem.is_edit_multiline
+func (self class) IsEditMultiline(column int64) bool { //gd:TreeItem.is_edit_multiline
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
@@ -891,7 +894,7 @@ func (self class) IsEditMultiline(column gd.Int) bool { //gd:TreeItem.is_edit_mu
 If [param checked] is [code]true[/code], the given [param column] is checked. Clears column's indeterminate status.
 */
 //go:nosplit
-func (self class) SetChecked(column gd.Int, checked bool) { //gd:TreeItem.set_checked
+func (self class) SetChecked(column int64, checked bool) { //gd:TreeItem.set_checked
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, checked)
@@ -905,7 +908,7 @@ If [param indeterminate] is [code]true[/code], the given [param column] is marke
 [b]Note:[/b] If set [code]true[/code] from [code]false[/code], then column is cleared of checked status.
 */
 //go:nosplit
-func (self class) SetIndeterminate(column gd.Int, indeterminate bool) { //gd:TreeItem.set_indeterminate
+func (self class) SetIndeterminate(column int64, indeterminate bool) { //gd:TreeItem.set_indeterminate
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, indeterminate)
@@ -918,7 +921,7 @@ func (self class) SetIndeterminate(column gd.Int, indeterminate bool) { //gd:Tre
 Returns [code]true[/code] if the given [param column] is checked.
 */
 //go:nosplit
-func (self class) IsChecked(column gd.Int) bool { //gd:TreeItem.is_checked
+func (self class) IsChecked(column int64) bool { //gd:TreeItem.is_checked
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
@@ -932,7 +935,7 @@ func (self class) IsChecked(column gd.Int) bool { //gd:TreeItem.is_checked
 Returns [code]true[/code] if the given [param column] is indeterminate.
 */
 //go:nosplit
-func (self class) IsIndeterminate(column gd.Int) bool { //gd:TreeItem.is_indeterminate
+func (self class) IsIndeterminate(column int64) bool { //gd:TreeItem.is_indeterminate
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
@@ -946,7 +949,7 @@ func (self class) IsIndeterminate(column gd.Int) bool { //gd:TreeItem.is_indeter
 Propagates this item's checked status to its children and parents for the given [param column]. It is possible to process the items affected by this method call by connecting to [signal Tree.check_propagated_to_item]. The order that the items affected will be processed is as follows: the item invoking this method, children of that item, and finally parents of that item. If [param emit_signal] is [code]false[/code], then [signal Tree.check_propagated_to_item] will not be emitted.
 */
 //go:nosplit
-func (self class) PropagateCheck(column gd.Int, emit_signal bool) { //gd:TreeItem.propagate_check
+func (self class) PropagateCheck(column int64, emit_signal bool) { //gd:TreeItem.propagate_check
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, emit_signal)
@@ -959,7 +962,7 @@ func (self class) PropagateCheck(column gd.Int, emit_signal bool) { //gd:TreeIte
 Sets the given column's text value.
 */
 //go:nosplit
-func (self class) SetText(column gd.Int, text String.Readable) { //gd:TreeItem.set_text
+func (self class) SetText(column int64, text String.Readable) { //gd:TreeItem.set_text
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
@@ -972,7 +975,7 @@ func (self class) SetText(column gd.Int, text String.Readable) { //gd:TreeItem.s
 Returns the given column's text.
 */
 //go:nosplit
-func (self class) GetText(column gd.Int) String.Readable { //gd:TreeItem.get_text
+func (self class) GetText(column int64) String.Readable { //gd:TreeItem.get_text
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -986,7 +989,7 @@ func (self class) GetText(column gd.Int) String.Readable { //gd:TreeItem.get_tex
 Sets item's text base writing direction.
 */
 //go:nosplit
-func (self class) SetTextDirection(column gd.Int, direction gdclass.ControlTextDirection) { //gd:TreeItem.set_text_direction
+func (self class) SetTextDirection(column int64, direction gdclass.ControlTextDirection) { //gd:TreeItem.set_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, direction)
@@ -999,7 +1002,7 @@ func (self class) SetTextDirection(column gd.Int, direction gdclass.ControlTextD
 Returns item's text base writing direction.
 */
 //go:nosplit
-func (self class) GetTextDirection(column gd.Int) gdclass.ControlTextDirection { //gd:TreeItem.get_text_direction
+func (self class) GetTextDirection(column int64) gdclass.ControlTextDirection { //gd:TreeItem.get_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
@@ -1013,7 +1016,7 @@ func (self class) GetTextDirection(column gd.Int) gdclass.ControlTextDirection {
 Sets the autowrap mode in the given [param column]. If set to something other than [constant TextServer.AUTOWRAP_OFF], the text gets wrapped inside the cell's bounding rectangle.
 */
 //go:nosplit
-func (self class) SetAutowrapMode(column gd.Int, autowrap_mode gdclass.TextServerAutowrapMode) { //gd:TreeItem.set_autowrap_mode
+func (self class) SetAutowrapMode(column int64, autowrap_mode gdclass.TextServerAutowrapMode) { //gd:TreeItem.set_autowrap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, autowrap_mode)
@@ -1026,7 +1029,7 @@ func (self class) SetAutowrapMode(column gd.Int, autowrap_mode gdclass.TextServe
 Returns the text autowrap mode in the given [param column]. By default it is [constant TextServer.AUTOWRAP_OFF].
 */
 //go:nosplit
-func (self class) GetAutowrapMode(column gd.Int) gdclass.TextServerAutowrapMode { //gd:TreeItem.get_autowrap_mode
+func (self class) GetAutowrapMode(column int64) gdclass.TextServerAutowrapMode { //gd:TreeItem.get_autowrap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gdclass.TextServerAutowrapMode](frame)
@@ -1040,7 +1043,7 @@ func (self class) GetAutowrapMode(column gd.Int) gdclass.TextServerAutowrapMode 
 Sets the clipping behavior when the text exceeds the item's bounding rectangle in the given [param column].
 */
 //go:nosplit
-func (self class) SetTextOverrunBehavior(column gd.Int, overrun_behavior gdclass.TextServerOverrunBehavior) { //gd:TreeItem.set_text_overrun_behavior
+func (self class) SetTextOverrunBehavior(column int64, overrun_behavior gdclass.TextServerOverrunBehavior) { //gd:TreeItem.set_text_overrun_behavior
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, overrun_behavior)
@@ -1053,7 +1056,7 @@ func (self class) SetTextOverrunBehavior(column gd.Int, overrun_behavior gdclass
 Returns the clipping behavior when the text exceeds the item's bounding rectangle in the given [param column]. By default it is [constant TextServer.OVERRUN_TRIM_ELLIPSIS].
 */
 //go:nosplit
-func (self class) GetTextOverrunBehavior(column gd.Int) gdclass.TextServerOverrunBehavior { //gd:TreeItem.get_text_overrun_behavior
+func (self class) GetTextOverrunBehavior(column int64) gdclass.TextServerOverrunBehavior { //gd:TreeItem.get_text_overrun_behavior
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gdclass.TextServerOverrunBehavior](frame)
@@ -1067,7 +1070,7 @@ func (self class) GetTextOverrunBehavior(column gd.Int) gdclass.TextServerOverru
 Set BiDi algorithm override for the structured text. Has effect for cells that display text.
 */
 //go:nosplit
-func (self class) SetStructuredTextBidiOverride(column gd.Int, parser gdclass.TextServerStructuredTextParser) { //gd:TreeItem.set_structured_text_bidi_override
+func (self class) SetStructuredTextBidiOverride(column int64, parser gdclass.TextServerStructuredTextParser) { //gd:TreeItem.set_structured_text_bidi_override
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, parser)
@@ -1080,7 +1083,7 @@ func (self class) SetStructuredTextBidiOverride(column gd.Int, parser gdclass.Te
 Returns the BiDi algorithm override set for this cell.
 */
 //go:nosplit
-func (self class) GetStructuredTextBidiOverride(column gd.Int) gdclass.TextServerStructuredTextParser { //gd:TreeItem.get_structured_text_bidi_override
+func (self class) GetStructuredTextBidiOverride(column int64) gdclass.TextServerStructuredTextParser { //gd:TreeItem.get_structured_text_bidi_override
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gdclass.TextServerStructuredTextParser](frame)
@@ -1094,7 +1097,7 @@ func (self class) GetStructuredTextBidiOverride(column gd.Int) gdclass.TextServe
 Set additional options for BiDi override. Has effect for cells that display text.
 */
 //go:nosplit
-func (self class) SetStructuredTextBidiOverrideOptions(column gd.Int, args Array.Any) { //gd:TreeItem.set_structured_text_bidi_override_options
+func (self class) SetStructuredTextBidiOverrideOptions(column int64, args Array.Any) { //gd:TreeItem.set_structured_text_bidi_override_options
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
@@ -1107,7 +1110,7 @@ func (self class) SetStructuredTextBidiOverrideOptions(column gd.Int, args Array
 Returns the additional BiDi options set for this cell.
 */
 //go:nosplit
-func (self class) GetStructuredTextBidiOverrideOptions(column gd.Int) Array.Any { //gd:TreeItem.get_structured_text_bidi_override_options
+func (self class) GetStructuredTextBidiOverrideOptions(column int64) Array.Any { //gd:TreeItem.get_structured_text_bidi_override_options
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1121,7 +1124,7 @@ func (self class) GetStructuredTextBidiOverrideOptions(column gd.Int) Array.Any 
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 //go:nosplit
-func (self class) SetLanguage(column gd.Int, language String.Readable) { //gd:TreeItem.set_language
+func (self class) SetLanguage(column int64, language String.Readable) { //gd:TreeItem.set_language
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
@@ -1134,7 +1137,7 @@ func (self class) SetLanguage(column gd.Int, language String.Readable) { //gd:Tr
 Returns item's text language code.
 */
 //go:nosplit
-func (self class) GetLanguage(column gd.Int) String.Readable { //gd:TreeItem.get_language
+func (self class) GetLanguage(column int64) String.Readable { //gd:TreeItem.get_language
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1148,7 +1151,7 @@ func (self class) GetLanguage(column gd.Int) String.Readable { //gd:TreeItem.get
 Sets a string to be shown after a column's value (for example, a unit abbreviation).
 */
 //go:nosplit
-func (self class) SetSuffix(column gd.Int, text String.Readable) { //gd:TreeItem.set_suffix
+func (self class) SetSuffix(column int64, text String.Readable) { //gd:TreeItem.set_suffix
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
@@ -1161,7 +1164,7 @@ func (self class) SetSuffix(column gd.Int, text String.Readable) { //gd:TreeItem
 Gets the suffix string shown after the column value.
 */
 //go:nosplit
-func (self class) GetSuffix(column gd.Int) String.Readable { //gd:TreeItem.get_suffix
+func (self class) GetSuffix(column int64) String.Readable { //gd:TreeItem.get_suffix
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1175,7 +1178,7 @@ func (self class) GetSuffix(column gd.Int) String.Readable { //gd:TreeItem.get_s
 Sets the given cell's icon [Texture2D]. The cell has to be in [constant CELL_MODE_ICON] mode.
 */
 //go:nosplit
-func (self class) SetIcon(column gd.Int, texture [1]gdclass.Texture2D) { //gd:TreeItem.set_icon
+func (self class) SetIcon(column int64, texture [1]gdclass.Texture2D) { //gd:TreeItem.set_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
@@ -1188,7 +1191,7 @@ func (self class) SetIcon(column gd.Int, texture [1]gdclass.Texture2D) { //gd:Tr
 Returns the given column's icon [Texture2D]. Error if no icon is set.
 */
 //go:nosplit
-func (self class) GetIcon(column gd.Int) [1]gdclass.Texture2D { //gd:TreeItem.get_icon
+func (self class) GetIcon(column int64) [1]gdclass.Texture2D { //gd:TreeItem.get_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1202,7 +1205,7 @@ func (self class) GetIcon(column gd.Int) [1]gdclass.Texture2D { //gd:TreeItem.ge
 Sets the given column's icon's texture region.
 */
 //go:nosplit
-func (self class) SetIconRegion(column gd.Int, region gd.Rect2) { //gd:TreeItem.set_icon_region
+func (self class) SetIconRegion(column int64, region Rect2.PositionSize) { //gd:TreeItem.set_icon_region
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, region)
@@ -1215,10 +1218,10 @@ func (self class) SetIconRegion(column gd.Int, region gd.Rect2) { //gd:TreeItem.
 Returns the icon [Texture2D] region as [Rect2].
 */
 //go:nosplit
-func (self class) GetIconRegion(column gd.Int) gd.Rect2 { //gd:TreeItem.get_icon_region
+func (self class) GetIconRegion(column int64) Rect2.PositionSize { //gd:TreeItem.get_icon_region
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1229,7 +1232,7 @@ func (self class) GetIconRegion(column gd.Int) gd.Rect2 { //gd:TreeItem.get_icon
 Sets the maximum allowed width of the icon in the given [param column]. This limit is applied on top of the default size of the icon and on top of [theme_item Tree.icon_max_width]. The height is adjusted according to the icon's ratio.
 */
 //go:nosplit
-func (self class) SetIconMaxWidth(column gd.Int, width gd.Int) { //gd:TreeItem.set_icon_max_width
+func (self class) SetIconMaxWidth(column int64, width int64) { //gd:TreeItem.set_icon_max_width
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, width)
@@ -1242,10 +1245,10 @@ func (self class) SetIconMaxWidth(column gd.Int, width gd.Int) { //gd:TreeItem.s
 Returns the maximum allowed width of the icon in the given [param column].
 */
 //go:nosplit
-func (self class) GetIconMaxWidth(column gd.Int) gd.Int { //gd:TreeItem.get_icon_max_width
+func (self class) GetIconMaxWidth(column int64) int64 { //gd:TreeItem.get_icon_max_width
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon_max_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1256,7 +1259,7 @@ func (self class) GetIconMaxWidth(column gd.Int) gd.Int { //gd:TreeItem.get_icon
 Modulates the given column's icon with [param modulate].
 */
 //go:nosplit
-func (self class) SetIconModulate(column gd.Int, modulate gd.Color) { //gd:TreeItem.set_icon_modulate
+func (self class) SetIconModulate(column int64, modulate Color.RGBA) { //gd:TreeItem.set_icon_modulate
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, modulate)
@@ -1269,10 +1272,10 @@ func (self class) SetIconModulate(column gd.Int, modulate gd.Color) { //gd:TreeI
 Returns the [Color] modulating the column's icon.
 */
 //go:nosplit
-func (self class) GetIconModulate(column gd.Int) gd.Color { //gd:TreeItem.get_icon_modulate
+func (self class) GetIconModulate(column int64) Color.RGBA { //gd:TreeItem.get_icon_modulate
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1283,7 +1286,7 @@ func (self class) GetIconModulate(column gd.Int) gd.Color { //gd:TreeItem.get_ic
 Sets the value of a [constant CELL_MODE_RANGE] column.
 */
 //go:nosplit
-func (self class) SetRange(column gd.Int, value gd.Float) { //gd:TreeItem.set_range
+func (self class) SetRange(column int64, value float64) { //gd:TreeItem.set_range
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, value)
@@ -1296,10 +1299,10 @@ func (self class) SetRange(column gd.Int, value gd.Float) { //gd:TreeItem.set_ra
 Returns the value of a [constant CELL_MODE_RANGE] column.
 */
 //go:nosplit
-func (self class) GetRange(column gd.Int) gd.Float { //gd:TreeItem.get_range
+func (self class) GetRange(column int64) float64 { //gd:TreeItem.get_range
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1311,7 +1314,7 @@ Sets the range of accepted values for a column. The column must be in the [const
 If [param expr] is [code]true[/code], the edit mode slider will use an exponential scale as with [member Range.exp_edit].
 */
 //go:nosplit
-func (self class) SetRangeConfig(column gd.Int, min gd.Float, max gd.Float, step gd.Float, expr bool) { //gd:TreeItem.set_range_config
+func (self class) SetRangeConfig(column int64, min float64, max float64, step float64, expr bool) { //gd:TreeItem.set_range_config
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, min)
@@ -1327,7 +1330,7 @@ func (self class) SetRangeConfig(column gd.Int, min gd.Float, max gd.Float, step
 Returns a dictionary containing the range parameters for a given column. The keys are "min", "max", "step", and "expr".
 */
 //go:nosplit
-func (self class) GetRangeConfig(column gd.Int) Dictionary.Any { //gd:TreeItem.get_range_config
+func (self class) GetRangeConfig(column int64) Dictionary.Any { //gd:TreeItem.get_range_config
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1341,10 +1344,10 @@ func (self class) GetRangeConfig(column gd.Int) Dictionary.Any { //gd:TreeItem.g
 Sets the metadata value for the given column, which can be retrieved later using [method get_metadata]. This can be used, for example, to store a reference to the original data.
 */
 //go:nosplit
-func (self class) SetMetadata(column gd.Int, meta gd.Variant) { //gd:TreeItem.set_metadata
+func (self class) SetMetadata(column int64, meta variant.Any) { //gd:TreeItem.set_metadata
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	callframe.Arg(frame, pointers.Get(meta))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(meta)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1354,12 +1357,12 @@ func (self class) SetMetadata(column gd.Int, meta gd.Variant) { //gd:TreeItem.se
 Returns the metadata value that was set for the given column using [method set_metadata].
 */
 //go:nosplit
-func (self class) GetMetadata(column gd.Int) gd.Variant { //gd:TreeItem.get_metadata
+func (self class) GetMetadata(column int64) variant.Any { //gd:TreeItem.get_metadata
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1369,7 +1372,7 @@ Sets the given column's custom draw callback to the [param callback] method on [
 The method named [param callback] should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2].
 */
 //go:nosplit
-func (self class) SetCustomDraw(column gd.Int, obj [1]gd.Object, callback String.Name) { //gd:TreeItem.set_custom_draw
+func (self class) SetCustomDraw(column int64, obj [1]gd.Object, callback String.Name) { //gd:TreeItem.set_custom_draw
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
@@ -1384,7 +1387,7 @@ Sets the given column's custom draw callback. Use an empty [Callable] ([code ski
 The [param callback] should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2].
 */
 //go:nosplit
-func (self class) SetCustomDrawCallback(column gd.Int, callback Callable.Function) { //gd:TreeItem.set_custom_draw_callback
+func (self class) SetCustomDrawCallback(column int64, callback Callable.Function) { //gd:TreeItem.set_custom_draw_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
@@ -1397,7 +1400,7 @@ func (self class) SetCustomDrawCallback(column gd.Int, callback Callable.Functio
 Returns the custom callback of column [param column].
 */
 //go:nosplit
-func (self class) GetCustomDrawCallback(column gd.Int) Callable.Function { //gd:TreeItem.get_custom_draw_callback
+func (self class) GetCustomDrawCallback(column int64) Callable.Function { //gd:TreeItem.get_custom_draw_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[2]uint64](frame)
@@ -1497,7 +1500,7 @@ func (self class) UncollapseTree() { //gd:TreeItem.uncollapse_tree
 }
 
 //go:nosplit
-func (self class) SetCustomMinimumHeight(height gd.Int) { //gd:TreeItem.set_custom_minimum_height
+func (self class) SetCustomMinimumHeight(height int64) { //gd:TreeItem.set_custom_minimum_height
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -1506,9 +1509,9 @@ func (self class) SetCustomMinimumHeight(height gd.Int) { //gd:TreeItem.set_cust
 }
 
 //go:nosplit
-func (self class) GetCustomMinimumHeight() gd.Int { //gd:TreeItem.get_custom_minimum_height
+func (self class) GetCustomMinimumHeight() int64 { //gd:TreeItem.get_custom_minimum_height
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_minimum_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1519,7 +1522,7 @@ func (self class) GetCustomMinimumHeight() gd.Int { //gd:TreeItem.get_custom_min
 If [param selectable] is [code]true[/code], the given [param column] is selectable.
 */
 //go:nosplit
-func (self class) SetSelectable(column gd.Int, selectable bool) { //gd:TreeItem.set_selectable
+func (self class) SetSelectable(column int64, selectable bool) { //gd:TreeItem.set_selectable
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, selectable)
@@ -1532,7 +1535,7 @@ func (self class) SetSelectable(column gd.Int, selectable bool) { //gd:TreeItem.
 Returns [code]true[/code] if the given [param column] is selectable.
 */
 //go:nosplit
-func (self class) IsSelectable(column gd.Int) bool { //gd:TreeItem.is_selectable
+func (self class) IsSelectable(column int64) bool { //gd:TreeItem.is_selectable
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1546,7 +1549,7 @@ func (self class) IsSelectable(column gd.Int) bool { //gd:TreeItem.is_selectable
 Returns [code]true[/code] if the given [param column] is selected.
 */
 //go:nosplit
-func (self class) IsSelected(column gd.Int) bool { //gd:TreeItem.is_selected
+func (self class) IsSelected(column int64) bool { //gd:TreeItem.is_selected
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1560,7 +1563,7 @@ func (self class) IsSelected(column gd.Int) bool { //gd:TreeItem.is_selected
 Selects the given [param column].
 */
 //go:nosplit
-func (self class) Select(column gd.Int) { //gd:TreeItem.select_
+func (self class) Select(column int64) { //gd:TreeItem.select_
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Nil
@@ -1572,7 +1575,7 @@ func (self class) Select(column gd.Int) { //gd:TreeItem.select_
 Deselects the given column.
 */
 //go:nosplit
-func (self class) Deselect(column gd.Int) { //gd:TreeItem.deselect
+func (self class) Deselect(column int64) { //gd:TreeItem.deselect
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Nil
@@ -1584,7 +1587,7 @@ func (self class) Deselect(column gd.Int) { //gd:TreeItem.deselect
 If [param enabled] is [code]true[/code], the given [param column] is editable.
 */
 //go:nosplit
-func (self class) SetEditable(column gd.Int, enabled bool) { //gd:TreeItem.set_editable
+func (self class) SetEditable(column int64, enabled bool) { //gd:TreeItem.set_editable
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, enabled)
@@ -1597,7 +1600,7 @@ func (self class) SetEditable(column gd.Int, enabled bool) { //gd:TreeItem.set_e
 Returns [code]true[/code] if the given [param column] is editable.
 */
 //go:nosplit
-func (self class) IsEditable(column gd.Int) bool { //gd:TreeItem.is_editable
+func (self class) IsEditable(column int64) bool { //gd:TreeItem.is_editable
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1611,7 +1614,7 @@ func (self class) IsEditable(column gd.Int) bool { //gd:TreeItem.is_editable
 Sets the given column's custom color.
 */
 //go:nosplit
-func (self class) SetCustomColor(column gd.Int, color gd.Color) { //gd:TreeItem.set_custom_color
+func (self class) SetCustomColor(column int64, color Color.RGBA) { //gd:TreeItem.set_custom_color
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, color)
@@ -1624,10 +1627,10 @@ func (self class) SetCustomColor(column gd.Int, color gd.Color) { //gd:TreeItem.
 Returns the custom color of column [param column].
 */
 //go:nosplit
-func (self class) GetCustomColor(column gd.Int) gd.Color { //gd:TreeItem.get_custom_color
+func (self class) GetCustomColor(column int64) Color.RGBA { //gd:TreeItem.get_custom_color
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1638,7 +1641,7 @@ func (self class) GetCustomColor(column gd.Int) gd.Color { //gd:TreeItem.get_cus
 Resets the color for the given column to default.
 */
 //go:nosplit
-func (self class) ClearCustomColor(column gd.Int) { //gd:TreeItem.clear_custom_color
+func (self class) ClearCustomColor(column int64) { //gd:TreeItem.clear_custom_color
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Nil
@@ -1650,7 +1653,7 @@ func (self class) ClearCustomColor(column gd.Int) { //gd:TreeItem.clear_custom_c
 Sets custom font used to draw text in the given [param column].
 */
 //go:nosplit
-func (self class) SetCustomFont(column gd.Int, font [1]gdclass.Font) { //gd:TreeItem.set_custom_font
+func (self class) SetCustomFont(column int64, font [1]gdclass.Font) { //gd:TreeItem.set_custom_font
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(font[0])[0])
@@ -1663,7 +1666,7 @@ func (self class) SetCustomFont(column gd.Int, font [1]gdclass.Font) { //gd:Tree
 Returns custom font used to draw text in the column [param column].
 */
 //go:nosplit
-func (self class) GetCustomFont(column gd.Int) [1]gdclass.Font { //gd:TreeItem.get_custom_font
+func (self class) GetCustomFont(column int64) [1]gdclass.Font { //gd:TreeItem.get_custom_font
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1677,7 +1680,7 @@ func (self class) GetCustomFont(column gd.Int) [1]gdclass.Font { //gd:TreeItem.g
 Sets custom font size used to draw text in the given [param column].
 */
 //go:nosplit
-func (self class) SetCustomFontSize(column gd.Int, font_size gd.Int) { //gd:TreeItem.set_custom_font_size
+func (self class) SetCustomFontSize(column int64, font_size int64) { //gd:TreeItem.set_custom_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, font_size)
@@ -1690,10 +1693,10 @@ func (self class) SetCustomFontSize(column gd.Int, font_size gd.Int) { //gd:Tree
 Returns custom font size used to draw text in the column [param column].
 */
 //go:nosplit
-func (self class) GetCustomFontSize(column gd.Int) gd.Int { //gd:TreeItem.get_custom_font_size
+func (self class) GetCustomFontSize(column int64) int64 { //gd:TreeItem.get_custom_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1704,7 +1707,7 @@ func (self class) GetCustomFontSize(column gd.Int) gd.Int { //gd:TreeItem.get_cu
 Sets the given column's custom background color and whether to just use it as an outline.
 */
 //go:nosplit
-func (self class) SetCustomBgColor(column gd.Int, color gd.Color, just_outline bool) { //gd:TreeItem.set_custom_bg_color
+func (self class) SetCustomBgColor(column int64, color Color.RGBA, just_outline bool) { //gd:TreeItem.set_custom_bg_color
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, color)
@@ -1718,7 +1721,7 @@ func (self class) SetCustomBgColor(column gd.Int, color gd.Color, just_outline b
 Resets the background color for the given column to default.
 */
 //go:nosplit
-func (self class) ClearCustomBgColor(column gd.Int) { //gd:TreeItem.clear_custom_bg_color
+func (self class) ClearCustomBgColor(column int64) { //gd:TreeItem.clear_custom_bg_color
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Nil
@@ -1730,10 +1733,10 @@ func (self class) ClearCustomBgColor(column gd.Int) { //gd:TreeItem.clear_custom
 Returns the custom background color of column [param column].
 */
 //go:nosplit
-func (self class) GetCustomBgColor(column gd.Int) gd.Color { //gd:TreeItem.get_custom_bg_color
+func (self class) GetCustomBgColor(column int64) Color.RGBA { //gd:TreeItem.get_custom_bg_color
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_bg_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1744,7 +1747,7 @@ func (self class) GetCustomBgColor(column gd.Int) gd.Color { //gd:TreeItem.get_c
 Makes a cell with [constant CELL_MODE_CUSTOM] display as a non-flat button with a [StyleBox].
 */
 //go:nosplit
-func (self class) SetCustomAsButton(column gd.Int, enable bool) { //gd:TreeItem.set_custom_as_button
+func (self class) SetCustomAsButton(column int64, enable bool) { //gd:TreeItem.set_custom_as_button
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, enable)
@@ -1757,7 +1760,7 @@ func (self class) SetCustomAsButton(column gd.Int, enable bool) { //gd:TreeItem.
 Returns [code]true[/code] if the cell was made into a button with [method set_custom_as_button].
 */
 //go:nosplit
-func (self class) IsCustomSetAsButton(column gd.Int) bool { //gd:TreeItem.is_custom_set_as_button
+func (self class) IsCustomSetAsButton(column int64) bool { //gd:TreeItem.is_custom_set_as_button
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1771,7 +1774,7 @@ func (self class) IsCustomSetAsButton(column gd.Int) bool { //gd:TreeItem.is_cus
 Adds a button with [Texture2D] [param button] at column [param column]. The [param id] is used to identify the button in the according [signal Tree.button_clicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [method get_button_count] immediately before this method. Optionally, the button can be [param disabled] and have a [param tooltip_text].
 */
 //go:nosplit
-func (self class) AddButton(column gd.Int, button [1]gdclass.Texture2D, id gd.Int, disabled bool, tooltip_text String.Readable) { //gd:TreeItem.add_button
+func (self class) AddButton(column int64, button [1]gdclass.Texture2D, id int64, disabled bool, tooltip_text String.Readable) { //gd:TreeItem.add_button
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(button[0])[0])
@@ -1787,10 +1790,10 @@ func (self class) AddButton(column gd.Int, button [1]gdclass.Texture2D, id gd.In
 Returns the number of buttons in column [param column].
 */
 //go:nosplit
-func (self class) GetButtonCount(column gd.Int) gd.Int { //gd:TreeItem.get_button_count
+func (self class) GetButtonCount(column int64) int64 { //gd:TreeItem.get_button_count
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1801,7 +1804,7 @@ func (self class) GetButtonCount(column gd.Int) gd.Int { //gd:TreeItem.get_butto
 Returns the tooltip text for the button at index [param button_index] in column [param column].
 */
 //go:nosplit
-func (self class) GetButtonTooltipText(column gd.Int, button_index gd.Int) String.Readable { //gd:TreeItem.get_button_tooltip_text
+func (self class) GetButtonTooltipText(column int64, button_index int64) String.Readable { //gd:TreeItem.get_button_tooltip_text
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
@@ -1816,11 +1819,11 @@ func (self class) GetButtonTooltipText(column gd.Int, button_index gd.Int) Strin
 Returns the ID for the button at index [param button_index] in column [param column].
 */
 //go:nosplit
-func (self class) GetButtonId(column gd.Int, button_index gd.Int) gd.Int { //gd:TreeItem.get_button_id
+func (self class) GetButtonId(column int64, button_index int64) int64 { //gd:TreeItem.get_button_id
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1831,11 +1834,11 @@ func (self class) GetButtonId(column gd.Int, button_index gd.Int) gd.Int { //gd:
 Returns the button index if there is a button with ID [param id] in column [param column], otherwise returns -1.
 */
 //go:nosplit
-func (self class) GetButtonById(column gd.Int, id gd.Int) gd.Int { //gd:TreeItem.get_button_by_id
+func (self class) GetButtonById(column int64, id int64) int64 { //gd:TreeItem.get_button_by_id
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_by_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1846,11 +1849,11 @@ func (self class) GetButtonById(column gd.Int, id gd.Int) gd.Int { //gd:TreeItem
 Returns the color of the button with ID [param id] in column [param column]. If the specified button does not exist, returns [constant Color.BLACK].
 */
 //go:nosplit
-func (self class) GetButtonColor(column gd.Int, id gd.Int) gd.Color { //gd:TreeItem.get_button_color
+func (self class) GetButtonColor(column int64, id int64) Color.RGBA { //gd:TreeItem.get_button_color
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1861,7 +1864,7 @@ func (self class) GetButtonColor(column gd.Int, id gd.Int) gd.Color { //gd:TreeI
 Returns the [Texture2D] of the button at index [param button_index] in column [param column].
 */
 //go:nosplit
-func (self class) GetButton(column gd.Int, button_index gd.Int) [1]gdclass.Texture2D { //gd:TreeItem.get_button
+func (self class) GetButton(column int64, button_index int64) [1]gdclass.Texture2D { //gd:TreeItem.get_button
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
@@ -1876,7 +1879,7 @@ func (self class) GetButton(column gd.Int, button_index gd.Int) [1]gdclass.Textu
 Sets the tooltip text for the button at index [param button_index] in the given [param column].
 */
 //go:nosplit
-func (self class) SetButtonTooltipText(column gd.Int, button_index gd.Int, tooltip String.Readable) { //gd:TreeItem.set_button_tooltip_text
+func (self class) SetButtonTooltipText(column int64, button_index int64, tooltip String.Readable) { //gd:TreeItem.set_button_tooltip_text
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
@@ -1890,7 +1893,7 @@ func (self class) SetButtonTooltipText(column gd.Int, button_index gd.Int, toolt
 Sets the given column's button [Texture2D] at index [param button_index] to [param button].
 */
 //go:nosplit
-func (self class) SetButton(column gd.Int, button_index gd.Int, button [1]gdclass.Texture2D) { //gd:TreeItem.set_button
+func (self class) SetButton(column int64, button_index int64, button [1]gdclass.Texture2D) { //gd:TreeItem.set_button
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
@@ -1904,7 +1907,7 @@ func (self class) SetButton(column gd.Int, button_index gd.Int, button [1]gdclas
 Removes the button at index [param button_index] in column [param column].
 */
 //go:nosplit
-func (self class) EraseButton(column gd.Int, button_index gd.Int) { //gd:TreeItem.erase_button
+func (self class) EraseButton(column int64, button_index int64) { //gd:TreeItem.erase_button
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
@@ -1917,7 +1920,7 @@ func (self class) EraseButton(column gd.Int, button_index gd.Int) { //gd:TreeIte
 If [code]true[/code], disables the button at index [param button_index] in the given [param column].
 */
 //go:nosplit
-func (self class) SetButtonDisabled(column gd.Int, button_index gd.Int, disabled bool) { //gd:TreeItem.set_button_disabled
+func (self class) SetButtonDisabled(column int64, button_index int64, disabled bool) { //gd:TreeItem.set_button_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
@@ -1931,7 +1934,7 @@ func (self class) SetButtonDisabled(column gd.Int, button_index gd.Int, disabled
 Sets the given column's button color at index [param button_index] to [param color].
 */
 //go:nosplit
-func (self class) SetButtonColor(column gd.Int, button_index gd.Int, color gd.Color) { //gd:TreeItem.set_button_color
+func (self class) SetButtonColor(column int64, button_index int64, color Color.RGBA) { //gd:TreeItem.set_button_color
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
@@ -1945,7 +1948,7 @@ func (self class) SetButtonColor(column gd.Int, button_index gd.Int, color gd.Co
 Returns [code]true[/code] if the button at index [param button_index] for the given [param column] is disabled.
 */
 //go:nosplit
-func (self class) IsButtonDisabled(column gd.Int, button_index gd.Int) bool { //gd:TreeItem.is_button_disabled
+func (self class) IsButtonDisabled(column int64, button_index int64) bool { //gd:TreeItem.is_button_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
@@ -1960,7 +1963,7 @@ func (self class) IsButtonDisabled(column gd.Int, button_index gd.Int) bool { //
 Sets the given column's tooltip text.
 */
 //go:nosplit
-func (self class) SetTooltipText(column gd.Int, tooltip String.Readable) { //gd:TreeItem.set_tooltip_text
+func (self class) SetTooltipText(column int64, tooltip String.Readable) { //gd:TreeItem.set_tooltip_text
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
@@ -1973,7 +1976,7 @@ func (self class) SetTooltipText(column gd.Int, tooltip String.Readable) { //gd:
 Returns the given column's tooltip text.
 */
 //go:nosplit
-func (self class) GetTooltipText(column gd.Int) String.Readable { //gd:TreeItem.get_tooltip_text
+func (self class) GetTooltipText(column int64) String.Readable { //gd:TreeItem.get_tooltip_text
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1987,7 +1990,7 @@ func (self class) GetTooltipText(column gd.Int) String.Readable { //gd:TreeItem.
 Sets the given column's text alignment. See [enum HorizontalAlignment] for possible values.
 */
 //go:nosplit
-func (self class) SetTextAlignment(column gd.Int, text_alignment HorizontalAlignment) { //gd:TreeItem.set_text_alignment
+func (self class) SetTextAlignment(column int64, text_alignment HorizontalAlignment) { //gd:TreeItem.set_text_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, text_alignment)
@@ -2000,7 +2003,7 @@ func (self class) SetTextAlignment(column gd.Int, text_alignment HorizontalAlign
 Returns the given column's text alignment.
 */
 //go:nosplit
-func (self class) GetTextAlignment(column gd.Int) HorizontalAlignment { //gd:TreeItem.get_text_alignment
+func (self class) GetTextAlignment(column int64) HorizontalAlignment { //gd:TreeItem.get_text_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[HorizontalAlignment](frame)
@@ -2014,7 +2017,7 @@ func (self class) GetTextAlignment(column gd.Int) HorizontalAlignment { //gd:Tre
 If [param enable] is [code]true[/code], the given [param column] is expanded to the right.
 */
 //go:nosplit
-func (self class) SetExpandRight(column gd.Int, enable bool) { //gd:TreeItem.set_expand_right
+func (self class) SetExpandRight(column int64, enable bool) { //gd:TreeItem.set_expand_right
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, enable)
@@ -2027,7 +2030,7 @@ func (self class) SetExpandRight(column gd.Int, enable bool) { //gd:TreeItem.set
 Returns [code]true[/code] if [code]expand_right[/code] is set.
 */
 //go:nosplit
-func (self class) GetExpandRight(column gd.Int) bool { //gd:TreeItem.get_expand_right
+func (self class) GetExpandRight(column int64) bool { //gd:TreeItem.get_expand_right
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
@@ -2061,7 +2064,7 @@ Creates an item and adds it as a child.
 The new item will be inserted as position [param index] (the default value [code]-1[/code] means the last position), or it will be the last child if [param index] is higher than the child count.
 */
 //go:nosplit
-func (self class) CreateChild(index gd.Int) [1]gdclass.TreeItem { //gd:TreeItem.create_child
+func (self class) CreateChild(index int64) [1]gdclass.TreeItem { //gd:TreeItem.create_child
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -2226,7 +2229,7 @@ Returns a child item by its [param index] (see [method get_child_count]). This m
 Negative indices access the children from the last one.
 */
 //go:nosplit
-func (self class) GetChild(index gd.Int) [1]gdclass.TreeItem { //gd:TreeItem.get_child
+func (self class) GetChild(index int64) [1]gdclass.TreeItem { //gd:TreeItem.get_child
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -2240,9 +2243,9 @@ func (self class) GetChild(index gd.Int) [1]gdclass.TreeItem { //gd:TreeItem.get
 Returns the number of child items.
 */
 //go:nosplit
-func (self class) GetChildCount() gd.Int { //gd:TreeItem.get_child_count
+func (self class) GetChildCount() int64 { //gd:TreeItem.get_child_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_child_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2266,9 +2269,9 @@ func (self class) GetChildren() Array.Contains[[1]gdclass.TreeItem] { //gd:TreeI
 Returns the node's order in the tree. For example, if called on the first child item the position is [code]0[/code].
 */
 //go:nosplit
-func (self class) GetIndex() gd.Int { //gd:TreeItem.get_index
+func (self class) GetIndex() int64 { //gd:TreeItem.get_index
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

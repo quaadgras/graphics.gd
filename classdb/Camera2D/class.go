@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -131,7 +134,7 @@ func (self Instance) Offset() Vector2.XY {
 }
 
 func (self Instance) SetOffset(value Vector2.XY) {
-	class(self).SetOffset(gd.Vector2(value))
+	class(self).SetOffset(Vector2.XY(value))
 }
 
 func (self Instance) AnchorMode() gdclass.Camera2DAnchorMode {
@@ -163,7 +166,7 @@ func (self Instance) Zoom() Vector2.XY {
 }
 
 func (self Instance) SetZoom(value Vector2.XY) {
-	class(self).SetZoom(gd.Vector2(value))
+	class(self).SetZoom(Vector2.XY(value))
 }
 
 func (self Instance) CustomViewport() [1]gdclass.Node {
@@ -187,7 +190,7 @@ func (self Instance) LimitLeft() int {
 }
 
 func (self Instance) SetLimitLeft(value int) {
-	class(self).SetLimit(0, gd.Int(value))
+	class(self).SetLimit(0, int64(value))
 }
 
 func (self Instance) LimitTop() int {
@@ -195,7 +198,7 @@ func (self Instance) LimitTop() int {
 }
 
 func (self Instance) SetLimitTop(value int) {
-	class(self).SetLimit(1, gd.Int(value))
+	class(self).SetLimit(1, int64(value))
 }
 
 func (self Instance) LimitRight() int {
@@ -203,7 +206,7 @@ func (self Instance) LimitRight() int {
 }
 
 func (self Instance) SetLimitRight(value int) {
-	class(self).SetLimit(2, gd.Int(value))
+	class(self).SetLimit(2, int64(value))
 }
 
 func (self Instance) LimitBottom() int {
@@ -211,7 +214,7 @@ func (self Instance) LimitBottom() int {
 }
 
 func (self Instance) SetLimitBottom(value int) {
-	class(self).SetLimit(3, gd.Int(value))
+	class(self).SetLimit(3, int64(value))
 }
 
 func (self Instance) LimitSmoothed() bool {
@@ -235,7 +238,7 @@ func (self Instance) PositionSmoothingSpeed() Float.X {
 }
 
 func (self Instance) SetPositionSmoothingSpeed(value Float.X) {
-	class(self).SetPositionSmoothingSpeed(gd.Float(value))
+	class(self).SetPositionSmoothingSpeed(float64(value))
 }
 
 func (self Instance) RotationSmoothingEnabled() bool {
@@ -251,7 +254,7 @@ func (self Instance) RotationSmoothingSpeed() Float.X {
 }
 
 func (self Instance) SetRotationSmoothingSpeed(value Float.X) {
-	class(self).SetRotationSmoothingSpeed(gd.Float(value))
+	class(self).SetRotationSmoothingSpeed(float64(value))
 }
 
 func (self Instance) DragHorizontalEnabled() bool {
@@ -275,7 +278,7 @@ func (self Instance) DragHorizontalOffset() Float.X {
 }
 
 func (self Instance) SetDragHorizontalOffset(value Float.X) {
-	class(self).SetDragHorizontalOffset(gd.Float(value))
+	class(self).SetDragHorizontalOffset(float64(value))
 }
 
 func (self Instance) DragVerticalOffset() Float.X {
@@ -283,7 +286,7 @@ func (self Instance) DragVerticalOffset() Float.X {
 }
 
 func (self Instance) SetDragVerticalOffset(value Float.X) {
-	class(self).SetDragVerticalOffset(gd.Float(value))
+	class(self).SetDragVerticalOffset(float64(value))
 }
 
 func (self Instance) DragLeftMargin() Float.X {
@@ -291,7 +294,7 @@ func (self Instance) DragLeftMargin() Float.X {
 }
 
 func (self Instance) SetDragLeftMargin(value Float.X) {
-	class(self).SetDragMargin(0, gd.Float(value))
+	class(self).SetDragMargin(0, float64(value))
 }
 
 func (self Instance) DragTopMargin() Float.X {
@@ -299,7 +302,7 @@ func (self Instance) DragTopMargin() Float.X {
 }
 
 func (self Instance) SetDragTopMargin(value Float.X) {
-	class(self).SetDragMargin(1, gd.Float(value))
+	class(self).SetDragMargin(1, float64(value))
 }
 
 func (self Instance) DragRightMargin() Float.X {
@@ -307,7 +310,7 @@ func (self Instance) DragRightMargin() Float.X {
 }
 
 func (self Instance) SetDragRightMargin(value Float.X) {
-	class(self).SetDragMargin(2, gd.Float(value))
+	class(self).SetDragMargin(2, float64(value))
 }
 
 func (self Instance) DragBottomMargin() Float.X {
@@ -315,7 +318,7 @@ func (self Instance) DragBottomMargin() Float.X {
 }
 
 func (self Instance) SetDragBottomMargin(value Float.X) {
-	class(self).SetDragMargin(3, gd.Float(value))
+	class(self).SetDragMargin(3, float64(value))
 }
 
 func (self Instance) EditorDrawScreen() bool {
@@ -343,7 +346,7 @@ func (self Instance) SetEditorDrawDragMargin(value bool) {
 }
 
 //go:nosplit
-func (self class) SetOffset(offset gd.Vector2) { //gd:Camera2D.set_offset
+func (self class) SetOffset(offset Vector2.XY) { //gd:Camera2D.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -352,9 +355,9 @@ func (self class) SetOffset(offset gd.Vector2) { //gd:Camera2D.set_offset
 }
 
 //go:nosplit
-func (self class) GetOffset() gd.Vector2 { //gd:Camera2D.get_offset
+func (self class) GetOffset() Vector2.XY { //gd:Camera2D.get_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -465,7 +468,7 @@ func (self class) IsCurrent() bool { //gd:Camera2D.is_current
 Sets the camera limit for the specified [enum Side]. See also [member limit_bottom], [member limit_top], [member limit_left], and [member limit_right].
 */
 //go:nosplit
-func (self class) SetLimit(margin Side, limit gd.Int) { //gd:Camera2D.set_limit
+func (self class) SetLimit(margin Side, limit int64) { //gd:Camera2D.set_limit
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, limit)
@@ -478,10 +481,10 @@ func (self class) SetLimit(margin Side, limit gd.Int) { //gd:Camera2D.set_limit
 Returns the camera limit for the specified [enum Side]. See also [member limit_bottom], [member limit_top], [member limit_left], and [member limit_right].
 */
 //go:nosplit
-func (self class) GetLimit(margin Side) gd.Int { //gd:Camera2D.get_limit
+func (self class) GetLimit(margin Side) int64 { //gd:Camera2D.get_limit
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_limit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -546,7 +549,7 @@ func (self class) IsDragHorizontalEnabled() bool { //gd:Camera2D.is_drag_horizon
 }
 
 //go:nosplit
-func (self class) SetDragVerticalOffset(offset gd.Float) { //gd:Camera2D.set_drag_vertical_offset
+func (self class) SetDragVerticalOffset(offset float64) { //gd:Camera2D.set_drag_vertical_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -555,9 +558,9 @@ func (self class) SetDragVerticalOffset(offset gd.Float) { //gd:Camera2D.set_dra
 }
 
 //go:nosplit
-func (self class) GetDragVerticalOffset() gd.Float { //gd:Camera2D.get_drag_vertical_offset
+func (self class) GetDragVerticalOffset() float64 { //gd:Camera2D.get_drag_vertical_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_drag_vertical_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -565,7 +568,7 @@ func (self class) GetDragVerticalOffset() gd.Float { //gd:Camera2D.get_drag_vert
 }
 
 //go:nosplit
-func (self class) SetDragHorizontalOffset(offset gd.Float) { //gd:Camera2D.set_drag_horizontal_offset
+func (self class) SetDragHorizontalOffset(offset float64) { //gd:Camera2D.set_drag_horizontal_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -574,9 +577,9 @@ func (self class) SetDragHorizontalOffset(offset gd.Float) { //gd:Camera2D.set_d
 }
 
 //go:nosplit
-func (self class) GetDragHorizontalOffset() gd.Float { //gd:Camera2D.get_drag_horizontal_offset
+func (self class) GetDragHorizontalOffset() float64 { //gd:Camera2D.get_drag_horizontal_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_drag_horizontal_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -587,7 +590,7 @@ func (self class) GetDragHorizontalOffset() gd.Float { //gd:Camera2D.get_drag_ho
 Sets the specified [enum Side]'s margin. See also [member drag_bottom_margin], [member drag_top_margin], [member drag_left_margin], and [member drag_right_margin].
 */
 //go:nosplit
-func (self class) SetDragMargin(margin Side, drag_margin gd.Float) { //gd:Camera2D.set_drag_margin
+func (self class) SetDragMargin(margin Side, drag_margin float64) { //gd:Camera2D.set_drag_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, drag_margin)
@@ -600,10 +603,10 @@ func (self class) SetDragMargin(margin Side, drag_margin gd.Float) { //gd:Camera
 Returns the specified [enum Side]'s margin. See also [member drag_bottom_margin], [member drag_top_margin], [member drag_left_margin], and [member drag_right_margin].
 */
 //go:nosplit
-func (self class) GetDragMargin(margin Side) gd.Float { //gd:Camera2D.get_drag_margin
+func (self class) GetDragMargin(margin Side) float64 { //gd:Camera2D.get_drag_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_drag_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -615,9 +618,9 @@ Returns this camera's target position, in global coordinates.
 [b]Note:[/b] The returned value is not the same as [member Node2D.global_position], as it is affected by the drag properties. It is also not the same as the current position if [member position_smoothing_enabled] is [code]true[/code] (see [method get_screen_center_position]).
 */
 //go:nosplit
-func (self class) GetTargetPosition() gd.Vector2 { //gd:Camera2D.get_target_position
+func (self class) GetTargetPosition() Vector2.XY { //gd:Camera2D.get_target_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_target_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -629,9 +632,9 @@ Returns the center of the screen from this camera's point of view, in global coo
 [b]Note:[/b] The exact targeted position of the camera may be different. See [method get_target_position].
 */
 //go:nosplit
-func (self class) GetScreenCenterPosition() gd.Vector2 { //gd:Camera2D.get_screen_center_position
+func (self class) GetScreenCenterPosition() Vector2.XY { //gd:Camera2D.get_screen_center_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_screen_center_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -639,7 +642,7 @@ func (self class) GetScreenCenterPosition() gd.Vector2 { //gd:Camera2D.get_scree
 }
 
 //go:nosplit
-func (self class) SetZoom(zoom gd.Vector2) { //gd:Camera2D.set_zoom
+func (self class) SetZoom(zoom Vector2.XY) { //gd:Camera2D.set_zoom
 	var frame = callframe.New()
 	callframe.Arg(frame, zoom)
 	var r_ret = callframe.Nil
@@ -648,9 +651,9 @@ func (self class) SetZoom(zoom gd.Vector2) { //gd:Camera2D.set_zoom
 }
 
 //go:nosplit
-func (self class) GetZoom() gd.Vector2 { //gd:Camera2D.get_zoom
+func (self class) GetZoom() Vector2.XY { //gd:Camera2D.get_zoom
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_zoom, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -677,7 +680,7 @@ func (self class) GetCustomViewport() [1]gdclass.Node { //gd:Camera2D.get_custom
 }
 
 //go:nosplit
-func (self class) SetPositionSmoothingSpeed(position_smoothing_speed gd.Float) { //gd:Camera2D.set_position_smoothing_speed
+func (self class) SetPositionSmoothingSpeed(position_smoothing_speed float64) { //gd:Camera2D.set_position_smoothing_speed
 	var frame = callframe.New()
 	callframe.Arg(frame, position_smoothing_speed)
 	var r_ret = callframe.Nil
@@ -686,9 +689,9 @@ func (self class) SetPositionSmoothingSpeed(position_smoothing_speed gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPositionSmoothingSpeed() gd.Float { //gd:Camera2D.get_position_smoothing_speed
+func (self class) GetPositionSmoothingSpeed() float64 { //gd:Camera2D.get_position_smoothing_speed
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_position_smoothing_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -734,7 +737,7 @@ func (self class) IsRotationSmoothingEnabled() bool { //gd:Camera2D.is_rotation_
 }
 
 //go:nosplit
-func (self class) SetRotationSmoothingSpeed(speed gd.Float) { //gd:Camera2D.set_rotation_smoothing_speed
+func (self class) SetRotationSmoothingSpeed(speed float64) { //gd:Camera2D.set_rotation_smoothing_speed
 	var frame = callframe.New()
 	callframe.Arg(frame, speed)
 	var r_ret = callframe.Nil
@@ -743,9 +746,9 @@ func (self class) SetRotationSmoothingSpeed(speed gd.Float) { //gd:Camera2D.set_
 }
 
 //go:nosplit
-func (self class) GetRotationSmoothingSpeed() gd.Float { //gd:Camera2D.get_rotation_smoothing_speed
+func (self class) GetRotationSmoothingSpeed() float64 { //gd:Camera2D.get_rotation_smoothing_speed
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_rotation_smoothing_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

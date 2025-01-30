@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
 
 var _ Object.ID
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -65,7 +68,7 @@ func (self Instance) GetBoneCount() int { //gd:Skeleton2D.get_bone_count
 Returns a [Bone2D] from the node hierarchy parented by Skeleton2D. The object to return is identified by the parameter [param idx]. Bones are indexed by descending the node hierarchy from top to bottom, adding the children of each branch before moving to the next sibling.
 */
 func (self Instance) GetBone(idx int) [1]gdclass.Bone2D { //gd:Skeleton2D.get_bone
-	return [1]gdclass.Bone2D(class(self).GetBone(gd.Int(idx)))
+	return [1]gdclass.Bone2D(class(self).GetBone(int64(idx)))
 }
 
 /*
@@ -93,7 +96,7 @@ func (self Instance) GetModificationStack() [1]gdclass.SkeletonModificationStack
 Executes all the modifications on the [SkeletonModificationStack2D], if the Skeleton2D has one assigned.
 */
 func (self Instance) ExecuteModifications(delta Float.X, execution_mode int) { //gd:Skeleton2D.execute_modifications
-	class(self).ExecuteModifications(gd.Float(delta), gd.Int(execution_mode))
+	class(self).ExecuteModifications(float64(delta), int64(execution_mode))
 }
 
 /*
@@ -102,14 +105,14 @@ Sets the local pose transform, [param override_pose], for the bone at [param bon
 [b]Note:[/b] The pose transform needs to be a local transform relative to the [Bone2D] node at [param bone_idx]!
 */
 func (self Instance) SetBoneLocalPoseOverride(bone_idx int, override_pose Transform2D.OriginXY, strength Float.X, persistent bool) { //gd:Skeleton2D.set_bone_local_pose_override
-	class(self).SetBoneLocalPoseOverride(gd.Int(bone_idx), gd.Transform2D(override_pose), gd.Float(strength), persistent)
+	class(self).SetBoneLocalPoseOverride(int64(bone_idx), Transform2D.OriginXY(override_pose), float64(strength), persistent)
 }
 
 /*
 Returns the local pose override transform for [param bone_idx].
 */
 func (self Instance) GetBoneLocalPoseOverride(bone_idx int) Transform2D.OriginXY { //gd:Skeleton2D.get_bone_local_pose_override
-	return Transform2D.OriginXY(class(self).GetBoneLocalPoseOverride(gd.Int(bone_idx)))
+	return Transform2D.OriginXY(class(self).GetBoneLocalPoseOverride(int64(bone_idx)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -134,9 +137,9 @@ func New() Instance {
 Returns the number of [Bone2D] nodes in the node hierarchy parented by Skeleton2D.
 */
 //go:nosplit
-func (self class) GetBoneCount() gd.Int { //gd:Skeleton2D.get_bone_count
+func (self class) GetBoneCount() int64 { //gd:Skeleton2D.get_bone_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton2D.Bind_get_bone_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -147,7 +150,7 @@ func (self class) GetBoneCount() gd.Int { //gd:Skeleton2D.get_bone_count
 Returns a [Bone2D] from the node hierarchy parented by Skeleton2D. The object to return is identified by the parameter [param idx]. Bones are indexed by descending the node hierarchy from top to bottom, adding the children of each branch before moving to the next sibling.
 */
 //go:nosplit
-func (self class) GetBone(idx gd.Int) [1]gdclass.Bone2D { //gd:Skeleton2D.get_bone
+func (self class) GetBone(idx int64) [1]gdclass.Bone2D { //gd:Skeleton2D.get_bone
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -161,9 +164,9 @@ func (self class) GetBone(idx gd.Int) [1]gdclass.Bone2D { //gd:Skeleton2D.get_bo
 Returns the [RID] of a Skeleton2D instance.
 */
 //go:nosplit
-func (self class) GetSkeleton() gd.RID { //gd:Skeleton2D.get_skeleton
+func (self class) GetSkeleton() RID.Any { //gd:Skeleton2D.get_skeleton
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton2D.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -199,7 +202,7 @@ func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D 
 Executes all the modifications on the [SkeletonModificationStack2D], if the Skeleton2D has one assigned.
 */
 //go:nosplit
-func (self class) ExecuteModifications(delta gd.Float, execution_mode gd.Int) { //gd:Skeleton2D.execute_modifications
+func (self class) ExecuteModifications(delta float64, execution_mode int64) { //gd:Skeleton2D.execute_modifications
 	var frame = callframe.New()
 	callframe.Arg(frame, delta)
 	callframe.Arg(frame, execution_mode)
@@ -214,7 +217,7 @@ Sets the local pose transform, [param override_pose], for the bone at [param bon
 [b]Note:[/b] The pose transform needs to be a local transform relative to the [Bone2D] node at [param bone_idx]!
 */
 //go:nosplit
-func (self class) SetBoneLocalPoseOverride(bone_idx gd.Int, override_pose gd.Transform2D, strength gd.Float, persistent bool) { //gd:Skeleton2D.set_bone_local_pose_override
+func (self class) SetBoneLocalPoseOverride(bone_idx int64, override_pose Transform2D.OriginXY, strength float64, persistent bool) { //gd:Skeleton2D.set_bone_local_pose_override
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, override_pose)
@@ -229,10 +232,10 @@ func (self class) SetBoneLocalPoseOverride(bone_idx gd.Int, override_pose gd.Tra
 Returns the local pose override transform for [param bone_idx].
 */
 //go:nosplit
-func (self class) GetBoneLocalPoseOverride(bone_idx gd.Int) gd.Transform2D { //gd:Skeleton2D.get_bone_local_pose_override
+func (self class) GetBoneLocalPoseOverride(bone_idx int64) Transform2D.OriginXY { //gd:Skeleton2D.get_bone_local_pose_override
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[gd.Transform2D](frame)
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton2D.Bind_get_bone_local_pose_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture"
+import "graphics.gd/classdb/Texture3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Texture3D"
-import "graphics.gd/classdb/Texture"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -79,15 +82,15 @@ func New() Instance {
 }
 
 func (self Instance) SetWidth(value int) {
-	class(self).SetWidth(gd.Int(value))
+	class(self).SetWidth(int64(value))
 }
 
 func (self Instance) SetHeight(value int) {
-	class(self).SetHeight(gd.Int(value))
+	class(self).SetHeight(int64(value))
 }
 
 func (self Instance) SetDepth(value int) {
-	class(self).SetDepth(gd.Int(value))
+	class(self).SetDepth(int64(value))
 }
 
 func (self Instance) Invert() bool {
@@ -111,7 +114,7 @@ func (self Instance) SeamlessBlendSkirt() Float.X {
 }
 
 func (self Instance) SetSeamlessBlendSkirt(value Float.X) {
-	class(self).SetSeamlessBlendSkirt(gd.Float(value))
+	class(self).SetSeamlessBlendSkirt(float64(value))
 }
 
 func (self Instance) Normalize() bool {
@@ -139,7 +142,7 @@ func (self Instance) SetNoise(value [1]gdclass.Noise) {
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Int) { //gd:NoiseTexture3D.set_width
+func (self class) SetWidth(width int64) { //gd:NoiseTexture3D.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -148,7 +151,7 @@ func (self class) SetWidth(width gd.Int) { //gd:NoiseTexture3D.set_width
 }
 
 //go:nosplit
-func (self class) SetHeight(height gd.Int) { //gd:NoiseTexture3D.set_height
+func (self class) SetHeight(height int64) { //gd:NoiseTexture3D.set_height
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -157,7 +160,7 @@ func (self class) SetHeight(height gd.Int) { //gd:NoiseTexture3D.set_height
 }
 
 //go:nosplit
-func (self class) SetDepth(depth gd.Int) { //gd:NoiseTexture3D.set_depth
+func (self class) SetDepth(depth int64) { //gd:NoiseTexture3D.set_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, depth)
 	var r_ret = callframe.Nil
@@ -204,7 +207,7 @@ func (self class) GetSeamless() bool { //gd:NoiseTexture3D.get_seamless
 }
 
 //go:nosplit
-func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt gd.Float) { //gd:NoiseTexture3D.set_seamless_blend_skirt
+func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt float64) { //gd:NoiseTexture3D.set_seamless_blend_skirt
 	var frame = callframe.New()
 	callframe.Arg(frame, seamless_blend_skirt)
 	var r_ret = callframe.Nil
@@ -213,9 +216,9 @@ func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt gd.Float) { //gd:No
 }
 
 //go:nosplit
-func (self class) GetSeamlessBlendSkirt() gd.Float { //gd:NoiseTexture3D.get_seamless_blend_skirt
+func (self class) GetSeamlessBlendSkirt() float64 { //gd:NoiseTexture3D.get_seamless_blend_skirt
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture3D.Bind_get_seamless_blend_skirt, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

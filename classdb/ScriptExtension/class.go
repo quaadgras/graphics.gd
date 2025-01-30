@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Script"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Script"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 type Instance [1]gdclass.ScriptExtension
@@ -258,7 +262,12 @@ func (Instance) _reload(impl func(ptr unsafe.Pointer, keep_state bool) error) (c
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, keep_state)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 func (Instance) _get_documentation(impl func(ptr unsafe.Pointer) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -313,7 +322,7 @@ func (Instance) _get_script_method_argument_count(impl func(ptr unsafe.Pointer, 
 		defer pointers.End(gd.InternalStringName(method))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, method.String())
-		ptr, ok := pointers.End(gd.NewVariant(ret))
+		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
 			return
@@ -408,7 +417,7 @@ func (Instance) _get_property_default_value(impl func(ptr unsafe.Pointer, proper
 		defer pointers.End(gd.InternalStringName(property))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, property.String())
-		ptr, ok := pointers.End(gd.NewVariant(ret))
+		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
 			return
@@ -452,7 +461,7 @@ func (Instance) _get_member_line(impl func(ptr unsafe.Pointer, member string) in
 		defer pointers.End(gd.InternalStringName(member))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, member.String())
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 func (Instance) _get_constants(impl func(ptr unsafe.Pointer) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -490,7 +499,7 @@ func (Instance) _get_rpc_config(impl func(ptr unsafe.Pointer) any) (cb gd.Extens
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewVariant(ret))
+		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
 			return
@@ -653,13 +662,18 @@ func (class) _set_source_code(impl func(ptr unsafe.Pointer, code String.Readable
 	}
 }
 
-func (class) _reload(impl func(ptr unsafe.Pointer, keep_state bool) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _reload(impl func(ptr unsafe.Pointer, keep_state bool) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var keep_state = gd.UnsafeGet[bool](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, keep_state)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -712,13 +726,13 @@ func (class) _has_static_method(impl func(ptr unsafe.Pointer, method String.Name
 /*
 Return the expected argument count for the given [param method], or [code]null[/code] if it can't be determined (which will then fall back to the default behavior).
 */
-func (class) _get_script_method_argument_count(impl func(ptr unsafe.Pointer, method String.Name) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_script_method_argument_count(impl func(ptr unsafe.Pointer, method String.Name) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(method))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, method)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
 		if !ok {
 			return
@@ -815,13 +829,13 @@ func (class) _has_property_default_value(impl func(ptr unsafe.Pointer, property 
 	}
 }
 
-func (class) _get_property_default_value(impl func(ptr unsafe.Pointer, property String.Name) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_property_default_value(impl func(ptr unsafe.Pointer, property String.Name) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var property = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(property))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, property)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
 		if !ok {
 			return
@@ -863,7 +877,7 @@ func (class) _get_script_property_list(impl func(ptr unsafe.Pointer) Array.Conta
 	}
 }
 
-func (class) _get_member_line(impl func(ptr unsafe.Pointer, member String.Name) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_member_line(impl func(ptr unsafe.Pointer, member String.Name) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var member = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(member))
@@ -907,11 +921,11 @@ func (class) _is_placeholder_fallback_enabled(impl func(ptr unsafe.Pointer) bool
 	}
 }
 
-func (class) _get_rpc_config(impl func(ptr unsafe.Pointer) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_rpc_config(impl func(ptr unsafe.Pointer) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
 		if !ok {
 			return
@@ -1099,119 +1113,3 @@ func init() {
 		return [1]gdclass.ScriptExtension{*(*gdclass.ScriptExtension)(unsafe.Pointer(&ptr))}
 	})
 }
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
-)

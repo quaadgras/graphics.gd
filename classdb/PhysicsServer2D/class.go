@@ -10,16 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -135,7 +138,7 @@ Sets the shape data that defines the configuration of the shape. The [param data
 */
 func ShapeSetData(shape RID.Shape2D, data any) { //gd:PhysicsServer2D.shape_set_data
 	once.Do(singleton)
-	class(self).ShapeSetData(gd.RID(shape), gd.NewVariant(data))
+	class(self).ShapeSetData(RID.Any(shape), variant.New(data))
 }
 
 /*
@@ -143,7 +146,7 @@ Returns the shape's type (see [enum ShapeType]).
 */
 func ShapeGetType(shape RID.Shape2D) gdclass.PhysicsServer2DShapeType { //gd:PhysicsServer2D.shape_get_type
 	once.Do(singleton)
-	return gdclass.PhysicsServer2DShapeType(class(self).ShapeGetType(gd.RID(shape)))
+	return gdclass.PhysicsServer2DShapeType(class(self).ShapeGetType(RID.Any(shape)))
 }
 
 /*
@@ -151,7 +154,7 @@ Returns the shape data that defines the configuration of the shape, such as the 
 */
 func ShapeGetData(shape RID.Shape2D) any { //gd:PhysicsServer2D.shape_get_data
 	once.Do(singleton)
-	return any(class(self).ShapeGetData(gd.RID(shape)).Interface())
+	return any(class(self).ShapeGetData(RID.Any(shape)).Interface())
 }
 
 /*
@@ -167,7 +170,7 @@ Activates or deactivates the space. If [param active] is [code]false[/code], the
 */
 func SpaceSetActive(space RID.Space2D, active bool) { //gd:PhysicsServer2D.space_set_active
 	once.Do(singleton)
-	class(self).SpaceSetActive(gd.RID(space), active)
+	class(self).SpaceSetActive(RID.Any(space), active)
 }
 
 /*
@@ -175,7 +178,7 @@ Returns [code]true[/code] if the space is active.
 */
 func SpaceIsActive(space RID.Space2D) bool { //gd:PhysicsServer2D.space_is_active
 	once.Do(singleton)
-	return bool(class(self).SpaceIsActive(gd.RID(space)))
+	return bool(class(self).SpaceIsActive(RID.Any(space)))
 }
 
 /*
@@ -183,7 +186,7 @@ Sets the value of the given space parameter. See [enum SpaceParameter] for the l
 */
 func SpaceSetParam(space RID.Space2D, param gdclass.PhysicsServer2DSpaceParameter, value Float.X) { //gd:PhysicsServer2D.space_set_param
 	once.Do(singleton)
-	class(self).SpaceSetParam(gd.RID(space), param, gd.Float(value))
+	class(self).SpaceSetParam(RID.Any(space), param, float64(value))
 }
 
 /*
@@ -191,7 +194,7 @@ Returns the value of the given space parameter. See [enum SpaceParameter] for th
 */
 func SpaceGetParam(space RID.Space2D, param gdclass.PhysicsServer2DSpaceParameter) Float.X { //gd:PhysicsServer2D.space_get_param
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).SpaceGetParam(gd.RID(space), param)))
+	return Float.X(Float.X(class(self).SpaceGetParam(RID.Any(space), param)))
 }
 
 /*
@@ -199,7 +202,7 @@ Returns the state of a space, a [PhysicsDirectSpaceState2D]. This object can be 
 */
 func SpaceGetDirectState(space RID.Space2D) [1]gdclass.PhysicsDirectSpaceState2D { //gd:PhysicsServer2D.space_get_direct_state
 	once.Do(singleton)
-	return [1]gdclass.PhysicsDirectSpaceState2D(class(self).SpaceGetDirectState(gd.RID(space)))
+	return [1]gdclass.PhysicsDirectSpaceState2D(class(self).SpaceGetDirectState(RID.Any(space)))
 }
 
 /*
@@ -217,7 +220,7 @@ Adds the area to the given space, after removing the area from the previously as
 */
 func AreaSetSpace(area RID.Area2D, space RID.Space2D) { //gd:PhysicsServer2D.area_set_space
 	once.Do(singleton)
-	class(self).AreaSetSpace(gd.RID(area), gd.RID(space))
+	class(self).AreaSetSpace(RID.Any(area), RID.Any(space))
 }
 
 /*
@@ -225,7 +228,7 @@ Returns the [RID] of the space assigned to the area. Returns an empty [RID] if n
 */
 func AreaGetSpace(area RID.Area2D) RID.Space2D { //gd:PhysicsServer2D.area_get_space
 	once.Do(singleton)
-	return RID.Space2D(class(self).AreaGetSpace(gd.RID(area)))
+	return RID.Space2D(class(self).AreaGetSpace(RID.Any(area)))
 }
 
 /*
@@ -233,7 +236,7 @@ Adds a shape to the area, with the given local transform. The shape (together wi
 */
 func AreaAddShape(area RID.Area2D, shape RID.Shape2D) { //gd:PhysicsServer2D.area_add_shape
 	once.Do(singleton)
-	class(self).AreaAddShape(gd.RID(area), gd.RID(shape), gd.Transform2D(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), false)
+	class(self).AreaAddShape(RID.Any(area), RID.Any(shape), Transform2D.OriginXY(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), false)
 }
 
 /*
@@ -241,7 +244,7 @@ Replaces the area's shape at the given index by another shape, while not affecti
 */
 func AreaSetShape(area RID.Area2D, shape_idx int, shape RID.Shape2D) { //gd:PhysicsServer2D.area_set_shape
 	once.Do(singleton)
-	class(self).AreaSetShape(gd.RID(area), gd.Int(shape_idx), gd.RID(shape))
+	class(self).AreaSetShape(RID.Any(area), int64(shape_idx), RID.Any(shape))
 }
 
 /*
@@ -249,7 +252,7 @@ Sets the local transform matrix of the area's shape with the given index.
 */
 func AreaSetShapeTransform(area RID.Area2D, shape_idx int, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.area_set_shape_transform
 	once.Do(singleton)
-	class(self).AreaSetShapeTransform(gd.RID(area), gd.Int(shape_idx), gd.Transform2D(transform))
+	class(self).AreaSetShapeTransform(RID.Any(area), int64(shape_idx), Transform2D.OriginXY(transform))
 }
 
 /*
@@ -257,7 +260,7 @@ Sets the disabled property of the area's shape with the given index. If [param d
 */
 func AreaSetShapeDisabled(area RID.Area2D, shape_idx int, disabled bool) { //gd:PhysicsServer2D.area_set_shape_disabled
 	once.Do(singleton)
-	class(self).AreaSetShapeDisabled(gd.RID(area), gd.Int(shape_idx), disabled)
+	class(self).AreaSetShapeDisabled(RID.Any(area), int64(shape_idx), disabled)
 }
 
 /*
@@ -265,7 +268,7 @@ Returns the number of shapes added to the area.
 */
 func AreaGetShapeCount(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_shape_count
 	once.Do(singleton)
-	return int(int(class(self).AreaGetShapeCount(gd.RID(area))))
+	return int(int(class(self).AreaGetShapeCount(RID.Any(area))))
 }
 
 /*
@@ -273,7 +276,7 @@ Returns the [RID] of the shape with the given index in the area's array of shape
 */
 func AreaGetShape(area RID.Area2D, shape_idx int) RID.Shape2D { //gd:PhysicsServer2D.area_get_shape
 	once.Do(singleton)
-	return RID.Shape2D(class(self).AreaGetShape(gd.RID(area), gd.Int(shape_idx)))
+	return RID.Shape2D(class(self).AreaGetShape(RID.Any(area), int64(shape_idx)))
 }
 
 /*
@@ -281,7 +284,7 @@ Returns the local transform matrix of the shape with the given index in the area
 */
 func AreaGetShapeTransform(area RID.Area2D, shape_idx int) Transform2D.OriginXY { //gd:PhysicsServer2D.area_get_shape_transform
 	once.Do(singleton)
-	return Transform2D.OriginXY(class(self).AreaGetShapeTransform(gd.RID(area), gd.Int(shape_idx)))
+	return Transform2D.OriginXY(class(self).AreaGetShapeTransform(RID.Any(area), int64(shape_idx)))
 }
 
 /*
@@ -289,7 +292,7 @@ Removes the shape with the given index from the area's array of shapes. The shap
 */
 func AreaRemoveShape(area RID.Area2D, shape_idx int) { //gd:PhysicsServer2D.area_remove_shape
 	once.Do(singleton)
-	class(self).AreaRemoveShape(gd.RID(area), gd.Int(shape_idx))
+	class(self).AreaRemoveShape(RID.Any(area), int64(shape_idx))
 }
 
 /*
@@ -297,7 +300,7 @@ Removes all shapes from the area. This does not delete the shapes themselves, so
 */
 func AreaClearShapes(area RID.Area2D) { //gd:PhysicsServer2D.area_clear_shapes
 	once.Do(singleton)
-	class(self).AreaClearShapes(gd.RID(area))
+	class(self).AreaClearShapes(RID.Any(area))
 }
 
 /*
@@ -305,7 +308,7 @@ Assigns the area to one or many physics layers, via a bitmask.
 */
 func AreaSetCollisionLayer(area RID.Area2D, layer int) { //gd:PhysicsServer2D.area_set_collision_layer
 	once.Do(singleton)
-	class(self).AreaSetCollisionLayer(gd.RID(area), gd.Int(layer))
+	class(self).AreaSetCollisionLayer(RID.Any(area), int64(layer))
 }
 
 /*
@@ -313,7 +316,7 @@ Returns the physics layer or layers the area belongs to, as a bitmask.
 */
 func AreaGetCollisionLayer(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_collision_layer
 	once.Do(singleton)
-	return int(int(class(self).AreaGetCollisionLayer(gd.RID(area))))
+	return int(int(class(self).AreaGetCollisionLayer(RID.Any(area))))
 }
 
 /*
@@ -321,7 +324,7 @@ Sets which physics layers the area will monitor, via a bitmask.
 */
 func AreaSetCollisionMask(area RID.Area2D, mask int) { //gd:PhysicsServer2D.area_set_collision_mask
 	once.Do(singleton)
-	class(self).AreaSetCollisionMask(gd.RID(area), gd.Int(mask))
+	class(self).AreaSetCollisionMask(RID.Any(area), int64(mask))
 }
 
 /*
@@ -329,7 +332,7 @@ Returns the physics layer or layers the area can contact with, as a bitmask.
 */
 func AreaGetCollisionMask(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_collision_mask
 	once.Do(singleton)
-	return int(int(class(self).AreaGetCollisionMask(gd.RID(area))))
+	return int(int(class(self).AreaGetCollisionMask(RID.Any(area))))
 }
 
 /*
@@ -337,7 +340,7 @@ Sets the value of the given area parameter. See [enum AreaParameter] for the lis
 */
 func AreaSetParam(area RID.Area2D, param gdclass.PhysicsServer2DAreaParameter, value any) { //gd:PhysicsServer2D.area_set_param
 	once.Do(singleton)
-	class(self).AreaSetParam(gd.RID(area), param, gd.NewVariant(value))
+	class(self).AreaSetParam(RID.Any(area), param, variant.New(value))
 }
 
 /*
@@ -345,7 +348,7 @@ Sets the transform matrix of the area.
 */
 func AreaSetTransform(area RID.Area2D, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.area_set_transform
 	once.Do(singleton)
-	class(self).AreaSetTransform(gd.RID(area), gd.Transform2D(transform))
+	class(self).AreaSetTransform(RID.Any(area), Transform2D.OriginXY(transform))
 }
 
 /*
@@ -353,7 +356,7 @@ Returns the value of the given area parameter. See [enum AreaParameter] for the 
 */
 func AreaGetParam(area RID.Area2D, param gdclass.PhysicsServer2DAreaParameter) any { //gd:PhysicsServer2D.area_get_param
 	once.Do(singleton)
-	return any(class(self).AreaGetParam(gd.RID(area), param).Interface())
+	return any(class(self).AreaGetParam(RID.Any(area), param).Interface())
 }
 
 /*
@@ -361,7 +364,7 @@ Returns the transform matrix of the area.
 */
 func AreaGetTransform(area RID.Area2D) Transform2D.OriginXY { //gd:PhysicsServer2D.area_get_transform
 	once.Do(singleton)
-	return Transform2D.OriginXY(class(self).AreaGetTransform(gd.RID(area)))
+	return Transform2D.OriginXY(class(self).AreaGetTransform(RID.Any(area)))
 }
 
 /*
@@ -369,7 +372,7 @@ Attaches the [code]ObjectID[/code] of an [Object] to the area. Use [method Objec
 */
 func AreaAttachObjectInstanceId(area RID.Area2D, id int) { //gd:PhysicsServer2D.area_attach_object_instance_id
 	once.Do(singleton)
-	class(self).AreaAttachObjectInstanceId(gd.RID(area), gd.Int(id))
+	class(self).AreaAttachObjectInstanceId(RID.Any(area), int64(id))
 }
 
 /*
@@ -377,7 +380,7 @@ Returns the [code]ObjectID[/code] attached to the area. Use [method @GlobalScope
 */
 func AreaGetObjectInstanceId(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_object_instance_id
 	once.Do(singleton)
-	return int(int(class(self).AreaGetObjectInstanceId(gd.RID(area))))
+	return int(int(class(self).AreaGetObjectInstanceId(RID.Any(area))))
 }
 
 /*
@@ -385,7 +388,7 @@ Attaches the [code]ObjectID[/code] of a canvas to the area. Use [method Object.g
 */
 func AreaAttachCanvasInstanceId(area RID.Area2D, id int) { //gd:PhysicsServer2D.area_attach_canvas_instance_id
 	once.Do(singleton)
-	class(self).AreaAttachCanvasInstanceId(gd.RID(area), gd.Int(id))
+	class(self).AreaAttachCanvasInstanceId(RID.Any(area), int64(id))
 }
 
 /*
@@ -393,7 +396,7 @@ Returns the [code]ObjectID[/code] of the canvas attached to the area. Use [metho
 */
 func AreaGetCanvasInstanceId(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_canvas_instance_id
 	once.Do(singleton)
-	return int(int(class(self).AreaGetCanvasInstanceId(gd.RID(area))))
+	return int(int(class(self).AreaGetCanvasInstanceId(RID.Any(area))))
 }
 
 /*
@@ -407,7 +410,7 @@ By counting (or keeping track of) the shapes that enter and exit, it can be dete
 */
 func AreaSetMonitorCallback(area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) { //gd:PhysicsServer2D.area_set_monitor_callback
 	once.Do(singleton)
-	class(self).AreaSetMonitorCallback(gd.RID(area), Callable.New(callback))
+	class(self).AreaSetMonitorCallback(RID.Any(area), Callable.New(callback))
 }
 
 /*
@@ -421,7 +424,7 @@ By counting (or keeping track of) the shapes that enter and exit, it can be dete
 */
 func AreaSetAreaMonitorCallback(area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) { //gd:PhysicsServer2D.area_set_area_monitor_callback
 	once.Do(singleton)
-	class(self).AreaSetAreaMonitorCallback(gd.RID(area), Callable.New(callback))
+	class(self).AreaSetAreaMonitorCallback(RID.Any(area), Callable.New(callback))
 }
 
 /*
@@ -429,7 +432,7 @@ Sets whether the area is monitorable or not. If [param monitorable] is [code]tru
 */
 func AreaSetMonitorable(area RID.Area2D, monitorable bool) { //gd:PhysicsServer2D.area_set_monitorable
 	once.Do(singleton)
-	class(self).AreaSetMonitorable(gd.RID(area), monitorable)
+	class(self).AreaSetMonitorable(RID.Any(area), monitorable)
 }
 
 /*
@@ -449,7 +452,7 @@ Adds the body to the given space, after removing the body from the previously as
 */
 func BodySetSpace(body RID.Body2D, space RID.Space2D) { //gd:PhysicsServer2D.body_set_space
 	once.Do(singleton)
-	class(self).BodySetSpace(gd.RID(body), gd.RID(space))
+	class(self).BodySetSpace(RID.Any(body), RID.Any(space))
 }
 
 /*
@@ -457,7 +460,7 @@ Returns the [RID] of the space assigned to the body. Returns an empty [RID] if n
 */
 func BodyGetSpace(body RID.Body2D) RID.Space2D { //gd:PhysicsServer2D.body_get_space
 	once.Do(singleton)
-	return RID.Space2D(class(self).BodyGetSpace(gd.RID(body)))
+	return RID.Space2D(class(self).BodyGetSpace(RID.Any(body)))
 }
 
 /*
@@ -465,7 +468,7 @@ Sets the body's mode. See [enum BodyMode] for the list of available modes.
 */
 func BodySetMode(body RID.Body2D, mode gdclass.PhysicsServer2DBodyMode) { //gd:PhysicsServer2D.body_set_mode
 	once.Do(singleton)
-	class(self).BodySetMode(gd.RID(body), mode)
+	class(self).BodySetMode(RID.Any(body), mode)
 }
 
 /*
@@ -473,7 +476,7 @@ Returns the body's mode (see [enum BodyMode]).
 */
 func BodyGetMode(body RID.Body2D) gdclass.PhysicsServer2DBodyMode { //gd:PhysicsServer2D.body_get_mode
 	once.Do(singleton)
-	return gdclass.PhysicsServer2DBodyMode(class(self).BodyGetMode(gd.RID(body)))
+	return gdclass.PhysicsServer2DBodyMode(class(self).BodyGetMode(RID.Any(body)))
 }
 
 /*
@@ -481,7 +484,7 @@ Adds a shape to the area, with the given local transform. The shape (together wi
 */
 func BodyAddShape(body RID.Body2D, shape RID.Shape2D) { //gd:PhysicsServer2D.body_add_shape
 	once.Do(singleton)
-	class(self).BodyAddShape(gd.RID(body), gd.RID(shape), gd.Transform2D(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), false)
+	class(self).BodyAddShape(RID.Any(body), RID.Any(shape), Transform2D.OriginXY(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), false)
 }
 
 /*
@@ -489,7 +492,7 @@ Replaces the body's shape at the given index by another shape, while not affecti
 */
 func BodySetShape(body RID.Body2D, shape_idx int, shape RID.Shape2D) { //gd:PhysicsServer2D.body_set_shape
 	once.Do(singleton)
-	class(self).BodySetShape(gd.RID(body), gd.Int(shape_idx), gd.RID(shape))
+	class(self).BodySetShape(RID.Any(body), int64(shape_idx), RID.Any(shape))
 }
 
 /*
@@ -497,7 +500,7 @@ Sets the local transform matrix of the body's shape with the given index.
 */
 func BodySetShapeTransform(body RID.Body2D, shape_idx int, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.body_set_shape_transform
 	once.Do(singleton)
-	class(self).BodySetShapeTransform(gd.RID(body), gd.Int(shape_idx), gd.Transform2D(transform))
+	class(self).BodySetShapeTransform(RID.Any(body), int64(shape_idx), Transform2D.OriginXY(transform))
 }
 
 /*
@@ -505,7 +508,7 @@ Returns the number of shapes added to the body.
 */
 func BodyGetShapeCount(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_shape_count
 	once.Do(singleton)
-	return int(int(class(self).BodyGetShapeCount(gd.RID(body))))
+	return int(int(class(self).BodyGetShapeCount(RID.Any(body))))
 }
 
 /*
@@ -513,7 +516,7 @@ Returns the [RID] of the shape with the given index in the body's array of shape
 */
 func BodyGetShape(body RID.Body2D, shape_idx int) RID.Shape2D { //gd:PhysicsServer2D.body_get_shape
 	once.Do(singleton)
-	return RID.Shape2D(class(self).BodyGetShape(gd.RID(body), gd.Int(shape_idx)))
+	return RID.Shape2D(class(self).BodyGetShape(RID.Any(body), int64(shape_idx)))
 }
 
 /*
@@ -521,7 +524,7 @@ Returns the local transform matrix of the shape with the given index in the area
 */
 func BodyGetShapeTransform(body RID.Body2D, shape_idx int) Transform2D.OriginXY { //gd:PhysicsServer2D.body_get_shape_transform
 	once.Do(singleton)
-	return Transform2D.OriginXY(class(self).BodyGetShapeTransform(gd.RID(body), gd.Int(shape_idx)))
+	return Transform2D.OriginXY(class(self).BodyGetShapeTransform(RID.Any(body), int64(shape_idx)))
 }
 
 /*
@@ -529,7 +532,7 @@ Removes the shape with the given index from the body's array of shapes. The shap
 */
 func BodyRemoveShape(body RID.Body2D, shape_idx int) { //gd:PhysicsServer2D.body_remove_shape
 	once.Do(singleton)
-	class(self).BodyRemoveShape(gd.RID(body), gd.Int(shape_idx))
+	class(self).BodyRemoveShape(RID.Any(body), int64(shape_idx))
 }
 
 /*
@@ -537,7 +540,7 @@ Removes all shapes from the body. This does not delete the shapes themselves, so
 */
 func BodyClearShapes(body RID.Body2D) { //gd:PhysicsServer2D.body_clear_shapes
 	once.Do(singleton)
-	class(self).BodyClearShapes(gd.RID(body))
+	class(self).BodyClearShapes(RID.Any(body))
 }
 
 /*
@@ -545,7 +548,7 @@ Sets the disabled property of the body's shape with the given index. If [param d
 */
 func BodySetShapeDisabled(body RID.Body2D, shape_idx int, disabled bool) { //gd:PhysicsServer2D.body_set_shape_disabled
 	once.Do(singleton)
-	class(self).BodySetShapeDisabled(gd.RID(body), gd.Int(shape_idx), disabled)
+	class(self).BodySetShapeDisabled(RID.Any(body), int64(shape_idx), disabled)
 }
 
 /*
@@ -553,7 +556,7 @@ Sets the one-way collision properties of the body's shape with the given index. 
 */
 func BodySetShapeAsOneWayCollision(body RID.Body2D, shape_idx int, enable bool, margin Float.X) { //gd:PhysicsServer2D.body_set_shape_as_one_way_collision
 	once.Do(singleton)
-	class(self).BodySetShapeAsOneWayCollision(gd.RID(body), gd.Int(shape_idx), enable, gd.Float(margin))
+	class(self).BodySetShapeAsOneWayCollision(RID.Any(body), int64(shape_idx), enable, float64(margin))
 }
 
 /*
@@ -561,7 +564,7 @@ Attaches the [code]ObjectID[/code] of an [Object] to the body. Use [method Objec
 */
 func BodyAttachObjectInstanceId(body RID.Body2D, id int) { //gd:PhysicsServer2D.body_attach_object_instance_id
 	once.Do(singleton)
-	class(self).BodyAttachObjectInstanceId(gd.RID(body), gd.Int(id))
+	class(self).BodyAttachObjectInstanceId(RID.Any(body), int64(id))
 }
 
 /*
@@ -569,7 +572,7 @@ Returns the [code]ObjectID[/code] attached to the body. Use [method @GlobalScope
 */
 func BodyGetObjectInstanceId(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_object_instance_id
 	once.Do(singleton)
-	return int(int(class(self).BodyGetObjectInstanceId(gd.RID(body))))
+	return int(int(class(self).BodyGetObjectInstanceId(RID.Any(body))))
 }
 
 /*
@@ -577,7 +580,7 @@ Attaches the [code]ObjectID[/code] of a canvas to the body. Use [method Object.g
 */
 func BodyAttachCanvasInstanceId(body RID.Body2D, id int) { //gd:PhysicsServer2D.body_attach_canvas_instance_id
 	once.Do(singleton)
-	class(self).BodyAttachCanvasInstanceId(gd.RID(body), gd.Int(id))
+	class(self).BodyAttachCanvasInstanceId(RID.Any(body), int64(id))
 }
 
 /*
@@ -585,7 +588,7 @@ Returns the [code]ObjectID[/code] of the canvas attached to the body. Use [metho
 */
 func BodyGetCanvasInstanceId(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_canvas_instance_id
 	once.Do(singleton)
-	return int(int(class(self).BodyGetCanvasInstanceId(gd.RID(body))))
+	return int(int(class(self).BodyGetCanvasInstanceId(RID.Any(body))))
 }
 
 /*
@@ -594,7 +597,7 @@ Continuous collision detection tries to predict where a moving body would collid
 */
 func BodySetContinuousCollisionDetectionMode(body RID.Body2D, mode gdclass.PhysicsServer2DCCDMode) { //gd:PhysicsServer2D.body_set_continuous_collision_detection_mode
 	once.Do(singleton)
-	class(self).BodySetContinuousCollisionDetectionMode(gd.RID(body), mode)
+	class(self).BodySetContinuousCollisionDetectionMode(RID.Any(body), mode)
 }
 
 /*
@@ -602,7 +605,7 @@ Returns the body's continuous collision detection mode (see [enum CCDMode]).
 */
 func BodyGetContinuousCollisionDetectionMode(body RID.Body2D) gdclass.PhysicsServer2DCCDMode { //gd:PhysicsServer2D.body_get_continuous_collision_detection_mode
 	once.Do(singleton)
-	return gdclass.PhysicsServer2DCCDMode(class(self).BodyGetContinuousCollisionDetectionMode(gd.RID(body)))
+	return gdclass.PhysicsServer2DCCDMode(class(self).BodyGetContinuousCollisionDetectionMode(RID.Any(body)))
 }
 
 /*
@@ -610,7 +613,7 @@ Sets the physics layer or layers the body belongs to, via a bitmask.
 */
 func BodySetCollisionLayer(body RID.Body2D, layer int) { //gd:PhysicsServer2D.body_set_collision_layer
 	once.Do(singleton)
-	class(self).BodySetCollisionLayer(gd.RID(body), gd.Int(layer))
+	class(self).BodySetCollisionLayer(RID.Any(body), int64(layer))
 }
 
 /*
@@ -618,7 +621,7 @@ Returns the physics layer or layers the body belongs to, as a bitmask.
 */
 func BodyGetCollisionLayer(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_collision_layer
 	once.Do(singleton)
-	return int(int(class(self).BodyGetCollisionLayer(gd.RID(body))))
+	return int(int(class(self).BodyGetCollisionLayer(RID.Any(body))))
 }
 
 /*
@@ -626,7 +629,7 @@ Sets the physics layer or layers the body can collide with, via a bitmask.
 */
 func BodySetCollisionMask(body RID.Body2D, mask int) { //gd:PhysicsServer2D.body_set_collision_mask
 	once.Do(singleton)
-	class(self).BodySetCollisionMask(gd.RID(body), gd.Int(mask))
+	class(self).BodySetCollisionMask(RID.Any(body), int64(mask))
 }
 
 /*
@@ -634,7 +637,7 @@ Returns the physics layer or layers the body can collide with, as a bitmask.
 */
 func BodyGetCollisionMask(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_collision_mask
 	once.Do(singleton)
-	return int(int(class(self).BodyGetCollisionMask(gd.RID(body))))
+	return int(int(class(self).BodyGetCollisionMask(RID.Any(body))))
 }
 
 /*
@@ -642,7 +645,7 @@ Sets the body's collision priority. This is used in the depenetration phase of [
 */
 func BodySetCollisionPriority(body RID.Body2D, priority Float.X) { //gd:PhysicsServer2D.body_set_collision_priority
 	once.Do(singleton)
-	class(self).BodySetCollisionPriority(gd.RID(body), gd.Float(priority))
+	class(self).BodySetCollisionPriority(RID.Any(body), float64(priority))
 }
 
 /*
@@ -650,7 +653,7 @@ Returns the body's collision priority. This is used in the depenetration phase o
 */
 func BodyGetCollisionPriority(body RID.Body2D) Float.X { //gd:PhysicsServer2D.body_get_collision_priority
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).BodyGetCollisionPriority(gd.RID(body))))
+	return Float.X(Float.X(class(self).BodyGetCollisionPriority(RID.Any(body))))
 }
 
 /*
@@ -658,7 +661,7 @@ Sets the value of the given body parameter. See [enum BodyParameter] for the lis
 */
 func BodySetParam(body RID.Body2D, param gdclass.PhysicsServer2DBodyParameter, value any) { //gd:PhysicsServer2D.body_set_param
 	once.Do(singleton)
-	class(self).BodySetParam(gd.RID(body), param, gd.NewVariant(value))
+	class(self).BodySetParam(RID.Any(body), param, variant.New(value))
 }
 
 /*
@@ -666,7 +669,7 @@ Returns the value of the given body parameter. See [enum BodyParameter] for the 
 */
 func BodyGetParam(body RID.Body2D, param gdclass.PhysicsServer2DBodyParameter) any { //gd:PhysicsServer2D.body_get_param
 	once.Do(singleton)
-	return any(class(self).BodyGetParam(gd.RID(body), param).Interface())
+	return any(class(self).BodyGetParam(RID.Any(body), param).Interface())
 }
 
 /*
@@ -674,7 +677,7 @@ Restores the default inertia and center of mass of the body based on its shapes.
 */
 func BodyResetMassProperties(body RID.Body2D) { //gd:PhysicsServer2D.body_reset_mass_properties
 	once.Do(singleton)
-	class(self).BodyResetMassProperties(gd.RID(body))
+	class(self).BodyResetMassProperties(RID.Any(body))
 }
 
 /*
@@ -683,7 +686,7 @@ Sets the value of a body's state. See [enum BodyState] for the list of available
 */
 func BodySetState(body RID.Body2D, state gdclass.PhysicsServer2DBodyState, value any) { //gd:PhysicsServer2D.body_set_state
 	once.Do(singleton)
-	class(self).BodySetState(gd.RID(body), state, gd.NewVariant(value))
+	class(self).BodySetState(RID.Any(body), state, variant.New(value))
 }
 
 /*
@@ -691,7 +694,7 @@ Returns the value of the given state of the body. See [enum BodyState] for the l
 */
 func BodyGetState(body RID.Body2D, state gdclass.PhysicsServer2DBodyState) any { //gd:PhysicsServer2D.body_get_state
 	once.Do(singleton)
-	return any(class(self).BodyGetState(gd.RID(body), state).Interface())
+	return any(class(self).BodyGetState(RID.Any(body), state).Interface())
 }
 
 /*
@@ -701,7 +704,7 @@ This is equivalent to using [method body_apply_impulse] at the body's center of 
 */
 func BodyApplyCentralImpulse(body RID.Body2D, impulse Vector2.XY) { //gd:PhysicsServer2D.body_apply_central_impulse
 	once.Do(singleton)
-	class(self).BodyApplyCentralImpulse(gd.RID(body), gd.Vector2(impulse))
+	class(self).BodyApplyCentralImpulse(RID.Any(body), Vector2.XY(impulse))
 }
 
 /*
@@ -710,7 +713,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 func BodyApplyTorqueImpulse(body RID.Body2D, impulse Float.X) { //gd:PhysicsServer2D.body_apply_torque_impulse
 	once.Do(singleton)
-	class(self).BodyApplyTorqueImpulse(gd.RID(body), gd.Float(impulse))
+	class(self).BodyApplyTorqueImpulse(RID.Any(body), float64(impulse))
 }
 
 /*
@@ -720,7 +723,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 func BodyApplyImpulse(body RID.Body2D, impulse Vector2.XY) { //gd:PhysicsServer2D.body_apply_impulse
 	once.Do(singleton)
-	class(self).BodyApplyImpulse(gd.RID(body), gd.Vector2(impulse), gd.Vector2(gd.Vector2{0, 0}))
+	class(self).BodyApplyImpulse(RID.Any(body), Vector2.XY(impulse), Vector2.XY(gd.Vector2{0, 0}))
 }
 
 /*
@@ -729,7 +732,7 @@ This is equivalent to using [method body_apply_force] at the body's center of ma
 */
 func BodyApplyCentralForce(body RID.Body2D, force Vector2.XY) { //gd:PhysicsServer2D.body_apply_central_force
 	once.Do(singleton)
-	class(self).BodyApplyCentralForce(gd.RID(body), gd.Vector2(force))
+	class(self).BodyApplyCentralForce(RID.Any(body), Vector2.XY(force))
 }
 
 /*
@@ -738,7 +741,7 @@ Applies a positioned force to the body. The force can affect rotation if [param 
 */
 func BodyApplyForce(body RID.Body2D, force Vector2.XY) { //gd:PhysicsServer2D.body_apply_force
 	once.Do(singleton)
-	class(self).BodyApplyForce(gd.RID(body), gd.Vector2(force), gd.Vector2(gd.Vector2{0, 0}))
+	class(self).BodyApplyForce(RID.Any(body), Vector2.XY(force), Vector2.XY(gd.Vector2{0, 0}))
 }
 
 /*
@@ -746,7 +749,7 @@ Applies a rotational force to the body. The force does not affect position. A fo
 */
 func BodyApplyTorque(body RID.Body2D, torque Float.X) { //gd:PhysicsServer2D.body_apply_torque
 	once.Do(singleton)
-	class(self).BodyApplyTorque(gd.RID(body), gd.Float(torque))
+	class(self).BodyApplyTorque(RID.Any(body), float64(torque))
 }
 
 /*
@@ -755,7 +758,7 @@ This is equivalent to using [method body_add_constant_force] at the body's cente
 */
 func BodyAddConstantCentralForce(body RID.Body2D, force Vector2.XY) { //gd:PhysicsServer2D.body_add_constant_central_force
 	once.Do(singleton)
-	class(self).BodyAddConstantCentralForce(gd.RID(body), gd.Vector2(force))
+	class(self).BodyAddConstantCentralForce(RID.Any(body), Vector2.XY(force))
 }
 
 /*
@@ -764,7 +767,7 @@ Adds a constant positioned force to the body. The force can affect rotation if [
 */
 func BodyAddConstantForce(body RID.Body2D, force Vector2.XY) { //gd:PhysicsServer2D.body_add_constant_force
 	once.Do(singleton)
-	class(self).BodyAddConstantForce(gd.RID(body), gd.Vector2(force), gd.Vector2(gd.Vector2{0, 0}))
+	class(self).BodyAddConstantForce(RID.Any(body), Vector2.XY(force), Vector2.XY(gd.Vector2{0, 0}))
 }
 
 /*
@@ -772,7 +775,7 @@ Adds a constant rotational force to the body. The force does not affect position
 */
 func BodyAddConstantTorque(body RID.Body2D, torque Float.X) { //gd:PhysicsServer2D.body_add_constant_torque
 	once.Do(singleton)
-	class(self).BodyAddConstantTorque(gd.RID(body), gd.Float(torque))
+	class(self).BodyAddConstantTorque(RID.Any(body), float64(torque))
 }
 
 /*
@@ -781,7 +784,7 @@ See [method body_add_constant_force] and [method body_add_constant_central_force
 */
 func BodySetConstantForce(body RID.Body2D, force Vector2.XY) { //gd:PhysicsServer2D.body_set_constant_force
 	once.Do(singleton)
-	class(self).BodySetConstantForce(gd.RID(body), gd.Vector2(force))
+	class(self).BodySetConstantForce(RID.Any(body), Vector2.XY(force))
 }
 
 /*
@@ -790,7 +793,7 @@ See [method body_add_constant_force] and [method body_add_constant_central_force
 */
 func BodyGetConstantForce(body RID.Body2D) Vector2.XY { //gd:PhysicsServer2D.body_get_constant_force
 	once.Do(singleton)
-	return Vector2.XY(class(self).BodyGetConstantForce(gd.RID(body)))
+	return Vector2.XY(class(self).BodyGetConstantForce(RID.Any(body)))
 }
 
 /*
@@ -799,7 +802,7 @@ See [method body_add_constant_torque].
 */
 func BodySetConstantTorque(body RID.Body2D, torque Float.X) { //gd:PhysicsServer2D.body_set_constant_torque
 	once.Do(singleton)
-	class(self).BodySetConstantTorque(gd.RID(body), gd.Float(torque))
+	class(self).BodySetConstantTorque(RID.Any(body), float64(torque))
 }
 
 /*
@@ -808,7 +811,7 @@ See [method body_add_constant_torque].
 */
 func BodyGetConstantTorque(body RID.Body2D) Float.X { //gd:PhysicsServer2D.body_get_constant_torque
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).BodyGetConstantTorque(gd.RID(body))))
+	return Float.X(Float.X(class(self).BodyGetConstantTorque(RID.Any(body))))
 }
 
 /*
@@ -816,7 +819,7 @@ Modifies the body's linear velocity so that its projection to the axis [code]axi
 */
 func BodySetAxisVelocity(body RID.Body2D, axis_velocity Vector2.XY) { //gd:PhysicsServer2D.body_set_axis_velocity
 	once.Do(singleton)
-	class(self).BodySetAxisVelocity(gd.RID(body), gd.Vector2(axis_velocity))
+	class(self).BodySetAxisVelocity(RID.Any(body), Vector2.XY(axis_velocity))
 }
 
 /*
@@ -824,7 +827,7 @@ Adds [param excepted_body] to the body's list of collision exceptions, so that c
 */
 func BodyAddCollisionException(body RID.Body2D, excepted_body RID.Body2D) { //gd:PhysicsServer2D.body_add_collision_exception
 	once.Do(singleton)
-	class(self).BodyAddCollisionException(gd.RID(body), gd.RID(excepted_body))
+	class(self).BodyAddCollisionException(RID.Any(body), RID.Any(excepted_body))
 }
 
 /*
@@ -832,7 +835,7 @@ Removes [param excepted_body] from the body's list of collision exceptions, so t
 */
 func BodyRemoveCollisionException(body RID.Body2D, excepted_body RID.Body2D) { //gd:PhysicsServer2D.body_remove_collision_exception
 	once.Do(singleton)
-	class(self).BodyRemoveCollisionException(gd.RID(body), gd.RID(excepted_body))
+	class(self).BodyRemoveCollisionException(RID.Any(body), RID.Any(excepted_body))
 }
 
 /*
@@ -840,7 +843,7 @@ Sets the maximum number of contacts that the body can report. If [param amount] 
 */
 func BodySetMaxContactsReported(body RID.Body2D, amount int) { //gd:PhysicsServer2D.body_set_max_contacts_reported
 	once.Do(singleton)
-	class(self).BodySetMaxContactsReported(gd.RID(body), gd.Int(amount))
+	class(self).BodySetMaxContactsReported(RID.Any(body), int64(amount))
 }
 
 /*
@@ -848,7 +851,7 @@ Returns the maximum number of contacts that the body can report. See [method bod
 */
 func BodyGetMaxContactsReported(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_max_contacts_reported
 	once.Do(singleton)
-	return int(int(class(self).BodyGetMaxContactsReported(gd.RID(body))))
+	return int(int(class(self).BodyGetMaxContactsReported(RID.Any(body))))
 }
 
 /*
@@ -857,7 +860,7 @@ This method is called when the property [member RigidBody2D.custom_integrator] i
 */
 func BodySetOmitForceIntegration(body RID.Body2D, enable bool) { //gd:PhysicsServer2D.body_set_omit_force_integration
 	once.Do(singleton)
-	class(self).BodySetOmitForceIntegration(gd.RID(body), enable)
+	class(self).BodySetOmitForceIntegration(RID.Any(body), enable)
 }
 
 /*
@@ -865,7 +868,7 @@ Returns [code]true[/code] if the body is omitting the standard force integration
 */
 func BodyIsOmittingForceIntegration(body RID.Body2D) bool { //gd:PhysicsServer2D.body_is_omitting_force_integration
 	once.Do(singleton)
-	return bool(class(self).BodyIsOmittingForceIntegration(gd.RID(body)))
+	return bool(class(self).BodyIsOmittingForceIntegration(RID.Any(body)))
 }
 
 /*
@@ -876,7 +879,7 @@ The function [param callable] must take the following parameters:
 */
 func BodySetStateSyncCallback(body RID.Body2D, callable func(state [1]gdclass.PhysicsDirectBodyState2D)) { //gd:PhysicsServer2D.body_set_state_sync_callback
 	once.Do(singleton)
-	class(self).BodySetStateSyncCallback(gd.RID(body), Callable.New(callable))
+	class(self).BodySetStateSyncCallback(RID.Any(body), Callable.New(callable))
 }
 
 /*
@@ -889,7 +892,7 @@ If [param userdata] is [code]null[/code], then [param callable] must take only t
 */
 func BodySetForceIntegrationCallback(body RID.Body2D, callable func(state [1]gdclass.PhysicsDirectBodyState2D, userdata any)) { //gd:PhysicsServer2D.body_set_force_integration_callback
 	once.Do(singleton)
-	class(self).BodySetForceIntegrationCallback(gd.RID(body), Callable.New(callable), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))
+	class(self).BodySetForceIntegrationCallback(RID.Any(body), Callable.New(callable), variant.New([1]any{}[0]))
 }
 
 /*
@@ -897,7 +900,7 @@ Returns [code]true[/code] if a collision would result from moving the body along
 */
 func BodyTestMotion(body RID.Body2D, parameters [1]gdclass.PhysicsTestMotionParameters2D) bool { //gd:PhysicsServer2D.body_test_motion
 	once.Do(singleton)
-	return bool(class(self).BodyTestMotion(gd.RID(body), parameters, [1][1]gdclass.PhysicsTestMotionResult2D{}[0]))
+	return bool(class(self).BodyTestMotion(RID.Any(body), parameters, [1][1]gdclass.PhysicsTestMotionResult2D{}[0]))
 }
 
 /*
@@ -905,7 +908,7 @@ Returns the [PhysicsDirectBodyState2D] of the body. Returns [code]null[/code] if
 */
 func BodyGetDirectState(body RID.Body2D) [1]gdclass.PhysicsDirectBodyState2D { //gd:PhysicsServer2D.body_get_direct_state
 	once.Do(singleton)
-	return [1]gdclass.PhysicsDirectBodyState2D(class(self).BodyGetDirectState(gd.RID(body)))
+	return [1]gdclass.PhysicsDirectBodyState2D(class(self).BodyGetDirectState(RID.Any(body)))
 }
 
 /*
@@ -921,7 +924,7 @@ Destroys the joint with the given [RID], creates a new uninitialized joint, and 
 */
 func JointClear(joint RID.Joint2D) { //gd:PhysicsServer2D.joint_clear
 	once.Do(singleton)
-	class(self).JointClear(gd.RID(joint))
+	class(self).JointClear(RID.Any(joint))
 }
 
 /*
@@ -929,7 +932,7 @@ Sets the value of the given joint parameter. See [enum JointParam] for the list 
 */
 func JointSetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DJointParam, value Float.X) { //gd:PhysicsServer2D.joint_set_param
 	once.Do(singleton)
-	class(self).JointSetParam(gd.RID(joint), param, gd.Float(value))
+	class(self).JointSetParam(RID.Any(joint), param, float64(value))
 }
 
 /*
@@ -937,7 +940,7 @@ Returns the value of the given joint parameter. See [enum JointParam] for the li
 */
 func JointGetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DJointParam) Float.X { //gd:PhysicsServer2D.joint_get_param
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).JointGetParam(gd.RID(joint), param)))
+	return Float.X(Float.X(class(self).JointGetParam(RID.Any(joint), param)))
 }
 
 /*
@@ -945,7 +948,7 @@ Sets whether the bodies attached to the [Joint2D] will collide with each other.
 */
 func JointDisableCollisionsBetweenBodies(joint RID.Joint2D, disable bool) { //gd:PhysicsServer2D.joint_disable_collisions_between_bodies
 	once.Do(singleton)
-	class(self).JointDisableCollisionsBetweenBodies(gd.RID(joint), disable)
+	class(self).JointDisableCollisionsBetweenBodies(RID.Any(joint), disable)
 }
 
 /*
@@ -953,7 +956,7 @@ Returns whether the bodies attached to the [Joint2D] will collide with each othe
 */
 func JointIsDisabledCollisionsBetweenBodies(joint RID.Joint2D) bool { //gd:PhysicsServer2D.joint_is_disabled_collisions_between_bodies
 	once.Do(singleton)
-	return bool(class(self).JointIsDisabledCollisionsBetweenBodies(gd.RID(joint)))
+	return bool(class(self).JointIsDisabledCollisionsBetweenBodies(RID.Any(joint)))
 }
 
 /*
@@ -961,7 +964,7 @@ Makes the joint a pin joint. If [param body_b] is an empty [RID], then [param bo
 */
 func JointMakePin(joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D) { //gd:PhysicsServer2D.joint_make_pin
 	once.Do(singleton)
-	class(self).JointMakePin(gd.RID(joint), gd.Vector2(anchor), gd.RID(body_a), gd.RID([1]RID.Any{}[0]))
+	class(self).JointMakePin(RID.Any(joint), Vector2.XY(anchor), RID.Any(body_a), RID.Any([1]RID.Any{}[0]))
 }
 
 /*
@@ -969,7 +972,7 @@ Makes the joint a groove joint.
 */
 func JointMakeGroove(joint RID.Joint2D, groove1_a Vector2.XY, groove2_a Vector2.XY, anchor_b Vector2.XY) { //gd:PhysicsServer2D.joint_make_groove
 	once.Do(singleton)
-	class(self).JointMakeGroove(gd.RID(joint), gd.Vector2(groove1_a), gd.Vector2(groove2_a), gd.Vector2(anchor_b), gd.RID([1]RID.Any{}[0]), gd.RID([1]RID.Any{}[0]))
+	class(self).JointMakeGroove(RID.Any(joint), Vector2.XY(groove1_a), Vector2.XY(groove2_a), Vector2.XY(anchor_b), RID.Any([1]RID.Any{}[0]), RID.Any([1]RID.Any{}[0]))
 }
 
 /*
@@ -977,7 +980,7 @@ Makes the joint a damped spring joint, attached at the point [param anchor_a] (g
 */
 func JointMakeDampedSpring(joint RID.Joint2D, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D) { //gd:PhysicsServer2D.joint_make_damped_spring
 	once.Do(singleton)
-	class(self).JointMakeDampedSpring(gd.RID(joint), gd.Vector2(anchor_a), gd.Vector2(anchor_b), gd.RID(body_a), gd.RID([1]RID.Any{}[0]))
+	class(self).JointMakeDampedSpring(RID.Any(joint), Vector2.XY(anchor_a), Vector2.XY(anchor_b), RID.Any(body_a), RID.Any([1]RID.Any{}[0]))
 }
 
 /*
@@ -985,7 +988,7 @@ Sets a pin joint flag (see [enum PinJointFlag] constants).
 */
 func PinJointSetFlag(joint RID.Joint2D, flag gdclass.PhysicsServer2DPinJointFlag, enabled bool) { //gd:PhysicsServer2D.pin_joint_set_flag
 	once.Do(singleton)
-	class(self).PinJointSetFlag(gd.RID(joint), flag, enabled)
+	class(self).PinJointSetFlag(RID.Any(joint), flag, enabled)
 }
 
 /*
@@ -993,7 +996,7 @@ Gets a pin joint flag (see [enum PinJointFlag] constants).
 */
 func PinJointGetFlag(joint RID.Joint2D, flag gdclass.PhysicsServer2DPinJointFlag) bool { //gd:PhysicsServer2D.pin_joint_get_flag
 	once.Do(singleton)
-	return bool(class(self).PinJointGetFlag(gd.RID(joint), flag))
+	return bool(class(self).PinJointGetFlag(RID.Any(joint), flag))
 }
 
 /*
@@ -1001,7 +1004,7 @@ Sets a pin joint parameter. See [enum PinJointParam] for a list of available par
 */
 func PinJointSetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DPinJointParam, value Float.X) { //gd:PhysicsServer2D.pin_joint_set_param
 	once.Do(singleton)
-	class(self).PinJointSetParam(gd.RID(joint), param, gd.Float(value))
+	class(self).PinJointSetParam(RID.Any(joint), param, float64(value))
 }
 
 /*
@@ -1009,7 +1012,7 @@ Returns the value of a pin joint parameter. See [enum PinJointParam] for a list 
 */
 func PinJointGetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DPinJointParam) Float.X { //gd:PhysicsServer2D.pin_joint_get_param
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).PinJointGetParam(gd.RID(joint), param)))
+	return Float.X(Float.X(class(self).PinJointGetParam(RID.Any(joint), param)))
 }
 
 /*
@@ -1017,7 +1020,7 @@ Sets the value of the given damped spring joint parameter. See [enum DampedSprin
 */
 func DampedSpringJointSetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DDampedSpringParam, value Float.X) { //gd:PhysicsServer2D.damped_spring_joint_set_param
 	once.Do(singleton)
-	class(self).DampedSpringJointSetParam(gd.RID(joint), param, gd.Float(value))
+	class(self).DampedSpringJointSetParam(RID.Any(joint), param, float64(value))
 }
 
 /*
@@ -1025,7 +1028,7 @@ Returns the value of the given damped spring joint parameter. See [enum DampedSp
 */
 func DampedSpringJointGetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DDampedSpringParam) Float.X { //gd:PhysicsServer2D.damped_spring_joint_get_param
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).DampedSpringJointGetParam(gd.RID(joint), param)))
+	return Float.X(Float.X(class(self).DampedSpringJointGetParam(RID.Any(joint), param)))
 }
 
 /*
@@ -1033,7 +1036,7 @@ Returns the joint's type (see [enum JointType]).
 */
 func JointGetType(joint RID.Joint2D) gdclass.PhysicsServer2DJointType { //gd:PhysicsServer2D.joint_get_type
 	once.Do(singleton)
-	return gdclass.PhysicsServer2DJointType(class(self).JointGetType(gd.RID(joint)))
+	return gdclass.PhysicsServer2DJointType(class(self).JointGetType(RID.Any(joint)))
 }
 
 /*
@@ -1041,7 +1044,7 @@ Destroys any of the objects created by PhysicsServer2D. If the [RID] passed is n
 */
 func FreeRid(rid RID.Any) { //gd:PhysicsServer2D.free_rid
 	once.Do(singleton)
-	class(self).FreeRid(gd.RID(rid))
+	class(self).FreeRid(RID.Any(rid))
 }
 
 /*
@@ -1074,9 +1077,9 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Creates a 2D world boundary shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the shape's normal direction and distance properties.
 */
 //go:nosplit
-func (self class) WorldBoundaryShapeCreate() gd.RID { //gd:PhysicsServer2D.world_boundary_shape_create
+func (self class) WorldBoundaryShapeCreate() RID.Any { //gd:PhysicsServer2D.world_boundary_shape_create
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_world_boundary_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1087,9 +1090,9 @@ func (self class) WorldBoundaryShapeCreate() gd.RID { //gd:PhysicsServer2D.world
 Creates a 2D separation ray shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the shape's [code]length[/code] and [code]slide_on_slope[/code] properties.
 */
 //go:nosplit
-func (self class) SeparationRayShapeCreate() gd.RID { //gd:PhysicsServer2D.separation_ray_shape_create
+func (self class) SeparationRayShapeCreate() RID.Any { //gd:PhysicsServer2D.separation_ray_shape_create
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_separation_ray_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1100,9 +1103,9 @@ func (self class) SeparationRayShapeCreate() gd.RID { //gd:PhysicsServer2D.separ
 Creates a 2D segment shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the segment's start and end points.
 */
 //go:nosplit
-func (self class) SegmentShapeCreate() gd.RID { //gd:PhysicsServer2D.segment_shape_create
+func (self class) SegmentShapeCreate() RID.Any { //gd:PhysicsServer2D.segment_shape_create
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_segment_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1113,9 +1116,9 @@ func (self class) SegmentShapeCreate() gd.RID { //gd:PhysicsServer2D.segment_sha
 Creates a 2D circle shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the circle's radius.
 */
 //go:nosplit
-func (self class) CircleShapeCreate() gd.RID { //gd:PhysicsServer2D.circle_shape_create
+func (self class) CircleShapeCreate() RID.Any { //gd:PhysicsServer2D.circle_shape_create
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_circle_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1126,9 +1129,9 @@ func (self class) CircleShapeCreate() gd.RID { //gd:PhysicsServer2D.circle_shape
 Creates a 2D rectangle shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the rectangle's half-extents.
 */
 //go:nosplit
-func (self class) RectangleShapeCreate() gd.RID { //gd:PhysicsServer2D.rectangle_shape_create
+func (self class) RectangleShapeCreate() RID.Any { //gd:PhysicsServer2D.rectangle_shape_create
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_rectangle_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1139,9 +1142,9 @@ func (self class) RectangleShapeCreate() gd.RID { //gd:PhysicsServer2D.rectangle
 Creates a 2D capsule shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the capsule's height and radius.
 */
 //go:nosplit
-func (self class) CapsuleShapeCreate() gd.RID { //gd:PhysicsServer2D.capsule_shape_create
+func (self class) CapsuleShapeCreate() RID.Any { //gd:PhysicsServer2D.capsule_shape_create
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_capsule_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1152,9 +1155,9 @@ func (self class) CapsuleShapeCreate() gd.RID { //gd:PhysicsServer2D.capsule_sha
 Creates a 2D convex polygon shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the convex polygon's points.
 */
 //go:nosplit
-func (self class) ConvexPolygonShapeCreate() gd.RID { //gd:PhysicsServer2D.convex_polygon_shape_create
+func (self class) ConvexPolygonShapeCreate() RID.Any { //gd:PhysicsServer2D.convex_polygon_shape_create
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_convex_polygon_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1165,9 +1168,9 @@ func (self class) ConvexPolygonShapeCreate() gd.RID { //gd:PhysicsServer2D.conve
 Creates a 2D concave polygon shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the concave polygon's segments.
 */
 //go:nosplit
-func (self class) ConcavePolygonShapeCreate() gd.RID { //gd:PhysicsServer2D.concave_polygon_shape_create
+func (self class) ConcavePolygonShapeCreate() RID.Any { //gd:PhysicsServer2D.concave_polygon_shape_create
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_concave_polygon_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1187,10 +1190,10 @@ Sets the shape data that defines the configuration of the shape. The [param data
 [b]Warning:[/b] In the case of [constant SHAPE_CONVEX_POLYGON], this method does not check if the points supplied actually form a convex polygon (unlike the [member CollisionPolygon2D.polygon] property).
 */
 //go:nosplit
-func (self class) ShapeSetData(shape gd.RID, data gd.Variant) { //gd:PhysicsServer2D.shape_set_data
+func (self class) ShapeSetData(shape RID.Any, data variant.Any) { //gd:PhysicsServer2D.shape_set_data
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(data)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_shape_set_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1200,7 +1203,7 @@ func (self class) ShapeSetData(shape gd.RID, data gd.Variant) { //gd:PhysicsServ
 Returns the shape's type (see [enum ShapeType]).
 */
 //go:nosplit
-func (self class) ShapeGetType(shape gd.RID) gdclass.PhysicsServer2DShapeType { //gd:PhysicsServer2D.shape_get_type
+func (self class) ShapeGetType(shape RID.Any) gdclass.PhysicsServer2DShapeType { //gd:PhysicsServer2D.shape_get_type
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Ret[gdclass.PhysicsServer2DShapeType](frame)
@@ -1214,12 +1217,12 @@ func (self class) ShapeGetType(shape gd.RID) gdclass.PhysicsServer2DShapeType { 
 Returns the shape data that defines the configuration of the shape, such as the half-extents of a rectangle or the segments of a concave shape. See [method shape_set_data] for the precise format of this data in each case.
 */
 //go:nosplit
-func (self class) ShapeGetData(shape gd.RID) gd.Variant { //gd:PhysicsServer2D.shape_get_data
+func (self class) ShapeGetData(shape RID.Any) variant.Any { //gd:PhysicsServer2D.shape_get_data
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_shape_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1228,9 +1231,9 @@ func (self class) ShapeGetData(shape gd.RID) gd.Variant { //gd:PhysicsServer2D.s
 Creates a 2D space in the physics server, and returns the [RID] that identifies it. A space contains bodies and areas, and controls the stepping of the physics simulation of the objects in it.
 */
 //go:nosplit
-func (self class) SpaceCreate() gd.RID { //gd:PhysicsServer2D.space_create
+func (self class) SpaceCreate() RID.Any { //gd:PhysicsServer2D.space_create
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_space_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1241,7 +1244,7 @@ func (self class) SpaceCreate() gd.RID { //gd:PhysicsServer2D.space_create
 Activates or deactivates the space. If [param active] is [code]false[/code], then the physics server will not do anything with this space in its physics step.
 */
 //go:nosplit
-func (self class) SpaceSetActive(space gd.RID, active bool) { //gd:PhysicsServer2D.space_set_active
+func (self class) SpaceSetActive(space RID.Any, active bool) { //gd:PhysicsServer2D.space_set_active
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	callframe.Arg(frame, active)
@@ -1254,7 +1257,7 @@ func (self class) SpaceSetActive(space gd.RID, active bool) { //gd:PhysicsServer
 Returns [code]true[/code] if the space is active.
 */
 //go:nosplit
-func (self class) SpaceIsActive(space gd.RID) bool { //gd:PhysicsServer2D.space_is_active
+func (self class) SpaceIsActive(space RID.Any) bool { //gd:PhysicsServer2D.space_is_active
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1268,7 +1271,7 @@ func (self class) SpaceIsActive(space gd.RID) bool { //gd:PhysicsServer2D.space_
 Sets the value of the given space parameter. See [enum SpaceParameter] for the list of available parameters.
 */
 //go:nosplit
-func (self class) SpaceSetParam(space gd.RID, param gdclass.PhysicsServer2DSpaceParameter, value gd.Float) { //gd:PhysicsServer2D.space_set_param
+func (self class) SpaceSetParam(space RID.Any, param gdclass.PhysicsServer2DSpaceParameter, value float64) { //gd:PhysicsServer2D.space_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	callframe.Arg(frame, param)
@@ -1282,11 +1285,11 @@ func (self class) SpaceSetParam(space gd.RID, param gdclass.PhysicsServer2DSpace
 Returns the value of the given space parameter. See [enum SpaceParameter] for the list of available parameters.
 */
 //go:nosplit
-func (self class) SpaceGetParam(space gd.RID, param gdclass.PhysicsServer2DSpaceParameter) gd.Float { //gd:PhysicsServer2D.space_get_param
+func (self class) SpaceGetParam(space RID.Any, param gdclass.PhysicsServer2DSpaceParameter) float64 { //gd:PhysicsServer2D.space_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_space_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1297,7 +1300,7 @@ func (self class) SpaceGetParam(space gd.RID, param gdclass.PhysicsServer2DSpace
 Returns the state of a space, a [PhysicsDirectSpaceState2D]. This object can be used for collision/intersection queries.
 */
 //go:nosplit
-func (self class) SpaceGetDirectState(space gd.RID) [1]gdclass.PhysicsDirectSpaceState2D { //gd:PhysicsServer2D.space_get_direct_state
+func (self class) SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpaceState2D { //gd:PhysicsServer2D.space_get_direct_state
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1312,9 +1315,9 @@ Creates a 2D area object in the physics server, and returns the [RID] that ident
 Use [method area_add_shape] to add shapes to it, use [method area_set_transform] to set its transform, and use [method area_set_space] to add the area to a space. If you want the area to be detectable use [method area_set_monitorable].
 */
 //go:nosplit
-func (self class) AreaCreate() gd.RID { //gd:PhysicsServer2D.area_create
+func (self class) AreaCreate() RID.Any { //gd:PhysicsServer2D.area_create
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1326,7 +1329,7 @@ Adds the area to the given space, after removing the area from the previously as
 [b]Note:[/b] To remove an area from a space without immediately adding it back elsewhere, use [code]PhysicsServer2D.area_set_space(area, RID())[/code].
 */
 //go:nosplit
-func (self class) AreaSetSpace(area gd.RID, space gd.RID) { //gd:PhysicsServer2D.area_set_space
+func (self class) AreaSetSpace(area RID.Any, space RID.Any) { //gd:PhysicsServer2D.area_set_space
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, space)
@@ -1339,10 +1342,10 @@ func (self class) AreaSetSpace(area gd.RID, space gd.RID) { //gd:PhysicsServer2D
 Returns the [RID] of the space assigned to the area. Returns an empty [RID] if no space is assigned.
 */
 //go:nosplit
-func (self class) AreaGetSpace(area gd.RID) gd.RID { //gd:PhysicsServer2D.area_get_space
+func (self class) AreaGetSpace(area RID.Any) RID.Any { //gd:PhysicsServer2D.area_get_space
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_space, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1353,7 +1356,7 @@ func (self class) AreaGetSpace(area gd.RID) gd.RID { //gd:PhysicsServer2D.area_g
 Adds a shape to the area, with the given local transform. The shape (together with its [param transform] and [param disabled] properties) is added to an array of shapes, and the shapes of an area are usually referenced by their index in this array.
 */
 //go:nosplit
-func (self class) AreaAddShape(area gd.RID, shape gd.RID, transform gd.Transform2D, disabled bool) { //gd:PhysicsServer2D.area_add_shape
+func (self class) AreaAddShape(area RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool) { //gd:PhysicsServer2D.area_add_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape)
@@ -1368,7 +1371,7 @@ func (self class) AreaAddShape(area gd.RID, shape gd.RID, transform gd.Transform
 Replaces the area's shape at the given index by another shape, while not affecting the [code]transform[/code] and [code]disabled[/code] properties at the same index.
 */
 //go:nosplit
-func (self class) AreaSetShape(area gd.RID, shape_idx gd.Int, shape gd.RID) { //gd:PhysicsServer2D.area_set_shape
+func (self class) AreaSetShape(area RID.Any, shape_idx int64, shape RID.Any) { //gd:PhysicsServer2D.area_set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
@@ -1382,7 +1385,7 @@ func (self class) AreaSetShape(area gd.RID, shape_idx gd.Int, shape gd.RID) { //
 Sets the local transform matrix of the area's shape with the given index.
 */
 //go:nosplit
-func (self class) AreaSetShapeTransform(area gd.RID, shape_idx gd.Int, transform gd.Transform2D) { //gd:PhysicsServer2D.area_set_shape_transform
+func (self class) AreaSetShapeTransform(area RID.Any, shape_idx int64, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.area_set_shape_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
@@ -1396,7 +1399,7 @@ func (self class) AreaSetShapeTransform(area gd.RID, shape_idx gd.Int, transform
 Sets the disabled property of the area's shape with the given index. If [param disabled] is [code]true[/code], then the shape will not detect any other shapes entering or exiting it.
 */
 //go:nosplit
-func (self class) AreaSetShapeDisabled(area gd.RID, shape_idx gd.Int, disabled bool) { //gd:PhysicsServer2D.area_set_shape_disabled
+func (self class) AreaSetShapeDisabled(area RID.Any, shape_idx int64, disabled bool) { //gd:PhysicsServer2D.area_set_shape_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
@@ -1410,10 +1413,10 @@ func (self class) AreaSetShapeDisabled(area gd.RID, shape_idx gd.Int, disabled b
 Returns the number of shapes added to the area.
 */
 //go:nosplit
-func (self class) AreaGetShapeCount(area gd.RID) gd.Int { //gd:PhysicsServer2D.area_get_shape_count
+func (self class) AreaGetShapeCount(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_shape_count
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_shape_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1424,11 +1427,11 @@ func (self class) AreaGetShapeCount(area gd.RID) gd.Int { //gd:PhysicsServer2D.a
 Returns the [RID] of the shape with the given index in the area's array of shapes.
 */
 //go:nosplit
-func (self class) AreaGetShape(area gd.RID, shape_idx gd.Int) gd.RID { //gd:PhysicsServer2D.area_get_shape
+func (self class) AreaGetShape(area RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer2D.area_get_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1439,11 +1442,11 @@ func (self class) AreaGetShape(area gd.RID, shape_idx gd.Int) gd.RID { //gd:Phys
 Returns the local transform matrix of the shape with the given index in the area's array of shapes.
 */
 //go:nosplit
-func (self class) AreaGetShapeTransform(area gd.RID, shape_idx gd.Int) gd.Transform2D { //gd:PhysicsServer2D.area_get_shape_transform
+func (self class) AreaGetShapeTransform(area RID.Any, shape_idx int64) Transform2D.OriginXY { //gd:PhysicsServer2D.area_get_shape_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
-	var r_ret = callframe.Ret[gd.Transform2D](frame)
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_shape_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1454,7 +1457,7 @@ func (self class) AreaGetShapeTransform(area gd.RID, shape_idx gd.Int) gd.Transf
 Removes the shape with the given index from the area's array of shapes. The shape itself is not deleted, so it can continue to be used elsewhere or added back later. As a result of this operation, the area's shapes which used to have indices higher than [param shape_idx] will have their index decreased by one.
 */
 //go:nosplit
-func (self class) AreaRemoveShape(area gd.RID, shape_idx gd.Int) { //gd:PhysicsServer2D.area_remove_shape
+func (self class) AreaRemoveShape(area RID.Any, shape_idx int64) { //gd:PhysicsServer2D.area_remove_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
@@ -1467,7 +1470,7 @@ func (self class) AreaRemoveShape(area gd.RID, shape_idx gd.Int) { //gd:PhysicsS
 Removes all shapes from the area. This does not delete the shapes themselves, so they can continue to be used elsewhere or added back later.
 */
 //go:nosplit
-func (self class) AreaClearShapes(area gd.RID) { //gd:PhysicsServer2D.area_clear_shapes
+func (self class) AreaClearShapes(area RID.Any) { //gd:PhysicsServer2D.area_clear_shapes
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Nil
@@ -1479,7 +1482,7 @@ func (self class) AreaClearShapes(area gd.RID) { //gd:PhysicsServer2D.area_clear
 Assigns the area to one or many physics layers, via a bitmask.
 */
 //go:nosplit
-func (self class) AreaSetCollisionLayer(area gd.RID, layer gd.Int) { //gd:PhysicsServer2D.area_set_collision_layer
+func (self class) AreaSetCollisionLayer(area RID.Any, layer int64) { //gd:PhysicsServer2D.area_set_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, layer)
@@ -1492,10 +1495,10 @@ func (self class) AreaSetCollisionLayer(area gd.RID, layer gd.Int) { //gd:Physic
 Returns the physics layer or layers the area belongs to, as a bitmask.
 */
 //go:nosplit
-func (self class) AreaGetCollisionLayer(area gd.RID) gd.Int { //gd:PhysicsServer2D.area_get_collision_layer
+func (self class) AreaGetCollisionLayer(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1506,7 +1509,7 @@ func (self class) AreaGetCollisionLayer(area gd.RID) gd.Int { //gd:PhysicsServer
 Sets which physics layers the area will monitor, via a bitmask.
 */
 //go:nosplit
-func (self class) AreaSetCollisionMask(area gd.RID, mask gd.Int) { //gd:PhysicsServer2D.area_set_collision_mask
+func (self class) AreaSetCollisionMask(area RID.Any, mask int64) { //gd:PhysicsServer2D.area_set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, mask)
@@ -1519,10 +1522,10 @@ func (self class) AreaSetCollisionMask(area gd.RID, mask gd.Int) { //gd:PhysicsS
 Returns the physics layer or layers the area can contact with, as a bitmask.
 */
 //go:nosplit
-func (self class) AreaGetCollisionMask(area gd.RID) gd.Int { //gd:PhysicsServer2D.area_get_collision_mask
+func (self class) AreaGetCollisionMask(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1533,11 +1536,11 @@ func (self class) AreaGetCollisionMask(area gd.RID) gd.Int { //gd:PhysicsServer2
 Sets the value of the given area parameter. See [enum AreaParameter] for the list of available parameters.
 */
 //go:nosplit
-func (self class) AreaSetParam(area gd.RID, param gdclass.PhysicsServer2DAreaParameter, value gd.Variant) { //gd:PhysicsServer2D.area_set_param
+func (self class) AreaSetParam(area RID.Any, param gdclass.PhysicsServer2DAreaParameter, value variant.Any) { //gd:PhysicsServer2D.area_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, param)
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_set_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1547,7 +1550,7 @@ func (self class) AreaSetParam(area gd.RID, param gdclass.PhysicsServer2DAreaPar
 Sets the transform matrix of the area.
 */
 //go:nosplit
-func (self class) AreaSetTransform(area gd.RID, transform gd.Transform2D) { //gd:PhysicsServer2D.area_set_transform
+func (self class) AreaSetTransform(area RID.Any, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.area_set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, transform)
@@ -1560,13 +1563,13 @@ func (self class) AreaSetTransform(area gd.RID, transform gd.Transform2D) { //gd
 Returns the value of the given area parameter. See [enum AreaParameter] for the list of available parameters.
 */
 //go:nosplit
-func (self class) AreaGetParam(area gd.RID, param gdclass.PhysicsServer2DAreaParameter) gd.Variant { //gd:PhysicsServer2D.area_get_param
+func (self class) AreaGetParam(area RID.Any, param gdclass.PhysicsServer2DAreaParameter) variant.Any { //gd:PhysicsServer2D.area_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1575,10 +1578,10 @@ func (self class) AreaGetParam(area gd.RID, param gdclass.PhysicsServer2DAreaPar
 Returns the transform matrix of the area.
 */
 //go:nosplit
-func (self class) AreaGetTransform(area gd.RID) gd.Transform2D { //gd:PhysicsServer2D.area_get_transform
+func (self class) AreaGetTransform(area RID.Any) Transform2D.OriginXY { //gd:PhysicsServer2D.area_get_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[gd.Transform2D](frame)
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1589,7 +1592,7 @@ func (self class) AreaGetTransform(area gd.RID) gd.Transform2D { //gd:PhysicsSer
 Attaches the [code]ObjectID[/code] of an [Object] to the area. Use [method Object.get_instance_id] to get the [code]ObjectID[/code] of a [CollisionObject2D].
 */
 //go:nosplit
-func (self class) AreaAttachObjectInstanceId(area gd.RID, id gd.Int) { //gd:PhysicsServer2D.area_attach_object_instance_id
+func (self class) AreaAttachObjectInstanceId(area RID.Any, id int64) { //gd:PhysicsServer2D.area_attach_object_instance_id
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, id)
@@ -1602,10 +1605,10 @@ func (self class) AreaAttachObjectInstanceId(area gd.RID, id gd.Int) { //gd:Phys
 Returns the [code]ObjectID[/code] attached to the area. Use [method @GlobalScope.instance_from_id] to retrieve an [Object] from a nonzero [code]ObjectID[/code].
 */
 //go:nosplit
-func (self class) AreaGetObjectInstanceId(area gd.RID) gd.Int { //gd:PhysicsServer2D.area_get_object_instance_id
+func (self class) AreaGetObjectInstanceId(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_object_instance_id
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1616,7 +1619,7 @@ func (self class) AreaGetObjectInstanceId(area gd.RID) gd.Int { //gd:PhysicsServ
 Attaches the [code]ObjectID[/code] of a canvas to the area. Use [method Object.get_instance_id] to get the [code]ObjectID[/code] of a [CanvasLayer].
 */
 //go:nosplit
-func (self class) AreaAttachCanvasInstanceId(area gd.RID, id gd.Int) { //gd:PhysicsServer2D.area_attach_canvas_instance_id
+func (self class) AreaAttachCanvasInstanceId(area RID.Any, id int64) { //gd:PhysicsServer2D.area_attach_canvas_instance_id
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, id)
@@ -1629,10 +1632,10 @@ func (self class) AreaAttachCanvasInstanceId(area gd.RID, id gd.Int) { //gd:Phys
 Returns the [code]ObjectID[/code] of the canvas attached to the area. Use [method @GlobalScope.instance_from_id] to retrieve a [CanvasLayer] from a nonzero [code]ObjectID[/code].
 */
 //go:nosplit
-func (self class) AreaGetCanvasInstanceId(area gd.RID) gd.Int { //gd:PhysicsServer2D.area_get_canvas_instance_id
+func (self class) AreaGetCanvasInstanceId(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_canvas_instance_id
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_canvas_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1649,7 +1652,7 @@ Sets the area's body monitor callback. This callback will be called when any oth
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
 */
 //go:nosplit
-func (self class) AreaSetMonitorCallback(area gd.RID, callback Callable.Function) { //gd:PhysicsServer2D.area_set_monitor_callback
+func (self class) AreaSetMonitorCallback(area RID.Any, callback Callable.Function) { //gd:PhysicsServer2D.area_set_monitor_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
@@ -1668,7 +1671,7 @@ Sets the area's area monitor callback. This callback will be called when any oth
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
 */
 //go:nosplit
-func (self class) AreaSetAreaMonitorCallback(area gd.RID, callback Callable.Function) { //gd:PhysicsServer2D.area_set_area_monitor_callback
+func (self class) AreaSetAreaMonitorCallback(area RID.Any, callback Callable.Function) { //gd:PhysicsServer2D.area_set_area_monitor_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
@@ -1681,7 +1684,7 @@ func (self class) AreaSetAreaMonitorCallback(area gd.RID, callback Callable.Func
 Sets whether the area is monitorable or not. If [param monitorable] is [code]true[/code], the area monitoring callback of other areas will be called when this area enters or exits them.
 */
 //go:nosplit
-func (self class) AreaSetMonitorable(area gd.RID, monitorable bool) { //gd:PhysicsServer2D.area_set_monitorable
+func (self class) AreaSetMonitorable(area RID.Any, monitorable bool) { //gd:PhysicsServer2D.area_set_monitorable
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, monitorable)
@@ -1695,9 +1698,9 @@ Creates a 2D body object in the physics server, and returns the [RID] that ident
 Use [method body_add_shape] to add shapes to it, use [method body_set_state] to set its transform, and use [method body_set_space] to add the body to a space.
 */
 //go:nosplit
-func (self class) BodyCreate() gd.RID { //gd:PhysicsServer2D.body_create
+func (self class) BodyCreate() RID.Any { //gd:PhysicsServer2D.body_create
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1711,7 +1714,7 @@ Adds the body to the given space, after removing the body from the previously as
 [b]Note:[/b] To remove a body from a space without immediately adding it back elsewhere, use [code]PhysicsServer2D.body_set_space(body, RID())[/code].
 */
 //go:nosplit
-func (self class) BodySetSpace(body gd.RID, space gd.RID) { //gd:PhysicsServer2D.body_set_space
+func (self class) BodySetSpace(body RID.Any, space RID.Any) { //gd:PhysicsServer2D.body_set_space
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, space)
@@ -1724,10 +1727,10 @@ func (self class) BodySetSpace(body gd.RID, space gd.RID) { //gd:PhysicsServer2D
 Returns the [RID] of the space assigned to the body. Returns an empty [RID] if no space is assigned.
 */
 //go:nosplit
-func (self class) BodyGetSpace(body gd.RID) gd.RID { //gd:PhysicsServer2D.body_get_space
+func (self class) BodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer2D.body_get_space
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_space, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1738,7 +1741,7 @@ func (self class) BodyGetSpace(body gd.RID) gd.RID { //gd:PhysicsServer2D.body_g
 Sets the body's mode. See [enum BodyMode] for the list of available modes.
 */
 //go:nosplit
-func (self class) BodySetMode(body gd.RID, mode gdclass.PhysicsServer2DBodyMode) { //gd:PhysicsServer2D.body_set_mode
+func (self class) BodySetMode(body RID.Any, mode gdclass.PhysicsServer2DBodyMode) { //gd:PhysicsServer2D.body_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, mode)
@@ -1751,7 +1754,7 @@ func (self class) BodySetMode(body gd.RID, mode gdclass.PhysicsServer2DBodyMode)
 Returns the body's mode (see [enum BodyMode]).
 */
 //go:nosplit
-func (self class) BodyGetMode(body gd.RID) gdclass.PhysicsServer2DBodyMode { //gd:PhysicsServer2D.body_get_mode
+func (self class) BodyGetMode(body RID.Any) gdclass.PhysicsServer2DBodyMode { //gd:PhysicsServer2D.body_get_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gdclass.PhysicsServer2DBodyMode](frame)
@@ -1765,7 +1768,7 @@ func (self class) BodyGetMode(body gd.RID) gdclass.PhysicsServer2DBodyMode { //g
 Adds a shape to the area, with the given local transform. The shape (together with its [param transform] and [param disabled] properties) is added to an array of shapes, and the shapes of a body are usually referenced by their index in this array.
 */
 //go:nosplit
-func (self class) BodyAddShape(body gd.RID, shape gd.RID, transform gd.Transform2D, disabled bool) { //gd:PhysicsServer2D.body_add_shape
+func (self class) BodyAddShape(body RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool) { //gd:PhysicsServer2D.body_add_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape)
@@ -1780,7 +1783,7 @@ func (self class) BodyAddShape(body gd.RID, shape gd.RID, transform gd.Transform
 Replaces the body's shape at the given index by another shape, while not affecting the [code]transform[/code], [code]disabled[/code], and one-way collision properties at the same index.
 */
 //go:nosplit
-func (self class) BodySetShape(body gd.RID, shape_idx gd.Int, shape gd.RID) { //gd:PhysicsServer2D.body_set_shape
+func (self class) BodySetShape(body RID.Any, shape_idx int64, shape RID.Any) { //gd:PhysicsServer2D.body_set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
@@ -1794,7 +1797,7 @@ func (self class) BodySetShape(body gd.RID, shape_idx gd.Int, shape gd.RID) { //
 Sets the local transform matrix of the body's shape with the given index.
 */
 //go:nosplit
-func (self class) BodySetShapeTransform(body gd.RID, shape_idx gd.Int, transform gd.Transform2D) { //gd:PhysicsServer2D.body_set_shape_transform
+func (self class) BodySetShapeTransform(body RID.Any, shape_idx int64, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.body_set_shape_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
@@ -1808,10 +1811,10 @@ func (self class) BodySetShapeTransform(body gd.RID, shape_idx gd.Int, transform
 Returns the number of shapes added to the body.
 */
 //go:nosplit
-func (self class) BodyGetShapeCount(body gd.RID) gd.Int { //gd:PhysicsServer2D.body_get_shape_count
+func (self class) BodyGetShapeCount(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_shape_count
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_shape_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1822,11 +1825,11 @@ func (self class) BodyGetShapeCount(body gd.RID) gd.Int { //gd:PhysicsServer2D.b
 Returns the [RID] of the shape with the given index in the body's array of shapes.
 */
 //go:nosplit
-func (self class) BodyGetShape(body gd.RID, shape_idx gd.Int) gd.RID { //gd:PhysicsServer2D.body_get_shape
+func (self class) BodyGetShape(body RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer2D.body_get_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1837,11 +1840,11 @@ func (self class) BodyGetShape(body gd.RID, shape_idx gd.Int) gd.RID { //gd:Phys
 Returns the local transform matrix of the shape with the given index in the area's array of shapes.
 */
 //go:nosplit
-func (self class) BodyGetShapeTransform(body gd.RID, shape_idx gd.Int) gd.Transform2D { //gd:PhysicsServer2D.body_get_shape_transform
+func (self class) BodyGetShapeTransform(body RID.Any, shape_idx int64) Transform2D.OriginXY { //gd:PhysicsServer2D.body_get_shape_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
-	var r_ret = callframe.Ret[gd.Transform2D](frame)
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_shape_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1852,7 +1855,7 @@ func (self class) BodyGetShapeTransform(body gd.RID, shape_idx gd.Int) gd.Transf
 Removes the shape with the given index from the body's array of shapes. The shape itself is not deleted, so it can continue to be used elsewhere or added back later. As a result of this operation, the body's shapes which used to have indices higher than [param shape_idx] will have their index decreased by one.
 */
 //go:nosplit
-func (self class) BodyRemoveShape(body gd.RID, shape_idx gd.Int) { //gd:PhysicsServer2D.body_remove_shape
+func (self class) BodyRemoveShape(body RID.Any, shape_idx int64) { //gd:PhysicsServer2D.body_remove_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
@@ -1865,7 +1868,7 @@ func (self class) BodyRemoveShape(body gd.RID, shape_idx gd.Int) { //gd:PhysicsS
 Removes all shapes from the body. This does not delete the shapes themselves, so they can continue to be used elsewhere or added back later.
 */
 //go:nosplit
-func (self class) BodyClearShapes(body gd.RID) { //gd:PhysicsServer2D.body_clear_shapes
+func (self class) BodyClearShapes(body RID.Any) { //gd:PhysicsServer2D.body_clear_shapes
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Nil
@@ -1877,7 +1880,7 @@ func (self class) BodyClearShapes(body gd.RID) { //gd:PhysicsServer2D.body_clear
 Sets the disabled property of the body's shape with the given index. If [param disabled] is [code]true[/code], then the shape will be ignored in all collision detection.
 */
 //go:nosplit
-func (self class) BodySetShapeDisabled(body gd.RID, shape_idx gd.Int, disabled bool) { //gd:PhysicsServer2D.body_set_shape_disabled
+func (self class) BodySetShapeDisabled(body RID.Any, shape_idx int64, disabled bool) { //gd:PhysicsServer2D.body_set_shape_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
@@ -1891,7 +1894,7 @@ func (self class) BodySetShapeDisabled(body gd.RID, shape_idx gd.Int, disabled b
 Sets the one-way collision properties of the body's shape with the given index. If [param enable] is [code]true[/code], the one-way collision direction given by the shape's local upward axis [code]body_get_shape_transform(body, shape_idx).y[/code] will be used to ignore collisions with the shape in the opposite direction, and to ensure depenetration of kinematic bodies happens in this direction.
 */
 //go:nosplit
-func (self class) BodySetShapeAsOneWayCollision(body gd.RID, shape_idx gd.Int, enable bool, margin gd.Float) { //gd:PhysicsServer2D.body_set_shape_as_one_way_collision
+func (self class) BodySetShapeAsOneWayCollision(body RID.Any, shape_idx int64, enable bool, margin float64) { //gd:PhysicsServer2D.body_set_shape_as_one_way_collision
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
@@ -1906,7 +1909,7 @@ func (self class) BodySetShapeAsOneWayCollision(body gd.RID, shape_idx gd.Int, e
 Attaches the [code]ObjectID[/code] of an [Object] to the body. Use [method Object.get_instance_id] to get the [code]ObjectID[/code] of a [CollisionObject2D].
 */
 //go:nosplit
-func (self class) BodyAttachObjectInstanceId(body gd.RID, id gd.Int) { //gd:PhysicsServer2D.body_attach_object_instance_id
+func (self class) BodyAttachObjectInstanceId(body RID.Any, id int64) { //gd:PhysicsServer2D.body_attach_object_instance_id
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, id)
@@ -1919,10 +1922,10 @@ func (self class) BodyAttachObjectInstanceId(body gd.RID, id gd.Int) { //gd:Phys
 Returns the [code]ObjectID[/code] attached to the body. Use [method @GlobalScope.instance_from_id] to retrieve an [Object] from a nonzero [code]ObjectID[/code].
 */
 //go:nosplit
-func (self class) BodyGetObjectInstanceId(body gd.RID) gd.Int { //gd:PhysicsServer2D.body_get_object_instance_id
+func (self class) BodyGetObjectInstanceId(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_object_instance_id
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1933,7 +1936,7 @@ func (self class) BodyGetObjectInstanceId(body gd.RID) gd.Int { //gd:PhysicsServ
 Attaches the [code]ObjectID[/code] of a canvas to the body. Use [method Object.get_instance_id] to get the [code]ObjectID[/code] of a [CanvasLayer].
 */
 //go:nosplit
-func (self class) BodyAttachCanvasInstanceId(body gd.RID, id gd.Int) { //gd:PhysicsServer2D.body_attach_canvas_instance_id
+func (self class) BodyAttachCanvasInstanceId(body RID.Any, id int64) { //gd:PhysicsServer2D.body_attach_canvas_instance_id
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, id)
@@ -1946,10 +1949,10 @@ func (self class) BodyAttachCanvasInstanceId(body gd.RID, id gd.Int) { //gd:Phys
 Returns the [code]ObjectID[/code] of the canvas attached to the body. Use [method @GlobalScope.instance_from_id] to retrieve a [CanvasLayer] from a nonzero [code]ObjectID[/code].
 */
 //go:nosplit
-func (self class) BodyGetCanvasInstanceId(body gd.RID) gd.Int { //gd:PhysicsServer2D.body_get_canvas_instance_id
+func (self class) BodyGetCanvasInstanceId(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_canvas_instance_id
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_canvas_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1961,7 +1964,7 @@ Sets the continuous collision detection mode using one of the [enum CCDMode] con
 Continuous collision detection tries to predict where a moving body would collide in between physics updates, instead of moving it and correcting its movement if it collided.
 */
 //go:nosplit
-func (self class) BodySetContinuousCollisionDetectionMode(body gd.RID, mode gdclass.PhysicsServer2DCCDMode) { //gd:PhysicsServer2D.body_set_continuous_collision_detection_mode
+func (self class) BodySetContinuousCollisionDetectionMode(body RID.Any, mode gdclass.PhysicsServer2DCCDMode) { //gd:PhysicsServer2D.body_set_continuous_collision_detection_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, mode)
@@ -1974,7 +1977,7 @@ func (self class) BodySetContinuousCollisionDetectionMode(body gd.RID, mode gdcl
 Returns the body's continuous collision detection mode (see [enum CCDMode]).
 */
 //go:nosplit
-func (self class) BodyGetContinuousCollisionDetectionMode(body gd.RID) gdclass.PhysicsServer2DCCDMode { //gd:PhysicsServer2D.body_get_continuous_collision_detection_mode
+func (self class) BodyGetContinuousCollisionDetectionMode(body RID.Any) gdclass.PhysicsServer2DCCDMode { //gd:PhysicsServer2D.body_get_continuous_collision_detection_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gdclass.PhysicsServer2DCCDMode](frame)
@@ -1988,7 +1991,7 @@ func (self class) BodyGetContinuousCollisionDetectionMode(body gd.RID) gdclass.P
 Sets the physics layer or layers the body belongs to, via a bitmask.
 */
 //go:nosplit
-func (self class) BodySetCollisionLayer(body gd.RID, layer gd.Int) { //gd:PhysicsServer2D.body_set_collision_layer
+func (self class) BodySetCollisionLayer(body RID.Any, layer int64) { //gd:PhysicsServer2D.body_set_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, layer)
@@ -2001,10 +2004,10 @@ func (self class) BodySetCollisionLayer(body gd.RID, layer gd.Int) { //gd:Physic
 Returns the physics layer or layers the body belongs to, as a bitmask.
 */
 //go:nosplit
-func (self class) BodyGetCollisionLayer(body gd.RID) gd.Int { //gd:PhysicsServer2D.body_get_collision_layer
+func (self class) BodyGetCollisionLayer(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2015,7 +2018,7 @@ func (self class) BodyGetCollisionLayer(body gd.RID) gd.Int { //gd:PhysicsServer
 Sets the physics layer or layers the body can collide with, via a bitmask.
 */
 //go:nosplit
-func (self class) BodySetCollisionMask(body gd.RID, mask gd.Int) { //gd:PhysicsServer2D.body_set_collision_mask
+func (self class) BodySetCollisionMask(body RID.Any, mask int64) { //gd:PhysicsServer2D.body_set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, mask)
@@ -2028,10 +2031,10 @@ func (self class) BodySetCollisionMask(body gd.RID, mask gd.Int) { //gd:PhysicsS
 Returns the physics layer or layers the body can collide with, as a bitmask.
 */
 //go:nosplit
-func (self class) BodyGetCollisionMask(body gd.RID) gd.Int { //gd:PhysicsServer2D.body_get_collision_mask
+func (self class) BodyGetCollisionMask(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2042,7 +2045,7 @@ func (self class) BodyGetCollisionMask(body gd.RID) gd.Int { //gd:PhysicsServer2
 Sets the body's collision priority. This is used in the depenetration phase of [method body_test_motion]. The higher the priority is, the lower the penetration into the body will be.
 */
 //go:nosplit
-func (self class) BodySetCollisionPriority(body gd.RID, priority gd.Float) { //gd:PhysicsServer2D.body_set_collision_priority
+func (self class) BodySetCollisionPriority(body RID.Any, priority float64) { //gd:PhysicsServer2D.body_set_collision_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, priority)
@@ -2055,10 +2058,10 @@ func (self class) BodySetCollisionPriority(body gd.RID, priority gd.Float) { //g
 Returns the body's collision priority. This is used in the depenetration phase of [method body_test_motion]. The higher the priority is, the lower the penetration into the body will be.
 */
 //go:nosplit
-func (self class) BodyGetCollisionPriority(body gd.RID) gd.Float { //gd:PhysicsServer2D.body_get_collision_priority
+func (self class) BodyGetCollisionPriority(body RID.Any) float64 { //gd:PhysicsServer2D.body_get_collision_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_collision_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2069,11 +2072,11 @@ func (self class) BodyGetCollisionPriority(body gd.RID) gd.Float { //gd:PhysicsS
 Sets the value of the given body parameter. See [enum BodyParameter] for the list of available parameters.
 */
 //go:nosplit
-func (self class) BodySetParam(body gd.RID, param gdclass.PhysicsServer2DBodyParameter, value gd.Variant) { //gd:PhysicsServer2D.body_set_param
+func (self class) BodySetParam(body RID.Any, param gdclass.PhysicsServer2DBodyParameter, value variant.Any) { //gd:PhysicsServer2D.body_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, param)
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2083,13 +2086,13 @@ func (self class) BodySetParam(body gd.RID, param gdclass.PhysicsServer2DBodyPar
 Returns the value of the given body parameter. See [enum BodyParameter] for the list of available parameters.
 */
 //go:nosplit
-func (self class) BodyGetParam(body gd.RID, param gdclass.PhysicsServer2DBodyParameter) gd.Variant { //gd:PhysicsServer2D.body_get_param
+func (self class) BodyGetParam(body RID.Any, param gdclass.PhysicsServer2DBodyParameter) variant.Any { //gd:PhysicsServer2D.body_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2098,7 +2101,7 @@ func (self class) BodyGetParam(body gd.RID, param gdclass.PhysicsServer2DBodyPar
 Restores the default inertia and center of mass of the body based on its shapes. This undoes any custom values previously set using [method body_set_param].
 */
 //go:nosplit
-func (self class) BodyResetMassProperties(body gd.RID) { //gd:PhysicsServer2D.body_reset_mass_properties
+func (self class) BodyResetMassProperties(body RID.Any) { //gd:PhysicsServer2D.body_reset_mass_properties
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Nil
@@ -2111,11 +2114,11 @@ Sets the value of a body's state. See [enum BodyState] for the list of available
 [b]Note:[/b] The state change doesn't take effect immediately. The state will change on the next physics frame.
 */
 //go:nosplit
-func (self class) BodySetState(body gd.RID, state gdclass.PhysicsServer2DBodyState, value gd.Variant) { //gd:PhysicsServer2D.body_set_state
+func (self class) BodySetState(body RID.Any, state gdclass.PhysicsServer2DBodyState, value variant.Any) { //gd:PhysicsServer2D.body_set_state
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2125,13 +2128,13 @@ func (self class) BodySetState(body gd.RID, state gdclass.PhysicsServer2DBodySta
 Returns the value of the given state of the body. See [enum BodyState] for the list of available states.
 */
 //go:nosplit
-func (self class) BodyGetState(body gd.RID, state gdclass.PhysicsServer2DBodyState) gd.Variant { //gd:PhysicsServer2D.body_get_state
+func (self class) BodyGetState(body RID.Any, state gdclass.PhysicsServer2DBodyState) variant.Any { //gd:PhysicsServer2D.body_get_state
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_state, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2142,7 +2145,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 This is equivalent to using [method body_apply_impulse] at the body's center of mass.
 */
 //go:nosplit
-func (self class) BodyApplyCentralImpulse(body gd.RID, impulse gd.Vector2) { //gd:PhysicsServer2D.body_apply_central_impulse
+func (self class) BodyApplyCentralImpulse(body RID.Any, impulse Vector2.XY) { //gd:PhysicsServer2D.body_apply_central_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, impulse)
@@ -2156,7 +2159,7 @@ Applies a rotational impulse to the body. The impulse does not affect position.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 */
 //go:nosplit
-func (self class) BodyApplyTorqueImpulse(body gd.RID, impulse gd.Float) { //gd:PhysicsServer2D.body_apply_torque_impulse
+func (self class) BodyApplyTorqueImpulse(body RID.Any, impulse float64) { //gd:PhysicsServer2D.body_apply_torque_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, impulse)
@@ -2171,7 +2174,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 [param position] is the offset from the body origin in global coordinates.
 */
 //go:nosplit
-func (self class) BodyApplyImpulse(body gd.RID, impulse gd.Vector2, position gd.Vector2) { //gd:PhysicsServer2D.body_apply_impulse
+func (self class) BodyApplyImpulse(body RID.Any, impulse Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, impulse)
@@ -2186,7 +2189,7 @@ Applies a directional force to the body, at the body's center of mass. The force
 This is equivalent to using [method body_apply_force] at the body's center of mass.
 */
 //go:nosplit
-func (self class) BodyApplyCentralForce(body gd.RID, force gd.Vector2) { //gd:PhysicsServer2D.body_apply_central_force
+func (self class) BodyApplyCentralForce(body RID.Any, force Vector2.XY) { //gd:PhysicsServer2D.body_apply_central_force
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
@@ -2200,7 +2203,7 @@ Applies a positioned force to the body. The force can affect rotation if [param 
 [param position] is the offset from the body origin in global coordinates.
 */
 //go:nosplit
-func (self class) BodyApplyForce(body gd.RID, force gd.Vector2, position gd.Vector2) { //gd:PhysicsServer2D.body_apply_force
+func (self class) BodyApplyForce(body RID.Any, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_force
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
@@ -2214,7 +2217,7 @@ func (self class) BodyApplyForce(body gd.RID, force gd.Vector2, position gd.Vect
 Applies a rotational force to the body. The force does not affect position. A force is time dependent and meant to be applied every physics update.
 */
 //go:nosplit
-func (self class) BodyApplyTorque(body gd.RID, torque gd.Float) { //gd:PhysicsServer2D.body_apply_torque
+func (self class) BodyApplyTorque(body RID.Any, torque float64) { //gd:PhysicsServer2D.body_apply_torque
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, torque)
@@ -2228,7 +2231,7 @@ Adds a constant directional force to the body. The force does not affect rotatio
 This is equivalent to using [method body_add_constant_force] at the body's center of mass.
 */
 //go:nosplit
-func (self class) BodyAddConstantCentralForce(body gd.RID, force gd.Vector2) { //gd:PhysicsServer2D.body_add_constant_central_force
+func (self class) BodyAddConstantCentralForce(body RID.Any, force Vector2.XY) { //gd:PhysicsServer2D.body_add_constant_central_force
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
@@ -2242,7 +2245,7 @@ Adds a constant positioned force to the body. The force can affect rotation if [
 [param position] is the offset from the body origin in global coordinates.
 */
 //go:nosplit
-func (self class) BodyAddConstantForce(body gd.RID, force gd.Vector2, position gd.Vector2) { //gd:PhysicsServer2D.body_add_constant_force
+func (self class) BodyAddConstantForce(body RID.Any, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_add_constant_force
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
@@ -2256,7 +2259,7 @@ func (self class) BodyAddConstantForce(body gd.RID, force gd.Vector2, position g
 Adds a constant rotational force to the body. The force does not affect position. The force remains applied over time until cleared with [code]PhysicsServer2D.body_set_constant_torque(body, 0)[/code].
 */
 //go:nosplit
-func (self class) BodyAddConstantTorque(body gd.RID, torque gd.Float) { //gd:PhysicsServer2D.body_add_constant_torque
+func (self class) BodyAddConstantTorque(body RID.Any, torque float64) { //gd:PhysicsServer2D.body_add_constant_torque
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, torque)
@@ -2270,7 +2273,7 @@ Sets the body's total constant positional force applied during each physics upda
 See [method body_add_constant_force] and [method body_add_constant_central_force].
 */
 //go:nosplit
-func (self class) BodySetConstantForce(body gd.RID, force gd.Vector2) { //gd:PhysicsServer2D.body_set_constant_force
+func (self class) BodySetConstantForce(body RID.Any, force Vector2.XY) { //gd:PhysicsServer2D.body_set_constant_force
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
@@ -2284,10 +2287,10 @@ Returns the body's total constant positional force applied during each physics u
 See [method body_add_constant_force] and [method body_add_constant_central_force].
 */
 //go:nosplit
-func (self class) BodyGetConstantForce(body gd.RID) gd.Vector2 { //gd:PhysicsServer2D.body_get_constant_force
+func (self class) BodyGetConstantForce(body RID.Any) Vector2.XY { //gd:PhysicsServer2D.body_get_constant_force
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2299,7 +2302,7 @@ Sets the body's total constant rotational force applied during each physics upda
 See [method body_add_constant_torque].
 */
 //go:nosplit
-func (self class) BodySetConstantTorque(body gd.RID, torque gd.Float) { //gd:PhysicsServer2D.body_set_constant_torque
+func (self class) BodySetConstantTorque(body RID.Any, torque float64) { //gd:PhysicsServer2D.body_set_constant_torque
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, torque)
@@ -2313,10 +2316,10 @@ Returns the body's total constant rotational force applied during each physics u
 See [method body_add_constant_torque].
 */
 //go:nosplit
-func (self class) BodyGetConstantTorque(body gd.RID) gd.Float { //gd:PhysicsServer2D.body_get_constant_torque
+func (self class) BodyGetConstantTorque(body RID.Any) float64 { //gd:PhysicsServer2D.body_get_constant_torque
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2327,7 +2330,7 @@ func (self class) BodyGetConstantTorque(body gd.RID) gd.Float { //gd:PhysicsServ
 Modifies the body's linear velocity so that its projection to the axis [code]axis_velocity.normalized()[/code] is exactly [code]axis_velocity.length()[/code]. This is useful for jumping behavior.
 */
 //go:nosplit
-func (self class) BodySetAxisVelocity(body gd.RID, axis_velocity gd.Vector2) { //gd:PhysicsServer2D.body_set_axis_velocity
+func (self class) BodySetAxisVelocity(body RID.Any, axis_velocity Vector2.XY) { //gd:PhysicsServer2D.body_set_axis_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, axis_velocity)
@@ -2340,7 +2343,7 @@ func (self class) BodySetAxisVelocity(body gd.RID, axis_velocity gd.Vector2) { /
 Adds [param excepted_body] to the body's list of collision exceptions, so that collisions with it are ignored.
 */
 //go:nosplit
-func (self class) BodyAddCollisionException(body gd.RID, excepted_body gd.RID) { //gd:PhysicsServer2D.body_add_collision_exception
+func (self class) BodyAddCollisionException(body RID.Any, excepted_body RID.Any) { //gd:PhysicsServer2D.body_add_collision_exception
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, excepted_body)
@@ -2353,7 +2356,7 @@ func (self class) BodyAddCollisionException(body gd.RID, excepted_body gd.RID) {
 Removes [param excepted_body] from the body's list of collision exceptions, so that collisions with it are no longer ignored.
 */
 //go:nosplit
-func (self class) BodyRemoveCollisionException(body gd.RID, excepted_body gd.RID) { //gd:PhysicsServer2D.body_remove_collision_exception
+func (self class) BodyRemoveCollisionException(body RID.Any, excepted_body RID.Any) { //gd:PhysicsServer2D.body_remove_collision_exception
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, excepted_body)
@@ -2366,7 +2369,7 @@ func (self class) BodyRemoveCollisionException(body gd.RID, excepted_body gd.RID
 Sets the maximum number of contacts that the body can report. If [param amount] is greater than zero, then the body will keep track of at most this many contacts with other bodies.
 */
 //go:nosplit
-func (self class) BodySetMaxContactsReported(body gd.RID, amount gd.Int) { //gd:PhysicsServer2D.body_set_max_contacts_reported
+func (self class) BodySetMaxContactsReported(body RID.Any, amount int64) { //gd:PhysicsServer2D.body_set_max_contacts_reported
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, amount)
@@ -2379,10 +2382,10 @@ func (self class) BodySetMaxContactsReported(body gd.RID, amount gd.Int) { //gd:
 Returns the maximum number of contacts that the body can report. See [method body_set_max_contacts_reported].
 */
 //go:nosplit
-func (self class) BodyGetMaxContactsReported(body gd.RID) gd.Int { //gd:PhysicsServer2D.body_get_max_contacts_reported
+func (self class) BodyGetMaxContactsReported(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_max_contacts_reported
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_max_contacts_reported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2394,7 +2397,7 @@ Sets whether the body omits the standard force integration. If [param enable] is
 This method is called when the property [member RigidBody2D.custom_integrator] is set.
 */
 //go:nosplit
-func (self class) BodySetOmitForceIntegration(body gd.RID, enable bool) { //gd:PhysicsServer2D.body_set_omit_force_integration
+func (self class) BodySetOmitForceIntegration(body RID.Any, enable bool) { //gd:PhysicsServer2D.body_set_omit_force_integration
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, enable)
@@ -2407,7 +2410,7 @@ func (self class) BodySetOmitForceIntegration(body gd.RID, enable bool) { //gd:P
 Returns [code]true[/code] if the body is omitting the standard force integration. See [method body_set_omit_force_integration].
 */
 //go:nosplit
-func (self class) BodyIsOmittingForceIntegration(body gd.RID) bool { //gd:PhysicsServer2D.body_is_omitting_force_integration
+func (self class) BodyIsOmittingForceIntegration(body RID.Any) bool { //gd:PhysicsServer2D.body_is_omitting_force_integration
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[bool](frame)
@@ -2424,7 +2427,7 @@ The function [param callable] must take the following parameters:
 1. [code]state[/code]: a [PhysicsDirectBodyState2D], used to retrieve the body's state.
 */
 //go:nosplit
-func (self class) BodySetStateSyncCallback(body gd.RID, callable Callable.Function) { //gd:PhysicsServer2D.body_set_state_sync_callback
+func (self class) BodySetStateSyncCallback(body RID.Any, callable Callable.Function) { //gd:PhysicsServer2D.body_set_state_sync_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
@@ -2442,11 +2445,11 @@ If [param userdata] is not [code]null[/code], the function [param callable] must
 If [param userdata] is [code]null[/code], then [param callable] must take only the [code]state[/code] parameter.
 */
 //go:nosplit
-func (self class) BodySetForceIntegrationCallback(body gd.RID, callable Callable.Function, userdata gd.Variant) { //gd:PhysicsServer2D.body_set_force_integration_callback
+func (self class) BodySetForceIntegrationCallback(body RID.Any, callable Callable.Function, userdata variant.Any) { //gd:PhysicsServer2D.body_set_force_integration_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
-	callframe.Arg(frame, pointers.Get(userdata))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(userdata)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_force_integration_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2456,7 +2459,7 @@ func (self class) BodySetForceIntegrationCallback(body gd.RID, callable Callable
 Returns [code]true[/code] if a collision would result from moving the body along a motion vector from a given point in space. See [PhysicsTestMotionParameters2D] for the available motion parameters. Optionally a [PhysicsTestMotionResult2D] object can be passed, which will be used to store the information about the resulting collision.
 */
 //go:nosplit
-func (self class) BodyTestMotion(body gd.RID, parameters [1]gdclass.PhysicsTestMotionParameters2D, result [1]gdclass.PhysicsTestMotionResult2D) bool { //gd:PhysicsServer2D.body_test_motion
+func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTestMotionParameters2D, result [1]gdclass.PhysicsTestMotionResult2D) bool { //gd:PhysicsServer2D.body_test_motion
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
@@ -2472,7 +2475,7 @@ func (self class) BodyTestMotion(body gd.RID, parameters [1]gdclass.PhysicsTestM
 Returns the [PhysicsDirectBodyState2D] of the body. Returns [code]null[/code] if the body is destroyed or not assigned to a space.
 */
 //go:nosplit
-func (self class) BodyGetDirectState(body gd.RID) [1]gdclass.PhysicsDirectBodyState2D { //gd:PhysicsServer2D.body_get_direct_state
+func (self class) BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyState2D { //gd:PhysicsServer2D.body_get_direct_state
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -2486,9 +2489,9 @@ func (self class) BodyGetDirectState(body gd.RID) [1]gdclass.PhysicsDirectBodySt
 Creates a 2D joint in the physics server, and returns the [RID] that identifies it. To set the joint type, use [method joint_make_damped_spring], [method joint_make_groove] or [method joint_make_pin]. Use [method joint_set_param] to set generic joint parameters.
 */
 //go:nosplit
-func (self class) JointCreate() gd.RID { //gd:PhysicsServer2D.joint_create
+func (self class) JointCreate() RID.Any { //gd:PhysicsServer2D.joint_create
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2499,7 +2502,7 @@ func (self class) JointCreate() gd.RID { //gd:PhysicsServer2D.joint_create
 Destroys the joint with the given [RID], creates a new uninitialized joint, and makes the [RID] refer to this new joint.
 */
 //go:nosplit
-func (self class) JointClear(joint gd.RID) { //gd:PhysicsServer2D.joint_clear
+func (self class) JointClear(joint RID.Any) { //gd:PhysicsServer2D.joint_clear
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Nil
@@ -2511,7 +2514,7 @@ func (self class) JointClear(joint gd.RID) { //gd:PhysicsServer2D.joint_clear
 Sets the value of the given joint parameter. See [enum JointParam] for the list of available parameters.
 */
 //go:nosplit
-func (self class) JointSetParam(joint gd.RID, param gdclass.PhysicsServer2DJointParam, value gd.Float) { //gd:PhysicsServer2D.joint_set_param
+func (self class) JointSetParam(joint RID.Any, param gdclass.PhysicsServer2DJointParam, value float64) { //gd:PhysicsServer2D.joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -2525,11 +2528,11 @@ func (self class) JointSetParam(joint gd.RID, param gdclass.PhysicsServer2DJoint
 Returns the value of the given joint parameter. See [enum JointParam] for the list of available parameters.
 */
 //go:nosplit
-func (self class) JointGetParam(joint gd.RID, param gdclass.PhysicsServer2DJointParam) gd.Float { //gd:PhysicsServer2D.joint_get_param
+func (self class) JointGetParam(joint RID.Any, param gdclass.PhysicsServer2DJointParam) float64 { //gd:PhysicsServer2D.joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2540,7 +2543,7 @@ func (self class) JointGetParam(joint gd.RID, param gdclass.PhysicsServer2DJoint
 Sets whether the bodies attached to the [Joint2D] will collide with each other.
 */
 //go:nosplit
-func (self class) JointDisableCollisionsBetweenBodies(joint gd.RID, disable bool) { //gd:PhysicsServer2D.joint_disable_collisions_between_bodies
+func (self class) JointDisableCollisionsBetweenBodies(joint RID.Any, disable bool) { //gd:PhysicsServer2D.joint_disable_collisions_between_bodies
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, disable)
@@ -2553,7 +2556,7 @@ func (self class) JointDisableCollisionsBetweenBodies(joint gd.RID, disable bool
 Returns whether the bodies attached to the [Joint2D] will collide with each other.
 */
 //go:nosplit
-func (self class) JointIsDisabledCollisionsBetweenBodies(joint gd.RID) bool { //gd:PhysicsServer2D.joint_is_disabled_collisions_between_bodies
+func (self class) JointIsDisabledCollisionsBetweenBodies(joint RID.Any) bool { //gd:PhysicsServer2D.joint_is_disabled_collisions_between_bodies
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[bool](frame)
@@ -2567,7 +2570,7 @@ func (self class) JointIsDisabledCollisionsBetweenBodies(joint gd.RID) bool { //
 Makes the joint a pin joint. If [param body_b] is an empty [RID], then [param body_a] is pinned to the point [param anchor] (given in global coordinates); otherwise, [param body_a] is pinned to [param body_b] at the point [param anchor] (given in global coordinates). To set the parameters which are specific to the pin joint, see [method pin_joint_set_param].
 */
 //go:nosplit
-func (self class) JointMakePin(joint gd.RID, anchor gd.Vector2, body_a gd.RID, body_b gd.RID) { //gd:PhysicsServer2D.joint_make_pin
+func (self class) JointMakePin(joint RID.Any, anchor Vector2.XY, body_a RID.Any, body_b RID.Any) { //gd:PhysicsServer2D.joint_make_pin
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, anchor)
@@ -2582,7 +2585,7 @@ func (self class) JointMakePin(joint gd.RID, anchor gd.Vector2, body_a gd.RID, b
 Makes the joint a groove joint.
 */
 //go:nosplit
-func (self class) JointMakeGroove(joint gd.RID, groove1_a gd.Vector2, groove2_a gd.Vector2, anchor_b gd.Vector2, body_a gd.RID, body_b gd.RID) { //gd:PhysicsServer2D.joint_make_groove
+func (self class) JointMakeGroove(joint RID.Any, groove1_a Vector2.XY, groove2_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Any, body_b RID.Any) { //gd:PhysicsServer2D.joint_make_groove
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, groove1_a)
@@ -2599,7 +2602,7 @@ func (self class) JointMakeGroove(joint gd.RID, groove1_a gd.Vector2, groove2_a 
 Makes the joint a damped spring joint, attached at the point [param anchor_a] (given in global coordinates) on the body [param body_a] and at the point [param anchor_b] (given in global coordinates) on the body [param body_b]. To set the parameters which are specific to the damped spring, see [method damped_spring_joint_set_param].
 */
 //go:nosplit
-func (self class) JointMakeDampedSpring(joint gd.RID, anchor_a gd.Vector2, anchor_b gd.Vector2, body_a gd.RID, body_b gd.RID) { //gd:PhysicsServer2D.joint_make_damped_spring
+func (self class) JointMakeDampedSpring(joint RID.Any, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Any, body_b RID.Any) { //gd:PhysicsServer2D.joint_make_damped_spring
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, anchor_a)
@@ -2615,7 +2618,7 @@ func (self class) JointMakeDampedSpring(joint gd.RID, anchor_a gd.Vector2, ancho
 Sets a pin joint flag (see [enum PinJointFlag] constants).
 */
 //go:nosplit
-func (self class) PinJointSetFlag(joint gd.RID, flag gdclass.PhysicsServer2DPinJointFlag, enabled bool) { //gd:PhysicsServer2D.pin_joint_set_flag
+func (self class) PinJointSetFlag(joint RID.Any, flag gdclass.PhysicsServer2DPinJointFlag, enabled bool) { //gd:PhysicsServer2D.pin_joint_set_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, flag)
@@ -2629,7 +2632,7 @@ func (self class) PinJointSetFlag(joint gd.RID, flag gdclass.PhysicsServer2DPinJ
 Gets a pin joint flag (see [enum PinJointFlag] constants).
 */
 //go:nosplit
-func (self class) PinJointGetFlag(joint gd.RID, flag gdclass.PhysicsServer2DPinJointFlag) bool { //gd:PhysicsServer2D.pin_joint_get_flag
+func (self class) PinJointGetFlag(joint RID.Any, flag gdclass.PhysicsServer2DPinJointFlag) bool { //gd:PhysicsServer2D.pin_joint_get_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, flag)
@@ -2644,7 +2647,7 @@ func (self class) PinJointGetFlag(joint gd.RID, flag gdclass.PhysicsServer2DPinJ
 Sets a pin joint parameter. See [enum PinJointParam] for a list of available parameters.
 */
 //go:nosplit
-func (self class) PinJointSetParam(joint gd.RID, param gdclass.PhysicsServer2DPinJointParam, value gd.Float) { //gd:PhysicsServer2D.pin_joint_set_param
+func (self class) PinJointSetParam(joint RID.Any, param gdclass.PhysicsServer2DPinJointParam, value float64) { //gd:PhysicsServer2D.pin_joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -2658,11 +2661,11 @@ func (self class) PinJointSetParam(joint gd.RID, param gdclass.PhysicsServer2DPi
 Returns the value of a pin joint parameter. See [enum PinJointParam] for a list of available parameters.
 */
 //go:nosplit
-func (self class) PinJointGetParam(joint gd.RID, param gdclass.PhysicsServer2DPinJointParam) gd.Float { //gd:PhysicsServer2D.pin_joint_get_param
+func (self class) PinJointGetParam(joint RID.Any, param gdclass.PhysicsServer2DPinJointParam) float64 { //gd:PhysicsServer2D.pin_joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_pin_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2673,7 +2676,7 @@ func (self class) PinJointGetParam(joint gd.RID, param gdclass.PhysicsServer2DPi
 Sets the value of the given damped spring joint parameter. See [enum DampedSpringParam] for the list of available parameters.
 */
 //go:nosplit
-func (self class) DampedSpringJointSetParam(joint gd.RID, param gdclass.PhysicsServer2DDampedSpringParam, value gd.Float) { //gd:PhysicsServer2D.damped_spring_joint_set_param
+func (self class) DampedSpringJointSetParam(joint RID.Any, param gdclass.PhysicsServer2DDampedSpringParam, value float64) { //gd:PhysicsServer2D.damped_spring_joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -2687,11 +2690,11 @@ func (self class) DampedSpringJointSetParam(joint gd.RID, param gdclass.PhysicsS
 Returns the value of the given damped spring joint parameter. See [enum DampedSpringParam] for the list of available parameters.
 */
 //go:nosplit
-func (self class) DampedSpringJointGetParam(joint gd.RID, param gdclass.PhysicsServer2DDampedSpringParam) gd.Float { //gd:PhysicsServer2D.damped_spring_joint_get_param
+func (self class) DampedSpringJointGetParam(joint RID.Any, param gdclass.PhysicsServer2DDampedSpringParam) float64 { //gd:PhysicsServer2D.damped_spring_joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_damped_spring_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2702,7 +2705,7 @@ func (self class) DampedSpringJointGetParam(joint gd.RID, param gdclass.PhysicsS
 Returns the joint's type (see [enum JointType]).
 */
 //go:nosplit
-func (self class) JointGetType(joint gd.RID) gdclass.PhysicsServer2DJointType { //gd:PhysicsServer2D.joint_get_type
+func (self class) JointGetType(joint RID.Any) gdclass.PhysicsServer2DJointType { //gd:PhysicsServer2D.joint_get_type
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gdclass.PhysicsServer2DJointType](frame)
@@ -2716,7 +2719,7 @@ func (self class) JointGetType(joint gd.RID) gdclass.PhysicsServer2DJointType { 
 Destroys any of the objects created by PhysicsServer2D. If the [RID] passed is not one of the objects that can be created by PhysicsServer2D, an error will be printed to the console.
 */
 //go:nosplit
-func (self class) FreeRid(rid gd.RID) { //gd:PhysicsServer2D.free_rid
+func (self class) FreeRid(rid RID.Any) { //gd:PhysicsServer2D.free_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Nil
@@ -2740,10 +2743,10 @@ func (self class) SetActive(active bool) { //gd:PhysicsServer2D.set_active
 Returns information about the current state of the 2D physics engine. See [enum ProcessInfo] for the list of available states.
 */
 //go:nosplit
-func (self class) GetProcessInfo(process_info gdclass.PhysicsServer2DProcessInfo) gd.Int { //gd:PhysicsServer2D.get_process_info
+func (self class) GetProcessInfo(process_info gdclass.PhysicsServer2DProcessInfo) int64 { //gd:PhysicsServer2D.get_process_info
 	var frame = callframe.New()
 	callframe.Arg(frame, process_info)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_get_process_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

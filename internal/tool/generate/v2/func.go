@@ -54,7 +54,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		return
 	}
 	resultSimple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type)
-	resultExpert := classDB.convertType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultExpert := gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
 	if singleton || method.IsStatic {
 		fmt.Fprintf(w, "func %v(", convertName(method.Name))
 	} else {
@@ -125,11 +125,11 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 					}
 				}
 			}
-			if gdtype.Name(classDB.convertType(class.Name, arg.Meta, arg.Type)) == "gd.Variant" {
+			if gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)) == "gd.Variant" {
 				val = `gd.NewVariant(` + val + `)`
 			}
 		}
-		fmt.Fprint(&call, gdtype.Name(classDB.convertType(class.Name, arg.Meta, arg.Type)).ConvertToSimple(val))
+		fmt.Fprint(&call, gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)).ConvertToSimple(val))
 	}
 	fmt.Fprint(&call, ")")
 	fmt.Fprint(w, gdtype.Name(resultExpert).ConvertToGo(call.String(), resultSimple))
@@ -141,7 +141,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 
 func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method gdjson.Method) {
 	resultSimple := classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type)
-	resultExpert := classDB.convertType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultExpert := gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
 	_, needsLifetime := gdtype.Name(resultExpert).IsPointer()
 	if method.IsStatic {
 		needsLifetime = true
@@ -154,7 +154,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	fmt.Fprintf(w, ") %v) (cb gd.ExtensionClassCallVirtualFunc) {\n", resultSimple)
 	fmt.Fprintf(w, "\treturn func(class any, p_args gd.Address, p_back gd.Address) {\n")
 	for i, arg := range method.Arguments {
-		var expert = classDB.convertType(class.Name, arg.Meta, arg.Type)
+		var expert = gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)
 		pointerKind, argIsPtr := gdtype.Name(expert).IsPointer()
 		if !argIsPtr {
 			pointerKind = expert
@@ -174,7 +174,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	for _, arg := range method.Arguments {
 		simple := classDB.convertTypeSimple(class, "", arg.Meta, arg.Type)
 		fmt.Fprint(w, ", ")
-		fmt.Fprintf(w, "%v", gdtype.Name(classDB.convertType(class.Name, arg.Meta, arg.Type)).ConvertToGo(fixReserved(arg.Name), simple))
+		fmt.Fprintf(w, "%v", gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)).ConvertToGo(fixReserved(arg.Name), simple))
 	}
 	fmt.Fprintf(w, ")\n")
 	if resultSimple != "" {
@@ -203,9 +203,9 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		"RID", "Projection", "Color":
 		return
 	}
-	result := classDB.convertType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
+	result := gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
 	if method.ReturnType != "" {
-		result = classDB.convertType(class.Name, "", method.ReturnType)
+		result = gdtype.EngineTypeAsGoType(class.Name, "", method.ReturnType)
 	}
 	ptrKind, isPtr := gdtype.Name(result).IsPointer()
 
@@ -225,12 +225,12 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		fmt.Fprintf(w, "func (class) %s(impl func(ptr unsafe.Pointer", method.Name)
 		for _, arg := range method.Arguments {
 			fmt.Fprint(w, ", ")
-			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertType(class.Name, arg.Meta, arg.Type))
+			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type))
 		}
 		fmt.Fprintf(w, ") %v) (cb "+prefix+"ExtensionClassCallVirtualFunc) {\n", result)
 		fmt.Fprintf(w, "\treturn func(class any, p_args "+prefix+"Address, p_back "+prefix+"Address) {\n")
 		for i, arg := range method.Arguments {
-			var argType = classDB.convertType(class.Name, arg.Meta, arg.Type)
+			var argType = gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)
 			pointerKind, argIsPtr := gdtype.Name(argType).IsPointer()
 			if !argIsPtr {
 				pointerKind = argType
@@ -285,7 +285,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		if i > 0 {
 			fmt.Fprint(w, ", ")
 		}
-		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertType(class.Name, arg.Meta, arg.Type))
+		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type))
 	}
 	if method.IsVararg {
 		if len(method.Arguments) > 0 {
@@ -308,7 +308,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			}
 			continue
 		}
-		argType := classDB.convertType(class.Name, arg.Meta, arg.Type)
+		argType := gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)
 		fmt.Fprint(w, gdtype.Name(argType).LoadOntoCallFrame(fixReserved(arg.Name)))
 	}
 	if method.IsVararg {

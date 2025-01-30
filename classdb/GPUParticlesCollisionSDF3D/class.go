@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/GPUParticlesCollision3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/GPUParticlesCollision3D"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -63,14 +66,14 @@ type Any interface {
 Based on [param value], enables or disables the specified layer in the [member bake_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetBakeMaskValue(layer_number int, value bool) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask_value
-	class(self).SetBakeMaskValue(gd.Int(layer_number), value)
+	class(self).SetBakeMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member bake_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetBakeMaskValue(layer_number int) bool { //gd:GPUParticlesCollisionSDF3D.get_bake_mask_value
-	return bool(class(self).GetBakeMaskValue(gd.Int(layer_number)))
+	return bool(class(self).GetBakeMaskValue(int64(layer_number)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -96,7 +99,7 @@ func (self Instance) Size() Vector3.XYZ {
 }
 
 func (self Instance) SetSize(value Vector3.XYZ) {
-	class(self).SetSize(gd.Vector3(value))
+	class(self).SetSize(Vector3.XYZ(value))
 }
 
 func (self Instance) Resolution() gdclass.GPUParticlesCollisionSDF3DResolution {
@@ -112,7 +115,7 @@ func (self Instance) Thickness() Float.X {
 }
 
 func (self Instance) SetThickness(value Float.X) {
-	class(self).SetThickness(gd.Float(value))
+	class(self).SetThickness(float64(value))
 }
 
 func (self Instance) BakeMask() int {
@@ -120,7 +123,7 @@ func (self Instance) BakeMask() int {
 }
 
 func (self Instance) SetBakeMask(value int) {
-	class(self).SetBakeMask(gd.Int(value))
+	class(self).SetBakeMask(int64(value))
 }
 
 func (self Instance) Texture() [1]gdclass.Texture3D {
@@ -132,7 +135,7 @@ func (self Instance) SetTexture(value [1]gdclass.Texture3D) {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector3) { //gd:GPUParticlesCollisionSDF3D.set_size
+func (self class) SetSize(size Vector3.XYZ) { //gd:GPUParticlesCollisionSDF3D.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -141,9 +144,9 @@ func (self class) SetSize(size gd.Vector3) { //gd:GPUParticlesCollisionSDF3D.set
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector3 { //gd:GPUParticlesCollisionSDF3D.get_size
+func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesCollisionSDF3D.get_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -189,7 +192,7 @@ func (self class) GetTexture() [1]gdclass.Texture3D { //gd:GPUParticlesCollision
 }
 
 //go:nosplit
-func (self class) SetThickness(thickness gd.Float) { //gd:GPUParticlesCollisionSDF3D.set_thickness
+func (self class) SetThickness(thickness float64) { //gd:GPUParticlesCollisionSDF3D.set_thickness
 	var frame = callframe.New()
 	callframe.Arg(frame, thickness)
 	var r_ret = callframe.Nil
@@ -198,9 +201,9 @@ func (self class) SetThickness(thickness gd.Float) { //gd:GPUParticlesCollisionS
 }
 
 //go:nosplit
-func (self class) GetThickness() gd.Float { //gd:GPUParticlesCollisionSDF3D.get_thickness
+func (self class) GetThickness() float64 { //gd:GPUParticlesCollisionSDF3D.get_thickness
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_thickness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -208,7 +211,7 @@ func (self class) GetThickness() gd.Float { //gd:GPUParticlesCollisionSDF3D.get_
 }
 
 //go:nosplit
-func (self class) SetBakeMask(mask gd.Int) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask
+func (self class) SetBakeMask(mask int64) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -217,9 +220,9 @@ func (self class) SetBakeMask(mask gd.Int) { //gd:GPUParticlesCollisionSDF3D.set
 }
 
 //go:nosplit
-func (self class) GetBakeMask() gd.Int { //gd:GPUParticlesCollisionSDF3D.get_bake_mask
+func (self class) GetBakeMask() int64 { //gd:GPUParticlesCollisionSDF3D.get_bake_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_bake_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -230,7 +233,7 @@ func (self class) GetBakeMask() gd.Int { //gd:GPUParticlesCollisionSDF3D.get_bak
 Based on [param value], enables or disables the specified layer in the [member bake_mask], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetBakeMaskValue(layer_number gd.Int, value bool) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask_value
+func (self class) SetBakeMaskValue(layer_number int64, value bool) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -243,7 +246,7 @@ func (self class) SetBakeMaskValue(layer_number gd.Int, value bool) { //gd:GPUPa
 Returns whether or not the specified layer of the [member bake_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetBakeMaskValue(layer_number gd.Int) bool { //gd:GPUParticlesCollisionSDF3D.get_bake_mask_value
+func (self class) GetBakeMaskValue(layer_number int64) bool { //gd:GPUParticlesCollisionSDF3D.get_bake_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)

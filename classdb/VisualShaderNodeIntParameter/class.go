@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/VisualShaderNode"
+import "graphics.gd/classdb/VisualShaderNodeParameter"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/VisualShaderNodeParameter"
-import "graphics.gd/classdb/VisualShaderNode"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -83,7 +87,7 @@ func (self Instance) Min() int {
 }
 
 func (self Instance) SetMin(value int) {
-	class(self).SetMin(gd.Int(value))
+	class(self).SetMin(int64(value))
 }
 
 func (self Instance) Max() int {
@@ -91,7 +95,7 @@ func (self Instance) Max() int {
 }
 
 func (self Instance) SetMax(value int) {
-	class(self).SetMax(gd.Int(value))
+	class(self).SetMax(int64(value))
 }
 
 func (self Instance) Step() int {
@@ -99,7 +103,7 @@ func (self Instance) Step() int {
 }
 
 func (self Instance) SetStep(value int) {
-	class(self).SetStep(gd.Int(value))
+	class(self).SetStep(int64(value))
 }
 
 func (self Instance) DefaultValueEnabled() bool {
@@ -115,7 +119,7 @@ func (self Instance) DefaultValue() int {
 }
 
 func (self Instance) SetDefaultValue(value int) {
-	class(self).SetDefaultValue(gd.Int(value))
+	class(self).SetDefaultValue(int64(value))
 }
 
 //go:nosplit
@@ -138,7 +142,7 @@ func (self class) GetHint() gdclass.VisualShaderNodeIntParameterHint { //gd:Visu
 }
 
 //go:nosplit
-func (self class) SetMin(value gd.Int) { //gd:VisualShaderNodeIntParameter.set_min
+func (self class) SetMin(value int64) { //gd:VisualShaderNodeIntParameter.set_min
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -147,9 +151,9 @@ func (self class) SetMin(value gd.Int) { //gd:VisualShaderNodeIntParameter.set_m
 }
 
 //go:nosplit
-func (self class) GetMin() gd.Int { //gd:VisualShaderNodeIntParameter.get_min
+func (self class) GetMin() int64 { //gd:VisualShaderNodeIntParameter.get_min
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -157,7 +161,7 @@ func (self class) GetMin() gd.Int { //gd:VisualShaderNodeIntParameter.get_min
 }
 
 //go:nosplit
-func (self class) SetMax(value gd.Int) { //gd:VisualShaderNodeIntParameter.set_max
+func (self class) SetMax(value int64) { //gd:VisualShaderNodeIntParameter.set_max
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -166,9 +170,9 @@ func (self class) SetMax(value gd.Int) { //gd:VisualShaderNodeIntParameter.set_m
 }
 
 //go:nosplit
-func (self class) GetMax() gd.Int { //gd:VisualShaderNodeIntParameter.get_max
+func (self class) GetMax() int64 { //gd:VisualShaderNodeIntParameter.get_max
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -176,7 +180,7 @@ func (self class) GetMax() gd.Int { //gd:VisualShaderNodeIntParameter.get_max
 }
 
 //go:nosplit
-func (self class) SetStep(value gd.Int) { //gd:VisualShaderNodeIntParameter.set_step
+func (self class) SetStep(value int64) { //gd:VisualShaderNodeIntParameter.set_step
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -185,9 +189,9 @@ func (self class) SetStep(value gd.Int) { //gd:VisualShaderNodeIntParameter.set_
 }
 
 //go:nosplit
-func (self class) GetStep() gd.Int { //gd:VisualShaderNodeIntParameter.get_step
+func (self class) GetStep() int64 { //gd:VisualShaderNodeIntParameter.get_step
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -214,7 +218,7 @@ func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeIntParamet
 }
 
 //go:nosplit
-func (self class) SetDefaultValue(value gd.Int) { //gd:VisualShaderNodeIntParameter.set_default_value
+func (self class) SetDefaultValue(value int64) { //gd:VisualShaderNodeIntParameter.set_default_value
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -223,9 +227,9 @@ func (self class) SetDefaultValue(value gd.Int) { //gd:VisualShaderNodeIntParame
 }
 
 //go:nosplit
-func (self class) GetDefaultValue() gd.Int { //gd:VisualShaderNodeIntParameter.get_default_value
+func (self class) GetDefaultValue() int64 { //gd:VisualShaderNodeIntParameter.get_default_value
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

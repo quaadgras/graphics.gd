@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,56 +61,56 @@ Adds a point with the specified [param position] relative to the curve's own pos
 If [param index] is given, the new point is inserted before the existing point identified by index [param index]. Every existing point starting from [param index] is shifted further down the list of points. The index must be greater than or equal to [code]0[/code] and must not exceed the number of existing points in the line. See [member point_count].
 */
 func (self Instance) AddPoint(position Vector2.XY) { //gd:Curve2D.add_point
-	class(self).AddPoint(gd.Vector2(position), gd.Vector2(gd.Vector2{0, 0}), gd.Vector2(gd.Vector2{0, 0}), gd.Int(-1))
+	class(self).AddPoint(Vector2.XY(position), Vector2.XY(gd.Vector2{0, 0}), Vector2.XY(gd.Vector2{0, 0}), int64(-1))
 }
 
 /*
 Sets the position for the vertex [param idx]. If the index is out of bounds, the function sends an error to the console.
 */
 func (self Instance) SetPointPosition(idx int, position Vector2.XY) { //gd:Curve2D.set_point_position
-	class(self).SetPointPosition(gd.Int(idx), gd.Vector2(position))
+	class(self).SetPointPosition(int64(idx), Vector2.XY(position))
 }
 
 /*
 Returns the position of the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0)[/code].
 */
 func (self Instance) GetPointPosition(idx int) Vector2.XY { //gd:Curve2D.get_point_position
-	return Vector2.XY(class(self).GetPointPosition(gd.Int(idx)))
+	return Vector2.XY(class(self).GetPointPosition(int64(idx)))
 }
 
 /*
 Sets the position of the control point leading to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
 */
 func (self Instance) SetPointIn(idx int, position Vector2.XY) { //gd:Curve2D.set_point_in
-	class(self).SetPointIn(gd.Int(idx), gd.Vector2(position))
+	class(self).SetPointIn(int64(idx), Vector2.XY(position))
 }
 
 /*
 Returns the position of the control point leading to the vertex [param idx]. The returned position is relative to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0)[/code].
 */
 func (self Instance) GetPointIn(idx int) Vector2.XY { //gd:Curve2D.get_point_in
-	return Vector2.XY(class(self).GetPointIn(gd.Int(idx)))
+	return Vector2.XY(class(self).GetPointIn(int64(idx)))
 }
 
 /*
 Sets the position of the control point leading out of the vertex [param idx]. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
 */
 func (self Instance) SetPointOut(idx int, position Vector2.XY) { //gd:Curve2D.set_point_out
-	class(self).SetPointOut(gd.Int(idx), gd.Vector2(position))
+	class(self).SetPointOut(int64(idx), Vector2.XY(position))
 }
 
 /*
 Returns the position of the control point leading out of the vertex [param idx]. The returned position is relative to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0)[/code].
 */
 func (self Instance) GetPointOut(idx int) Vector2.XY { //gd:Curve2D.get_point_out
-	return Vector2.XY(class(self).GetPointOut(gd.Int(idx)))
+	return Vector2.XY(class(self).GetPointOut(int64(idx)))
 }
 
 /*
 Deletes the point [param idx] from the curve. Sends an error to the console if [param idx] is out of bounds.
 */
 func (self Instance) RemovePoint(idx int) { //gd:Curve2D.remove_point
-	class(self).RemovePoint(gd.Int(idx))
+	class(self).RemovePoint(int64(idx))
 }
 
 /*
@@ -122,14 +125,14 @@ Returns the position between the vertex [param idx] and the vertex [code]idx + 1
 If [param idx] is out of bounds it is truncated to the first or last vertex, and [param t] is ignored. If the curve has no points, the function sends an error to the console, and returns [code](0, 0)[/code].
 */
 func (self Instance) Sample(idx int, t Float.X) Vector2.XY { //gd:Curve2D.sample
-	return Vector2.XY(class(self).Sample(gd.Int(idx), gd.Float(t)))
+	return Vector2.XY(class(self).Sample(int64(idx), float64(t)))
 }
 
 /*
 Returns the position at the vertex [param fofs]. It calls [method sample] using the integer part of [param fofs] as [code]idx[/code], and its fractional part as [code]t[/code].
 */
 func (self Instance) Samplef(fofs Float.X) Vector2.XY { //gd:Curve2D.samplef
-	return Vector2.XY(class(self).Samplef(gd.Float(fofs)))
+	return Vector2.XY(class(self).Samplef(float64(fofs)))
 }
 
 /*
@@ -145,7 +148,7 @@ To do that, it finds the two cached points where the [param offset] lies between
 Cubic interpolation tends to follow the curves better, but linear is faster (and often, precise enough).
 */
 func (self Instance) SampleBaked() Vector2.XY { //gd:Curve2D.sample_baked
-	return Vector2.XY(class(self).SampleBaked(gd.Float(0.0), false))
+	return Vector2.XY(class(self).SampleBaked(float64(0.0), false))
 }
 
 /*
@@ -160,7 +163,7 @@ rotation = baked.get_rotation()
 [/codeblock]
 */
 func (self Instance) SampleBakedWithRotation() Transform2D.OriginXY { //gd:Curve2D.sample_baked_with_rotation
-	return Transform2D.OriginXY(class(self).SampleBakedWithRotation(gd.Float(0.0), false))
+	return Transform2D.OriginXY(class(self).SampleBakedWithRotation(float64(0.0), false))
 }
 
 /*
@@ -175,7 +178,7 @@ Returns the closest point on baked segments (in curve's local space) to [param t
 [param to_point] must be in this curve's local space.
 */
 func (self Instance) GetClosestPoint(to_point Vector2.XY) Vector2.XY { //gd:Curve2D.get_closest_point
-	return Vector2.XY(class(self).GetClosestPoint(gd.Vector2(to_point)))
+	return Vector2.XY(class(self).GetClosestPoint(Vector2.XY(to_point)))
 }
 
 /*
@@ -183,7 +186,7 @@ Returns the closest offset to [param to_point]. This offset is meant to be used 
 [param to_point] must be in this curve's local space.
 */
 func (self Instance) GetClosestOffset(to_point Vector2.XY) Float.X { //gd:Curve2D.get_closest_offset
-	return Float.X(Float.X(class(self).GetClosestOffset(gd.Vector2(to_point))))
+	return Float.X(Float.X(class(self).GetClosestOffset(Vector2.XY(to_point))))
 }
 
 /*
@@ -193,7 +196,7 @@ This approximation makes straight segments between each point, then subdivides t
 [param tolerance_degrees] controls how many degrees the midpoint of a segment may deviate from the real curve, before the segment has to be subdivided.
 */
 func (self Instance) Tessellate() []Vector2.XY { //gd:Curve2D.tessellate
-	return []Vector2.XY(slices.Collect(class(self).Tessellate(gd.Int(5), gd.Float(4)).Values()))
+	return []Vector2.XY(slices.Collect(class(self).Tessellate(int64(5), float64(4)).Values()))
 }
 
 /*
@@ -201,7 +204,7 @@ Returns a list of points along the curve, with almost uniform density. [param ma
 [param tolerance_length] controls the maximal distance between two neighboring points, before the segment has to be subdivided.
 */
 func (self Instance) TessellateEvenLength() []Vector2.XY { //gd:Curve2D.tessellate_even_length
-	return []Vector2.XY(slices.Collect(class(self).TessellateEvenLength(gd.Int(5), gd.Float(20.0)).Values()))
+	return []Vector2.XY(slices.Collect(class(self).TessellateEvenLength(int64(5), float64(20.0)).Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -228,7 +231,7 @@ func (self Instance) BakeInterval() Float.X {
 }
 
 func (self Instance) SetBakeInterval(value Float.X) {
-	class(self).SetBakeInterval(gd.Float(value))
+	class(self).SetBakeInterval(float64(value))
 }
 
 func (self Instance) PointCount() int {
@@ -236,13 +239,13 @@ func (self Instance) PointCount() int {
 }
 
 func (self Instance) SetPointCount(value int) {
-	class(self).SetPointCount(gd.Int(value))
+	class(self).SetPointCount(int64(value))
 }
 
 //go:nosplit
-func (self class) GetPointCount() gd.Int { //gd:Curve2D.get_point_count
+func (self class) GetPointCount() int64 { //gd:Curve2D.get_point_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -250,7 +253,7 @@ func (self class) GetPointCount() gd.Int { //gd:Curve2D.get_point_count
 }
 
 //go:nosplit
-func (self class) SetPointCount(count gd.Int) { //gd:Curve2D.set_point_count
+func (self class) SetPointCount(count int64) { //gd:Curve2D.set_point_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -263,7 +266,7 @@ Adds a point with the specified [param position] relative to the curve's own pos
 If [param index] is given, the new point is inserted before the existing point identified by index [param index]. Every existing point starting from [param index] is shifted further down the list of points. The index must be greater than or equal to [code]0[/code] and must not exceed the number of existing points in the line. See [member point_count].
 */
 //go:nosplit
-func (self class) AddPoint(position gd.Vector2, in gd.Vector2, out gd.Vector2, index gd.Int) { //gd:Curve2D.add_point
+func (self class) AddPoint(position Vector2.XY, in Vector2.XY, out Vector2.XY, index int64) { //gd:Curve2D.add_point
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, in)
@@ -278,7 +281,7 @@ func (self class) AddPoint(position gd.Vector2, in gd.Vector2, out gd.Vector2, i
 Sets the position for the vertex [param idx]. If the index is out of bounds, the function sends an error to the console.
 */
 //go:nosplit
-func (self class) SetPointPosition(idx gd.Int, position gd.Vector2) { //gd:Curve2D.set_point_position
+func (self class) SetPointPosition(idx int64, position Vector2.XY) { //gd:Curve2D.set_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, position)
@@ -291,10 +294,10 @@ func (self class) SetPointPosition(idx gd.Int, position gd.Vector2) { //gd:Curve
 Returns the position of the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0)[/code].
 */
 //go:nosplit
-func (self class) GetPointPosition(idx gd.Int) gd.Vector2 { //gd:Curve2D.get_point_position
+func (self class) GetPointPosition(idx int64) Vector2.XY { //gd:Curve2D.get_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_get_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -305,7 +308,7 @@ func (self class) GetPointPosition(idx gd.Int) gd.Vector2 { //gd:Curve2D.get_poi
 Sets the position of the control point leading to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
 */
 //go:nosplit
-func (self class) SetPointIn(idx gd.Int, position gd.Vector2) { //gd:Curve2D.set_point_in
+func (self class) SetPointIn(idx int64, position Vector2.XY) { //gd:Curve2D.set_point_in
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, position)
@@ -318,10 +321,10 @@ func (self class) SetPointIn(idx gd.Int, position gd.Vector2) { //gd:Curve2D.set
 Returns the position of the control point leading to the vertex [param idx]. The returned position is relative to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0)[/code].
 */
 //go:nosplit
-func (self class) GetPointIn(idx gd.Int) gd.Vector2 { //gd:Curve2D.get_point_in
+func (self class) GetPointIn(idx int64) Vector2.XY { //gd:Curve2D.get_point_in
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_get_point_in, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -332,7 +335,7 @@ func (self class) GetPointIn(idx gd.Int) gd.Vector2 { //gd:Curve2D.get_point_in
 Sets the position of the control point leading out of the vertex [param idx]. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
 */
 //go:nosplit
-func (self class) SetPointOut(idx gd.Int, position gd.Vector2) { //gd:Curve2D.set_point_out
+func (self class) SetPointOut(idx int64, position Vector2.XY) { //gd:Curve2D.set_point_out
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, position)
@@ -345,10 +348,10 @@ func (self class) SetPointOut(idx gd.Int, position gd.Vector2) { //gd:Curve2D.se
 Returns the position of the control point leading out of the vertex [param idx]. The returned position is relative to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0)[/code].
 */
 //go:nosplit
-func (self class) GetPointOut(idx gd.Int) gd.Vector2 { //gd:Curve2D.get_point_out
+func (self class) GetPointOut(idx int64) Vector2.XY { //gd:Curve2D.get_point_out
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_get_point_out, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -359,7 +362,7 @@ func (self class) GetPointOut(idx gd.Int) gd.Vector2 { //gd:Curve2D.get_point_ou
 Deletes the point [param idx] from the curve. Sends an error to the console if [param idx] is out of bounds.
 */
 //go:nosplit
-func (self class) RemovePoint(idx gd.Int) { //gd:Curve2D.remove_point
+func (self class) RemovePoint(idx int64) { //gd:Curve2D.remove_point
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Nil
@@ -383,11 +386,11 @@ Returns the position between the vertex [param idx] and the vertex [code]idx + 1
 If [param idx] is out of bounds it is truncated to the first or last vertex, and [param t] is ignored. If the curve has no points, the function sends an error to the console, and returns [code](0, 0)[/code].
 */
 //go:nosplit
-func (self class) Sample(idx gd.Int, t gd.Float) gd.Vector2 { //gd:Curve2D.sample
+func (self class) Sample(idx int64, t float64) Vector2.XY { //gd:Curve2D.sample
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, t)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_sample, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -398,10 +401,10 @@ func (self class) Sample(idx gd.Int, t gd.Float) gd.Vector2 { //gd:Curve2D.sampl
 Returns the position at the vertex [param fofs]. It calls [method sample] using the integer part of [param fofs] as [code]idx[/code], and its fractional part as [code]t[/code].
 */
 //go:nosplit
-func (self class) Samplef(fofs gd.Float) gd.Vector2 { //gd:Curve2D.samplef
+func (self class) Samplef(fofs float64) Vector2.XY { //gd:Curve2D.samplef
 	var frame = callframe.New()
 	callframe.Arg(frame, fofs)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_samplef, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -409,7 +412,7 @@ func (self class) Samplef(fofs gd.Float) gd.Vector2 { //gd:Curve2D.samplef
 }
 
 //go:nosplit
-func (self class) SetBakeInterval(distance gd.Float) { //gd:Curve2D.set_bake_interval
+func (self class) SetBakeInterval(distance float64) { //gd:Curve2D.set_bake_interval
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -418,9 +421,9 @@ func (self class) SetBakeInterval(distance gd.Float) { //gd:Curve2D.set_bake_int
 }
 
 //go:nosplit
-func (self class) GetBakeInterval() gd.Float { //gd:Curve2D.get_bake_interval
+func (self class) GetBakeInterval() float64 { //gd:Curve2D.get_bake_interval
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_get_bake_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -431,9 +434,9 @@ func (self class) GetBakeInterval() gd.Float { //gd:Curve2D.get_bake_interval
 Returns the total length of the curve, based on the cached points. Given enough density (see [member bake_interval]), it should be approximate enough.
 */
 //go:nosplit
-func (self class) GetBakedLength() gd.Float { //gd:Curve2D.get_baked_length
+func (self class) GetBakedLength() float64 { //gd:Curve2D.get_baked_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_get_baked_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -446,11 +449,11 @@ To do that, it finds the two cached points where the [param offset] lies between
 Cubic interpolation tends to follow the curves better, but linear is faster (and often, precise enough).
 */
 //go:nosplit
-func (self class) SampleBaked(offset gd.Float, cubic bool) gd.Vector2 { //gd:Curve2D.sample_baked
+func (self class) SampleBaked(offset float64, cubic bool) Vector2.XY { //gd:Curve2D.sample_baked
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, cubic)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_sample_baked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -469,11 +472,11 @@ rotation = baked.get_rotation()
 [/codeblock]
 */
 //go:nosplit
-func (self class) SampleBakedWithRotation(offset gd.Float, cubic bool) gd.Transform2D { //gd:Curve2D.sample_baked_with_rotation
+func (self class) SampleBakedWithRotation(offset float64, cubic bool) Transform2D.OriginXY { //gd:Curve2D.sample_baked_with_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, cubic)
-	var r_ret = callframe.Ret[gd.Transform2D](frame)
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_sample_baked_with_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -498,10 +501,10 @@ Returns the closest point on baked segments (in curve's local space) to [param t
 [param to_point] must be in this curve's local space.
 */
 //go:nosplit
-func (self class) GetClosestPoint(to_point gd.Vector2) gd.Vector2 { //gd:Curve2D.get_closest_point
+func (self class) GetClosestPoint(to_point Vector2.XY) Vector2.XY { //gd:Curve2D.get_closest_point
 	var frame = callframe.New()
 	callframe.Arg(frame, to_point)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_get_closest_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -513,10 +516,10 @@ Returns the closest offset to [param to_point]. This offset is meant to be used 
 [param to_point] must be in this curve's local space.
 */
 //go:nosplit
-func (self class) GetClosestOffset(to_point gd.Vector2) gd.Float { //gd:Curve2D.get_closest_offset
+func (self class) GetClosestOffset(to_point Vector2.XY) float64 { //gd:Curve2D.get_closest_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, to_point)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve2D.Bind_get_closest_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -530,7 +533,7 @@ This approximation makes straight segments between each point, then subdivides t
 [param tolerance_degrees] controls how many degrees the midpoint of a segment may deviate from the real curve, before the segment has to be subdivided.
 */
 //go:nosplit
-func (self class) Tessellate(max_stages gd.Int, tolerance_degrees gd.Float) Packed.Array[Vector2.XY] { //gd:Curve2D.tessellate
+func (self class) Tessellate(max_stages int64, tolerance_degrees float64) Packed.Array[Vector2.XY] { //gd:Curve2D.tessellate
 	var frame = callframe.New()
 	callframe.Arg(frame, max_stages)
 	callframe.Arg(frame, tolerance_degrees)
@@ -546,7 +549,7 @@ Returns a list of points along the curve, with almost uniform density. [param ma
 [param tolerance_length] controls the maximal distance between two neighboring points, before the segment has to be subdivided.
 */
 //go:nosplit
-func (self class) TessellateEvenLength(max_stages gd.Int, tolerance_length gd.Float) Packed.Array[Vector2.XY] { //gd:Curve2D.tessellate_even_length
+func (self class) TessellateEvenLength(max_stages int64, tolerance_length float64) Packed.Array[Vector2.XY] { //gd:Curve2D.tessellate_even_length
 	var frame = callframe.New()
 	callframe.Arg(frame, max_stages)
 	callframe.Arg(frame, tolerance_length)

@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Material"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Material"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,7 +62,7 @@ Changes the value set for this material of a uniform in the shader.
 [b]Note:[/b] Changes to the shader uniform will be effective on all instances using this [ShaderMaterial]. To prevent this, use per-instance uniforms with [method GeometryInstance3D.set_instance_shader_parameter] or duplicate the [ShaderMaterial] resource using [method Resource.duplicate]. Per-instance uniforms allow for better shader reuse and are therefore faster, so they should be preferred over duplicating the [ShaderMaterial] when possible.
 */
 func (self Instance) SetShaderParameter(param string, value any) { //gd:ShaderMaterial.set_shader_parameter
-	class(self).SetShaderParameter(String.Name(String.New(param)), gd.NewVariant(value))
+	class(self).SetShaderParameter(String.Name(String.New(param)), variant.New(value))
 }
 
 /*
@@ -120,10 +124,10 @@ Changes the value set for this material of a uniform in the shader.
 [b]Note:[/b] Changes to the shader uniform will be effective on all instances using this [ShaderMaterial]. To prevent this, use per-instance uniforms with [method GeometryInstance3D.set_instance_shader_parameter] or duplicate the [ShaderMaterial] resource using [method Resource.duplicate]. Per-instance uniforms allow for better shader reuse and are therefore faster, so they should be preferred over duplicating the [ShaderMaterial] when possible.
 */
 //go:nosplit
-func (self class) SetShaderParameter(param String.Name, value gd.Variant) { //gd:ShaderMaterial.set_shader_parameter
+func (self class) SetShaderParameter(param String.Name, value variant.Any) { //gd:ShaderMaterial.set_shader_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(param)))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderMaterial.Bind_set_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -133,12 +137,12 @@ func (self class) SetShaderParameter(param String.Name, value gd.Variant) { //gd
 Returns the current value set for this material of a uniform in the shader.
 */
 //go:nosplit
-func (self class) GetShaderParameter(param String.Name) gd.Variant { //gd:ShaderMaterial.get_shader_parameter
+func (self class) GetShaderParameter(param String.Name) variant.Any { //gd:ShaderMaterial.get_shader_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(param)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderMaterial.Bind_get_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

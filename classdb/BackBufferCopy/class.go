@@ -9,19 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -84,11 +88,11 @@ func (self Instance) Rect() Rect2.PositionSize {
 }
 
 func (self Instance) SetRect(value Rect2.PositionSize) {
-	class(self).SetRect(gd.Rect2(value))
+	class(self).SetRect(Rect2.PositionSize(value))
 }
 
 //go:nosplit
-func (self class) SetRect(rect gd.Rect2) { //gd:BackBufferCopy.set_rect
+func (self class) SetRect(rect Rect2.PositionSize) { //gd:BackBufferCopy.set_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Nil
@@ -97,9 +101,9 @@ func (self class) SetRect(rect gd.Rect2) { //gd:BackBufferCopy.set_rect
 }
 
 //go:nosplit
-func (self class) GetRect() gd.Rect2 { //gd:BackBufferCopy.get_rect
+func (self class) GetRect() Rect2.PositionSize { //gd:BackBufferCopy.get_rect
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BackBufferCopy.Bind_get_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

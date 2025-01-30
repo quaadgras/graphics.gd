@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Joint2D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Joint2D"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -76,7 +79,7 @@ func (self Instance) Softness() Float.X {
 }
 
 func (self Instance) SetSoftness(value Float.X) {
-	class(self).SetSoftness(gd.Float(value))
+	class(self).SetSoftness(float64(value))
 }
 
 func (self Instance) AngularLimitEnabled() bool {
@@ -92,7 +95,7 @@ func (self Instance) AngularLimitLower() Float.X {
 }
 
 func (self Instance) SetAngularLimitLower(value Float.X) {
-	class(self).SetAngularLimitLower(gd.Float(value))
+	class(self).SetAngularLimitLower(float64(value))
 }
 
 func (self Instance) AngularLimitUpper() Float.X {
@@ -100,7 +103,7 @@ func (self Instance) AngularLimitUpper() Float.X {
 }
 
 func (self Instance) SetAngularLimitUpper(value Float.X) {
-	class(self).SetAngularLimitUpper(gd.Float(value))
+	class(self).SetAngularLimitUpper(float64(value))
 }
 
 func (self Instance) MotorEnabled() bool {
@@ -116,11 +119,11 @@ func (self Instance) MotorTargetVelocity() Float.X {
 }
 
 func (self Instance) SetMotorTargetVelocity(value Float.X) {
-	class(self).SetMotorTargetVelocity(gd.Float(value))
+	class(self).SetMotorTargetVelocity(float64(value))
 }
 
 //go:nosplit
-func (self class) SetSoftness(softness gd.Float) { //gd:PinJoint2D.set_softness
+func (self class) SetSoftness(softness float64) { //gd:PinJoint2D.set_softness
 	var frame = callframe.New()
 	callframe.Arg(frame, softness)
 	var r_ret = callframe.Nil
@@ -129,9 +132,9 @@ func (self class) SetSoftness(softness gd.Float) { //gd:PinJoint2D.set_softness
 }
 
 //go:nosplit
-func (self class) GetSoftness() gd.Float { //gd:PinJoint2D.get_softness
+func (self class) GetSoftness() float64 { //gd:PinJoint2D.get_softness
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PinJoint2D.Bind_get_softness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -139,7 +142,7 @@ func (self class) GetSoftness() gd.Float { //gd:PinJoint2D.get_softness
 }
 
 //go:nosplit
-func (self class) SetAngularLimitLower(angular_limit_lower gd.Float) { //gd:PinJoint2D.set_angular_limit_lower
+func (self class) SetAngularLimitLower(angular_limit_lower float64) { //gd:PinJoint2D.set_angular_limit_lower
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_limit_lower)
 	var r_ret = callframe.Nil
@@ -148,9 +151,9 @@ func (self class) SetAngularLimitLower(angular_limit_lower gd.Float) { //gd:PinJ
 }
 
 //go:nosplit
-func (self class) GetAngularLimitLower() gd.Float { //gd:PinJoint2D.get_angular_limit_lower
+func (self class) GetAngularLimitLower() float64 { //gd:PinJoint2D.get_angular_limit_lower
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PinJoint2D.Bind_get_angular_limit_lower, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -158,7 +161,7 @@ func (self class) GetAngularLimitLower() gd.Float { //gd:PinJoint2D.get_angular_
 }
 
 //go:nosplit
-func (self class) SetAngularLimitUpper(angular_limit_upper gd.Float) { //gd:PinJoint2D.set_angular_limit_upper
+func (self class) SetAngularLimitUpper(angular_limit_upper float64) { //gd:PinJoint2D.set_angular_limit_upper
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_limit_upper)
 	var r_ret = callframe.Nil
@@ -167,9 +170,9 @@ func (self class) SetAngularLimitUpper(angular_limit_upper gd.Float) { //gd:PinJ
 }
 
 //go:nosplit
-func (self class) GetAngularLimitUpper() gd.Float { //gd:PinJoint2D.get_angular_limit_upper
+func (self class) GetAngularLimitUpper() float64 { //gd:PinJoint2D.get_angular_limit_upper
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PinJoint2D.Bind_get_angular_limit_upper, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -177,7 +180,7 @@ func (self class) GetAngularLimitUpper() gd.Float { //gd:PinJoint2D.get_angular_
 }
 
 //go:nosplit
-func (self class) SetMotorTargetVelocity(motor_target_velocity gd.Float) { //gd:PinJoint2D.set_motor_target_velocity
+func (self class) SetMotorTargetVelocity(motor_target_velocity float64) { //gd:PinJoint2D.set_motor_target_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, motor_target_velocity)
 	var r_ret = callframe.Nil
@@ -186,9 +189,9 @@ func (self class) SetMotorTargetVelocity(motor_target_velocity gd.Float) { //gd:
 }
 
 //go:nosplit
-func (self class) GetMotorTargetVelocity() gd.Float { //gd:PinJoint2D.get_motor_target_velocity
+func (self class) GetMotorTargetVelocity() float64 { //gd:PinJoint2D.get_motor_target_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PinJoint2D.Bind_get_motor_target_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

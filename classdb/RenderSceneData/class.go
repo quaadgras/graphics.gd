@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Projection"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -79,7 +83,7 @@ func (self Instance) GetViewCount() int { //gd:RenderSceneData.get_view_count
 Returns the eye offset per view used to render this frame. This is the offset between our camera transform and the eye transform.
 */
 func (self Instance) GetViewEyeOffset(view int) Vector3.XYZ { //gd:RenderSceneData.get_view_eye_offset
-	return Vector3.XYZ(class(self).GetViewEyeOffset(gd.Int(view)))
+	return Vector3.XYZ(class(self).GetViewEyeOffset(int64(view)))
 }
 
 /*
@@ -87,7 +91,7 @@ Returns the view projection per view used to render this frame.
 [b]Note:[/b] If a single view is rendered, this returns the camera projection. If more than one view is rendered, this will return a projection for the given view including the eye offset.
 */
 func (self Instance) GetViewProjection(view int) Projection.XYZW { //gd:RenderSceneData.get_view_projection
-	return Projection.XYZW(class(self).GetViewProjection(gd.Int(view)))
+	return Projection.XYZW(class(self).GetViewProjection(int64(view)))
 }
 
 /*
@@ -120,9 +124,9 @@ Returns the camera transform used to render this frame.
 [b]Note:[/b] If more than one view is rendered, this will return a centered transform.
 */
 //go:nosplit
-func (self class) GetCamTransform() gd.Transform3D { //gd:RenderSceneData.get_cam_transform
+func (self class) GetCamTransform() Transform3D.BasisOrigin { //gd:RenderSceneData.get_cam_transform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneData.Bind_get_cam_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -134,9 +138,9 @@ Returns the camera projection used to render this frame.
 [b]Note:[/b] If more than one view is rendered, this will return a combined projection.
 */
 //go:nosplit
-func (self class) GetCamProjection() gd.Projection { //gd:RenderSceneData.get_cam_projection
+func (self class) GetCamProjection() Projection.XYZW { //gd:RenderSceneData.get_cam_projection
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Projection](frame)
+	var r_ret = callframe.Ret[Projection.XYZW](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneData.Bind_get_cam_projection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -147,9 +151,9 @@ func (self class) GetCamProjection() gd.Projection { //gd:RenderSceneData.get_ca
 Returns the number of views being rendered.
 */
 //go:nosplit
-func (self class) GetViewCount() gd.Int { //gd:RenderSceneData.get_view_count
+func (self class) GetViewCount() int64 { //gd:RenderSceneData.get_view_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneData.Bind_get_view_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -160,10 +164,10 @@ func (self class) GetViewCount() gd.Int { //gd:RenderSceneData.get_view_count
 Returns the eye offset per view used to render this frame. This is the offset between our camera transform and the eye transform.
 */
 //go:nosplit
-func (self class) GetViewEyeOffset(view gd.Int) gd.Vector3 { //gd:RenderSceneData.get_view_eye_offset
+func (self class) GetViewEyeOffset(view int64) Vector3.XYZ { //gd:RenderSceneData.get_view_eye_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, view)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneData.Bind_get_view_eye_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -175,10 +179,10 @@ Returns the view projection per view used to render this frame.
 [b]Note:[/b] If a single view is rendered, this returns the camera projection. If more than one view is rendered, this will return a projection for the given view including the eye offset.
 */
 //go:nosplit
-func (self class) GetViewProjection(view gd.Int) gd.Projection { //gd:RenderSceneData.get_view_projection
+func (self class) GetViewProjection(view int64) Projection.XYZW { //gd:RenderSceneData.get_view_projection
 	var frame = callframe.New()
 	callframe.Arg(frame, view)
-	var r_ret = callframe.Ret[gd.Projection](frame)
+	var r_ret = callframe.Ret[Projection.XYZW](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneData.Bind_get_view_projection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -189,9 +193,9 @@ func (self class) GetViewProjection(view gd.Int) gd.Projection { //gd:RenderScen
 Return the [RID] of the uniform buffer containing the scene data as a UBO.
 */
 //go:nosplit
-func (self class) GetUniformBuffer() gd.RID { //gd:RenderSceneData.get_uniform_buffer
+func (self class) GetUniformBuffer() RID.Any { //gd:RenderSceneData.get_uniform_buffer
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneData.Bind_get_uniform_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

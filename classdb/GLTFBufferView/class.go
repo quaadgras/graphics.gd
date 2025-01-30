@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -81,7 +85,7 @@ func (self Instance) Buffer() int {
 }
 
 func (self Instance) SetBuffer(value int) {
-	class(self).SetBuffer(gd.Int(value))
+	class(self).SetBuffer(int64(value))
 }
 
 func (self Instance) ByteOffset() int {
@@ -89,7 +93,7 @@ func (self Instance) ByteOffset() int {
 }
 
 func (self Instance) SetByteOffset(value int) {
-	class(self).SetByteOffset(gd.Int(value))
+	class(self).SetByteOffset(int64(value))
 }
 
 func (self Instance) ByteLength() int {
@@ -97,7 +101,7 @@ func (self Instance) ByteLength() int {
 }
 
 func (self Instance) SetByteLength(value int) {
-	class(self).SetByteLength(gd.Int(value))
+	class(self).SetByteLength(int64(value))
 }
 
 func (self Instance) ByteStride() int {
@@ -105,7 +109,7 @@ func (self Instance) ByteStride() int {
 }
 
 func (self Instance) SetByteStride(value int) {
-	class(self).SetByteStride(gd.Int(value))
+	class(self).SetByteStride(int64(value))
 }
 
 func (self Instance) Indices() bool {
@@ -139,9 +143,9 @@ func (self class) LoadBufferViewData(state [1]gdclass.GLTFState) Packed.Bytes { 
 }
 
 //go:nosplit
-func (self class) GetBuffer() gd.Int { //gd:GLTFBufferView.get_buffer
+func (self class) GetBuffer() int64 { //gd:GLTFBufferView.get_buffer
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -149,7 +153,7 @@ func (self class) GetBuffer() gd.Int { //gd:GLTFBufferView.get_buffer
 }
 
 //go:nosplit
-func (self class) SetBuffer(buffer gd.Int) { //gd:GLTFBufferView.set_buffer
+func (self class) SetBuffer(buffer int64) { //gd:GLTFBufferView.set_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer)
 	var r_ret = callframe.Nil
@@ -158,9 +162,9 @@ func (self class) SetBuffer(buffer gd.Int) { //gd:GLTFBufferView.set_buffer
 }
 
 //go:nosplit
-func (self class) GetByteOffset() gd.Int { //gd:GLTFBufferView.get_byte_offset
+func (self class) GetByteOffset() int64 { //gd:GLTFBufferView.get_byte_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_byte_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -168,7 +172,7 @@ func (self class) GetByteOffset() gd.Int { //gd:GLTFBufferView.get_byte_offset
 }
 
 //go:nosplit
-func (self class) SetByteOffset(byte_offset gd.Int) { //gd:GLTFBufferView.set_byte_offset
+func (self class) SetByteOffset(byte_offset int64) { //gd:GLTFBufferView.set_byte_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Nil
@@ -177,9 +181,9 @@ func (self class) SetByteOffset(byte_offset gd.Int) { //gd:GLTFBufferView.set_by
 }
 
 //go:nosplit
-func (self class) GetByteLength() gd.Int { //gd:GLTFBufferView.get_byte_length
+func (self class) GetByteLength() int64 { //gd:GLTFBufferView.get_byte_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_byte_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -187,7 +191,7 @@ func (self class) GetByteLength() gd.Int { //gd:GLTFBufferView.get_byte_length
 }
 
 //go:nosplit
-func (self class) SetByteLength(byte_length gd.Int) { //gd:GLTFBufferView.set_byte_length
+func (self class) SetByteLength(byte_length int64) { //gd:GLTFBufferView.set_byte_length
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_length)
 	var r_ret = callframe.Nil
@@ -196,9 +200,9 @@ func (self class) SetByteLength(byte_length gd.Int) { //gd:GLTFBufferView.set_by
 }
 
 //go:nosplit
-func (self class) GetByteStride() gd.Int { //gd:GLTFBufferView.get_byte_stride
+func (self class) GetByteStride() int64 { //gd:GLTFBufferView.get_byte_stride
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_byte_stride, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -206,7 +210,7 @@ func (self class) GetByteStride() gd.Int { //gd:GLTFBufferView.get_byte_stride
 }
 
 //go:nosplit
-func (self class) SetByteStride(byte_stride gd.Int) { //gd:GLTFBufferView.set_byte_stride
+func (self class) SetByteStride(byte_stride int64) { //gd:GLTFBufferView.set_byte_stride
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_stride)
 	var r_ret = callframe.Nil

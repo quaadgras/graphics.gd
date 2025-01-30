@@ -10,16 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -70,7 +73,7 @@ An [InputEvent] can then be added to this action with [method action_add_event].
 */
 func AddAction(action string) { //gd:InputMap.add_action
 	once.Do(singleton)
-	class(self).AddAction(String.Name(String.New(action)), gd.Float(0.5))
+	class(self).AddAction(String.Name(String.New(action)), float64(0.5))
 }
 
 /*
@@ -86,7 +89,7 @@ Sets a deadzone value for the action.
 */
 func ActionSetDeadzone(action string, deadzone Float.X) { //gd:InputMap.action_set_deadzone
 	once.Do(singleton)
-	class(self).ActionSetDeadzone(String.Name(String.New(action)), gd.Float(deadzone))
+	class(self).ActionSetDeadzone(String.Name(String.New(action)), float64(deadzone))
 }
 
 /*
@@ -197,7 +200,7 @@ Adds an empty action to the [InputMap] with a configurable [param deadzone].
 An [InputEvent] can then be added to this action with [method action_add_event].
 */
 //go:nosplit
-func (self class) AddAction(action String.Name, deadzone gd.Float) { //gd:InputMap.add_action
+func (self class) AddAction(action String.Name, deadzone float64) { //gd:InputMap.add_action
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, deadzone)
@@ -222,7 +225,7 @@ func (self class) EraseAction(action String.Name) { //gd:InputMap.erase_action
 Sets a deadzone value for the action.
 */
 //go:nosplit
-func (self class) ActionSetDeadzone(action String.Name, deadzone gd.Float) { //gd:InputMap.action_set_deadzone
+func (self class) ActionSetDeadzone(action String.Name, deadzone float64) { //gd:InputMap.action_set_deadzone
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, deadzone)
@@ -235,10 +238,10 @@ func (self class) ActionSetDeadzone(action String.Name, deadzone gd.Float) { //g
 Returns a deadzone value for the action.
 */
 //go:nosplit
-func (self class) ActionGetDeadzone(action String.Name) gd.Float { //gd:InputMap.action_get_deadzone
+func (self class) ActionGetDeadzone(action String.Name) float64 { //gd:InputMap.action_get_deadzone
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_get_deadzone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

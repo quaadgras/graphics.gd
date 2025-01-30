@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/RenderSceneData"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/RenderSceneData"
-import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Projection"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -89,7 +93,7 @@ func (Instance) _get_cam_transform(impl func(ptr unsafe.Pointer) Transform3D.Bas
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Transform3D(ret))
+		gd.UnsafeSet(p_back, Transform3D.BasisOrigin(ret))
 	}
 }
 
@@ -111,7 +115,7 @@ func (Instance) _get_view_count(impl func(ptr unsafe.Pointer) int) (cb gd.Extens
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -120,11 +124,11 @@ Implement this in GDExtension to return the eye offset for the given [param view
 */
 func (Instance) _get_view_eye_offset(impl func(ptr unsafe.Pointer, view int) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var view = gd.UnsafeGet[gd.Int](p_args, 0)
+		var view = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(view))
-		gd.UnsafeSet(p_back, gd.Vector3(ret))
+		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
 	}
 }
 
@@ -133,7 +137,7 @@ Implement this in GDExtension to return the view [Projection] for the given [par
 */
 func (Instance) _get_view_projection(impl func(ptr unsafe.Pointer, view int) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var view = gd.UnsafeGet[gd.Int](p_args, 0)
+		var view = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(view))
@@ -148,7 +152,7 @@ func (Instance) _get_uniform_buffer(impl func(ptr unsafe.Pointer) RID.Any) (cb g
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -173,7 +177,7 @@ func New() Instance {
 /*
 Implement this in GDExtension to return the camera [Transform3D].
 */
-func (class) _get_cam_transform(impl func(ptr unsafe.Pointer) gd.Transform3D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_cam_transform(impl func(ptr unsafe.Pointer) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -184,7 +188,7 @@ func (class) _get_cam_transform(impl func(ptr unsafe.Pointer) gd.Transform3D) (c
 /*
 Implement this in GDExtension to return the camera [Projection].
 */
-func (class) _get_cam_projection(impl func(ptr unsafe.Pointer) gd.Projection) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_cam_projection(impl func(ptr unsafe.Pointer) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -195,7 +199,7 @@ func (class) _get_cam_projection(impl func(ptr unsafe.Pointer) gd.Projection) (c
 /*
 Implement this in GDExtension to return the view count.
 */
-func (class) _get_view_count(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_view_count(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -206,9 +210,9 @@ func (class) _get_view_count(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.Extens
 /*
 Implement this in GDExtension to return the eye offset for the given [param view].
 */
-func (class) _get_view_eye_offset(impl func(ptr unsafe.Pointer, view gd.Int) gd.Vector3) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_view_eye_offset(impl func(ptr unsafe.Pointer, view int64) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var view = gd.UnsafeGet[gd.Int](p_args, 0)
+		var view = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, view)
@@ -219,9 +223,9 @@ func (class) _get_view_eye_offset(impl func(ptr unsafe.Pointer, view gd.Int) gd.
 /*
 Implement this in GDExtension to return the view [Projection] for the given [param view].
 */
-func (class) _get_view_projection(impl func(ptr unsafe.Pointer, view gd.Int) gd.Projection) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_view_projection(impl func(ptr unsafe.Pointer, view int64) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var view = gd.UnsafeGet[gd.Int](p_args, 0)
+		var view = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, view)
@@ -232,7 +236,7 @@ func (class) _get_view_projection(impl func(ptr unsafe.Pointer, view gd.Int) gd.
 /*
 Implement this in GDExtension to return the [RID] of the uniform buffer containing the scene data as a UBO.
 */
-func (class) _get_uniform_buffer(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_uniform_buffer(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

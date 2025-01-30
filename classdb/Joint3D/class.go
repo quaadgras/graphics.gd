@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -96,7 +100,7 @@ func (self Instance) SolverPriority() int {
 }
 
 func (self Instance) SetSolverPriority(value int) {
-	class(self).SetSolverPriority(gd.Int(value))
+	class(self).SetSolverPriority(int64(value))
 }
 
 func (self Instance) ExcludeNodesFromCollision() bool {
@@ -146,7 +150,7 @@ func (self class) GetNodeB() Path.ToNode { //gd:Joint3D.get_node_b
 }
 
 //go:nosplit
-func (self class) SetSolverPriority(priority gd.Int) { //gd:Joint3D.set_solver_priority
+func (self class) SetSolverPriority(priority int64) { //gd:Joint3D.set_solver_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -155,9 +159,9 @@ func (self class) SetSolverPriority(priority gd.Int) { //gd:Joint3D.set_solver_p
 }
 
 //go:nosplit
-func (self class) GetSolverPriority() gd.Int { //gd:Joint3D.get_solver_priority
+func (self class) GetSolverPriority() int64 { //gd:Joint3D.get_solver_priority
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint3D.Bind_get_solver_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -187,9 +191,9 @@ func (self class) GetExcludeNodesFromCollision() bool { //gd:Joint3D.get_exclude
 Returns the joint's internal [RID] from the [PhysicsServer3D].
 */
 //go:nosplit
-func (self class) GetRid() gd.RID { //gd:Joint3D.get_rid
+func (self class) GetRid() RID.Any { //gd:Joint3D.get_rid
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint3D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

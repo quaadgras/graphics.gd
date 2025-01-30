@@ -104,7 +104,7 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 			return TypeSignal, true
 		case reflect.TypeOf([0]Variant{}).Elem():
 			vtype = TypeNil
-		case reflect.TypeOf([0]Bool{}).Elem():
+		case reflect.TypeOf([0]bool{}).Elem():
 			vtype = TypeBool
 		case reflect.TypeOf([0]Int{}).Elem():
 			vtype = TypeInt

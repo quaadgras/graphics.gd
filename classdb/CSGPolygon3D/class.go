@@ -9,23 +9,24 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/CSGPrimitive3D"
 import "graphics.gd/classdb/CSGShape3D"
 import "graphics.gd/classdb/GeometryInstance3D"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -41,6 +42,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -96,7 +99,7 @@ func (self Instance) Depth() Float.X {
 }
 
 func (self Instance) SetDepth(value Float.X) {
-	class(self).SetDepth(gd.Float(value))
+	class(self).SetDepth(float64(value))
 }
 
 func (self Instance) SpinDegrees() Float.X {
@@ -104,7 +107,7 @@ func (self Instance) SpinDegrees() Float.X {
 }
 
 func (self Instance) SetSpinDegrees(value Float.X) {
-	class(self).SetSpinDegrees(gd.Float(value))
+	class(self).SetSpinDegrees(float64(value))
 }
 
 func (self Instance) SpinSides() int {
@@ -112,7 +115,7 @@ func (self Instance) SpinSides() int {
 }
 
 func (self Instance) SetSpinSides(value int) {
-	class(self).SetSpinSides(gd.Int(value))
+	class(self).SetSpinSides(int64(value))
 }
 
 func (self Instance) PathNode() string {
@@ -136,7 +139,7 @@ func (self Instance) PathInterval() Float.X {
 }
 
 func (self Instance) SetPathInterval(value Float.X) {
-	class(self).SetPathInterval(gd.Float(value))
+	class(self).SetPathInterval(float64(value))
 }
 
 func (self Instance) PathSimplifyAngle() Float.X {
@@ -144,7 +147,7 @@ func (self Instance) PathSimplifyAngle() Float.X {
 }
 
 func (self Instance) SetPathSimplifyAngle(value Float.X) {
-	class(self).SetPathSimplifyAngle(gd.Float(value))
+	class(self).SetPathSimplifyAngle(float64(value))
 }
 
 func (self Instance) PathRotation() gdclass.CSGPolygon3DPathRotation {
@@ -176,7 +179,7 @@ func (self Instance) PathUDistance() Float.X {
 }
 
 func (self Instance) SetPathUDistance(value Float.X) {
-	class(self).SetPathUDistance(gd.Float(value))
+	class(self).SetPathUDistance(float64(value))
 }
 
 func (self Instance) PathJoined() bool {
@@ -242,7 +245,7 @@ func (self class) GetMode() gdclass.CSGPolygon3DMode { //gd:CSGPolygon3D.get_mod
 }
 
 //go:nosplit
-func (self class) SetDepth(depth gd.Float) { //gd:CSGPolygon3D.set_depth
+func (self class) SetDepth(depth float64) { //gd:CSGPolygon3D.set_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, depth)
 	var r_ret = callframe.Nil
@@ -251,9 +254,9 @@ func (self class) SetDepth(depth gd.Float) { //gd:CSGPolygon3D.set_depth
 }
 
 //go:nosplit
-func (self class) GetDepth() gd.Float { //gd:CSGPolygon3D.get_depth
+func (self class) GetDepth() float64 { //gd:CSGPolygon3D.get_depth
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -261,7 +264,7 @@ func (self class) GetDepth() gd.Float { //gd:CSGPolygon3D.get_depth
 }
 
 //go:nosplit
-func (self class) SetSpinDegrees(degrees gd.Float) { //gd:CSGPolygon3D.set_spin_degrees
+func (self class) SetSpinDegrees(degrees float64) { //gd:CSGPolygon3D.set_spin_degrees
 	var frame = callframe.New()
 	callframe.Arg(frame, degrees)
 	var r_ret = callframe.Nil
@@ -270,9 +273,9 @@ func (self class) SetSpinDegrees(degrees gd.Float) { //gd:CSGPolygon3D.set_spin_
 }
 
 //go:nosplit
-func (self class) GetSpinDegrees() gd.Float { //gd:CSGPolygon3D.get_spin_degrees
+func (self class) GetSpinDegrees() float64 { //gd:CSGPolygon3D.get_spin_degrees
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_get_spin_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -280,7 +283,7 @@ func (self class) GetSpinDegrees() gd.Float { //gd:CSGPolygon3D.get_spin_degrees
 }
 
 //go:nosplit
-func (self class) SetSpinSides(spin_sides gd.Int) { //gd:CSGPolygon3D.set_spin_sides
+func (self class) SetSpinSides(spin_sides int64) { //gd:CSGPolygon3D.set_spin_sides
 	var frame = callframe.New()
 	callframe.Arg(frame, spin_sides)
 	var r_ret = callframe.Nil
@@ -289,9 +292,9 @@ func (self class) SetSpinSides(spin_sides gd.Int) { //gd:CSGPolygon3D.set_spin_s
 }
 
 //go:nosplit
-func (self class) GetSpinSides() gd.Int { //gd:CSGPolygon3D.get_spin_sides
+func (self class) GetSpinSides() int64 { //gd:CSGPolygon3D.get_spin_sides
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_get_spin_sides, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -337,7 +340,7 @@ func (self class) GetPathIntervalType() gdclass.CSGPolygon3DPathIntervalType { /
 }
 
 //go:nosplit
-func (self class) SetPathInterval(interval gd.Float) { //gd:CSGPolygon3D.set_path_interval
+func (self class) SetPathInterval(interval float64) { //gd:CSGPolygon3D.set_path_interval
 	var frame = callframe.New()
 	callframe.Arg(frame, interval)
 	var r_ret = callframe.Nil
@@ -346,9 +349,9 @@ func (self class) SetPathInterval(interval gd.Float) { //gd:CSGPolygon3D.set_pat
 }
 
 //go:nosplit
-func (self class) GetPathInterval() gd.Float { //gd:CSGPolygon3D.get_path_interval
+func (self class) GetPathInterval() float64 { //gd:CSGPolygon3D.get_path_interval
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_get_path_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -356,7 +359,7 @@ func (self class) GetPathInterval() gd.Float { //gd:CSGPolygon3D.get_path_interv
 }
 
 //go:nosplit
-func (self class) SetPathSimplifyAngle(degrees gd.Float) { //gd:CSGPolygon3D.set_path_simplify_angle
+func (self class) SetPathSimplifyAngle(degrees float64) { //gd:CSGPolygon3D.set_path_simplify_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, degrees)
 	var r_ret = callframe.Nil
@@ -365,9 +368,9 @@ func (self class) SetPathSimplifyAngle(degrees gd.Float) { //gd:CSGPolygon3D.set
 }
 
 //go:nosplit
-func (self class) GetPathSimplifyAngle() gd.Float { //gd:CSGPolygon3D.get_path_simplify_angle
+func (self class) GetPathSimplifyAngle() float64 { //gd:CSGPolygon3D.get_path_simplify_angle
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_get_path_simplify_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -432,7 +435,7 @@ func (self class) IsPathContinuousU() bool { //gd:CSGPolygon3D.is_path_continuou
 }
 
 //go:nosplit
-func (self class) SetPathUDistance(distance gd.Float) { //gd:CSGPolygon3D.set_path_u_distance
+func (self class) SetPathUDistance(distance float64) { //gd:CSGPolygon3D.set_path_u_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -441,9 +444,9 @@ func (self class) SetPathUDistance(distance gd.Float) { //gd:CSGPolygon3D.set_pa
 }
 
 //go:nosplit
-func (self class) GetPathUDistance() gd.Float { //gd:CSGPolygon3D.get_path_u_distance
+func (self class) GetPathUDistance() float64 { //gd:CSGPolygon3D.get_path_u_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_get_path_u_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -10,17 +10,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,7 +57,7 @@ Returns [code]true[/code] if [param point] is inside the circle or if it's locat
 */
 func IsPointInCircle(point Vector2.XY, circle_position Vector2.XY, circle_radius Float.X) bool { //gd:Geometry2D.is_point_in_circle
 	once.Do(singleton)
-	return bool(class(self).IsPointInCircle(gd.Vector2(point), gd.Vector2(circle_position), gd.Float(circle_radius)))
+	return bool(class(self).IsPointInCircle(Vector2.XY(point), Vector2.XY(circle_position), float64(circle_radius)))
 }
 
 /*
@@ -62,7 +65,7 @@ Given the 2D segment ([param segment_from], [param segment_to]), returns the pos
 */
 func SegmentIntersectsCircle(segment_from Vector2.XY, segment_to Vector2.XY, circle_position Vector2.XY, circle_radius Float.X) Float.X { //gd:Geometry2D.segment_intersects_circle
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).SegmentIntersectsCircle(gd.Vector2(segment_from), gd.Vector2(segment_to), gd.Vector2(circle_position), gd.Float(circle_radius))))
+	return Float.X(Float.X(class(self).SegmentIntersectsCircle(Vector2.XY(segment_from), Vector2.XY(segment_to), Vector2.XY(circle_position), float64(circle_radius))))
 }
 
 /*
@@ -70,7 +73,7 @@ Checks if the two segments ([param from_a], [param to_a]) and ([param from_b], [
 */
 func SegmentIntersectsSegment(from_a Vector2.XY, to_a Vector2.XY, from_b Vector2.XY, to_b Vector2.XY) any { //gd:Geometry2D.segment_intersects_segment
 	once.Do(singleton)
-	return any(class(self).SegmentIntersectsSegment(gd.Vector2(from_a), gd.Vector2(to_a), gd.Vector2(from_b), gd.Vector2(to_b)).Interface())
+	return any(class(self).SegmentIntersectsSegment(Vector2.XY(from_a), Vector2.XY(to_a), Vector2.XY(from_b), Vector2.XY(to_b)).Interface())
 }
 
 /*
@@ -79,7 +82,7 @@ Checks if the two lines ([param from_a], [param dir_a]) and ([param from_b], [pa
 */
 func LineIntersectsLine(from_a Vector2.XY, dir_a Vector2.XY, from_b Vector2.XY, dir_b Vector2.XY) any { //gd:Geometry2D.line_intersects_line
 	once.Do(singleton)
-	return any(class(self).LineIntersectsLine(gd.Vector2(from_a), gd.Vector2(dir_a), gd.Vector2(from_b), gd.Vector2(dir_b)).Interface())
+	return any(class(self).LineIntersectsLine(Vector2.XY(from_a), Vector2.XY(dir_a), Vector2.XY(from_b), Vector2.XY(dir_b)).Interface())
 }
 
 /*
@@ -87,7 +90,7 @@ Given the two 2D segments ([param p1], [param q1]) and ([param p2], [param q2]),
 */
 func GetClosestPointsBetweenSegments(p1 Vector2.XY, q1 Vector2.XY, p2 Vector2.XY, q2 Vector2.XY) []Vector2.XY { //gd:Geometry2D.get_closest_points_between_segments
 	once.Do(singleton)
-	return []Vector2.XY(slices.Collect(class(self).GetClosestPointsBetweenSegments(gd.Vector2(p1), gd.Vector2(q1), gd.Vector2(p2), gd.Vector2(q2)).Values()))
+	return []Vector2.XY(slices.Collect(class(self).GetClosestPointsBetweenSegments(Vector2.XY(p1), Vector2.XY(q1), Vector2.XY(p2), Vector2.XY(q2)).Values()))
 }
 
 /*
@@ -95,7 +98,7 @@ Returns the 2D point on the 2D segment ([param s1], [param s2]) that is closest 
 */
 func GetClosestPointToSegment(point Vector2.XY, s1 Vector2.XY, s2 Vector2.XY) Vector2.XY { //gd:Geometry2D.get_closest_point_to_segment
 	once.Do(singleton)
-	return Vector2.XY(class(self).GetClosestPointToSegment(gd.Vector2(point), gd.Vector2(s1), gd.Vector2(s2)))
+	return Vector2.XY(class(self).GetClosestPointToSegment(Vector2.XY(point), Vector2.XY(s1), Vector2.XY(s2)))
 }
 
 /*
@@ -103,7 +106,7 @@ Returns the 2D point on the 2D line defined by ([param s1], [param s2]) that is 
 */
 func GetClosestPointToSegmentUncapped(point Vector2.XY, s1 Vector2.XY, s2 Vector2.XY) Vector2.XY { //gd:Geometry2D.get_closest_point_to_segment_uncapped
 	once.Do(singleton)
-	return Vector2.XY(class(self).GetClosestPointToSegmentUncapped(gd.Vector2(point), gd.Vector2(s1), gd.Vector2(s2)))
+	return Vector2.XY(class(self).GetClosestPointToSegmentUncapped(Vector2.XY(point), Vector2.XY(s1), Vector2.XY(s2)))
 }
 
 /*
@@ -111,7 +114,7 @@ Returns if [param point] is inside the triangle specified by [param a], [param b
 */
 func PointIsInsideTriangle(point Vector2.XY, a Vector2.XY, b Vector2.XY, c Vector2.XY) bool { //gd:Geometry2D.point_is_inside_triangle
 	once.Do(singleton)
-	return bool(class(self).PointIsInsideTriangle(gd.Vector2(point), gd.Vector2(a), gd.Vector2(b), gd.Vector2(c)))
+	return bool(class(self).PointIsInsideTriangle(Vector2.XY(point), Vector2.XY(a), Vector2.XY(b), Vector2.XY(c)))
 }
 
 /*
@@ -128,7 +131,7 @@ Returns [code]true[/code] if [param point] is inside [param polygon] or if it's 
 */
 func IsPointInPolygon(point Vector2.XY, polygon []Vector2.XY) bool { //gd:Geometry2D.is_point_in_polygon
 	once.Do(singleton)
-	return bool(class(self).IsPointInPolygon(gd.Vector2(point), Packed.New(polygon...)))
+	return bool(class(self).IsPointInPolygon(Vector2.XY(point), Packed.New(polygon...)))
 }
 
 /*
@@ -237,7 +240,7 @@ GD.Print((Variant)polygon); // prints [(50, 50), (150, 50), (150, 150), (50, 150
 */
 func OffsetPolygon(polygon []Vector2.XY, delta Float.X) [][]Vector2.XY { //gd:Geometry2D.offset_polygon
 	once.Do(singleton)
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).OffsetPolygon(Packed.New(polygon...), gd.Float(delta), 0))))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).OffsetPolygon(Packed.New(polygon...), float64(delta), 0))))
 }
 
 /*
@@ -248,7 +251,7 @@ The operation may result in an outer polygon (boundary) and inner polygon (hole)
 */
 func OffsetPolyline(polyline []Vector2.XY, delta Float.X) [][]Vector2.XY { //gd:Geometry2D.offset_polyline
 	once.Do(singleton)
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).OffsetPolyline(Packed.New(polyline...), gd.Float(delta), 0, 3))))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).OffsetPolyline(Packed.New(polyline...), float64(delta), 0, 3))))
 }
 
 /*
@@ -273,7 +276,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Returns [code]true[/code] if [param point] is inside the circle or if it's located exactly [i]on[/i] the circle's boundary, otherwise returns [code]false[/code].
 */
 //go:nosplit
-func (self class) IsPointInCircle(point gd.Vector2, circle_position gd.Vector2, circle_radius gd.Float) bool { //gd:Geometry2D.is_point_in_circle
+func (self class) IsPointInCircle(point Vector2.XY, circle_position Vector2.XY, circle_radius float64) bool { //gd:Geometry2D.is_point_in_circle
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, circle_position)
@@ -289,13 +292,13 @@ func (self class) IsPointInCircle(point gd.Vector2, circle_position gd.Vector2, 
 Given the 2D segment ([param segment_from], [param segment_to]), returns the position on the segment (as a number between 0 and 1) at which the segment hits the circle that is located at position [param circle_position] and has radius [param circle_radius]. If the segment does not intersect the circle, -1 is returned (this is also the case if the line extending the segment would intersect the circle, but the segment does not).
 */
 //go:nosplit
-func (self class) SegmentIntersectsCircle(segment_from gd.Vector2, segment_to gd.Vector2, circle_position gd.Vector2, circle_radius gd.Float) gd.Float { //gd:Geometry2D.segment_intersects_circle
+func (self class) SegmentIntersectsCircle(segment_from Vector2.XY, segment_to Vector2.XY, circle_position Vector2.XY, circle_radius float64) float64 { //gd:Geometry2D.segment_intersects_circle
 	var frame = callframe.New()
 	callframe.Arg(frame, segment_from)
 	callframe.Arg(frame, segment_to)
 	callframe.Arg(frame, circle_position)
 	callframe.Arg(frame, circle_radius)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_segment_intersects_circle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -306,7 +309,7 @@ func (self class) SegmentIntersectsCircle(segment_from gd.Vector2, segment_to gd
 Checks if the two segments ([param from_a], [param to_a]) and ([param from_b], [param to_b]) intersect. If yes, return the point of intersection as [Vector2]. If no intersection takes place, returns [code]null[/code].
 */
 //go:nosplit
-func (self class) SegmentIntersectsSegment(from_a gd.Vector2, to_a gd.Vector2, from_b gd.Vector2, to_b gd.Vector2) gd.Variant { //gd:Geometry2D.segment_intersects_segment
+func (self class) SegmentIntersectsSegment(from_a Vector2.XY, to_a Vector2.XY, from_b Vector2.XY, to_b Vector2.XY) variant.Any { //gd:Geometry2D.segment_intersects_segment
 	var frame = callframe.New()
 	callframe.Arg(frame, from_a)
 	callframe.Arg(frame, to_a)
@@ -314,7 +317,7 @@ func (self class) SegmentIntersectsSegment(from_a gd.Vector2, to_a gd.Vector2, f
 	callframe.Arg(frame, to_b)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_segment_intersects_segment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -324,7 +327,7 @@ Checks if the two lines ([param from_a], [param dir_a]) and ([param from_b], [pa
 [b]Note:[/b] The lines are specified using direction vectors, not end points.
 */
 //go:nosplit
-func (self class) LineIntersectsLine(from_a gd.Vector2, dir_a gd.Vector2, from_b gd.Vector2, dir_b gd.Vector2) gd.Variant { //gd:Geometry2D.line_intersects_line
+func (self class) LineIntersectsLine(from_a Vector2.XY, dir_a Vector2.XY, from_b Vector2.XY, dir_b Vector2.XY) variant.Any { //gd:Geometry2D.line_intersects_line
 	var frame = callframe.New()
 	callframe.Arg(frame, from_a)
 	callframe.Arg(frame, dir_a)
@@ -332,7 +335,7 @@ func (self class) LineIntersectsLine(from_a gd.Vector2, dir_a gd.Vector2, from_b
 	callframe.Arg(frame, dir_b)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_line_intersects_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -341,7 +344,7 @@ func (self class) LineIntersectsLine(from_a gd.Vector2, dir_a gd.Vector2, from_b
 Given the two 2D segments ([param p1], [param q1]) and ([param p2], [param q2]), finds those two points on the two segments that are closest to each other. Returns a [PackedVector2Array] that contains this point on ([param p1], [param q1]) as well the accompanying point on ([param p2], [param q2]).
 */
 //go:nosplit
-func (self class) GetClosestPointsBetweenSegments(p1 gd.Vector2, q1 gd.Vector2, p2 gd.Vector2, q2 gd.Vector2) Packed.Array[Vector2.XY] { //gd:Geometry2D.get_closest_points_between_segments
+func (self class) GetClosestPointsBetweenSegments(p1 Vector2.XY, q1 Vector2.XY, p2 Vector2.XY, q2 Vector2.XY) Packed.Array[Vector2.XY] { //gd:Geometry2D.get_closest_points_between_segments
 	var frame = callframe.New()
 	callframe.Arg(frame, p1)
 	callframe.Arg(frame, q1)
@@ -358,12 +361,12 @@ func (self class) GetClosestPointsBetweenSegments(p1 gd.Vector2, q1 gd.Vector2, 
 Returns the 2D point on the 2D segment ([param s1], [param s2]) that is closest to [param point]. The returned point will always be inside the specified segment.
 */
 //go:nosplit
-func (self class) GetClosestPointToSegment(point gd.Vector2, s1 gd.Vector2, s2 gd.Vector2) gd.Vector2 { //gd:Geometry2D.get_closest_point_to_segment
+func (self class) GetClosestPointToSegment(point Vector2.XY, s1 Vector2.XY, s2 Vector2.XY) Vector2.XY { //gd:Geometry2D.get_closest_point_to_segment
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, s1)
 	callframe.Arg(frame, s2)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_get_closest_point_to_segment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -374,12 +377,12 @@ func (self class) GetClosestPointToSegment(point gd.Vector2, s1 gd.Vector2, s2 g
 Returns the 2D point on the 2D line defined by ([param s1], [param s2]) that is closest to [param point]. The returned point can be inside the segment ([param s1], [param s2]) or outside of it, i.e. somewhere on the line extending from the segment.
 */
 //go:nosplit
-func (self class) GetClosestPointToSegmentUncapped(point gd.Vector2, s1 gd.Vector2, s2 gd.Vector2) gd.Vector2 { //gd:Geometry2D.get_closest_point_to_segment_uncapped
+func (self class) GetClosestPointToSegmentUncapped(point Vector2.XY, s1 Vector2.XY, s2 Vector2.XY) Vector2.XY { //gd:Geometry2D.get_closest_point_to_segment_uncapped
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, s1)
 	callframe.Arg(frame, s2)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_get_closest_point_to_segment_uncapped, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -390,7 +393,7 @@ func (self class) GetClosestPointToSegmentUncapped(point gd.Vector2, s1 gd.Vecto
 Returns if [param point] is inside the triangle specified by [param a], [param b] and [param c].
 */
 //go:nosplit
-func (self class) PointIsInsideTriangle(point gd.Vector2, a gd.Vector2, b gd.Vector2, c gd.Vector2) bool { //gd:Geometry2D.point_is_inside_triangle
+func (self class) PointIsInsideTriangle(point Vector2.XY, a Vector2.XY, b Vector2.XY, c Vector2.XY) bool { //gd:Geometry2D.point_is_inside_triangle
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, a)
@@ -422,7 +425,7 @@ func (self class) IsPolygonClockwise(polygon Packed.Array[Vector2.XY]) bool { //
 Returns [code]true[/code] if [param point] is inside [param polygon] or if it's located exactly [i]on[/i] polygon's boundary, otherwise returns [code]false[/code].
 */
 //go:nosplit
-func (self class) IsPointInPolygon(point gd.Vector2, polygon Packed.Array[Vector2.XY]) bool { //gd:Geometry2D.is_point_in_polygon
+func (self class) IsPointInPolygon(point Vector2.XY, polygon Packed.Array[Vector2.XY]) bool { //gd:Geometry2D.is_point_in_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))
@@ -604,7 +607,7 @@ GD.Print((Variant)polygon); // prints [(50, 50), (150, 50), (150, 150), (50, 150
 [/codeblocks]
 */
 //go:nosplit
-func (self class) OffsetPolygon(polygon Packed.Array[Vector2.XY], delta gd.Float, join_type gdclass.Geometry2DPolyJoinType) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.offset_polygon
+func (self class) OffsetPolygon(polygon Packed.Array[Vector2.XY], delta float64, join_type gdclass.Geometry2DPolyJoinType) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.offset_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))
 	callframe.Arg(frame, delta)
@@ -623,7 +626,7 @@ Each polygon's endpoints will be rounded as determined by [param end_type], see 
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
 //go:nosplit
-func (self class) OffsetPolyline(polyline Packed.Array[Vector2.XY], delta gd.Float, join_type gdclass.Geometry2DPolyJoinType, end_type gdclass.Geometry2DPolyEndType) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.offset_polyline
+func (self class) OffsetPolyline(polyline Packed.Array[Vector2.XY], delta float64, join_type gdclass.Geometry2DPolyJoinType, end_type gdclass.Geometry2DPolyEndType) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.offset_polyline
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polyline)))
 	callframe.Arg(frame, delta)

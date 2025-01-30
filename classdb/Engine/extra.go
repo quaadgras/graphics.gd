@@ -6,12 +6,6 @@ import (
 	gd "graphics.gd/internal"
 )
 
-type (
-	Bool   = gd.Bool
-	Int    = gd.Int
-	FloatX = gd.Float
-)
-
 // Version returns the version of the Engine.
 func Version() gd.Version {
 	return gd.Global.GetGodotVersion()

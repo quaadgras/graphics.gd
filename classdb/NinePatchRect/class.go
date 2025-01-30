@@ -9,19 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -91,7 +95,7 @@ func (self Instance) RegionRect() Rect2.PositionSize {
 }
 
 func (self Instance) SetRegionRect(value Rect2.PositionSize) {
-	class(self).SetRegionRect(gd.Rect2(value))
+	class(self).SetRegionRect(Rect2.PositionSize(value))
 }
 
 func (self Instance) PatchMarginLeft() int {
@@ -99,7 +103,7 @@ func (self Instance) PatchMarginLeft() int {
 }
 
 func (self Instance) SetPatchMarginLeft(value int) {
-	class(self).SetPatchMargin(0, gd.Int(value))
+	class(self).SetPatchMargin(0, int64(value))
 }
 
 func (self Instance) PatchMarginTop() int {
@@ -107,7 +111,7 @@ func (self Instance) PatchMarginTop() int {
 }
 
 func (self Instance) SetPatchMarginTop(value int) {
-	class(self).SetPatchMargin(1, gd.Int(value))
+	class(self).SetPatchMargin(1, int64(value))
 }
 
 func (self Instance) PatchMarginRight() int {
@@ -115,7 +119,7 @@ func (self Instance) PatchMarginRight() int {
 }
 
 func (self Instance) SetPatchMarginRight(value int) {
-	class(self).SetPatchMargin(2, gd.Int(value))
+	class(self).SetPatchMargin(2, int64(value))
 }
 
 func (self Instance) PatchMarginBottom() int {
@@ -123,7 +127,7 @@ func (self Instance) PatchMarginBottom() int {
 }
 
 func (self Instance) SetPatchMarginBottom(value int) {
-	class(self).SetPatchMargin(3, gd.Int(value))
+	class(self).SetPatchMargin(3, int64(value))
 }
 
 func (self Instance) AxisStretchHorizontal() gdclass.NinePatchRectAxisStretchMode {
@@ -165,7 +169,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D { //gd:NinePatchRect.get_tex
 Sets the size of the margin on the specified [enum Side] to [param value] pixels.
 */
 //go:nosplit
-func (self class) SetPatchMargin(margin Side, value gd.Int) { //gd:NinePatchRect.set_patch_margin
+func (self class) SetPatchMargin(margin Side, value int64) { //gd:NinePatchRect.set_patch_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, value)
@@ -178,10 +182,10 @@ func (self class) SetPatchMargin(margin Side, value gd.Int) { //gd:NinePatchRect
 Returns the size of the margin on the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetPatchMargin(margin Side) gd.Int { //gd:NinePatchRect.get_patch_margin
+func (self class) GetPatchMargin(margin Side) int64 { //gd:NinePatchRect.get_patch_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NinePatchRect.Bind_get_patch_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -189,7 +193,7 @@ func (self class) GetPatchMargin(margin Side) gd.Int { //gd:NinePatchRect.get_pa
 }
 
 //go:nosplit
-func (self class) SetRegionRect(rect gd.Rect2) { //gd:NinePatchRect.set_region_rect
+func (self class) SetRegionRect(rect Rect2.PositionSize) { //gd:NinePatchRect.set_region_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Nil
@@ -198,9 +202,9 @@ func (self class) SetRegionRect(rect gd.Rect2) { //gd:NinePatchRect.set_region_r
 }
 
 //go:nosplit
-func (self class) GetRegionRect() gd.Rect2 { //gd:NinePatchRect.get_region_rect
+func (self class) GetRegionRect() Rect2.PositionSize { //gd:NinePatchRect.get_region_rect
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NinePatchRect.Bind_get_region_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

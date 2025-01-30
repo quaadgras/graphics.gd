@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Tweener"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Tweener"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -61,7 +64,7 @@ tween.tween_callback(queue_free).set_delay(2) #this will call queue_free() after
 [/codeblock]
 */
 func (self Instance) SetDelay(delay Float.X) [1]gdclass.CallbackTweener { //gd:CallbackTweener.set_delay
-	return [1]gdclass.CallbackTweener(class(self).SetDelay(gd.Float(delay)))
+	return [1]gdclass.CallbackTweener(class(self).SetDelay(float64(delay)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -92,7 +95,7 @@ tween.tween_callback(queue_free).set_delay(2) #this will call queue_free() after
 [/codeblock]
 */
 //go:nosplit
-func (self class) SetDelay(delay gd.Float) [1]gdclass.CallbackTweener { //gd:CallbackTweener.set_delay
+func (self class) SetDelay(delay float64) [1]gdclass.CallbackTweener { //gd:CallbackTweener.set_delay
 	var frame = callframe.New()
 	callframe.Arg(frame, delay)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

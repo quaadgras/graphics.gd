@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CollisionObject3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/PhysicsBody3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/PhysicsBody3D"
-import "graphics.gd/classdb/CollisionObject3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -155,7 +158,7 @@ func (self Instance) GetRealVelocity() Vector3.XYZ { //gd:CharacterBody3D.get_re
 Returns the floor's collision angle at the last collision point according to [param up_direction], which is [constant Vector3.UP] by default. This value is always positive and only valid after calling [method move_and_slide] and when [method is_on_floor] returns [code]true[/code].
 */
 func (self Instance) GetFloorAngle() Float.X { //gd:CharacterBody3D.get_floor_angle
-	return Float.X(Float.X(class(self).GetFloorAngle(gd.Vector3(gd.Vector3{0, 1, 0}))))
+	return Float.X(Float.X(class(self).GetFloorAngle(Vector3.XYZ(gd.Vector3{0, 1, 0}))))
 }
 
 /*
@@ -183,7 +186,7 @@ func (self Instance) GetSlideCollisionCount() int { //gd:CharacterBody3D.get_sli
 Returns a [KinematicCollision3D], which contains information about a collision that occurred during the last call to [method move_and_slide]. Since the body can collide several times in a single call to [method move_and_slide], you must specify the index of the collision in the range 0 to ([method get_slide_collision_count] - 1).
 */
 func (self Instance) GetSlideCollision(slide_idx int) [1]gdclass.KinematicCollision3D { //gd:CharacterBody3D.get_slide_collision
-	return [1]gdclass.KinematicCollision3D(class(self).GetSlideCollision(gd.Int(slide_idx)))
+	return [1]gdclass.KinematicCollision3D(class(self).GetSlideCollision(int64(slide_idx)))
 }
 
 /*
@@ -224,7 +227,7 @@ func (self Instance) UpDirection() Vector3.XYZ {
 }
 
 func (self Instance) SetUpDirection(value Vector3.XYZ) {
-	class(self).SetUpDirection(gd.Vector3(value))
+	class(self).SetUpDirection(Vector3.XYZ(value))
 }
 
 func (self Instance) SlideOnCeiling() bool {
@@ -240,7 +243,7 @@ func (self Instance) Velocity() Vector3.XYZ {
 }
 
 func (self Instance) SetVelocity(value Vector3.XYZ) {
-	class(self).SetVelocity(gd.Vector3(value))
+	class(self).SetVelocity(Vector3.XYZ(value))
 }
 
 func (self Instance) MaxSlides() int {
@@ -248,7 +251,7 @@ func (self Instance) MaxSlides() int {
 }
 
 func (self Instance) SetMaxSlides(value int) {
-	class(self).SetMaxSlides(gd.Int(value))
+	class(self).SetMaxSlides(int64(value))
 }
 
 func (self Instance) WallMinSlideAngle() Float.X {
@@ -256,7 +259,7 @@ func (self Instance) WallMinSlideAngle() Float.X {
 }
 
 func (self Instance) SetWallMinSlideAngle(value Float.X) {
-	class(self).SetWallMinSlideAngle(gd.Float(value))
+	class(self).SetWallMinSlideAngle(float64(value))
 }
 
 func (self Instance) FloorStopOnSlope() bool {
@@ -288,7 +291,7 @@ func (self Instance) FloorMaxAngle() Float.X {
 }
 
 func (self Instance) SetFloorMaxAngle(value Float.X) {
-	class(self).SetFloorMaxAngle(gd.Float(value))
+	class(self).SetFloorMaxAngle(float64(value))
 }
 
 func (self Instance) FloorSnapLength() Float.X {
@@ -296,7 +299,7 @@ func (self Instance) FloorSnapLength() Float.X {
 }
 
 func (self Instance) SetFloorSnapLength(value Float.X) {
-	class(self).SetFloorSnapLength(gd.Float(value))
+	class(self).SetFloorSnapLength(float64(value))
 }
 
 func (self Instance) PlatformOnLeave() gdclass.CharacterBody3DPlatformOnLeave {
@@ -312,7 +315,7 @@ func (self Instance) PlatformFloorLayers() int {
 }
 
 func (self Instance) SetPlatformFloorLayers(value int) {
-	class(self).SetPlatformFloorLayers(gd.Int(value))
+	class(self).SetPlatformFloorLayers(int64(value))
 }
 
 func (self Instance) PlatformWallLayers() int {
@@ -320,7 +323,7 @@ func (self Instance) PlatformWallLayers() int {
 }
 
 func (self Instance) SetPlatformWallLayers(value int) {
-	class(self).SetPlatformWallLayers(gd.Int(value))
+	class(self).SetPlatformWallLayers(int64(value))
 }
 
 func (self Instance) SafeMargin() Float.X {
@@ -328,7 +331,7 @@ func (self Instance) SafeMargin() Float.X {
 }
 
 func (self Instance) SetSafeMargin(value Float.X) {
-	class(self).SetSafeMargin(gd.Float(value))
+	class(self).SetSafeMargin(float64(value))
 }
 
 /*
@@ -359,7 +362,7 @@ func (self class) ApplyFloorSnap() { //gd:CharacterBody3D.apply_floor_snap
 }
 
 //go:nosplit
-func (self class) SetVelocity(velocity gd.Vector3) { //gd:CharacterBody3D.set_velocity
+func (self class) SetVelocity(velocity Vector3.XYZ) { //gd:CharacterBody3D.set_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
 	var r_ret = callframe.Nil
@@ -368,9 +371,9 @@ func (self class) SetVelocity(velocity gd.Vector3) { //gd:CharacterBody3D.set_ve
 }
 
 //go:nosplit
-func (self class) GetVelocity() gd.Vector3 { //gd:CharacterBody3D.get_velocity
+func (self class) GetVelocity() Vector3.XYZ { //gd:CharacterBody3D.get_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -378,7 +381,7 @@ func (self class) GetVelocity() gd.Vector3 { //gd:CharacterBody3D.get_velocity
 }
 
 //go:nosplit
-func (self class) SetSafeMargin(margin gd.Float) { //gd:CharacterBody3D.set_safe_margin
+func (self class) SetSafeMargin(margin float64) { //gd:CharacterBody3D.set_safe_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -387,9 +390,9 @@ func (self class) SetSafeMargin(margin gd.Float) { //gd:CharacterBody3D.set_safe
 }
 
 //go:nosplit
-func (self class) GetSafeMargin() gd.Float { //gd:CharacterBody3D.get_safe_margin
+func (self class) GetSafeMargin() float64 { //gd:CharacterBody3D.get_safe_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_safe_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -473,7 +476,7 @@ func (self class) IsSlideOnCeilingEnabled() bool { //gd:CharacterBody3D.is_slide
 }
 
 //go:nosplit
-func (self class) SetPlatformFloorLayers(exclude_layer gd.Int) { //gd:CharacterBody3D.set_platform_floor_layers
+func (self class) SetPlatformFloorLayers(exclude_layer int64) { //gd:CharacterBody3D.set_platform_floor_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, exclude_layer)
 	var r_ret = callframe.Nil
@@ -482,9 +485,9 @@ func (self class) SetPlatformFloorLayers(exclude_layer gd.Int) { //gd:CharacterB
 }
 
 //go:nosplit
-func (self class) GetPlatformFloorLayers() gd.Int { //gd:CharacterBody3D.get_platform_floor_layers
+func (self class) GetPlatformFloorLayers() int64 { //gd:CharacterBody3D.get_platform_floor_layers
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_platform_floor_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -492,7 +495,7 @@ func (self class) GetPlatformFloorLayers() gd.Int { //gd:CharacterBody3D.get_pla
 }
 
 //go:nosplit
-func (self class) SetPlatformWallLayers(exclude_layer gd.Int) { //gd:CharacterBody3D.set_platform_wall_layers
+func (self class) SetPlatformWallLayers(exclude_layer int64) { //gd:CharacterBody3D.set_platform_wall_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, exclude_layer)
 	var r_ret = callframe.Nil
@@ -501,9 +504,9 @@ func (self class) SetPlatformWallLayers(exclude_layer gd.Int) { //gd:CharacterBo
 }
 
 //go:nosplit
-func (self class) GetPlatformWallLayers() gd.Int { //gd:CharacterBody3D.get_platform_wall_layers
+func (self class) GetPlatformWallLayers() int64 { //gd:CharacterBody3D.get_platform_wall_layers
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_platform_wall_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -511,9 +514,9 @@ func (self class) GetPlatformWallLayers() gd.Int { //gd:CharacterBody3D.get_plat
 }
 
 //go:nosplit
-func (self class) GetMaxSlides() gd.Int { //gd:CharacterBody3D.get_max_slides
+func (self class) GetMaxSlides() int64 { //gd:CharacterBody3D.get_max_slides
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_max_slides, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -521,7 +524,7 @@ func (self class) GetMaxSlides() gd.Int { //gd:CharacterBody3D.get_max_slides
 }
 
 //go:nosplit
-func (self class) SetMaxSlides(max_slides gd.Int) { //gd:CharacterBody3D.set_max_slides
+func (self class) SetMaxSlides(max_slides int64) { //gd:CharacterBody3D.set_max_slides
 	var frame = callframe.New()
 	callframe.Arg(frame, max_slides)
 	var r_ret = callframe.Nil
@@ -530,9 +533,9 @@ func (self class) SetMaxSlides(max_slides gd.Int) { //gd:CharacterBody3D.set_max
 }
 
 //go:nosplit
-func (self class) GetFloorMaxAngle() gd.Float { //gd:CharacterBody3D.get_floor_max_angle
+func (self class) GetFloorMaxAngle() float64 { //gd:CharacterBody3D.get_floor_max_angle
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_floor_max_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -540,7 +543,7 @@ func (self class) GetFloorMaxAngle() gd.Float { //gd:CharacterBody3D.get_floor_m
 }
 
 //go:nosplit
-func (self class) SetFloorMaxAngle(radians gd.Float) { //gd:CharacterBody3D.set_floor_max_angle
+func (self class) SetFloorMaxAngle(radians float64) { //gd:CharacterBody3D.set_floor_max_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, radians)
 	var r_ret = callframe.Nil
@@ -549,9 +552,9 @@ func (self class) SetFloorMaxAngle(radians gd.Float) { //gd:CharacterBody3D.set_
 }
 
 //go:nosplit
-func (self class) GetFloorSnapLength() gd.Float { //gd:CharacterBody3D.get_floor_snap_length
+func (self class) GetFloorSnapLength() float64 { //gd:CharacterBody3D.get_floor_snap_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_floor_snap_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -559,7 +562,7 @@ func (self class) GetFloorSnapLength() gd.Float { //gd:CharacterBody3D.get_floor
 }
 
 //go:nosplit
-func (self class) SetFloorSnapLength(floor_snap_length gd.Float) { //gd:CharacterBody3D.set_floor_snap_length
+func (self class) SetFloorSnapLength(floor_snap_length float64) { //gd:CharacterBody3D.set_floor_snap_length
 	var frame = callframe.New()
 	callframe.Arg(frame, floor_snap_length)
 	var r_ret = callframe.Nil
@@ -568,9 +571,9 @@ func (self class) SetFloorSnapLength(floor_snap_length gd.Float) { //gd:Characte
 }
 
 //go:nosplit
-func (self class) GetWallMinSlideAngle() gd.Float { //gd:CharacterBody3D.get_wall_min_slide_angle
+func (self class) GetWallMinSlideAngle() float64 { //gd:CharacterBody3D.get_wall_min_slide_angle
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_wall_min_slide_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -578,7 +581,7 @@ func (self class) GetWallMinSlideAngle() gd.Float { //gd:CharacterBody3D.get_wal
 }
 
 //go:nosplit
-func (self class) SetWallMinSlideAngle(radians gd.Float) { //gd:CharacterBody3D.set_wall_min_slide_angle
+func (self class) SetWallMinSlideAngle(radians float64) { //gd:CharacterBody3D.set_wall_min_slide_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, radians)
 	var r_ret = callframe.Nil
@@ -587,9 +590,9 @@ func (self class) SetWallMinSlideAngle(radians gd.Float) { //gd:CharacterBody3D.
 }
 
 //go:nosplit
-func (self class) GetUpDirection() gd.Vector3 { //gd:CharacterBody3D.get_up_direction
+func (self class) GetUpDirection() Vector3.XYZ { //gd:CharacterBody3D.get_up_direction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_up_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -597,7 +600,7 @@ func (self class) GetUpDirection() gd.Vector3 { //gd:CharacterBody3D.get_up_dire
 }
 
 //go:nosplit
-func (self class) SetUpDirection(up_direction gd.Vector3) { //gd:CharacterBody3D.set_up_direction
+func (self class) SetUpDirection(up_direction Vector3.XYZ) { //gd:CharacterBody3D.set_up_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, up_direction)
 	var r_ret = callframe.Nil
@@ -726,9 +729,9 @@ Returns the collision normal of the floor at the last collision point. Only vali
 [b]Warning:[/b] The collision normal is not always the same as the surface normal.
 */
 //go:nosplit
-func (self class) GetFloorNormal() gd.Vector3 { //gd:CharacterBody3D.get_floor_normal
+func (self class) GetFloorNormal() Vector3.XYZ { //gd:CharacterBody3D.get_floor_normal
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_floor_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -740,9 +743,9 @@ Returns the collision normal of the wall at the last collision point. Only valid
 [b]Warning:[/b] The collision normal is not always the same as the surface normal.
 */
 //go:nosplit
-func (self class) GetWallNormal() gd.Vector3 { //gd:CharacterBody3D.get_wall_normal
+func (self class) GetWallNormal() Vector3.XYZ { //gd:CharacterBody3D.get_wall_normal
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_wall_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -753,9 +756,9 @@ func (self class) GetWallNormal() gd.Vector3 { //gd:CharacterBody3D.get_wall_nor
 Returns the last motion applied to the [CharacterBody3D] during the last call to [method move_and_slide]. The movement can be split into multiple motions when sliding occurs, and this method return the last one, which is useful to retrieve the current direction of the movement.
 */
 //go:nosplit
-func (self class) GetLastMotion() gd.Vector3 { //gd:CharacterBody3D.get_last_motion
+func (self class) GetLastMotion() Vector3.XYZ { //gd:CharacterBody3D.get_last_motion
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_last_motion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -766,9 +769,9 @@ func (self class) GetLastMotion() gd.Vector3 { //gd:CharacterBody3D.get_last_mot
 Returns the travel (position delta) that occurred during the last call to [method move_and_slide].
 */
 //go:nosplit
-func (self class) GetPositionDelta() gd.Vector3 { //gd:CharacterBody3D.get_position_delta
+func (self class) GetPositionDelta() Vector3.XYZ { //gd:CharacterBody3D.get_position_delta
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_position_delta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -779,9 +782,9 @@ func (self class) GetPositionDelta() gd.Vector3 { //gd:CharacterBody3D.get_posit
 Returns the current real velocity since the last call to [method move_and_slide]. For example, when you climb a slope, you will move diagonally even though the velocity is horizontal. This method returns the diagonal movement, as opposed to [member velocity] which returns the requested velocity.
 */
 //go:nosplit
-func (self class) GetRealVelocity() gd.Vector3 { //gd:CharacterBody3D.get_real_velocity
+func (self class) GetRealVelocity() Vector3.XYZ { //gd:CharacterBody3D.get_real_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_real_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -792,10 +795,10 @@ func (self class) GetRealVelocity() gd.Vector3 { //gd:CharacterBody3D.get_real_v
 Returns the floor's collision angle at the last collision point according to [param up_direction], which is [constant Vector3.UP] by default. This value is always positive and only valid after calling [method move_and_slide] and when [method is_on_floor] returns [code]true[/code].
 */
 //go:nosplit
-func (self class) GetFloorAngle(up_direction gd.Vector3) gd.Float { //gd:CharacterBody3D.get_floor_angle
+func (self class) GetFloorAngle(up_direction Vector3.XYZ) float64 { //gd:CharacterBody3D.get_floor_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, up_direction)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_floor_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -806,9 +809,9 @@ func (self class) GetFloorAngle(up_direction gd.Vector3) gd.Float { //gd:Charact
 Returns the linear velocity of the platform at the last collision point. Only valid after calling [method move_and_slide].
 */
 //go:nosplit
-func (self class) GetPlatformVelocity() gd.Vector3 { //gd:CharacterBody3D.get_platform_velocity
+func (self class) GetPlatformVelocity() Vector3.XYZ { //gd:CharacterBody3D.get_platform_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_platform_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -819,9 +822,9 @@ func (self class) GetPlatformVelocity() gd.Vector3 { //gd:CharacterBody3D.get_pl
 Returns the angular velocity of the platform at the last collision point. Only valid after calling [method move_and_slide].
 */
 //go:nosplit
-func (self class) GetPlatformAngularVelocity() gd.Vector3 { //gd:CharacterBody3D.get_platform_angular_velocity
+func (self class) GetPlatformAngularVelocity() Vector3.XYZ { //gd:CharacterBody3D.get_platform_angular_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_platform_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -832,9 +835,9 @@ func (self class) GetPlatformAngularVelocity() gd.Vector3 { //gd:CharacterBody3D
 Returns the number of times the body collided and changed direction during the last call to [method move_and_slide].
 */
 //go:nosplit
-func (self class) GetSlideCollisionCount() gd.Int { //gd:CharacterBody3D.get_slide_collision_count
+func (self class) GetSlideCollisionCount() int64 { //gd:CharacterBody3D.get_slide_collision_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_slide_collision_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -845,7 +848,7 @@ func (self class) GetSlideCollisionCount() gd.Int { //gd:CharacterBody3D.get_sli
 Returns a [KinematicCollision3D], which contains information about a collision that occurred during the last call to [method move_and_slide]. Since the body can collide several times in a single call to [method move_and_slide], you must specify the index of the collision in the range 0 to ([method get_slide_collision_count] - 1).
 */
 //go:nosplit
-func (self class) GetSlideCollision(slide_idx gd.Int) [1]gdclass.KinematicCollision3D { //gd:CharacterBody3D.get_slide_collision
+func (self class) GetSlideCollision(slide_idx int64) [1]gdclass.KinematicCollision3D { //gd:CharacterBody3D.get_slide_collision
 	var frame = callframe.New()
 	callframe.Arg(frame, slide_idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

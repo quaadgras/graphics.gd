@@ -10,16 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -81,7 +84,7 @@ func FallbackBaseScale() Float.X {
 }
 
 func SetFallbackBaseScale(value Float.X) {
-	class(self).SetFallbackBaseScale(gd.Float(value))
+	class(self).SetFallbackBaseScale(float64(value))
 }
 
 func FallbackFont() [1]gdclass.Font {
@@ -97,7 +100,7 @@ func FallbackFontSize() int {
 }
 
 func SetFallbackFontSize(value int) {
-	class(self).SetFallbackFontSize(gd.Int(value))
+	class(self).SetFallbackFontSize(int64(value))
 }
 
 func FallbackIcon() [1]gdclass.Texture2D {
@@ -144,7 +147,7 @@ func (self class) GetProjectTheme() [1]gdclass.Theme { //gd:ThemeDB.get_project_
 }
 
 //go:nosplit
-func (self class) SetFallbackBaseScale(base_scale gd.Float) { //gd:ThemeDB.set_fallback_base_scale
+func (self class) SetFallbackBaseScale(base_scale float64) { //gd:ThemeDB.set_fallback_base_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, base_scale)
 	var r_ret = callframe.Nil
@@ -153,9 +156,9 @@ func (self class) SetFallbackBaseScale(base_scale gd.Float) { //gd:ThemeDB.set_f
 }
 
 //go:nosplit
-func (self class) GetFallbackBaseScale() gd.Float { //gd:ThemeDB.get_fallback_base_scale
+func (self class) GetFallbackBaseScale() float64 { //gd:ThemeDB.get_fallback_base_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_fallback_base_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -182,7 +185,7 @@ func (self class) GetFallbackFont() [1]gdclass.Font { //gd:ThemeDB.get_fallback_
 }
 
 //go:nosplit
-func (self class) SetFallbackFontSize(font_size gd.Int) { //gd:ThemeDB.set_fallback_font_size
+func (self class) SetFallbackFontSize(font_size int64) { //gd:ThemeDB.set_fallback_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
 	var r_ret = callframe.Nil
@@ -191,9 +194,9 @@ func (self class) SetFallbackFontSize(font_size gd.Int) { //gd:ThemeDB.set_fallb
 }
 
 //go:nosplit
-func (self class) GetFallbackFontSize() gd.Int { //gd:ThemeDB.get_fallback_font_size
+func (self class) GetFallbackFontSize() int64 { //gd:ThemeDB.get_fallback_font_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_fallback_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

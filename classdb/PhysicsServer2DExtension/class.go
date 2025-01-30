@@ -9,16 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -585,7 +588,7 @@ func (Instance) _world_boundary_shape_create(impl func(ptr unsafe.Pointer) RID.A
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -596,7 +599,7 @@ func (Instance) _separation_ray_shape_create(impl func(ptr unsafe.Pointer) RID.A
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -607,7 +610,7 @@ func (Instance) _segment_shape_create(impl func(ptr unsafe.Pointer) RID.Any) (cb
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -618,7 +621,7 @@ func (Instance) _circle_shape_create(impl func(ptr unsafe.Pointer) RID.Any) (cb 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -629,7 +632,7 @@ func (Instance) _rectangle_shape_create(impl func(ptr unsafe.Pointer) RID.Any) (
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -640,7 +643,7 @@ func (Instance) _capsule_shape_create(impl func(ptr unsafe.Pointer) RID.Any) (cb
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -651,7 +654,7 @@ func (Instance) _convex_polygon_shape_create(impl func(ptr unsafe.Pointer) RID.A
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -662,7 +665,7 @@ func (Instance) _concave_polygon_shape_create(impl func(ptr unsafe.Pointer) RID.
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -671,10 +674,10 @@ Overridable version of [method PhysicsServer2D.shape_set_data].
 */
 func (Instance) _shape_set_data(impl func(ptr unsafe.Pointer, shape RID.Any, data any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var shape = gd.UnsafeGet[gd.RID](p_args, 0)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
-		defer pointers.End(data)
+		var data = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shape, data.Interface())
 	}
@@ -686,9 +689,9 @@ Overridable version of [PhysicsServer2D]'s internal [code]shape_get_custom_solve
 */
 func (Instance) _shape_set_custom_solver_bias(impl func(ptr unsafe.Pointer, shape RID.Any, bias Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var shape = gd.UnsafeGet[gd.RID](p_args, 0)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var bias = gd.UnsafeGet[gd.Float](p_args, 1)
+		var bias = gd.UnsafeGet[float64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shape, Float.X(bias))
@@ -700,7 +703,7 @@ Overridable version of [method PhysicsServer2D.shape_get_type].
 */
 func (Instance) _shape_get_type(impl func(ptr unsafe.Pointer, shape RID.Any) gdclass.PhysicsServer2DShapeType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var shape = gd.UnsafeGet[gd.RID](p_args, 0)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shape)
@@ -713,11 +716,11 @@ Overridable version of [method PhysicsServer2D.shape_get_data].
 */
 func (Instance) _shape_get_data(impl func(ptr unsafe.Pointer, shape RID.Any) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var shape = gd.UnsafeGet[gd.RID](p_args, 0)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shape)
-		ptr, ok := pointers.End(gd.NewVariant(ret))
+		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
 			return
@@ -732,11 +735,11 @@ Overridable version of [PhysicsServer2D]'s internal [code]shape_get_custom_solve
 */
 func (Instance) _shape_get_custom_solver_bias(impl func(ptr unsafe.Pointer, shape RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var shape = gd.UnsafeGet[gd.RID](p_args, 0)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shape)
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
@@ -746,21 +749,21 @@ Overridable version of [PhysicsServer2D]'s internal [code]shape_collide[/code] m
 */
 func (Instance) _shape_collide(impl func(ptr unsafe.Pointer, shape_A RID.Any, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Any, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results unsafe.Pointer, result_max int, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var shape_A = gd.UnsafeGet[gd.RID](p_args, 0)
+		var shape_A = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var xform_A = gd.UnsafeGet[gd.Transform2D](p_args, 1)
+		var xform_A = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
 
-		var motion_A = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var motion_A = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
-		var shape_B = gd.UnsafeGet[gd.RID](p_args, 3)
+		var shape_B = gd.UnsafeGet[RID.Any](p_args, 3)
 
-		var xform_B = gd.UnsafeGet[gd.Transform2D](p_args, 4)
+		var xform_B = gd.UnsafeGet[Transform2D.OriginXY](p_args, 4)
 
-		var motion_B = gd.UnsafeGet[gd.Vector2](p_args, 5)
+		var motion_B = gd.UnsafeGet[Vector2.XY](p_args, 5)
 
 		var results = gd.UnsafeGet[unsafe.Pointer](p_args, 6)
 
-		var result_max = gd.UnsafeGet[gd.Int](p_args, 7)
+		var result_max = gd.UnsafeGet[int64](p_args, 7)
 
 		var result_count = gd.UnsafeGet[*int32](p_args, 8)
 
@@ -777,7 +780,7 @@ func (Instance) _space_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.Exte
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -786,7 +789,7 @@ Overridable version of [method PhysicsServer2D.space_set_active].
 */
 func (Instance) _space_set_active(impl func(ptr unsafe.Pointer, space RID.Any, active bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var active = gd.UnsafeGet[bool](p_args, 1)
 
@@ -800,7 +803,7 @@ Overridable version of [method PhysicsServer2D.space_is_active].
 */
 func (Instance) _space_is_active(impl func(ptr unsafe.Pointer, space RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space)
@@ -813,11 +816,11 @@ Overridable version of [method PhysicsServer2D.space_set_param].
 */
 func (Instance) _space_set_param(impl func(ptr unsafe.Pointer, space RID.Any, param gdclass.PhysicsServer2DSpaceParameter, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DSpaceParameter](p_args, 1)
 
-		var value = gd.UnsafeGet[gd.Float](p_args, 2)
+		var value = gd.UnsafeGet[float64](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, space, param, Float.X(value))
@@ -829,13 +832,13 @@ Overridable version of [method PhysicsServer2D.space_get_param].
 */
 func (Instance) _space_get_param(impl func(ptr unsafe.Pointer, space RID.Any, param gdclass.PhysicsServer2DSpaceParameter) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DSpaceParameter](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space, param)
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
@@ -844,7 +847,7 @@ Overridable version of [method PhysicsServer2D.space_get_direct_state].
 */
 func (Instance) _space_get_direct_state(impl func(ptr unsafe.Pointer, space RID.Any) [1]gdclass.PhysicsDirectSpaceState2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space)
@@ -863,9 +866,9 @@ Overridable version of [PhysicsServer2D]'s internal [code]space_set_debug_contac
 */
 func (Instance) _space_set_debug_contacts(impl func(ptr unsafe.Pointer, space RID.Any, max_contacts int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var max_contacts = gd.UnsafeGet[gd.Int](p_args, 1)
+		var max_contacts = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, space, int(max_contacts))
@@ -878,7 +881,7 @@ Overridable version of [PhysicsServer2D]'s internal [code]space_get_contacts[/co
 */
 func (Instance) _space_get_contacts(impl func(ptr unsafe.Pointer, space RID.Any) []Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space)
@@ -897,11 +900,11 @@ Overridable version of [PhysicsServer2D]'s internal [code]space_get_contact_coun
 */
 func (Instance) _space_get_contact_count(impl func(ptr unsafe.Pointer, space RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -912,7 +915,7 @@ func (Instance) _area_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.Exten
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -921,9 +924,9 @@ Overridable version of [method PhysicsServer2D.area_set_space].
 */
 func (Instance) _area_set_space(impl func(ptr unsafe.Pointer, area RID.Any, space RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var space = gd.UnsafeGet[gd.RID](p_args, 1)
+		var space = gd.UnsafeGet[RID.Any](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, space)
@@ -935,11 +938,11 @@ Overridable version of [method PhysicsServer2D.area_get_space].
 */
 func (Instance) _area_get_space(impl func(ptr unsafe.Pointer, area RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -948,11 +951,11 @@ Overridable version of [method PhysicsServer2D.area_add_shape].
 */
 func (Instance) _area_add_shape(impl func(ptr unsafe.Pointer, area RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape = gd.UnsafeGet[gd.RID](p_args, 1)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 1)
 
-		var transform = gd.UnsafeGet[gd.Transform2D](p_args, 2)
+		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 2)
 
 		var disabled = gd.UnsafeGet[bool](p_args, 3)
 
@@ -966,11 +969,11 @@ Overridable version of [method PhysicsServer2D.area_set_shape].
 */
 func (Instance) _area_set_shape(impl func(ptr unsafe.Pointer, area RID.Any, shape_idx int, shape RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
-		var shape = gd.UnsafeGet[gd.RID](p_args, 2)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, int(shape_idx), shape)
@@ -982,11 +985,11 @@ Overridable version of [method PhysicsServer2D.area_set_shape_transform].
 */
 func (Instance) _area_set_shape_transform(impl func(ptr unsafe.Pointer, area RID.Any, shape_idx int, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
-		var transform = gd.UnsafeGet[gd.Transform2D](p_args, 2)
+		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, int(shape_idx), transform)
@@ -998,9 +1001,9 @@ Overridable version of [method PhysicsServer2D.area_set_shape_disabled].
 */
 func (Instance) _area_set_shape_disabled(impl func(ptr unsafe.Pointer, area RID.Any, shape_idx int, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		var disabled = gd.UnsafeGet[bool](p_args, 2)
 
@@ -1014,11 +1017,11 @@ Overridable version of [method PhysicsServer2D.area_get_shape_count].
 */
 func (Instance) _area_get_shape_count(impl func(ptr unsafe.Pointer, area RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -1027,13 +1030,13 @@ Overridable version of [method PhysicsServer2D.area_get_shape].
 */
 func (Instance) _area_get_shape(impl func(ptr unsafe.Pointer, area RID.Any, shape_idx int) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area, int(shape_idx))
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -1042,13 +1045,13 @@ Overridable version of [method PhysicsServer2D.area_get_shape_transform].
 */
 func (Instance) _area_get_shape_transform(impl func(ptr unsafe.Pointer, area RID.Any, shape_idx int) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area, int(shape_idx))
-		gd.UnsafeSet(p_back, gd.Transform2D(ret))
+		gd.UnsafeSet(p_back, Transform2D.OriginXY(ret))
 	}
 }
 
@@ -1057,9 +1060,9 @@ Overridable version of [method PhysicsServer2D.area_remove_shape].
 */
 func (Instance) _area_remove_shape(impl func(ptr unsafe.Pointer, area RID.Any, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, int(shape_idx))
@@ -1071,7 +1074,7 @@ Overridable version of [method PhysicsServer2D.area_clear_shapes].
 */
 func (Instance) _area_clear_shapes(impl func(ptr unsafe.Pointer, area RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area)
@@ -1083,9 +1086,9 @@ Overridable version of [method PhysicsServer2D.area_attach_object_instance_id].
 */
 func (Instance) _area_attach_object_instance_id(impl func(ptr unsafe.Pointer, area RID.Any, id int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var id = gd.UnsafeGet[gd.Int](p_args, 1)
+		var id = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, int(id))
@@ -1097,11 +1100,11 @@ Overridable version of [method PhysicsServer2D.area_get_object_instance_id].
 */
 func (Instance) _area_get_object_instance_id(impl func(ptr unsafe.Pointer, area RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -1110,9 +1113,9 @@ Overridable version of [method PhysicsServer2D.area_attach_canvas_instance_id].
 */
 func (Instance) _area_attach_canvas_instance_id(impl func(ptr unsafe.Pointer, area RID.Any, id int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var id = gd.UnsafeGet[gd.Int](p_args, 1)
+		var id = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, int(id))
@@ -1124,11 +1127,11 @@ Overridable version of [method PhysicsServer2D.area_get_canvas_instance_id].
 */
 func (Instance) _area_get_canvas_instance_id(impl func(ptr unsafe.Pointer, area RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -1137,12 +1140,12 @@ Overridable version of [method PhysicsServer2D.area_set_param].
 */
 func (Instance) _area_set_param(impl func(ptr unsafe.Pointer, area RID.Any, param gdclass.PhysicsServer2DAreaParameter, value any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DAreaParameter](p_args, 1)
 
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
-		defer pointers.End(value)
+		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, param, value.Interface())
 	}
@@ -1153,9 +1156,9 @@ Overridable version of [method PhysicsServer2D.area_set_transform].
 */
 func (Instance) _area_set_transform(impl func(ptr unsafe.Pointer, area RID.Any, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var transform = gd.UnsafeGet[gd.Transform2D](p_args, 1)
+		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, transform)
@@ -1167,13 +1170,13 @@ Overridable version of [method PhysicsServer2D.area_get_param].
 */
 func (Instance) _area_get_param(impl func(ptr unsafe.Pointer, area RID.Any, param gdclass.PhysicsServer2DAreaParameter) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DAreaParameter](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area, param)
-		ptr, ok := pointers.End(gd.NewVariant(ret))
+		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
 			return
@@ -1187,11 +1190,11 @@ Overridable version of [method PhysicsServer2D.area_get_transform].
 */
 func (Instance) _area_get_transform(impl func(ptr unsafe.Pointer, area RID.Any) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area)
-		gd.UnsafeSet(p_back, gd.Transform2D(ret))
+		gd.UnsafeSet(p_back, Transform2D.OriginXY(ret))
 	}
 }
 
@@ -1200,9 +1203,9 @@ Overridable version of [method PhysicsServer2D.area_set_collision_layer].
 */
 func (Instance) _area_set_collision_layer(impl func(ptr unsafe.Pointer, area RID.Any, layer int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var layer = gd.UnsafeGet[gd.Int](p_args, 1)
+		var layer = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, int(layer))
@@ -1214,11 +1217,11 @@ Overridable version of [method PhysicsServer2D.area_get_collision_layer].
 */
 func (Instance) _area_get_collision_layer(impl func(ptr unsafe.Pointer, area RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -1227,9 +1230,9 @@ Overridable version of [method PhysicsServer2D.area_set_collision_mask].
 */
 func (Instance) _area_set_collision_mask(impl func(ptr unsafe.Pointer, area RID.Any, mask int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var mask = gd.UnsafeGet[gd.Int](p_args, 1)
+		var mask = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, int(mask))
@@ -1241,11 +1244,11 @@ Overridable version of [method PhysicsServer2D.area_get_collision_mask].
 */
 func (Instance) _area_get_collision_mask(impl func(ptr unsafe.Pointer, area RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -1254,7 +1257,7 @@ Overridable version of [method PhysicsServer2D.area_set_monitorable].
 */
 func (Instance) _area_set_monitorable(impl func(ptr unsafe.Pointer, area RID.Any, monitorable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var monitorable = gd.UnsafeGet[bool](p_args, 1)
 
@@ -1269,7 +1272,7 @@ Overridable version of [PhysicsServer2D]'s internal [code]area_set_pickable[/cod
 */
 func (Instance) _area_set_pickable(impl func(ptr unsafe.Pointer, area RID.Any, pickable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var pickable = gd.UnsafeGet[bool](p_args, 1)
 
@@ -1283,7 +1286,7 @@ Overridable version of [method PhysicsServer2D.area_set_monitor_callback].
 */
 func (Instance) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area RID.Any, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callback))
@@ -1297,7 +1300,7 @@ Overridable version of [method PhysicsServer2D.area_set_area_monitor_callback].
 */
 func (Instance) _area_set_area_monitor_callback(impl func(ptr unsafe.Pointer, area RID.Any, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callback))
@@ -1313,7 +1316,7 @@ func (Instance) _body_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.Exten
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -1322,9 +1325,9 @@ Overridable version of [method PhysicsServer2D.body_set_space].
 */
 func (Instance) _body_set_space(impl func(ptr unsafe.Pointer, body RID.Any, space RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var space = gd.UnsafeGet[gd.RID](p_args, 1)
+		var space = gd.UnsafeGet[RID.Any](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, space)
@@ -1336,11 +1339,11 @@ Overridable version of [method PhysicsServer2D.body_get_space].
 */
 func (Instance) _body_get_space(impl func(ptr unsafe.Pointer, body RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -1349,7 +1352,7 @@ Overridable version of [method PhysicsServer2D.body_set_mode].
 */
 func (Instance) _body_set_mode(impl func(ptr unsafe.Pointer, body RID.Any, mode gdclass.PhysicsServer2DBodyMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var mode = gd.UnsafeGet[gdclass.PhysicsServer2DBodyMode](p_args, 1)
 
@@ -1363,7 +1366,7 @@ Overridable version of [method PhysicsServer2D.body_get_mode].
 */
 func (Instance) _body_get_mode(impl func(ptr unsafe.Pointer, body RID.Any) gdclass.PhysicsServer2DBodyMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -1376,11 +1379,11 @@ Overridable version of [method PhysicsServer2D.body_add_shape].
 */
 func (Instance) _body_add_shape(impl func(ptr unsafe.Pointer, body RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape = gd.UnsafeGet[gd.RID](p_args, 1)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 1)
 
-		var transform = gd.UnsafeGet[gd.Transform2D](p_args, 2)
+		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 2)
 
 		var disabled = gd.UnsafeGet[bool](p_args, 3)
 
@@ -1394,11 +1397,11 @@ Overridable version of [method PhysicsServer2D.body_set_shape].
 */
 func (Instance) _body_set_shape(impl func(ptr unsafe.Pointer, body RID.Any, shape_idx int, shape RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
-		var shape = gd.UnsafeGet[gd.RID](p_args, 2)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, int(shape_idx), shape)
@@ -1410,11 +1413,11 @@ Overridable version of [method PhysicsServer2D.body_set_shape_transform].
 */
 func (Instance) _body_set_shape_transform(impl func(ptr unsafe.Pointer, body RID.Any, shape_idx int, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
-		var transform = gd.UnsafeGet[gd.Transform2D](p_args, 2)
+		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, int(shape_idx), transform)
@@ -1426,11 +1429,11 @@ Overridable version of [method PhysicsServer2D.body_get_shape_count].
 */
 func (Instance) _body_get_shape_count(impl func(ptr unsafe.Pointer, body RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -1439,13 +1442,13 @@ Overridable version of [method PhysicsServer2D.body_get_shape].
 */
 func (Instance) _body_get_shape(impl func(ptr unsafe.Pointer, body RID.Any, shape_idx int) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body, int(shape_idx))
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -1454,13 +1457,13 @@ Overridable version of [method PhysicsServer2D.body_get_shape_transform].
 */
 func (Instance) _body_get_shape_transform(impl func(ptr unsafe.Pointer, body RID.Any, shape_idx int) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body, int(shape_idx))
-		gd.UnsafeSet(p_back, gd.Transform2D(ret))
+		gd.UnsafeSet(p_back, Transform2D.OriginXY(ret))
 	}
 }
 
@@ -1469,9 +1472,9 @@ Overridable version of [method PhysicsServer2D.body_set_shape_disabled].
 */
 func (Instance) _body_set_shape_disabled(impl func(ptr unsafe.Pointer, body RID.Any, shape_idx int, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		var disabled = gd.UnsafeGet[bool](p_args, 2)
 
@@ -1485,13 +1488,13 @@ Overridable version of [method PhysicsServer2D.body_set_shape_as_one_way_collisi
 */
 func (Instance) _body_set_shape_as_one_way_collision(impl func(ptr unsafe.Pointer, body RID.Any, shape_idx int, enable bool, margin Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		var enable = gd.UnsafeGet[bool](p_args, 2)
 
-		var margin = gd.UnsafeGet[gd.Float](p_args, 3)
+		var margin = gd.UnsafeGet[float64](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, int(shape_idx), enable, Float.X(margin))
@@ -1503,9 +1506,9 @@ Overridable version of [method PhysicsServer2D.body_remove_shape].
 */
 func (Instance) _body_remove_shape(impl func(ptr unsafe.Pointer, body RID.Any, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, int(shape_idx))
@@ -1517,7 +1520,7 @@ Overridable version of [method PhysicsServer2D.body_clear_shapes].
 */
 func (Instance) _body_clear_shapes(impl func(ptr unsafe.Pointer, body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body)
@@ -1529,9 +1532,9 @@ Overridable version of [method PhysicsServer2D.body_attach_object_instance_id].
 */
 func (Instance) _body_attach_object_instance_id(impl func(ptr unsafe.Pointer, body RID.Any, id int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var id = gd.UnsafeGet[gd.Int](p_args, 1)
+		var id = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, int(id))
@@ -1543,11 +1546,11 @@ Overridable version of [method PhysicsServer2D.body_get_object_instance_id].
 */
 func (Instance) _body_get_object_instance_id(impl func(ptr unsafe.Pointer, body RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -1556,9 +1559,9 @@ Overridable version of [method PhysicsServer2D.body_attach_canvas_instance_id].
 */
 func (Instance) _body_attach_canvas_instance_id(impl func(ptr unsafe.Pointer, body RID.Any, id int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var id = gd.UnsafeGet[gd.Int](p_args, 1)
+		var id = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, int(id))
@@ -1570,11 +1573,11 @@ Overridable version of [method PhysicsServer2D.body_get_canvas_instance_id].
 */
 func (Instance) _body_get_canvas_instance_id(impl func(ptr unsafe.Pointer, body RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -1583,7 +1586,7 @@ Overridable version of [method PhysicsServer2D.body_set_continuous_collision_det
 */
 func (Instance) _body_set_continuous_collision_detection_mode(impl func(ptr unsafe.Pointer, body RID.Any, mode gdclass.PhysicsServer2DCCDMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var mode = gd.UnsafeGet[gdclass.PhysicsServer2DCCDMode](p_args, 1)
 
@@ -1597,7 +1600,7 @@ Overridable version of [method PhysicsServer2D.body_get_continuous_collision_det
 */
 func (Instance) _body_get_continuous_collision_detection_mode(impl func(ptr unsafe.Pointer, body RID.Any) gdclass.PhysicsServer2DCCDMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -1610,9 +1613,9 @@ Overridable version of [method PhysicsServer2D.body_set_collision_layer].
 */
 func (Instance) _body_set_collision_layer(impl func(ptr unsafe.Pointer, body RID.Any, layer int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var layer = gd.UnsafeGet[gd.Int](p_args, 1)
+		var layer = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, int(layer))
@@ -1624,11 +1627,11 @@ Overridable version of [method PhysicsServer2D.body_get_collision_layer].
 */
 func (Instance) _body_get_collision_layer(impl func(ptr unsafe.Pointer, body RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -1637,9 +1640,9 @@ Overridable version of [method PhysicsServer2D.body_set_collision_mask].
 */
 func (Instance) _body_set_collision_mask(impl func(ptr unsafe.Pointer, body RID.Any, mask int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var mask = gd.UnsafeGet[gd.Int](p_args, 1)
+		var mask = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, int(mask))
@@ -1651,11 +1654,11 @@ Overridable version of [method PhysicsServer2D.body_get_collision_mask].
 */
 func (Instance) _body_get_collision_mask(impl func(ptr unsafe.Pointer, body RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -1664,9 +1667,9 @@ Overridable version of [method PhysicsServer2D.body_set_collision_priority].
 */
 func (Instance) _body_set_collision_priority(impl func(ptr unsafe.Pointer, body RID.Any, priority Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var priority = gd.UnsafeGet[gd.Float](p_args, 1)
+		var priority = gd.UnsafeGet[float64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, Float.X(priority))
@@ -1678,11 +1681,11 @@ Overridable version of [method PhysicsServer2D.body_get_collision_priority].
 */
 func (Instance) _body_get_collision_priority(impl func(ptr unsafe.Pointer, body RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
@@ -1691,12 +1694,12 @@ Overridable version of [method PhysicsServer2D.body_set_param].
 */
 func (Instance) _body_set_param(impl func(ptr unsafe.Pointer, body RID.Any, param gdclass.PhysicsServer2DBodyParameter, value any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DBodyParameter](p_args, 1)
 
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
-		defer pointers.End(value)
+		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, param, value.Interface())
 	}
@@ -1707,13 +1710,13 @@ Overridable version of [method PhysicsServer2D.body_get_param].
 */
 func (Instance) _body_get_param(impl func(ptr unsafe.Pointer, body RID.Any, param gdclass.PhysicsServer2DBodyParameter) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DBodyParameter](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body, param)
-		ptr, ok := pointers.End(gd.NewVariant(ret))
+		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
 			return
@@ -1727,7 +1730,7 @@ Overridable version of [method PhysicsServer2D.body_reset_mass_properties].
 */
 func (Instance) _body_reset_mass_properties(impl func(ptr unsafe.Pointer, body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body)
@@ -1739,12 +1742,12 @@ Overridable version of [method PhysicsServer2D.body_set_state].
 */
 func (Instance) _body_set_state(impl func(ptr unsafe.Pointer, body RID.Any, state gdclass.PhysicsServer2DBodyState, value any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var state = gd.UnsafeGet[gdclass.PhysicsServer2DBodyState](p_args, 1)
 
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
-		defer pointers.End(value)
+		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, state, value.Interface())
 	}
@@ -1755,13 +1758,13 @@ Overridable version of [method PhysicsServer2D.body_get_state].
 */
 func (Instance) _body_get_state(impl func(ptr unsafe.Pointer, body RID.Any, state gdclass.PhysicsServer2DBodyState) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var state = gd.UnsafeGet[gdclass.PhysicsServer2DBodyState](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body, state)
-		ptr, ok := pointers.End(gd.NewVariant(ret))
+		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
 			return
@@ -1775,9 +1778,9 @@ Overridable version of [method PhysicsServer2D.body_apply_central_impulse].
 */
 func (Instance) _body_apply_central_impulse(impl func(ptr unsafe.Pointer, body RID.Any, impulse Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var impulse = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var impulse = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, impulse)
@@ -1789,9 +1792,9 @@ Overridable version of [method PhysicsServer2D.body_apply_torque_impulse].
 */
 func (Instance) _body_apply_torque_impulse(impl func(ptr unsafe.Pointer, body RID.Any, impulse Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var impulse = gd.UnsafeGet[gd.Float](p_args, 1)
+		var impulse = gd.UnsafeGet[float64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, Float.X(impulse))
@@ -1803,11 +1806,11 @@ Overridable version of [method PhysicsServer2D.body_apply_impulse].
 */
 func (Instance) _body_apply_impulse(impl func(ptr unsafe.Pointer, body RID.Any, impulse Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var impulse = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var impulse = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
-		var position = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var position = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, impulse, position)
@@ -1819,9 +1822,9 @@ Overridable version of [method PhysicsServer2D.body_apply_central_force].
 */
 func (Instance) _body_apply_central_force(impl func(ptr unsafe.Pointer, body RID.Any, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var force = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, force)
@@ -1833,11 +1836,11 @@ Overridable version of [method PhysicsServer2D.body_apply_force].
 */
 func (Instance) _body_apply_force(impl func(ptr unsafe.Pointer, body RID.Any, force Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var force = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
-		var position = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var position = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, force, position)
@@ -1849,9 +1852,9 @@ Overridable version of [method PhysicsServer2D.body_apply_torque].
 */
 func (Instance) _body_apply_torque(impl func(ptr unsafe.Pointer, body RID.Any, torque Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var torque = gd.UnsafeGet[gd.Float](p_args, 1)
+		var torque = gd.UnsafeGet[float64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, Float.X(torque))
@@ -1863,9 +1866,9 @@ Overridable version of [method PhysicsServer2D.body_add_constant_central_force].
 */
 func (Instance) _body_add_constant_central_force(impl func(ptr unsafe.Pointer, body RID.Any, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var force = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, force)
@@ -1877,11 +1880,11 @@ Overridable version of [method PhysicsServer2D.body_add_constant_force].
 */
 func (Instance) _body_add_constant_force(impl func(ptr unsafe.Pointer, body RID.Any, force Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var force = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
-		var position = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var position = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, force, position)
@@ -1893,9 +1896,9 @@ Overridable version of [method PhysicsServer2D.body_add_constant_torque].
 */
 func (Instance) _body_add_constant_torque(impl func(ptr unsafe.Pointer, body RID.Any, torque Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var torque = gd.UnsafeGet[gd.Float](p_args, 1)
+		var torque = gd.UnsafeGet[float64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, Float.X(torque))
@@ -1907,9 +1910,9 @@ Overridable version of [method PhysicsServer2D.body_set_constant_force].
 */
 func (Instance) _body_set_constant_force(impl func(ptr unsafe.Pointer, body RID.Any, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var force = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, force)
@@ -1921,11 +1924,11 @@ Overridable version of [method PhysicsServer2D.body_get_constant_force].
 */
 func (Instance) _body_get_constant_force(impl func(ptr unsafe.Pointer, body RID.Any) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		gd.UnsafeSet(p_back, gd.Vector2(ret))
+		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
 }
 
@@ -1934,9 +1937,9 @@ Overridable version of [method PhysicsServer2D.body_set_constant_torque].
 */
 func (Instance) _body_set_constant_torque(impl func(ptr unsafe.Pointer, body RID.Any, torque Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var torque = gd.UnsafeGet[gd.Float](p_args, 1)
+		var torque = gd.UnsafeGet[float64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, Float.X(torque))
@@ -1948,11 +1951,11 @@ Overridable version of [method PhysicsServer2D.body_get_constant_torque].
 */
 func (Instance) _body_get_constant_torque(impl func(ptr unsafe.Pointer, body RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
@@ -1961,9 +1964,9 @@ Overridable version of [method PhysicsServer2D.body_set_axis_velocity].
 */
 func (Instance) _body_set_axis_velocity(impl func(ptr unsafe.Pointer, body RID.Any, axis_velocity Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var axis_velocity = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var axis_velocity = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, axis_velocity)
@@ -1975,9 +1978,9 @@ Overridable version of [method PhysicsServer2D.body_add_collision_exception].
 */
 func (Instance) _body_add_collision_exception(impl func(ptr unsafe.Pointer, body RID.Any, excepted_body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var excepted_body = gd.UnsafeGet[gd.RID](p_args, 1)
+		var excepted_body = gd.UnsafeGet[RID.Any](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, excepted_body)
@@ -1989,9 +1992,9 @@ Overridable version of [method PhysicsServer2D.body_remove_collision_exception].
 */
 func (Instance) _body_remove_collision_exception(impl func(ptr unsafe.Pointer, body RID.Any, excepted_body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var excepted_body = gd.UnsafeGet[gd.RID](p_args, 1)
+		var excepted_body = gd.UnsafeGet[RID.Any](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, excepted_body)
@@ -2004,11 +2007,11 @@ Overridable version of [PhysicsServer2D]'s internal [code]body_get_collision_exc
 */
 func (Instance) _body_get_collision_exceptions(impl func(ptr unsafe.Pointer, body RID.Any) []RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.RID]](ret)))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[RID.Any]](ret)))
 
 		if !ok {
 			return
@@ -2022,9 +2025,9 @@ Overridable version of [method PhysicsServer2D.body_set_max_contacts_reported].
 */
 func (Instance) _body_set_max_contacts_reported(impl func(ptr unsafe.Pointer, body RID.Any, amount int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var amount = gd.UnsafeGet[gd.Int](p_args, 1)
+		var amount = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, int(amount))
@@ -2036,11 +2039,11 @@ Overridable version of [method PhysicsServer2D.body_get_max_contacts_reported].
 */
 func (Instance) _body_get_max_contacts_reported(impl func(ptr unsafe.Pointer, body RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -2050,9 +2053,9 @@ Overridable version of [PhysicsServer2D]'s internal [code]body_set_contacts_repo
 */
 func (Instance) _body_set_contacts_reported_depth_threshold(impl func(ptr unsafe.Pointer, body RID.Any, threshold Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var threshold = gd.UnsafeGet[gd.Float](p_args, 1)
+		var threshold = gd.UnsafeGet[float64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, Float.X(threshold))
@@ -2065,11 +2068,11 @@ Overridable version of [PhysicsServer2D]'s internal [code]body_get_contacts_repo
 */
 func (Instance) _body_get_contacts_reported_depth_threshold(impl func(ptr unsafe.Pointer, body RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
@@ -2078,7 +2081,7 @@ Overridable version of [method PhysicsServer2D.body_set_omit_force_integration].
 */
 func (Instance) _body_set_omit_force_integration(impl func(ptr unsafe.Pointer, body RID.Any, enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var enable = gd.UnsafeGet[bool](p_args, 1)
 
@@ -2092,7 +2095,7 @@ Overridable version of [method PhysicsServer2D.body_is_omitting_force_integratio
 */
 func (Instance) _body_is_omitting_force_integration(impl func(ptr unsafe.Pointer, body RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -2106,7 +2109,7 @@ Overridable version of [method PhysicsServer2D.body_set_state_sync_callback].
 */
 func (Instance) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body RID.Any, callable Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callable))
@@ -2120,12 +2123,12 @@ Overridable version of [method PhysicsServer2D.body_set_force_integration_callba
 */
 func (Instance) _body_set_force_integration_callback(impl func(ptr unsafe.Pointer, body RID.Any, callable Callable.Function, userdata any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callable))
-		var userdata = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
-		defer pointers.End(userdata)
+		var userdata = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		defer pointers.End(gd.InternalVariant(userdata))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, callable, userdata.Interface())
 	}
@@ -2137,19 +2140,19 @@ Overridable version of [PhysicsServer2D]'s internal [code]shape_collide[/code] m
 */
 func (Instance) _body_collide_shape(impl func(ptr unsafe.Pointer, body RID.Any, body_shape int, shape RID.Any, shape_xform Transform2D.OriginXY, motion Vector2.XY, results unsafe.Pointer, result_max int, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var body_shape = gd.UnsafeGet[gd.Int](p_args, 1)
+		var body_shape = gd.UnsafeGet[int64](p_args, 1)
 
-		var shape = gd.UnsafeGet[gd.RID](p_args, 2)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 2)
 
-		var shape_xform = gd.UnsafeGet[gd.Transform2D](p_args, 3)
+		var shape_xform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 3)
 
-		var motion = gd.UnsafeGet[gd.Vector2](p_args, 4)
+		var motion = gd.UnsafeGet[Vector2.XY](p_args, 4)
 
 		var results = gd.UnsafeGet[unsafe.Pointer](p_args, 5)
 
-		var result_max = gd.UnsafeGet[gd.Int](p_args, 6)
+		var result_max = gd.UnsafeGet[int64](p_args, 6)
 
 		var result_count = gd.UnsafeGet[*int32](p_args, 7)
 
@@ -2165,7 +2168,7 @@ Overridable version of [PhysicsServer2D]'s internal [code]body_set_pickable[/cod
 */
 func (Instance) _body_set_pickable(impl func(ptr unsafe.Pointer, body RID.Any, pickable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var pickable = gd.UnsafeGet[bool](p_args, 1)
 
@@ -2179,7 +2182,7 @@ Overridable version of [method PhysicsServer2D.body_get_direct_state].
 */
 func (Instance) _body_get_direct_state(impl func(ptr unsafe.Pointer, body RID.Any) [1]gdclass.PhysicsDirectBodyState2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -2197,13 +2200,13 @@ Overridable version of [method PhysicsServer2D.body_test_motion]. Unlike the exp
 */
 func (Instance) _body_test_motion(impl func(ptr unsafe.Pointer, body RID.Any, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var from = gd.UnsafeGet[gd.Transform2D](p_args, 1)
+		var from = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
 
-		var motion = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var motion = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
-		var margin = gd.UnsafeGet[gd.Float](p_args, 3)
+		var margin = gd.UnsafeGet[float64](p_args, 3)
 
 		var collide_separation_ray = gd.UnsafeGet[bool](p_args, 4)
 
@@ -2224,7 +2227,7 @@ func (Instance) _joint_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.Exte
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -2233,7 +2236,7 @@ Overridable version of [method PhysicsServer2D.joint_clear].
 */
 func (Instance) _joint_clear(impl func(ptr unsafe.Pointer, joint RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, joint)
@@ -2245,11 +2248,11 @@ Overridable version of [method PhysicsServer2D.joint_set_param].
 */
 func (Instance) _joint_set_param(impl func(ptr unsafe.Pointer, joint RID.Any, param gdclass.PhysicsServer2DJointParam, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DJointParam](p_args, 1)
 
-		var value = gd.UnsafeGet[gd.Float](p_args, 2)
+		var value = gd.UnsafeGet[float64](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, joint, param, Float.X(value))
@@ -2261,13 +2264,13 @@ Overridable version of [method PhysicsServer2D.joint_get_param].
 */
 func (Instance) _joint_get_param(impl func(ptr unsafe.Pointer, joint RID.Any, param gdclass.PhysicsServer2DJointParam) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DJointParam](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, joint, param)
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
@@ -2276,7 +2279,7 @@ Overridable version of [method PhysicsServer2D.joint_disable_collisions_between_
 */
 func (Instance) _joint_disable_collisions_between_bodies(impl func(ptr unsafe.Pointer, joint RID.Any, disable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var disable = gd.UnsafeGet[bool](p_args, 1)
 
@@ -2290,7 +2293,7 @@ Overridable version of [method PhysicsServer2D.joint_is_disabled_collisions_betw
 */
 func (Instance) _joint_is_disabled_collisions_between_bodies(impl func(ptr unsafe.Pointer, joint RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, joint)
@@ -2303,13 +2306,13 @@ Overridable version of [method PhysicsServer2D.joint_make_pin].
 */
 func (Instance) _joint_make_pin(impl func(ptr unsafe.Pointer, joint RID.Any, anchor Vector2.XY, body_a RID.Any, body_b RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var anchor = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var anchor = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
-		var body_a = gd.UnsafeGet[gd.RID](p_args, 2)
+		var body_a = gd.UnsafeGet[RID.Any](p_args, 2)
 
-		var body_b = gd.UnsafeGet[gd.RID](p_args, 3)
+		var body_b = gd.UnsafeGet[RID.Any](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, joint, anchor, body_a, body_b)
@@ -2321,17 +2324,17 @@ Overridable version of [method PhysicsServer2D.joint_make_groove].
 */
 func (Instance) _joint_make_groove(impl func(ptr unsafe.Pointer, joint RID.Any, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a RID.Any, body_b RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var a_groove1 = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var a_groove1 = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
-		var a_groove2 = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var a_groove2 = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
-		var b_anchor = gd.UnsafeGet[gd.Vector2](p_args, 3)
+		var b_anchor = gd.UnsafeGet[Vector2.XY](p_args, 3)
 
-		var body_a = gd.UnsafeGet[gd.RID](p_args, 4)
+		var body_a = gd.UnsafeGet[RID.Any](p_args, 4)
 
-		var body_b = gd.UnsafeGet[gd.RID](p_args, 5)
+		var body_b = gd.UnsafeGet[RID.Any](p_args, 5)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, joint, a_groove1, a_groove2, b_anchor, body_a, body_b)
@@ -2343,15 +2346,15 @@ Overridable version of [method PhysicsServer2D.joint_make_damped_spring].
 */
 func (Instance) _joint_make_damped_spring(impl func(ptr unsafe.Pointer, joint RID.Any, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Any, body_b RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var anchor_a = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var anchor_a = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
-		var anchor_b = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var anchor_b = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
-		var body_a = gd.UnsafeGet[gd.RID](p_args, 3)
+		var body_a = gd.UnsafeGet[RID.Any](p_args, 3)
 
-		var body_b = gd.UnsafeGet[gd.RID](p_args, 4)
+		var body_b = gd.UnsafeGet[RID.Any](p_args, 4)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, joint, anchor_a, anchor_b, body_a, body_b)
@@ -2363,7 +2366,7 @@ Overridable version of [method PhysicsServer2D.pin_joint_set_flag].
 */
 func (Instance) _pin_joint_set_flag(impl func(ptr unsafe.Pointer, joint RID.Any, flag gdclass.PhysicsServer2DPinJointFlag, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var flag = gd.UnsafeGet[gdclass.PhysicsServer2DPinJointFlag](p_args, 1)
 
@@ -2379,7 +2382,7 @@ Overridable version of [method PhysicsServer2D.pin_joint_get_flag].
 */
 func (Instance) _pin_joint_get_flag(impl func(ptr unsafe.Pointer, joint RID.Any, flag gdclass.PhysicsServer2DPinJointFlag) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var flag = gd.UnsafeGet[gdclass.PhysicsServer2DPinJointFlag](p_args, 1)
 
@@ -2394,11 +2397,11 @@ Overridable version of [method PhysicsServer2D.pin_joint_set_param].
 */
 func (Instance) _pin_joint_set_param(impl func(ptr unsafe.Pointer, joint RID.Any, param gdclass.PhysicsServer2DPinJointParam, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DPinJointParam](p_args, 1)
 
-		var value = gd.UnsafeGet[gd.Float](p_args, 2)
+		var value = gd.UnsafeGet[float64](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, joint, param, Float.X(value))
@@ -2410,13 +2413,13 @@ Overridable version of [method PhysicsServer2D.pin_joint_get_param].
 */
 func (Instance) _pin_joint_get_param(impl func(ptr unsafe.Pointer, joint RID.Any, param gdclass.PhysicsServer2DPinJointParam) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DPinJointParam](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, joint, param)
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
@@ -2425,11 +2428,11 @@ Overridable version of [method PhysicsServer2D.damped_spring_joint_set_param].
 */
 func (Instance) _damped_spring_joint_set_param(impl func(ptr unsafe.Pointer, joint RID.Any, param gdclass.PhysicsServer2DDampedSpringParam, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DDampedSpringParam](p_args, 1)
 
-		var value = gd.UnsafeGet[gd.Float](p_args, 2)
+		var value = gd.UnsafeGet[float64](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, joint, param, Float.X(value))
@@ -2441,13 +2444,13 @@ Overridable version of [method PhysicsServer2D.damped_spring_joint_get_param].
 */
 func (Instance) _damped_spring_joint_get_param(impl func(ptr unsafe.Pointer, joint RID.Any, param gdclass.PhysicsServer2DDampedSpringParam) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DDampedSpringParam](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, joint, param)
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
@@ -2456,7 +2459,7 @@ Overridable version of [method PhysicsServer2D.joint_get_type].
 */
 func (Instance) _joint_get_type(impl func(ptr unsafe.Pointer, joint RID.Any) gdclass.PhysicsServer2DJointType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, joint)
@@ -2469,7 +2472,7 @@ Overridable version of [method PhysicsServer2D.free_rid].
 */
 func (Instance) _free_rid(impl func(ptr unsafe.Pointer, rid RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var rid = gd.UnsafeGet[gd.RID](p_args, 0)
+		var rid = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, rid)
@@ -2505,7 +2508,7 @@ Overridable version of [PhysicsServer2D]'s internal [code skip-lint]step[/code] 
 */
 func (Instance) _step(impl func(ptr unsafe.Pointer, step Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var step = gd.UnsafeGet[gd.Float](p_args, 0)
+		var step = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(step))
@@ -2577,7 +2580,7 @@ func (Instance) _get_process_info(impl func(ptr unsafe.Pointer, process_info gdc
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, process_info)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -2585,14 +2588,14 @@ func (Instance) _get_process_info(impl func(ptr unsafe.Pointer, process_info gdc
 Returns [code]true[/code] if the body with the given [RID] is being excluded from [method _body_test_motion]. See also [method Object.get_instance_id].
 */
 func (self Instance) BodyTestMotionIsExcludingBody(body RID.Body2D) bool { //gd:PhysicsServer2DExtension.body_test_motion_is_excluding_body
-	return bool(class(self).BodyTestMotionIsExcludingBody(gd.RID(body)))
+	return bool(class(self).BodyTestMotionIsExcludingBody(RID.Any(body)))
 }
 
 /*
 Returns [code]true[/code] if the object with the given instance ID is being excluded from [method _body_test_motion]. See also [method Object.get_instance_id].
 */
 func (self Instance) BodyTestMotionIsExcludingObject(obj int) bool { //gd:PhysicsServer2DExtension.body_test_motion_is_excluding_object
-	return bool(class(self).BodyTestMotionIsExcludingObject(gd.Int(obj)))
+	return bool(class(self).BodyTestMotionIsExcludingObject(int64(obj)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -2616,7 +2619,7 @@ func New() Instance {
 /*
 Overridable version of [method PhysicsServer2D.world_boundary_shape_create].
 */
-func (class) _world_boundary_shape_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _world_boundary_shape_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -2627,7 +2630,7 @@ func (class) _world_boundary_shape_create(impl func(ptr unsafe.Pointer) gd.RID) 
 /*
 Overridable version of [method PhysicsServer2D.separation_ray_shape_create].
 */
-func (class) _separation_ray_shape_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _separation_ray_shape_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -2638,7 +2641,7 @@ func (class) _separation_ray_shape_create(impl func(ptr unsafe.Pointer) gd.RID) 
 /*
 Overridable version of [method PhysicsServer2D.segment_shape_create].
 */
-func (class) _segment_shape_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _segment_shape_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -2649,7 +2652,7 @@ func (class) _segment_shape_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.
 /*
 Overridable version of [method PhysicsServer2D.circle_shape_create].
 */
-func (class) _circle_shape_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _circle_shape_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -2660,7 +2663,7 @@ func (class) _circle_shape_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.E
 /*
 Overridable version of [method PhysicsServer2D.rectangle_shape_create].
 */
-func (class) _rectangle_shape_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _rectangle_shape_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -2671,7 +2674,7 @@ func (class) _rectangle_shape_create(impl func(ptr unsafe.Pointer) gd.RID) (cb g
 /*
 Overridable version of [method PhysicsServer2D.capsule_shape_create].
 */
-func (class) _capsule_shape_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _capsule_shape_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -2682,7 +2685,7 @@ func (class) _capsule_shape_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.
 /*
 Overridable version of [method PhysicsServer2D.convex_polygon_shape_create].
 */
-func (class) _convex_polygon_shape_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _convex_polygon_shape_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -2693,7 +2696,7 @@ func (class) _convex_polygon_shape_create(impl func(ptr unsafe.Pointer) gd.RID) 
 /*
 Overridable version of [method PhysicsServer2D.concave_polygon_shape_create].
 */
-func (class) _concave_polygon_shape_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _concave_polygon_shape_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -2704,12 +2707,12 @@ func (class) _concave_polygon_shape_create(impl func(ptr unsafe.Pointer) gd.RID)
 /*
 Overridable version of [method PhysicsServer2D.shape_set_data].
 */
-func (class) _shape_set_data(impl func(ptr unsafe.Pointer, shape gd.RID, data gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shape_set_data(impl func(ptr unsafe.Pointer, shape RID.Any, data variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var shape = gd.UnsafeGet[gd.RID](p_args, 0)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
-		defer pointers.End(data)
+		var data = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shape, data)
 	}
@@ -2719,11 +2722,11 @@ func (class) _shape_set_data(impl func(ptr unsafe.Pointer, shape gd.RID, data gd
 Should set the custom solver bias for the given [param shape]. It defines how much bodies are forced to separate on contact.
 Overridable version of [PhysicsServer2D]'s internal [code]shape_get_custom_solver_bias[/code] method. Corresponds to [member Shape2D.custom_solver_bias].
 */
-func (class) _shape_set_custom_solver_bias(impl func(ptr unsafe.Pointer, shape gd.RID, bias gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shape_set_custom_solver_bias(impl func(ptr unsafe.Pointer, shape RID.Any, bias float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var shape = gd.UnsafeGet[gd.RID](p_args, 0)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var bias = gd.UnsafeGet[gd.Float](p_args, 1)
+		var bias = gd.UnsafeGet[float64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shape, bias)
@@ -2733,9 +2736,9 @@ func (class) _shape_set_custom_solver_bias(impl func(ptr unsafe.Pointer, shape g
 /*
 Overridable version of [method PhysicsServer2D.shape_get_type].
 */
-func (class) _shape_get_type(impl func(ptr unsafe.Pointer, shape gd.RID) gdclass.PhysicsServer2DShapeType) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shape_get_type(impl func(ptr unsafe.Pointer, shape RID.Any) gdclass.PhysicsServer2DShapeType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var shape = gd.UnsafeGet[gd.RID](p_args, 0)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shape)
@@ -2746,13 +2749,13 @@ func (class) _shape_get_type(impl func(ptr unsafe.Pointer, shape gd.RID) gdclass
 /*
 Overridable version of [method PhysicsServer2D.shape_get_data].
 */
-func (class) _shape_get_data(impl func(ptr unsafe.Pointer, shape gd.RID) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shape_get_data(impl func(ptr unsafe.Pointer, shape RID.Any) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var shape = gd.UnsafeGet[gd.RID](p_args, 0)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shape)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
 		if !ok {
 			return
@@ -2765,9 +2768,9 @@ func (class) _shape_get_data(impl func(ptr unsafe.Pointer, shape gd.RID) gd.Vari
 Should return the custom solver bias of the given [param shape], which defines how much bodies are forced to separate on contact when this shape is involved.
 Overridable version of [PhysicsServer2D]'s internal [code]shape_get_custom_solver_bias[/code] method. Corresponds to [member Shape2D.custom_solver_bias].
 */
-func (class) _shape_get_custom_solver_bias(impl func(ptr unsafe.Pointer, shape gd.RID) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shape_get_custom_solver_bias(impl func(ptr unsafe.Pointer, shape RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var shape = gd.UnsafeGet[gd.RID](p_args, 0)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shape)
@@ -2779,23 +2782,23 @@ func (class) _shape_get_custom_solver_bias(impl func(ptr unsafe.Pointer, shape g
 Given two shapes and their parameters, should return [code]true[/code] if a collision between the two would occur, with additional details passed in [param results].
 Overridable version of [PhysicsServer2D]'s internal [code]shape_collide[/code] method. Corresponds to [method PhysicsDirectSpaceState2D.collide_shape].
 */
-func (class) _shape_collide(impl func(ptr unsafe.Pointer, shape_A gd.RID, xform_A gd.Transform2D, motion_A gd.Vector2, shape_B gd.RID, xform_B gd.Transform2D, motion_B gd.Vector2, results unsafe.Pointer, result_max gd.Int, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shape_collide(impl func(ptr unsafe.Pointer, shape_A RID.Any, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Any, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results unsafe.Pointer, result_max int64, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var shape_A = gd.UnsafeGet[gd.RID](p_args, 0)
+		var shape_A = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var xform_A = gd.UnsafeGet[gd.Transform2D](p_args, 1)
+		var xform_A = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
 
-		var motion_A = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var motion_A = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
-		var shape_B = gd.UnsafeGet[gd.RID](p_args, 3)
+		var shape_B = gd.UnsafeGet[RID.Any](p_args, 3)
 
-		var xform_B = gd.UnsafeGet[gd.Transform2D](p_args, 4)
+		var xform_B = gd.UnsafeGet[Transform2D.OriginXY](p_args, 4)
 
-		var motion_B = gd.UnsafeGet[gd.Vector2](p_args, 5)
+		var motion_B = gd.UnsafeGet[Vector2.XY](p_args, 5)
 
 		var results = gd.UnsafeGet[unsafe.Pointer](p_args, 6)
 
-		var result_max = gd.UnsafeGet[gd.Int](p_args, 7)
+		var result_max = gd.UnsafeGet[int64](p_args, 7)
 
 		var result_count = gd.UnsafeGet[*int32](p_args, 8)
 
@@ -2808,7 +2811,7 @@ func (class) _shape_collide(impl func(ptr unsafe.Pointer, shape_A gd.RID, xform_
 /*
 Overridable version of [method PhysicsServer2D.space_create].
 */
-func (class) _space_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _space_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -2819,9 +2822,9 @@ func (class) _space_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.Extensio
 /*
 Overridable version of [method PhysicsServer2D.space_set_active].
 */
-func (class) _space_set_active(impl func(ptr unsafe.Pointer, space gd.RID, active bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _space_set_active(impl func(ptr unsafe.Pointer, space RID.Any, active bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var active = gd.UnsafeGet[bool](p_args, 1)
 
@@ -2833,9 +2836,9 @@ func (class) _space_set_active(impl func(ptr unsafe.Pointer, space gd.RID, activ
 /*
 Overridable version of [method PhysicsServer2D.space_is_active].
 */
-func (class) _space_is_active(impl func(ptr unsafe.Pointer, space gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _space_is_active(impl func(ptr unsafe.Pointer, space RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space)
@@ -2846,13 +2849,13 @@ func (class) _space_is_active(impl func(ptr unsafe.Pointer, space gd.RID) bool) 
 /*
 Overridable version of [method PhysicsServer2D.space_set_param].
 */
-func (class) _space_set_param(impl func(ptr unsafe.Pointer, space gd.RID, param gdclass.PhysicsServer2DSpaceParameter, value gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _space_set_param(impl func(ptr unsafe.Pointer, space RID.Any, param gdclass.PhysicsServer2DSpaceParameter, value float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DSpaceParameter](p_args, 1)
 
-		var value = gd.UnsafeGet[gd.Float](p_args, 2)
+		var value = gd.UnsafeGet[float64](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, space, param, value)
@@ -2862,9 +2865,9 @@ func (class) _space_set_param(impl func(ptr unsafe.Pointer, space gd.RID, param 
 /*
 Overridable version of [method PhysicsServer2D.space_get_param].
 */
-func (class) _space_get_param(impl func(ptr unsafe.Pointer, space gd.RID, param gdclass.PhysicsServer2DSpaceParameter) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _space_get_param(impl func(ptr unsafe.Pointer, space RID.Any, param gdclass.PhysicsServer2DSpaceParameter) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DSpaceParameter](p_args, 1)
 
@@ -2877,9 +2880,9 @@ func (class) _space_get_param(impl func(ptr unsafe.Pointer, space gd.RID, param 
 /*
 Overridable version of [method PhysicsServer2D.space_get_direct_state].
 */
-func (class) _space_get_direct_state(impl func(ptr unsafe.Pointer, space gd.RID) [1]gdclass.PhysicsDirectSpaceState2D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _space_get_direct_state(impl func(ptr unsafe.Pointer, space RID.Any) [1]gdclass.PhysicsDirectSpaceState2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space)
@@ -2896,11 +2899,11 @@ func (class) _space_get_direct_state(impl func(ptr unsafe.Pointer, space gd.RID)
 Used internally to allow the given [param space] to store contact points, up to [param max_contacts]. This is automatically set for the main [World2D]'s space when [member SceneTree.debug_collisions_hint] is [code]true[/code], or by checking "Visible Collision Shapes" in the editor. Only works in debug builds.
 Overridable version of [PhysicsServer2D]'s internal [code]space_set_debug_contacts[/code] method.
 */
-func (class) _space_set_debug_contacts(impl func(ptr unsafe.Pointer, space gd.RID, max_contacts gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _space_set_debug_contacts(impl func(ptr unsafe.Pointer, space RID.Any, max_contacts int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var max_contacts = gd.UnsafeGet[gd.Int](p_args, 1)
+		var max_contacts = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, space, max_contacts)
@@ -2911,9 +2914,9 @@ func (class) _space_set_debug_contacts(impl func(ptr unsafe.Pointer, space gd.RI
 Should return the positions of all contacts that have occurred during the last physics step in the given [param space]. See also [method _space_get_contact_count] and [method _space_set_debug_contacts].
 Overridable version of [PhysicsServer2D]'s internal [code]space_get_contacts[/code] method.
 */
-func (class) _space_get_contacts(impl func(ptr unsafe.Pointer, space gd.RID) Packed.Array[Vector2.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _space_get_contacts(impl func(ptr unsafe.Pointer, space RID.Any) Packed.Array[Vector2.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space)
@@ -2930,9 +2933,9 @@ func (class) _space_get_contacts(impl func(ptr unsafe.Pointer, space gd.RID) Pac
 Should return how many contacts have occurred during the last physics step in the given [param space]. See also [method _space_get_contacts] and [method _space_set_debug_contacts].
 Overridable version of [PhysicsServer2D]'s internal [code]space_get_contact_count[/code] method.
 */
-func (class) _space_get_contact_count(impl func(ptr unsafe.Pointer, space gd.RID) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _space_get_contact_count(impl func(ptr unsafe.Pointer, space RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var space = gd.UnsafeGet[gd.RID](p_args, 0)
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space)
@@ -2943,7 +2946,7 @@ func (class) _space_get_contact_count(impl func(ptr unsafe.Pointer, space gd.RID
 /*
 Overridable version of [method PhysicsServer2D.area_create].
 */
-func (class) _area_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -2954,11 +2957,11 @@ func (class) _area_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.Extension
 /*
 Overridable version of [method PhysicsServer2D.area_set_space].
 */
-func (class) _area_set_space(impl func(ptr unsafe.Pointer, area gd.RID, space gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_set_space(impl func(ptr unsafe.Pointer, area RID.Any, space RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var space = gd.UnsafeGet[gd.RID](p_args, 1)
+		var space = gd.UnsafeGet[RID.Any](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, space)
@@ -2968,9 +2971,9 @@ func (class) _area_set_space(impl func(ptr unsafe.Pointer, area gd.RID, space gd
 /*
 Overridable version of [method PhysicsServer2D.area_get_space].
 */
-func (class) _area_get_space(impl func(ptr unsafe.Pointer, area gd.RID) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_get_space(impl func(ptr unsafe.Pointer, area RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area)
@@ -2981,13 +2984,13 @@ func (class) _area_get_space(impl func(ptr unsafe.Pointer, area gd.RID) gd.RID) 
 /*
 Overridable version of [method PhysicsServer2D.area_add_shape].
 */
-func (class) _area_add_shape(impl func(ptr unsafe.Pointer, area gd.RID, shape gd.RID, transform gd.Transform2D, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_add_shape(impl func(ptr unsafe.Pointer, area RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape = gd.UnsafeGet[gd.RID](p_args, 1)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 1)
 
-		var transform = gd.UnsafeGet[gd.Transform2D](p_args, 2)
+		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 2)
 
 		var disabled = gd.UnsafeGet[bool](p_args, 3)
 
@@ -2999,13 +3002,13 @@ func (class) _area_add_shape(impl func(ptr unsafe.Pointer, area gd.RID, shape gd
 /*
 Overridable version of [method PhysicsServer2D.area_set_shape].
 */
-func (class) _area_set_shape(impl func(ptr unsafe.Pointer, area gd.RID, shape_idx gd.Int, shape gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_set_shape(impl func(ptr unsafe.Pointer, area RID.Any, shape_idx int64, shape RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
-		var shape = gd.UnsafeGet[gd.RID](p_args, 2)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, shape_idx, shape)
@@ -3015,13 +3018,13 @@ func (class) _area_set_shape(impl func(ptr unsafe.Pointer, area gd.RID, shape_id
 /*
 Overridable version of [method PhysicsServer2D.area_set_shape_transform].
 */
-func (class) _area_set_shape_transform(impl func(ptr unsafe.Pointer, area gd.RID, shape_idx gd.Int, transform gd.Transform2D)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_set_shape_transform(impl func(ptr unsafe.Pointer, area RID.Any, shape_idx int64, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
-		var transform = gd.UnsafeGet[gd.Transform2D](p_args, 2)
+		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, shape_idx, transform)
@@ -3031,11 +3034,11 @@ func (class) _area_set_shape_transform(impl func(ptr unsafe.Pointer, area gd.RID
 /*
 Overridable version of [method PhysicsServer2D.area_set_shape_disabled].
 */
-func (class) _area_set_shape_disabled(impl func(ptr unsafe.Pointer, area gd.RID, shape_idx gd.Int, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_set_shape_disabled(impl func(ptr unsafe.Pointer, area RID.Any, shape_idx int64, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		var disabled = gd.UnsafeGet[bool](p_args, 2)
 
@@ -3047,9 +3050,9 @@ func (class) _area_set_shape_disabled(impl func(ptr unsafe.Pointer, area gd.RID,
 /*
 Overridable version of [method PhysicsServer2D.area_get_shape_count].
 */
-func (class) _area_get_shape_count(impl func(ptr unsafe.Pointer, area gd.RID) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_get_shape_count(impl func(ptr unsafe.Pointer, area RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area)
@@ -3060,11 +3063,11 @@ func (class) _area_get_shape_count(impl func(ptr unsafe.Pointer, area gd.RID) gd
 /*
 Overridable version of [method PhysicsServer2D.area_get_shape].
 */
-func (class) _area_get_shape(impl func(ptr unsafe.Pointer, area gd.RID, shape_idx gd.Int) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_get_shape(impl func(ptr unsafe.Pointer, area RID.Any, shape_idx int64) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area, shape_idx)
@@ -3075,11 +3078,11 @@ func (class) _area_get_shape(impl func(ptr unsafe.Pointer, area gd.RID, shape_id
 /*
 Overridable version of [method PhysicsServer2D.area_get_shape_transform].
 */
-func (class) _area_get_shape_transform(impl func(ptr unsafe.Pointer, area gd.RID, shape_idx gd.Int) gd.Transform2D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_get_shape_transform(impl func(ptr unsafe.Pointer, area RID.Any, shape_idx int64) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area, shape_idx)
@@ -3090,11 +3093,11 @@ func (class) _area_get_shape_transform(impl func(ptr unsafe.Pointer, area gd.RID
 /*
 Overridable version of [method PhysicsServer2D.area_remove_shape].
 */
-func (class) _area_remove_shape(impl func(ptr unsafe.Pointer, area gd.RID, shape_idx gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_remove_shape(impl func(ptr unsafe.Pointer, area RID.Any, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, shape_idx)
@@ -3104,9 +3107,9 @@ func (class) _area_remove_shape(impl func(ptr unsafe.Pointer, area gd.RID, shape
 /*
 Overridable version of [method PhysicsServer2D.area_clear_shapes].
 */
-func (class) _area_clear_shapes(impl func(ptr unsafe.Pointer, area gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_clear_shapes(impl func(ptr unsafe.Pointer, area RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area)
@@ -3116,11 +3119,11 @@ func (class) _area_clear_shapes(impl func(ptr unsafe.Pointer, area gd.RID)) (cb 
 /*
 Overridable version of [method PhysicsServer2D.area_attach_object_instance_id].
 */
-func (class) _area_attach_object_instance_id(impl func(ptr unsafe.Pointer, area gd.RID, id gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_attach_object_instance_id(impl func(ptr unsafe.Pointer, area RID.Any, id int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var id = gd.UnsafeGet[gd.Int](p_args, 1)
+		var id = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, id)
@@ -3130,9 +3133,9 @@ func (class) _area_attach_object_instance_id(impl func(ptr unsafe.Pointer, area 
 /*
 Overridable version of [method PhysicsServer2D.area_get_object_instance_id].
 */
-func (class) _area_get_object_instance_id(impl func(ptr unsafe.Pointer, area gd.RID) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_get_object_instance_id(impl func(ptr unsafe.Pointer, area RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area)
@@ -3143,11 +3146,11 @@ func (class) _area_get_object_instance_id(impl func(ptr unsafe.Pointer, area gd.
 /*
 Overridable version of [method PhysicsServer2D.area_attach_canvas_instance_id].
 */
-func (class) _area_attach_canvas_instance_id(impl func(ptr unsafe.Pointer, area gd.RID, id gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_attach_canvas_instance_id(impl func(ptr unsafe.Pointer, area RID.Any, id int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var id = gd.UnsafeGet[gd.Int](p_args, 1)
+		var id = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, id)
@@ -3157,9 +3160,9 @@ func (class) _area_attach_canvas_instance_id(impl func(ptr unsafe.Pointer, area 
 /*
 Overridable version of [method PhysicsServer2D.area_get_canvas_instance_id].
 */
-func (class) _area_get_canvas_instance_id(impl func(ptr unsafe.Pointer, area gd.RID) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_get_canvas_instance_id(impl func(ptr unsafe.Pointer, area RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area)
@@ -3170,14 +3173,14 @@ func (class) _area_get_canvas_instance_id(impl func(ptr unsafe.Pointer, area gd.
 /*
 Overridable version of [method PhysicsServer2D.area_set_param].
 */
-func (class) _area_set_param(impl func(ptr unsafe.Pointer, area gd.RID, param gdclass.PhysicsServer2DAreaParameter, value gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_set_param(impl func(ptr unsafe.Pointer, area RID.Any, param gdclass.PhysicsServer2DAreaParameter, value variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DAreaParameter](p_args, 1)
 
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
-		defer pointers.End(value)
+		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, param, value)
 	}
@@ -3186,11 +3189,11 @@ func (class) _area_set_param(impl func(ptr unsafe.Pointer, area gd.RID, param gd
 /*
 Overridable version of [method PhysicsServer2D.area_set_transform].
 */
-func (class) _area_set_transform(impl func(ptr unsafe.Pointer, area gd.RID, transform gd.Transform2D)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_set_transform(impl func(ptr unsafe.Pointer, area RID.Any, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var transform = gd.UnsafeGet[gd.Transform2D](p_args, 1)
+		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, transform)
@@ -3200,15 +3203,15 @@ func (class) _area_set_transform(impl func(ptr unsafe.Pointer, area gd.RID, tran
 /*
 Overridable version of [method PhysicsServer2D.area_get_param].
 */
-func (class) _area_get_param(impl func(ptr unsafe.Pointer, area gd.RID, param gdclass.PhysicsServer2DAreaParameter) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_get_param(impl func(ptr unsafe.Pointer, area RID.Any, param gdclass.PhysicsServer2DAreaParameter) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DAreaParameter](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area, param)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
 		if !ok {
 			return
@@ -3220,9 +3223,9 @@ func (class) _area_get_param(impl func(ptr unsafe.Pointer, area gd.RID, param gd
 /*
 Overridable version of [method PhysicsServer2D.area_get_transform].
 */
-func (class) _area_get_transform(impl func(ptr unsafe.Pointer, area gd.RID) gd.Transform2D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_get_transform(impl func(ptr unsafe.Pointer, area RID.Any) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area)
@@ -3233,11 +3236,11 @@ func (class) _area_get_transform(impl func(ptr unsafe.Pointer, area gd.RID) gd.T
 /*
 Overridable version of [method PhysicsServer2D.area_set_collision_layer].
 */
-func (class) _area_set_collision_layer(impl func(ptr unsafe.Pointer, area gd.RID, layer gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_set_collision_layer(impl func(ptr unsafe.Pointer, area RID.Any, layer int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var layer = gd.UnsafeGet[gd.Int](p_args, 1)
+		var layer = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, layer)
@@ -3247,9 +3250,9 @@ func (class) _area_set_collision_layer(impl func(ptr unsafe.Pointer, area gd.RID
 /*
 Overridable version of [method PhysicsServer2D.area_get_collision_layer].
 */
-func (class) _area_get_collision_layer(impl func(ptr unsafe.Pointer, area gd.RID) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_get_collision_layer(impl func(ptr unsafe.Pointer, area RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area)
@@ -3260,11 +3263,11 @@ func (class) _area_get_collision_layer(impl func(ptr unsafe.Pointer, area gd.RID
 /*
 Overridable version of [method PhysicsServer2D.area_set_collision_mask].
 */
-func (class) _area_set_collision_mask(impl func(ptr unsafe.Pointer, area gd.RID, mask gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_set_collision_mask(impl func(ptr unsafe.Pointer, area RID.Any, mask int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var mask = gd.UnsafeGet[gd.Int](p_args, 1)
+		var mask = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, mask)
@@ -3274,9 +3277,9 @@ func (class) _area_set_collision_mask(impl func(ptr unsafe.Pointer, area gd.RID,
 /*
 Overridable version of [method PhysicsServer2D.area_get_collision_mask].
 */
-func (class) _area_get_collision_mask(impl func(ptr unsafe.Pointer, area gd.RID) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_get_collision_mask(impl func(ptr unsafe.Pointer, area RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, area)
@@ -3287,9 +3290,9 @@ func (class) _area_get_collision_mask(impl func(ptr unsafe.Pointer, area gd.RID)
 /*
 Overridable version of [method PhysicsServer2D.area_set_monitorable].
 */
-func (class) _area_set_monitorable(impl func(ptr unsafe.Pointer, area gd.RID, monitorable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_set_monitorable(impl func(ptr unsafe.Pointer, area RID.Any, monitorable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var monitorable = gd.UnsafeGet[bool](p_args, 1)
 
@@ -3302,9 +3305,9 @@ func (class) _area_set_monitorable(impl func(ptr unsafe.Pointer, area gd.RID, mo
 If set to [code]true[/code], allows the area with the given [RID] to detect mouse inputs when the mouse cursor is hovering on it.
 Overridable version of [PhysicsServer2D]'s internal [code]area_set_pickable[/code] method. Corresponds to [member CollisionObject2D.input_pickable].
 */
-func (class) _area_set_pickable(impl func(ptr unsafe.Pointer, area gd.RID, pickable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_set_pickable(impl func(ptr unsafe.Pointer, area RID.Any, pickable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var pickable = gd.UnsafeGet[bool](p_args, 1)
 
@@ -3316,9 +3319,9 @@ func (class) _area_set_pickable(impl func(ptr unsafe.Pointer, area gd.RID, picka
 /*
 Overridable version of [method PhysicsServer2D.area_set_monitor_callback].
 */
-func (class) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area gd.RID, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area RID.Any, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callback))
@@ -3330,9 +3333,9 @@ func (class) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area gd.RI
 /*
 Overridable version of [method PhysicsServer2D.area_set_area_monitor_callback].
 */
-func (class) _area_set_area_monitor_callback(impl func(ptr unsafe.Pointer, area gd.RID, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_set_area_monitor_callback(impl func(ptr unsafe.Pointer, area RID.Any, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var area = gd.UnsafeGet[gd.RID](p_args, 0)
+		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callback))
@@ -3344,7 +3347,7 @@ func (class) _area_set_area_monitor_callback(impl func(ptr unsafe.Pointer, area 
 /*
 Overridable version of [method PhysicsServer2D.body_create].
 */
-func (class) _body_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -3355,11 +3358,11 @@ func (class) _body_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.Extension
 /*
 Overridable version of [method PhysicsServer2D.body_set_space].
 */
-func (class) _body_set_space(impl func(ptr unsafe.Pointer, body gd.RID, space gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_space(impl func(ptr unsafe.Pointer, body RID.Any, space RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var space = gd.UnsafeGet[gd.RID](p_args, 1)
+		var space = gd.UnsafeGet[RID.Any](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, space)
@@ -3369,9 +3372,9 @@ func (class) _body_set_space(impl func(ptr unsafe.Pointer, body gd.RID, space gd
 /*
 Overridable version of [method PhysicsServer2D.body_get_space].
 */
-func (class) _body_get_space(impl func(ptr unsafe.Pointer, body gd.RID) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_space(impl func(ptr unsafe.Pointer, body RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -3382,9 +3385,9 @@ func (class) _body_get_space(impl func(ptr unsafe.Pointer, body gd.RID) gd.RID) 
 /*
 Overridable version of [method PhysicsServer2D.body_set_mode].
 */
-func (class) _body_set_mode(impl func(ptr unsafe.Pointer, body gd.RID, mode gdclass.PhysicsServer2DBodyMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_mode(impl func(ptr unsafe.Pointer, body RID.Any, mode gdclass.PhysicsServer2DBodyMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var mode = gd.UnsafeGet[gdclass.PhysicsServer2DBodyMode](p_args, 1)
 
@@ -3396,9 +3399,9 @@ func (class) _body_set_mode(impl func(ptr unsafe.Pointer, body gd.RID, mode gdcl
 /*
 Overridable version of [method PhysicsServer2D.body_get_mode].
 */
-func (class) _body_get_mode(impl func(ptr unsafe.Pointer, body gd.RID) gdclass.PhysicsServer2DBodyMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_mode(impl func(ptr unsafe.Pointer, body RID.Any) gdclass.PhysicsServer2DBodyMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -3409,13 +3412,13 @@ func (class) _body_get_mode(impl func(ptr unsafe.Pointer, body gd.RID) gdclass.P
 /*
 Overridable version of [method PhysicsServer2D.body_add_shape].
 */
-func (class) _body_add_shape(impl func(ptr unsafe.Pointer, body gd.RID, shape gd.RID, transform gd.Transform2D, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_add_shape(impl func(ptr unsafe.Pointer, body RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape = gd.UnsafeGet[gd.RID](p_args, 1)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 1)
 
-		var transform = gd.UnsafeGet[gd.Transform2D](p_args, 2)
+		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 2)
 
 		var disabled = gd.UnsafeGet[bool](p_args, 3)
 
@@ -3427,13 +3430,13 @@ func (class) _body_add_shape(impl func(ptr unsafe.Pointer, body gd.RID, shape gd
 /*
 Overridable version of [method PhysicsServer2D.body_set_shape].
 */
-func (class) _body_set_shape(impl func(ptr unsafe.Pointer, body gd.RID, shape_idx gd.Int, shape gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_shape(impl func(ptr unsafe.Pointer, body RID.Any, shape_idx int64, shape RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
-		var shape = gd.UnsafeGet[gd.RID](p_args, 2)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, shape_idx, shape)
@@ -3443,13 +3446,13 @@ func (class) _body_set_shape(impl func(ptr unsafe.Pointer, body gd.RID, shape_id
 /*
 Overridable version of [method PhysicsServer2D.body_set_shape_transform].
 */
-func (class) _body_set_shape_transform(impl func(ptr unsafe.Pointer, body gd.RID, shape_idx gd.Int, transform gd.Transform2D)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_shape_transform(impl func(ptr unsafe.Pointer, body RID.Any, shape_idx int64, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
-		var transform = gd.UnsafeGet[gd.Transform2D](p_args, 2)
+		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, shape_idx, transform)
@@ -3459,9 +3462,9 @@ func (class) _body_set_shape_transform(impl func(ptr unsafe.Pointer, body gd.RID
 /*
 Overridable version of [method PhysicsServer2D.body_get_shape_count].
 */
-func (class) _body_get_shape_count(impl func(ptr unsafe.Pointer, body gd.RID) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_shape_count(impl func(ptr unsafe.Pointer, body RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -3472,11 +3475,11 @@ func (class) _body_get_shape_count(impl func(ptr unsafe.Pointer, body gd.RID) gd
 /*
 Overridable version of [method PhysicsServer2D.body_get_shape].
 */
-func (class) _body_get_shape(impl func(ptr unsafe.Pointer, body gd.RID, shape_idx gd.Int) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_shape(impl func(ptr unsafe.Pointer, body RID.Any, shape_idx int64) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body, shape_idx)
@@ -3487,11 +3490,11 @@ func (class) _body_get_shape(impl func(ptr unsafe.Pointer, body gd.RID, shape_id
 /*
 Overridable version of [method PhysicsServer2D.body_get_shape_transform].
 */
-func (class) _body_get_shape_transform(impl func(ptr unsafe.Pointer, body gd.RID, shape_idx gd.Int) gd.Transform2D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_shape_transform(impl func(ptr unsafe.Pointer, body RID.Any, shape_idx int64) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body, shape_idx)
@@ -3502,11 +3505,11 @@ func (class) _body_get_shape_transform(impl func(ptr unsafe.Pointer, body gd.RID
 /*
 Overridable version of [method PhysicsServer2D.body_set_shape_disabled].
 */
-func (class) _body_set_shape_disabled(impl func(ptr unsafe.Pointer, body gd.RID, shape_idx gd.Int, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_shape_disabled(impl func(ptr unsafe.Pointer, body RID.Any, shape_idx int64, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		var disabled = gd.UnsafeGet[bool](p_args, 2)
 
@@ -3518,15 +3521,15 @@ func (class) _body_set_shape_disabled(impl func(ptr unsafe.Pointer, body gd.RID,
 /*
 Overridable version of [method PhysicsServer2D.body_set_shape_as_one_way_collision].
 */
-func (class) _body_set_shape_as_one_way_collision(impl func(ptr unsafe.Pointer, body gd.RID, shape_idx gd.Int, enable bool, margin gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_shape_as_one_way_collision(impl func(ptr unsafe.Pointer, body RID.Any, shape_idx int64, enable bool, margin float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		var enable = gd.UnsafeGet[bool](p_args, 2)
 
-		var margin = gd.UnsafeGet[gd.Float](p_args, 3)
+		var margin = gd.UnsafeGet[float64](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, shape_idx, enable, margin)
@@ -3536,11 +3539,11 @@ func (class) _body_set_shape_as_one_way_collision(impl func(ptr unsafe.Pointer, 
 /*
 Overridable version of [method PhysicsServer2D.body_remove_shape].
 */
-func (class) _body_remove_shape(impl func(ptr unsafe.Pointer, body gd.RID, shape_idx gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_remove_shape(impl func(ptr unsafe.Pointer, body RID.Any, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 1)
+		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, shape_idx)
@@ -3550,9 +3553,9 @@ func (class) _body_remove_shape(impl func(ptr unsafe.Pointer, body gd.RID, shape
 /*
 Overridable version of [method PhysicsServer2D.body_clear_shapes].
 */
-func (class) _body_clear_shapes(impl func(ptr unsafe.Pointer, body gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_clear_shapes(impl func(ptr unsafe.Pointer, body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body)
@@ -3562,11 +3565,11 @@ func (class) _body_clear_shapes(impl func(ptr unsafe.Pointer, body gd.RID)) (cb 
 /*
 Overridable version of [method PhysicsServer2D.body_attach_object_instance_id].
 */
-func (class) _body_attach_object_instance_id(impl func(ptr unsafe.Pointer, body gd.RID, id gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_attach_object_instance_id(impl func(ptr unsafe.Pointer, body RID.Any, id int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var id = gd.UnsafeGet[gd.Int](p_args, 1)
+		var id = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, id)
@@ -3576,9 +3579,9 @@ func (class) _body_attach_object_instance_id(impl func(ptr unsafe.Pointer, body 
 /*
 Overridable version of [method PhysicsServer2D.body_get_object_instance_id].
 */
-func (class) _body_get_object_instance_id(impl func(ptr unsafe.Pointer, body gd.RID) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_object_instance_id(impl func(ptr unsafe.Pointer, body RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -3589,11 +3592,11 @@ func (class) _body_get_object_instance_id(impl func(ptr unsafe.Pointer, body gd.
 /*
 Overridable version of [method PhysicsServer2D.body_attach_canvas_instance_id].
 */
-func (class) _body_attach_canvas_instance_id(impl func(ptr unsafe.Pointer, body gd.RID, id gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_attach_canvas_instance_id(impl func(ptr unsafe.Pointer, body RID.Any, id int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var id = gd.UnsafeGet[gd.Int](p_args, 1)
+		var id = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, id)
@@ -3603,9 +3606,9 @@ func (class) _body_attach_canvas_instance_id(impl func(ptr unsafe.Pointer, body 
 /*
 Overridable version of [method PhysicsServer2D.body_get_canvas_instance_id].
 */
-func (class) _body_get_canvas_instance_id(impl func(ptr unsafe.Pointer, body gd.RID) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_canvas_instance_id(impl func(ptr unsafe.Pointer, body RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -3616,9 +3619,9 @@ func (class) _body_get_canvas_instance_id(impl func(ptr unsafe.Pointer, body gd.
 /*
 Overridable version of [method PhysicsServer2D.body_set_continuous_collision_detection_mode].
 */
-func (class) _body_set_continuous_collision_detection_mode(impl func(ptr unsafe.Pointer, body gd.RID, mode gdclass.PhysicsServer2DCCDMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_continuous_collision_detection_mode(impl func(ptr unsafe.Pointer, body RID.Any, mode gdclass.PhysicsServer2DCCDMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var mode = gd.UnsafeGet[gdclass.PhysicsServer2DCCDMode](p_args, 1)
 
@@ -3630,9 +3633,9 @@ func (class) _body_set_continuous_collision_detection_mode(impl func(ptr unsafe.
 /*
 Overridable version of [method PhysicsServer2D.body_get_continuous_collision_detection_mode].
 */
-func (class) _body_get_continuous_collision_detection_mode(impl func(ptr unsafe.Pointer, body gd.RID) gdclass.PhysicsServer2DCCDMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_continuous_collision_detection_mode(impl func(ptr unsafe.Pointer, body RID.Any) gdclass.PhysicsServer2DCCDMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -3643,11 +3646,11 @@ func (class) _body_get_continuous_collision_detection_mode(impl func(ptr unsafe.
 /*
 Overridable version of [method PhysicsServer2D.body_set_collision_layer].
 */
-func (class) _body_set_collision_layer(impl func(ptr unsafe.Pointer, body gd.RID, layer gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_collision_layer(impl func(ptr unsafe.Pointer, body RID.Any, layer int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var layer = gd.UnsafeGet[gd.Int](p_args, 1)
+		var layer = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, layer)
@@ -3657,9 +3660,9 @@ func (class) _body_set_collision_layer(impl func(ptr unsafe.Pointer, body gd.RID
 /*
 Overridable version of [method PhysicsServer2D.body_get_collision_layer].
 */
-func (class) _body_get_collision_layer(impl func(ptr unsafe.Pointer, body gd.RID) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_collision_layer(impl func(ptr unsafe.Pointer, body RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -3670,11 +3673,11 @@ func (class) _body_get_collision_layer(impl func(ptr unsafe.Pointer, body gd.RID
 /*
 Overridable version of [method PhysicsServer2D.body_set_collision_mask].
 */
-func (class) _body_set_collision_mask(impl func(ptr unsafe.Pointer, body gd.RID, mask gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_collision_mask(impl func(ptr unsafe.Pointer, body RID.Any, mask int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var mask = gd.UnsafeGet[gd.Int](p_args, 1)
+		var mask = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, mask)
@@ -3684,9 +3687,9 @@ func (class) _body_set_collision_mask(impl func(ptr unsafe.Pointer, body gd.RID,
 /*
 Overridable version of [method PhysicsServer2D.body_get_collision_mask].
 */
-func (class) _body_get_collision_mask(impl func(ptr unsafe.Pointer, body gd.RID) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_collision_mask(impl func(ptr unsafe.Pointer, body RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -3697,11 +3700,11 @@ func (class) _body_get_collision_mask(impl func(ptr unsafe.Pointer, body gd.RID)
 /*
 Overridable version of [method PhysicsServer2D.body_set_collision_priority].
 */
-func (class) _body_set_collision_priority(impl func(ptr unsafe.Pointer, body gd.RID, priority gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_collision_priority(impl func(ptr unsafe.Pointer, body RID.Any, priority float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var priority = gd.UnsafeGet[gd.Float](p_args, 1)
+		var priority = gd.UnsafeGet[float64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, priority)
@@ -3711,9 +3714,9 @@ func (class) _body_set_collision_priority(impl func(ptr unsafe.Pointer, body gd.
 /*
 Overridable version of [method PhysicsServer2D.body_get_collision_priority].
 */
-func (class) _body_get_collision_priority(impl func(ptr unsafe.Pointer, body gd.RID) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_collision_priority(impl func(ptr unsafe.Pointer, body RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -3724,14 +3727,14 @@ func (class) _body_get_collision_priority(impl func(ptr unsafe.Pointer, body gd.
 /*
 Overridable version of [method PhysicsServer2D.body_set_param].
 */
-func (class) _body_set_param(impl func(ptr unsafe.Pointer, body gd.RID, param gdclass.PhysicsServer2DBodyParameter, value gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_param(impl func(ptr unsafe.Pointer, body RID.Any, param gdclass.PhysicsServer2DBodyParameter, value variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DBodyParameter](p_args, 1)
 
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
-		defer pointers.End(value)
+		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, param, value)
 	}
@@ -3740,15 +3743,15 @@ func (class) _body_set_param(impl func(ptr unsafe.Pointer, body gd.RID, param gd
 /*
 Overridable version of [method PhysicsServer2D.body_get_param].
 */
-func (class) _body_get_param(impl func(ptr unsafe.Pointer, body gd.RID, param gdclass.PhysicsServer2DBodyParameter) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_param(impl func(ptr unsafe.Pointer, body RID.Any, param gdclass.PhysicsServer2DBodyParameter) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DBodyParameter](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body, param)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
 		if !ok {
 			return
@@ -3760,9 +3763,9 @@ func (class) _body_get_param(impl func(ptr unsafe.Pointer, body gd.RID, param gd
 /*
 Overridable version of [method PhysicsServer2D.body_reset_mass_properties].
 */
-func (class) _body_reset_mass_properties(impl func(ptr unsafe.Pointer, body gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_reset_mass_properties(impl func(ptr unsafe.Pointer, body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body)
@@ -3772,14 +3775,14 @@ func (class) _body_reset_mass_properties(impl func(ptr unsafe.Pointer, body gd.R
 /*
 Overridable version of [method PhysicsServer2D.body_set_state].
 */
-func (class) _body_set_state(impl func(ptr unsafe.Pointer, body gd.RID, state gdclass.PhysicsServer2DBodyState, value gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_state(impl func(ptr unsafe.Pointer, body RID.Any, state gdclass.PhysicsServer2DBodyState, value variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var state = gd.UnsafeGet[gdclass.PhysicsServer2DBodyState](p_args, 1)
 
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
-		defer pointers.End(value)
+		var value = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		defer pointers.End(gd.InternalVariant(value))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, state, value)
 	}
@@ -3788,15 +3791,15 @@ func (class) _body_set_state(impl func(ptr unsafe.Pointer, body gd.RID, state gd
 /*
 Overridable version of [method PhysicsServer2D.body_get_state].
 */
-func (class) _body_get_state(impl func(ptr unsafe.Pointer, body gd.RID, state gdclass.PhysicsServer2DBodyState) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_state(impl func(ptr unsafe.Pointer, body RID.Any, state gdclass.PhysicsServer2DBodyState) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var state = gd.UnsafeGet[gdclass.PhysicsServer2DBodyState](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body, state)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
 		if !ok {
 			return
@@ -3808,11 +3811,11 @@ func (class) _body_get_state(impl func(ptr unsafe.Pointer, body gd.RID, state gd
 /*
 Overridable version of [method PhysicsServer2D.body_apply_central_impulse].
 */
-func (class) _body_apply_central_impulse(impl func(ptr unsafe.Pointer, body gd.RID, impulse gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_apply_central_impulse(impl func(ptr unsafe.Pointer, body RID.Any, impulse Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var impulse = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var impulse = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, impulse)
@@ -3822,11 +3825,11 @@ func (class) _body_apply_central_impulse(impl func(ptr unsafe.Pointer, body gd.R
 /*
 Overridable version of [method PhysicsServer2D.body_apply_torque_impulse].
 */
-func (class) _body_apply_torque_impulse(impl func(ptr unsafe.Pointer, body gd.RID, impulse gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_apply_torque_impulse(impl func(ptr unsafe.Pointer, body RID.Any, impulse float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var impulse = gd.UnsafeGet[gd.Float](p_args, 1)
+		var impulse = gd.UnsafeGet[float64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, impulse)
@@ -3836,13 +3839,13 @@ func (class) _body_apply_torque_impulse(impl func(ptr unsafe.Pointer, body gd.RI
 /*
 Overridable version of [method PhysicsServer2D.body_apply_impulse].
 */
-func (class) _body_apply_impulse(impl func(ptr unsafe.Pointer, body gd.RID, impulse gd.Vector2, position gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_apply_impulse(impl func(ptr unsafe.Pointer, body RID.Any, impulse Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var impulse = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var impulse = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
-		var position = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var position = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, impulse, position)
@@ -3852,11 +3855,11 @@ func (class) _body_apply_impulse(impl func(ptr unsafe.Pointer, body gd.RID, impu
 /*
 Overridable version of [method PhysicsServer2D.body_apply_central_force].
 */
-func (class) _body_apply_central_force(impl func(ptr unsafe.Pointer, body gd.RID, force gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_apply_central_force(impl func(ptr unsafe.Pointer, body RID.Any, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var force = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, force)
@@ -3866,13 +3869,13 @@ func (class) _body_apply_central_force(impl func(ptr unsafe.Pointer, body gd.RID
 /*
 Overridable version of [method PhysicsServer2D.body_apply_force].
 */
-func (class) _body_apply_force(impl func(ptr unsafe.Pointer, body gd.RID, force gd.Vector2, position gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_apply_force(impl func(ptr unsafe.Pointer, body RID.Any, force Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var force = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
-		var position = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var position = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, force, position)
@@ -3882,11 +3885,11 @@ func (class) _body_apply_force(impl func(ptr unsafe.Pointer, body gd.RID, force 
 /*
 Overridable version of [method PhysicsServer2D.body_apply_torque].
 */
-func (class) _body_apply_torque(impl func(ptr unsafe.Pointer, body gd.RID, torque gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_apply_torque(impl func(ptr unsafe.Pointer, body RID.Any, torque float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var torque = gd.UnsafeGet[gd.Float](p_args, 1)
+		var torque = gd.UnsafeGet[float64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, torque)
@@ -3896,11 +3899,11 @@ func (class) _body_apply_torque(impl func(ptr unsafe.Pointer, body gd.RID, torqu
 /*
 Overridable version of [method PhysicsServer2D.body_add_constant_central_force].
 */
-func (class) _body_add_constant_central_force(impl func(ptr unsafe.Pointer, body gd.RID, force gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_add_constant_central_force(impl func(ptr unsafe.Pointer, body RID.Any, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var force = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, force)
@@ -3910,13 +3913,13 @@ func (class) _body_add_constant_central_force(impl func(ptr unsafe.Pointer, body
 /*
 Overridable version of [method PhysicsServer2D.body_add_constant_force].
 */
-func (class) _body_add_constant_force(impl func(ptr unsafe.Pointer, body gd.RID, force gd.Vector2, position gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_add_constant_force(impl func(ptr unsafe.Pointer, body RID.Any, force Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var force = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
-		var position = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var position = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, force, position)
@@ -3926,11 +3929,11 @@ func (class) _body_add_constant_force(impl func(ptr unsafe.Pointer, body gd.RID,
 /*
 Overridable version of [method PhysicsServer2D.body_add_constant_torque].
 */
-func (class) _body_add_constant_torque(impl func(ptr unsafe.Pointer, body gd.RID, torque gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_add_constant_torque(impl func(ptr unsafe.Pointer, body RID.Any, torque float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var torque = gd.UnsafeGet[gd.Float](p_args, 1)
+		var torque = gd.UnsafeGet[float64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, torque)
@@ -3940,11 +3943,11 @@ func (class) _body_add_constant_torque(impl func(ptr unsafe.Pointer, body gd.RID
 /*
 Overridable version of [method PhysicsServer2D.body_set_constant_force].
 */
-func (class) _body_set_constant_force(impl func(ptr unsafe.Pointer, body gd.RID, force gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_constant_force(impl func(ptr unsafe.Pointer, body RID.Any, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var force = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, force)
@@ -3954,9 +3957,9 @@ func (class) _body_set_constant_force(impl func(ptr unsafe.Pointer, body gd.RID,
 /*
 Overridable version of [method PhysicsServer2D.body_get_constant_force].
 */
-func (class) _body_get_constant_force(impl func(ptr unsafe.Pointer, body gd.RID) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_constant_force(impl func(ptr unsafe.Pointer, body RID.Any) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -3967,11 +3970,11 @@ func (class) _body_get_constant_force(impl func(ptr unsafe.Pointer, body gd.RID)
 /*
 Overridable version of [method PhysicsServer2D.body_set_constant_torque].
 */
-func (class) _body_set_constant_torque(impl func(ptr unsafe.Pointer, body gd.RID, torque gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_constant_torque(impl func(ptr unsafe.Pointer, body RID.Any, torque float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var torque = gd.UnsafeGet[gd.Float](p_args, 1)
+		var torque = gd.UnsafeGet[float64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, torque)
@@ -3981,9 +3984,9 @@ func (class) _body_set_constant_torque(impl func(ptr unsafe.Pointer, body gd.RID
 /*
 Overridable version of [method PhysicsServer2D.body_get_constant_torque].
 */
-func (class) _body_get_constant_torque(impl func(ptr unsafe.Pointer, body gd.RID) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_constant_torque(impl func(ptr unsafe.Pointer, body RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -3994,11 +3997,11 @@ func (class) _body_get_constant_torque(impl func(ptr unsafe.Pointer, body gd.RID
 /*
 Overridable version of [method PhysicsServer2D.body_set_axis_velocity].
 */
-func (class) _body_set_axis_velocity(impl func(ptr unsafe.Pointer, body gd.RID, axis_velocity gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_axis_velocity(impl func(ptr unsafe.Pointer, body RID.Any, axis_velocity Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var axis_velocity = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var axis_velocity = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, axis_velocity)
@@ -4008,11 +4011,11 @@ func (class) _body_set_axis_velocity(impl func(ptr unsafe.Pointer, body gd.RID, 
 /*
 Overridable version of [method PhysicsServer2D.body_add_collision_exception].
 */
-func (class) _body_add_collision_exception(impl func(ptr unsafe.Pointer, body gd.RID, excepted_body gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_add_collision_exception(impl func(ptr unsafe.Pointer, body RID.Any, excepted_body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var excepted_body = gd.UnsafeGet[gd.RID](p_args, 1)
+		var excepted_body = gd.UnsafeGet[RID.Any](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, excepted_body)
@@ -4022,11 +4025,11 @@ func (class) _body_add_collision_exception(impl func(ptr unsafe.Pointer, body gd
 /*
 Overridable version of [method PhysicsServer2D.body_remove_collision_exception].
 */
-func (class) _body_remove_collision_exception(impl func(ptr unsafe.Pointer, body gd.RID, excepted_body gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_remove_collision_exception(impl func(ptr unsafe.Pointer, body RID.Any, excepted_body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var excepted_body = gd.UnsafeGet[gd.RID](p_args, 1)
+		var excepted_body = gd.UnsafeGet[RID.Any](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, excepted_body)
@@ -4037,9 +4040,9 @@ func (class) _body_remove_collision_exception(impl func(ptr unsafe.Pointer, body
 Returns the [RID]s of all bodies added as collision exceptions for the given [param body]. See also [method _body_add_collision_exception] and [method _body_remove_collision_exception].
 Overridable version of [PhysicsServer2D]'s internal [code]body_get_collision_exceptions[/code] method. Corresponds to [method PhysicsBody2D.get_collision_exceptions].
 */
-func (class) _body_get_collision_exceptions(impl func(ptr unsafe.Pointer, body gd.RID) Array.Contains[gd.RID]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_collision_exceptions(impl func(ptr unsafe.Pointer, body RID.Any) Array.Contains[RID.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -4055,11 +4058,11 @@ func (class) _body_get_collision_exceptions(impl func(ptr unsafe.Pointer, body g
 /*
 Overridable version of [method PhysicsServer2D.body_set_max_contacts_reported].
 */
-func (class) _body_set_max_contacts_reported(impl func(ptr unsafe.Pointer, body gd.RID, amount gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_max_contacts_reported(impl func(ptr unsafe.Pointer, body RID.Any, amount int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var amount = gd.UnsafeGet[gd.Int](p_args, 1)
+		var amount = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, amount)
@@ -4069,9 +4072,9 @@ func (class) _body_set_max_contacts_reported(impl func(ptr unsafe.Pointer, body 
 /*
 Overridable version of [method PhysicsServer2D.body_get_max_contacts_reported].
 */
-func (class) _body_get_max_contacts_reported(impl func(ptr unsafe.Pointer, body gd.RID) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_max_contacts_reported(impl func(ptr unsafe.Pointer, body RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -4083,11 +4086,11 @@ func (class) _body_get_max_contacts_reported(impl func(ptr unsafe.Pointer, body 
 Overridable version of [PhysicsServer2D]'s internal [code]body_set_contacts_reported_depth_threshold[/code] method.
 [b]Note:[/b] This method is currently unused by Godot's default physics implementation.
 */
-func (class) _body_set_contacts_reported_depth_threshold(impl func(ptr unsafe.Pointer, body gd.RID, threshold gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_contacts_reported_depth_threshold(impl func(ptr unsafe.Pointer, body RID.Any, threshold float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var threshold = gd.UnsafeGet[gd.Float](p_args, 1)
+		var threshold = gd.UnsafeGet[float64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, threshold)
@@ -4098,9 +4101,9 @@ func (class) _body_set_contacts_reported_depth_threshold(impl func(ptr unsafe.Po
 Overridable version of [PhysicsServer2D]'s internal [code]body_get_contacts_reported_depth_threshold[/code] method.
 [b]Note:[/b] This method is currently unused by Godot's default physics implementation.
 */
-func (class) _body_get_contacts_reported_depth_threshold(impl func(ptr unsafe.Pointer, body gd.RID) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_contacts_reported_depth_threshold(impl func(ptr unsafe.Pointer, body RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -4111,9 +4114,9 @@ func (class) _body_get_contacts_reported_depth_threshold(impl func(ptr unsafe.Po
 /*
 Overridable version of [method PhysicsServer2D.body_set_omit_force_integration].
 */
-func (class) _body_set_omit_force_integration(impl func(ptr unsafe.Pointer, body gd.RID, enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_omit_force_integration(impl func(ptr unsafe.Pointer, body RID.Any, enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var enable = gd.UnsafeGet[bool](p_args, 1)
 
@@ -4125,9 +4128,9 @@ func (class) _body_set_omit_force_integration(impl func(ptr unsafe.Pointer, body
 /*
 Overridable version of [method PhysicsServer2D.body_is_omitting_force_integration].
 */
-func (class) _body_is_omitting_force_integration(impl func(ptr unsafe.Pointer, body gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_is_omitting_force_integration(impl func(ptr unsafe.Pointer, body RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -4139,9 +4142,9 @@ func (class) _body_is_omitting_force_integration(impl func(ptr unsafe.Pointer, b
 Assigns the [param body] to call the given [param callable] during the synchronization phase of the loop, before [method _step] is called. See also [method _sync].
 Overridable version of [method PhysicsServer2D.body_set_state_sync_callback].
 */
-func (class) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body gd.RID, callable Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body RID.Any, callable Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callable))
@@ -4153,14 +4156,14 @@ func (class) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body gd
 /*
 Overridable version of [method PhysicsServer2D.body_set_force_integration_callback].
 */
-func (class) _body_set_force_integration_callback(impl func(ptr unsafe.Pointer, body gd.RID, callable Callable.Function, userdata gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_force_integration_callback(impl func(ptr unsafe.Pointer, body RID.Any, callable Callable.Function, userdata variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callable))
-		var userdata = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
-		defer pointers.End(userdata)
+		var userdata = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
+		defer pointers.End(gd.InternalVariant(userdata))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, callable, userdata)
 	}
@@ -4170,21 +4173,21 @@ func (class) _body_set_force_integration_callback(impl func(ptr unsafe.Pointer, 
 Given a [param body], a [param shape], and their respective parameters, this method should return [code]true[/code] if a collision between the two would occur, with additional details passed in [param results].
 Overridable version of [PhysicsServer2D]'s internal [code]shape_collide[/code] method. Corresponds to [method PhysicsDirectSpaceState2D.collide_shape].
 */
-func (class) _body_collide_shape(impl func(ptr unsafe.Pointer, body gd.RID, body_shape gd.Int, shape gd.RID, shape_xform gd.Transform2D, motion gd.Vector2, results unsafe.Pointer, result_max gd.Int, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_collide_shape(impl func(ptr unsafe.Pointer, body RID.Any, body_shape int64, shape RID.Any, shape_xform Transform2D.OriginXY, motion Vector2.XY, results unsafe.Pointer, result_max int64, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var body_shape = gd.UnsafeGet[gd.Int](p_args, 1)
+		var body_shape = gd.UnsafeGet[int64](p_args, 1)
 
-		var shape = gd.UnsafeGet[gd.RID](p_args, 2)
+		var shape = gd.UnsafeGet[RID.Any](p_args, 2)
 
-		var shape_xform = gd.UnsafeGet[gd.Transform2D](p_args, 3)
+		var shape_xform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 3)
 
-		var motion = gd.UnsafeGet[gd.Vector2](p_args, 4)
+		var motion = gd.UnsafeGet[Vector2.XY](p_args, 4)
 
 		var results = gd.UnsafeGet[unsafe.Pointer](p_args, 5)
 
-		var result_max = gd.UnsafeGet[gd.Int](p_args, 6)
+		var result_max = gd.UnsafeGet[int64](p_args, 6)
 
 		var result_count = gd.UnsafeGet[*int32](p_args, 7)
 
@@ -4198,9 +4201,9 @@ func (class) _body_collide_shape(impl func(ptr unsafe.Pointer, body gd.RID, body
 If set to [code]true[/code], allows the body with the given [RID] to detect mouse inputs when the mouse cursor is hovering on it.
 Overridable version of [PhysicsServer2D]'s internal [code]body_set_pickable[/code] method. Corresponds to [member CollisionObject2D.input_pickable].
 */
-func (class) _body_set_pickable(impl func(ptr unsafe.Pointer, body gd.RID, pickable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_pickable(impl func(ptr unsafe.Pointer, body RID.Any, pickable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var pickable = gd.UnsafeGet[bool](p_args, 1)
 
@@ -4212,9 +4215,9 @@ func (class) _body_set_pickable(impl func(ptr unsafe.Pointer, body gd.RID, picka
 /*
 Overridable version of [method PhysicsServer2D.body_get_direct_state].
 */
-func (class) _body_get_direct_state(impl func(ptr unsafe.Pointer, body gd.RID) [1]gdclass.PhysicsDirectBodyState2D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_get_direct_state(impl func(ptr unsafe.Pointer, body RID.Any) [1]gdclass.PhysicsDirectBodyState2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
@@ -4230,15 +4233,15 @@ func (class) _body_get_direct_state(impl func(ptr unsafe.Pointer, body gd.RID) [
 /*
 Overridable version of [method PhysicsServer2D.body_test_motion]. Unlike the exposed implementation, this method does not receive all of the arguments inside a [PhysicsTestMotionParameters2D].
 */
-func (class) _body_test_motion(impl func(ptr unsafe.Pointer, body gd.RID, from gd.Transform2D, motion gd.Vector2, margin gd.Float, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_test_motion(impl func(ptr unsafe.Pointer, body RID.Any, from Transform2D.OriginXY, motion Vector2.XY, margin float64, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var body = gd.UnsafeGet[gd.RID](p_args, 0)
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var from = gd.UnsafeGet[gd.Transform2D](p_args, 1)
+		var from = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
 
-		var motion = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var motion = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
-		var margin = gd.UnsafeGet[gd.Float](p_args, 3)
+		var margin = gd.UnsafeGet[float64](p_args, 3)
 
 		var collide_separation_ray = gd.UnsafeGet[bool](p_args, 4)
 
@@ -4255,7 +4258,7 @@ func (class) _body_test_motion(impl func(ptr unsafe.Pointer, body gd.RID, from g
 /*
 Overridable version of [method PhysicsServer2D.joint_create].
 */
-func (class) _joint_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _joint_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -4266,9 +4269,9 @@ func (class) _joint_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.Extensio
 /*
 Overridable version of [method PhysicsServer2D.joint_clear].
 */
-func (class) _joint_clear(impl func(ptr unsafe.Pointer, joint gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _joint_clear(impl func(ptr unsafe.Pointer, joint RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, joint)
@@ -4278,13 +4281,13 @@ func (class) _joint_clear(impl func(ptr unsafe.Pointer, joint gd.RID)) (cb gd.Ex
 /*
 Overridable version of [method PhysicsServer2D.joint_set_param].
 */
-func (class) _joint_set_param(impl func(ptr unsafe.Pointer, joint gd.RID, param gdclass.PhysicsServer2DJointParam, value gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _joint_set_param(impl func(ptr unsafe.Pointer, joint RID.Any, param gdclass.PhysicsServer2DJointParam, value float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DJointParam](p_args, 1)
 
-		var value = gd.UnsafeGet[gd.Float](p_args, 2)
+		var value = gd.UnsafeGet[float64](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, joint, param, value)
@@ -4294,9 +4297,9 @@ func (class) _joint_set_param(impl func(ptr unsafe.Pointer, joint gd.RID, param 
 /*
 Overridable version of [method PhysicsServer2D.joint_get_param].
 */
-func (class) _joint_get_param(impl func(ptr unsafe.Pointer, joint gd.RID, param gdclass.PhysicsServer2DJointParam) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _joint_get_param(impl func(ptr unsafe.Pointer, joint RID.Any, param gdclass.PhysicsServer2DJointParam) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DJointParam](p_args, 1)
 
@@ -4309,9 +4312,9 @@ func (class) _joint_get_param(impl func(ptr unsafe.Pointer, joint gd.RID, param 
 /*
 Overridable version of [method PhysicsServer2D.joint_disable_collisions_between_bodies].
 */
-func (class) _joint_disable_collisions_between_bodies(impl func(ptr unsafe.Pointer, joint gd.RID, disable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _joint_disable_collisions_between_bodies(impl func(ptr unsafe.Pointer, joint RID.Any, disable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var disable = gd.UnsafeGet[bool](p_args, 1)
 
@@ -4323,9 +4326,9 @@ func (class) _joint_disable_collisions_between_bodies(impl func(ptr unsafe.Point
 /*
 Overridable version of [method PhysicsServer2D.joint_is_disabled_collisions_between_bodies].
 */
-func (class) _joint_is_disabled_collisions_between_bodies(impl func(ptr unsafe.Pointer, joint gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _joint_is_disabled_collisions_between_bodies(impl func(ptr unsafe.Pointer, joint RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, joint)
@@ -4336,15 +4339,15 @@ func (class) _joint_is_disabled_collisions_between_bodies(impl func(ptr unsafe.P
 /*
 Overridable version of [method PhysicsServer2D.joint_make_pin].
 */
-func (class) _joint_make_pin(impl func(ptr unsafe.Pointer, joint gd.RID, anchor gd.Vector2, body_a gd.RID, body_b gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _joint_make_pin(impl func(ptr unsafe.Pointer, joint RID.Any, anchor Vector2.XY, body_a RID.Any, body_b RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var anchor = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var anchor = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
-		var body_a = gd.UnsafeGet[gd.RID](p_args, 2)
+		var body_a = gd.UnsafeGet[RID.Any](p_args, 2)
 
-		var body_b = gd.UnsafeGet[gd.RID](p_args, 3)
+		var body_b = gd.UnsafeGet[RID.Any](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, joint, anchor, body_a, body_b)
@@ -4354,19 +4357,19 @@ func (class) _joint_make_pin(impl func(ptr unsafe.Pointer, joint gd.RID, anchor 
 /*
 Overridable version of [method PhysicsServer2D.joint_make_groove].
 */
-func (class) _joint_make_groove(impl func(ptr unsafe.Pointer, joint gd.RID, a_groove1 gd.Vector2, a_groove2 gd.Vector2, b_anchor gd.Vector2, body_a gd.RID, body_b gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _joint_make_groove(impl func(ptr unsafe.Pointer, joint RID.Any, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a RID.Any, body_b RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var a_groove1 = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var a_groove1 = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
-		var a_groove2 = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var a_groove2 = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
-		var b_anchor = gd.UnsafeGet[gd.Vector2](p_args, 3)
+		var b_anchor = gd.UnsafeGet[Vector2.XY](p_args, 3)
 
-		var body_a = gd.UnsafeGet[gd.RID](p_args, 4)
+		var body_a = gd.UnsafeGet[RID.Any](p_args, 4)
 
-		var body_b = gd.UnsafeGet[gd.RID](p_args, 5)
+		var body_b = gd.UnsafeGet[RID.Any](p_args, 5)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, joint, a_groove1, a_groove2, b_anchor, body_a, body_b)
@@ -4376,17 +4379,17 @@ func (class) _joint_make_groove(impl func(ptr unsafe.Pointer, joint gd.RID, a_gr
 /*
 Overridable version of [method PhysicsServer2D.joint_make_damped_spring].
 */
-func (class) _joint_make_damped_spring(impl func(ptr unsafe.Pointer, joint gd.RID, anchor_a gd.Vector2, anchor_b gd.Vector2, body_a gd.RID, body_b gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _joint_make_damped_spring(impl func(ptr unsafe.Pointer, joint RID.Any, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Any, body_b RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var anchor_a = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var anchor_a = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
-		var anchor_b = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var anchor_b = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
-		var body_a = gd.UnsafeGet[gd.RID](p_args, 3)
+		var body_a = gd.UnsafeGet[RID.Any](p_args, 3)
 
-		var body_b = gd.UnsafeGet[gd.RID](p_args, 4)
+		var body_b = gd.UnsafeGet[RID.Any](p_args, 4)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, joint, anchor_a, anchor_b, body_a, body_b)
@@ -4396,9 +4399,9 @@ func (class) _joint_make_damped_spring(impl func(ptr unsafe.Pointer, joint gd.RI
 /*
 Overridable version of [method PhysicsServer2D.pin_joint_set_flag].
 */
-func (class) _pin_joint_set_flag(impl func(ptr unsafe.Pointer, joint gd.RID, flag gdclass.PhysicsServer2DPinJointFlag, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _pin_joint_set_flag(impl func(ptr unsafe.Pointer, joint RID.Any, flag gdclass.PhysicsServer2DPinJointFlag, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var flag = gd.UnsafeGet[gdclass.PhysicsServer2DPinJointFlag](p_args, 1)
 
@@ -4412,9 +4415,9 @@ func (class) _pin_joint_set_flag(impl func(ptr unsafe.Pointer, joint gd.RID, fla
 /*
 Overridable version of [method PhysicsServer2D.pin_joint_get_flag].
 */
-func (class) _pin_joint_get_flag(impl func(ptr unsafe.Pointer, joint gd.RID, flag gdclass.PhysicsServer2DPinJointFlag) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _pin_joint_get_flag(impl func(ptr unsafe.Pointer, joint RID.Any, flag gdclass.PhysicsServer2DPinJointFlag) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var flag = gd.UnsafeGet[gdclass.PhysicsServer2DPinJointFlag](p_args, 1)
 
@@ -4427,13 +4430,13 @@ func (class) _pin_joint_get_flag(impl func(ptr unsafe.Pointer, joint gd.RID, fla
 /*
 Overridable version of [method PhysicsServer2D.pin_joint_set_param].
 */
-func (class) _pin_joint_set_param(impl func(ptr unsafe.Pointer, joint gd.RID, param gdclass.PhysicsServer2DPinJointParam, value gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _pin_joint_set_param(impl func(ptr unsafe.Pointer, joint RID.Any, param gdclass.PhysicsServer2DPinJointParam, value float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DPinJointParam](p_args, 1)
 
-		var value = gd.UnsafeGet[gd.Float](p_args, 2)
+		var value = gd.UnsafeGet[float64](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, joint, param, value)
@@ -4443,9 +4446,9 @@ func (class) _pin_joint_set_param(impl func(ptr unsafe.Pointer, joint gd.RID, pa
 /*
 Overridable version of [method PhysicsServer2D.pin_joint_get_param].
 */
-func (class) _pin_joint_get_param(impl func(ptr unsafe.Pointer, joint gd.RID, param gdclass.PhysicsServer2DPinJointParam) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _pin_joint_get_param(impl func(ptr unsafe.Pointer, joint RID.Any, param gdclass.PhysicsServer2DPinJointParam) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DPinJointParam](p_args, 1)
 
@@ -4458,13 +4461,13 @@ func (class) _pin_joint_get_param(impl func(ptr unsafe.Pointer, joint gd.RID, pa
 /*
 Overridable version of [method PhysicsServer2D.damped_spring_joint_set_param].
 */
-func (class) _damped_spring_joint_set_param(impl func(ptr unsafe.Pointer, joint gd.RID, param gdclass.PhysicsServer2DDampedSpringParam, value gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _damped_spring_joint_set_param(impl func(ptr unsafe.Pointer, joint RID.Any, param gdclass.PhysicsServer2DDampedSpringParam, value float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DDampedSpringParam](p_args, 1)
 
-		var value = gd.UnsafeGet[gd.Float](p_args, 2)
+		var value = gd.UnsafeGet[float64](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, joint, param, value)
@@ -4474,9 +4477,9 @@ func (class) _damped_spring_joint_set_param(impl func(ptr unsafe.Pointer, joint 
 /*
 Overridable version of [method PhysicsServer2D.damped_spring_joint_get_param].
 */
-func (class) _damped_spring_joint_get_param(impl func(ptr unsafe.Pointer, joint gd.RID, param gdclass.PhysicsServer2DDampedSpringParam) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _damped_spring_joint_get_param(impl func(ptr unsafe.Pointer, joint RID.Any, param gdclass.PhysicsServer2DDampedSpringParam) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DDampedSpringParam](p_args, 1)
 
@@ -4489,9 +4492,9 @@ func (class) _damped_spring_joint_get_param(impl func(ptr unsafe.Pointer, joint 
 /*
 Overridable version of [method PhysicsServer2D.joint_get_type].
 */
-func (class) _joint_get_type(impl func(ptr unsafe.Pointer, joint gd.RID) gdclass.PhysicsServer2DJointType) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _joint_get_type(impl func(ptr unsafe.Pointer, joint RID.Any) gdclass.PhysicsServer2DJointType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var joint = gd.UnsafeGet[gd.RID](p_args, 0)
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, joint)
@@ -4502,9 +4505,9 @@ func (class) _joint_get_type(impl func(ptr unsafe.Pointer, joint gd.RID) gdclass
 /*
 Overridable version of [method PhysicsServer2D.free_rid].
 */
-func (class) _free_rid(impl func(ptr unsafe.Pointer, rid gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _free_rid(impl func(ptr unsafe.Pointer, rid RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var rid = gd.UnsafeGet[gd.RID](p_args, 0)
+		var rid = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, rid)
@@ -4538,9 +4541,9 @@ func (class) _init(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtu
 Called every physics step to process the physics simulation. [param step] is the time elapsed since the last physics step, in seconds. It is usually the same as [method Node.get_physics_process_delta_time].
 Overridable version of [PhysicsServer2D]'s internal [code skip-lint]step[/code] method.
 */
-func (class) _step(impl func(ptr unsafe.Pointer, step gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _step(impl func(ptr unsafe.Pointer, step float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var step = gd.UnsafeGet[gd.Float](p_args, 0)
+		var step = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, step)
@@ -4606,7 +4609,7 @@ func (class) _is_flushing_queries(impl func(ptr unsafe.Pointer) bool) (cb gd.Ext
 /*
 Overridable version of [method PhysicsServer2D.get_process_info].
 */
-func (class) _get_process_info(impl func(ptr unsafe.Pointer, process_info gdclass.PhysicsServer2DProcessInfo) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_process_info(impl func(ptr unsafe.Pointer, process_info gdclass.PhysicsServer2DProcessInfo) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var process_info = gd.UnsafeGet[gdclass.PhysicsServer2DProcessInfo](p_args, 0)
 
@@ -4620,7 +4623,7 @@ func (class) _get_process_info(impl func(ptr unsafe.Pointer, process_info gdclas
 Returns [code]true[/code] if the body with the given [RID] is being excluded from [method _body_test_motion]. See also [method Object.get_instance_id].
 */
 //go:nosplit
-func (self class) BodyTestMotionIsExcludingBody(body gd.RID) bool { //gd:PhysicsServer2DExtension.body_test_motion_is_excluding_body
+func (self class) BodyTestMotionIsExcludingBody(body RID.Any) bool { //gd:PhysicsServer2DExtension.body_test_motion_is_excluding_body
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[bool](frame)
@@ -4634,7 +4637,7 @@ func (self class) BodyTestMotionIsExcludingBody(body gd.RID) bool { //gd:Physics
 Returns [code]true[/code] if the object with the given instance ID is being excluded from [method _body_test_motion]. See also [method Object.get_instance_id].
 */
 //go:nosplit
-func (self class) BodyTestMotionIsExcludingObject(obj gd.Int) bool { //gd:PhysicsServer2DExtension.body_test_motion_is_excluding_object
+func (self class) BodyTestMotionIsExcludingObject(obj int64) bool { //gd:PhysicsServer2DExtension.body_test_motion_is_excluding_object
 	var frame = callframe.New()
 	callframe.Arg(frame, obj)
 	var r_ret = callframe.Ret[bool](frame)

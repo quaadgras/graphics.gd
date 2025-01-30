@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AnimationNode"
+import "graphics.gd/classdb/AnimationRootNode"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AnimationRootNode"
-import "graphics.gd/classdb/AnimationNode"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,7 +61,7 @@ type Any interface {
 Adds an [AnimationNode] at the given [param position]. The [param name] is used to identify the created sub animation node later.
 */
 func (self Instance) AddNode(name string, node [1]gdclass.AnimationNode) { //gd:AnimationNodeBlendTree.add_node
-	class(self).AddNode(String.Name(String.New(name)), node, gd.Vector2(gd.Vector2{0, 0}))
+	class(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(gd.Vector2{0, 0}))
 }
 
 /*
@@ -92,21 +96,21 @@ func (self Instance) HasNode(name string) bool { //gd:AnimationNodeBlendTree.has
 Connects the output of an [AnimationNode] as input for another [AnimationNode], at the input port specified by [param input_index].
 */
 func (self Instance) ConnectNode(input_node string, input_index int, output_node string) { //gd:AnimationNodeBlendTree.connect_node
-	class(self).ConnectNode(String.Name(String.New(input_node)), gd.Int(input_index), String.Name(String.New(output_node)))
+	class(self).ConnectNode(String.Name(String.New(input_node)), int64(input_index), String.Name(String.New(output_node)))
 }
 
 /*
 Disconnects the animation node connected to the specified input.
 */
 func (self Instance) DisconnectNode(input_node string, input_index int) { //gd:AnimationNodeBlendTree.disconnect_node
-	class(self).DisconnectNode(String.Name(String.New(input_node)), gd.Int(input_index))
+	class(self).DisconnectNode(String.Name(String.New(input_node)), int64(input_index))
 }
 
 /*
 Modifies the position of a sub animation node.
 */
 func (self Instance) SetNodePosition(name string, position Vector2.XY) { //gd:AnimationNodeBlendTree.set_node_position
-	class(self).SetNodePosition(String.Name(String.New(name)), gd.Vector2(position))
+	class(self).SetNodePosition(String.Name(String.New(name)), Vector2.XY(position))
 }
 
 /*
@@ -140,14 +144,14 @@ func (self Instance) GraphOffset() Vector2.XY {
 }
 
 func (self Instance) SetGraphOffset(value Vector2.XY) {
-	class(self).SetGraphOffset(gd.Vector2(value))
+	class(self).SetGraphOffset(Vector2.XY(value))
 }
 
 /*
 Adds an [AnimationNode] at the given [param position]. The [param name] is used to identify the created sub animation node later.
 */
 //go:nosplit
-func (self class) AddNode(name String.Name, node [1]gdclass.AnimationNode, position gd.Vector2) { //gd:AnimationNodeBlendTree.add_node
+func (self class) AddNode(name String.Name, node [1]gdclass.AnimationNode, position Vector2.XY) { //gd:AnimationNodeBlendTree.add_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(node[0])[0])
@@ -214,7 +218,7 @@ func (self class) HasNode(name String.Name) bool { //gd:AnimationNodeBlendTree.h
 Connects the output of an [AnimationNode] as input for another [AnimationNode], at the input port specified by [param input_index].
 */
 //go:nosplit
-func (self class) ConnectNode(input_node String.Name, input_index gd.Int, output_node String.Name) { //gd:AnimationNodeBlendTree.connect_node
+func (self class) ConnectNode(input_node String.Name, input_index int64, output_node String.Name) { //gd:AnimationNodeBlendTree.connect_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(input_node)))
 	callframe.Arg(frame, input_index)
@@ -228,7 +232,7 @@ func (self class) ConnectNode(input_node String.Name, input_index gd.Int, output
 Disconnects the animation node connected to the specified input.
 */
 //go:nosplit
-func (self class) DisconnectNode(input_node String.Name, input_index gd.Int) { //gd:AnimationNodeBlendTree.disconnect_node
+func (self class) DisconnectNode(input_node String.Name, input_index int64) { //gd:AnimationNodeBlendTree.disconnect_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(input_node)))
 	callframe.Arg(frame, input_index)
@@ -241,7 +245,7 @@ func (self class) DisconnectNode(input_node String.Name, input_index gd.Int) { /
 Modifies the position of a sub animation node.
 */
 //go:nosplit
-func (self class) SetNodePosition(name String.Name, position gd.Vector2) { //gd:AnimationNodeBlendTree.set_node_position
+func (self class) SetNodePosition(name String.Name, position Vector2.XY) { //gd:AnimationNodeBlendTree.set_node_position
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, position)
@@ -254,10 +258,10 @@ func (self class) SetNodePosition(name String.Name, position gd.Vector2) { //gd:
 Returns the position of the sub animation node with the specified [param name].
 */
 //go:nosplit
-func (self class) GetNodePosition(name String.Name) gd.Vector2 { //gd:AnimationNodeBlendTree.get_node_position
+func (self class) GetNodePosition(name String.Name) Vector2.XY { //gd:AnimationNodeBlendTree.get_node_position
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendTree.Bind_get_node_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -265,7 +269,7 @@ func (self class) GetNodePosition(name String.Name) gd.Vector2 { //gd:AnimationN
 }
 
 //go:nosplit
-func (self class) SetGraphOffset(offset gd.Vector2) { //gd:AnimationNodeBlendTree.set_graph_offset
+func (self class) SetGraphOffset(offset Vector2.XY) { //gd:AnimationNodeBlendTree.set_graph_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -274,9 +278,9 @@ func (self class) SetGraphOffset(offset gd.Vector2) { //gd:AnimationNodeBlendTre
 }
 
 //go:nosplit
-func (self class) GetGraphOffset() gd.Vector2 { //gd:AnimationNodeBlendTree.get_graph_offset
+func (self class) GetGraphOffset() Vector2.XY { //gd:AnimationNodeBlendTree.get_graph_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendTree.Bind_get_graph_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

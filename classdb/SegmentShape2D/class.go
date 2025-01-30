@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Shape2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Shape2D"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,7 +79,7 @@ func (self Instance) A() Vector2.XY {
 }
 
 func (self Instance) SetA(value Vector2.XY) {
-	class(self).SetA(gd.Vector2(value))
+	class(self).SetA(Vector2.XY(value))
 }
 
 func (self Instance) B() Vector2.XY {
@@ -83,11 +87,11 @@ func (self Instance) B() Vector2.XY {
 }
 
 func (self Instance) SetB(value Vector2.XY) {
-	class(self).SetB(gd.Vector2(value))
+	class(self).SetB(Vector2.XY(value))
 }
 
 //go:nosplit
-func (self class) SetA(a gd.Vector2) { //gd:SegmentShape2D.set_a
+func (self class) SetA(a Vector2.XY) { //gd:SegmentShape2D.set_a
 	var frame = callframe.New()
 	callframe.Arg(frame, a)
 	var r_ret = callframe.Nil
@@ -96,9 +100,9 @@ func (self class) SetA(a gd.Vector2) { //gd:SegmentShape2D.set_a
 }
 
 //go:nosplit
-func (self class) GetA() gd.Vector2 { //gd:SegmentShape2D.get_a
+func (self class) GetA() Vector2.XY { //gd:SegmentShape2D.get_a
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SegmentShape2D.Bind_get_a, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -106,7 +110,7 @@ func (self class) GetA() gd.Vector2 { //gd:SegmentShape2D.get_a
 }
 
 //go:nosplit
-func (self class) SetB(b gd.Vector2) { //gd:SegmentShape2D.set_b
+func (self class) SetB(b Vector2.XY) { //gd:SegmentShape2D.set_b
 	var frame = callframe.New()
 	callframe.Arg(frame, b)
 	var r_ret = callframe.Nil
@@ -115,9 +119,9 @@ func (self class) SetB(b gd.Vector2) { //gd:SegmentShape2D.set_b
 }
 
 //go:nosplit
-func (self class) GetB() gd.Vector2 { //gd:SegmentShape2D.get_b
+func (self class) GetB() Vector2.XY { //gd:SegmentShape2D.get_b
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SegmentShape2D.Bind_get_b, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

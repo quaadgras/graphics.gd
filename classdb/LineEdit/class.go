@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -98,7 +101,7 @@ Select(2, 5); // Will select "lco".
 [/codeblocks]
 */
 func (self Instance) Select() { //gd:LineEdit.select
-	class(self).Select(gd.Int(0), gd.Int(-1))
+	class(self).Select(int64(0), int64(-1))
 }
 
 /*
@@ -168,14 +171,14 @@ func (self Instance) DeleteCharAtCaret() { //gd:LineEdit.delete_char_at_caret
 Deletes a section of the [member text] going from position [param from_column] to [param to_column]. Both parameters should be within the text's length.
 */
 func (self Instance) DeleteText(from_column int, to_column int) { //gd:LineEdit.delete_text
-	class(self).DeleteText(gd.Int(from_column), gd.Int(to_column))
+	class(self).DeleteText(int64(from_column), int64(to_column))
 }
 
 /*
 Executes a given action as defined in the [enum MenuItems] enum.
 */
 func (self Instance) MenuOption(option int) { //gd:LineEdit.menu_option
-	class(self).MenuOption(gd.Int(option))
+	class(self).MenuOption(int64(option))
 }
 
 /*
@@ -285,7 +288,7 @@ func (self Instance) MaxLength() int {
 }
 
 func (self Instance) SetMaxLength(value int) {
-	class(self).SetMaxLength(gd.Int(value))
+	class(self).SetMaxLength(int64(value))
 }
 
 func (self Instance) Editable() bool {
@@ -421,7 +424,7 @@ func (self Instance) CaretBlinkInterval() Float.X {
 }
 
 func (self Instance) SetCaretBlinkInterval(value Float.X) {
-	class(self).SetCaretBlinkInterval(gd.Float(value))
+	class(self).SetCaretBlinkInterval(float64(value))
 }
 
 func (self Instance) CaretColumn() int {
@@ -429,7 +432,7 @@ func (self Instance) CaretColumn() int {
 }
 
 func (self Instance) SetCaretColumn(value int) {
-	class(self).SetCaretColumn(gd.Int(value))
+	class(self).SetCaretColumn(int64(value))
 }
 
 func (self Instance) CaretForceDisplayed() bool {
@@ -544,7 +547,7 @@ Select(2, 5); // Will select "lco".
 [/codeblocks]
 */
 //go:nosplit
-func (self class) Select(from gd.Int, to gd.Int) { //gd:LineEdit.select_
+func (self class) Select(from int64, to int64) { //gd:LineEdit.select_
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -605,9 +608,9 @@ func (self class) GetSelectedText() String.Readable { //gd:LineEdit.get_selected
 Returns the selection begin column.
 */
 //go:nosplit
-func (self class) GetSelectionFromColumn() gd.Int { //gd:LineEdit.get_selection_from_column
+func (self class) GetSelectionFromColumn() int64 { //gd:LineEdit.get_selection_from_column
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_selection_from_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -618,9 +621,9 @@ func (self class) GetSelectionFromColumn() gd.Int { //gd:LineEdit.get_selection_
 Returns the selection end column.
 */
 //go:nosplit
-func (self class) GetSelectionToColumn() gd.Int { //gd:LineEdit.get_selection_to_column
+func (self class) GetSelectionToColumn() int64 { //gd:LineEdit.get_selection_to_column
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_selection_to_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -761,7 +764,7 @@ func (self class) GetPlaceholder() String.Readable { //gd:LineEdit.get_placehold
 }
 
 //go:nosplit
-func (self class) SetCaretColumn(position gd.Int) { //gd:LineEdit.set_caret_column
+func (self class) SetCaretColumn(position int64) { //gd:LineEdit.set_caret_column
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -770,9 +773,9 @@ func (self class) SetCaretColumn(position gd.Int) { //gd:LineEdit.set_caret_colu
 }
 
 //go:nosplit
-func (self class) GetCaretColumn() gd.Int { //gd:LineEdit.get_caret_column
+func (self class) GetCaretColumn() int64 { //gd:LineEdit.get_caret_column
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_caret_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -783,9 +786,9 @@ func (self class) GetCaretColumn() gd.Int { //gd:LineEdit.get_caret_column
 Returns the scroll offset due to [member caret_column], as a number of characters.
 */
 //go:nosplit
-func (self class) GetScrollOffset() gd.Float { //gd:LineEdit.get_scroll_offset
+func (self class) GetScrollOffset() float64 { //gd:LineEdit.get_scroll_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_scroll_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -869,7 +872,7 @@ func (self class) IsCaretForceDisplayed() bool { //gd:LineEdit.is_caret_force_di
 }
 
 //go:nosplit
-func (self class) SetCaretBlinkInterval(interval gd.Float) { //gd:LineEdit.set_caret_blink_interval
+func (self class) SetCaretBlinkInterval(interval float64) { //gd:LineEdit.set_caret_blink_interval
 	var frame = callframe.New()
 	callframe.Arg(frame, interval)
 	var r_ret = callframe.Nil
@@ -878,9 +881,9 @@ func (self class) SetCaretBlinkInterval(interval gd.Float) { //gd:LineEdit.set_c
 }
 
 //go:nosplit
-func (self class) GetCaretBlinkInterval() gd.Float { //gd:LineEdit.get_caret_blink_interval
+func (self class) GetCaretBlinkInterval() float64 { //gd:LineEdit.get_caret_blink_interval
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_caret_blink_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -888,7 +891,7 @@ func (self class) GetCaretBlinkInterval() gd.Float { //gd:LineEdit.get_caret_bli
 }
 
 //go:nosplit
-func (self class) SetMaxLength(chars gd.Int) { //gd:LineEdit.set_max_length
+func (self class) SetMaxLength(chars int64) { //gd:LineEdit.set_max_length
 	var frame = callframe.New()
 	callframe.Arg(frame, chars)
 	var r_ret = callframe.Nil
@@ -897,9 +900,9 @@ func (self class) SetMaxLength(chars gd.Int) { //gd:LineEdit.set_max_length
 }
 
 //go:nosplit
-func (self class) GetMaxLength() gd.Int { //gd:LineEdit.get_max_length
+func (self class) GetMaxLength() int64 { //gd:LineEdit.get_max_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_max_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -933,7 +936,7 @@ func (self class) DeleteCharAtCaret() { //gd:LineEdit.delete_char_at_caret
 Deletes a section of the [member text] going from position [param from_column] to [param to_column]. Both parameters should be within the text's length.
 */
 //go:nosplit
-func (self class) DeleteText(from_column gd.Int, to_column gd.Int) { //gd:LineEdit.delete_text
+func (self class) DeleteText(from_column int64, to_column int64) { //gd:LineEdit.delete_text
 	var frame = callframe.New()
 	callframe.Arg(frame, from_column)
 	callframe.Arg(frame, to_column)
@@ -1003,7 +1006,7 @@ func (self class) GetSecretCharacter() String.Readable { //gd:LineEdit.get_secre
 Executes a given action as defined in the [enum MenuItems] enum.
 */
 //go:nosplit
-func (self class) MenuOption(option gd.Int) { //gd:LineEdit.menu_option
+func (self class) MenuOption(option int64) { //gd:LineEdit.menu_option
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Nil

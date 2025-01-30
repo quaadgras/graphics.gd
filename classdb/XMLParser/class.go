@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -132,14 +136,14 @@ func (self Instance) GetAttributeCount() int { //gd:XMLParser.get_attribute_coun
 Returns the name of an attribute of the currently parsed element, specified by the [param idx] index.
 */
 func (self Instance) GetAttributeName(idx int) string { //gd:XMLParser.get_attribute_name
-	return string(class(self).GetAttributeName(gd.Int(idx)).String())
+	return string(class(self).GetAttributeName(int64(idx)).String())
 }
 
 /*
 Returns the value of an attribute of the currently parsed element, specified by the [param idx] index.
 */
 func (self Instance) GetAttributeValue(idx int) string { //gd:XMLParser.get_attribute_value
-	return string(class(self).GetAttributeValue(gd.Int(idx)).String())
+	return string(class(self).GetAttributeValue(int64(idx)).String())
 }
 
 /*
@@ -188,7 +192,7 @@ func (self Instance) SkipSection() { //gd:XMLParser.skip_section
 Moves the buffer cursor to a certain offset (since the beginning) and reads the next node there. This method returns an error code.
 */
 func (self Instance) SeekTo(position int) error { //gd:XMLParser.seek
-	return error(gd.ToError(class(self).SeekTo(gd.Int(position))))
+	return error(gd.ToError(class(self).SeekTo(int64(position))))
 }
 
 /*
@@ -228,11 +232,11 @@ func New() Instance {
 Parses the next node in the file. This method returns an error code.
 */
 //go:nosplit
-func (self class) Read() gd.Error { //gd:XMLParser.read
+func (self class) Read() Error.Code { //gd:XMLParser.read
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_read, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -281,9 +285,9 @@ func (self class) GetNodeData() String.Readable { //gd:XMLParser.get_node_data
 Returns the byte offset of the currently parsed node since the beginning of the file or buffer. This is usually equivalent to the number of characters before the read position.
 */
 //go:nosplit
-func (self class) GetNodeOffset() gd.Int { //gd:XMLParser.get_node_offset
+func (self class) GetNodeOffset() int64 { //gd:XMLParser.get_node_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_get_node_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -295,9 +299,9 @@ Returns the number of attributes in the currently parsed element.
 [b]Note:[/b] If this method is used while the currently parsed node is not [constant NODE_ELEMENT] or [constant NODE_ELEMENT_END], this count will not be updated and will still reflect the last element.
 */
 //go:nosplit
-func (self class) GetAttributeCount() gd.Int { //gd:XMLParser.get_attribute_count
+func (self class) GetAttributeCount() int64 { //gd:XMLParser.get_attribute_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_get_attribute_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -308,7 +312,7 @@ func (self class) GetAttributeCount() gd.Int { //gd:XMLParser.get_attribute_coun
 Returns the name of an attribute of the currently parsed element, specified by the [param idx] index.
 */
 //go:nosplit
-func (self class) GetAttributeName(idx gd.Int) String.Readable { //gd:XMLParser.get_attribute_name
+func (self class) GetAttributeName(idx int64) String.Readable { //gd:XMLParser.get_attribute_name
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -322,7 +326,7 @@ func (self class) GetAttributeName(idx gd.Int) String.Readable { //gd:XMLParser.
 Returns the value of an attribute of the currently parsed element, specified by the [param idx] index.
 */
 //go:nosplit
-func (self class) GetAttributeValue(idx gd.Int) String.Readable { //gd:XMLParser.get_attribute_value
+func (self class) GetAttributeValue(idx int64) String.Readable { //gd:XMLParser.get_attribute_value
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -391,9 +395,9 @@ func (self class) IsEmpty() bool { //gd:XMLParser.is_empty
 Returns the current line in the parsed file, counting from 0.
 */
 //go:nosplit
-func (self class) GetCurrentLine() gd.Int { //gd:XMLParser.get_current_line
+func (self class) GetCurrentLine() int64 { //gd:XMLParser.get_current_line
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_get_current_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -415,12 +419,12 @@ func (self class) SkipSection() { //gd:XMLParser.skip_section
 Moves the buffer cursor to a certain offset (since the beginning) and reads the next node there. This method returns an error code.
 */
 //go:nosplit
-func (self class) SeekTo(position gd.Int) gd.Error { //gd:XMLParser.seek
+func (self class) SeekTo(position int64) Error.Code { //gd:XMLParser.seek
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_seek, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -429,12 +433,12 @@ func (self class) SeekTo(position gd.Int) gd.Error { //gd:XMLParser.seek
 Opens an XML [param file] for parsing. This method returns an error code.
 */
 //go:nosplit
-func (self class) Open(file String.Readable) gd.Error { //gd:XMLParser.open
+func (self class) Open(file String.Readable) Error.Code { //gd:XMLParser.open
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_open, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -443,12 +447,12 @@ func (self class) Open(file String.Readable) gd.Error { //gd:XMLParser.open
 Opens an XML raw [param buffer] for parsing. This method returns an error code.
 */
 //go:nosplit
-func (self class) OpenBuffer(buffer Packed.Bytes) gd.Error { //gd:XMLParser.open_buffer
+func (self class) OpenBuffer(buffer Packed.Bytes) Error.Code { //gd:XMLParser.open_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_open_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -495,120 +499,4 @@ const (
 	NodeCdata NodeType = 5
 	/*An unknown node type.*/
 	NodeUnknown NodeType = 6
-)
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
 )

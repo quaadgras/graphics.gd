@@ -9,16 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -77,21 +80,21 @@ Returns a [url=https://en.wikipedia.org/wiki/Normal_distribution]normally-distri
 [b]Note:[/b] This method uses the [url=https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform]Box-Muller transform[/url] algorithm.
 */
 func (self Instance) Randfn() Float.X { //gd:RandomNumberGenerator.randfn
-	return Float.X(Float.X(class(self).Randfn(gd.Float(0.0), gd.Float(1.0))))
+	return Float.X(Float.X(class(self).Randfn(float64(0.0), float64(1.0))))
 }
 
 /*
 Returns a pseudo-random float between [param from] and [param to] (inclusive).
 */
 func (self Instance) RandfRange(from Float.X, to Float.X) Float.X { //gd:RandomNumberGenerator.randf_range
-	return Float.X(Float.X(class(self).RandfRange(gd.Float(from), gd.Float(to))))
+	return Float.X(Float.X(class(self).RandfRange(float64(from), float64(to))))
 }
 
 /*
 Returns a pseudo-random 32-bit signed integer between [param from] and [param to] (inclusive).
 */
 func (self Instance) RandiRange(from int, to int) int { //gd:RandomNumberGenerator.randi_range
-	return int(int(class(self).RandiRange(gd.Int(from), gd.Int(to))))
+	return int(int(class(self).RandiRange(int64(from), int64(to))))
 }
 
 /*
@@ -144,7 +147,7 @@ func (self Instance) Seed() int {
 }
 
 func (self Instance) SetSeed(value int) {
-	class(self).SetSeed(gd.Int(value))
+	class(self).SetSeed(int64(value))
 }
 
 func (self Instance) State() int {
@@ -152,11 +155,11 @@ func (self Instance) State() int {
 }
 
 func (self Instance) SetState(value int) {
-	class(self).SetState(gd.Int(value))
+	class(self).SetState(int64(value))
 }
 
 //go:nosplit
-func (self class) SetSeed(seed gd.Int) { //gd:RandomNumberGenerator.set_seed
+func (self class) SetSeed(seed int64) { //gd:RandomNumberGenerator.set_seed
 	var frame = callframe.New()
 	callframe.Arg(frame, seed)
 	var r_ret = callframe.Nil
@@ -165,9 +168,9 @@ func (self class) SetSeed(seed gd.Int) { //gd:RandomNumberGenerator.set_seed
 }
 
 //go:nosplit
-func (self class) GetSeed() gd.Int { //gd:RandomNumberGenerator.get_seed
+func (self class) GetSeed() int64 { //gd:RandomNumberGenerator.get_seed
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RandomNumberGenerator.Bind_get_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -175,7 +178,7 @@ func (self class) GetSeed() gd.Int { //gd:RandomNumberGenerator.get_seed
 }
 
 //go:nosplit
-func (self class) SetState(state gd.Int) { //gd:RandomNumberGenerator.set_state
+func (self class) SetState(state int64) { //gd:RandomNumberGenerator.set_state
 	var frame = callframe.New()
 	callframe.Arg(frame, state)
 	var r_ret = callframe.Nil
@@ -184,9 +187,9 @@ func (self class) SetState(state gd.Int) { //gd:RandomNumberGenerator.set_state
 }
 
 //go:nosplit
-func (self class) GetState() gd.Int { //gd:RandomNumberGenerator.get_state
+func (self class) GetState() int64 { //gd:RandomNumberGenerator.get_state
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RandomNumberGenerator.Bind_get_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -197,9 +200,9 @@ func (self class) GetState() gd.Int { //gd:RandomNumberGenerator.get_state
 Returns a pseudo-random 32-bit unsigned integer between [code]0[/code] and [code]4294967295[/code] (inclusive).
 */
 //go:nosplit
-func (self class) Randi() gd.Int { //gd:RandomNumberGenerator.randi
+func (self class) Randi() int64 { //gd:RandomNumberGenerator.randi
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RandomNumberGenerator.Bind_randi, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -210,9 +213,9 @@ func (self class) Randi() gd.Int { //gd:RandomNumberGenerator.randi
 Returns a pseudo-random float between [code]0.0[/code] and [code]1.0[/code] (inclusive).
 */
 //go:nosplit
-func (self class) Randf() gd.Float { //gd:RandomNumberGenerator.randf
+func (self class) Randf() float64 { //gd:RandomNumberGenerator.randf
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RandomNumberGenerator.Bind_randf, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -224,11 +227,11 @@ Returns a [url=https://en.wikipedia.org/wiki/Normal_distribution]normally-distri
 [b]Note:[/b] This method uses the [url=https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform]Box-Muller transform[/url] algorithm.
 */
 //go:nosplit
-func (self class) Randfn(mean gd.Float, deviation gd.Float) gd.Float { //gd:RandomNumberGenerator.randfn
+func (self class) Randfn(mean float64, deviation float64) float64 { //gd:RandomNumberGenerator.randfn
 	var frame = callframe.New()
 	callframe.Arg(frame, mean)
 	callframe.Arg(frame, deviation)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RandomNumberGenerator.Bind_randfn, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -239,11 +242,11 @@ func (self class) Randfn(mean gd.Float, deviation gd.Float) gd.Float { //gd:Rand
 Returns a pseudo-random float between [param from] and [param to] (inclusive).
 */
 //go:nosplit
-func (self class) RandfRange(from gd.Float, to gd.Float) gd.Float { //gd:RandomNumberGenerator.randf_range
+func (self class) RandfRange(from float64, to float64) float64 { //gd:RandomNumberGenerator.randf_range
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RandomNumberGenerator.Bind_randf_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -254,11 +257,11 @@ func (self class) RandfRange(from gd.Float, to gd.Float) gd.Float { //gd:RandomN
 Returns a pseudo-random 32-bit signed integer between [param from] and [param to] (inclusive).
 */
 //go:nosplit
-func (self class) RandiRange(from gd.Int, to gd.Int) gd.Int { //gd:RandomNumberGenerator.randi_range
+func (self class) RandiRange(from int64, to int64) int64 { //gd:RandomNumberGenerator.randi_range
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RandomNumberGenerator.Bind_randi_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -281,10 +284,10 @@ print(my_array[rng.rand_weighted(weights)])
 [/codeblocks]
 */
 //go:nosplit
-func (self class) RandWeighted(weights Packed.Array[float32]) gd.Int { //gd:RandomNumberGenerator.rand_weighted
+func (self class) RandWeighted(weights Packed.Array[float32]) int64 { //gd:RandomNumberGenerator.rand_weighted
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RandomNumberGenerator.Bind_rand_weighted, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

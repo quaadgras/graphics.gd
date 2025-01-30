@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -78,7 +81,7 @@ func (self Instance) SkyTopColor() Color.RGBA {
 }
 
 func (self Instance) SetSkyTopColor(value Color.RGBA) {
-	class(self).SetSkyTopColor(gd.Color(value))
+	class(self).SetSkyTopColor(Color.RGBA(value))
 }
 
 func (self Instance) SkyHorizonColor() Color.RGBA {
@@ -86,7 +89,7 @@ func (self Instance) SkyHorizonColor() Color.RGBA {
 }
 
 func (self Instance) SetSkyHorizonColor(value Color.RGBA) {
-	class(self).SetSkyHorizonColor(gd.Color(value))
+	class(self).SetSkyHorizonColor(Color.RGBA(value))
 }
 
 func (self Instance) SkyCurve() Float.X {
@@ -94,7 +97,7 @@ func (self Instance) SkyCurve() Float.X {
 }
 
 func (self Instance) SetSkyCurve(value Float.X) {
-	class(self).SetSkyCurve(gd.Float(value))
+	class(self).SetSkyCurve(float64(value))
 }
 
 func (self Instance) SkyEnergyMultiplier() Float.X {
@@ -102,7 +105,7 @@ func (self Instance) SkyEnergyMultiplier() Float.X {
 }
 
 func (self Instance) SetSkyEnergyMultiplier(value Float.X) {
-	class(self).SetSkyEnergyMultiplier(gd.Float(value))
+	class(self).SetSkyEnergyMultiplier(float64(value))
 }
 
 func (self Instance) SkyCover() [1]gdclass.Texture2D {
@@ -118,7 +121,7 @@ func (self Instance) SkyCoverModulate() Color.RGBA {
 }
 
 func (self Instance) SetSkyCoverModulate(value Color.RGBA) {
-	class(self).SetSkyCoverModulate(gd.Color(value))
+	class(self).SetSkyCoverModulate(Color.RGBA(value))
 }
 
 func (self Instance) GroundBottomColor() Color.RGBA {
@@ -126,7 +129,7 @@ func (self Instance) GroundBottomColor() Color.RGBA {
 }
 
 func (self Instance) SetGroundBottomColor(value Color.RGBA) {
-	class(self).SetGroundBottomColor(gd.Color(value))
+	class(self).SetGroundBottomColor(Color.RGBA(value))
 }
 
 func (self Instance) GroundHorizonColor() Color.RGBA {
@@ -134,7 +137,7 @@ func (self Instance) GroundHorizonColor() Color.RGBA {
 }
 
 func (self Instance) SetGroundHorizonColor(value Color.RGBA) {
-	class(self).SetGroundHorizonColor(gd.Color(value))
+	class(self).SetGroundHorizonColor(Color.RGBA(value))
 }
 
 func (self Instance) GroundCurve() Float.X {
@@ -142,7 +145,7 @@ func (self Instance) GroundCurve() Float.X {
 }
 
 func (self Instance) SetGroundCurve(value Float.X) {
-	class(self).SetGroundCurve(gd.Float(value))
+	class(self).SetGroundCurve(float64(value))
 }
 
 func (self Instance) GroundEnergyMultiplier() Float.X {
@@ -150,7 +153,7 @@ func (self Instance) GroundEnergyMultiplier() Float.X {
 }
 
 func (self Instance) SetGroundEnergyMultiplier(value Float.X) {
-	class(self).SetGroundEnergyMultiplier(gd.Float(value))
+	class(self).SetGroundEnergyMultiplier(float64(value))
 }
 
 func (self Instance) SunAngleMax() Float.X {
@@ -158,7 +161,7 @@ func (self Instance) SunAngleMax() Float.X {
 }
 
 func (self Instance) SetSunAngleMax(value Float.X) {
-	class(self).SetSunAngleMax(gd.Float(value))
+	class(self).SetSunAngleMax(float64(value))
 }
 
 func (self Instance) SunCurve() Float.X {
@@ -166,7 +169,7 @@ func (self Instance) SunCurve() Float.X {
 }
 
 func (self Instance) SetSunCurve(value Float.X) {
-	class(self).SetSunCurve(gd.Float(value))
+	class(self).SetSunCurve(float64(value))
 }
 
 func (self Instance) UseDebanding() bool {
@@ -182,11 +185,11 @@ func (self Instance) EnergyMultiplier() Float.X {
 }
 
 func (self Instance) SetEnergyMultiplier(value Float.X) {
-	class(self).SetEnergyMultiplier(gd.Float(value))
+	class(self).SetEnergyMultiplier(float64(value))
 }
 
 //go:nosplit
-func (self class) SetSkyTopColor(color gd.Color) { //gd:ProceduralSkyMaterial.set_sky_top_color
+func (self class) SetSkyTopColor(color Color.RGBA) { //gd:ProceduralSkyMaterial.set_sky_top_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -195,9 +198,9 @@ func (self class) SetSkyTopColor(color gd.Color) { //gd:ProceduralSkyMaterial.se
 }
 
 //go:nosplit
-func (self class) GetSkyTopColor() gd.Color { //gd:ProceduralSkyMaterial.get_sky_top_color
+func (self class) GetSkyTopColor() Color.RGBA { //gd:ProceduralSkyMaterial.get_sky_top_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProceduralSkyMaterial.Bind_get_sky_top_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -205,7 +208,7 @@ func (self class) GetSkyTopColor() gd.Color { //gd:ProceduralSkyMaterial.get_sky
 }
 
 //go:nosplit
-func (self class) SetSkyHorizonColor(color gd.Color) { //gd:ProceduralSkyMaterial.set_sky_horizon_color
+func (self class) SetSkyHorizonColor(color Color.RGBA) { //gd:ProceduralSkyMaterial.set_sky_horizon_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -214,9 +217,9 @@ func (self class) SetSkyHorizonColor(color gd.Color) { //gd:ProceduralSkyMateria
 }
 
 //go:nosplit
-func (self class) GetSkyHorizonColor() gd.Color { //gd:ProceduralSkyMaterial.get_sky_horizon_color
+func (self class) GetSkyHorizonColor() Color.RGBA { //gd:ProceduralSkyMaterial.get_sky_horizon_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProceduralSkyMaterial.Bind_get_sky_horizon_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -224,7 +227,7 @@ func (self class) GetSkyHorizonColor() gd.Color { //gd:ProceduralSkyMaterial.get
 }
 
 //go:nosplit
-func (self class) SetSkyCurve(curve gd.Float) { //gd:ProceduralSkyMaterial.set_sky_curve
+func (self class) SetSkyCurve(curve float64) { //gd:ProceduralSkyMaterial.set_sky_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, curve)
 	var r_ret = callframe.Nil
@@ -233,9 +236,9 @@ func (self class) SetSkyCurve(curve gd.Float) { //gd:ProceduralSkyMaterial.set_s
 }
 
 //go:nosplit
-func (self class) GetSkyCurve() gd.Float { //gd:ProceduralSkyMaterial.get_sky_curve
+func (self class) GetSkyCurve() float64 { //gd:ProceduralSkyMaterial.get_sky_curve
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProceduralSkyMaterial.Bind_get_sky_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -243,7 +246,7 @@ func (self class) GetSkyCurve() gd.Float { //gd:ProceduralSkyMaterial.get_sky_cu
 }
 
 //go:nosplit
-func (self class) SetSkyEnergyMultiplier(multiplier gd.Float) { //gd:ProceduralSkyMaterial.set_sky_energy_multiplier
+func (self class) SetSkyEnergyMultiplier(multiplier float64) { //gd:ProceduralSkyMaterial.set_sky_energy_multiplier
 	var frame = callframe.New()
 	callframe.Arg(frame, multiplier)
 	var r_ret = callframe.Nil
@@ -252,9 +255,9 @@ func (self class) SetSkyEnergyMultiplier(multiplier gd.Float) { //gd:ProceduralS
 }
 
 //go:nosplit
-func (self class) GetSkyEnergyMultiplier() gd.Float { //gd:ProceduralSkyMaterial.get_sky_energy_multiplier
+func (self class) GetSkyEnergyMultiplier() float64 { //gd:ProceduralSkyMaterial.get_sky_energy_multiplier
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProceduralSkyMaterial.Bind_get_sky_energy_multiplier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -281,7 +284,7 @@ func (self class) GetSkyCover() [1]gdclass.Texture2D { //gd:ProceduralSkyMateria
 }
 
 //go:nosplit
-func (self class) SetSkyCoverModulate(color gd.Color) { //gd:ProceduralSkyMaterial.set_sky_cover_modulate
+func (self class) SetSkyCoverModulate(color Color.RGBA) { //gd:ProceduralSkyMaterial.set_sky_cover_modulate
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -290,9 +293,9 @@ func (self class) SetSkyCoverModulate(color gd.Color) { //gd:ProceduralSkyMateri
 }
 
 //go:nosplit
-func (self class) GetSkyCoverModulate() gd.Color { //gd:ProceduralSkyMaterial.get_sky_cover_modulate
+func (self class) GetSkyCoverModulate() Color.RGBA { //gd:ProceduralSkyMaterial.get_sky_cover_modulate
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProceduralSkyMaterial.Bind_get_sky_cover_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -300,7 +303,7 @@ func (self class) GetSkyCoverModulate() gd.Color { //gd:ProceduralSkyMaterial.ge
 }
 
 //go:nosplit
-func (self class) SetGroundBottomColor(color gd.Color) { //gd:ProceduralSkyMaterial.set_ground_bottom_color
+func (self class) SetGroundBottomColor(color Color.RGBA) { //gd:ProceduralSkyMaterial.set_ground_bottom_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -309,9 +312,9 @@ func (self class) SetGroundBottomColor(color gd.Color) { //gd:ProceduralSkyMater
 }
 
 //go:nosplit
-func (self class) GetGroundBottomColor() gd.Color { //gd:ProceduralSkyMaterial.get_ground_bottom_color
+func (self class) GetGroundBottomColor() Color.RGBA { //gd:ProceduralSkyMaterial.get_ground_bottom_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProceduralSkyMaterial.Bind_get_ground_bottom_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -319,7 +322,7 @@ func (self class) GetGroundBottomColor() gd.Color { //gd:ProceduralSkyMaterial.g
 }
 
 //go:nosplit
-func (self class) SetGroundHorizonColor(color gd.Color) { //gd:ProceduralSkyMaterial.set_ground_horizon_color
+func (self class) SetGroundHorizonColor(color Color.RGBA) { //gd:ProceduralSkyMaterial.set_ground_horizon_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -328,9 +331,9 @@ func (self class) SetGroundHorizonColor(color gd.Color) { //gd:ProceduralSkyMate
 }
 
 //go:nosplit
-func (self class) GetGroundHorizonColor() gd.Color { //gd:ProceduralSkyMaterial.get_ground_horizon_color
+func (self class) GetGroundHorizonColor() Color.RGBA { //gd:ProceduralSkyMaterial.get_ground_horizon_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProceduralSkyMaterial.Bind_get_ground_horizon_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -338,7 +341,7 @@ func (self class) GetGroundHorizonColor() gd.Color { //gd:ProceduralSkyMaterial.
 }
 
 //go:nosplit
-func (self class) SetGroundCurve(curve gd.Float) { //gd:ProceduralSkyMaterial.set_ground_curve
+func (self class) SetGroundCurve(curve float64) { //gd:ProceduralSkyMaterial.set_ground_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, curve)
 	var r_ret = callframe.Nil
@@ -347,9 +350,9 @@ func (self class) SetGroundCurve(curve gd.Float) { //gd:ProceduralSkyMaterial.se
 }
 
 //go:nosplit
-func (self class) GetGroundCurve() gd.Float { //gd:ProceduralSkyMaterial.get_ground_curve
+func (self class) GetGroundCurve() float64 { //gd:ProceduralSkyMaterial.get_ground_curve
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProceduralSkyMaterial.Bind_get_ground_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -357,7 +360,7 @@ func (self class) GetGroundCurve() gd.Float { //gd:ProceduralSkyMaterial.get_gro
 }
 
 //go:nosplit
-func (self class) SetGroundEnergyMultiplier(energy gd.Float) { //gd:ProceduralSkyMaterial.set_ground_energy_multiplier
+func (self class) SetGroundEnergyMultiplier(energy float64) { //gd:ProceduralSkyMaterial.set_ground_energy_multiplier
 	var frame = callframe.New()
 	callframe.Arg(frame, energy)
 	var r_ret = callframe.Nil
@@ -366,9 +369,9 @@ func (self class) SetGroundEnergyMultiplier(energy gd.Float) { //gd:ProceduralSk
 }
 
 //go:nosplit
-func (self class) GetGroundEnergyMultiplier() gd.Float { //gd:ProceduralSkyMaterial.get_ground_energy_multiplier
+func (self class) GetGroundEnergyMultiplier() float64 { //gd:ProceduralSkyMaterial.get_ground_energy_multiplier
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProceduralSkyMaterial.Bind_get_ground_energy_multiplier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -376,7 +379,7 @@ func (self class) GetGroundEnergyMultiplier() gd.Float { //gd:ProceduralSkyMater
 }
 
 //go:nosplit
-func (self class) SetSunAngleMax(degrees gd.Float) { //gd:ProceduralSkyMaterial.set_sun_angle_max
+func (self class) SetSunAngleMax(degrees float64) { //gd:ProceduralSkyMaterial.set_sun_angle_max
 	var frame = callframe.New()
 	callframe.Arg(frame, degrees)
 	var r_ret = callframe.Nil
@@ -385,9 +388,9 @@ func (self class) SetSunAngleMax(degrees gd.Float) { //gd:ProceduralSkyMaterial.
 }
 
 //go:nosplit
-func (self class) GetSunAngleMax() gd.Float { //gd:ProceduralSkyMaterial.get_sun_angle_max
+func (self class) GetSunAngleMax() float64 { //gd:ProceduralSkyMaterial.get_sun_angle_max
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProceduralSkyMaterial.Bind_get_sun_angle_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -395,7 +398,7 @@ func (self class) GetSunAngleMax() gd.Float { //gd:ProceduralSkyMaterial.get_sun
 }
 
 //go:nosplit
-func (self class) SetSunCurve(curve gd.Float) { //gd:ProceduralSkyMaterial.set_sun_curve
+func (self class) SetSunCurve(curve float64) { //gd:ProceduralSkyMaterial.set_sun_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, curve)
 	var r_ret = callframe.Nil
@@ -404,9 +407,9 @@ func (self class) SetSunCurve(curve gd.Float) { //gd:ProceduralSkyMaterial.set_s
 }
 
 //go:nosplit
-func (self class) GetSunCurve() gd.Float { //gd:ProceduralSkyMaterial.get_sun_curve
+func (self class) GetSunCurve() float64 { //gd:ProceduralSkyMaterial.get_sun_curve
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProceduralSkyMaterial.Bind_get_sun_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -433,7 +436,7 @@ func (self class) GetUseDebanding() bool { //gd:ProceduralSkyMaterial.get_use_de
 }
 
 //go:nosplit
-func (self class) SetEnergyMultiplier(multiplier gd.Float) { //gd:ProceduralSkyMaterial.set_energy_multiplier
+func (self class) SetEnergyMultiplier(multiplier float64) { //gd:ProceduralSkyMaterial.set_energy_multiplier
 	var frame = callframe.New()
 	callframe.Arg(frame, multiplier)
 	var r_ret = callframe.Nil
@@ -442,9 +445,9 @@ func (self class) SetEnergyMultiplier(multiplier gd.Float) { //gd:ProceduralSkyM
 }
 
 //go:nosplit
-func (self class) GetEnergyMultiplier() gd.Float { //gd:ProceduralSkyMaterial.get_energy_multiplier
+func (self class) GetEnergyMultiplier() float64 { //gd:ProceduralSkyMaterial.get_energy_multiplier
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProceduralSkyMaterial.Bind_get_energy_multiplier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

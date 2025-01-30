@@ -69,11 +69,11 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 	}
 	switch gdType {
 	case "int", "Int":
-		return maybeInternal("Int")
+		return "int64"
 	case "float", "Float":
-		return maybeInternal("Float")
+		return "float64"
 	case "bool", "Bool":
-		return maybeInternal("Bool")
+		return "bool"
 	case "String":
 		return maybeInternal("String")
 	case "StringName":

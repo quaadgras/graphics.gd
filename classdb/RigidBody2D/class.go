@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/CollisionObject2D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/PhysicsBody2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/PhysicsBody2D"
-import "graphics.gd/classdb/CollisionObject2D"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -40,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -99,7 +102,7 @@ func (self Instance) GetContactCount() int { //gd:RigidBody2D.get_contact_count
 Sets the body's velocity on the given axis. The velocity in the given vector axis will be set as the given vector length. This is useful for jumping behavior.
 */
 func (self Instance) SetAxisVelocity(axis_velocity Vector2.XY) { //gd:RigidBody2D.set_axis_velocity
-	class(self).SetAxisVelocity(gd.Vector2(axis_velocity))
+	class(self).SetAxisVelocity(Vector2.XY(axis_velocity))
 }
 
 /*
@@ -108,7 +111,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 This is equivalent to using [method apply_impulse] at the body's center of mass.
 */
 func (self Instance) ApplyCentralImpulse() { //gd:RigidBody2D.apply_central_impulse
-	class(self).ApplyCentralImpulse(gd.Vector2(gd.Vector2{0, 0}))
+	class(self).ApplyCentralImpulse(Vector2.XY(gd.Vector2{0, 0}))
 }
 
 /*
@@ -117,7 +120,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 [param position] is the offset from the body origin in global coordinates.
 */
 func (self Instance) ApplyImpulse(impulse Vector2.XY) { //gd:RigidBody2D.apply_impulse
-	class(self).ApplyImpulse(gd.Vector2(impulse), gd.Vector2(gd.Vector2{0, 0}))
+	class(self).ApplyImpulse(Vector2.XY(impulse), Vector2.XY(gd.Vector2{0, 0}))
 }
 
 /*
@@ -126,7 +129,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 [b]Note:[/b] [member inertia] is required for this to work. To have [member inertia], an active [CollisionShape2D] must be a child of the node, or you can manually set [member inertia].
 */
 func (self Instance) ApplyTorqueImpulse(torque Float.X) { //gd:RigidBody2D.apply_torque_impulse
-	class(self).ApplyTorqueImpulse(gd.Float(torque))
+	class(self).ApplyTorqueImpulse(float64(torque))
 }
 
 /*
@@ -134,7 +137,7 @@ Applies a directional force without affecting rotation. A force is time dependen
 This is equivalent to using [method apply_force] at the body's center of mass.
 */
 func (self Instance) ApplyCentralForce(force Vector2.XY) { //gd:RigidBody2D.apply_central_force
-	class(self).ApplyCentralForce(gd.Vector2(force))
+	class(self).ApplyCentralForce(Vector2.XY(force))
 }
 
 /*
@@ -142,7 +145,7 @@ Applies a positioned force to the body. A force is time dependent and meant to b
 [param position] is the offset from the body origin in global coordinates.
 */
 func (self Instance) ApplyForce(force Vector2.XY) { //gd:RigidBody2D.apply_force
-	class(self).ApplyForce(gd.Vector2(force), gd.Vector2(gd.Vector2{0, 0}))
+	class(self).ApplyForce(Vector2.XY(force), Vector2.XY(gd.Vector2{0, 0}))
 }
 
 /*
@@ -150,7 +153,7 @@ Applies a rotational force without affecting position. A force is time dependent
 [b]Note:[/b] [member inertia] is required for this to work. To have [member inertia], an active [CollisionShape2D] must be a child of the node, or you can manually set [member inertia].
 */
 func (self Instance) ApplyTorque(torque Float.X) { //gd:RigidBody2D.apply_torque
-	class(self).ApplyTorque(gd.Float(torque))
+	class(self).ApplyTorque(float64(torque))
 }
 
 /*
@@ -158,7 +161,7 @@ Adds a constant directional force without affecting rotation that keeps being ap
 This is equivalent to using [method add_constant_force] at the body's center of mass.
 */
 func (self Instance) AddConstantCentralForce(force Vector2.XY) { //gd:RigidBody2D.add_constant_central_force
-	class(self).AddConstantCentralForce(gd.Vector2(force))
+	class(self).AddConstantCentralForce(Vector2.XY(force))
 }
 
 /*
@@ -166,14 +169,14 @@ Adds a constant positioned force to the body that keeps being applied over time 
 [param position] is the offset from the body origin in global coordinates.
 */
 func (self Instance) AddConstantForce(force Vector2.XY) { //gd:RigidBody2D.add_constant_force
-	class(self).AddConstantForce(gd.Vector2(force), gd.Vector2(gd.Vector2{0, 0}))
+	class(self).AddConstantForce(Vector2.XY(force), Vector2.XY(gd.Vector2{0, 0}))
 }
 
 /*
 Adds a constant rotational force without affecting position that keeps being applied over time until cleared with [code]constant_torque = 0[/code].
 */
 func (self Instance) AddConstantTorque(torque Float.X) { //gd:RigidBody2D.add_constant_torque
-	class(self).AddConstantTorque(gd.Float(torque))
+	class(self).AddConstantTorque(float64(torque))
 }
 
 /*
@@ -207,7 +210,7 @@ func (self Instance) Mass() Float.X {
 }
 
 func (self Instance) SetMass(value Float.X) {
-	class(self).SetMass(gd.Float(value))
+	class(self).SetMass(float64(value))
 }
 
 func (self Instance) PhysicsMaterialOverride() [1]gdclass.PhysicsMaterial {
@@ -223,7 +226,7 @@ func (self Instance) GravityScale() Float.X {
 }
 
 func (self Instance) SetGravityScale(value Float.X) {
-	class(self).SetGravityScale(gd.Float(value))
+	class(self).SetGravityScale(float64(value))
 }
 
 func (self Instance) CenterOfMassMode() gdclass.RigidBody2DCenterOfMassMode {
@@ -239,7 +242,7 @@ func (self Instance) CenterOfMass() Vector2.XY {
 }
 
 func (self Instance) SetCenterOfMass(value Vector2.XY) {
-	class(self).SetCenterOfMass(gd.Vector2(value))
+	class(self).SetCenterOfMass(Vector2.XY(value))
 }
 
 func (self Instance) Inertia() Float.X {
@@ -247,7 +250,7 @@ func (self Instance) Inertia() Float.X {
 }
 
 func (self Instance) SetInertia(value Float.X) {
-	class(self).SetInertia(gd.Float(value))
+	class(self).SetInertia(float64(value))
 }
 
 func (self Instance) Sleeping() bool {
@@ -319,7 +322,7 @@ func (self Instance) MaxContactsReported() int {
 }
 
 func (self Instance) SetMaxContactsReported(value int) {
-	class(self).SetMaxContactsReported(gd.Int(value))
+	class(self).SetMaxContactsReported(int64(value))
 }
 
 func (self Instance) LinearVelocity() Vector2.XY {
@@ -327,7 +330,7 @@ func (self Instance) LinearVelocity() Vector2.XY {
 }
 
 func (self Instance) SetLinearVelocity(value Vector2.XY) {
-	class(self).SetLinearVelocity(gd.Vector2(value))
+	class(self).SetLinearVelocity(Vector2.XY(value))
 }
 
 func (self Instance) LinearDampMode() gdclass.RigidBody2DDampMode {
@@ -343,7 +346,7 @@ func (self Instance) LinearDamp() Float.X {
 }
 
 func (self Instance) SetLinearDamp(value Float.X) {
-	class(self).SetLinearDamp(gd.Float(value))
+	class(self).SetLinearDamp(float64(value))
 }
 
 func (self Instance) AngularVelocity() Float.X {
@@ -351,7 +354,7 @@ func (self Instance) AngularVelocity() Float.X {
 }
 
 func (self Instance) SetAngularVelocity(value Float.X) {
-	class(self).SetAngularVelocity(gd.Float(value))
+	class(self).SetAngularVelocity(float64(value))
 }
 
 func (self Instance) AngularDampMode() gdclass.RigidBody2DDampMode {
@@ -367,7 +370,7 @@ func (self Instance) AngularDamp() Float.X {
 }
 
 func (self Instance) SetAngularDamp(value Float.X) {
-	class(self).SetAngularDamp(gd.Float(value))
+	class(self).SetAngularDamp(float64(value))
 }
 
 func (self Instance) ConstantForce() Vector2.XY {
@@ -375,7 +378,7 @@ func (self Instance) ConstantForce() Vector2.XY {
 }
 
 func (self Instance) SetConstantForce(value Vector2.XY) {
-	class(self).SetConstantForce(gd.Vector2(value))
+	class(self).SetConstantForce(Vector2.XY(value))
 }
 
 func (self Instance) ConstantTorque() Float.X {
@@ -383,7 +386,7 @@ func (self Instance) ConstantTorque() Float.X {
 }
 
 func (self Instance) SetConstantTorque(value Float.X) {
-	class(self).SetConstantTorque(gd.Float(value))
+	class(self).SetConstantTorque(float64(value))
 }
 
 /*
@@ -400,7 +403,7 @@ func (class) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass.Ph
 }
 
 //go:nosplit
-func (self class) SetMass(mass gd.Float) { //gd:RigidBody2D.set_mass
+func (self class) SetMass(mass float64) { //gd:RigidBody2D.set_mass
 	var frame = callframe.New()
 	callframe.Arg(frame, mass)
 	var r_ret = callframe.Nil
@@ -409,9 +412,9 @@ func (self class) SetMass(mass gd.Float) { //gd:RigidBody2D.set_mass
 }
 
 //go:nosplit
-func (self class) GetMass() gd.Float { //gd:RigidBody2D.get_mass
+func (self class) GetMass() float64 { //gd:RigidBody2D.get_mass
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody2D.Bind_get_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -419,9 +422,9 @@ func (self class) GetMass() gd.Float { //gd:RigidBody2D.get_mass
 }
 
 //go:nosplit
-func (self class) GetInertia() gd.Float { //gd:RigidBody2D.get_inertia
+func (self class) GetInertia() float64 { //gd:RigidBody2D.get_inertia
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody2D.Bind_get_inertia, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -429,7 +432,7 @@ func (self class) GetInertia() gd.Float { //gd:RigidBody2D.get_inertia
 }
 
 //go:nosplit
-func (self class) SetInertia(inertia gd.Float) { //gd:RigidBody2D.set_inertia
+func (self class) SetInertia(inertia float64) { //gd:RigidBody2D.set_inertia
 	var frame = callframe.New()
 	callframe.Arg(frame, inertia)
 	var r_ret = callframe.Nil
@@ -457,7 +460,7 @@ func (self class) GetCenterOfMassMode() gdclass.RigidBody2DCenterOfMassMode { //
 }
 
 //go:nosplit
-func (self class) SetCenterOfMass(center_of_mass gd.Vector2) { //gd:RigidBody2D.set_center_of_mass
+func (self class) SetCenterOfMass(center_of_mass Vector2.XY) { //gd:RigidBody2D.set_center_of_mass
 	var frame = callframe.New()
 	callframe.Arg(frame, center_of_mass)
 	var r_ret = callframe.Nil
@@ -466,9 +469,9 @@ func (self class) SetCenterOfMass(center_of_mass gd.Vector2) { //gd:RigidBody2D.
 }
 
 //go:nosplit
-func (self class) GetCenterOfMass() gd.Vector2 { //gd:RigidBody2D.get_center_of_mass
+func (self class) GetCenterOfMass() Vector2.XY { //gd:RigidBody2D.get_center_of_mass
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody2D.Bind_get_center_of_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -495,7 +498,7 @@ func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial { //gd
 }
 
 //go:nosplit
-func (self class) SetGravityScale(gravity_scale gd.Float) { //gd:RigidBody2D.set_gravity_scale
+func (self class) SetGravityScale(gravity_scale float64) { //gd:RigidBody2D.set_gravity_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, gravity_scale)
 	var r_ret = callframe.Nil
@@ -504,9 +507,9 @@ func (self class) SetGravityScale(gravity_scale gd.Float) { //gd:RigidBody2D.set
 }
 
 //go:nosplit
-func (self class) GetGravityScale() gd.Float { //gd:RigidBody2D.get_gravity_scale
+func (self class) GetGravityScale() float64 { //gd:RigidBody2D.get_gravity_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody2D.Bind_get_gravity_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -552,7 +555,7 @@ func (self class) GetAngularDampMode() gdclass.RigidBody2DDampMode { //gd:RigidB
 }
 
 //go:nosplit
-func (self class) SetLinearDamp(linear_damp gd.Float) { //gd:RigidBody2D.set_linear_damp
+func (self class) SetLinearDamp(linear_damp float64) { //gd:RigidBody2D.set_linear_damp
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_damp)
 	var r_ret = callframe.Nil
@@ -561,9 +564,9 @@ func (self class) SetLinearDamp(linear_damp gd.Float) { //gd:RigidBody2D.set_lin
 }
 
 //go:nosplit
-func (self class) GetLinearDamp() gd.Float { //gd:RigidBody2D.get_linear_damp
+func (self class) GetLinearDamp() float64 { //gd:RigidBody2D.get_linear_damp
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody2D.Bind_get_linear_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -571,7 +574,7 @@ func (self class) GetLinearDamp() gd.Float { //gd:RigidBody2D.get_linear_damp
 }
 
 //go:nosplit
-func (self class) SetAngularDamp(angular_damp gd.Float) { //gd:RigidBody2D.set_angular_damp
+func (self class) SetAngularDamp(angular_damp float64) { //gd:RigidBody2D.set_angular_damp
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_damp)
 	var r_ret = callframe.Nil
@@ -580,9 +583,9 @@ func (self class) SetAngularDamp(angular_damp gd.Float) { //gd:RigidBody2D.set_a
 }
 
 //go:nosplit
-func (self class) GetAngularDamp() gd.Float { //gd:RigidBody2D.get_angular_damp
+func (self class) GetAngularDamp() float64 { //gd:RigidBody2D.get_angular_damp
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody2D.Bind_get_angular_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -590,7 +593,7 @@ func (self class) GetAngularDamp() gd.Float { //gd:RigidBody2D.get_angular_damp
 }
 
 //go:nosplit
-func (self class) SetLinearVelocity(linear_velocity gd.Vector2) { //gd:RigidBody2D.set_linear_velocity
+func (self class) SetLinearVelocity(linear_velocity Vector2.XY) { //gd:RigidBody2D.set_linear_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_velocity)
 	var r_ret = callframe.Nil
@@ -599,9 +602,9 @@ func (self class) SetLinearVelocity(linear_velocity gd.Vector2) { //gd:RigidBody
 }
 
 //go:nosplit
-func (self class) GetLinearVelocity() gd.Vector2 { //gd:RigidBody2D.get_linear_velocity
+func (self class) GetLinearVelocity() Vector2.XY { //gd:RigidBody2D.get_linear_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody2D.Bind_get_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -609,7 +612,7 @@ func (self class) GetLinearVelocity() gd.Vector2 { //gd:RigidBody2D.get_linear_v
 }
 
 //go:nosplit
-func (self class) SetAngularVelocity(angular_velocity gd.Float) { //gd:RigidBody2D.set_angular_velocity
+func (self class) SetAngularVelocity(angular_velocity float64) { //gd:RigidBody2D.set_angular_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_velocity)
 	var r_ret = callframe.Nil
@@ -618,9 +621,9 @@ func (self class) SetAngularVelocity(angular_velocity gd.Float) { //gd:RigidBody
 }
 
 //go:nosplit
-func (self class) GetAngularVelocity() gd.Float { //gd:RigidBody2D.get_angular_velocity
+func (self class) GetAngularVelocity() float64 { //gd:RigidBody2D.get_angular_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody2D.Bind_get_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -628,7 +631,7 @@ func (self class) GetAngularVelocity() gd.Float { //gd:RigidBody2D.get_angular_v
 }
 
 //go:nosplit
-func (self class) SetMaxContactsReported(amount gd.Int) { //gd:RigidBody2D.set_max_contacts_reported
+func (self class) SetMaxContactsReported(amount int64) { //gd:RigidBody2D.set_max_contacts_reported
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -637,9 +640,9 @@ func (self class) SetMaxContactsReported(amount gd.Int) { //gd:RigidBody2D.set_m
 }
 
 //go:nosplit
-func (self class) GetMaxContactsReported() gd.Int { //gd:RigidBody2D.get_max_contacts_reported
+func (self class) GetMaxContactsReported() int64 { //gd:RigidBody2D.get_max_contacts_reported
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody2D.Bind_get_max_contacts_reported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -651,9 +654,9 @@ Returns the number of contacts this body has with other bodies. By default, this
 [b]Note:[/b] To retrieve the colliding bodies, use [method get_colliding_bodies].
 */
 //go:nosplit
-func (self class) GetContactCount() gd.Int { //gd:RigidBody2D.get_contact_count
+func (self class) GetContactCount() int64 { //gd:RigidBody2D.get_contact_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody2D.Bind_get_contact_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -721,7 +724,7 @@ func (self class) GetContinuousCollisionDetectionMode() gdclass.RigidBody2DCCDMo
 Sets the body's velocity on the given axis. The velocity in the given vector axis will be set as the given vector length. This is useful for jumping behavior.
 */
 //go:nosplit
-func (self class) SetAxisVelocity(axis_velocity gd.Vector2) { //gd:RigidBody2D.set_axis_velocity
+func (self class) SetAxisVelocity(axis_velocity Vector2.XY) { //gd:RigidBody2D.set_axis_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, axis_velocity)
 	var r_ret = callframe.Nil
@@ -735,7 +738,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 This is equivalent to using [method apply_impulse] at the body's center of mass.
 */
 //go:nosplit
-func (self class) ApplyCentralImpulse(impulse gd.Vector2) { //gd:RigidBody2D.apply_central_impulse
+func (self class) ApplyCentralImpulse(impulse Vector2.XY) { //gd:RigidBody2D.apply_central_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
 	var r_ret = callframe.Nil
@@ -749,7 +752,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 [param position] is the offset from the body origin in global coordinates.
 */
 //go:nosplit
-func (self class) ApplyImpulse(impulse gd.Vector2, position gd.Vector2) { //gd:RigidBody2D.apply_impulse
+func (self class) ApplyImpulse(impulse Vector2.XY, position Vector2.XY) { //gd:RigidBody2D.apply_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
 	callframe.Arg(frame, position)
@@ -764,7 +767,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 [b]Note:[/b] [member inertia] is required for this to work. To have [member inertia], an active [CollisionShape2D] must be a child of the node, or you can manually set [member inertia].
 */
 //go:nosplit
-func (self class) ApplyTorqueImpulse(torque gd.Float) { //gd:RigidBody2D.apply_torque_impulse
+func (self class) ApplyTorqueImpulse(torque float64) { //gd:RigidBody2D.apply_torque_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, torque)
 	var r_ret = callframe.Nil
@@ -777,7 +780,7 @@ Applies a directional force without affecting rotation. A force is time dependen
 This is equivalent to using [method apply_force] at the body's center of mass.
 */
 //go:nosplit
-func (self class) ApplyCentralForce(force gd.Vector2) { //gd:RigidBody2D.apply_central_force
+func (self class) ApplyCentralForce(force Vector2.XY) { //gd:RigidBody2D.apply_central_force
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	var r_ret = callframe.Nil
@@ -790,7 +793,7 @@ Applies a positioned force to the body. A force is time dependent and meant to b
 [param position] is the offset from the body origin in global coordinates.
 */
 //go:nosplit
-func (self class) ApplyForce(force gd.Vector2, position gd.Vector2) { //gd:RigidBody2D.apply_force
+func (self class) ApplyForce(force Vector2.XY, position Vector2.XY) { //gd:RigidBody2D.apply_force
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	callframe.Arg(frame, position)
@@ -804,7 +807,7 @@ Applies a rotational force without affecting position. A force is time dependent
 [b]Note:[/b] [member inertia] is required for this to work. To have [member inertia], an active [CollisionShape2D] must be a child of the node, or you can manually set [member inertia].
 */
 //go:nosplit
-func (self class) ApplyTorque(torque gd.Float) { //gd:RigidBody2D.apply_torque
+func (self class) ApplyTorque(torque float64) { //gd:RigidBody2D.apply_torque
 	var frame = callframe.New()
 	callframe.Arg(frame, torque)
 	var r_ret = callframe.Nil
@@ -817,7 +820,7 @@ Adds a constant directional force without affecting rotation that keeps being ap
 This is equivalent to using [method add_constant_force] at the body's center of mass.
 */
 //go:nosplit
-func (self class) AddConstantCentralForce(force gd.Vector2) { //gd:RigidBody2D.add_constant_central_force
+func (self class) AddConstantCentralForce(force Vector2.XY) { //gd:RigidBody2D.add_constant_central_force
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	var r_ret = callframe.Nil
@@ -830,7 +833,7 @@ Adds a constant positioned force to the body that keeps being applied over time 
 [param position] is the offset from the body origin in global coordinates.
 */
 //go:nosplit
-func (self class) AddConstantForce(force gd.Vector2, position gd.Vector2) { //gd:RigidBody2D.add_constant_force
+func (self class) AddConstantForce(force Vector2.XY, position Vector2.XY) { //gd:RigidBody2D.add_constant_force
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	callframe.Arg(frame, position)
@@ -843,7 +846,7 @@ func (self class) AddConstantForce(force gd.Vector2, position gd.Vector2) { //gd
 Adds a constant rotational force without affecting position that keeps being applied over time until cleared with [code]constant_torque = 0[/code].
 */
 //go:nosplit
-func (self class) AddConstantTorque(torque gd.Float) { //gd:RigidBody2D.add_constant_torque
+func (self class) AddConstantTorque(torque float64) { //gd:RigidBody2D.add_constant_torque
 	var frame = callframe.New()
 	callframe.Arg(frame, torque)
 	var r_ret = callframe.Nil
@@ -852,7 +855,7 @@ func (self class) AddConstantTorque(torque gd.Float) { //gd:RigidBody2D.add_cons
 }
 
 //go:nosplit
-func (self class) SetConstantForce(force gd.Vector2) { //gd:RigidBody2D.set_constant_force
+func (self class) SetConstantForce(force Vector2.XY) { //gd:RigidBody2D.set_constant_force
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	var r_ret = callframe.Nil
@@ -861,9 +864,9 @@ func (self class) SetConstantForce(force gd.Vector2) { //gd:RigidBody2D.set_cons
 }
 
 //go:nosplit
-func (self class) GetConstantForce() gd.Vector2 { //gd:RigidBody2D.get_constant_force
+func (self class) GetConstantForce() Vector2.XY { //gd:RigidBody2D.get_constant_force
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody2D.Bind_get_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -871,7 +874,7 @@ func (self class) GetConstantForce() gd.Vector2 { //gd:RigidBody2D.get_constant_
 }
 
 //go:nosplit
-func (self class) SetConstantTorque(torque gd.Float) { //gd:RigidBody2D.set_constant_torque
+func (self class) SetConstantTorque(torque float64) { //gd:RigidBody2D.set_constant_torque
 	var frame = callframe.New()
 	callframe.Arg(frame, torque)
 	var r_ret = callframe.Nil
@@ -880,9 +883,9 @@ func (self class) SetConstantTorque(torque gd.Float) { //gd:RigidBody2D.set_cons
 }
 
 //go:nosplit
-func (self class) GetConstantTorque() gd.Float { //gd:RigidBody2D.get_constant_torque
+func (self class) GetConstantTorque() float64 { //gd:RigidBody2D.get_constant_torque
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody2D.Bind_get_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

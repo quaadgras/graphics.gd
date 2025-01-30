@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/PacketPeer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/PacketPeer"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -74,7 +78,7 @@ func (self Instance) InputBufferMaxSize() int {
 }
 
 func (self Instance) SetInputBufferMaxSize(value int) {
-	class(self).SetInputBufferMaxSize(gd.Int(value))
+	class(self).SetInputBufferMaxSize(int64(value))
 }
 
 func (self Instance) OutputBufferMaxSize() int {
@@ -82,7 +86,7 @@ func (self Instance) OutputBufferMaxSize() int {
 }
 
 func (self Instance) SetOutputBufferMaxSize(value int) {
-	class(self).SetOutputBufferMaxSize(gd.Int(value))
+	class(self).SetOutputBufferMaxSize(int64(value))
 }
 
 func (self Instance) StreamPeer() [1]gdclass.StreamPeer {
@@ -113,7 +117,7 @@ func (self class) GetStreamPeer() [1]gdclass.StreamPeer { //gd:PacketPeerStream.
 }
 
 //go:nosplit
-func (self class) SetInputBufferMaxSize(max_size_bytes gd.Int) { //gd:PacketPeerStream.set_input_buffer_max_size
+func (self class) SetInputBufferMaxSize(max_size_bytes int64) { //gd:PacketPeerStream.set_input_buffer_max_size
 	var frame = callframe.New()
 	callframe.Arg(frame, max_size_bytes)
 	var r_ret = callframe.Nil
@@ -122,7 +126,7 @@ func (self class) SetInputBufferMaxSize(max_size_bytes gd.Int) { //gd:PacketPeer
 }
 
 //go:nosplit
-func (self class) SetOutputBufferMaxSize(max_size_bytes gd.Int) { //gd:PacketPeerStream.set_output_buffer_max_size
+func (self class) SetOutputBufferMaxSize(max_size_bytes int64) { //gd:PacketPeerStream.set_output_buffer_max_size
 	var frame = callframe.New()
 	callframe.Arg(frame, max_size_bytes)
 	var r_ret = callframe.Nil
@@ -131,9 +135,9 @@ func (self class) SetOutputBufferMaxSize(max_size_bytes gd.Int) { //gd:PacketPee
 }
 
 //go:nosplit
-func (self class) GetInputBufferMaxSize() gd.Int { //gd:PacketPeerStream.get_input_buffer_max_size
+func (self class) GetInputBufferMaxSize() int64 { //gd:PacketPeerStream.get_input_buffer_max_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerStream.Bind_get_input_buffer_max_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -141,9 +145,9 @@ func (self class) GetInputBufferMaxSize() gd.Int { //gd:PacketPeerStream.get_inp
 }
 
 //go:nosplit
-func (self class) GetOutputBufferMaxSize() gd.Int { //gd:PacketPeerStream.get_output_buffer_max_size
+func (self class) GetOutputBufferMaxSize() int64 { //gd:PacketPeerStream.get_output_buffer_max_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerStream.Bind_get_output_buffer_max_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

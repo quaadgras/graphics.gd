@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioEffect"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioEffect"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,14 +58,14 @@ type Any interface {
 Sets band's gain at the specified index, in dB.
 */
 func (self Instance) SetBandGainDb(band_idx int, volume_db Float.X) { //gd:AudioEffectEQ.set_band_gain_db
-	class(self).SetBandGainDb(gd.Int(band_idx), gd.Float(volume_db))
+	class(self).SetBandGainDb(int64(band_idx), float64(volume_db))
 }
 
 /*
 Returns the band's gain at the specified index, in dB.
 */
 func (self Instance) GetBandGainDb(band_idx int) Float.X { //gd:AudioEffectEQ.get_band_gain_db
-	return Float.X(Float.X(class(self).GetBandGainDb(gd.Int(band_idx))))
+	return Float.X(Float.X(class(self).GetBandGainDb(int64(band_idx))))
 }
 
 /*
@@ -95,7 +98,7 @@ func New() Instance {
 Sets band's gain at the specified index, in dB.
 */
 //go:nosplit
-func (self class) SetBandGainDb(band_idx gd.Int, volume_db gd.Float) { //gd:AudioEffectEQ.set_band_gain_db
+func (self class) SetBandGainDb(band_idx int64, volume_db float64) { //gd:AudioEffectEQ.set_band_gain_db
 	var frame = callframe.New()
 	callframe.Arg(frame, band_idx)
 	callframe.Arg(frame, volume_db)
@@ -108,10 +111,10 @@ func (self class) SetBandGainDb(band_idx gd.Int, volume_db gd.Float) { //gd:Audi
 Returns the band's gain at the specified index, in dB.
 */
 //go:nosplit
-func (self class) GetBandGainDb(band_idx gd.Int) gd.Float { //gd:AudioEffectEQ.get_band_gain_db
+func (self class) GetBandGainDb(band_idx int64) float64 { //gd:AudioEffectEQ.get_band_gain_db
 	var frame = callframe.New()
 	callframe.Arg(frame, band_idx)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectEQ.Bind_get_band_gain_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -122,9 +125,9 @@ func (self class) GetBandGainDb(band_idx gd.Int) gd.Float { //gd:AudioEffectEQ.g
 Returns the number of bands of the equalizer.
 */
 //go:nosplit
-func (self class) GetBandCount() gd.Int { //gd:AudioEffectEQ.get_band_count
+func (self class) GetBandCount() int64 { //gd:AudioEffectEQ.get_band_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectEQ.Bind_get_band_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

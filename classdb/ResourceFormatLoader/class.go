@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -188,7 +192,7 @@ func (Instance) _get_resource_uid(impl func(ptr unsafe.Pointer, path string) int
 		defer pointers.End(gd.InternalString(path))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String())
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -225,7 +229,12 @@ func (Instance) _rename_dependencies(impl func(ptr unsafe.Pointer, path string, 
 		defer pointers.End(gd.InternalDictionary(renames))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), gd.DictionaryAs[map[any]any](renames))
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 func (Instance) _exists(impl func(ptr unsafe.Pointer, path string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -264,11 +273,11 @@ func (Instance) _load(impl func(ptr unsafe.Pointer, path string, original_path s
 		defer pointers.End(gd.InternalString(original_path))
 		var use_sub_threads = gd.UnsafeGet[bool](p_args, 2)
 
-		var cache_mode = gd.UnsafeGet[gd.Int](p_args, 3)
+		var cache_mode = gd.UnsafeGet[int64](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), original_path.String(), use_sub_threads, int(cache_mode))
-		ptr, ok := pointers.End(gd.NewVariant(ret))
+		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
 			return
@@ -379,7 +388,7 @@ func (class) _get_resource_script_class(impl func(ptr unsafe.Pointer, path Strin
 	}
 }
 
-func (class) _get_resource_uid(impl func(ptr unsafe.Pointer, path String.Readable) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_resource_uid(impl func(ptr unsafe.Pointer, path String.Readable) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
@@ -414,7 +423,7 @@ func (class) _get_dependencies(impl func(ptr unsafe.Pointer, path String.Readabl
 If implemented, renames dependencies within the given resource and saves it. [param renames] is a dictionary [code]{ String => String }[/code] mapping old dependency paths to new paths.
 Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
-func (class) _rename_dependencies(impl func(ptr unsafe.Pointer, path String.Readable, renames Dictionary.Any) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _rename_dependencies(impl func(ptr unsafe.Pointer, path String.Readable, renames Dictionary.Any) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
@@ -422,7 +431,12 @@ func (class) _rename_dependencies(impl func(ptr unsafe.Pointer, path String.Read
 		defer pointers.End(gd.InternalDictionary(renames))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, renames)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -455,7 +469,7 @@ func (class) _get_classes_used(impl func(ptr unsafe.Pointer, path String.Readabl
 Loads a resource when the engine finds this loader to be compatible. If the loaded resource is the result of an import, [param original_path] will target the source file. Returns a [Resource] object on success, or an [enum Error] constant in case of failure.
 The [param cache_mode] property defines whether and how the cache should be used or updated when loading the resource. See [enum CacheMode] for details.
 */
-func (class) _load(impl func(ptr unsafe.Pointer, path String.Readable, original_path String.Readable, use_sub_threads bool, cache_mode gd.Int) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _load(impl func(ptr unsafe.Pointer, path String.Readable, original_path String.Readable, use_sub_threads bool, cache_mode int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
@@ -463,11 +477,11 @@ func (class) _load(impl func(ptr unsafe.Pointer, path String.Readable, original_
 		defer pointers.End(gd.InternalString(original_path))
 		var use_sub_threads = gd.UnsafeGet[bool](p_args, 2)
 
-		var cache_mode = gd.UnsafeGet[gd.Int](p_args, 3)
+		var cache_mode = gd.UnsafeGet[int64](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, original_path, use_sub_threads, cache_mode)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
 		if !ok {
 			return
@@ -561,120 +575,4 @@ const (
 	CacheModeIgnoreDeep CacheMode = 3
 	/*Like [constant CACHE_MODE_REPLACE], but propagated recursively down the tree of dependencies (external resources).*/
 	CacheModeReplaceDeep CacheMode = 4
-)
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
 )

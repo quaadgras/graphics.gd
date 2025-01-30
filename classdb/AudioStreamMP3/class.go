@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioStream"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioStream"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -83,7 +86,7 @@ func (self Instance) Bpm() Float.X {
 }
 
 func (self Instance) SetBpm(value Float.X) {
-	class(self).SetBpm(gd.Float(value))
+	class(self).SetBpm(float64(value))
 }
 
 func (self Instance) BeatCount() int {
@@ -91,7 +94,7 @@ func (self Instance) BeatCount() int {
 }
 
 func (self Instance) SetBeatCount(value int) {
-	class(self).SetBeatCount(gd.Int(value))
+	class(self).SetBeatCount(int64(value))
 }
 
 func (self Instance) BarBeats() int {
@@ -99,7 +102,7 @@ func (self Instance) BarBeats() int {
 }
 
 func (self Instance) SetBarBeats(value int) {
-	class(self).SetBarBeats(gd.Int(value))
+	class(self).SetBarBeats(int64(value))
 }
 
 func (self Instance) Loop() bool {
@@ -115,7 +118,7 @@ func (self Instance) LoopOffset() Float.X {
 }
 
 func (self Instance) SetLoopOffset(value Float.X) {
-	class(self).SetLoopOffset(gd.Float(value))
+	class(self).SetLoopOffset(float64(value))
 }
 
 //go:nosplit
@@ -157,7 +160,7 @@ func (self class) HasLoop() bool { //gd:AudioStreamMP3.has_loop
 }
 
 //go:nosplit
-func (self class) SetLoopOffset(seconds gd.Float) { //gd:AudioStreamMP3.set_loop_offset
+func (self class) SetLoopOffset(seconds float64) { //gd:AudioStreamMP3.set_loop_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, seconds)
 	var r_ret = callframe.Nil
@@ -166,9 +169,9 @@ func (self class) SetLoopOffset(seconds gd.Float) { //gd:AudioStreamMP3.set_loop
 }
 
 //go:nosplit
-func (self class) GetLoopOffset() gd.Float { //gd:AudioStreamMP3.get_loop_offset
+func (self class) GetLoopOffset() float64 { //gd:AudioStreamMP3.get_loop_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamMP3.Bind_get_loop_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -176,7 +179,7 @@ func (self class) GetLoopOffset() gd.Float { //gd:AudioStreamMP3.get_loop_offset
 }
 
 //go:nosplit
-func (self class) SetBpm(bpm gd.Float) { //gd:AudioStreamMP3.set_bpm
+func (self class) SetBpm(bpm float64) { //gd:AudioStreamMP3.set_bpm
 	var frame = callframe.New()
 	callframe.Arg(frame, bpm)
 	var r_ret = callframe.Nil
@@ -185,9 +188,9 @@ func (self class) SetBpm(bpm gd.Float) { //gd:AudioStreamMP3.set_bpm
 }
 
 //go:nosplit
-func (self class) GetBpm() gd.Float { //gd:AudioStreamMP3.get_bpm
+func (self class) GetBpm() float64 { //gd:AudioStreamMP3.get_bpm
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamMP3.Bind_get_bpm, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -195,7 +198,7 @@ func (self class) GetBpm() gd.Float { //gd:AudioStreamMP3.get_bpm
 }
 
 //go:nosplit
-func (self class) SetBeatCount(count gd.Int) { //gd:AudioStreamMP3.set_beat_count
+func (self class) SetBeatCount(count int64) { //gd:AudioStreamMP3.set_beat_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -204,9 +207,9 @@ func (self class) SetBeatCount(count gd.Int) { //gd:AudioStreamMP3.set_beat_coun
 }
 
 //go:nosplit
-func (self class) GetBeatCount() gd.Int { //gd:AudioStreamMP3.get_beat_count
+func (self class) GetBeatCount() int64 { //gd:AudioStreamMP3.get_beat_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamMP3.Bind_get_beat_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -214,7 +217,7 @@ func (self class) GetBeatCount() gd.Int { //gd:AudioStreamMP3.get_beat_count
 }
 
 //go:nosplit
-func (self class) SetBarBeats(count gd.Int) { //gd:AudioStreamMP3.set_bar_beats
+func (self class) SetBarBeats(count int64) { //gd:AudioStreamMP3.set_bar_beats
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -223,9 +226,9 @@ func (self class) SetBarBeats(count gd.Int) { //gd:AudioStreamMP3.set_bar_beats
 }
 
 //go:nosplit
-func (self class) GetBarBeats() gd.Int { //gd:AudioStreamMP3.get_bar_beats
+func (self class) GetBarBeats() int64 { //gd:AudioStreamMP3.get_bar_beats
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamMP3.Bind_get_bar_beats, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

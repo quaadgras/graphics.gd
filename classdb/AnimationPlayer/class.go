@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AnimationMixer"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AnimationMixer"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -72,7 +75,7 @@ func (self Instance) AnimationGetNext(animation_from string) string { //gd:Anima
 Specifies a blend time (in seconds) between two animations, referenced by their keys.
 */
 func (self Instance) SetBlendTime(animation_from string, animation_to string, sec Float.X) { //gd:AnimationPlayer.set_blend_time
-	class(self).SetBlendTime(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)), gd.Float(sec))
+	class(self).SetBlendTime(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)), float64(sec))
 }
 
 /*
@@ -89,7 +92,7 @@ The [AnimationPlayer] keeps track of its current or last played animation with [
 [b]Note:[/b] The animation will be updated the next time the [AnimationPlayer] is processed. If other variables are updated at the same time this is called, they may be updated too early. To perform the update immediately, call [code]advance(0)[/code].
 */
 func (self Instance) Play() { //gd:AnimationPlayer.play
-	class(self).Play(String.Name(String.New("")), gd.Float(-1), gd.Float(1.0), false)
+	class(self).Play(String.Name(String.New("")), float64(-1), float64(1.0), false)
 }
 
 /*
@@ -97,7 +100,7 @@ Plays the animation with key [param name] in reverse.
 This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 */
 func (self Instance) PlayBackwards() { //gd:AnimationPlayer.play_backwards
-	class(self).PlayBackwards(String.Name(String.New("")), gd.Float(-1))
+	class(self).PlayBackwards(String.Name(String.New("")), float64(-1))
 }
 
 /*
@@ -112,7 +115,7 @@ If [param duration] is a negative value, the duration is set to the interval bet
 [b]Note:[/b] The [param duration] takes [member speed_scale] into account, but [param custom_speed] does not, because the capture cache is interpolated with the blend result and the result may contain multiple animations.
 */
 func (self Instance) PlayWithCapture() { //gd:AnimationPlayer.play_with_capture
-	class(self).PlayWithCapture(String.Name(String.New("")), gd.Float(-1.0), gd.Float(-1), gd.Float(1.0), false, 0, 0)
+	class(self).PlayWithCapture(String.Name(String.New("")), float64(-1.0), float64(-1), float64(1.0), false, 0, 0)
 }
 
 /*
@@ -175,7 +178,7 @@ If [param update_only] is [code]true[/code], the method / audio / animation play
 [b]Note:[/b] Seeking to the end of the animation doesn't emit [signal AnimationMixer.animation_finished]. If you want to skip animation and emit the signal, use [method AnimationMixer.advance].
 */
 func (self Instance) SeekTo(seconds Float.X) { //gd:AnimationPlayer.seek
-	class(self).SeekTo(gd.Float(seconds), false, false)
+	class(self).SeekTo(float64(seconds), false, false)
 }
 
 /*
@@ -283,7 +286,7 @@ func (self Instance) PlaybackAutoCaptureDuration() Float.X {
 }
 
 func (self Instance) SetPlaybackAutoCaptureDuration(value Float.X) {
-	class(self).SetAutoCaptureDuration(gd.Float(value))
+	class(self).SetAutoCaptureDuration(float64(value))
 }
 
 func (self Instance) PlaybackAutoCaptureTransitionType() gdclass.TweenTransitionType {
@@ -307,7 +310,7 @@ func (self Instance) PlaybackDefaultBlendTime() Float.X {
 }
 
 func (self Instance) SetPlaybackDefaultBlendTime(value Float.X) {
-	class(self).SetDefaultBlendTime(gd.Float(value))
+	class(self).SetDefaultBlendTime(float64(value))
 }
 
 func (self Instance) SpeedScale() Float.X {
@@ -315,7 +318,7 @@ func (self Instance) SpeedScale() Float.X {
 }
 
 func (self Instance) SetSpeedScale(value Float.X) {
-	class(self).SetSpeedScale(gd.Float(value))
+	class(self).SetSpeedScale(float64(value))
 }
 
 func (self Instance) MovieQuitOnFinish() bool {
@@ -357,7 +360,7 @@ func (self class) AnimationGetNext(animation_from String.Name) String.Name { //g
 Specifies a blend time (in seconds) between two animations, referenced by their keys.
 */
 //go:nosplit
-func (self class) SetBlendTime(animation_from String.Name, animation_to String.Name, sec gd.Float) { //gd:AnimationPlayer.set_blend_time
+func (self class) SetBlendTime(animation_from String.Name, animation_to String.Name, sec float64) { //gd:AnimationPlayer.set_blend_time
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation_from)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation_to)))
@@ -371,11 +374,11 @@ func (self class) SetBlendTime(animation_from String.Name, animation_to String.N
 Returns the blend time (in seconds) between two animations, referenced by their keys.
 */
 //go:nosplit
-func (self class) GetBlendTime(animation_from String.Name, animation_to String.Name) gd.Float { //gd:AnimationPlayer.get_blend_time
+func (self class) GetBlendTime(animation_from String.Name, animation_to String.Name) float64 { //gd:AnimationPlayer.get_blend_time
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation_from)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation_to)))
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_blend_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -383,7 +386,7 @@ func (self class) GetBlendTime(animation_from String.Name, animation_to String.N
 }
 
 //go:nosplit
-func (self class) SetDefaultBlendTime(sec gd.Float) { //gd:AnimationPlayer.set_default_blend_time
+func (self class) SetDefaultBlendTime(sec float64) { //gd:AnimationPlayer.set_default_blend_time
 	var frame = callframe.New()
 	callframe.Arg(frame, sec)
 	var r_ret = callframe.Nil
@@ -392,9 +395,9 @@ func (self class) SetDefaultBlendTime(sec gd.Float) { //gd:AnimationPlayer.set_d
 }
 
 //go:nosplit
-func (self class) GetDefaultBlendTime() gd.Float { //gd:AnimationPlayer.get_default_blend_time
+func (self class) GetDefaultBlendTime() float64 { //gd:AnimationPlayer.get_default_blend_time
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_default_blend_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -421,7 +424,7 @@ func (self class) IsAutoCapture() bool { //gd:AnimationPlayer.is_auto_capture
 }
 
 //go:nosplit
-func (self class) SetAutoCaptureDuration(auto_capture_duration gd.Float) { //gd:AnimationPlayer.set_auto_capture_duration
+func (self class) SetAutoCaptureDuration(auto_capture_duration float64) { //gd:AnimationPlayer.set_auto_capture_duration
 	var frame = callframe.New()
 	callframe.Arg(frame, auto_capture_duration)
 	var r_ret = callframe.Nil
@@ -430,9 +433,9 @@ func (self class) SetAutoCaptureDuration(auto_capture_duration gd.Float) { //gd:
 }
 
 //go:nosplit
-func (self class) GetAutoCaptureDuration() gd.Float { //gd:AnimationPlayer.get_auto_capture_duration
+func (self class) GetAutoCaptureDuration() float64 { //gd:AnimationPlayer.get_auto_capture_duration
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_auto_capture_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -484,7 +487,7 @@ The [AnimationPlayer] keeps track of its current or last played animation with [
 [b]Note:[/b] The animation will be updated the next time the [AnimationPlayer] is processed. If other variables are updated at the same time this is called, they may be updated too early. To perform the update immediately, call [code]advance(0)[/code].
 */
 //go:nosplit
-func (self class) Play(name String.Name, custom_blend gd.Float, custom_speed gd.Float, from_end bool) { //gd:AnimationPlayer.play
+func (self class) Play(name String.Name, custom_blend float64, custom_speed float64, from_end bool) { //gd:AnimationPlayer.play
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, custom_blend)
@@ -500,7 +503,7 @@ Plays the animation with key [param name] in reverse.
 This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 */
 //go:nosplit
-func (self class) PlayBackwards(name String.Name, custom_blend gd.Float) { //gd:AnimationPlayer.play_backwards
+func (self class) PlayBackwards(name String.Name, custom_blend float64) { //gd:AnimationPlayer.play_backwards
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, custom_blend)
@@ -521,7 +524,7 @@ If [param duration] is a negative value, the duration is set to the interval bet
 [b]Note:[/b] The [param duration] takes [member speed_scale] into account, but [param custom_speed] does not, because the capture cache is interpolated with the blend result and the result may contain multiple animations.
 */
 //go:nosplit
-func (self class) PlayWithCapture(name String.Name, duration gd.Float, custom_blend gd.Float, custom_speed gd.Float, from_end bool, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) { //gd:AnimationPlayer.play_with_capture
+func (self class) PlayWithCapture(name String.Name, duration float64, custom_blend float64, custom_speed float64, from_end bool, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) { //gd:AnimationPlayer.play_with_capture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, duration)
@@ -650,7 +653,7 @@ func (self class) ClearQueue() { //gd:AnimationPlayer.clear_queue
 }
 
 //go:nosplit
-func (self class) SetSpeedScale(speed gd.Float) { //gd:AnimationPlayer.set_speed_scale
+func (self class) SetSpeedScale(speed float64) { //gd:AnimationPlayer.set_speed_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, speed)
 	var r_ret = callframe.Nil
@@ -659,9 +662,9 @@ func (self class) SetSpeedScale(speed gd.Float) { //gd:AnimationPlayer.set_speed
 }
 
 //go:nosplit
-func (self class) GetSpeedScale() gd.Float { //gd:AnimationPlayer.get_speed_scale
+func (self class) GetSpeedScale() float64 { //gd:AnimationPlayer.get_speed_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -673,9 +676,9 @@ Returns the actual playing speed of current animation or [code]0[/code] if not p
 Returns a negative value if the current animation is playing backwards.
 */
 //go:nosplit
-func (self class) GetPlayingSpeed() gd.Float { //gd:AnimationPlayer.get_playing_speed
+func (self class) GetPlayingSpeed() float64 { //gd:AnimationPlayer.get_playing_speed
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_playing_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -721,9 +724,9 @@ func (self class) IsMovieQuitOnFinishEnabled() bool { //gd:AnimationPlayer.is_mo
 }
 
 //go:nosplit
-func (self class) GetCurrentAnimationPosition() gd.Float { //gd:AnimationPlayer.get_current_animation_position
+func (self class) GetCurrentAnimationPosition() float64 { //gd:AnimationPlayer.get_current_animation_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -731,9 +734,9 @@ func (self class) GetCurrentAnimationPosition() gd.Float { //gd:AnimationPlayer.
 }
 
 //go:nosplit
-func (self class) GetCurrentAnimationLength() gd.Float { //gd:AnimationPlayer.get_current_animation_length
+func (self class) GetCurrentAnimationLength() float64 { //gd:AnimationPlayer.get_current_animation_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -746,7 +749,7 @@ If [param update_only] is [code]true[/code], the method / audio / animation play
 [b]Note:[/b] Seeking to the end of the animation doesn't emit [signal AnimationMixer.animation_finished]. If you want to skip animation and emit the signal, use [method AnimationMixer.advance].
 */
 //go:nosplit
-func (self class) SeekTo(seconds gd.Float, update bool, update_only bool) { //gd:AnimationPlayer.seek
+func (self class) SeekTo(seconds float64, update bool, update_only bool) { //gd:AnimationPlayer.seek
 	var frame = callframe.New()
 	callframe.Arg(frame, seconds)
 	callframe.Arg(frame, update)

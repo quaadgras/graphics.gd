@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -76,63 +80,63 @@ func (self Instance) GetMenuCount() int { //gd:MenuBar.get_menu_count
 Sets menu item title.
 */
 func (self Instance) SetMenuTitle(menu int, title string) { //gd:MenuBar.set_menu_title
-	class(self).SetMenuTitle(gd.Int(menu), String.New(title))
+	class(self).SetMenuTitle(int64(menu), String.New(title))
 }
 
 /*
 Returns menu item title.
 */
 func (self Instance) GetMenuTitle(menu int) string { //gd:MenuBar.get_menu_title
-	return string(class(self).GetMenuTitle(gd.Int(menu)).String())
+	return string(class(self).GetMenuTitle(int64(menu)).String())
 }
 
 /*
 Sets menu item tooltip.
 */
 func (self Instance) SetMenuTooltip(menu int, tooltip string) { //gd:MenuBar.set_menu_tooltip
-	class(self).SetMenuTooltip(gd.Int(menu), String.New(tooltip))
+	class(self).SetMenuTooltip(int64(menu), String.New(tooltip))
 }
 
 /*
 Returns menu item tooltip.
 */
 func (self Instance) GetMenuTooltip(menu int) string { //gd:MenuBar.get_menu_tooltip
-	return string(class(self).GetMenuTooltip(gd.Int(menu)).String())
+	return string(class(self).GetMenuTooltip(int64(menu)).String())
 }
 
 /*
 If [code]true[/code], menu item is disabled.
 */
 func (self Instance) SetMenuDisabled(menu int, disabled bool) { //gd:MenuBar.set_menu_disabled
-	class(self).SetMenuDisabled(gd.Int(menu), disabled)
+	class(self).SetMenuDisabled(int64(menu), disabled)
 }
 
 /*
 Returns [code]true[/code], if menu item is disabled.
 */
 func (self Instance) IsMenuDisabled(menu int) bool { //gd:MenuBar.is_menu_disabled
-	return bool(class(self).IsMenuDisabled(gd.Int(menu)))
+	return bool(class(self).IsMenuDisabled(int64(menu)))
 }
 
 /*
 If [code]true[/code], menu item is hidden.
 */
 func (self Instance) SetMenuHidden(menu int, hidden bool) { //gd:MenuBar.set_menu_hidden
-	class(self).SetMenuHidden(gd.Int(menu), hidden)
+	class(self).SetMenuHidden(int64(menu), hidden)
 }
 
 /*
 Returns [code]true[/code], if menu item is hidden.
 */
 func (self Instance) IsMenuHidden(menu int) bool { //gd:MenuBar.is_menu_hidden
-	return bool(class(self).IsMenuHidden(gd.Int(menu)))
+	return bool(class(self).IsMenuHidden(int64(menu)))
 }
 
 /*
 Returns [PopupMenu] associated with menu item.
 */
 func (self Instance) GetMenuPopup(menu int) [1]gdclass.PopupMenu { //gd:MenuBar.get_menu_popup
-	return [1]gdclass.PopupMenu(class(self).GetMenuPopup(gd.Int(menu)))
+	return [1]gdclass.PopupMenu(class(self).GetMenuPopup(int64(menu)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -166,7 +170,7 @@ func (self Instance) StartIndex() int {
 }
 
 func (self Instance) SetStartIndex(value int) {
-	class(self).SetStartIndex(gd.Int(value))
+	class(self).SetStartIndex(int64(value))
 }
 
 func (self Instance) SwitchOnHover() bool {
@@ -268,9 +272,9 @@ func (self class) IsNativeMenu() bool { //gd:MenuBar.is_native_menu
 Returns number of menu items.
 */
 //go:nosplit
-func (self class) GetMenuCount() gd.Int { //gd:MenuBar.get_menu_count
+func (self class) GetMenuCount() int64 { //gd:MenuBar.get_menu_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_menu_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -335,7 +339,7 @@ func (self class) IsFlat() bool { //gd:MenuBar.is_flat
 }
 
 //go:nosplit
-func (self class) SetStartIndex(enabled gd.Int) { //gd:MenuBar.set_start_index
+func (self class) SetStartIndex(enabled int64) { //gd:MenuBar.set_start_index
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -344,9 +348,9 @@ func (self class) SetStartIndex(enabled gd.Int) { //gd:MenuBar.set_start_index
 }
 
 //go:nosplit
-func (self class) GetStartIndex() gd.Int { //gd:MenuBar.get_start_index
+func (self class) GetStartIndex() int64 { //gd:MenuBar.get_start_index
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_start_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -357,7 +361,7 @@ func (self class) GetStartIndex() gd.Int { //gd:MenuBar.get_start_index
 Sets menu item title.
 */
 //go:nosplit
-func (self class) SetMenuTitle(menu gd.Int, title String.Readable) { //gd:MenuBar.set_menu_title
+func (self class) SetMenuTitle(menu int64, title String.Readable) { //gd:MenuBar.set_menu_title
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
@@ -370,7 +374,7 @@ func (self class) SetMenuTitle(menu gd.Int, title String.Readable) { //gd:MenuBa
 Returns menu item title.
 */
 //go:nosplit
-func (self class) GetMenuTitle(menu gd.Int) String.Readable { //gd:MenuBar.get_menu_title
+func (self class) GetMenuTitle(menu int64) String.Readable { //gd:MenuBar.get_menu_title
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -384,7 +388,7 @@ func (self class) GetMenuTitle(menu gd.Int) String.Readable { //gd:MenuBar.get_m
 Sets menu item tooltip.
 */
 //go:nosplit
-func (self class) SetMenuTooltip(menu gd.Int, tooltip String.Readable) { //gd:MenuBar.set_menu_tooltip
+func (self class) SetMenuTooltip(menu int64, tooltip String.Readable) { //gd:MenuBar.set_menu_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
@@ -397,7 +401,7 @@ func (self class) SetMenuTooltip(menu gd.Int, tooltip String.Readable) { //gd:Me
 Returns menu item tooltip.
 */
 //go:nosplit
-func (self class) GetMenuTooltip(menu gd.Int) String.Readable { //gd:MenuBar.get_menu_tooltip
+func (self class) GetMenuTooltip(menu int64) String.Readable { //gd:MenuBar.get_menu_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -411,7 +415,7 @@ func (self class) GetMenuTooltip(menu gd.Int) String.Readable { //gd:MenuBar.get
 If [code]true[/code], menu item is disabled.
 */
 //go:nosplit
-func (self class) SetMenuDisabled(menu gd.Int, disabled bool) { //gd:MenuBar.set_menu_disabled
+func (self class) SetMenuDisabled(menu int64, disabled bool) { //gd:MenuBar.set_menu_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	callframe.Arg(frame, disabled)
@@ -424,7 +428,7 @@ func (self class) SetMenuDisabled(menu gd.Int, disabled bool) { //gd:MenuBar.set
 Returns [code]true[/code], if menu item is disabled.
 */
 //go:nosplit
-func (self class) IsMenuDisabled(menu gd.Int) bool { //gd:MenuBar.is_menu_disabled
+func (self class) IsMenuDisabled(menu int64) bool { //gd:MenuBar.is_menu_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	var r_ret = callframe.Ret[bool](frame)
@@ -438,7 +442,7 @@ func (self class) IsMenuDisabled(menu gd.Int) bool { //gd:MenuBar.is_menu_disabl
 If [code]true[/code], menu item is hidden.
 */
 //go:nosplit
-func (self class) SetMenuHidden(menu gd.Int, hidden bool) { //gd:MenuBar.set_menu_hidden
+func (self class) SetMenuHidden(menu int64, hidden bool) { //gd:MenuBar.set_menu_hidden
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	callframe.Arg(frame, hidden)
@@ -451,7 +455,7 @@ func (self class) SetMenuHidden(menu gd.Int, hidden bool) { //gd:MenuBar.set_men
 Returns [code]true[/code], if menu item is hidden.
 */
 //go:nosplit
-func (self class) IsMenuHidden(menu gd.Int) bool { //gd:MenuBar.is_menu_hidden
+func (self class) IsMenuHidden(menu int64) bool { //gd:MenuBar.is_menu_hidden
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	var r_ret = callframe.Ret[bool](frame)
@@ -465,7 +469,7 @@ func (self class) IsMenuHidden(menu gd.Int) bool { //gd:MenuBar.is_menu_hidden
 Returns [PopupMenu] associated with menu item.
 */
 //go:nosplit
-func (self class) GetMenuPopup(menu gd.Int) [1]gdclass.PopupMenu { //gd:MenuBar.get_menu_popup
+func (self class) GetMenuPopup(menu int64) [1]gdclass.PopupMenu { //gd:MenuBar.get_menu_popup
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

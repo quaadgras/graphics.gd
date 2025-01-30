@@ -9,19 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Vector2i"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2i"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,49 +60,49 @@ type Any interface {
 Creates a bitmap with the specified size, filled with [code]false[/code].
 */
 func (self Instance) Create(size Vector2i.XY) { //gd:BitMap.create
-	class(self).Create(gd.Vector2i(size))
+	class(self).Create(Vector2i.XY(size))
 }
 
 /*
 Creates a bitmap that matches the given image dimensions, every element of the bitmap is set to [code]false[/code] if the alpha value of the image at that position is equal to [param threshold] or less, and [code]true[/code] in other case.
 */
 func (self Instance) CreateFromImageAlpha(image [1]gdclass.Image) { //gd:BitMap.create_from_image_alpha
-	class(self).CreateFromImageAlpha(image, gd.Float(0.1))
+	class(self).CreateFromImageAlpha(image, float64(0.1))
 }
 
 /*
 Sets the bitmap's element at the specified position, to the specified value.
 */
 func (self Instance) SetBitv(position Vector2i.XY, bit bool) { //gd:BitMap.set_bitv
-	class(self).SetBitv(gd.Vector2i(position), bit)
+	class(self).SetBitv(Vector2i.XY(position), bit)
 }
 
 /*
 Sets the bitmap's element at the specified position, to the specified value.
 */
 func (self Instance) SetBit(x int, y int, bit bool) { //gd:BitMap.set_bit
-	class(self).SetBit(gd.Int(x), gd.Int(y), bit)
+	class(self).SetBit(int64(x), int64(y), bit)
 }
 
 /*
 Returns bitmap's value at the specified position.
 */
 func (self Instance) GetBitv(position Vector2i.XY) bool { //gd:BitMap.get_bitv
-	return bool(class(self).GetBitv(gd.Vector2i(position)))
+	return bool(class(self).GetBitv(Vector2i.XY(position)))
 }
 
 /*
 Returns bitmap's value at the specified position.
 */
 func (self Instance) GetBit(x int, y int) bool { //gd:BitMap.get_bit
-	return bool(class(self).GetBit(gd.Int(x), gd.Int(y)))
+	return bool(class(self).GetBit(int64(x), int64(y)))
 }
 
 /*
 Sets a rectangular portion of the bitmap to the specified value.
 */
 func (self Instance) SetBitRect(rect Rect2i.PositionSize, bit bool) { //gd:BitMap.set_bit_rect
-	class(self).SetBitRect(gd.Rect2i(rect), bit)
+	class(self).SetBitRect(Rect2i.PositionSize(rect), bit)
 }
 
 /*
@@ -119,14 +123,14 @@ func (self Instance) GetSize() Vector2i.XY { //gd:BitMap.get_size
 Resizes the image to [param new_size].
 */
 func (self Instance) Resize(new_size Vector2i.XY) { //gd:BitMap.resize
-	class(self).Resize(gd.Vector2i(new_size))
+	class(self).Resize(Vector2i.XY(new_size))
 }
 
 /*
 Applies morphological dilation or erosion to the bitmap. If [param pixels] is positive, dilation is applied to the bitmap. If [param pixels] is negative, erosion is applied to the bitmap. [param rect] defines the area where the morphological operation is applied. Pixels located outside the [param rect] are unaffected by [method grow_mask].
 */
 func (self Instance) GrowMask(pixels int, rect Rect2i.PositionSize) { //gd:BitMap.grow_mask
-	class(self).GrowMask(gd.Int(pixels), gd.Rect2i(rect))
+	class(self).GrowMask(int64(pixels), Rect2i.PositionSize(rect))
 }
 
 /*
@@ -145,7 +149,7 @@ Rect2(Vector2(), get_size())
 [param epsilon] is passed to RDP to control how accurately the polygons cover the bitmap: a lower [param epsilon] corresponds to more points in the polygons.
 */
 func (self Instance) OpaqueToPolygons(rect Rect2i.PositionSize) [][]Vector2.XY { //gd:BitMap.opaque_to_polygons
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).OpaqueToPolygons(gd.Rect2i(rect), gd.Float(2.0)))))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).OpaqueToPolygons(Rect2i.PositionSize(rect), float64(2.0)))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -171,7 +175,7 @@ func New() Instance {
 Creates a bitmap with the specified size, filled with [code]false[/code].
 */
 //go:nosplit
-func (self class) Create(size gd.Vector2i) { //gd:BitMap.create
+func (self class) Create(size Vector2i.XY) { //gd:BitMap.create
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -183,7 +187,7 @@ func (self class) Create(size gd.Vector2i) { //gd:BitMap.create
 Creates a bitmap that matches the given image dimensions, every element of the bitmap is set to [code]false[/code] if the alpha value of the image at that position is equal to [param threshold] or less, and [code]true[/code] in other case.
 */
 //go:nosplit
-func (self class) CreateFromImageAlpha(image [1]gdclass.Image, threshold gd.Float) { //gd:BitMap.create_from_image_alpha
+func (self class) CreateFromImageAlpha(image [1]gdclass.Image, threshold float64) { //gd:BitMap.create_from_image_alpha
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, threshold)
@@ -196,7 +200,7 @@ func (self class) CreateFromImageAlpha(image [1]gdclass.Image, threshold gd.Floa
 Sets the bitmap's element at the specified position, to the specified value.
 */
 //go:nosplit
-func (self class) SetBitv(position gd.Vector2i, bit bool) { //gd:BitMap.set_bitv
+func (self class) SetBitv(position Vector2i.XY, bit bool) { //gd:BitMap.set_bitv
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, bit)
@@ -209,7 +213,7 @@ func (self class) SetBitv(position gd.Vector2i, bit bool) { //gd:BitMap.set_bitv
 Sets the bitmap's element at the specified position, to the specified value.
 */
 //go:nosplit
-func (self class) SetBit(x gd.Int, y gd.Int, bit bool) { //gd:BitMap.set_bit
+func (self class) SetBit(x int64, y int64, bit bool) { //gd:BitMap.set_bit
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
@@ -223,7 +227,7 @@ func (self class) SetBit(x gd.Int, y gd.Int, bit bool) { //gd:BitMap.set_bit
 Returns bitmap's value at the specified position.
 */
 //go:nosplit
-func (self class) GetBitv(position gd.Vector2i) bool { //gd:BitMap.get_bitv
+func (self class) GetBitv(position Vector2i.XY) bool { //gd:BitMap.get_bitv
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[bool](frame)
@@ -237,7 +241,7 @@ func (self class) GetBitv(position gd.Vector2i) bool { //gd:BitMap.get_bitv
 Returns bitmap's value at the specified position.
 */
 //go:nosplit
-func (self class) GetBit(x gd.Int, y gd.Int) bool { //gd:BitMap.get_bit
+func (self class) GetBit(x int64, y int64) bool { //gd:BitMap.get_bit
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
@@ -252,7 +256,7 @@ func (self class) GetBit(x gd.Int, y gd.Int) bool { //gd:BitMap.get_bit
 Sets a rectangular portion of the bitmap to the specified value.
 */
 //go:nosplit
-func (self class) SetBitRect(rect gd.Rect2i, bit bool) { //gd:BitMap.set_bit_rect
+func (self class) SetBitRect(rect Rect2i.PositionSize, bit bool) { //gd:BitMap.set_bit_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	callframe.Arg(frame, bit)
@@ -265,9 +269,9 @@ func (self class) SetBitRect(rect gd.Rect2i, bit bool) { //gd:BitMap.set_bit_rec
 Returns the number of bitmap elements that are set to [code]true[/code].
 */
 //go:nosplit
-func (self class) GetTrueBitCount() gd.Int { //gd:BitMap.get_true_bit_count
+func (self class) GetTrueBitCount() int64 { //gd:BitMap.get_true_bit_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_get_true_bit_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -278,9 +282,9 @@ func (self class) GetTrueBitCount() gd.Int { //gd:BitMap.get_true_bit_count
 Returns bitmap's dimensions.
 */
 //go:nosplit
-func (self class) GetSize() gd.Vector2i { //gd:BitMap.get_size
+func (self class) GetSize() Vector2i.XY { //gd:BitMap.get_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -291,7 +295,7 @@ func (self class) GetSize() gd.Vector2i { //gd:BitMap.get_size
 Resizes the image to [param new_size].
 */
 //go:nosplit
-func (self class) Resize(new_size gd.Vector2i) { //gd:BitMap.resize
+func (self class) Resize(new_size Vector2i.XY) { //gd:BitMap.resize
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Nil
@@ -303,7 +307,7 @@ func (self class) Resize(new_size gd.Vector2i) { //gd:BitMap.resize
 Applies morphological dilation or erosion to the bitmap. If [param pixels] is positive, dilation is applied to the bitmap. If [param pixels] is negative, erosion is applied to the bitmap. [param rect] defines the area where the morphological operation is applied. Pixels located outside the [param rect] are unaffected by [method grow_mask].
 */
 //go:nosplit
-func (self class) GrowMask(pixels gd.Int, rect gd.Rect2i) { //gd:BitMap.grow_mask
+func (self class) GrowMask(pixels int64, rect Rect2i.PositionSize) { //gd:BitMap.grow_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, pixels)
 	callframe.Arg(frame, rect)
@@ -334,7 +338,7 @@ Rect2(Vector2(), get_size())
 [param epsilon] is passed to RDP to control how accurately the polygons cover the bitmap: a lower [param epsilon] corresponds to more points in the polygons.
 */
 //go:nosplit
-func (self class) OpaqueToPolygons(rect gd.Rect2i, epsilon gd.Float) Array.Contains[Packed.Array[Vector2.XY]] { //gd:BitMap.opaque_to_polygons
+func (self class) OpaqueToPolygons(rect Rect2i.PositionSize, epsilon float64) Array.Contains[Packed.Array[Vector2.XY]] { //gd:BitMap.opaque_to_polygons
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	callframe.Arg(frame, epsilon)

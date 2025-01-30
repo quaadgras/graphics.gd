@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,21 +61,21 @@ Adds a point with the specified [param position] relative to the curve's own pos
 If [param index] is given, the new point is inserted before the existing point identified by index [param index]. Every existing point starting from [param index] is shifted further down the list of points. The index must be greater than or equal to [code]0[/code] and must not exceed the number of existing points in the line. See [member point_count].
 */
 func (self Instance) AddPoint(position Vector3.XYZ) { //gd:Curve3D.add_point
-	class(self).AddPoint(gd.Vector3(position), gd.Vector3(gd.Vector3{0, 0, 0}), gd.Vector3(gd.Vector3{0, 0, 0}), gd.Int(-1))
+	class(self).AddPoint(Vector3.XYZ(position), Vector3.XYZ(gd.Vector3{0, 0, 0}), Vector3.XYZ(gd.Vector3{0, 0, 0}), int64(-1))
 }
 
 /*
 Sets the position for the vertex [param idx]. If the index is out of bounds, the function sends an error to the console.
 */
 func (self Instance) SetPointPosition(idx int, position Vector3.XYZ) { //gd:Curve3D.set_point_position
-	class(self).SetPointPosition(gd.Int(idx), gd.Vector3(position))
+	class(self).SetPointPosition(int64(idx), Vector3.XYZ(position))
 }
 
 /*
 Returns the position of the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0, 0)[/code].
 */
 func (self Instance) GetPointPosition(idx int) Vector3.XYZ { //gd:Curve3D.get_point_position
-	return Vector3.XYZ(class(self).GetPointPosition(gd.Int(idx)))
+	return Vector3.XYZ(class(self).GetPointPosition(int64(idx)))
 }
 
 /*
@@ -80,49 +83,49 @@ Sets the tilt angle in radians for the point [param idx]. If the index is out of
 The tilt controls the rotation along the look-at axis an object traveling the path would have. In the case of a curve controlling a [PathFollow3D], this tilt is an offset over the natural tilt the [PathFollow3D] calculates.
 */
 func (self Instance) SetPointTilt(idx int, tilt Float.X) { //gd:Curve3D.set_point_tilt
-	class(self).SetPointTilt(gd.Int(idx), gd.Float(tilt))
+	class(self).SetPointTilt(int64(idx), float64(tilt))
 }
 
 /*
 Returns the tilt angle in radians for the point [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code]0[/code].
 */
 func (self Instance) GetPointTilt(idx int) Float.X { //gd:Curve3D.get_point_tilt
-	return Float.X(Float.X(class(self).GetPointTilt(gd.Int(idx))))
+	return Float.X(Float.X(class(self).GetPointTilt(int64(idx))))
 }
 
 /*
 Sets the position of the control point leading to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
 */
 func (self Instance) SetPointIn(idx int, position Vector3.XYZ) { //gd:Curve3D.set_point_in
-	class(self).SetPointIn(gd.Int(idx), gd.Vector3(position))
+	class(self).SetPointIn(int64(idx), Vector3.XYZ(position))
 }
 
 /*
 Returns the position of the control point leading to the vertex [param idx]. The returned position is relative to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0, 0)[/code].
 */
 func (self Instance) GetPointIn(idx int) Vector3.XYZ { //gd:Curve3D.get_point_in
-	return Vector3.XYZ(class(self).GetPointIn(gd.Int(idx)))
+	return Vector3.XYZ(class(self).GetPointIn(int64(idx)))
 }
 
 /*
 Sets the position of the control point leading out of the vertex [param idx]. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
 */
 func (self Instance) SetPointOut(idx int, position Vector3.XYZ) { //gd:Curve3D.set_point_out
-	class(self).SetPointOut(gd.Int(idx), gd.Vector3(position))
+	class(self).SetPointOut(int64(idx), Vector3.XYZ(position))
 }
 
 /*
 Returns the position of the control point leading out of the vertex [param idx]. The returned position is relative to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0, 0)[/code].
 */
 func (self Instance) GetPointOut(idx int) Vector3.XYZ { //gd:Curve3D.get_point_out
-	return Vector3.XYZ(class(self).GetPointOut(gd.Int(idx)))
+	return Vector3.XYZ(class(self).GetPointOut(int64(idx)))
 }
 
 /*
 Deletes the point [param idx] from the curve. Sends an error to the console if [param idx] is out of bounds.
 */
 func (self Instance) RemovePoint(idx int) { //gd:Curve3D.remove_point
-	class(self).RemovePoint(gd.Int(idx))
+	class(self).RemovePoint(int64(idx))
 }
 
 /*
@@ -137,14 +140,14 @@ Returns the position between the vertex [param idx] and the vertex [code]idx + 1
 If [param idx] is out of bounds it is truncated to the first or last vertex, and [param t] is ignored. If the curve has no points, the function sends an error to the console, and returns [code](0, 0, 0)[/code].
 */
 func (self Instance) Sample(idx int, t Float.X) Vector3.XYZ { //gd:Curve3D.sample
-	return Vector3.XYZ(class(self).Sample(gd.Int(idx), gd.Float(t)))
+	return Vector3.XYZ(class(self).Sample(int64(idx), float64(t)))
 }
 
 /*
 Returns the position at the vertex [param fofs]. It calls [method sample] using the integer part of [param fofs] as [code]idx[/code], and its fractional part as [code]t[/code].
 */
 func (self Instance) Samplef(fofs Float.X) Vector3.XYZ { //gd:Curve3D.samplef
-	return Vector3.XYZ(class(self).Samplef(gd.Float(fofs)))
+	return Vector3.XYZ(class(self).Samplef(float64(fofs)))
 }
 
 /*
@@ -159,14 +162,14 @@ Returns a point within the curve at position [param offset], where [param offset
 Cubic interpolation tends to follow the curves better, but linear is faster (and often, precise enough).
 */
 func (self Instance) SampleBaked() Vector3.XYZ { //gd:Curve3D.sample_baked
-	return Vector3.XYZ(class(self).SampleBaked(gd.Float(0.0), false))
+	return Vector3.XYZ(class(self).SampleBaked(float64(0.0), false))
 }
 
 /*
 Returns a [Transform3D] with [code]origin[/code] as point position, [code]basis.x[/code] as sideway vector, [code]basis.y[/code] as up vector, [code]basis.z[/code] as forward vector. When the curve length is 0, there is no reasonable way to calculate the rotation, all vectors aligned with global space axes. See also [method sample_baked].
 */
 func (self Instance) SampleBakedWithRotation() Transform3D.BasisOrigin { //gd:Curve3D.sample_baked_with_rotation
-	return Transform3D.BasisOrigin(class(self).SampleBakedWithRotation(gd.Float(0.0), false, false))
+	return Transform3D.BasisOrigin(class(self).SampleBakedWithRotation(float64(0.0), false, false))
 }
 
 /*
@@ -174,7 +177,7 @@ Returns an up vector within the curve at position [param offset], where [param o
 If the curve has no up vectors, the function sends an error to the console, and returns [code](0, 1, 0)[/code].
 */
 func (self Instance) SampleBakedUpVector(offset Float.X) Vector3.XYZ { //gd:Curve3D.sample_baked_up_vector
-	return Vector3.XYZ(class(self).SampleBakedUpVector(gd.Float(offset), false))
+	return Vector3.XYZ(class(self).SampleBakedUpVector(float64(offset), false))
 }
 
 /*
@@ -204,7 +207,7 @@ Returns the closest point on baked segments (in curve's local space) to [param t
 [param to_point] must be in this curve's local space.
 */
 func (self Instance) GetClosestPoint(to_point Vector3.XYZ) Vector3.XYZ { //gd:Curve3D.get_closest_point
-	return Vector3.XYZ(class(self).GetClosestPoint(gd.Vector3(to_point)))
+	return Vector3.XYZ(class(self).GetClosestPoint(Vector3.XYZ(to_point)))
 }
 
 /*
@@ -212,7 +215,7 @@ Returns the closest offset to [param to_point]. This offset is meant to be used 
 [param to_point] must be in this curve's local space.
 */
 func (self Instance) GetClosestOffset(to_point Vector3.XYZ) Float.X { //gd:Curve3D.get_closest_offset
-	return Float.X(Float.X(class(self).GetClosestOffset(gd.Vector3(to_point))))
+	return Float.X(Float.X(class(self).GetClosestOffset(Vector3.XYZ(to_point))))
 }
 
 /*
@@ -222,7 +225,7 @@ This approximation makes straight segments between each point, then subdivides t
 [param tolerance_degrees] controls how many degrees the midpoint of a segment may deviate from the real curve, before the segment has to be subdivided.
 */
 func (self Instance) Tessellate() []Vector3.XYZ { //gd:Curve3D.tessellate
-	return []Vector3.XYZ(slices.Collect(class(self).Tessellate(gd.Int(5), gd.Float(4)).Values()))
+	return []Vector3.XYZ(slices.Collect(class(self).Tessellate(int64(5), float64(4)).Values()))
 }
 
 /*
@@ -230,7 +233,7 @@ Returns a list of points along the curve, with almost uniform density. [param ma
 [param tolerance_length] controls the maximal distance between two neighboring points, before the segment has to be subdivided.
 */
 func (self Instance) TessellateEvenLength() []Vector3.XYZ { //gd:Curve3D.tessellate_even_length
-	return []Vector3.XYZ(slices.Collect(class(self).TessellateEvenLength(gd.Int(5), gd.Float(0.2)).Values()))
+	return []Vector3.XYZ(slices.Collect(class(self).TessellateEvenLength(int64(5), float64(0.2)).Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -257,7 +260,7 @@ func (self Instance) BakeInterval() Float.X {
 }
 
 func (self Instance) SetBakeInterval(value Float.X) {
-	class(self).SetBakeInterval(gd.Float(value))
+	class(self).SetBakeInterval(float64(value))
 }
 
 func (self Instance) PointCount() int {
@@ -265,7 +268,7 @@ func (self Instance) PointCount() int {
 }
 
 func (self Instance) SetPointCount(value int) {
-	class(self).SetPointCount(gd.Int(value))
+	class(self).SetPointCount(int64(value))
 }
 
 func (self Instance) UpVectorEnabled() bool {
@@ -277,9 +280,9 @@ func (self Instance) SetUpVectorEnabled(value bool) {
 }
 
 //go:nosplit
-func (self class) GetPointCount() gd.Int { //gd:Curve3D.get_point_count
+func (self class) GetPointCount() int64 { //gd:Curve3D.get_point_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -287,7 +290,7 @@ func (self class) GetPointCount() gd.Int { //gd:Curve3D.get_point_count
 }
 
 //go:nosplit
-func (self class) SetPointCount(count gd.Int) { //gd:Curve3D.set_point_count
+func (self class) SetPointCount(count int64) { //gd:Curve3D.set_point_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -300,7 +303,7 @@ Adds a point with the specified [param position] relative to the curve's own pos
 If [param index] is given, the new point is inserted before the existing point identified by index [param index]. Every existing point starting from [param index] is shifted further down the list of points. The index must be greater than or equal to [code]0[/code] and must not exceed the number of existing points in the line. See [member point_count].
 */
 //go:nosplit
-func (self class) AddPoint(position gd.Vector3, in gd.Vector3, out gd.Vector3, index gd.Int) { //gd:Curve3D.add_point
+func (self class) AddPoint(position Vector3.XYZ, in Vector3.XYZ, out Vector3.XYZ, index int64) { //gd:Curve3D.add_point
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, in)
@@ -315,7 +318,7 @@ func (self class) AddPoint(position gd.Vector3, in gd.Vector3, out gd.Vector3, i
 Sets the position for the vertex [param idx]. If the index is out of bounds, the function sends an error to the console.
 */
 //go:nosplit
-func (self class) SetPointPosition(idx gd.Int, position gd.Vector3) { //gd:Curve3D.set_point_position
+func (self class) SetPointPosition(idx int64, position Vector3.XYZ) { //gd:Curve3D.set_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, position)
@@ -328,10 +331,10 @@ func (self class) SetPointPosition(idx gd.Int, position gd.Vector3) { //gd:Curve
 Returns the position of the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0, 0)[/code].
 */
 //go:nosplit
-func (self class) GetPointPosition(idx gd.Int) gd.Vector3 { //gd:Curve3D.get_point_position
+func (self class) GetPointPosition(idx int64) Vector3.XYZ { //gd:Curve3D.get_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -343,7 +346,7 @@ Sets the tilt angle in radians for the point [param idx]. If the index is out of
 The tilt controls the rotation along the look-at axis an object traveling the path would have. In the case of a curve controlling a [PathFollow3D], this tilt is an offset over the natural tilt the [PathFollow3D] calculates.
 */
 //go:nosplit
-func (self class) SetPointTilt(idx gd.Int, tilt gd.Float) { //gd:Curve3D.set_point_tilt
+func (self class) SetPointTilt(idx int64, tilt float64) { //gd:Curve3D.set_point_tilt
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, tilt)
@@ -356,10 +359,10 @@ func (self class) SetPointTilt(idx gd.Int, tilt gd.Float) { //gd:Curve3D.set_poi
 Returns the tilt angle in radians for the point [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code]0[/code].
 */
 //go:nosplit
-func (self class) GetPointTilt(idx gd.Int) gd.Float { //gd:Curve3D.get_point_tilt
+func (self class) GetPointTilt(idx int64) float64 { //gd:Curve3D.get_point_tilt
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_tilt, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -370,7 +373,7 @@ func (self class) GetPointTilt(idx gd.Int) gd.Float { //gd:Curve3D.get_point_til
 Sets the position of the control point leading to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
 */
 //go:nosplit
-func (self class) SetPointIn(idx gd.Int, position gd.Vector3) { //gd:Curve3D.set_point_in
+func (self class) SetPointIn(idx int64, position Vector3.XYZ) { //gd:Curve3D.set_point_in
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, position)
@@ -383,10 +386,10 @@ func (self class) SetPointIn(idx gd.Int, position gd.Vector3) { //gd:Curve3D.set
 Returns the position of the control point leading to the vertex [param idx]. The returned position is relative to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0, 0)[/code].
 */
 //go:nosplit
-func (self class) GetPointIn(idx gd.Int) gd.Vector3 { //gd:Curve3D.get_point_in
+func (self class) GetPointIn(idx int64) Vector3.XYZ { //gd:Curve3D.get_point_in
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_in, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -397,7 +400,7 @@ func (self class) GetPointIn(idx gd.Int) gd.Vector3 { //gd:Curve3D.get_point_in
 Sets the position of the control point leading out of the vertex [param idx]. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
 */
 //go:nosplit
-func (self class) SetPointOut(idx gd.Int, position gd.Vector3) { //gd:Curve3D.set_point_out
+func (self class) SetPointOut(idx int64, position Vector3.XYZ) { //gd:Curve3D.set_point_out
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, position)
@@ -410,10 +413,10 @@ func (self class) SetPointOut(idx gd.Int, position gd.Vector3) { //gd:Curve3D.se
 Returns the position of the control point leading out of the vertex [param idx]. The returned position is relative to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0, 0)[/code].
 */
 //go:nosplit
-func (self class) GetPointOut(idx gd.Int) gd.Vector3 { //gd:Curve3D.get_point_out
+func (self class) GetPointOut(idx int64) Vector3.XYZ { //gd:Curve3D.get_point_out
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_out, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -424,7 +427,7 @@ func (self class) GetPointOut(idx gd.Int) gd.Vector3 { //gd:Curve3D.get_point_ou
 Deletes the point [param idx] from the curve. Sends an error to the console if [param idx] is out of bounds.
 */
 //go:nosplit
-func (self class) RemovePoint(idx gd.Int) { //gd:Curve3D.remove_point
+func (self class) RemovePoint(idx int64) { //gd:Curve3D.remove_point
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Nil
@@ -448,11 +451,11 @@ Returns the position between the vertex [param idx] and the vertex [code]idx + 1
 If [param idx] is out of bounds it is truncated to the first or last vertex, and [param t] is ignored. If the curve has no points, the function sends an error to the console, and returns [code](0, 0, 0)[/code].
 */
 //go:nosplit
-func (self class) Sample(idx gd.Int, t gd.Float) gd.Vector3 { //gd:Curve3D.sample
+func (self class) Sample(idx int64, t float64) Vector3.XYZ { //gd:Curve3D.sample
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, t)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -463,10 +466,10 @@ func (self class) Sample(idx gd.Int, t gd.Float) gd.Vector3 { //gd:Curve3D.sampl
 Returns the position at the vertex [param fofs]. It calls [method sample] using the integer part of [param fofs] as [code]idx[/code], and its fractional part as [code]t[/code].
 */
 //go:nosplit
-func (self class) Samplef(fofs gd.Float) gd.Vector3 { //gd:Curve3D.samplef
+func (self class) Samplef(fofs float64) Vector3.XYZ { //gd:Curve3D.samplef
 	var frame = callframe.New()
 	callframe.Arg(frame, fofs)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_samplef, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -474,7 +477,7 @@ func (self class) Samplef(fofs gd.Float) gd.Vector3 { //gd:Curve3D.samplef
 }
 
 //go:nosplit
-func (self class) SetBakeInterval(distance gd.Float) { //gd:Curve3D.set_bake_interval
+func (self class) SetBakeInterval(distance float64) { //gd:Curve3D.set_bake_interval
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -483,9 +486,9 @@ func (self class) SetBakeInterval(distance gd.Float) { //gd:Curve3D.set_bake_int
 }
 
 //go:nosplit
-func (self class) GetBakeInterval() gd.Float { //gd:Curve3D.get_bake_interval
+func (self class) GetBakeInterval() float64 { //gd:Curve3D.get_bake_interval
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_bake_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -515,9 +518,9 @@ func (self class) IsUpVectorEnabled() bool { //gd:Curve3D.is_up_vector_enabled
 Returns the total length of the curve, based on the cached points. Given enough density (see [member bake_interval]), it should be approximate enough.
 */
 //go:nosplit
-func (self class) GetBakedLength() gd.Float { //gd:Curve3D.get_baked_length
+func (self class) GetBakedLength() float64 { //gd:Curve3D.get_baked_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -529,11 +532,11 @@ Returns a point within the curve at position [param offset], where [param offset
 Cubic interpolation tends to follow the curves better, but linear is faster (and often, precise enough).
 */
 //go:nosplit
-func (self class) SampleBaked(offset gd.Float, cubic bool) gd.Vector3 { //gd:Curve3D.sample_baked
+func (self class) SampleBaked(offset float64, cubic bool) Vector3.XYZ { //gd:Curve3D.sample_baked
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, cubic)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample_baked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -544,12 +547,12 @@ func (self class) SampleBaked(offset gd.Float, cubic bool) gd.Vector3 { //gd:Cur
 Returns a [Transform3D] with [code]origin[/code] as point position, [code]basis.x[/code] as sideway vector, [code]basis.y[/code] as up vector, [code]basis.z[/code] as forward vector. When the curve length is 0, there is no reasonable way to calculate the rotation, all vectors aligned with global space axes. See also [method sample_baked].
 */
 //go:nosplit
-func (self class) SampleBakedWithRotation(offset gd.Float, cubic bool, apply_tilt bool) gd.Transform3D { //gd:Curve3D.sample_baked_with_rotation
+func (self class) SampleBakedWithRotation(offset float64, cubic bool, apply_tilt bool) Transform3D.BasisOrigin { //gd:Curve3D.sample_baked_with_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, cubic)
 	callframe.Arg(frame, apply_tilt)
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample_baked_with_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -561,11 +564,11 @@ Returns an up vector within the curve at position [param offset], where [param o
 If the curve has no up vectors, the function sends an error to the console, and returns [code](0, 1, 0)[/code].
 */
 //go:nosplit
-func (self class) SampleBakedUpVector(offset gd.Float, apply_tilt bool) gd.Vector3 { //gd:Curve3D.sample_baked_up_vector
+func (self class) SampleBakedUpVector(offset float64, apply_tilt bool) Vector3.XYZ { //gd:Curve3D.sample_baked_up_vector
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, apply_tilt)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample_baked_up_vector, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -617,10 +620,10 @@ Returns the closest point on baked segments (in curve's local space) to [param t
 [param to_point] must be in this curve's local space.
 */
 //go:nosplit
-func (self class) GetClosestPoint(to_point gd.Vector3) gd.Vector3 { //gd:Curve3D.get_closest_point
+func (self class) GetClosestPoint(to_point Vector3.XYZ) Vector3.XYZ { //gd:Curve3D.get_closest_point
 	var frame = callframe.New()
 	callframe.Arg(frame, to_point)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_closest_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -632,10 +635,10 @@ Returns the closest offset to [param to_point]. This offset is meant to be used 
 [param to_point] must be in this curve's local space.
 */
 //go:nosplit
-func (self class) GetClosestOffset(to_point gd.Vector3) gd.Float { //gd:Curve3D.get_closest_offset
+func (self class) GetClosestOffset(to_point Vector3.XYZ) float64 { //gd:Curve3D.get_closest_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, to_point)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_closest_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -649,7 +652,7 @@ This approximation makes straight segments between each point, then subdivides t
 [param tolerance_degrees] controls how many degrees the midpoint of a segment may deviate from the real curve, before the segment has to be subdivided.
 */
 //go:nosplit
-func (self class) Tessellate(max_stages gd.Int, tolerance_degrees gd.Float) Packed.Array[Vector3.XYZ] { //gd:Curve3D.tessellate
+func (self class) Tessellate(max_stages int64, tolerance_degrees float64) Packed.Array[Vector3.XYZ] { //gd:Curve3D.tessellate
 	var frame = callframe.New()
 	callframe.Arg(frame, max_stages)
 	callframe.Arg(frame, tolerance_degrees)
@@ -665,7 +668,7 @@ Returns a list of points along the curve, with almost uniform density. [param ma
 [param tolerance_length] controls the maximal distance between two neighboring points, before the segment has to be subdivided.
 */
 //go:nosplit
-func (self class) TessellateEvenLength(max_stages gd.Int, tolerance_length gd.Float) Packed.Array[Vector3.XYZ] { //gd:Curve3D.tessellate_even_length
+func (self class) TessellateEvenLength(max_stages int64, tolerance_length float64) Packed.Array[Vector3.XYZ] { //gd:Curve3D.tessellate_even_length
 	var frame = callframe.New()
 	callframe.Arg(frame, max_stages)
 	callframe.Arg(frame, tolerance_length)

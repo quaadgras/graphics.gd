@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -124,7 +127,7 @@ func (Instance) _get_length(impl func(ptr unsafe.Pointer) Float.X) (cb gd.Extens
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
@@ -147,7 +150,7 @@ func (Instance) _get_bpm(impl func(ptr unsafe.Pointer) Float.X) (cb gd.Extension
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
@@ -159,7 +162,7 @@ func (Instance) _get_beat_count(impl func(ptr unsafe.Pointer) int) (cb gd.Extens
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -275,7 +278,7 @@ func (class) _get_stream_name(impl func(ptr unsafe.Pointer) String.Readable) (cb
 /*
 Override this method to customize the returned value of [method get_length]. Should return the length of this audio stream, in seconds.
 */
-func (class) _get_length(impl func(ptr unsafe.Pointer) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_length(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -298,7 +301,7 @@ func (class) _is_monophonic(impl func(ptr unsafe.Pointer) bool) (cb gd.Extension
 Overridable method. Should return the tempo of this audio stream, in beats per minute (BPM). Used by the engine to determine the position of every beat.
 Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
 */
-func (class) _get_bpm(impl func(ptr unsafe.Pointer) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_bpm(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -310,7 +313,7 @@ func (class) _get_bpm(impl func(ptr unsafe.Pointer) gd.Float) (cb gd.ExtensionCl
 Overridable method. Should return the total number of beats of this audio stream. Used by the engine to determine the position of every beat.
 Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
 */
-func (class) _get_beat_count(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_beat_count(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -338,9 +341,9 @@ func (class) _get_parameter_list(impl func(ptr unsafe.Pointer) Array.Contains[Di
 Returns the length of the audio stream in seconds.
 */
 //go:nosplit
-func (self class) GetLength() gd.Float { //gd:AudioStream.get_length
+func (self class) GetLength() float64 { //gd:AudioStream.get_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

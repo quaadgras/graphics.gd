@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -65,21 +68,21 @@ func (self Instance) GetRid() RID.NavigationAgent3D { //gd:NavigationAgent3D.get
 Based on [param value], enables or disables the specified layer in the [member navigation_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetNavigationLayerValue(layer_number int, value bool) { //gd:NavigationAgent3D.set_navigation_layer_value
-	class(self).SetNavigationLayerValue(gd.Int(layer_number), value)
+	class(self).SetNavigationLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member navigation_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:NavigationAgent3D.get_navigation_layer_value
-	return bool(class(self).GetNavigationLayerValue(gd.Int(layer_number)))
+	return bool(class(self).GetNavigationLayerValue(int64(layer_number)))
 }
 
 /*
 Sets the [RID] of the navigation map this NavigationAgent node should use and also updates the [code]agent[/code] on the NavigationServer.
 */
 func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd:NavigationAgent3D.set_navigation_map
-	class(self).SetNavigationMap(gd.RID(navigation_map))
+	class(self).SetNavigationMap(RID.Any(navigation_map))
 }
 
 /*
@@ -100,7 +103,7 @@ func (self Instance) GetNextPathPosition() Vector3.XYZ { //gd:NavigationAgent3D.
 Replaces the internal velocity in the collision avoidance simulation with [param velocity]. When an agent is teleported to a new position this function should be used in the same frame. If called frequently this function can get agents stuck.
 */
 func (self Instance) SetVelocityForced(velocity Vector3.XYZ) { //gd:NavigationAgent3D.set_velocity_forced
-	class(self).SetVelocityForced(gd.Vector3(velocity))
+	class(self).SetVelocityForced(Vector3.XYZ(velocity))
 }
 
 /*
@@ -164,28 +167,28 @@ func (self Instance) GetFinalPosition() Vector3.XYZ { //gd:NavigationAgent3D.get
 Based on [param value], enables or disables the specified layer in the [member avoidance_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetAvoidanceLayerValue(layer_number int, value bool) { //gd:NavigationAgent3D.set_avoidance_layer_value
-	class(self).SetAvoidanceLayerValue(gd.Int(layer_number), value)
+	class(self).SetAvoidanceLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member avoidance_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetAvoidanceLayerValue(layer_number int) bool { //gd:NavigationAgent3D.get_avoidance_layer_value
-	return bool(class(self).GetAvoidanceLayerValue(gd.Int(layer_number)))
+	return bool(class(self).GetAvoidanceLayerValue(int64(layer_number)))
 }
 
 /*
 Based on [param value], enables or disables the specified mask in the [member avoidance_mask] bitmask, given a [param mask_number] between 1 and 32.
 */
 func (self Instance) SetAvoidanceMaskValue(mask_number int, value bool) { //gd:NavigationAgent3D.set_avoidance_mask_value
-	class(self).SetAvoidanceMaskValue(gd.Int(mask_number), value)
+	class(self).SetAvoidanceMaskValue(int64(mask_number), value)
 }
 
 /*
 Returns whether or not the specified mask of the [member avoidance_mask] bitmask is enabled, given a [param mask_number] between 1 and 32.
 */
 func (self Instance) GetAvoidanceMaskValue(mask_number int) bool { //gd:NavigationAgent3D.get_avoidance_mask_value
-	return bool(class(self).GetAvoidanceMaskValue(gd.Int(mask_number)))
+	return bool(class(self).GetAvoidanceMaskValue(int64(mask_number)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -211,7 +214,7 @@ func (self Instance) TargetPosition() Vector3.XYZ {
 }
 
 func (self Instance) SetTargetPosition(value Vector3.XYZ) {
-	class(self).SetTargetPosition(gd.Vector3(value))
+	class(self).SetTargetPosition(Vector3.XYZ(value))
 }
 
 func (self Instance) PathDesiredDistance() Float.X {
@@ -219,7 +222,7 @@ func (self Instance) PathDesiredDistance() Float.X {
 }
 
 func (self Instance) SetPathDesiredDistance(value Float.X) {
-	class(self).SetPathDesiredDistance(gd.Float(value))
+	class(self).SetPathDesiredDistance(float64(value))
 }
 
 func (self Instance) TargetDesiredDistance() Float.X {
@@ -227,7 +230,7 @@ func (self Instance) TargetDesiredDistance() Float.X {
 }
 
 func (self Instance) SetTargetDesiredDistance(value Float.X) {
-	class(self).SetTargetDesiredDistance(gd.Float(value))
+	class(self).SetTargetDesiredDistance(float64(value))
 }
 
 func (self Instance) PathHeightOffset() Float.X {
@@ -235,7 +238,7 @@ func (self Instance) PathHeightOffset() Float.X {
 }
 
 func (self Instance) SetPathHeightOffset(value Float.X) {
-	class(self).SetPathHeightOffset(gd.Float(value))
+	class(self).SetPathHeightOffset(float64(value))
 }
 
 func (self Instance) PathMaxDistance() Float.X {
@@ -243,7 +246,7 @@ func (self Instance) PathMaxDistance() Float.X {
 }
 
 func (self Instance) SetPathMaxDistance(value Float.X) {
-	class(self).SetPathMaxDistance(gd.Float(value))
+	class(self).SetPathMaxDistance(float64(value))
 }
 
 func (self Instance) NavigationLayers() int {
@@ -251,7 +254,7 @@ func (self Instance) NavigationLayers() int {
 }
 
 func (self Instance) SetNavigationLayers(value int) {
-	class(self).SetNavigationLayers(gd.Int(value))
+	class(self).SetNavigationLayers(int64(value))
 }
 
 func (self Instance) PathfindingAlgorithm() gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm {
@@ -291,7 +294,7 @@ func (self Instance) SimplifyEpsilon() Float.X {
 }
 
 func (self Instance) SetSimplifyEpsilon(value Float.X) {
-	class(self).SetSimplifyEpsilon(gd.Float(value))
+	class(self).SetSimplifyEpsilon(float64(value))
 }
 
 func (self Instance) AvoidanceEnabled() bool {
@@ -307,7 +310,7 @@ func (self Instance) Velocity() Vector3.XYZ {
 }
 
 func (self Instance) SetVelocity(value Vector3.XYZ) {
-	class(self).SetVelocity(gd.Vector3(value))
+	class(self).SetVelocity(Vector3.XYZ(value))
 }
 
 func (self Instance) Height() Float.X {
@@ -315,7 +318,7 @@ func (self Instance) Height() Float.X {
 }
 
 func (self Instance) SetHeight(value Float.X) {
-	class(self).SetHeight(gd.Float(value))
+	class(self).SetHeight(float64(value))
 }
 
 func (self Instance) Radius() Float.X {
@@ -323,7 +326,7 @@ func (self Instance) Radius() Float.X {
 }
 
 func (self Instance) SetRadius(value Float.X) {
-	class(self).SetRadius(gd.Float(value))
+	class(self).SetRadius(float64(value))
 }
 
 func (self Instance) NeighborDistance() Float.X {
@@ -331,7 +334,7 @@ func (self Instance) NeighborDistance() Float.X {
 }
 
 func (self Instance) SetNeighborDistance(value Float.X) {
-	class(self).SetNeighborDistance(gd.Float(value))
+	class(self).SetNeighborDistance(float64(value))
 }
 
 func (self Instance) MaxNeighbors() int {
@@ -339,7 +342,7 @@ func (self Instance) MaxNeighbors() int {
 }
 
 func (self Instance) SetMaxNeighbors(value int) {
-	class(self).SetMaxNeighbors(gd.Int(value))
+	class(self).SetMaxNeighbors(int64(value))
 }
 
 func (self Instance) TimeHorizonAgents() Float.X {
@@ -347,7 +350,7 @@ func (self Instance) TimeHorizonAgents() Float.X {
 }
 
 func (self Instance) SetTimeHorizonAgents(value Float.X) {
-	class(self).SetTimeHorizonAgents(gd.Float(value))
+	class(self).SetTimeHorizonAgents(float64(value))
 }
 
 func (self Instance) TimeHorizonObstacles() Float.X {
@@ -355,7 +358,7 @@ func (self Instance) TimeHorizonObstacles() Float.X {
 }
 
 func (self Instance) SetTimeHorizonObstacles(value Float.X) {
-	class(self).SetTimeHorizonObstacles(gd.Float(value))
+	class(self).SetTimeHorizonObstacles(float64(value))
 }
 
 func (self Instance) MaxSpeed() Float.X {
@@ -363,7 +366,7 @@ func (self Instance) MaxSpeed() Float.X {
 }
 
 func (self Instance) SetMaxSpeed(value Float.X) {
-	class(self).SetMaxSpeed(gd.Float(value))
+	class(self).SetMaxSpeed(float64(value))
 }
 
 func (self Instance) Use3dAvoidance() bool {
@@ -387,7 +390,7 @@ func (self Instance) AvoidanceLayers() int {
 }
 
 func (self Instance) SetAvoidanceLayers(value int) {
-	class(self).SetAvoidanceLayers(gd.Int(value))
+	class(self).SetAvoidanceLayers(int64(value))
 }
 
 func (self Instance) AvoidanceMask() int {
@@ -395,7 +398,7 @@ func (self Instance) AvoidanceMask() int {
 }
 
 func (self Instance) SetAvoidanceMask(value int) {
-	class(self).SetAvoidanceMask(gd.Int(value))
+	class(self).SetAvoidanceMask(int64(value))
 }
 
 func (self Instance) AvoidancePriority() Float.X {
@@ -403,7 +406,7 @@ func (self Instance) AvoidancePriority() Float.X {
 }
 
 func (self Instance) SetAvoidancePriority(value Float.X) {
-	class(self).SetAvoidancePriority(gd.Float(value))
+	class(self).SetAvoidancePriority(float64(value))
 }
 
 func (self Instance) DebugEnabled() bool {
@@ -427,7 +430,7 @@ func (self Instance) DebugPathCustomColor() Color.RGBA {
 }
 
 func (self Instance) SetDebugPathCustomColor(value Color.RGBA) {
-	class(self).SetDebugPathCustomColor(gd.Color(value))
+	class(self).SetDebugPathCustomColor(Color.RGBA(value))
 }
 
 func (self Instance) DebugPathCustomPointSize() Float.X {
@@ -435,16 +438,16 @@ func (self Instance) DebugPathCustomPointSize() Float.X {
 }
 
 func (self Instance) SetDebugPathCustomPointSize(value Float.X) {
-	class(self).SetDebugPathCustomPointSize(gd.Float(value))
+	class(self).SetDebugPathCustomPointSize(float64(value))
 }
 
 /*
 Returns the [RID] of this agent on the [NavigationServer3D].
 */
 //go:nosplit
-func (self class) GetRid() gd.RID { //gd:NavigationAgent3D.get_rid
+func (self class) GetRid() RID.Any { //gd:NavigationAgent3D.get_rid
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -471,7 +474,7 @@ func (self class) GetAvoidanceEnabled() bool { //gd:NavigationAgent3D.get_avoida
 }
 
 //go:nosplit
-func (self class) SetPathDesiredDistance(desired_distance gd.Float) { //gd:NavigationAgent3D.set_path_desired_distance
+func (self class) SetPathDesiredDistance(desired_distance float64) { //gd:NavigationAgent3D.set_path_desired_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, desired_distance)
 	var r_ret = callframe.Nil
@@ -480,9 +483,9 @@ func (self class) SetPathDesiredDistance(desired_distance gd.Float) { //gd:Navig
 }
 
 //go:nosplit
-func (self class) GetPathDesiredDistance() gd.Float { //gd:NavigationAgent3D.get_path_desired_distance
+func (self class) GetPathDesiredDistance() float64 { //gd:NavigationAgent3D.get_path_desired_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_desired_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -490,7 +493,7 @@ func (self class) GetPathDesiredDistance() gd.Float { //gd:NavigationAgent3D.get
 }
 
 //go:nosplit
-func (self class) SetTargetDesiredDistance(desired_distance gd.Float) { //gd:NavigationAgent3D.set_target_desired_distance
+func (self class) SetTargetDesiredDistance(desired_distance float64) { //gd:NavigationAgent3D.set_target_desired_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, desired_distance)
 	var r_ret = callframe.Nil
@@ -499,9 +502,9 @@ func (self class) SetTargetDesiredDistance(desired_distance gd.Float) { //gd:Nav
 }
 
 //go:nosplit
-func (self class) GetTargetDesiredDistance() gd.Float { //gd:NavigationAgent3D.get_target_desired_distance
+func (self class) GetTargetDesiredDistance() float64 { //gd:NavigationAgent3D.get_target_desired_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_target_desired_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -509,7 +512,7 @@ func (self class) GetTargetDesiredDistance() gd.Float { //gd:NavigationAgent3D.g
 }
 
 //go:nosplit
-func (self class) SetRadius(radius gd.Float) { //gd:NavigationAgent3D.set_radius
+func (self class) SetRadius(radius float64) { //gd:NavigationAgent3D.set_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -518,9 +521,9 @@ func (self class) SetRadius(radius gd.Float) { //gd:NavigationAgent3D.set_radius
 }
 
 //go:nosplit
-func (self class) GetRadius() gd.Float { //gd:NavigationAgent3D.get_radius
+func (self class) GetRadius() float64 { //gd:NavigationAgent3D.get_radius
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -528,7 +531,7 @@ func (self class) GetRadius() gd.Float { //gd:NavigationAgent3D.get_radius
 }
 
 //go:nosplit
-func (self class) SetHeight(height gd.Float) { //gd:NavigationAgent3D.set_height
+func (self class) SetHeight(height float64) { //gd:NavigationAgent3D.set_height
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -537,9 +540,9 @@ func (self class) SetHeight(height gd.Float) { //gd:NavigationAgent3D.set_height
 }
 
 //go:nosplit
-func (self class) GetHeight() gd.Float { //gd:NavigationAgent3D.get_height
+func (self class) GetHeight() float64 { //gd:NavigationAgent3D.get_height
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -547,7 +550,7 @@ func (self class) GetHeight() gd.Float { //gd:NavigationAgent3D.get_height
 }
 
 //go:nosplit
-func (self class) SetPathHeightOffset(path_height_offset gd.Float) { //gd:NavigationAgent3D.set_path_height_offset
+func (self class) SetPathHeightOffset(path_height_offset float64) { //gd:NavigationAgent3D.set_path_height_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, path_height_offset)
 	var r_ret = callframe.Nil
@@ -556,9 +559,9 @@ func (self class) SetPathHeightOffset(path_height_offset gd.Float) { //gd:Naviga
 }
 
 //go:nosplit
-func (self class) GetPathHeightOffset() gd.Float { //gd:NavigationAgent3D.get_path_height_offset
+func (self class) GetPathHeightOffset() float64 { //gd:NavigationAgent3D.get_path_height_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_height_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -604,7 +607,7 @@ func (self class) GetKeepYVelocity() bool { //gd:NavigationAgent3D.get_keep_y_ve
 }
 
 //go:nosplit
-func (self class) SetNeighborDistance(neighbor_distance gd.Float) { //gd:NavigationAgent3D.set_neighbor_distance
+func (self class) SetNeighborDistance(neighbor_distance float64) { //gd:NavigationAgent3D.set_neighbor_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, neighbor_distance)
 	var r_ret = callframe.Nil
@@ -613,9 +616,9 @@ func (self class) SetNeighborDistance(neighbor_distance gd.Float) { //gd:Navigat
 }
 
 //go:nosplit
-func (self class) GetNeighborDistance() gd.Float { //gd:NavigationAgent3D.get_neighbor_distance
+func (self class) GetNeighborDistance() float64 { //gd:NavigationAgent3D.get_neighbor_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_neighbor_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -623,7 +626,7 @@ func (self class) GetNeighborDistance() gd.Float { //gd:NavigationAgent3D.get_ne
 }
 
 //go:nosplit
-func (self class) SetMaxNeighbors(max_neighbors gd.Int) { //gd:NavigationAgent3D.set_max_neighbors
+func (self class) SetMaxNeighbors(max_neighbors int64) { //gd:NavigationAgent3D.set_max_neighbors
 	var frame = callframe.New()
 	callframe.Arg(frame, max_neighbors)
 	var r_ret = callframe.Nil
@@ -632,9 +635,9 @@ func (self class) SetMaxNeighbors(max_neighbors gd.Int) { //gd:NavigationAgent3D
 }
 
 //go:nosplit
-func (self class) GetMaxNeighbors() gd.Int { //gd:NavigationAgent3D.get_max_neighbors
+func (self class) GetMaxNeighbors() int64 { //gd:NavigationAgent3D.get_max_neighbors
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_max_neighbors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -642,7 +645,7 @@ func (self class) GetMaxNeighbors() gd.Int { //gd:NavigationAgent3D.get_max_neig
 }
 
 //go:nosplit
-func (self class) SetTimeHorizonAgents(time_horizon gd.Float) { //gd:NavigationAgent3D.set_time_horizon_agents
+func (self class) SetTimeHorizonAgents(time_horizon float64) { //gd:NavigationAgent3D.set_time_horizon_agents
 	var frame = callframe.New()
 	callframe.Arg(frame, time_horizon)
 	var r_ret = callframe.Nil
@@ -651,9 +654,9 @@ func (self class) SetTimeHorizonAgents(time_horizon gd.Float) { //gd:NavigationA
 }
 
 //go:nosplit
-func (self class) GetTimeHorizonAgents() gd.Float { //gd:NavigationAgent3D.get_time_horizon_agents
+func (self class) GetTimeHorizonAgents() float64 { //gd:NavigationAgent3D.get_time_horizon_agents
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_time_horizon_agents, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -661,7 +664,7 @@ func (self class) GetTimeHorizonAgents() gd.Float { //gd:NavigationAgent3D.get_t
 }
 
 //go:nosplit
-func (self class) SetTimeHorizonObstacles(time_horizon gd.Float) { //gd:NavigationAgent3D.set_time_horizon_obstacles
+func (self class) SetTimeHorizonObstacles(time_horizon float64) { //gd:NavigationAgent3D.set_time_horizon_obstacles
 	var frame = callframe.New()
 	callframe.Arg(frame, time_horizon)
 	var r_ret = callframe.Nil
@@ -670,9 +673,9 @@ func (self class) SetTimeHorizonObstacles(time_horizon gd.Float) { //gd:Navigati
 }
 
 //go:nosplit
-func (self class) GetTimeHorizonObstacles() gd.Float { //gd:NavigationAgent3D.get_time_horizon_obstacles
+func (self class) GetTimeHorizonObstacles() float64 { //gd:NavigationAgent3D.get_time_horizon_obstacles
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_time_horizon_obstacles, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -680,7 +683,7 @@ func (self class) GetTimeHorizonObstacles() gd.Float { //gd:NavigationAgent3D.ge
 }
 
 //go:nosplit
-func (self class) SetMaxSpeed(max_speed gd.Float) { //gd:NavigationAgent3D.set_max_speed
+func (self class) SetMaxSpeed(max_speed float64) { //gd:NavigationAgent3D.set_max_speed
 	var frame = callframe.New()
 	callframe.Arg(frame, max_speed)
 	var r_ret = callframe.Nil
@@ -689,9 +692,9 @@ func (self class) SetMaxSpeed(max_speed gd.Float) { //gd:NavigationAgent3D.set_m
 }
 
 //go:nosplit
-func (self class) GetMaxSpeed() gd.Float { //gd:NavigationAgent3D.get_max_speed
+func (self class) GetMaxSpeed() float64 { //gd:NavigationAgent3D.get_max_speed
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_max_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -699,7 +702,7 @@ func (self class) GetMaxSpeed() gd.Float { //gd:NavigationAgent3D.get_max_speed
 }
 
 //go:nosplit
-func (self class) SetPathMaxDistance(max_speed gd.Float) { //gd:NavigationAgent3D.set_path_max_distance
+func (self class) SetPathMaxDistance(max_speed float64) { //gd:NavigationAgent3D.set_path_max_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, max_speed)
 	var r_ret = callframe.Nil
@@ -708,9 +711,9 @@ func (self class) SetPathMaxDistance(max_speed gd.Float) { //gd:NavigationAgent3
 }
 
 //go:nosplit
-func (self class) GetPathMaxDistance() gd.Float { //gd:NavigationAgent3D.get_path_max_distance
+func (self class) GetPathMaxDistance() float64 { //gd:NavigationAgent3D.get_path_max_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -718,7 +721,7 @@ func (self class) GetPathMaxDistance() gd.Float { //gd:NavigationAgent3D.get_pat
 }
 
 //go:nosplit
-func (self class) SetNavigationLayers(navigation_layers gd.Int) { //gd:NavigationAgent3D.set_navigation_layers
+func (self class) SetNavigationLayers(navigation_layers int64) { //gd:NavigationAgent3D.set_navigation_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_layers)
 	var r_ret = callframe.Nil
@@ -727,9 +730,9 @@ func (self class) SetNavigationLayers(navigation_layers gd.Int) { //gd:Navigatio
 }
 
 //go:nosplit
-func (self class) GetNavigationLayers() gd.Int { //gd:NavigationAgent3D.get_navigation_layers
+func (self class) GetNavigationLayers() int64 { //gd:NavigationAgent3D.get_navigation_layers
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -740,7 +743,7 @@ func (self class) GetNavigationLayers() gd.Int { //gd:NavigationAgent3D.get_navi
 Based on [param value], enables or disables the specified layer in the [member navigation_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetNavigationLayerValue(layer_number gd.Int, value bool) { //gd:NavigationAgent3D.set_navigation_layer_value
+func (self class) SetNavigationLayerValue(layer_number int64, value bool) { //gd:NavigationAgent3D.set_navigation_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -753,7 +756,7 @@ func (self class) SetNavigationLayerValue(layer_number gd.Int, value bool) { //g
 Returns whether or not the specified layer of the [member navigation_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetNavigationLayerValue(layer_number gd.Int) bool { //gd:NavigationAgent3D.get_navigation_layer_value
+func (self class) GetNavigationLayerValue(layer_number int64) bool { //gd:NavigationAgent3D.get_navigation_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -824,7 +827,7 @@ func (self class) GetPathMetadataFlags() gdclass.NavigationPathQueryParameters3D
 Sets the [RID] of the navigation map this NavigationAgent node should use and also updates the [code]agent[/code] on the NavigationServer.
 */
 //go:nosplit
-func (self class) SetNavigationMap(navigation_map gd.RID) { //gd:NavigationAgent3D.set_navigation_map
+func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:NavigationAgent3D.set_navigation_map
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_map)
 	var r_ret = callframe.Nil
@@ -836,9 +839,9 @@ func (self class) SetNavigationMap(navigation_map gd.RID) { //gd:NavigationAgent
 Returns the [RID] of the navigation map for this NavigationAgent node. This function returns always the map set on the NavigationAgent node and not the map of the abstract agent on the NavigationServer. If the agent map is changed directly with the NavigationServer API the NavigationAgent node will not be aware of the map change. Use [method set_navigation_map] to change the navigation map for the NavigationAgent and also update the agent on the NavigationServer.
 */
 //go:nosplit
-func (self class) GetNavigationMap() gd.RID { //gd:NavigationAgent3D.get_navigation_map
+func (self class) GetNavigationMap() RID.Any { //gd:NavigationAgent3D.get_navigation_map
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -846,7 +849,7 @@ func (self class) GetNavigationMap() gd.RID { //gd:NavigationAgent3D.get_navigat
 }
 
 //go:nosplit
-func (self class) SetTargetPosition(position gd.Vector3) { //gd:NavigationAgent3D.set_target_position
+func (self class) SetTargetPosition(position Vector3.XYZ) { //gd:NavigationAgent3D.set_target_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -855,9 +858,9 @@ func (self class) SetTargetPosition(position gd.Vector3) { //gd:NavigationAgent3
 }
 
 //go:nosplit
-func (self class) GetTargetPosition() gd.Vector3 { //gd:NavigationAgent3D.get_target_position
+func (self class) GetTargetPosition() Vector3.XYZ { //gd:NavigationAgent3D.get_target_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_target_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -884,7 +887,7 @@ func (self class) GetSimplifyPath() bool { //gd:NavigationAgent3D.get_simplify_p
 }
 
 //go:nosplit
-func (self class) SetSimplifyEpsilon(epsilon gd.Float) { //gd:NavigationAgent3D.set_simplify_epsilon
+func (self class) SetSimplifyEpsilon(epsilon float64) { //gd:NavigationAgent3D.set_simplify_epsilon
 	var frame = callframe.New()
 	callframe.Arg(frame, epsilon)
 	var r_ret = callframe.Nil
@@ -893,9 +896,9 @@ func (self class) SetSimplifyEpsilon(epsilon gd.Float) { //gd:NavigationAgent3D.
 }
 
 //go:nosplit
-func (self class) GetSimplifyEpsilon() gd.Float { //gd:NavigationAgent3D.get_simplify_epsilon
+func (self class) GetSimplifyEpsilon() float64 { //gd:NavigationAgent3D.get_simplify_epsilon
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_simplify_epsilon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -906,9 +909,9 @@ func (self class) GetSimplifyEpsilon() gd.Float { //gd:NavigationAgent3D.get_sim
 Returns the next position in global coordinates that can be moved to, making sure that there are no static objects in the way. If the agent does not have a navigation path, it will return the position of the agent's parent. The use of this function once every physics frame is required to update the internal path logic of the NavigationAgent.
 */
 //go:nosplit
-func (self class) GetNextPathPosition() gd.Vector3 { //gd:NavigationAgent3D.get_next_path_position
+func (self class) GetNextPathPosition() Vector3.XYZ { //gd:NavigationAgent3D.get_next_path_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_next_path_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -919,7 +922,7 @@ func (self class) GetNextPathPosition() gd.Vector3 { //gd:NavigationAgent3D.get_
 Replaces the internal velocity in the collision avoidance simulation with [param velocity]. When an agent is teleported to a new position this function should be used in the same frame. If called frequently this function can get agents stuck.
 */
 //go:nosplit
-func (self class) SetVelocityForced(velocity gd.Vector3) { //gd:NavigationAgent3D.set_velocity_forced
+func (self class) SetVelocityForced(velocity Vector3.XYZ) { //gd:NavigationAgent3D.set_velocity_forced
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
 	var r_ret = callframe.Nil
@@ -928,7 +931,7 @@ func (self class) SetVelocityForced(velocity gd.Vector3) { //gd:NavigationAgent3
 }
 
 //go:nosplit
-func (self class) SetVelocity(velocity gd.Vector3) { //gd:NavigationAgent3D.set_velocity
+func (self class) SetVelocity(velocity Vector3.XYZ) { //gd:NavigationAgent3D.set_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
 	var r_ret = callframe.Nil
@@ -937,9 +940,9 @@ func (self class) SetVelocity(velocity gd.Vector3) { //gd:NavigationAgent3D.set_
 }
 
 //go:nosplit
-func (self class) GetVelocity() gd.Vector3 { //gd:NavigationAgent3D.get_velocity
+func (self class) GetVelocity() Vector3.XYZ { //gd:NavigationAgent3D.get_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -950,9 +953,9 @@ func (self class) GetVelocity() gd.Vector3 { //gd:NavigationAgent3D.get_velocity
 Returns the distance to the target position, using the agent's global position. The user must set [member target_position] in order for this to be accurate.
 */
 //go:nosplit
-func (self class) DistanceToTarget() gd.Float { //gd:NavigationAgent3D.distance_to_target
+func (self class) DistanceToTarget() float64 { //gd:NavigationAgent3D.distance_to_target
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_distance_to_target, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -989,9 +992,9 @@ func (self class) GetCurrentNavigationPath() Packed.Array[Vector3.XYZ] { //gd:Na
 Returns which index the agent is currently on in the navigation path's [PackedVector3Array].
 */
 //go:nosplit
-func (self class) GetCurrentNavigationPathIndex() gd.Int { //gd:NavigationAgent3D.get_current_navigation_path_index
+func (self class) GetCurrentNavigationPathIndex() int64 { //gd:NavigationAgent3D.get_current_navigation_path_index
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_current_navigation_path_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1042,9 +1045,9 @@ func (self class) IsNavigationFinished() bool { //gd:NavigationAgent3D.is_naviga
 Returns the reachable final position of the current navigation path in global coordinates. This position can change if the agent needs to update the navigation path which makes the agent emit the [signal path_changed] signal.
 */
 //go:nosplit
-func (self class) GetFinalPosition() gd.Vector3 { //gd:NavigationAgent3D.get_final_position
+func (self class) GetFinalPosition() Vector3.XYZ { //gd:NavigationAgent3D.get_final_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_final_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1052,7 +1055,7 @@ func (self class) GetFinalPosition() gd.Vector3 { //gd:NavigationAgent3D.get_fin
 }
 
 //go:nosplit
-func (self class) SetAvoidanceLayers(layers gd.Int) { //gd:NavigationAgent3D.set_avoidance_layers
+func (self class) SetAvoidanceLayers(layers int64) { //gd:NavigationAgent3D.set_avoidance_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, layers)
 	var r_ret = callframe.Nil
@@ -1061,9 +1064,9 @@ func (self class) SetAvoidanceLayers(layers gd.Int) { //gd:NavigationAgent3D.set
 }
 
 //go:nosplit
-func (self class) GetAvoidanceLayers() gd.Int { //gd:NavigationAgent3D.get_avoidance_layers
+func (self class) GetAvoidanceLayers() int64 { //gd:NavigationAgent3D.get_avoidance_layers
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1071,7 +1074,7 @@ func (self class) GetAvoidanceLayers() gd.Int { //gd:NavigationAgent3D.get_avoid
 }
 
 //go:nosplit
-func (self class) SetAvoidanceMask(mask gd.Int) { //gd:NavigationAgent3D.set_avoidance_mask
+func (self class) SetAvoidanceMask(mask int64) { //gd:NavigationAgent3D.set_avoidance_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -1080,9 +1083,9 @@ func (self class) SetAvoidanceMask(mask gd.Int) { //gd:NavigationAgent3D.set_avo
 }
 
 //go:nosplit
-func (self class) GetAvoidanceMask() gd.Int { //gd:NavigationAgent3D.get_avoidance_mask
+func (self class) GetAvoidanceMask() int64 { //gd:NavigationAgent3D.get_avoidance_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1093,7 +1096,7 @@ func (self class) GetAvoidanceMask() gd.Int { //gd:NavigationAgent3D.get_avoidan
 Based on [param value], enables or disables the specified layer in the [member avoidance_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetAvoidanceLayerValue(layer_number gd.Int, value bool) { //gd:NavigationAgent3D.set_avoidance_layer_value
+func (self class) SetAvoidanceLayerValue(layer_number int64, value bool) { //gd:NavigationAgent3D.set_avoidance_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -1106,7 +1109,7 @@ func (self class) SetAvoidanceLayerValue(layer_number gd.Int, value bool) { //gd
 Returns whether or not the specified layer of the [member avoidance_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetAvoidanceLayerValue(layer_number gd.Int) bool { //gd:NavigationAgent3D.get_avoidance_layer_value
+func (self class) GetAvoidanceLayerValue(layer_number int64) bool { //gd:NavigationAgent3D.get_avoidance_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1120,7 +1123,7 @@ func (self class) GetAvoidanceLayerValue(layer_number gd.Int) bool { //gd:Naviga
 Based on [param value], enables or disables the specified mask in the [member avoidance_mask] bitmask, given a [param mask_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetAvoidanceMaskValue(mask_number gd.Int, value bool) { //gd:NavigationAgent3D.set_avoidance_mask_value
+func (self class) SetAvoidanceMaskValue(mask_number int64, value bool) { //gd:NavigationAgent3D.set_avoidance_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, mask_number)
 	callframe.Arg(frame, value)
@@ -1133,7 +1136,7 @@ func (self class) SetAvoidanceMaskValue(mask_number gd.Int, value bool) { //gd:N
 Returns whether or not the specified mask of the [member avoidance_mask] bitmask is enabled, given a [param mask_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetAvoidanceMaskValue(mask_number gd.Int) bool { //gd:NavigationAgent3D.get_avoidance_mask_value
+func (self class) GetAvoidanceMaskValue(mask_number int64) bool { //gd:NavigationAgent3D.get_avoidance_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, mask_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1144,7 +1147,7 @@ func (self class) GetAvoidanceMaskValue(mask_number gd.Int) bool { //gd:Navigati
 }
 
 //go:nosplit
-func (self class) SetAvoidancePriority(priority gd.Float) { //gd:NavigationAgent3D.set_avoidance_priority
+func (self class) SetAvoidancePriority(priority float64) { //gd:NavigationAgent3D.set_avoidance_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -1153,9 +1156,9 @@ func (self class) SetAvoidancePriority(priority gd.Float) { //gd:NavigationAgent
 }
 
 //go:nosplit
-func (self class) GetAvoidancePriority() gd.Float { //gd:NavigationAgent3D.get_avoidance_priority
+func (self class) GetAvoidancePriority() float64 { //gd:NavigationAgent3D.get_avoidance_priority
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1201,7 +1204,7 @@ func (self class) GetDebugUseCustom() bool { //gd:NavigationAgent3D.get_debug_us
 }
 
 //go:nosplit
-func (self class) SetDebugPathCustomColor(color gd.Color) { //gd:NavigationAgent3D.set_debug_path_custom_color
+func (self class) SetDebugPathCustomColor(color Color.RGBA) { //gd:NavigationAgent3D.set_debug_path_custom_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -1210,9 +1213,9 @@ func (self class) SetDebugPathCustomColor(color gd.Color) { //gd:NavigationAgent
 }
 
 //go:nosplit
-func (self class) GetDebugPathCustomColor() gd.Color { //gd:NavigationAgent3D.get_debug_path_custom_color
+func (self class) GetDebugPathCustomColor() Color.RGBA { //gd:NavigationAgent3D.get_debug_path_custom_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_debug_path_custom_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1220,7 +1223,7 @@ func (self class) GetDebugPathCustomColor() gd.Color { //gd:NavigationAgent3D.ge
 }
 
 //go:nosplit
-func (self class) SetDebugPathCustomPointSize(point_size gd.Float) { //gd:NavigationAgent3D.set_debug_path_custom_point_size
+func (self class) SetDebugPathCustomPointSize(point_size float64) { //gd:NavigationAgent3D.set_debug_path_custom_point_size
 	var frame = callframe.New()
 	callframe.Arg(frame, point_size)
 	var r_ret = callframe.Nil
@@ -1229,9 +1232,9 @@ func (self class) SetDebugPathCustomPointSize(point_size gd.Float) { //gd:Naviga
 }
 
 //go:nosplit
-func (self class) GetDebugPathCustomPointSize() gd.Float { //gd:NavigationAgent3D.get_debug_path_custom_point_size
+func (self class) GetDebugPathCustomPointSize() float64 { //gd:NavigationAgent3D.get_debug_path_custom_point_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_debug_path_custom_point_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

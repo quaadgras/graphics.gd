@@ -9,16 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -152,7 +155,7 @@ Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Objec
 */
 func (Instance) _process(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+		var delta = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(delta))
@@ -167,7 +170,7 @@ Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [meth
 */
 func (Instance) _physics_process(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+		var delta = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(delta))
@@ -409,7 +412,7 @@ var c = get_child(-1).name # c is "Last"
 [b]Note:[/b] To fetch a node by [NodePath], use [method get_node].
 */
 func (self Instance) GetChild(idx int) [1]gdclass.Node { //gd:Node.get_child
-	return [1]gdclass.Node(class(self).GetChild(gd.Int(idx), false))
+	return [1]gdclass.Node(class(self).GetChild(int64(idx), false))
 }
 
 /*
@@ -627,7 +630,7 @@ Moves [param child_node] to the given index. A node's index is the order among i
 [b]Note:[/b] The processing order of several engine callbacks ([method _ready], [method _process], etc.) and notifications sent through [method propagate_notification] is affected by tree order. [CanvasItem] nodes are also rendered in tree order. See also [member process_priority].
 */
 func (self Instance) MoveChild(child_node [1]gdclass.Node, to_index int) { //gd:Node.move_child
-	class(self).MoveChild(child_node, gd.Int(to_index))
+	class(self).MoveChild(child_node, int64(to_index))
 }
 
 /*
@@ -741,7 +744,7 @@ func (self Instance) GetTreeStringPretty() string { //gd:Node.get_tree_string_pr
 Calls [method Object.notification] with [param what] on this node and all of its children, recursively.
 */
 func (self Instance) PropagateNotification(what int) { //gd:Node.propagate_notification
-	class(self).PropagateNotification(gd.Int(what))
+	class(self).PropagateNotification(int64(what))
 }
 
 /*
@@ -985,7 +988,7 @@ Duplicates the node, returning a new node with all of its properties, signals an
 [b]Note:[/b] For nodes with a [Script] attached, if [method Object._init] has been defined with required parameters, the duplicated node will not have a [Script].
 */
 func (self Instance) Duplicate() [1]gdclass.Node { //gd:Node.duplicate
-	return [1]gdclass.Node(class(self).Duplicate(gd.Int(15)))
+	return [1]gdclass.Node(class(self).Duplicate(int64(15)))
 }
 
 /*
@@ -1063,7 +1066,7 @@ If [param recursive] is [code]true[/code], the given peer is recursively set as 
 [b]Warning:[/b] This does [b]not[/b] automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [member MultiplayerSpawner.spawn_function], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does [b]not[/b] propagate to newly added children.
 */
 func (self Instance) SetMultiplayerAuthority(id int) { //gd:Node.set_multiplayer_authority
-	class(self).SetMultiplayerAuthority(gd.Int(id), true)
+	class(self).SetMultiplayerAuthority(int64(id), true)
 }
 
 /*
@@ -1089,7 +1092,7 @@ Changes the RPC configuration for the given [param method]. [param config] shoul
 [b]Note:[/b] In GDScript, this method corresponds to the [annotation @GDScript.@rpc] annotation, with various parameters passed ([code]@rpc(any)[/code], [code]@rpc(authority)[/code]...). See also the [url=$DOCS_URL/tutorials/networking/high_level_multiplayer.html]high-level multiplayer[/url] tutorial.
 */
 func (self Instance) RpcConfig(method string, config any) { //gd:Node.rpc_config
-	class(self).RpcConfig(String.Name(String.New(method)), gd.NewVariant(config))
+	class(self).RpcConfig(String.Name(String.New(method)), variant.New(config))
 }
 
 /*
@@ -1111,7 +1114,7 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 [b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [method atr].
 */
 func (self Instance) AtrN(message string, plural_message string, n int) string { //gd:Node.atr_n
-	return string(class(self).AtrN(String.New(message), String.Name(String.New(plural_message)), gd.Int(n), String.Name(String.New(""))).String())
+	return string(class(self).AtrN(String.New(message), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(""))).String())
 }
 
 /*
@@ -1125,28 +1128,28 @@ func (self Instance) UpdateConfigurationWarnings() { //gd:Node.update_configurat
 Similar to [method call_deferred_thread_group], but for setting properties.
 */
 func (self Instance) SetDeferredThreadGroup(property string, value any) { //gd:Node.set_deferred_thread_group
-	class(self).SetDeferredThreadGroup(String.Name(String.New(property)), gd.NewVariant(value))
+	class(self).SetDeferredThreadGroup(String.Name(String.New(property)), variant.New(value))
 }
 
 /*
 Similar to [method call_deferred_thread_group], but for notifications.
 */
 func (self Instance) NotifyDeferredThreadGroup(what int) { //gd:Node.notify_deferred_thread_group
-	class(self).NotifyDeferredThreadGroup(gd.Int(what))
+	class(self).NotifyDeferredThreadGroup(int64(what))
 }
 
 /*
 Similar to [method call_thread_safe], but for setting properties.
 */
 func (self Instance) SetThreadSafe(property string, value any) { //gd:Node.set_thread_safe
-	class(self).SetThreadSafe(String.Name(String.New(property)), gd.NewVariant(value))
+	class(self).SetThreadSafe(String.Name(String.New(property)), variant.New(value))
 }
 
 /*
 Similar to [method call_thread_safe], but for notifications.
 */
 func (self Instance) NotifyThreadSafe(what int) { //gd:Node.notify_thread_safe
-	class(self).NotifyThreadSafe(gd.Int(what))
+	class(self).NotifyThreadSafe(int64(what))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -1216,7 +1219,7 @@ func (self Instance) ProcessPriority() int {
 }
 
 func (self Instance) SetProcessPriority(value int) {
-	class(self).SetProcessPriority(gd.Int(value))
+	class(self).SetProcessPriority(int64(value))
 }
 
 func (self Instance) ProcessPhysicsPriority() int {
@@ -1224,7 +1227,7 @@ func (self Instance) ProcessPhysicsPriority() int {
 }
 
 func (self Instance) SetProcessPhysicsPriority(value int) {
-	class(self).SetPhysicsProcessPriority(gd.Int(value))
+	class(self).SetPhysicsProcessPriority(int64(value))
 }
 
 func (self Instance) ProcessThreadGroup() gdclass.NodeProcessThreadGroup {
@@ -1240,7 +1243,7 @@ func (self Instance) ProcessThreadGroupOrder() int {
 }
 
 func (self Instance) SetProcessThreadGroupOrder(value int) {
-	class(self).SetProcessThreadGroupOrder(gd.Int(value))
+	class(self).SetProcessThreadGroupOrder(int64(value))
 }
 
 func (self Instance) ProcessThreadMessages() gdclass.NodeProcessThreadMessages {
@@ -1281,9 +1284,9 @@ It is only called if processing is enabled, which is done automatically if this 
 Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Object._notification].
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
-func (class) _process(impl func(ptr unsafe.Pointer, delta gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _process(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+		var delta = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, delta)
@@ -1296,9 +1299,9 @@ It is only called if physics processing is enabled, which is done automatically 
 Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [method Object._notification].
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
-func (class) _physics_process(impl func(ptr unsafe.Pointer, delta gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _physics_process(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+		var delta = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, delta)
@@ -1556,10 +1559,10 @@ Returns the number of children of this node.
 If [param include_internal] is [code]false[/code], internal children are not counted (see [method add_child]'s [code]internal[/code] parameter).
 */
 //go:nosplit
-func (self class) GetChildCount(include_internal bool) gd.Int { //gd:Node.get_child_count
+func (self class) GetChildCount(include_internal bool) int64 { //gd:Node.get_child_count
 	var frame = callframe.New()
 	callframe.Arg(frame, include_internal)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_child_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1596,7 +1599,7 @@ var c = get_child(-1).name # c is "Last"
 [b]Note:[/b] To fetch a node by [NodePath], use [method get_node].
 */
 //go:nosplit
-func (self class) GetChild(idx gd.Int, include_internal bool) [1]gdclass.Node { //gd:Node.get_child
+func (self class) GetChild(idx int64, include_internal bool) [1]gdclass.Node { //gd:Node.get_child
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, include_internal)
@@ -1945,7 +1948,7 @@ Moves [param child_node] to the given index. A node's index is the order among i
 [b]Note:[/b] The processing order of several engine callbacks ([method _ready], [method _process], etc.) and notifications sent through [method propagate_notification] is affected by tree order. [CanvasItem] nodes are also rendered in tree order. See also [member process_priority].
 */
 //go:nosplit
-func (self class) MoveChild(child_node [1]gdclass.Node, to_index gd.Int) { //gd:Node.move_child
+func (self class) MoveChild(child_node [1]gdclass.Node, to_index int64) { //gd:Node.move_child
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(child_node[0])[0])
 	callframe.Arg(frame, to_index)
@@ -2011,10 +2014,10 @@ Returns this node's order among its siblings. The first node's index is [code]0[
 If [param include_internal] is [code]false[/code], returns the index ignoring internal children. The first, non-internal child will have an index of [code]0[/code] (see [method add_child]'s [code]internal[/code] parameter).
 */
 //go:nosplit
-func (self class) GetIndex(include_internal bool) gd.Int { //gd:Node.get_index
+func (self class) GetIndex(include_internal bool) int64 { //gd:Node.get_index
 	var frame = callframe.New()
 	callframe.Arg(frame, include_internal)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2128,7 +2131,7 @@ func (self class) GetSceneFilePath() String.Readable { //gd:Node.get_scene_file_
 Calls [method Object.notification] with [param what] on this node and all of its children, recursively.
 */
 //go:nosplit
-func (self class) PropagateNotification(what gd.Int) { //gd:Node.propagate_notification
+func (self class) PropagateNotification(what int64) { //gd:Node.propagate_notification
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
 	var r_ret = callframe.Nil
@@ -2168,9 +2171,9 @@ func (self class) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_process
 Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [method _physics_process]'s [code]delta[/code] parameter, and is often consistent at run-time, unless [member Engine.physics_ticks_per_second] is changed. See also [constant NOTIFICATION_PHYSICS_PROCESS].
 */
 //go:nosplit
-func (self class) GetPhysicsProcessDeltaTime() gd.Float { //gd:Node.get_physics_process_delta_time
+func (self class) GetPhysicsProcessDeltaTime() float64 { //gd:Node.get_physics_process_delta_time
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_process_delta_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2194,9 +2197,9 @@ func (self class) IsPhysicsProcessing() bool { //gd:Node.is_physics_processing
 Returns the time elapsed (in seconds) since the last process callback. This value is identical to [method _process]'s [code]delta[/code] parameter, and may vary from frame to frame. See also [constant NOTIFICATION_PROCESS].
 */
 //go:nosplit
-func (self class) GetProcessDeltaTime() gd.Float { //gd:Node.get_process_delta_time
+func (self class) GetProcessDeltaTime() float64 { //gd:Node.get_process_delta_time
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_delta_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2218,7 +2221,7 @@ func (self class) SetProcess(enable bool) { //gd:Node.set_process
 }
 
 //go:nosplit
-func (self class) SetProcessPriority(priority gd.Int) { //gd:Node.set_process_priority
+func (self class) SetProcessPriority(priority int64) { //gd:Node.set_process_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -2227,9 +2230,9 @@ func (self class) SetProcessPriority(priority gd.Int) { //gd:Node.set_process_pr
 }
 
 //go:nosplit
-func (self class) GetProcessPriority() gd.Int { //gd:Node.get_process_priority
+func (self class) GetProcessPriority() int64 { //gd:Node.get_process_priority
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2237,7 +2240,7 @@ func (self class) GetProcessPriority() gd.Int { //gd:Node.get_process_priority
 }
 
 //go:nosplit
-func (self class) SetPhysicsProcessPriority(priority gd.Int) { //gd:Node.set_physics_process_priority
+func (self class) SetPhysicsProcessPriority(priority int64) { //gd:Node.set_physics_process_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -2246,9 +2249,9 @@ func (self class) SetPhysicsProcessPriority(priority gd.Int) { //gd:Node.set_phy
 }
 
 //go:nosplit
-func (self class) GetPhysicsProcessPriority() gd.Int { //gd:Node.get_physics_process_priority
+func (self class) GetPhysicsProcessPriority() int64 { //gd:Node.get_physics_process_priority
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_process_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2449,7 +2452,7 @@ func (self class) GetProcessThreadMessages() gdclass.NodeProcessThreadMessages {
 }
 
 //go:nosplit
-func (self class) SetProcessThreadGroupOrder(order gd.Int) { //gd:Node.set_process_thread_group_order
+func (self class) SetProcessThreadGroupOrder(order int64) { //gd:Node.set_process_thread_group_order
 	var frame = callframe.New()
 	callframe.Arg(frame, order)
 	var r_ret = callframe.Nil
@@ -2458,9 +2461,9 @@ func (self class) SetProcessThreadGroupOrder(order gd.Int) { //gd:Node.set_proce
 }
 
 //go:nosplit
-func (self class) GetProcessThreadGroupOrder() gd.Int { //gd:Node.get_process_thread_group_order
+func (self class) GetProcessThreadGroupOrder() int64 { //gd:Node.get_process_thread_group_order
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_group_order, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2693,7 +2696,7 @@ Duplicates the node, returning a new node with all of its properties, signals an
 [b]Note:[/b] For nodes with a [Script] attached, if [method Object._init] has been defined with required parameters, the duplicated node will not have a [Script].
 */
 //go:nosplit
-func (self class) Duplicate(flags gd.Int) [1]gdclass.Node { //gd:Node.duplicate
+func (self class) Duplicate(flags int64) [1]gdclass.Node { //gd:Node.duplicate
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -2828,7 +2831,7 @@ If [param recursive] is [code]true[/code], the given peer is recursively set as 
 [b]Warning:[/b] This does [b]not[/b] automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [member MultiplayerSpawner.spawn_function], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does [b]not[/b] propagate to newly added children.
 */
 //go:nosplit
-func (self class) SetMultiplayerAuthority(id gd.Int, recursive bool) { //gd:Node.set_multiplayer_authority
+func (self class) SetMultiplayerAuthority(id int64, recursive bool) { //gd:Node.set_multiplayer_authority
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, recursive)
@@ -2841,9 +2844,9 @@ func (self class) SetMultiplayerAuthority(id gd.Int, recursive bool) { //gd:Node
 Returns the peer ID of the multiplayer authority for this node. See [method set_multiplayer_authority].
 */
 //go:nosplit
-func (self class) GetMultiplayerAuthority() gd.Int { //gd:Node.get_multiplayer_authority
+func (self class) GetMultiplayerAuthority() int64 { //gd:Node.get_multiplayer_authority
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2882,10 +2885,10 @@ Changes the RPC configuration for the given [param method]. [param config] shoul
 [b]Note:[/b] In GDScript, this method corresponds to the [annotation @GDScript.@rpc] annotation, with various parameters passed ([code]@rpc(any)[/code], [code]@rpc(authority)[/code]...). See also the [url=$DOCS_URL/tutorials/networking/high_level_multiplayer.html]high-level multiplayer[/url] tutorial.
 */
 //go:nosplit
-func (self class) RpcConfig(method String.Name, config gd.Variant) { //gd:Node.rpc_config
+func (self class) RpcConfig(method String.Name, config variant.Any) { //gd:Node.rpc_config
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(method)))
-	callframe.Arg(frame, pointers.Get(config))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(config)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_rpc_config, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2956,7 +2959,7 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 [b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [method atr].
 */
 //go:nosplit
-func (self class) AtrN(message String.Readable, plural_message String.Name, n gd.Int, context String.Name) String.Readable { //gd:Node.atr_n
+func (self class) AtrN(message String.Readable, plural_message String.Name, n int64, context String.Name) String.Readable { //gd:Node.atr_n
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(message)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(plural_message)))
@@ -2984,10 +2987,10 @@ func (self class) UpdateConfigurationWarnings() { //gd:Node.update_configuration
 Similar to [method call_deferred_thread_group], but for setting properties.
 */
 //go:nosplit
-func (self class) SetDeferredThreadGroup(property String.Name, value gd.Variant) { //gd:Node.set_deferred_thread_group
+func (self class) SetDeferredThreadGroup(property String.Name, value variant.Any) { //gd:Node.set_deferred_thread_group
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_deferred_thread_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2997,7 +3000,7 @@ func (self class) SetDeferredThreadGroup(property String.Name, value gd.Variant)
 Similar to [method call_deferred_thread_group], but for notifications.
 */
 //go:nosplit
-func (self class) NotifyDeferredThreadGroup(what gd.Int) { //gd:Node.notify_deferred_thread_group
+func (self class) NotifyDeferredThreadGroup(what int64) { //gd:Node.notify_deferred_thread_group
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
 	var r_ret = callframe.Nil
@@ -3009,10 +3012,10 @@ func (self class) NotifyDeferredThreadGroup(what gd.Int) { //gd:Node.notify_defe
 Similar to [method call_thread_safe], but for setting properties.
 */
 //go:nosplit
-func (self class) SetThreadSafe(property String.Name, value gd.Variant) { //gd:Node.set_thread_safe
+func (self class) SetThreadSafe(property String.Name, value variant.Any) { //gd:Node.set_thread_safe
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_thread_safe, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3022,7 +3025,7 @@ func (self class) SetThreadSafe(property String.Name, value gd.Variant) { //gd:N
 Similar to [method call_thread_safe], but for notifications.
 */
 //go:nosplit
-func (self class) NotifyThreadSafe(what gd.Int) { //gd:Node.notify_thread_safe
+func (self class) NotifyThreadSafe(what int64) { //gd:Node.notify_thread_safe
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
 	var r_ret = callframe.Nil
@@ -3211,120 +3214,4 @@ const (
 	/*Never automatically translate. This is the inverse of [constant AUTO_TRANSLATE_MODE_ALWAYS].
 	  String parsing for POT generation will be skipped for this node and children that are set to [constant AUTO_TRANSLATE_MODE_INHERIT].*/
 	AutoTranslateModeDisabled AutoTranslateMode = 2
-)
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
 )

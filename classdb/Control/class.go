@@ -9,22 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3i"
-import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Rect2"
-import "graphics.gd/variant/Color"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -236,7 +239,7 @@ If not overridden, default behavior is checking if the point is within control's
 */
 func (Instance) _has_point(impl func(ptr unsafe.Pointer, point Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var point = gd.UnsafeGet[gd.Vector2](p_args, 0)
+		var point = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, point)
@@ -256,7 +259,7 @@ func (Instance) _structured_text_parser(impl func(ptr unsafe.Pointer, args []any
 		defer pointers.End(gd.InternalString(text))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gd.ArrayAs[[]any](gd.InternalArray(args)), text.String())
-		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Vector3i]](ret)))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Vector3i.XYZ]](ret)))
 
 		if !ok {
 			return
@@ -274,7 +277,7 @@ func (Instance) _get_minimum_size(impl func(ptr unsafe.Pointer) Vector2.XY) (cb 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Vector2(ret))
+		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
 }
 
@@ -284,7 +287,7 @@ Virtual method to be implemented by the user. Returns the tooltip text for the p
 */
 func (Instance) _get_tooltip(impl func(ptr unsafe.Pointer, at_position Vector2.XY) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
@@ -323,11 +326,11 @@ public override Variant _GetDragData(Vector2 atPosition)
 */
 func (Instance) _get_drag_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
-		ptr, ok := pointers.End(gd.NewVariant(ret))
+		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
 			return
@@ -362,10 +365,10 @@ public override bool _CanDropData(Vector2 atPosition, Variant data)
 */
 func (Instance) _can_drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
-		defer pointers.End(data)
+		var data = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position, data.Interface())
 		gd.UnsafeSet(p_back, ret)
@@ -403,10 +406,10 @@ public override void _DropData(Vector2 atPosition, Variant data)
 */
 func (Instance) _drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
-		defer pointers.End(data)
+		var data = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, at_position, data.Interface())
 	}
@@ -557,14 +560,14 @@ Use parameter [param resize_mode] with constants from [enum Control.LayoutPreset
 Use parameter [param margin] to determine the gap between the [Control] and the edges.
 */
 func (self Instance) SetOffsetsPreset(preset gdclass.ControlLayoutPreset) { //gd:Control.set_offsets_preset
-	class(self).SetOffsetsPreset(preset, 0, gd.Int(0))
+	class(self).SetOffsetsPreset(preset, 0, int64(0))
 }
 
 /*
 Sets both anchor preset and offset preset. See [method set_anchors_preset] and [method set_offsets_preset].
 */
 func (self Instance) SetAnchorsAndOffsetsPreset(preset gdclass.ControlLayoutPreset) { //gd:Control.set_anchors_and_offsets_preset
-	class(self).SetAnchorsAndOffsetsPreset(preset, 0, gd.Int(0))
+	class(self).SetAnchorsAndOffsetsPreset(preset, 0, int64(0))
 }
 
 /*
@@ -573,28 +576,28 @@ If [param keep_offset] is [code]true[/code], offsets aren't updated after this o
 If [param push_opposite_anchor] is [code]true[/code] and the opposite anchor overlaps this anchor, the opposite one will have its value overridden. For example, when setting left anchor to 1 and the right anchor has value of 0.5, the right anchor will also get value of 1. If [param push_opposite_anchor] was [code]false[/code], the left anchor would get value 0.5.
 */
 func (self Instance) SetAnchor(side Side, anchor Float.X) { //gd:Control.set_anchor
-	class(self).SetAnchor(side, gd.Float(anchor), false, true)
+	class(self).SetAnchor(side, float64(anchor), false, true)
 }
 
 /*
 Works the same as [method set_anchor], but instead of [code]keep_offset[/code] argument and automatic update of offset, it allows to set the offset yourself (see [method set_offset]).
 */
 func (self Instance) SetAnchorAndOffset(side Side, anchor Float.X, offset Float.X) { //gd:Control.set_anchor_and_offset
-	class(self).SetAnchorAndOffset(side, gd.Float(anchor), gd.Float(offset), false)
+	class(self).SetAnchorAndOffset(side, float64(anchor), float64(offset), false)
 }
 
 /*
 Sets [member offset_left] and [member offset_top] at the same time. Equivalent of changing [member position].
 */
 func (self Instance) SetBegin(position Vector2.XY) { //gd:Control.set_begin
-	class(self).SetBegin(gd.Vector2(position))
+	class(self).SetBegin(Vector2.XY(position))
 }
 
 /*
 Sets [member offset_right] and [member offset_bottom] at the same time.
 */
 func (self Instance) SetEnd(position Vector2.XY) { //gd:Control.set_end
-	class(self).SetEnd(gd.Vector2(position))
+	class(self).SetEnd(Vector2.XY(position))
 }
 
 /*
@@ -602,7 +605,7 @@ Sets the [member position] to given [param position].
 If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
 */
 func (self Instance) SetPosition(position Vector2.XY) { //gd:Control.set_position
-	class(self).SetPosition(gd.Vector2(position), false)
+	class(self).SetPosition(Vector2.XY(position), false)
 }
 
 /*
@@ -610,7 +613,7 @@ Sets the size (see [member size]).
 If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
 */
 func (self Instance) SetSize(size Vector2.XY) { //gd:Control.set_size
-	class(self).SetSize(gd.Vector2(size), false)
+	class(self).SetSize(Vector2.XY(size), false)
 }
 
 /*
@@ -625,7 +628,7 @@ Sets the [member global_position] to given [param position].
 If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
 */
 func (self Instance) SetGlobalPosition(position Vector2.XY) { //gd:Control.set_global_position
-	class(self).SetGlobalPosition(gd.Vector2(position), false)
+	class(self).SetGlobalPosition(Vector2.XY(position), false)
 }
 
 /*
@@ -793,7 +796,7 @@ Creates a local override for a theme font size with the specified [param name]. 
 See also [method get_theme_font_size].
 */
 func (self Instance) AddThemeFontSizeOverride(name string, font_size int) { //gd:Control.add_theme_font_size_override
-	class(self).AddThemeFontSizeOverride(String.Name(String.New(name)), gd.Int(font_size))
+	class(self).AddThemeFontSizeOverride(String.Name(String.New(name)), int64(font_size))
 }
 
 /*
@@ -820,7 +823,7 @@ GetNode<Label>("MyLabel").AddThemeColorOverride("font_color", GetThemeColor("fon
 [/codeblocks]
 */
 func (self Instance) AddThemeColorOverride(name string, color Color.RGBA) { //gd:Control.add_theme_color_override
-	class(self).AddThemeColorOverride(String.Name(String.New(name)), gd.Color(color))
+	class(self).AddThemeColorOverride(String.Name(String.New(name)), Color.RGBA(color))
 }
 
 /*
@@ -828,7 +831,7 @@ Creates a local override for a theme constant with the specified [param name]. L
 See also [method get_theme_constant].
 */
 func (self Instance) AddThemeConstantOverride(name string, constant int) { //gd:Control.add_theme_constant_override
-	class(self).AddThemeConstantOverride(String.Name(String.New(name)), gd.Int(constant))
+	class(self).AddThemeConstantOverride(String.Name(String.New(name)), int64(constant))
 }
 
 /*
@@ -1076,14 +1079,14 @@ This method can be overridden to customize its behavior. See [method _get_toolti
 [b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
 */
 func (self Instance) GetTooltip() string { //gd:Control.get_tooltip
-	return string(class(self).GetTooltip(gd.Vector2(gd.Vector2{0, 0})).String())
+	return string(class(self).GetTooltip(Vector2.XY(gd.Vector2{0, 0})).String())
 }
 
 /*
 Returns the mouse cursor shape the control displays on mouse hover. See [enum CursorShape].
 */
 func (self Instance) GetCursorShape() gdclass.ControlCursorShape { //gd:Control.get_cursor_shape
-	return gdclass.ControlCursorShape(class(self).GetCursorShape(gd.Vector2(gd.Vector2{0, 0})))
+	return gdclass.ControlCursorShape(class(self).GetCursorShape(Vector2.XY(gd.Vector2{0, 0})))
 }
 
 /*
@@ -1091,7 +1094,7 @@ Forces drag and bypasses [method _get_drag_data] and [method set_drag_preview] b
 The methods [method _can_drop_data] and [method _drop_data] must be implemented on controls that want to receive drop data.
 */
 func (self Instance) ForceDrag(data any, preview [1]gdclass.Control) { //gd:Control.force_drag
-	class(self).ForceDrag(gd.NewVariant(data), preview)
+	class(self).ForceDrag(variant.New(data), preview)
 }
 
 /*
@@ -1177,7 +1180,7 @@ Moves the mouse cursor to [param position], relative to [member position] of thi
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 */
 func (self Instance) WarpMouse(position Vector2.XY) { //gd:Control.warp_mouse
-	class(self).WarpMouse(gd.Vector2(position))
+	class(self).WarpMouse(Vector2.XY(position))
 }
 
 /*
@@ -1225,7 +1228,7 @@ func (self Instance) CustomMinimumSize() Vector2.XY {
 }
 
 func (self Instance) SetCustomMinimumSize(value Vector2.XY) {
-	class(self).SetCustomMinimumSize(gd.Vector2(value))
+	class(self).SetCustomMinimumSize(Vector2.XY(value))
 }
 
 func (self Instance) LayoutDirection() gdclass.ControlLayoutDirection {
@@ -1257,7 +1260,7 @@ func (self Instance) OffsetLeft() Float.X {
 }
 
 func (self Instance) SetOffsetLeft(value Float.X) {
-	class(self).SetOffset(0, gd.Float(value))
+	class(self).SetOffset(0, float64(value))
 }
 
 func (self Instance) OffsetTop() Float.X {
@@ -1265,7 +1268,7 @@ func (self Instance) OffsetTop() Float.X {
 }
 
 func (self Instance) SetOffsetTop(value Float.X) {
-	class(self).SetOffset(1, gd.Float(value))
+	class(self).SetOffset(1, float64(value))
 }
 
 func (self Instance) OffsetRight() Float.X {
@@ -1273,7 +1276,7 @@ func (self Instance) OffsetRight() Float.X {
 }
 
 func (self Instance) SetOffsetRight(value Float.X) {
-	class(self).SetOffset(2, gd.Float(value))
+	class(self).SetOffset(2, float64(value))
 }
 
 func (self Instance) OffsetBottom() Float.X {
@@ -1281,7 +1284,7 @@ func (self Instance) OffsetBottom() Float.X {
 }
 
 func (self Instance) SetOffsetBottom(value Float.X) {
-	class(self).SetOffset(3, gd.Float(value))
+	class(self).SetOffset(3, float64(value))
 }
 
 func (self Instance) GrowHorizontal() gdclass.ControlGrowDirection {
@@ -1317,7 +1320,7 @@ func (self Instance) Rotation() Float.X {
 }
 
 func (self Instance) SetRotation(value Float.X) {
-	class(self).SetRotation(gd.Float(value))
+	class(self).SetRotation(float64(value))
 }
 
 func (self Instance) RotationDegrees() Float.X {
@@ -1325,7 +1328,7 @@ func (self Instance) RotationDegrees() Float.X {
 }
 
 func (self Instance) SetRotationDegrees(value Float.X) {
-	class(self).SetRotationDegrees(gd.Float(value))
+	class(self).SetRotationDegrees(float64(value))
 }
 
 func (self Instance) Scale() Vector2.XY {
@@ -1333,7 +1336,7 @@ func (self Instance) Scale() Vector2.XY {
 }
 
 func (self Instance) SetScale(value Vector2.XY) {
-	class(self).SetScale(gd.Vector2(value))
+	class(self).SetScale(Vector2.XY(value))
 }
 
 func (self Instance) PivotOffset() Vector2.XY {
@@ -1341,7 +1344,7 @@ func (self Instance) PivotOffset() Vector2.XY {
 }
 
 func (self Instance) SetPivotOffset(value Vector2.XY) {
-	class(self).SetPivotOffset(gd.Vector2(value))
+	class(self).SetPivotOffset(Vector2.XY(value))
 }
 
 func (self Instance) SizeFlagsHorizontal() gdclass.ControlSizeFlags {
@@ -1365,7 +1368,7 @@ func (self Instance) SizeFlagsStretchRatio() Float.X {
 }
 
 func (self Instance) SetSizeFlagsStretchRatio(value Float.X) {
-	class(self).SetStretchRatio(gd.Float(value))
+	class(self).SetStretchRatio(float64(value))
 }
 
 func (self Instance) LocalizeNumeralSystem() bool {
@@ -1501,9 +1504,9 @@ Virtual method to be implemented by the user. Returns whether the given [param p
 If not overridden, default behavior is checking if the point is within control's Rect.
 [b]Note:[/b] If you want to check if a point is inside the control, you can use [code]Rect2(Vector2.ZERO, size).has_point(point)[/code].
 */
-func (class) _has_point(impl func(ptr unsafe.Pointer, point gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _has_point(impl func(ptr unsafe.Pointer, point Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var point = gd.UnsafeGet[gd.Vector2](p_args, 0)
+		var point = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, point)
@@ -1515,7 +1518,7 @@ func (class) _has_point(impl func(ptr unsafe.Pointer, point gd.Vector2) bool) (c
 User defined BiDi algorithm override function.
 Returns an [Array] of [Vector3i] text ranges and text base directions, in the left-to-right order. Ranges should cover full source [param text] without overlaps. BiDi algorithm will be used on each range separately.
 */
-func (class) _structured_text_parser(impl func(ptr unsafe.Pointer, args Array.Any, text String.Readable) Array.Contains[gd.Vector3i]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _structured_text_parser(impl func(ptr unsafe.Pointer, args Array.Any, text String.Readable) Array.Contains[Vector3i.XYZ]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalArray(args))
@@ -1537,7 +1540,7 @@ Virtual method to be implemented by the user. Returns the minimum size for this 
 If not overridden, defaults to [constant Vector2.ZERO].
 [b]Note:[/b] This method will not be called when the script is attached to a [Control] node that already overrides its minimum size (e.g. [Label], [Button], [PanelContainer] etc.). It can only be used with most basic GUI nodes, like [Control], [Container], [Panel] etc.
 */
-func (class) _get_minimum_size(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_minimum_size(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -1549,9 +1552,9 @@ func (class) _get_minimum_size(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.
 Virtual method to be implemented by the user. Returns the tooltip text for the position [param at_position] in control's local coordinates, which will typically appear when the cursor is resting over this control. See [method get_tooltip].
 [b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
 */
-func (class) _get_tooltip(impl func(ptr unsafe.Pointer, at_position gd.Vector2) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_tooltip(impl func(ptr unsafe.Pointer, at_position Vector2.XY) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
@@ -1588,13 +1591,13 @@ public override Variant _GetDragData(Vector2 atPosition)
 [/csharp]
 [/codeblocks]
 */
-func (class) _get_drag_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_drag_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
 		if !ok {
 			return
@@ -1627,12 +1630,12 @@ public override bool _CanDropData(Vector2 atPosition, Variant data)
 [/csharp]
 [/codeblocks]
 */
-func (class) _can_drop_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2, data gd.Variant) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _can_drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data variant.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
-		defer pointers.End(data)
+		var data = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position, data)
 		gd.UnsafeSet(p_back, ret)
@@ -1668,12 +1671,12 @@ public override void _DropData(Vector2 atPosition, Variant data)
 [/csharp]
 [/codeblocks]
 */
-func (class) _drop_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2, data gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
-		defer pointers.End(data)
+		var data = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
+		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, at_position, data)
 	}
@@ -1804,9 +1807,9 @@ func (self class) AcceptEvent() { //gd:Control.accept_event
 Returns the minimum size for this control. See [member custom_minimum_size].
 */
 //go:nosplit
-func (self class) GetMinimumSize() gd.Vector2 { //gd:Control.get_minimum_size
+func (self class) GetMinimumSize() Vector2.XY { //gd:Control.get_minimum_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_minimum_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1817,9 +1820,9 @@ func (self class) GetMinimumSize() gd.Vector2 { //gd:Control.get_minimum_size
 Returns combined minimum size from [member custom_minimum_size] and [method get_minimum_size].
 */
 //go:nosplit
-func (self class) GetCombinedMinimumSize() gd.Vector2 { //gd:Control.get_combined_minimum_size
+func (self class) GetCombinedMinimumSize() Vector2.XY { //gd:Control.get_combined_minimum_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_combined_minimum_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1846,7 +1849,7 @@ Use parameter [param resize_mode] with constants from [enum Control.LayoutPreset
 Use parameter [param margin] to determine the gap between the [Control] and the edges.
 */
 //go:nosplit
-func (self class) SetOffsetsPreset(preset gdclass.ControlLayoutPreset, resize_mode gdclass.ControlLayoutPresetMode, margin gd.Int) { //gd:Control.set_offsets_preset
+func (self class) SetOffsetsPreset(preset gdclass.ControlLayoutPreset, resize_mode gdclass.ControlLayoutPresetMode, margin int64) { //gd:Control.set_offsets_preset
 	var frame = callframe.New()
 	callframe.Arg(frame, preset)
 	callframe.Arg(frame, resize_mode)
@@ -1860,7 +1863,7 @@ func (self class) SetOffsetsPreset(preset gdclass.ControlLayoutPreset, resize_mo
 Sets both anchor preset and offset preset. See [method set_anchors_preset] and [method set_offsets_preset].
 */
 //go:nosplit
-func (self class) SetAnchorsAndOffsetsPreset(preset gdclass.ControlLayoutPreset, resize_mode gdclass.ControlLayoutPresetMode, margin gd.Int) { //gd:Control.set_anchors_and_offsets_preset
+func (self class) SetAnchorsAndOffsetsPreset(preset gdclass.ControlLayoutPreset, resize_mode gdclass.ControlLayoutPresetMode, margin int64) { //gd:Control.set_anchors_and_offsets_preset
 	var frame = callframe.New()
 	callframe.Arg(frame, preset)
 	callframe.Arg(frame, resize_mode)
@@ -1876,7 +1879,7 @@ If [param keep_offset] is [code]true[/code], offsets aren't updated after this o
 If [param push_opposite_anchor] is [code]true[/code] and the opposite anchor overlaps this anchor, the opposite one will have its value overridden. For example, when setting left anchor to 1 and the right anchor has value of 0.5, the right anchor will also get value of 1. If [param push_opposite_anchor] was [code]false[/code], the left anchor would get value 0.5.
 */
 //go:nosplit
-func (self class) SetAnchor(side Side, anchor gd.Float, keep_offset bool, push_opposite_anchor bool) { //gd:Control.set_anchor
+func (self class) SetAnchor(side Side, anchor float64, keep_offset bool, push_opposite_anchor bool) { //gd:Control.set_anchor
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	callframe.Arg(frame, anchor)
@@ -1891,10 +1894,10 @@ func (self class) SetAnchor(side Side, anchor gd.Float, keep_offset bool, push_o
 Returns the anchor for the specified [enum Side]. A getter method for [member anchor_bottom], [member anchor_left], [member anchor_right] and [member anchor_top].
 */
 //go:nosplit
-func (self class) GetAnchor(side Side) gd.Float { //gd:Control.get_anchor
+func (self class) GetAnchor(side Side) float64 { //gd:Control.get_anchor
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_anchor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1905,7 +1908,7 @@ func (self class) GetAnchor(side Side) gd.Float { //gd:Control.get_anchor
 Sets the offset for the specified [enum Side] to [param offset]. A setter method for [member offset_bottom], [member offset_left], [member offset_right] and [member offset_top].
 */
 //go:nosplit
-func (self class) SetOffset(side Side, offset gd.Float) { //gd:Control.set_offset
+func (self class) SetOffset(side Side, offset float64) { //gd:Control.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	callframe.Arg(frame, offset)
@@ -1918,10 +1921,10 @@ func (self class) SetOffset(side Side, offset gd.Float) { //gd:Control.set_offse
 Returns the offset for the specified [enum Side]. A getter method for [member offset_bottom], [member offset_left], [member offset_right] and [member offset_top].
 */
 //go:nosplit
-func (self class) GetOffset(offset Side) gd.Float { //gd:Control.get_offset
+func (self class) GetOffset(offset Side) float64 { //gd:Control.get_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1932,7 +1935,7 @@ func (self class) GetOffset(offset Side) gd.Float { //gd:Control.get_offset
 Works the same as [method set_anchor], but instead of [code]keep_offset[/code] argument and automatic update of offset, it allows to set the offset yourself (see [method set_offset]).
 */
 //go:nosplit
-func (self class) SetAnchorAndOffset(side Side, anchor gd.Float, offset gd.Float, push_opposite_anchor bool) { //gd:Control.set_anchor_and_offset
+func (self class) SetAnchorAndOffset(side Side, anchor float64, offset float64, push_opposite_anchor bool) { //gd:Control.set_anchor_and_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	callframe.Arg(frame, anchor)
@@ -1947,7 +1950,7 @@ func (self class) SetAnchorAndOffset(side Side, anchor gd.Float, offset gd.Float
 Sets [member offset_left] and [member offset_top] at the same time. Equivalent of changing [member position].
 */
 //go:nosplit
-func (self class) SetBegin(position gd.Vector2) { //gd:Control.set_begin
+func (self class) SetBegin(position Vector2.XY) { //gd:Control.set_begin
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -1959,7 +1962,7 @@ func (self class) SetBegin(position gd.Vector2) { //gd:Control.set_begin
 Sets [member offset_right] and [member offset_bottom] at the same time.
 */
 //go:nosplit
-func (self class) SetEnd(position gd.Vector2) { //gd:Control.set_end
+func (self class) SetEnd(position Vector2.XY) { //gd:Control.set_end
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -1972,7 +1975,7 @@ Sets the [member position] to given [param position].
 If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
 */
 //go:nosplit
-func (self class) SetPosition(position gd.Vector2, keep_offsets bool) { //gd:Control.set_position
+func (self class) SetPosition(position Vector2.XY, keep_offsets bool) { //gd:Control.set_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, keep_offsets)
@@ -1986,7 +1989,7 @@ Sets the size (see [member size]).
 If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
 */
 //go:nosplit
-func (self class) SetSize(size gd.Vector2, keep_offsets bool) { //gd:Control.set_size
+func (self class) SetSize(size Vector2.XY, keep_offsets bool) { //gd:Control.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, keep_offsets)
@@ -2007,7 +2010,7 @@ func (self class) ResetSize() { //gd:Control.reset_size
 }
 
 //go:nosplit
-func (self class) SetCustomMinimumSize(size gd.Vector2) { //gd:Control.set_custom_minimum_size
+func (self class) SetCustomMinimumSize(size Vector2.XY) { //gd:Control.set_custom_minimum_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -2020,7 +2023,7 @@ Sets the [member global_position] to given [param position].
 If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
 */
 //go:nosplit
-func (self class) SetGlobalPosition(position gd.Vector2, keep_offsets bool) { //gd:Control.set_global_position
+func (self class) SetGlobalPosition(position Vector2.XY, keep_offsets bool) { //gd:Control.set_global_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, keep_offsets)
@@ -2030,7 +2033,7 @@ func (self class) SetGlobalPosition(position gd.Vector2, keep_offsets bool) { //
 }
 
 //go:nosplit
-func (self class) SetRotation(radians gd.Float) { //gd:Control.set_rotation
+func (self class) SetRotation(radians float64) { //gd:Control.set_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, radians)
 	var r_ret = callframe.Nil
@@ -2039,7 +2042,7 @@ func (self class) SetRotation(radians gd.Float) { //gd:Control.set_rotation
 }
 
 //go:nosplit
-func (self class) SetRotationDegrees(degrees gd.Float) { //gd:Control.set_rotation_degrees
+func (self class) SetRotationDegrees(degrees float64) { //gd:Control.set_rotation_degrees
 	var frame = callframe.New()
 	callframe.Arg(frame, degrees)
 	var r_ret = callframe.Nil
@@ -2048,7 +2051,7 @@ func (self class) SetRotationDegrees(degrees gd.Float) { //gd:Control.set_rotati
 }
 
 //go:nosplit
-func (self class) SetScale(scale gd.Vector2) { //gd:Control.set_scale
+func (self class) SetScale(scale Vector2.XY) { //gd:Control.set_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -2057,7 +2060,7 @@ func (self class) SetScale(scale gd.Vector2) { //gd:Control.set_scale
 }
 
 //go:nosplit
-func (self class) SetPivotOffset(pivot_offset gd.Vector2) { //gd:Control.set_pivot_offset
+func (self class) SetPivotOffset(pivot_offset Vector2.XY) { //gd:Control.set_pivot_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, pivot_offset)
 	var r_ret = callframe.Nil
@@ -2069,9 +2072,9 @@ func (self class) SetPivotOffset(pivot_offset gd.Vector2) { //gd:Control.set_piv
 Returns [member offset_left] and [member offset_top]. See also [member position].
 */
 //go:nosplit
-func (self class) GetBegin() gd.Vector2 { //gd:Control.get_begin
+func (self class) GetBegin() Vector2.XY { //gd:Control.get_begin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2082,9 +2085,9 @@ func (self class) GetBegin() gd.Vector2 { //gd:Control.get_begin
 Returns [member offset_right] and [member offset_bottom].
 */
 //go:nosplit
-func (self class) GetEnd() gd.Vector2 { //gd:Control.get_end
+func (self class) GetEnd() Vector2.XY { //gd:Control.get_end
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_end, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2092,9 +2095,9 @@ func (self class) GetEnd() gd.Vector2 { //gd:Control.get_end
 }
 
 //go:nosplit
-func (self class) GetPosition() gd.Vector2 { //gd:Control.get_position
+func (self class) GetPosition() Vector2.XY { //gd:Control.get_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2102,9 +2105,9 @@ func (self class) GetPosition() gd.Vector2 { //gd:Control.get_position
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector2 { //gd:Control.get_size
+func (self class) GetSize() Vector2.XY { //gd:Control.get_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2112,9 +2115,9 @@ func (self class) GetSize() gd.Vector2 { //gd:Control.get_size
 }
 
 //go:nosplit
-func (self class) GetRotation() gd.Float { //gd:Control.get_rotation
+func (self class) GetRotation() float64 { //gd:Control.get_rotation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2122,9 +2125,9 @@ func (self class) GetRotation() gd.Float { //gd:Control.get_rotation
 }
 
 //go:nosplit
-func (self class) GetRotationDegrees() gd.Float { //gd:Control.get_rotation_degrees
+func (self class) GetRotationDegrees() float64 { //gd:Control.get_rotation_degrees
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2132,9 +2135,9 @@ func (self class) GetRotationDegrees() gd.Float { //gd:Control.get_rotation_degr
 }
 
 //go:nosplit
-func (self class) GetScale() gd.Vector2 { //gd:Control.get_scale
+func (self class) GetScale() Vector2.XY { //gd:Control.get_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2142,9 +2145,9 @@ func (self class) GetScale() gd.Vector2 { //gd:Control.get_scale
 }
 
 //go:nosplit
-func (self class) GetPivotOffset() gd.Vector2 { //gd:Control.get_pivot_offset
+func (self class) GetPivotOffset() Vector2.XY { //gd:Control.get_pivot_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_pivot_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2152,9 +2155,9 @@ func (self class) GetPivotOffset() gd.Vector2 { //gd:Control.get_pivot_offset
 }
 
 //go:nosplit
-func (self class) GetCustomMinimumSize() gd.Vector2 { //gd:Control.get_custom_minimum_size
+func (self class) GetCustomMinimumSize() Vector2.XY { //gd:Control.get_custom_minimum_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_custom_minimum_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2165,9 +2168,9 @@ func (self class) GetCustomMinimumSize() gd.Vector2 { //gd:Control.get_custom_mi
 Returns the width/height occupied in the parent control.
 */
 //go:nosplit
-func (self class) GetParentAreaSize() gd.Vector2 { //gd:Control.get_parent_area_size
+func (self class) GetParentAreaSize() Vector2.XY { //gd:Control.get_parent_area_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_parent_area_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2175,9 +2178,9 @@ func (self class) GetParentAreaSize() gd.Vector2 { //gd:Control.get_parent_area_
 }
 
 //go:nosplit
-func (self class) GetGlobalPosition() gd.Vector2 { //gd:Control.get_global_position
+func (self class) GetGlobalPosition() Vector2.XY { //gd:Control.get_global_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_global_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2195,9 +2198,9 @@ popup_menu.popup()
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetScreenPosition() gd.Vector2 { //gd:Control.get_screen_position
+func (self class) GetScreenPosition() Vector2.XY { //gd:Control.get_screen_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_screen_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2210,9 +2213,9 @@ Returns the position and size of the control in the coordinate system of the con
 [b]Note:[/b] Setting [member Viewport.gui_snap_controls_to_pixels] to [code]true[/code] can lead to rounding inaccuracies between the displayed control and the returned [Rect2].
 */
 //go:nosplit
-func (self class) GetRect() gd.Rect2 { //gd:Control.get_rect
+func (self class) GetRect() Rect2.PositionSize { //gd:Control.get_rect
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2225,9 +2228,9 @@ Returns the position and size of the control relative to the containing canvas. 
 [b]Note:[/b] Setting [member Viewport.gui_snap_controls_to_pixels] to [code]true[/code] can lead to rounding inaccuracies between the displayed control and the returned [Rect2].
 */
 //go:nosplit
-func (self class) GetGlobalRect() gd.Rect2 { //gd:Control.get_global_rect
+func (self class) GetGlobalRect() Rect2.PositionSize { //gd:Control.get_global_rect
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_global_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2350,7 +2353,7 @@ func (self class) GetHSizeFlags() gdclass.ControlSizeFlags { //gd:Control.get_h_
 }
 
 //go:nosplit
-func (self class) SetStretchRatio(ratio gd.Float) { //gd:Control.set_stretch_ratio
+func (self class) SetStretchRatio(ratio float64) { //gd:Control.set_stretch_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -2359,9 +2362,9 @@ func (self class) SetStretchRatio(ratio gd.Float) { //gd:Control.set_stretch_rat
 }
 
 //go:nosplit
-func (self class) GetStretchRatio() gd.Float { //gd:Control.get_stretch_ratio
+func (self class) GetStretchRatio() float64 { //gd:Control.get_stretch_ratio
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_stretch_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2519,7 +2522,7 @@ Creates a local override for a theme font size with the specified [param name]. 
 See also [method get_theme_font_size].
 */
 //go:nosplit
-func (self class) AddThemeFontSizeOverride(name String.Name, font_size gd.Int) { //gd:Control.add_theme_font_size_override
+func (self class) AddThemeFontSizeOverride(name String.Name, font_size int64) { //gd:Control.add_theme_font_size_override
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, font_size)
@@ -2552,7 +2555,7 @@ GetNode<Label>("MyLabel").AddThemeColorOverride("font_color", GetThemeColor("fon
 [/codeblocks]
 */
 //go:nosplit
-func (self class) AddThemeColorOverride(name String.Name, color gd.Color) { //gd:Control.add_theme_color_override
+func (self class) AddThemeColorOverride(name String.Name, color Color.RGBA) { //gd:Control.add_theme_color_override
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, color)
@@ -2566,7 +2569,7 @@ Creates a local override for a theme constant with the specified [param name]. L
 See also [method get_theme_constant].
 */
 //go:nosplit
-func (self class) AddThemeConstantOverride(name String.Name, constant gd.Int) { //gd:Control.add_theme_constant_override
+func (self class) AddThemeConstantOverride(name String.Name, constant int64) { //gd:Control.add_theme_constant_override
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, constant)
@@ -2700,11 +2703,11 @@ Returns a font size from the first matching [Theme] in the tree if that [Theme] 
 See [method get_theme_color] for details.
 */
 //go:nosplit
-func (self class) GetThemeFontSize(name String.Name, theme_type String.Name) gd.Int { //gd:Control.get_theme_font_size
+func (self class) GetThemeFontSize(name String.Name, theme_type String.Name) int64 { //gd:Control.get_theme_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2734,11 +2737,11 @@ public override void _Ready()
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetThemeColor(name String.Name, theme_type String.Name) gd.Color { //gd:Control.get_theme_color
+func (self class) GetThemeColor(name String.Name, theme_type String.Name) Color.RGBA { //gd:Control.get_theme_color
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2750,11 +2753,11 @@ Returns a constant from the first matching [Theme] in the tree if that [Theme] h
 See [method get_theme_color] for details.
 */
 //go:nosplit
-func (self class) GetThemeConstant(name String.Name, theme_type String.Name) gd.Int { //gd:Control.get_theme_constant
+func (self class) GetThemeConstant(name String.Name, theme_type String.Name) int64 { //gd:Control.get_theme_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2952,9 +2955,9 @@ Returns the default base scale value from the first matching [Theme] in the tree
 See [method get_theme_color] for details.
 */
 //go:nosplit
-func (self class) GetThemeDefaultBaseScale() gd.Float { //gd:Control.get_theme_default_base_scale
+func (self class) GetThemeDefaultBaseScale() float64 { //gd:Control.get_theme_default_base_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_default_base_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2980,9 +2983,9 @@ Returns the default font size value from the first matching [Theme] in the tree 
 See [method get_theme_color] for details.
 */
 //go:nosplit
-func (self class) GetThemeDefaultFontSize() gd.Int { //gd:Control.get_theme_default_font_size
+func (self class) GetThemeDefaultFontSize() int64 { //gd:Control.get_theme_default_font_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_default_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3065,7 +3068,7 @@ This method can be overridden to customize its behavior. See [method _get_toolti
 [b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
 */
 //go:nosplit
-func (self class) GetTooltip(at_position gd.Vector2) String.Readable { //gd:Control.get_tooltip
+func (self class) GetTooltip(at_position Vector2.XY) String.Readable { //gd:Control.get_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, at_position)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -3098,7 +3101,7 @@ func (self class) GetDefaultCursorShape() gdclass.ControlCursorShape { //gd:Cont
 Returns the mouse cursor shape the control displays on mouse hover. See [enum CursorShape].
 */
 //go:nosplit
-func (self class) GetCursorShape(position gd.Vector2) gdclass.ControlCursorShape { //gd:Control.get_cursor_shape
+func (self class) GetCursorShape(position Vector2.XY) gdclass.ControlCursorShape { //gd:Control.get_cursor_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gdclass.ControlCursorShape](frame)
@@ -3179,9 +3182,9 @@ Forces drag and bypasses [method _get_drag_data] and [method set_drag_preview] b
 The methods [method _can_drop_data] and [method _drop_data] must be implemented on controls that want to receive drop data.
 */
 //go:nosplit
-func (self class) ForceDrag(data gd.Variant, preview [1]gdclass.Control) { //gd:Control.force_drag
+func (self class) ForceDrag(data variant.Any, preview [1]gdclass.Control) { //gd:Control.force_drag
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(data)))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(preview[0].AsObject()[0]))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_force_drag, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3342,7 +3345,7 @@ Moves the mouse cursor to [param position], relative to [member position] of thi
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 */
 //go:nosplit
-func (self class) WarpMouse(position gd.Vector2) { //gd:Control.warp_mouse
+func (self class) WarpMouse(position Vector2.XY) { //gd:Control.warp_mouse
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil

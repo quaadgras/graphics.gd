@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Vector3"
-import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Projection"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -132,7 +135,7 @@ Triggers a haptic pulse on a device associated with this interface.
 [param delay_sec] is a delay in seconds before the pulse is given.
 */
 func (self Instance) TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) { //gd:XRInterface.trigger_haptic_pulse
-	class(self).TriggerHapticPulse(String.New(action_name), String.Name(String.New(tracker_name)), gd.Float(frequency), gd.Float(amplitude), gd.Float(duration_sec), gd.Float(delay_sec))
+	class(self).TriggerHapticPulse(String.New(action_name), String.Name(String.New(tracker_name)), float64(frequency), float64(amplitude), float64(duration_sec), float64(delay_sec))
 }
 
 /*
@@ -191,14 +194,14 @@ Returns the transform for a view/eye.
 [param cam_transform] is the transform that maps device coordinates to scene coordinates, typically the [member Node3D.global_transform] of the current XROrigin3D.
 */
 func (self Instance) GetTransformForView(view int, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin { //gd:XRInterface.get_transform_for_view
-	return Transform3D.BasisOrigin(class(self).GetTransformForView(gd.Int(view), gd.Transform3D(cam_transform)))
+	return Transform3D.BasisOrigin(class(self).GetTransformForView(int64(view), Transform3D.BasisOrigin(cam_transform)))
 }
 
 /*
 Returns the projection matrix for a view/eye.
 */
 func (self Instance) GetProjectionForView(view int, aspect Float.X, near Float.X, far Float.X) Projection.XYZW { //gd:XRInterface.get_projection_for_view
-	return Projection.XYZW(class(self).GetProjectionForView(gd.Int(view), gd.Float(aspect), gd.Float(near), gd.Float(far)))
+	return Projection.XYZW(class(self).GetProjectionForView(int64(view), float64(aspect), float64(near), float64(far)))
 }
 
 /*
@@ -276,9 +279,9 @@ func (self class) GetName() String.Name { //gd:XRInterface.get_name
 Returns a combination of [enum Capabilities] flags providing information about the capabilities of this interface.
 */
 //go:nosplit
-func (self class) GetCapabilities() gd.Int { //gd:XRInterface.get_capabilities
+func (self class) GetCapabilities() int64 { //gd:XRInterface.get_capabilities
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_capabilities, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -376,9 +379,9 @@ func (self class) GetTrackingStatus() gdclass.XRInterfaceTrackingStatus { //gd:X
 Returns the resolution at which we should render our intermediate results before things like lens distortion are applied by the VR platform.
 */
 //go:nosplit
-func (self class) GetRenderTargetSize() gd.Vector2 { //gd:XRInterface.get_render_target_size
+func (self class) GetRenderTargetSize() Vector2.XY { //gd:XRInterface.get_render_target_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_render_target_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -389,9 +392,9 @@ func (self class) GetRenderTargetSize() gd.Vector2 { //gd:XRInterface.get_render
 Returns the number of views that need to be rendered for this device. 1 for Monoscopic, 2 for Stereoscopic.
 */
 //go:nosplit
-func (self class) GetViewCount() gd.Int { //gd:XRInterface.get_view_count
+func (self class) GetViewCount() int64 { //gd:XRInterface.get_view_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_view_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -408,7 +411,7 @@ Triggers a haptic pulse on a device associated with this interface.
 [param delay_sec] is a delay in seconds before the pulse is given.
 */
 //go:nosplit
-func (self class) TriggerHapticPulse(action_name String.Readable, tracker_name String.Name, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float) { //gd:XRInterface.trigger_haptic_pulse
+func (self class) TriggerHapticPulse(action_name String.Readable, tracker_name String.Name, frequency float64, amplitude float64, duration_sec float64, delay_sec float64) { //gd:XRInterface.trigger_haptic_pulse
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(action_name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(tracker_name)))
@@ -496,9 +499,9 @@ func (self class) SetAnchorDetectionIsEnabled(enable bool) { //gd:XRInterface.se
 If this is an AR interface that requires displaying a camera feed as the background, this method returns the feed ID in the [CameraServer] for this interface.
 */
 //go:nosplit
-func (self class) GetCameraFeedId() gd.Int { //gd:XRInterface.get_camera_feed_id
+func (self class) GetCameraFeedId() int64 { //gd:XRInterface.get_camera_feed_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_camera_feed_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -562,11 +565,11 @@ Returns the transform for a view/eye.
 [param cam_transform] is the transform that maps device coordinates to scene coordinates, typically the [member Node3D.global_transform] of the current XROrigin3D.
 */
 //go:nosplit
-func (self class) GetTransformForView(view gd.Int, cam_transform gd.Transform3D) gd.Transform3D { //gd:XRInterface.get_transform_for_view
+func (self class) GetTransformForView(view int64, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin { //gd:XRInterface.get_transform_for_view
 	var frame = callframe.New()
 	callframe.Arg(frame, view)
 	callframe.Arg(frame, cam_transform)
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_transform_for_view, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -577,13 +580,13 @@ func (self class) GetTransformForView(view gd.Int, cam_transform gd.Transform3D)
 Returns the projection matrix for a view/eye.
 */
 //go:nosplit
-func (self class) GetProjectionForView(view gd.Int, aspect gd.Float, near gd.Float, far gd.Float) gd.Projection { //gd:XRInterface.get_projection_for_view
+func (self class) GetProjectionForView(view int64, aspect float64, near float64, far float64) Projection.XYZW { //gd:XRInterface.get_projection_for_view
 	var frame = callframe.New()
 	callframe.Arg(frame, view)
 	callframe.Arg(frame, aspect)
 	callframe.Arg(frame, near)
 	callframe.Arg(frame, far)
-	var r_ret = callframe.Ret[gd.Projection](frame)
+	var r_ret = callframe.Ret[Projection.XYZW](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_projection_for_view, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

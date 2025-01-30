@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -62,7 +66,7 @@ Connects to a host. This needs to be done before any requests are sent.
 If no [param port] is specified (or [code]-1[/code] is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional [param tls_options] parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) ConnectToHost(host string) error { //gd:HTTPClient.connect_to_host
-	return error(gd.ToError(class(self).ConnectToHost(String.New(host), gd.Int(-1), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(class(self).ConnectToHost(String.New(host), int64(-1), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*
@@ -186,7 +190,7 @@ Sets the proxy server for HTTP requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Instance) SetHttpProxy(host string, port int) { //gd:HTTPClient.set_http_proxy
-	class(self).SetHttpProxy(String.New(host), gd.Int(port))
+	class(self).SetHttpProxy(String.New(host), int64(port))
 }
 
 /*
@@ -194,7 +198,7 @@ Sets the proxy server for HTTPS requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Instance) SetHttpsProxy(host string, port int) { //gd:HTTPClient.set_https_proxy
-	class(self).SetHttpsProxy(String.New(host), gd.Int(port))
+	class(self).SetHttpsProxy(String.New(host), int64(port))
 }
 
 /*
@@ -276,7 +280,7 @@ func (self Instance) ReadChunkSize() int {
 }
 
 func (self Instance) SetReadChunkSize(value int) {
-	class(self).SetReadChunkSize(gd.Int(value))
+	class(self).SetReadChunkSize(int64(value))
 }
 
 /*
@@ -284,14 +288,14 @@ Connects to a host. This needs to be done before any requests are sent.
 If no [param port] is specified (or [code]-1[/code] is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional [param tls_options] parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 //go:nosplit
-func (self class) ConnectToHost(host String.Readable, port gd.Int, tls_options [1]gdclass.TLSOptions) gd.Error { //gd:HTTPClient.connect_to_host
+func (self class) ConnectToHost(host String.Readable, port int64, tls_options [1]gdclass.TLSOptions) Error.Code { //gd:HTTPClient.connect_to_host
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(tls_options[0])[0])
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -322,15 +326,15 @@ Headers are HTTP request headers. For available HTTP methods, see [enum Method].
 Sends the body data raw, as a byte array and does not encode it in any way.
 */
 //go:nosplit
-func (self class) RequestRaw(method gdclass.HTTPClientMethod, url String.Readable, headers Packed.Strings, body Packed.Bytes) gd.Error { //gd:HTTPClient.request_raw
+func (self class) RequestRaw(method gdclass.HTTPClientMethod, url String.Readable, headers Packed.Strings, body Packed.Bytes) Error.Code { //gd:HTTPClient.request_raw
 	var frame = callframe.New()
 	callframe.Arg(frame, method)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
 	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(headers)))
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](body))))
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_request_raw, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -357,15 +361,15 @@ var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", heade
 [b]Note:[/b] The [param body] parameter is ignored if [param method] is [constant HTTPClient.METHOD_GET]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [method String.uri_encode] for an example.
 */
 //go:nosplit
-func (self class) Request(method gdclass.HTTPClientMethod, url String.Readable, headers Packed.Strings, body String.Readable) gd.Error { //gd:HTTPClient.request
+func (self class) Request(method gdclass.HTTPClientMethod, url String.Readable, headers Packed.Strings, body String.Readable) Error.Code { //gd:HTTPClient.request
 	var frame = callframe.New()
 	callframe.Arg(frame, method)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
 	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(headers)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(body)))
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_request, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -411,9 +415,9 @@ func (self class) IsResponseChunked() bool { //gd:HTTPClient.is_response_chunked
 Returns the response's HTTP status code.
 */
 //go:nosplit
-func (self class) GetResponseCode() gd.Int { //gd:HTTPClient.get_response_code
+func (self class) GetResponseCode() int64 { //gd:HTTPClient.get_response_code
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -459,9 +463,9 @@ Returns the response's body length.
 [b]Note:[/b] This function always returns [code]-1[/code] on the Web platform due to browsers limitations.
 */
 //go:nosplit
-func (self class) GetResponseBodyLength() gd.Int { //gd:HTTPClient.get_response_body_length
+func (self class) GetResponseBodyLength() int64 { //gd:HTTPClient.get_response_body_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_body_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -482,7 +486,7 @@ func (self class) ReadResponseBodyChunk() Packed.Bytes { //gd:HTTPClient.read_re
 }
 
 //go:nosplit
-func (self class) SetReadChunkSize(bytes gd.Int) { //gd:HTTPClient.set_read_chunk_size
+func (self class) SetReadChunkSize(bytes int64) { //gd:HTTPClient.set_read_chunk_size
 	var frame = callframe.New()
 	callframe.Arg(frame, bytes)
 	var r_ret = callframe.Nil
@@ -491,9 +495,9 @@ func (self class) SetReadChunkSize(bytes gd.Int) { //gd:HTTPClient.set_read_chun
 }
 
 //go:nosplit
-func (self class) GetReadChunkSize() gd.Int { //gd:HTTPClient.get_read_chunk_size
+func (self class) GetReadChunkSize() int64 { //gd:HTTPClient.get_read_chunk_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_read_chunk_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -536,11 +540,11 @@ func (self class) GetStatus() gdclass.HTTPClientStatus { //gd:HTTPClient.get_sta
 This needs to be called in order to have any request processed. Check results with [method get_status].
 */
 //go:nosplit
-func (self class) Poll() gd.Error { //gd:HTTPClient.poll
+func (self class) Poll() Error.Code { //gd:HTTPClient.poll
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -550,7 +554,7 @@ Sets the proxy server for HTTP requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
-func (self class) SetHttpProxy(host String.Readable, port gd.Int) { //gd:HTTPClient.set_http_proxy
+func (self class) SetHttpProxy(host String.Readable, port int64) { //gd:HTTPClient.set_http_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, port)
@@ -564,7 +568,7 @@ Sets the proxy server for HTTPS requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
-func (self class) SetHttpsProxy(host String.Readable, port gd.Int) { //gd:HTTPClient.set_https_proxy
+func (self class) SetHttpsProxy(host String.Readable, port int64) { //gd:HTTPClient.set_https_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, port)
@@ -817,120 +821,4 @@ const (
 	ResponseNotExtended ResponseCode = 510
 	/*HTTP status code [code]511 Network Authentication Required[/code]. The client needs to authenticate to gain network access.*/
 	ResponseNetworkAuthRequired ResponseCode = 511
-)
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
 )

@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
@@ -35,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -98,7 +102,7 @@ func (self Instance) Transform() Transform3D.BasisOrigin {
 }
 
 func (self Instance) SetTransform(value Transform3D.BasisOrigin) {
-	class(self).SetTransform(gd.Transform3D(value))
+	class(self).SetTransform(Transform3D.BasisOrigin(value))
 }
 
 func (self Instance) LinearVelocity() Vector3.XYZ {
@@ -106,7 +110,7 @@ func (self Instance) LinearVelocity() Vector3.XYZ {
 }
 
 func (self Instance) SetLinearVelocity(value Vector3.XYZ) {
-	class(self).SetLinearVelocity(gd.Vector3(value))
+	class(self).SetLinearVelocity(Vector3.XYZ(value))
 }
 
 func (self Instance) AngularVelocity() Vector3.XYZ {
@@ -114,7 +118,7 @@ func (self Instance) AngularVelocity() Vector3.XYZ {
 }
 
 func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
-	class(self).SetAngularVelocity(gd.Vector3(value))
+	class(self).SetAngularVelocity(Vector3.XYZ(value))
 }
 
 func (self Instance) TrackingConfidence() gdclass.XRPoseTrackingConfidence {
@@ -164,7 +168,7 @@ func (self class) GetName() String.Name { //gd:XRPose.get_name
 }
 
 //go:nosplit
-func (self class) SetTransform(transform gd.Transform3D) { //gd:XRPose.set_transform
+func (self class) SetTransform(transform Transform3D.BasisOrigin) { //gd:XRPose.set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
 	var r_ret = callframe.Nil
@@ -173,9 +177,9 @@ func (self class) SetTransform(transform gd.Transform3D) { //gd:XRPose.set_trans
 }
 
 //go:nosplit
-func (self class) GetTransform() gd.Transform3D { //gd:XRPose.get_transform
+func (self class) GetTransform() Transform3D.BasisOrigin { //gd:XRPose.get_transform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -186,9 +190,9 @@ func (self class) GetTransform() gd.Transform3D { //gd:XRPose.get_transform
 Returns the [member transform] with world scale and our reference frame applied. This is the transform used to position [XRNode3D] objects.
 */
 //go:nosplit
-func (self class) GetAdjustedTransform() gd.Transform3D { //gd:XRPose.get_adjusted_transform
+func (self class) GetAdjustedTransform() Transform3D.BasisOrigin { //gd:XRPose.get_adjusted_transform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_adjusted_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -196,7 +200,7 @@ func (self class) GetAdjustedTransform() gd.Transform3D { //gd:XRPose.get_adjust
 }
 
 //go:nosplit
-func (self class) SetLinearVelocity(velocity gd.Vector3) { //gd:XRPose.set_linear_velocity
+func (self class) SetLinearVelocity(velocity Vector3.XYZ) { //gd:XRPose.set_linear_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
 	var r_ret = callframe.Nil
@@ -205,9 +209,9 @@ func (self class) SetLinearVelocity(velocity gd.Vector3) { //gd:XRPose.set_linea
 }
 
 //go:nosplit
-func (self class) GetLinearVelocity() gd.Vector3 { //gd:XRPose.get_linear_velocity
+func (self class) GetLinearVelocity() Vector3.XYZ { //gd:XRPose.get_linear_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -215,7 +219,7 @@ func (self class) GetLinearVelocity() gd.Vector3 { //gd:XRPose.get_linear_veloci
 }
 
 //go:nosplit
-func (self class) SetAngularVelocity(velocity gd.Vector3) { //gd:XRPose.set_angular_velocity
+func (self class) SetAngularVelocity(velocity Vector3.XYZ) { //gd:XRPose.set_angular_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
 	var r_ret = callframe.Nil
@@ -224,9 +228,9 @@ func (self class) SetAngularVelocity(velocity gd.Vector3) { //gd:XRPose.set_angu
 }
 
 //go:nosplit
-func (self class) GetAngularVelocity() gd.Vector3 { //gd:XRPose.get_angular_velocity
+func (self class) GetAngularVelocity() Vector3.XYZ { //gd:XRPose.get_angular_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

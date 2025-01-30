@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/SkeletonModifier3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/SkeletonModifier3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
-import "graphics.gd/variant/Float"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -140,7 +143,7 @@ func (self Instance) Target() Transform3D.BasisOrigin {
 }
 
 func (self Instance) SetTarget(value Transform3D.BasisOrigin) {
-	class(self).SetTargetTransform(gd.Transform3D(value))
+	class(self).SetTargetTransform(Transform3D.BasisOrigin(value))
 }
 
 func (self Instance) OverrideTipBasis() bool {
@@ -164,7 +167,7 @@ func (self Instance) Magnet() Vector3.XYZ {
 }
 
 func (self Instance) SetMagnet(value Vector3.XYZ) {
-	class(self).SetMagnetPosition(gd.Vector3(value))
+	class(self).SetMagnetPosition(Vector3.XYZ(value))
 }
 
 func (self Instance) TargetNode() string {
@@ -180,7 +183,7 @@ func (self Instance) MinDistance() Float.X {
 }
 
 func (self Instance) SetMinDistance(value Float.X) {
-	class(self).SetMinDistance(gd.Float(value))
+	class(self).SetMinDistance(float64(value))
 }
 
 func (self Instance) MaxIterations() int {
@@ -188,7 +191,7 @@ func (self Instance) MaxIterations() int {
 }
 
 func (self Instance) SetMaxIterations(value int) {
-	class(self).SetMaxIterations(gd.Int(value))
+	class(self).SetMaxIterations(int64(value))
 }
 
 func (self Instance) Interpolation() Float.X {
@@ -196,7 +199,7 @@ func (self Instance) Interpolation() Float.X {
 }
 
 func (self Instance) SetInterpolation(value Float.X) {
-	class(self).SetInterpolation(gd.Float(value))
+	class(self).SetInterpolation(float64(value))
 }
 
 //go:nosplit
@@ -238,7 +241,7 @@ func (self class) GetTipBone() String.Name { //gd:SkeletonIK3D.get_tip_bone
 }
 
 //go:nosplit
-func (self class) SetTargetTransform(target gd.Transform3D) { //gd:SkeletonIK3D.set_target_transform
+func (self class) SetTargetTransform(target Transform3D.BasisOrigin) { //gd:SkeletonIK3D.set_target_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, target)
 	var r_ret = callframe.Nil
@@ -247,9 +250,9 @@ func (self class) SetTargetTransform(target gd.Transform3D) { //gd:SkeletonIK3D.
 }
 
 //go:nosplit
-func (self class) GetTargetTransform() gd.Transform3D { //gd:SkeletonIK3D.get_target_transform
+func (self class) GetTargetTransform() Transform3D.BasisOrigin { //gd:SkeletonIK3D.get_target_transform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_get_target_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -314,7 +317,7 @@ func (self class) IsUsingMagnet() bool { //gd:SkeletonIK3D.is_using_magnet
 }
 
 //go:nosplit
-func (self class) SetMagnetPosition(local_position gd.Vector3) { //gd:SkeletonIK3D.set_magnet_position
+func (self class) SetMagnetPosition(local_position Vector3.XYZ) { //gd:SkeletonIK3D.set_magnet_position
 	var frame = callframe.New()
 	callframe.Arg(frame, local_position)
 	var r_ret = callframe.Nil
@@ -323,9 +326,9 @@ func (self class) SetMagnetPosition(local_position gd.Vector3) { //gd:SkeletonIK
 }
 
 //go:nosplit
-func (self class) GetMagnetPosition() gd.Vector3 { //gd:SkeletonIK3D.get_magnet_position
+func (self class) GetMagnetPosition() Vector3.XYZ { //gd:SkeletonIK3D.get_magnet_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_get_magnet_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -359,7 +362,7 @@ func (self class) IsRunning() bool { //gd:SkeletonIK3D.is_running
 }
 
 //go:nosplit
-func (self class) SetMinDistance(min_distance gd.Float) { //gd:SkeletonIK3D.set_min_distance
+func (self class) SetMinDistance(min_distance float64) { //gd:SkeletonIK3D.set_min_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, min_distance)
 	var r_ret = callframe.Nil
@@ -368,9 +371,9 @@ func (self class) SetMinDistance(min_distance gd.Float) { //gd:SkeletonIK3D.set_
 }
 
 //go:nosplit
-func (self class) GetMinDistance() gd.Float { //gd:SkeletonIK3D.get_min_distance
+func (self class) GetMinDistance() float64 { //gd:SkeletonIK3D.get_min_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_get_min_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -378,7 +381,7 @@ func (self class) GetMinDistance() gd.Float { //gd:SkeletonIK3D.get_min_distance
 }
 
 //go:nosplit
-func (self class) SetMaxIterations(iterations gd.Int) { //gd:SkeletonIK3D.set_max_iterations
+func (self class) SetMaxIterations(iterations int64) { //gd:SkeletonIK3D.set_max_iterations
 	var frame = callframe.New()
 	callframe.Arg(frame, iterations)
 	var r_ret = callframe.Nil
@@ -387,9 +390,9 @@ func (self class) SetMaxIterations(iterations gd.Int) { //gd:SkeletonIK3D.set_ma
 }
 
 //go:nosplit
-func (self class) GetMaxIterations() gd.Int { //gd:SkeletonIK3D.get_max_iterations
+func (self class) GetMaxIterations() int64 { //gd:SkeletonIK3D.get_max_iterations
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_get_max_iterations, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -420,7 +423,7 @@ func (self class) Stop() { //gd:SkeletonIK3D.stop
 }
 
 //go:nosplit
-func (self class) SetInterpolation(interpolation gd.Float) { //gd:SkeletonIK3D.set_interpolation
+func (self class) SetInterpolation(interpolation float64) { //gd:SkeletonIK3D.set_interpolation
 	var frame = callframe.New()
 	callframe.Arg(frame, interpolation)
 	var r_ret = callframe.Nil
@@ -429,9 +432,9 @@ func (self class) SetInterpolation(interpolation gd.Float) { //gd:SkeletonIK3D.s
 }
 
 //go:nosplit
-func (self class) GetInterpolation() gd.Float { //gd:SkeletonIK3D.get_interpolation
+func (self class) GetInterpolation() float64 { //gd:SkeletonIK3D.get_interpolation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_get_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

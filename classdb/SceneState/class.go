@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -61,14 +65,14 @@ func (self Instance) GetNodeCount() int { //gd:SceneState.get_node_count
 Returns the type of the node at [param idx].
 */
 func (self Instance) GetNodeType(idx int) string { //gd:SceneState.get_node_type
-	return string(class(self).GetNodeType(gd.Int(idx)).String())
+	return string(class(self).GetNodeType(int64(idx)).String())
 }
 
 /*
 Returns the name of the node at [param idx].
 */
 func (self Instance) GetNodeName(idx int) string { //gd:SceneState.get_node_name
-	return string(class(self).GetNodeName(gd.Int(idx)).String())
+	return string(class(self).GetNodeName(int64(idx)).String())
 }
 
 /*
@@ -76,49 +80,49 @@ Returns the path to the node at [param idx].
 If [param for_parent] is [code]true[/code], returns the path of the [param idx] node's parent instead.
 */
 func (self Instance) GetNodePath(idx int) string { //gd:SceneState.get_node_path
-	return string(class(self).GetNodePath(gd.Int(idx), false).String())
+	return string(class(self).GetNodePath(int64(idx), false).String())
 }
 
 /*
 Returns the path to the owner of the node at [param idx], relative to the root node.
 */
 func (self Instance) GetNodeOwnerPath(idx int) string { //gd:SceneState.get_node_owner_path
-	return string(class(self).GetNodeOwnerPath(gd.Int(idx)).String())
+	return string(class(self).GetNodeOwnerPath(int64(idx)).String())
 }
 
 /*
 Returns [code]true[/code] if the node at [param idx] is an [InstancePlaceholder].
 */
 func (self Instance) IsNodeInstancePlaceholder(idx int) bool { //gd:SceneState.is_node_instance_placeholder
-	return bool(class(self).IsNodeInstancePlaceholder(gd.Int(idx)))
+	return bool(class(self).IsNodeInstancePlaceholder(int64(idx)))
 }
 
 /*
 Returns the path to the represented scene file if the node at [param idx] is an [InstancePlaceholder].
 */
 func (self Instance) GetNodeInstancePlaceholder(idx int) string { //gd:SceneState.get_node_instance_placeholder
-	return string(class(self).GetNodeInstancePlaceholder(gd.Int(idx)).String())
+	return string(class(self).GetNodeInstancePlaceholder(int64(idx)).String())
 }
 
 /*
 Returns a [PackedScene] for the node at [param idx] (i.e. the whole branch starting at this node, with its child nodes and resources), or [code]null[/code] if the node is not an instance.
 */
 func (self Instance) GetNodeInstance(idx int) [1]gdclass.PackedScene { //gd:SceneState.get_node_instance
-	return [1]gdclass.PackedScene(class(self).GetNodeInstance(gd.Int(idx)))
+	return [1]gdclass.PackedScene(class(self).GetNodeInstance(int64(idx)))
 }
 
 /*
 Returns the list of group names associated with the node at [param idx].
 */
 func (self Instance) GetNodeGroups(idx int) []string { //gd:SceneState.get_node_groups
-	return []string(class(self).GetNodeGroups(gd.Int(idx)).Strings())
+	return []string(class(self).GetNodeGroups(int64(idx)).Strings())
 }
 
 /*
 Returns the node's index, which is its position relative to its siblings. This is only relevant and saved in scenes for cases where new nodes are added to an instantiated or inherited scene among siblings from the base scene. Despite the name, this index is not related to the [param idx] argument used here and in other methods.
 */
 func (self Instance) GetNodeIndex(idx int) int { //gd:SceneState.get_node_index
-	return int(int(class(self).GetNodeIndex(gd.Int(idx))))
+	return int(int(class(self).GetNodeIndex(int64(idx))))
 }
 
 /*
@@ -126,21 +130,21 @@ Returns the number of exported or overridden properties for the node at [param i
 The [code]prop_idx[/code] argument used to query node property data in other [code]get_node_property_*[/code] methods in the interval [code][0, get_node_property_count() - 1][/code].
 */
 func (self Instance) GetNodePropertyCount(idx int) int { //gd:SceneState.get_node_property_count
-	return int(int(class(self).GetNodePropertyCount(gd.Int(idx))))
+	return int(int(class(self).GetNodePropertyCount(int64(idx))))
 }
 
 /*
 Returns the name of the property at [param prop_idx] for the node at [param idx].
 */
 func (self Instance) GetNodePropertyName(idx int, prop_idx int) string { //gd:SceneState.get_node_property_name
-	return string(class(self).GetNodePropertyName(gd.Int(idx), gd.Int(prop_idx)).String())
+	return string(class(self).GetNodePropertyName(int64(idx), int64(prop_idx)).String())
 }
 
 /*
 Returns the value of the property at [param prop_idx] for the node at [param idx].
 */
 func (self Instance) GetNodePropertyValue(idx int, prop_idx int) any { //gd:SceneState.get_node_property_value
-	return any(class(self).GetNodePropertyValue(gd.Int(idx), gd.Int(prop_idx)).Interface())
+	return any(class(self).GetNodePropertyValue(int64(idx), int64(prop_idx)).Interface())
 }
 
 /*
@@ -155,49 +159,49 @@ func (self Instance) GetConnectionCount() int { //gd:SceneState.get_connection_c
 Returns the path to the node that owns the signal at [param idx], relative to the root node.
 */
 func (self Instance) GetConnectionSource(idx int) string { //gd:SceneState.get_connection_source
-	return string(class(self).GetConnectionSource(gd.Int(idx)).String())
+	return string(class(self).GetConnectionSource(int64(idx)).String())
 }
 
 /*
 Returns the name of the signal at [param idx].
 */
 func (self Instance) GetConnectionSignal(idx int) string { //gd:SceneState.get_connection_signal
-	return string(class(self).GetConnectionSignal(gd.Int(idx)).String())
+	return string(class(self).GetConnectionSignal(int64(idx)).String())
 }
 
 /*
 Returns the path to the node that owns the method connected to the signal at [param idx], relative to the root node.
 */
 func (self Instance) GetConnectionTarget(idx int) string { //gd:SceneState.get_connection_target
-	return string(class(self).GetConnectionTarget(gd.Int(idx)).String())
+	return string(class(self).GetConnectionTarget(int64(idx)).String())
 }
 
 /*
 Returns the method connected to the signal at [param idx].
 */
 func (self Instance) GetConnectionMethod(idx int) string { //gd:SceneState.get_connection_method
-	return string(class(self).GetConnectionMethod(gd.Int(idx)).String())
+	return string(class(self).GetConnectionMethod(int64(idx)).String())
 }
 
 /*
 Returns the connection flags for the signal at [param idx]. See [enum Object.ConnectFlags] constants.
 */
 func (self Instance) GetConnectionFlags(idx int) int { //gd:SceneState.get_connection_flags
-	return int(int(class(self).GetConnectionFlags(gd.Int(idx))))
+	return int(int(class(self).GetConnectionFlags(int64(idx))))
 }
 
 /*
 Returns the list of bound parameters for the signal at [param idx].
 */
 func (self Instance) GetConnectionBinds(idx int) []any { //gd:SceneState.get_connection_binds
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetConnectionBinds(gd.Int(idx)))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetConnectionBinds(int64(idx)))))
 }
 
 /*
 Returns the number of unbound parameters for the signal at [param idx].
 */
 func (self Instance) GetConnectionUnbinds(idx int) int { //gd:SceneState.get_connection_unbinds
-	return int(int(class(self).GetConnectionUnbinds(gd.Int(idx))))
+	return int(int(class(self).GetConnectionUnbinds(int64(idx))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -224,9 +228,9 @@ Returns the number of nodes in the scene.
 The [code]idx[/code] argument used to query node data in other [code]get_node_*[/code] methods in the interval [code][0, get_node_count() - 1][/code].
 */
 //go:nosplit
-func (self class) GetNodeCount() gd.Int { //gd:SceneState.get_node_count
+func (self class) GetNodeCount() int64 { //gd:SceneState.get_node_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -237,7 +241,7 @@ func (self class) GetNodeCount() gd.Int { //gd:SceneState.get_node_count
 Returns the type of the node at [param idx].
 */
 //go:nosplit
-func (self class) GetNodeType(idx gd.Int) String.Name { //gd:SceneState.get_node_type
+func (self class) GetNodeType(idx int64) String.Name { //gd:SceneState.get_node_type
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -251,7 +255,7 @@ func (self class) GetNodeType(idx gd.Int) String.Name { //gd:SceneState.get_node
 Returns the name of the node at [param idx].
 */
 //go:nosplit
-func (self class) GetNodeName(idx gd.Int) String.Name { //gd:SceneState.get_node_name
+func (self class) GetNodeName(idx int64) String.Name { //gd:SceneState.get_node_name
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -266,7 +270,7 @@ Returns the path to the node at [param idx].
 If [param for_parent] is [code]true[/code], returns the path of the [param idx] node's parent instead.
 */
 //go:nosplit
-func (self class) GetNodePath(idx gd.Int, for_parent bool) Path.ToNode { //gd:SceneState.get_node_path
+func (self class) GetNodePath(idx int64, for_parent bool) Path.ToNode { //gd:SceneState.get_node_path
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, for_parent)
@@ -281,7 +285,7 @@ func (self class) GetNodePath(idx gd.Int, for_parent bool) Path.ToNode { //gd:Sc
 Returns the path to the owner of the node at [param idx], relative to the root node.
 */
 //go:nosplit
-func (self class) GetNodeOwnerPath(idx gd.Int) Path.ToNode { //gd:SceneState.get_node_owner_path
+func (self class) GetNodeOwnerPath(idx int64) Path.ToNode { //gd:SceneState.get_node_owner_path
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -295,7 +299,7 @@ func (self class) GetNodeOwnerPath(idx gd.Int) Path.ToNode { //gd:SceneState.get
 Returns [code]true[/code] if the node at [param idx] is an [InstancePlaceholder].
 */
 //go:nosplit
-func (self class) IsNodeInstancePlaceholder(idx gd.Int) bool { //gd:SceneState.is_node_instance_placeholder
+func (self class) IsNodeInstancePlaceholder(idx int64) bool { //gd:SceneState.is_node_instance_placeholder
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -309,7 +313,7 @@ func (self class) IsNodeInstancePlaceholder(idx gd.Int) bool { //gd:SceneState.i
 Returns the path to the represented scene file if the node at [param idx] is an [InstancePlaceholder].
 */
 //go:nosplit
-func (self class) GetNodeInstancePlaceholder(idx gd.Int) String.Readable { //gd:SceneState.get_node_instance_placeholder
+func (self class) GetNodeInstancePlaceholder(idx int64) String.Readable { //gd:SceneState.get_node_instance_placeholder
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -323,7 +327,7 @@ func (self class) GetNodeInstancePlaceholder(idx gd.Int) String.Readable { //gd:
 Returns a [PackedScene] for the node at [param idx] (i.e. the whole branch starting at this node, with its child nodes and resources), or [code]null[/code] if the node is not an instance.
 */
 //go:nosplit
-func (self class) GetNodeInstance(idx gd.Int) [1]gdclass.PackedScene { //gd:SceneState.get_node_instance
+func (self class) GetNodeInstance(idx int64) [1]gdclass.PackedScene { //gd:SceneState.get_node_instance
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -337,7 +341,7 @@ func (self class) GetNodeInstance(idx gd.Int) [1]gdclass.PackedScene { //gd:Scen
 Returns the list of group names associated with the node at [param idx].
 */
 //go:nosplit
-func (self class) GetNodeGroups(idx gd.Int) Packed.Strings { //gd:SceneState.get_node_groups
+func (self class) GetNodeGroups(idx int64) Packed.Strings { //gd:SceneState.get_node_groups
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -351,10 +355,10 @@ func (self class) GetNodeGroups(idx gd.Int) Packed.Strings { //gd:SceneState.get
 Returns the node's index, which is its position relative to its siblings. This is only relevant and saved in scenes for cases where new nodes are added to an instantiated or inherited scene among siblings from the base scene. Despite the name, this index is not related to the [param idx] argument used here and in other methods.
 */
 //go:nosplit
-func (self class) GetNodeIndex(idx gd.Int) gd.Int { //gd:SceneState.get_node_index
+func (self class) GetNodeIndex(idx int64) int64 { //gd:SceneState.get_node_index
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -366,10 +370,10 @@ Returns the number of exported or overridden properties for the node at [param i
 The [code]prop_idx[/code] argument used to query node property data in other [code]get_node_property_*[/code] methods in the interval [code][0, get_node_property_count() - 1][/code].
 */
 //go:nosplit
-func (self class) GetNodePropertyCount(idx gd.Int) gd.Int { //gd:SceneState.get_node_property_count
+func (self class) GetNodePropertyCount(idx int64) int64 { //gd:SceneState.get_node_property_count
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_property_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -380,7 +384,7 @@ func (self class) GetNodePropertyCount(idx gd.Int) gd.Int { //gd:SceneState.get_
 Returns the name of the property at [param prop_idx] for the node at [param idx].
 */
 //go:nosplit
-func (self class) GetNodePropertyName(idx gd.Int, prop_idx gd.Int) String.Name { //gd:SceneState.get_node_property_name
+func (self class) GetNodePropertyName(idx int64, prop_idx int64) String.Name { //gd:SceneState.get_node_property_name
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, prop_idx)
@@ -395,13 +399,13 @@ func (self class) GetNodePropertyName(idx gd.Int, prop_idx gd.Int) String.Name {
 Returns the value of the property at [param prop_idx] for the node at [param idx].
 */
 //go:nosplit
-func (self class) GetNodePropertyValue(idx gd.Int, prop_idx gd.Int) gd.Variant { //gd:SceneState.get_node_property_value
+func (self class) GetNodePropertyValue(idx int64, prop_idx int64) variant.Any { //gd:SceneState.get_node_property_value
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, prop_idx)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_property_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -411,9 +415,9 @@ Returns the number of signal connections in the scene.
 The [code]idx[/code] argument used to query connection metadata in other [code]get_connection_*[/code] methods in the interval [code][0, get_connection_count() - 1][/code].
 */
 //go:nosplit
-func (self class) GetConnectionCount() gd.Int { //gd:SceneState.get_connection_count
+func (self class) GetConnectionCount() int64 { //gd:SceneState.get_connection_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -424,7 +428,7 @@ func (self class) GetConnectionCount() gd.Int { //gd:SceneState.get_connection_c
 Returns the path to the node that owns the signal at [param idx], relative to the root node.
 */
 //go:nosplit
-func (self class) GetConnectionSource(idx gd.Int) Path.ToNode { //gd:SceneState.get_connection_source
+func (self class) GetConnectionSource(idx int64) Path.ToNode { //gd:SceneState.get_connection_source
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -438,7 +442,7 @@ func (self class) GetConnectionSource(idx gd.Int) Path.ToNode { //gd:SceneState.
 Returns the name of the signal at [param idx].
 */
 //go:nosplit
-func (self class) GetConnectionSignal(idx gd.Int) String.Name { //gd:SceneState.get_connection_signal
+func (self class) GetConnectionSignal(idx int64) String.Name { //gd:SceneState.get_connection_signal
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -452,7 +456,7 @@ func (self class) GetConnectionSignal(idx gd.Int) String.Name { //gd:SceneState.
 Returns the path to the node that owns the method connected to the signal at [param idx], relative to the root node.
 */
 //go:nosplit
-func (self class) GetConnectionTarget(idx gd.Int) Path.ToNode { //gd:SceneState.get_connection_target
+func (self class) GetConnectionTarget(idx int64) Path.ToNode { //gd:SceneState.get_connection_target
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -466,7 +470,7 @@ func (self class) GetConnectionTarget(idx gd.Int) Path.ToNode { //gd:SceneState.
 Returns the method connected to the signal at [param idx].
 */
 //go:nosplit
-func (self class) GetConnectionMethod(idx gd.Int) String.Name { //gd:SceneState.get_connection_method
+func (self class) GetConnectionMethod(idx int64) String.Name { //gd:SceneState.get_connection_method
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -480,10 +484,10 @@ func (self class) GetConnectionMethod(idx gd.Int) String.Name { //gd:SceneState.
 Returns the connection flags for the signal at [param idx]. See [enum Object.ConnectFlags] constants.
 */
 //go:nosplit
-func (self class) GetConnectionFlags(idx gd.Int) gd.Int { //gd:SceneState.get_connection_flags
+func (self class) GetConnectionFlags(idx int64) int64 { //gd:SceneState.get_connection_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -494,7 +498,7 @@ func (self class) GetConnectionFlags(idx gd.Int) gd.Int { //gd:SceneState.get_co
 Returns the list of bound parameters for the signal at [param idx].
 */
 //go:nosplit
-func (self class) GetConnectionBinds(idx gd.Int) Array.Any { //gd:SceneState.get_connection_binds
+func (self class) GetConnectionBinds(idx int64) Array.Any { //gd:SceneState.get_connection_binds
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -508,10 +512,10 @@ func (self class) GetConnectionBinds(idx gd.Int) Array.Any { //gd:SceneState.get
 Returns the number of unbound parameters for the signal at [param idx].
 */
 //go:nosplit
-func (self class) GetConnectionUnbinds(idx gd.Int) gd.Int { //gd:SceneState.get_connection_unbinds
+func (self class) GetConnectionUnbinds(idx int64) int64 { //gd:SceneState.get_connection_unbinds
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_unbinds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

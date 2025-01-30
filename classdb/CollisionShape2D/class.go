@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Float"
+import "graphics.gd/classdb/Node2D"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -100,7 +103,7 @@ func (self Instance) OneWayCollisionMargin() Float.X {
 }
 
 func (self Instance) SetOneWayCollisionMargin(value Float.X) {
-	class(self).SetOneWayCollisionMargin(gd.Float(value))
+	class(self).SetOneWayCollisionMargin(float64(value))
 }
 
 func (self Instance) DebugColor() Color.RGBA {
@@ -108,7 +111,7 @@ func (self Instance) DebugColor() Color.RGBA {
 }
 
 func (self Instance) SetDebugColor(value Color.RGBA) {
-	class(self).SetDebugColor(gd.Color(value))
+	class(self).SetDebugColor(Color.RGBA(value))
 }
 
 //go:nosplit
@@ -169,7 +172,7 @@ func (self class) IsOneWayCollisionEnabled() bool { //gd:CollisionShape2D.is_one
 }
 
 //go:nosplit
-func (self class) SetOneWayCollisionMargin(margin gd.Float) { //gd:CollisionShape2D.set_one_way_collision_margin
+func (self class) SetOneWayCollisionMargin(margin float64) { //gd:CollisionShape2D.set_one_way_collision_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -178,9 +181,9 @@ func (self class) SetOneWayCollisionMargin(margin gd.Float) { //gd:CollisionShap
 }
 
 //go:nosplit
-func (self class) GetOneWayCollisionMargin() gd.Float { //gd:CollisionShape2D.get_one_way_collision_margin
+func (self class) GetOneWayCollisionMargin() float64 { //gd:CollisionShape2D.get_one_way_collision_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionShape2D.Bind_get_one_way_collision_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -188,7 +191,7 @@ func (self class) GetOneWayCollisionMargin() gd.Float { //gd:CollisionShape2D.ge
 }
 
 //go:nosplit
-func (self class) SetDebugColor(color gd.Color) { //gd:CollisionShape2D.set_debug_color
+func (self class) SetDebugColor(color Color.RGBA) { //gd:CollisionShape2D.set_debug_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -197,9 +200,9 @@ func (self class) SetDebugColor(color gd.Color) { //gd:CollisionShape2D.set_debu
 }
 
 //go:nosplit
-func (self class) GetDebugColor() gd.Color { //gd:CollisionShape2D.get_debug_color
+func (self class) GetDebugColor() Color.RGBA { //gd:CollisionShape2D.get_debug_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionShape2D.Bind_get_debug_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

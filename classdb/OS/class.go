@@ -10,15 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,7 +58,7 @@ Generates a [PackedByteArray] of cryptographically secure random bytes with give
 */
 func GetEntropy(size int) []byte { //gd:OS.get_entropy
 	once.Do(singleton)
-	return []byte(class(self).GetEntropy(gd.Int(size)).Bytes())
+	return []byte(class(self).GetEntropy(int64(size)).Bytes())
 }
 
 /*
@@ -143,7 +147,7 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 */
 func GetSystemFontPath(font_name string) string { //gd:OS.get_system_font_path
 	once.Do(singleton)
-	return string(class(self).GetSystemFontPath(String.New(font_name), gd.Int(400), gd.Int(100), false).String())
+	return string(class(self).GetSystemFontPath(String.New(font_name), int64(400), int64(100), false).String())
 }
 
 /*
@@ -155,7 +159,7 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 */
 func GetSystemFontPathForText(font_name string, text string) []string { //gd:OS.get_system_font_path_for_text
 	once.Do(singleton)
-	return []string(class(self).GetSystemFontPathForText(String.New(font_name), String.New(text), String.New(""), String.New(""), gd.Int(400), gd.Int(100), false).Strings())
+	return []string(class(self).GetSystemFontPathForText(String.New(font_name), String.New(text), String.New(""), String.New(""), int64(400), int64(100), false).Strings())
 }
 
 /*
@@ -274,7 +278,7 @@ Kill (terminate) the process identified by the given process ID ([param pid]), s
 */
 func Kill(pid int) error { //gd:OS.kill
 	once.Do(singleton)
-	return error(gd.ToError(class(self).Kill(gd.Int(pid))))
+	return error(gd.ToError(class(self).Kill(int64(pid))))
 }
 
 /*
@@ -308,7 +312,7 @@ Returns [code]true[/code] if the child process ID ([param pid]) is still running
 */
 func IsProcessRunning(pid int) bool { //gd:OS.is_process_running
 	once.Do(singleton)
-	return bool(class(self).IsProcessRunning(gd.Int(pid)))
+	return bool(class(self).IsProcessRunning(int64(pid)))
 }
 
 /*
@@ -319,7 +323,7 @@ Returns [code]-1[/code] if the [param pid] is not a PID of a spawned child proce
 */
 func GetProcessExitCode(pid int) int { //gd:OS.get_process_exit_code
 	once.Do(singleton)
-	return int(int(class(self).GetProcessExitCode(gd.Int(pid))))
+	return int(int(class(self).GetProcessExitCode(int64(pid))))
 }
 
 /*
@@ -565,7 +569,7 @@ Delays execution of the current thread by [param usec] microseconds. [param usec
 */
 func DelayUsec(usec int) { //gd:OS.delay_usec
 	once.Do(singleton)
-	class(self).DelayUsec(gd.Int(usec))
+	class(self).DelayUsec(int64(usec))
 }
 
 /*
@@ -575,7 +579,7 @@ Delays execution of the current thread by [param msec] milliseconds. [param msec
 */
 func DelayMsec(msec int) { //gd:OS.delay_msec
 	once.Do(singleton)
-	class(self).DelayMsec(gd.Int(msec))
+	class(self).DelayMsec(int64(msec))
 }
 
 /*
@@ -792,7 +796,7 @@ GD.Print(OS.IsKeycodeUnicode((long)Key.Escape)); // Prints false
 */
 func IsKeycodeUnicode(code int) bool { //gd:OS.is_keycode_unicode
 	once.Do(singleton)
-	return bool(class(self).IsKeycodeUnicode(gd.Int(code)))
+	return bool(class(self).IsKeycodeUnicode(int64(code)))
 }
 
 /*
@@ -930,7 +934,7 @@ func LowProcessorUsageModeSleepUsec() int {
 }
 
 func SetLowProcessorUsageModeSleepUsec(value int) {
-	class(self).SetLowProcessorUsageModeSleepUsec(gd.Int(value))
+	class(self).SetLowProcessorUsageModeSleepUsec(int64(value))
 }
 
 func DeltaSmoothing() bool {
@@ -946,7 +950,7 @@ Generates a [PackedByteArray] of cryptographically secure random bytes with give
 [b]Note:[/b] Generating large quantities of bytes using this method can result in locking and entropy of lower quality on most platforms. Using [method Crypto.generate_random_bytes] is preferred in most cases.
 */
 //go:nosplit
-func (self class) GetEntropy(size gd.Int) Packed.Bytes { //gd:OS.get_entropy
+func (self class) GetEntropy(size int64) Packed.Bytes { //gd:OS.get_entropy
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -1053,7 +1057,7 @@ func (self class) IsInLowProcessorUsageMode() bool { //gd:OS.is_in_low_processor
 }
 
 //go:nosplit
-func (self class) SetLowProcessorUsageModeSleepUsec(usec gd.Int) { //gd:OS.set_low_processor_usage_mode_sleep_usec
+func (self class) SetLowProcessorUsageModeSleepUsec(usec int64) { //gd:OS.set_low_processor_usage_mode_sleep_usec
 	var frame = callframe.New()
 	callframe.Arg(frame, usec)
 	var r_ret = callframe.Nil
@@ -1062,9 +1066,9 @@ func (self class) SetLowProcessorUsageModeSleepUsec(usec gd.Int) { //gd:OS.set_l
 }
 
 //go:nosplit
-func (self class) GetLowProcessorUsageModeSleepUsec() gd.Int { //gd:OS.get_low_processor_usage_mode_sleep_usec
+func (self class) GetLowProcessorUsageModeSleepUsec() int64 { //gd:OS.get_low_processor_usage_mode_sleep_usec
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_low_processor_usage_mode_sleep_usec, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1094,9 +1098,9 @@ func (self class) IsDeltaSmoothingEnabled() bool { //gd:OS.is_delta_smoothing_en
 Returns the number of [i]logical[/i] CPU cores available on the host machine. On CPUs with HyperThreading enabled, this number will be greater than the number of [i]physical[/i] CPU cores.
 */
 //go:nosplit
-func (self class) GetProcessorCount() gd.Int { //gd:OS.get_processor_count
+func (self class) GetProcessorCount() int64 { //gd:OS.get_processor_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_processor_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1138,7 +1142,7 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) GetSystemFontPath(font_name String.Readable, weight gd.Int, stretch gd.Int, italic bool) String.Readable { //gd:OS.get_system_font_path
+func (self class) GetSystemFontPath(font_name String.Readable, weight int64, stretch int64, italic bool) String.Readable { //gd:OS.get_system_font_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(font_name)))
 	callframe.Arg(frame, weight)
@@ -1159,7 +1163,7 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) GetSystemFontPathForText(font_name String.Readable, text String.Readable, locale String.Readable, script String.Readable, weight gd.Int, stretch gd.Int, italic bool) Packed.Strings { //gd:OS.get_system_font_path_for_text
+func (self class) GetSystemFontPathForText(font_name String.Readable, text String.Readable, locale String.Readable, script String.Readable, weight int64, stretch int64, italic bool) Packed.Strings { //gd:OS.get_system_font_path_for_text
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(font_name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
@@ -1240,14 +1244,14 @@ OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
 [b]Note:[/b] On Android, system commands such as [code]dumpsys[/code] can only be run on a rooted device.
 */
 //go:nosplit
-func (self class) Execute(path String.Readable, arguments Packed.Strings, output Array.Any, read_stderr bool, open_console bool) gd.Int { //gd:OS.execute
+func (self class) Execute(path String.Readable, arguments Packed.Strings, output Array.Any, read_stderr bool, open_console bool) int64 { //gd:OS.execute
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(output)))
 	callframe.Arg(frame, read_stderr)
 	callframe.Arg(frame, open_console)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_execute, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1296,12 +1300,12 @@ See [method execute] if you wish to run an external command and retrieve the res
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
 //go:nosplit
-func (self class) CreateProcess(path String.Readable, arguments Packed.Strings, open_console bool) gd.Int { //gd:OS.create_process
+func (self class) CreateProcess(path String.Readable, arguments Packed.Strings, open_console bool) int64 { //gd:OS.create_process
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
 	callframe.Arg(frame, open_console)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_create_process, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1315,10 +1319,10 @@ See [method create_process] if you wish to run a different process.
 [b]Note:[/b] This method is implemented on Android, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) CreateInstance(arguments Packed.Strings) gd.Int { //gd:OS.create_instance
+func (self class) CreateInstance(arguments Packed.Strings) int64 { //gd:OS.create_instance
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_create_instance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1331,12 +1335,12 @@ Kill (terminate) the process identified by the given process ID ([param pid]), s
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) Kill(pid gd.Int) gd.Error { //gd:OS.kill
+func (self class) Kill(pid int64) Error.Code { //gd:OS.kill
 	var frame = callframe.New()
 	callframe.Arg(frame, pid)
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_kill, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1351,12 +1355,12 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) ShellOpen(uri String.Readable) gd.Error { //gd:OS.shell_open
+func (self class) ShellOpen(uri String.Readable) Error.Code { //gd:OS.shell_open
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(uri)))
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_shell_open, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1368,13 +1372,13 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 [b]Note:[/b] This method is currently only implemented on Windows and macOS. On other platforms, it will fallback to [method shell_open] with a directory path of [param file_or_dir_path] prefixed with [code]file://[/code].
 */
 //go:nosplit
-func (self class) ShellShowInFileManager(file_or_dir_path String.Readable, open_folder bool) gd.Error { //gd:OS.shell_show_in_file_manager
+func (self class) ShellShowInFileManager(file_or_dir_path String.Readable, open_folder bool) Error.Code { //gd:OS.shell_show_in_file_manager
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file_or_dir_path)))
 	callframe.Arg(frame, open_folder)
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_shell_show_in_file_manager, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1384,7 +1388,7 @@ Returns [code]true[/code] if the child process ID ([param pid]) is still running
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS, and Windows.
 */
 //go:nosplit
-func (self class) IsProcessRunning(pid gd.Int) bool { //gd:OS.is_process_running
+func (self class) IsProcessRunning(pid int64) bool { //gd:OS.is_process_running
 	var frame = callframe.New()
 	callframe.Arg(frame, pid)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1401,10 +1405,10 @@ Returns [code]-1[/code] if the [param pid] is not a PID of a spawned child proce
 [b]Note:[/b] This method is implemented on Android, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) GetProcessExitCode(pid gd.Int) gd.Int { //gd:OS.get_process_exit_code
+func (self class) GetProcessExitCode(pid int64) int64 { //gd:OS.get_process_exit_code
 	var frame = callframe.New()
 	callframe.Arg(frame, pid)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_process_exit_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1416,9 +1420,9 @@ Returns the number used by the host machine to uniquely identify this applicatio
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS, and Windows.
 */
 //go:nosplit
-func (self class) GetProcessId() gd.Int { //gd:OS.get_process_id
+func (self class) GetProcessId() int64 { //gd:OS.get_process_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_process_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1716,7 +1720,7 @@ Delays execution of the current thread by [param usec] microseconds. [param usec
 [b]Note:[/b] When [method delay_usec] is called on the main thread, it will freeze the project and will prevent it from redrawing and registering input until the delay has passed. When using [method delay_usec] as part of an [EditorPlugin] or [EditorScript], it will freeze the editor but won't freeze the project if it is currently running (since the project is an independent child process).
 */
 //go:nosplit
-func (self class) DelayUsec(usec gd.Int) { //gd:OS.delay_usec
+func (self class) DelayUsec(usec int64) { //gd:OS.delay_usec
 	var frame = callframe.New()
 	callframe.Arg(frame, usec)
 	var r_ret = callframe.Nil
@@ -1730,7 +1734,7 @@ Delays execution of the current thread by [param msec] milliseconds. [param msec
 [b]Note:[/b] When [method delay_msec] is called on the main thread, it will freeze the project and will prevent it from redrawing and registering input until the delay has passed. When using [method delay_msec] as part of an [EditorPlugin] or [EditorScript], it will freeze the editor but won't freeze the project if it is currently running (since the project is an independent child process).
 */
 //go:nosplit
-func (self class) DelayMsec(msec gd.Int) { //gd:OS.delay_msec
+func (self class) DelayMsec(msec int64) { //gd:OS.delay_msec
 	var frame = callframe.New()
 	callframe.Arg(frame, msec)
 	var r_ret = callframe.Nil
@@ -1830,9 +1834,9 @@ func (self class) IsDebugBuild() bool { //gd:OS.is_debug_build
 Returns the amount of static memory being used by the program in bytes. Only works in debug builds.
 */
 //go:nosplit
-func (self class) GetStaticMemoryUsage() gd.Int { //gd:OS.get_static_memory_usage
+func (self class) GetStaticMemoryUsage() int64 { //gd:OS.get_static_memory_usage
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_static_memory_usage, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1843,9 +1847,9 @@ func (self class) GetStaticMemoryUsage() gd.Int { //gd:OS.get_static_memory_usag
 Returns the maximum amount of static memory used. Only works in debug builds.
 */
 //go:nosplit
-func (self class) GetStaticMemoryPeakUsage() gd.Int { //gd:OS.get_static_memory_peak_usage
+func (self class) GetStaticMemoryPeakUsage() int64 { //gd:OS.get_static_memory_peak_usage
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_static_memory_peak_usage, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1888,12 +1892,12 @@ OS.MoveToTrash(ProjectSettings.GlobalizePath(fileToRemove));
 [b]Note:[/b] If the user has disabled the recycle bin on their system, the file will be permanently deleted instead.
 */
 //go:nosplit
-func (self class) MoveToTrash(path String.Readable) gd.Error { //gd:OS.move_to_trash
+func (self class) MoveToTrash(path String.Readable) Error.Code { //gd:OS.move_to_trash
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_move_to_trash, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -2040,7 +2044,7 @@ GD.Print(OS.IsKeycodeUnicode((long)Key.Escape)); // Prints false
 [/codeblocks]
 */
 //go:nosplit
-func (self class) IsKeycodeUnicode(code gd.Int) bool { //gd:OS.is_keycode_unicode
+func (self class) IsKeycodeUnicode(code int64) bool { //gd:OS.is_keycode_unicode
 	var frame = callframe.New()
 	callframe.Arg(frame, code)
 	var r_ret = callframe.Ret[bool](frame)
@@ -2096,12 +2100,12 @@ func (self class) SetUseFileAccessSaveAndSwap(enabled bool) { //gd:OS.set_use_fi
 Assigns the given name to the current thread. Returns [constant ERR_UNAVAILABLE] if unavailable on the current platform.
 */
 //go:nosplit
-func (self class) SetThreadName(name String.Readable) gd.Error { //gd:OS.set_thread_name
+func (self class) SetThreadName(name String.Readable) Error.Code { //gd:OS.set_thread_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_thread_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -2111,9 +2115,9 @@ Returns the ID of the current thread. This can be used in logs to ease debugging
 [b]Note:[/b] Thread IDs are not deterministic and may be reused across application restarts.
 */
 //go:nosplit
-func (self class) GetThreadCallerId() gd.Int { //gd:OS.get_thread_caller_id
+func (self class) GetThreadCallerId() int64 { //gd:OS.get_thread_caller_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_thread_caller_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2125,9 +2129,9 @@ Returns the ID of the main thread. See [method get_thread_caller_id].
 [b]Note:[/b] Thread IDs are not deterministic and may be reused across application restarts.
 */
 //go:nosplit
-func (self class) GetMainThreadId() gd.Int { //gd:OS.get_main_thread_id
+func (self class) GetMainThreadId() int64 { //gd:OS.get_main_thread_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_main_thread_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2257,122 +2261,6 @@ const (
 	SystemDirPictures SystemDir = 6
 	/*Refers to the Ringtones directory path.*/
 	SystemDirRingtones SystemDir = 7
-)
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
 )
 
 type Key int
@@ -2766,14 +2654,14 @@ const (
 	KeySection Key = 167
 )
 
-type Pipe struct {
-	Stdio  [1]gdclass.FileAccess `gd:"stdio"`
-	Stderr [1]gdclass.FileAccess `gd:"stderr"`
-	PID    int                   `gd:"pid"`
-}
 type MemoryInfo struct {
 	Physical  int `gd:"physical"`
 	Free      int `gd:"free"`
 	Available int `gd:"available"`
 	Stack     int `gd:"stack"`
+}
+type Pipe struct {
+	Stdio  [1]gdclass.FileAccess `gd:"stdio"`
+	Stderr [1]gdclass.FileAccess `gd:"stderr"`
+	PID    int                   `gd:"pid"`
 }

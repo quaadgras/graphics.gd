@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -73,7 +77,7 @@ func (self Instance) Position() Vector2.XY {
 }
 
 func (self Instance) SetPosition(value Vector2.XY) {
-	class(self).SetPosition(gd.Vector2(value))
+	class(self).SetPosition(Vector2.XY(value))
 }
 
 func (self Instance) CanvasInstanceId() int {
@@ -81,7 +85,7 @@ func (self Instance) CanvasInstanceId() int {
 }
 
 func (self Instance) SetCanvasInstanceId(value int) {
-	class(self).SetCanvasInstanceId(gd.Int(value))
+	class(self).SetCanvasInstanceId(int64(value))
 }
 
 func (self Instance) CollisionMask() int {
@@ -89,7 +93,7 @@ func (self Instance) CollisionMask() int {
 }
 
 func (self Instance) SetCollisionMask(value int) {
-	class(self).SetCollisionMask(gd.Int(value))
+	class(self).SetCollisionMask(int64(value))
 }
 
 func (self Instance) Exclude() []RID.Any {
@@ -97,7 +101,7 @@ func (self Instance) Exclude() []RID.Any {
 }
 
 func (self Instance) SetExclude(value []RID.Any) {
-	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[gd.RID]](value))
+	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 
 func (self Instance) CollideWithBodies() bool {
@@ -117,7 +121,7 @@ func (self Instance) SetCollideWithAreas(value bool) {
 }
 
 //go:nosplit
-func (self class) SetPosition(position gd.Vector2) { //gd:PhysicsPointQueryParameters2D.set_position
+func (self class) SetPosition(position Vector2.XY) { //gd:PhysicsPointQueryParameters2D.set_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -126,9 +130,9 @@ func (self class) SetPosition(position gd.Vector2) { //gd:PhysicsPointQueryParam
 }
 
 //go:nosplit
-func (self class) GetPosition() gd.Vector2 { //gd:PhysicsPointQueryParameters2D.get_position
+func (self class) GetPosition() Vector2.XY { //gd:PhysicsPointQueryParameters2D.get_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsPointQueryParameters2D.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -136,7 +140,7 @@ func (self class) GetPosition() gd.Vector2 { //gd:PhysicsPointQueryParameters2D.
 }
 
 //go:nosplit
-func (self class) SetCanvasInstanceId(canvas_instance_id gd.Int) { //gd:PhysicsPointQueryParameters2D.set_canvas_instance_id
+func (self class) SetCanvasInstanceId(canvas_instance_id int64) { //gd:PhysicsPointQueryParameters2D.set_canvas_instance_id
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_instance_id)
 	var r_ret = callframe.Nil
@@ -145,9 +149,9 @@ func (self class) SetCanvasInstanceId(canvas_instance_id gd.Int) { //gd:PhysicsP
 }
 
 //go:nosplit
-func (self class) GetCanvasInstanceId() gd.Int { //gd:PhysicsPointQueryParameters2D.get_canvas_instance_id
+func (self class) GetCanvasInstanceId() int64 { //gd:PhysicsPointQueryParameters2D.get_canvas_instance_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsPointQueryParameters2D.Bind_get_canvas_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -155,7 +159,7 @@ func (self class) GetCanvasInstanceId() gd.Int { //gd:PhysicsPointQueryParameter
 }
 
 //go:nosplit
-func (self class) SetCollisionMask(collision_mask gd.Int) { //gd:PhysicsPointQueryParameters2D.set_collision_mask
+func (self class) SetCollisionMask(collision_mask int64) { //gd:PhysicsPointQueryParameters2D.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_mask)
 	var r_ret = callframe.Nil
@@ -164,9 +168,9 @@ func (self class) SetCollisionMask(collision_mask gd.Int) { //gd:PhysicsPointQue
 }
 
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int { //gd:PhysicsPointQueryParameters2D.get_collision_mask
+func (self class) GetCollisionMask() int64 { //gd:PhysicsPointQueryParameters2D.get_collision_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsPointQueryParameters2D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -174,7 +178,7 @@ func (self class) GetCollisionMask() gd.Int { //gd:PhysicsPointQueryParameters2D
 }
 
 //go:nosplit
-func (self class) SetExclude(exclude Array.Contains[gd.RID]) { //gd:PhysicsPointQueryParameters2D.set_exclude
+func (self class) SetExclude(exclude Array.Contains[RID.Any]) { //gd:PhysicsPointQueryParameters2D.set_exclude
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude)))
 	var r_ret = callframe.Nil
@@ -183,11 +187,11 @@ func (self class) SetExclude(exclude Array.Contains[gd.RID]) { //gd:PhysicsPoint
 }
 
 //go:nosplit
-func (self class) GetExclude() Array.Contains[gd.RID] { //gd:PhysicsPointQueryParameters2D.get_exclude
+func (self class) GetExclude() Array.Contains[RID.Any] { //gd:PhysicsPointQueryParameters2D.get_exclude
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsPointQueryParameters2D.Bind_get_exclude, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

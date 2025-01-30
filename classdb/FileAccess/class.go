@@ -9,16 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -154,7 +157,7 @@ func GetFileAsString(path string) string { //gd:FileAccess.get_file_as_string
 Resizes the file to a specified length. The file must be open in a mode that permits writing. If the file is extended, NUL characters are appended. If the file is truncated, all data from the end file to the original length of the file is lost.
 */
 func (self Instance) Resize(length int) error { //gd:FileAccess.resize
-	return error(gd.ToError(class(self).Resize(gd.Int(length))))
+	return error(gd.ToError(class(self).Resize(int64(length))))
 }
 
 /*
@@ -190,7 +193,7 @@ func (self Instance) IsOpen() bool { //gd:FileAccess.is_open
 Changes the file reading/writing cursor to the specified position (in bytes from the beginning of the file).
 */
 func (self Instance) SeekTo(position int) { //gd:FileAccess.seek
-	class(self).SeekTo(gd.Int(position))
+	class(self).SeekTo(int64(position))
 }
 
 /*
@@ -198,7 +201,7 @@ Changes the file reading/writing cursor to the specified position (in bytes from
 [b]Note:[/b] This is an offset, so you should use negative numbers or the cursor will be at the end of the file.
 */
 func (self Instance) SeekEnd() { //gd:FileAccess.seek_end
-	class(self).SeekEnd(gd.Int(0))
+	class(self).SeekEnd(int64(0))
 }
 
 /*
@@ -292,7 +295,7 @@ func (self Instance) GetReal() Float.X { //gd:FileAccess.get_real
 Returns next [param length] bytes of the file as a [PackedByteArray].
 */
 func (self Instance) GetBuffer(length int) []byte { //gd:FileAccess.get_buffer
-	return []byte(class(self).GetBuffer(gd.Int(length)).Bytes())
+	return []byte(class(self).GetBuffer(int64(length)).Bytes())
 }
 
 /*
@@ -364,7 +367,7 @@ Stores an integer as 8 bits in the file.
 To store a signed integer, use [method store_64], or convert it manually (see [method store_16] for an example).
 */
 func (self Instance) Store8(value int) { //gd:FileAccess.store_8
-	class(self).Store8(gd.Int(value))
+	class(self).Store8(int64(value))
 }
 
 /*
@@ -410,7 +413,7 @@ public override void _Ready()
 [/codeblocks]
 */
 func (self Instance) Store16(value int) { //gd:FileAccess.store_16
-	class(self).Store16(gd.Int(value))
+	class(self).Store16(int64(value))
 }
 
 /*
@@ -419,7 +422,7 @@ Stores an integer as 32 bits in the file.
 To store a signed integer, use [method store_64], or convert it manually (see [method store_16] for an example).
 */
 func (self Instance) Store32(value int) { //gd:FileAccess.store_32
-	class(self).Store32(gd.Int(value))
+	class(self).Store32(int64(value))
 }
 
 /*
@@ -427,28 +430,28 @@ Stores an integer as 64 bits in the file.
 [b]Note:[/b] The [param value] must lie in the interval [code][-2^63, 2^63 - 1][/code] (i.e. be a valid [int] value).
 */
 func (self Instance) Store64(value int) { //gd:FileAccess.store_64
-	class(self).Store64(gd.Int(value))
+	class(self).Store64(int64(value))
 }
 
 /*
 Stores a floating-point number as 32 bits in the file.
 */
 func (self Instance) StoreFloat(value Float.X) { //gd:FileAccess.store_float
-	class(self).StoreFloat(gd.Float(value))
+	class(self).StoreFloat(float64(value))
 }
 
 /*
 Stores a floating-point number as 64 bits in the file.
 */
 func (self Instance) StoreDouble(value Float.X) { //gd:FileAccess.store_double
-	class(self).StoreDouble(gd.Float(value))
+	class(self).StoreDouble(float64(value))
 }
 
 /*
 Stores a floating-point number in the file.
 */
 func (self Instance) StoreReal(value Float.X) { //gd:FileAccess.store_real
-	class(self).StoreReal(gd.Float(value))
+	class(self).StoreReal(float64(value))
 }
 
 /*
@@ -487,7 +490,7 @@ Internally, this uses the same encoding mechanism as the [method @GlobalScope.va
 [b]Note:[/b] Not all properties are included. Only properties that are configured with the [constant PROPERTY_USAGE_STORAGE] flag set will be serialized. You can add a new usage flag to a property by overriding the [method Object._get_property_list] method in your class. You can also check how property usage is configured by calling [method Object._get_property_list]. See [enum PropertyUsageFlags] for the possible usage flags.
 */
 func (self Instance) StoreVar(value any) { //gd:FileAccess.store_var
-	class(self).StoreVar(gd.NewVariant(value), false)
+	class(self).StoreVar(variant.New(value), false)
 }
 
 /*
@@ -686,11 +689,11 @@ func (self class) OpenCompressed(path String.Readable, mode_flags gdclass.FileAc
 Returns the result of the last [method open] call in the current thread.
 */
 //go:nosplit
-func (self class) GetOpenError() gd.Error { //gd:FileAccess.get_open_error
+func (self class) GetOpenError() Error.Code { //gd:FileAccess.get_open_error
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_open_error, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -729,12 +732,12 @@ func (self class) GetFileAsString(path String.Readable) String.Readable { //gd:F
 Resizes the file to a specified length. The file must be open in a mode that permits writing. If the file is extended, NUL characters are appended. If the file is truncated, all data from the end file to the original length of the file is lost.
 */
 //go:nosplit
-func (self class) Resize(length gd.Int) gd.Error { //gd:FileAccess.resize
+func (self class) Resize(length int64) Error.Code { //gd:FileAccess.resize
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_resize, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -794,7 +797,7 @@ func (self class) IsOpen() bool { //gd:FileAccess.is_open
 Changes the file reading/writing cursor to the specified position (in bytes from the beginning of the file).
 */
 //go:nosplit
-func (self class) SeekTo(position gd.Int) { //gd:FileAccess.seek
+func (self class) SeekTo(position int64) { //gd:FileAccess.seek
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -807,7 +810,7 @@ Changes the file reading/writing cursor to the specified position (in bytes from
 [b]Note:[/b] This is an offset, so you should use negative numbers or the cursor will be at the end of the file.
 */
 //go:nosplit
-func (self class) SeekEnd(position gd.Int) { //gd:FileAccess.seek_end
+func (self class) SeekEnd(position int64) { //gd:FileAccess.seek_end
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -819,9 +822,9 @@ func (self class) SeekEnd(position gd.Int) { //gd:FileAccess.seek_end
 Returns the file cursor's position.
 */
 //go:nosplit
-func (self class) GetPosition() gd.Int { //gd:FileAccess.get_position
+func (self class) GetPosition() int64 { //gd:FileAccess.get_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -832,9 +835,9 @@ func (self class) GetPosition() gd.Int { //gd:FileAccess.get_position
 Returns the size of the file in bytes.
 */
 //go:nosplit
-func (self class) GetLength() gd.Int { //gd:FileAccess.get_length
+func (self class) GetLength() int64 { //gd:FileAccess.get_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -871,9 +874,9 @@ func (self class) EofReached() bool { //gd:FileAccess.eof_reached
 Returns the next 8 bits from the file as an integer. See [method store_8] for details on what values can be stored and retrieved this way.
 */
 //go:nosplit
-func (self class) Get8() gd.Int { //gd:FileAccess.get_8
+func (self class) Get8() int64 { //gd:FileAccess.get_8
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_8, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -884,9 +887,9 @@ func (self class) Get8() gd.Int { //gd:FileAccess.get_8
 Returns the next 16 bits from the file as an integer. See [method store_16] for details on what values can be stored and retrieved this way.
 */
 //go:nosplit
-func (self class) Get16() gd.Int { //gd:FileAccess.get_16
+func (self class) Get16() int64 { //gd:FileAccess.get_16
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_16, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -897,9 +900,9 @@ func (self class) Get16() gd.Int { //gd:FileAccess.get_16
 Returns the next 32 bits from the file as an integer. See [method store_32] for details on what values can be stored and retrieved this way.
 */
 //go:nosplit
-func (self class) Get32() gd.Int { //gd:FileAccess.get_32
+func (self class) Get32() int64 { //gd:FileAccess.get_32
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_32, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -910,9 +913,9 @@ func (self class) Get32() gd.Int { //gd:FileAccess.get_32
 Returns the next 64 bits from the file as an integer. See [method store_64] for details on what values can be stored and retrieved this way.
 */
 //go:nosplit
-func (self class) Get64() gd.Int { //gd:FileAccess.get_64
+func (self class) Get64() int64 { //gd:FileAccess.get_64
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_64, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -923,9 +926,9 @@ func (self class) Get64() gd.Int { //gd:FileAccess.get_64
 Returns the next 32 bits from the file as a floating-point number.
 */
 //go:nosplit
-func (self class) GetFloat() gd.Float { //gd:FileAccess.get_float
+func (self class) GetFloat() float64 { //gd:FileAccess.get_float
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_float, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -936,9 +939,9 @@ func (self class) GetFloat() gd.Float { //gd:FileAccess.get_float
 Returns the next 64 bits from the file as a floating-point number.
 */
 //go:nosplit
-func (self class) GetDouble() gd.Float { //gd:FileAccess.get_double
+func (self class) GetDouble() float64 { //gd:FileAccess.get_double
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_double, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -949,9 +952,9 @@ func (self class) GetDouble() gd.Float { //gd:FileAccess.get_double
 Returns the next bits from the file as a floating-point number.
 */
 //go:nosplit
-func (self class) GetReal() gd.Float { //gd:FileAccess.get_real
+func (self class) GetReal() float64 { //gd:FileAccess.get_real
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_real, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -962,7 +965,7 @@ func (self class) GetReal() gd.Float { //gd:FileAccess.get_real
 Returns next [param length] bytes of the file as a [PackedByteArray].
 */
 //go:nosplit
-func (self class) GetBuffer(length gd.Int) Packed.Bytes { //gd:FileAccess.get_buffer
+func (self class) GetBuffer(length int64) Packed.Bytes { //gd:FileAccess.get_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -1074,11 +1077,11 @@ func (self class) SetBigEndian(big_endian bool) { //gd:FileAccess.set_big_endian
 Returns the last error that happened when trying to perform operations. Compare with the [code]ERR_FILE_*[/code] constants from [enum Error].
 */
 //go:nosplit
-func (self class) GetError() gd.Error { //gd:FileAccess.get_error
+func (self class) GetError() Error.Code { //gd:FileAccess.get_error
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_error, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1089,12 +1092,12 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 //go:nosplit
-func (self class) GetVar(allow_objects bool) gd.Variant { //gd:FileAccess.get_var
+func (self class) GetVar(allow_objects bool) variant.Any { //gd:FileAccess.get_var
 	var frame = callframe.New()
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_var, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1105,7 +1108,7 @@ Stores an integer as 8 bits in the file.
 To store a signed integer, use [method store_64], or convert it manually (see [method store_16] for an example).
 */
 //go:nosplit
-func (self class) Store8(value gd.Int) { //gd:FileAccess.store_8
+func (self class) Store8(value int64) { //gd:FileAccess.store_8
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -1151,7 +1154,7 @@ public override void _Ready()
 [/codeblocks]
 */
 //go:nosplit
-func (self class) Store16(value gd.Int) { //gd:FileAccess.store_16
+func (self class) Store16(value int64) { //gd:FileAccess.store_16
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -1165,7 +1168,7 @@ Stores an integer as 32 bits in the file.
 To store a signed integer, use [method store_64], or convert it manually (see [method store_16] for an example).
 */
 //go:nosplit
-func (self class) Store32(value gd.Int) { //gd:FileAccess.store_32
+func (self class) Store32(value int64) { //gd:FileAccess.store_32
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -1178,7 +1181,7 @@ Stores an integer as 64 bits in the file.
 [b]Note:[/b] The [param value] must lie in the interval [code][-2^63, 2^63 - 1][/code] (i.e. be a valid [int] value).
 */
 //go:nosplit
-func (self class) Store64(value gd.Int) { //gd:FileAccess.store_64
+func (self class) Store64(value int64) { //gd:FileAccess.store_64
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -1190,7 +1193,7 @@ func (self class) Store64(value gd.Int) { //gd:FileAccess.store_64
 Stores a floating-point number as 32 bits in the file.
 */
 //go:nosplit
-func (self class) StoreFloat(value gd.Float) { //gd:FileAccess.store_float
+func (self class) StoreFloat(value float64) { //gd:FileAccess.store_float
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -1202,7 +1205,7 @@ func (self class) StoreFloat(value gd.Float) { //gd:FileAccess.store_float
 Stores a floating-point number as 64 bits in the file.
 */
 //go:nosplit
-func (self class) StoreDouble(value gd.Float) { //gd:FileAccess.store_double
+func (self class) StoreDouble(value float64) { //gd:FileAccess.store_double
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -1214,7 +1217,7 @@ func (self class) StoreDouble(value gd.Float) { //gd:FileAccess.store_double
 Stores a floating-point number in the file.
 */
 //go:nosplit
-func (self class) StoreReal(value gd.Float) { //gd:FileAccess.store_real
+func (self class) StoreReal(value float64) { //gd:FileAccess.store_real
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -1279,9 +1282,9 @@ Internally, this uses the same encoding mechanism as the [method @GlobalScope.va
 [b]Note:[/b] Not all properties are included. Only properties that are configured with the [constant PROPERTY_USAGE_STORAGE] flag set will be serialized. You can add a new usage flag to a property by overriding the [method Object._get_property_list] method in your class. You can also check how property usage is configured by calling [method Object._get_property_list]. See [enum PropertyUsageFlags] for the possible usage flags.
 */
 //go:nosplit
-func (self class) StoreVar(value gd.Variant, full_objects bool) { //gd:FileAccess.store_var
+func (self class) StoreVar(value variant.Any, full_objects bool) { //gd:FileAccess.store_var
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	callframe.Arg(frame, full_objects)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_var, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1347,10 +1350,10 @@ func (self class) FileExists(path String.Readable) bool { //gd:FileAccess.file_e
 Returns the last time the [param file] was modified in Unix timestamp format, or [code]0[/code] on error. This Unix timestamp can be converted to another format using the [Time] singleton.
 */
 //go:nosplit
-func (self class) GetModifiedTime(file String.Readable) gd.Int { //gd:FileAccess.get_modified_time
+func (self class) GetModifiedTime(file String.Readable) int64 { //gd:FileAccess.get_modified_time
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_modified_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1377,13 +1380,13 @@ Sets file UNIX permissions.
 [b]Note:[/b] This method is implemented on iOS, Linux/BSD, and macOS.
 */
 //go:nosplit
-func (self class) SetUnixPermissions(file String.Readable, permissions gdclass.FileAccessUnixPermissionFlags) gd.Error { //gd:FileAccess.set_unix_permissions
+func (self class) SetUnixPermissions(file String.Readable, permissions gdclass.FileAccessUnixPermissionFlags) Error.Code { //gd:FileAccess.set_unix_permissions
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	callframe.Arg(frame, permissions)
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_set_unix_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1408,13 +1411,13 @@ Sets file [b]hidden[/b] attribute.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
-func (self class) SetHiddenAttribute(file String.Readable, hidden bool) gd.Error { //gd:FileAccess.set_hidden_attribute
+func (self class) SetHiddenAttribute(file String.Readable, hidden bool) Error.Code { //gd:FileAccess.set_hidden_attribute
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	callframe.Arg(frame, hidden)
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_set_hidden_attribute, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1424,13 +1427,13 @@ Sets file [b]read only[/b] attribute.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
-func (self class) SetReadOnlyAttribute(file String.Readable, ro bool) gd.Error { //gd:FileAccess.set_read_only_attribute
+func (self class) SetReadOnlyAttribute(file String.Readable, ro bool) Error.Code { //gd:FileAccess.set_read_only_attribute
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	callframe.Arg(frame, ro)
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_set_read_only_attribute, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1532,120 +1535,4 @@ const (
 	UnixSetGroupId UnixPermissionFlags = 1024
 	/*Restricted deletion (sticky) bit.*/
 	UnixRestrictedDelete UnixPermissionFlags = 512
-)
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
 )

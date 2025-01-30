@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioEffect"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioEffect"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -76,7 +79,7 @@ func (self Instance) CeilingDb() Float.X {
 }
 
 func (self Instance) SetCeilingDb(value Float.X) {
-	class(self).SetCeilingDb(gd.Float(value))
+	class(self).SetCeilingDb(float64(value))
 }
 
 func (self Instance) ThresholdDb() Float.X {
@@ -84,7 +87,7 @@ func (self Instance) ThresholdDb() Float.X {
 }
 
 func (self Instance) SetThresholdDb(value Float.X) {
-	class(self).SetThresholdDb(gd.Float(value))
+	class(self).SetThresholdDb(float64(value))
 }
 
 func (self Instance) SoftClipDb() Float.X {
@@ -92,7 +95,7 @@ func (self Instance) SoftClipDb() Float.X {
 }
 
 func (self Instance) SetSoftClipDb(value Float.X) {
-	class(self).SetSoftClipDb(gd.Float(value))
+	class(self).SetSoftClipDb(float64(value))
 }
 
 func (self Instance) SoftClipRatio() Float.X {
@@ -100,11 +103,11 @@ func (self Instance) SoftClipRatio() Float.X {
 }
 
 func (self Instance) SetSoftClipRatio(value Float.X) {
-	class(self).SetSoftClipRatio(gd.Float(value))
+	class(self).SetSoftClipRatio(float64(value))
 }
 
 //go:nosplit
-func (self class) SetCeilingDb(ceiling gd.Float) { //gd:AudioEffectLimiter.set_ceiling_db
+func (self class) SetCeilingDb(ceiling float64) { //gd:AudioEffectLimiter.set_ceiling_db
 	var frame = callframe.New()
 	callframe.Arg(frame, ceiling)
 	var r_ret = callframe.Nil
@@ -113,9 +116,9 @@ func (self class) SetCeilingDb(ceiling gd.Float) { //gd:AudioEffectLimiter.set_c
 }
 
 //go:nosplit
-func (self class) GetCeilingDb() gd.Float { //gd:AudioEffectLimiter.get_ceiling_db
+func (self class) GetCeilingDb() float64 { //gd:AudioEffectLimiter.get_ceiling_db
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectLimiter.Bind_get_ceiling_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -123,7 +126,7 @@ func (self class) GetCeilingDb() gd.Float { //gd:AudioEffectLimiter.get_ceiling_
 }
 
 //go:nosplit
-func (self class) SetThresholdDb(threshold gd.Float) { //gd:AudioEffectLimiter.set_threshold_db
+func (self class) SetThresholdDb(threshold float64) { //gd:AudioEffectLimiter.set_threshold_db
 	var frame = callframe.New()
 	callframe.Arg(frame, threshold)
 	var r_ret = callframe.Nil
@@ -132,9 +135,9 @@ func (self class) SetThresholdDb(threshold gd.Float) { //gd:AudioEffectLimiter.s
 }
 
 //go:nosplit
-func (self class) GetThresholdDb() gd.Float { //gd:AudioEffectLimiter.get_threshold_db
+func (self class) GetThresholdDb() float64 { //gd:AudioEffectLimiter.get_threshold_db
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectLimiter.Bind_get_threshold_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -142,7 +145,7 @@ func (self class) GetThresholdDb() gd.Float { //gd:AudioEffectLimiter.get_thresh
 }
 
 //go:nosplit
-func (self class) SetSoftClipDb(soft_clip gd.Float) { //gd:AudioEffectLimiter.set_soft_clip_db
+func (self class) SetSoftClipDb(soft_clip float64) { //gd:AudioEffectLimiter.set_soft_clip_db
 	var frame = callframe.New()
 	callframe.Arg(frame, soft_clip)
 	var r_ret = callframe.Nil
@@ -151,9 +154,9 @@ func (self class) SetSoftClipDb(soft_clip gd.Float) { //gd:AudioEffectLimiter.se
 }
 
 //go:nosplit
-func (self class) GetSoftClipDb() gd.Float { //gd:AudioEffectLimiter.get_soft_clip_db
+func (self class) GetSoftClipDb() float64 { //gd:AudioEffectLimiter.get_soft_clip_db
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectLimiter.Bind_get_soft_clip_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -161,7 +164,7 @@ func (self class) GetSoftClipDb() gd.Float { //gd:AudioEffectLimiter.get_soft_cl
 }
 
 //go:nosplit
-func (self class) SetSoftClipRatio(soft_clip gd.Float) { //gd:AudioEffectLimiter.set_soft_clip_ratio
+func (self class) SetSoftClipRatio(soft_clip float64) { //gd:AudioEffectLimiter.set_soft_clip_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, soft_clip)
 	var r_ret = callframe.Nil
@@ -170,9 +173,9 @@ func (self class) SetSoftClipRatio(soft_clip gd.Float) { //gd:AudioEffectLimiter
 }
 
 //go:nosplit
-func (self class) GetSoftClipRatio() gd.Float { //gd:AudioEffectLimiter.get_soft_clip_ratio
+func (self class) GetSoftClipRatio() float64 { //gd:AudioEffectLimiter.get_soft_clip_ratio
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectLimiter.Bind_get_soft_clip_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

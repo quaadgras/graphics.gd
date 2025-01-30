@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Joint3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Joint3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,7 +59,7 @@ type Any interface {
 Sets the value of the specified parameter.
 */
 func (self Instance) SetParam(param gdclass.PinJoint3DParam, value Float.X) { //gd:PinJoint3D.set_param
-	class(self).SetParam(param, gd.Float(value))
+	class(self).SetParam(param, float64(value))
 }
 
 /*
@@ -88,7 +91,7 @@ func New() Instance {
 Sets the value of the specified parameter.
 */
 //go:nosplit
-func (self class) SetParam(param gdclass.PinJoint3DParam, value gd.Float) { //gd:PinJoint3D.set_param
+func (self class) SetParam(param gdclass.PinJoint3DParam, value float64) { //gd:PinJoint3D.set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -101,10 +104,10 @@ func (self class) SetParam(param gdclass.PinJoint3DParam, value gd.Float) { //gd
 Returns the value of the specified parameter.
 */
 //go:nosplit
-func (self class) GetParam(param gdclass.PinJoint3DParam) gd.Float { //gd:PinJoint3D.get_param
+func (self class) GetParam(param gdclass.PinJoint3DParam) float64 { //gd:PinJoint3D.get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PinJoint3D.Bind_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

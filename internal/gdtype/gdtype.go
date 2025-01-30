@@ -9,6 +9,36 @@ import (
 
 var ClassDB map[string]gdjson.Class
 
+func (s Name) InCore() bool {
+	switch s {
+	case "Object", "RefCounted":
+		return true
+	default:
+		return false
+	}
+}
+
+var Builtins = []Name{
+	"String", "StringName", "PackedStringArray", "PackedInt32Array", "PackedInt64Array", "PackedFloat32Array",
+	"PackedFloat64Array", "PackedVector2Array", "PackedVector3Array", "PackedVector4Array", "PackedColorArray", "PackedByteArray",
+	"Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
+	"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath", "RID",
+	"Callable", "Signal", "Dictionary", "Array",
+}
+
+var builtinsMap = make(map[string]struct{})
+
+func init() {
+	for _, b := range Builtins {
+		builtinsMap[string(b)] = struct{}{}
+	}
+}
+
+func (s Name) IsBuiltin() bool {
+	_, ok := builtinsMap[string(s)]
+	return ok
+}
+
 type Name string
 
 func (name Name) Let(ctx string, val string) string {
@@ -43,13 +73,6 @@ func (name Name) ToUnderlying(val string) string {
 	return val
 }
 
-func (name Name) End(val string) string {
-	if name.Underlying() != string(name) {
-		return fmt.Sprintf("if %s != nil { mmm.End(%s.%v()) }", val, val, strings.TrimPrefix(name.Underlying(), "gd."))
-	}
-	return "mmm.End(" + val + ")"
-}
-
 func (name Name) ConvertToSimple(val string) string {
 	if strings.HasPrefix(val, "(") {
 		val = strings.TrimPrefix(val, "(")
@@ -75,21 +98,11 @@ func (name Name) ConvertToSimple(val string) string {
 		return fmt.Sprintf("Path.ToNode(String.New(%v))", val)
 	case "String.Name":
 		return fmt.Sprintf("String.Name(String.New(%v))", val)
-	case "gd.RID":
-		return fmt.Sprintf("gd.RID(%v)", val)
-	case "gd.String":
-		return fmt.Sprintf("gd.NewString(%v)", val)
-	case "gd.StringName":
-		return fmt.Sprintf("gd.NewStringName(%v)", val)
-	case "gd.NodePath":
-		return fmt.Sprintf("gd.NewString(string(%v)).NodePath()", val)
-	case "gd.Int", "gd.Float", "gd.Vector2", "gd.Vector2i", "gd.Rect2", "gd.Rect2i",
-		"gd.Vector3", "gd.Vector3i", "gd.Transform2D", "gd.Quaternion",
-		"gd.AABB", "gd.Color", "gd.Plane", "gd.Basis", "gd.Transform3D",
-		"gd.Vector4", "gd.Vector4i":
+	case "int64", "float64", "Vector2.XY", "Vector2i.XY", "Rect2.PositionSize", "Rect2i.PositionSize",
+		"Vector3.XYZ", "Vector3i.XYZ", "Transform2D.OriginXY", "Quaternion.IJKL",
+		"AABB.PositionSize", "Color.RGBA", "Plane.NormalD", "Basis.XYZ", "Transform3D.BasisOrigin",
+		"Vector4.XYZW", "Vector4i.XYZW", "RID.Any":
 		return fmt.Sprintf("%s(%v)", name, val)
-	case "gd.Dictionary":
-		return fmt.Sprintf("gd.NewVariant(%v).Interface().(gd.Dictionary)", val)
 	case "Packed.Bytes":
 		return fmt.Sprintf("Packed.Bytes(Packed.New(%v...))", val)
 	case "Packed.Strings":
@@ -103,10 +116,12 @@ func (name Name) ConvertToSimple(val string) string {
 			return fmt.Sprintf("Packed.New[%s]()", elem)
 		}
 		return fmt.Sprintf("Packed.New(%v...)", val)
-	case "gd.Variant":
-		return fmt.Sprintf("gd.NewVariant(%v)", val)
 	case "Callable.Function":
 		return fmt.Sprintf("Callable.New(%v)", val)
+	case "variant.Any":
+		return fmt.Sprintf("variant.New(%v)", val)
+	case "Error.Code":
+		return fmt.Sprintf("Error.New(%v)", val)
 	default:
 		return val
 	}
@@ -117,13 +132,13 @@ func (name Name) ConvertToGo(val string, simple string) string {
 		return fmt.Sprintf("gd.ArrayAs[%s](gd.InternalArray(%s))", simple, val)
 	}
 	switch name {
-	case "gd.String", "gd.StringName", "gd.NodePath", "String.Readable", "Path.ToNode", "String.Name":
+	case "String.Readable", "Path.ToNode", "String.Name":
 		return fmt.Sprintf("%v.String()", val)
-	case "gd.Error":
+	case "Error.Code":
 		return fmt.Sprintf("gd.ToError(%v)", val)
-	case "gd.Int":
+	case "int64":
 		return fmt.Sprintf("int(%v)", val)
-	case "gd.Float":
+	case "float64":
 		return fmt.Sprintf("Float.X(%v)", val)
 	case "Packed.Bytes":
 		return fmt.Sprintf("%v.Bytes()", val)
@@ -132,7 +147,7 @@ func (name Name) ConvertToGo(val string, simple string) string {
 	case "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]",
 		"Packed.Array[Vector2.XY]", "Packed.Array[Vector3.XYZ]", "Packed.Array[Vector4.XYZW]", "Packed.Array[Color.RGBA]":
 		return fmt.Sprintf("slices.Collect(%v.Values())", val)
-	case "gd.Variant":
+	case "variant.Any":
 		return fmt.Sprintf("%v.Interface()", val)
 	case "Array.Any":
 		return fmt.Sprintf("gd.ArrayAs[%s](gd.InternalArray(%s))", simple, val)
@@ -178,6 +193,10 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 		title = strings.Title(title)
 		return fmt.Sprintf("Packed.Array[%s](Array.Through(gd.PackedProxy[gd.Packed%sArray, %s]{}, pointers.Pack(pointers.New[gd.PackedStringArray](%s))))",
 			elem, title, elem, val)
+	case "variant.Any":
+		return fmt.Sprintf("variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](%s)))", val)
+	case "Error.Code":
+		return fmt.Sprintf("Error.Code(%s)", val)
 	default:
 		_, argIsPtr := name.IsPointer()
 		if name == "Object" {
@@ -219,6 +238,10 @@ func (name Name) EndPointer(val string) string {
 		return fmt.Sprintf("pointers.End(gd.InternalPacked[gd.PackedByteArray,byte](Packed.Array[byte](%v)))", val)
 	case "Packed.Strings":
 		return fmt.Sprintf("pointers.End(gd.InternalPackedStrings(%v))", val)
+	case "variant.Any":
+		return fmt.Sprintf("pointers.End(gd.InternalVariant(%v))", val)
+	case "Error.Code":
+		return fmt.Sprintf("func(e Error.Code)(int64,bool){return int64(e),true}(%s)", val)
 	case "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]",
 		"Packed.Array[Vector2.XY]", "Packed.Array[Vector3.XYZ]", "Packed.Array[Vector4.XYZW]", "Packed.Array[Color.RGBA]":
 		elem := strings.TrimPrefix(string(name), "Packed.Array[")
@@ -242,6 +265,10 @@ func (name Name) LoadOntoCallFrame(val string) string {
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalArray(%v)))\n", val)
 	}
 	switch name {
+	case "variant.Any":
+		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalVariant(%v)))\n", val)
+	case "Error.Code":
+		return fmt.Sprintf("\tcallframe.Arg(frame, int64(%v))\n", val)
 	case "Signal.Any":
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalSignal(%v)))\n", val)
 	case "Array.Any":
@@ -302,10 +329,12 @@ func (name Name) IsPointer() (string, bool) {
 		"Packed.Array[Vector4.XYZW]",
 		"Packed.Array[Color.RGBA]":
 		return "gd.PackedPointers", true
-	case "Variant":
+	case "Variant", "variant.Any":
 		return "[3]uint64", true
 	case "Object":
 		return "gd.EnginePointer", true
+	case "Error.Code":
+		return "int64", true
 	default:
 		if entry, ok := ClassDB[t]; ok && !entry.IsEnum {
 			return "gd.EnginePointer", true

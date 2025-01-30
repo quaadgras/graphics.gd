@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
-import "graphics.gd/variant/Float"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -106,7 +109,7 @@ func (self Instance) Layer() int {
 }
 
 func (self Instance) SetLayer(value int) {
-	class(self).SetLayer(gd.Int(value))
+	class(self).SetLayer(int64(value))
 }
 
 func (self Instance) Visible() bool {
@@ -122,7 +125,7 @@ func (self Instance) Offset() Vector2.XY {
 }
 
 func (self Instance) SetOffset(value Vector2.XY) {
-	class(self).SetOffset(gd.Vector2(value))
+	class(self).SetOffset(Vector2.XY(value))
 }
 
 func (self Instance) Rotation() Float.X {
@@ -130,7 +133,7 @@ func (self Instance) Rotation() Float.X {
 }
 
 func (self Instance) SetRotation(value Float.X) {
-	class(self).SetRotation(gd.Float(value))
+	class(self).SetRotation(float64(value))
 }
 
 func (self Instance) Scale() Vector2.XY {
@@ -138,7 +141,7 @@ func (self Instance) Scale() Vector2.XY {
 }
 
 func (self Instance) SetScale(value Vector2.XY) {
-	class(self).SetScale(gd.Vector2(value))
+	class(self).SetScale(Vector2.XY(value))
 }
 
 func (self Instance) Transform() Transform2D.OriginXY {
@@ -146,7 +149,7 @@ func (self Instance) Transform() Transform2D.OriginXY {
 }
 
 func (self Instance) SetTransform(value Transform2D.OriginXY) {
-	class(self).SetTransform(gd.Transform2D(value))
+	class(self).SetTransform(Transform2D.OriginXY(value))
 }
 
 func (self Instance) CustomViewport() [1]gdclass.Node {
@@ -170,11 +173,11 @@ func (self Instance) FollowViewportScale() Float.X {
 }
 
 func (self Instance) SetFollowViewportScale(value Float.X) {
-	class(self).SetFollowViewportScale(gd.Float(value))
+	class(self).SetFollowViewportScale(float64(value))
 }
 
 //go:nosplit
-func (self class) SetLayer(layer gd.Int) { //gd:CanvasLayer.set_layer
+func (self class) SetLayer(layer int64) { //gd:CanvasLayer.set_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -183,9 +186,9 @@ func (self class) SetLayer(layer gd.Int) { //gd:CanvasLayer.set_layer
 }
 
 //go:nosplit
-func (self class) GetLayer() gd.Int { //gd:CanvasLayer.get_layer
+func (self class) GetLayer() int64 { //gd:CanvasLayer.get_layer
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasLayer.Bind_get_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -234,7 +237,7 @@ func (self class) Hide() { //gd:CanvasLayer.hide
 }
 
 //go:nosplit
-func (self class) SetTransform(transform gd.Transform2D) { //gd:CanvasLayer.set_transform
+func (self class) SetTransform(transform Transform2D.OriginXY) { //gd:CanvasLayer.set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
 	var r_ret = callframe.Nil
@@ -243,9 +246,9 @@ func (self class) SetTransform(transform gd.Transform2D) { //gd:CanvasLayer.set_
 }
 
 //go:nosplit
-func (self class) GetTransform() gd.Transform2D { //gd:CanvasLayer.get_transform
+func (self class) GetTransform() Transform2D.OriginXY { //gd:CanvasLayer.get_transform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform2D](frame)
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasLayer.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -256,9 +259,9 @@ func (self class) GetTransform() gd.Transform2D { //gd:CanvasLayer.get_transform
 Returns the transform from the [CanvasLayer]s coordinate system to the [Viewport]s coordinate system.
 */
 //go:nosplit
-func (self class) GetFinalTransform() gd.Transform2D { //gd:CanvasLayer.get_final_transform
+func (self class) GetFinalTransform() Transform2D.OriginXY { //gd:CanvasLayer.get_final_transform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform2D](frame)
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasLayer.Bind_get_final_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -266,7 +269,7 @@ func (self class) GetFinalTransform() gd.Transform2D { //gd:CanvasLayer.get_fina
 }
 
 //go:nosplit
-func (self class) SetOffset(offset gd.Vector2) { //gd:CanvasLayer.set_offset
+func (self class) SetOffset(offset Vector2.XY) { //gd:CanvasLayer.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -275,9 +278,9 @@ func (self class) SetOffset(offset gd.Vector2) { //gd:CanvasLayer.set_offset
 }
 
 //go:nosplit
-func (self class) GetOffset() gd.Vector2 { //gd:CanvasLayer.get_offset
+func (self class) GetOffset() Vector2.XY { //gd:CanvasLayer.get_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasLayer.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -285,7 +288,7 @@ func (self class) GetOffset() gd.Vector2 { //gd:CanvasLayer.get_offset
 }
 
 //go:nosplit
-func (self class) SetRotation(radians gd.Float) { //gd:CanvasLayer.set_rotation
+func (self class) SetRotation(radians float64) { //gd:CanvasLayer.set_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, radians)
 	var r_ret = callframe.Nil
@@ -294,9 +297,9 @@ func (self class) SetRotation(radians gd.Float) { //gd:CanvasLayer.set_rotation
 }
 
 //go:nosplit
-func (self class) GetRotation() gd.Float { //gd:CanvasLayer.get_rotation
+func (self class) GetRotation() float64 { //gd:CanvasLayer.get_rotation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasLayer.Bind_get_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -304,7 +307,7 @@ func (self class) GetRotation() gd.Float { //gd:CanvasLayer.get_rotation
 }
 
 //go:nosplit
-func (self class) SetScale(scale gd.Vector2) { //gd:CanvasLayer.set_scale
+func (self class) SetScale(scale Vector2.XY) { //gd:CanvasLayer.set_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -313,9 +316,9 @@ func (self class) SetScale(scale gd.Vector2) { //gd:CanvasLayer.set_scale
 }
 
 //go:nosplit
-func (self class) GetScale() gd.Vector2 { //gd:CanvasLayer.get_scale
+func (self class) GetScale() Vector2.XY { //gd:CanvasLayer.get_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasLayer.Bind_get_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -342,7 +345,7 @@ func (self class) IsFollowingViewport() bool { //gd:CanvasLayer.is_following_vie
 }
 
 //go:nosplit
-func (self class) SetFollowViewportScale(scale gd.Float) { //gd:CanvasLayer.set_follow_viewport_scale
+func (self class) SetFollowViewportScale(scale float64) { //gd:CanvasLayer.set_follow_viewport_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -351,9 +354,9 @@ func (self class) SetFollowViewportScale(scale gd.Float) { //gd:CanvasLayer.set_
 }
 
 //go:nosplit
-func (self class) GetFollowViewportScale() gd.Float { //gd:CanvasLayer.get_follow_viewport_scale
+func (self class) GetFollowViewportScale() float64 { //gd:CanvasLayer.get_follow_viewport_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasLayer.Bind_get_follow_viewport_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -383,9 +386,9 @@ func (self class) GetCustomViewport() [1]gdclass.Node { //gd:CanvasLayer.get_cus
 Returns the RID of the canvas used by this layer.
 */
 //go:nosplit
-func (self class) GetCanvas() gd.RID { //gd:CanvasLayer.get_canvas
+func (self class) GetCanvas() RID.Any { //gd:CanvasLayer.get_canvas
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasLayer.Bind_get_canvas, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

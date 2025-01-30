@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/classdb/Node2D"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -72,21 +75,21 @@ func (self Instance) GetBoneCount() int { //gd:Polygon2D.get_bone_count
 Returns the path to the node associated with the specified bone.
 */
 func (self Instance) GetBonePath(index int) string { //gd:Polygon2D.get_bone_path
-	return string(class(self).GetBonePath(gd.Int(index)).String())
+	return string(class(self).GetBonePath(int64(index)).String())
 }
 
 /*
 Returns the weight values of the specified bone.
 */
 func (self Instance) GetBoneWeights(index int) []float32 { //gd:Polygon2D.get_bone_weights
-	return []float32(slices.Collect(class(self).GetBoneWeights(gd.Int(index)).Values()))
+	return []float32(slices.Collect(class(self).GetBoneWeights(int64(index)).Values()))
 }
 
 /*
 Removes the specified bone from this [Polygon2D].
 */
 func (self Instance) EraseBone(index int) { //gd:Polygon2D.erase_bone
-	class(self).EraseBone(gd.Int(index))
+	class(self).EraseBone(int64(index))
 }
 
 /*
@@ -100,14 +103,14 @@ func (self Instance) ClearBones() { //gd:Polygon2D.clear_bones
 Sets the path to the node associated with the specified bone.
 */
 func (self Instance) SetBonePath(index int, path string) { //gd:Polygon2D.set_bone_path
-	class(self).SetBonePath(gd.Int(index), Path.ToNode(String.New(path)))
+	class(self).SetBonePath(int64(index), Path.ToNode(String.New(path)))
 }
 
 /*
 Sets the weight values for the specified bone.
 */
 func (self Instance) SetBoneWeights(index int, weights []float32) { //gd:Polygon2D.set_bone_weights
-	class(self).SetBoneWeights(gd.Int(index), Packed.New(weights...))
+	class(self).SetBoneWeights(int64(index), Packed.New(weights...))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -133,7 +136,7 @@ func (self Instance) Color() Color.RGBA {
 }
 
 func (self Instance) SetColor(value Color.RGBA) {
-	class(self).SetColor(gd.Color(value))
+	class(self).SetColor(Color.RGBA(value))
 }
 
 func (self Instance) Offset() Vector2.XY {
@@ -141,7 +144,7 @@ func (self Instance) Offset() Vector2.XY {
 }
 
 func (self Instance) SetOffset(value Vector2.XY) {
-	class(self).SetOffset(gd.Vector2(value))
+	class(self).SetOffset(Vector2.XY(value))
 }
 
 func (self Instance) Antialiased() bool {
@@ -165,7 +168,7 @@ func (self Instance) TextureOffset() Vector2.XY {
 }
 
 func (self Instance) SetTextureOffset(value Vector2.XY) {
-	class(self).SetTextureOffset(gd.Vector2(value))
+	class(self).SetTextureOffset(Vector2.XY(value))
 }
 
 func (self Instance) TextureScale() Vector2.XY {
@@ -173,7 +176,7 @@ func (self Instance) TextureScale() Vector2.XY {
 }
 
 func (self Instance) SetTextureScale(value Vector2.XY) {
-	class(self).SetTextureScale(gd.Vector2(value))
+	class(self).SetTextureScale(Vector2.XY(value))
 }
 
 func (self Instance) TextureRotation() Float.X {
@@ -181,7 +184,7 @@ func (self Instance) TextureRotation() Float.X {
 }
 
 func (self Instance) SetTextureRotation(value Float.X) {
-	class(self).SetTextureRotation(gd.Float(value))
+	class(self).SetTextureRotation(float64(value))
 }
 
 func (self Instance) Skeleton() string {
@@ -205,7 +208,7 @@ func (self Instance) InvertBorder() Float.X {
 }
 
 func (self Instance) SetInvertBorder(value Float.X) {
-	class(self).SetInvertBorder(gd.Float(value))
+	class(self).SetInvertBorder(float64(value))
 }
 
 func (self Instance) Polygon() []Vector2.XY {
@@ -245,7 +248,7 @@ func (self Instance) InternalVertexCount() int {
 }
 
 func (self Instance) SetInternalVertexCount(value int) {
-	class(self).SetInternalVertexCount(gd.Int(value))
+	class(self).SetInternalVertexCount(int64(value))
 }
 
 //go:nosplit
@@ -287,7 +290,7 @@ func (self class) GetUv() Packed.Array[Vector2.XY] { //gd:Polygon2D.get_uv
 }
 
 //go:nosplit
-func (self class) SetColor(color gd.Color) { //gd:Polygon2D.set_color
+func (self class) SetColor(color Color.RGBA) { //gd:Polygon2D.set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -296,9 +299,9 @@ func (self class) SetColor(color gd.Color) { //gd:Polygon2D.set_color
 }
 
 //go:nosplit
-func (self class) GetColor() gd.Color { //gd:Polygon2D.get_color
+func (self class) GetColor() Color.RGBA { //gd:Polygon2D.get_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -363,7 +366,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D { //gd:Polygon2D.get_texture
 }
 
 //go:nosplit
-func (self class) SetTextureOffset(texture_offset gd.Vector2) { //gd:Polygon2D.set_texture_offset
+func (self class) SetTextureOffset(texture_offset Vector2.XY) { //gd:Polygon2D.set_texture_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_offset)
 	var r_ret = callframe.Nil
@@ -372,9 +375,9 @@ func (self class) SetTextureOffset(texture_offset gd.Vector2) { //gd:Polygon2D.s
 }
 
 //go:nosplit
-func (self class) GetTextureOffset() gd.Vector2 { //gd:Polygon2D.get_texture_offset
+func (self class) GetTextureOffset() Vector2.XY { //gd:Polygon2D.get_texture_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_get_texture_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -382,7 +385,7 @@ func (self class) GetTextureOffset() gd.Vector2 { //gd:Polygon2D.get_texture_off
 }
 
 //go:nosplit
-func (self class) SetTextureRotation(texture_rotation gd.Float) { //gd:Polygon2D.set_texture_rotation
+func (self class) SetTextureRotation(texture_rotation float64) { //gd:Polygon2D.set_texture_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_rotation)
 	var r_ret = callframe.Nil
@@ -391,9 +394,9 @@ func (self class) SetTextureRotation(texture_rotation gd.Float) { //gd:Polygon2D
 }
 
 //go:nosplit
-func (self class) GetTextureRotation() gd.Float { //gd:Polygon2D.get_texture_rotation
+func (self class) GetTextureRotation() float64 { //gd:Polygon2D.get_texture_rotation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_get_texture_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -401,7 +404,7 @@ func (self class) GetTextureRotation() gd.Float { //gd:Polygon2D.get_texture_rot
 }
 
 //go:nosplit
-func (self class) SetTextureScale(texture_scale gd.Vector2) { //gd:Polygon2D.set_texture_scale
+func (self class) SetTextureScale(texture_scale Vector2.XY) { //gd:Polygon2D.set_texture_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_scale)
 	var r_ret = callframe.Nil
@@ -410,9 +413,9 @@ func (self class) SetTextureScale(texture_scale gd.Vector2) { //gd:Polygon2D.set
 }
 
 //go:nosplit
-func (self class) GetTextureScale() gd.Vector2 { //gd:Polygon2D.get_texture_scale
+func (self class) GetTextureScale() Vector2.XY { //gd:Polygon2D.get_texture_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_get_texture_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -458,7 +461,7 @@ func (self class) GetAntialiased() bool { //gd:Polygon2D.get_antialiased
 }
 
 //go:nosplit
-func (self class) SetInvertBorder(invert_border gd.Float) { //gd:Polygon2D.set_invert_border
+func (self class) SetInvertBorder(invert_border float64) { //gd:Polygon2D.set_invert_border
 	var frame = callframe.New()
 	callframe.Arg(frame, invert_border)
 	var r_ret = callframe.Nil
@@ -467,9 +470,9 @@ func (self class) SetInvertBorder(invert_border gd.Float) { //gd:Polygon2D.set_i
 }
 
 //go:nosplit
-func (self class) GetInvertBorder() gd.Float { //gd:Polygon2D.get_invert_border
+func (self class) GetInvertBorder() float64 { //gd:Polygon2D.get_invert_border
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_get_invert_border, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -477,7 +480,7 @@ func (self class) GetInvertBorder() gd.Float { //gd:Polygon2D.get_invert_border
 }
 
 //go:nosplit
-func (self class) SetOffset(offset gd.Vector2) { //gd:Polygon2D.set_offset
+func (self class) SetOffset(offset Vector2.XY) { //gd:Polygon2D.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -486,9 +489,9 @@ func (self class) SetOffset(offset gd.Vector2) { //gd:Polygon2D.set_offset
 }
 
 //go:nosplit
-func (self class) GetOffset() gd.Vector2 { //gd:Polygon2D.get_offset
+func (self class) GetOffset() Vector2.XY { //gd:Polygon2D.get_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -512,9 +515,9 @@ func (self class) AddBone(path Path.ToNode, weights Packed.Array[float32]) { //g
 Returns the number of bones in this [Polygon2D].
 */
 //go:nosplit
-func (self class) GetBoneCount() gd.Int { //gd:Polygon2D.get_bone_count
+func (self class) GetBoneCount() int64 { //gd:Polygon2D.get_bone_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_get_bone_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -525,7 +528,7 @@ func (self class) GetBoneCount() gd.Int { //gd:Polygon2D.get_bone_count
 Returns the path to the node associated with the specified bone.
 */
 //go:nosplit
-func (self class) GetBonePath(index gd.Int) Path.ToNode { //gd:Polygon2D.get_bone_path
+func (self class) GetBonePath(index int64) Path.ToNode { //gd:Polygon2D.get_bone_path
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -539,7 +542,7 @@ func (self class) GetBonePath(index gd.Int) Path.ToNode { //gd:Polygon2D.get_bon
 Returns the weight values of the specified bone.
 */
 //go:nosplit
-func (self class) GetBoneWeights(index gd.Int) Packed.Array[float32] { //gd:Polygon2D.get_bone_weights
+func (self class) GetBoneWeights(index int64) Packed.Array[float32] { //gd:Polygon2D.get_bone_weights
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -553,7 +556,7 @@ func (self class) GetBoneWeights(index gd.Int) Packed.Array[float32] { //gd:Poly
 Removes the specified bone from this [Polygon2D].
 */
 //go:nosplit
-func (self class) EraseBone(index gd.Int) { //gd:Polygon2D.erase_bone
+func (self class) EraseBone(index int64) { //gd:Polygon2D.erase_bone
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -576,7 +579,7 @@ func (self class) ClearBones() { //gd:Polygon2D.clear_bones
 Sets the path to the node associated with the specified bone.
 */
 //go:nosplit
-func (self class) SetBonePath(index gd.Int, path Path.ToNode) { //gd:Polygon2D.set_bone_path
+func (self class) SetBonePath(index int64, path Path.ToNode) { //gd:Polygon2D.set_bone_path
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
@@ -589,7 +592,7 @@ func (self class) SetBonePath(index gd.Int, path Path.ToNode) { //gd:Polygon2D.s
 Sets the weight values for the specified bone.
 */
 //go:nosplit
-func (self class) SetBoneWeights(index gd.Int, weights Packed.Array[float32]) { //gd:Polygon2D.set_bone_weights
+func (self class) SetBoneWeights(index int64, weights Packed.Array[float32]) { //gd:Polygon2D.set_bone_weights
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)))
@@ -618,7 +621,7 @@ func (self class) GetSkeleton() Path.ToNode { //gd:Polygon2D.get_skeleton
 }
 
 //go:nosplit
-func (self class) SetInternalVertexCount(internal_vertex_count gd.Int) { //gd:Polygon2D.set_internal_vertex_count
+func (self class) SetInternalVertexCount(internal_vertex_count int64) { //gd:Polygon2D.set_internal_vertex_count
 	var frame = callframe.New()
 	callframe.Arg(frame, internal_vertex_count)
 	var r_ret = callframe.Nil
@@ -627,9 +630,9 @@ func (self class) SetInternalVertexCount(internal_vertex_count gd.Int) { //gd:Po
 }
 
 //go:nosplit
-func (self class) GetInternalVertexCount() gd.Int { //gd:Polygon2D.get_internal_vertex_count
+func (self class) GetInternalVertexCount() int64 { //gd:Polygon2D.get_internal_vertex_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_get_internal_vertex_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

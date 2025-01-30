@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioEffect"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioEffect"
-import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,7 +61,7 @@ type Any interface {
 Returns [code]true[/code] if at least [param frames] audio frames are available to read in the internal ring buffer.
 */
 func (self Instance) CanGetBuffer(frames int) bool { //gd:AudioEffectCapture.can_get_buffer
-	return bool(class(self).CanGetBuffer(gd.Int(frames)))
+	return bool(class(self).CanGetBuffer(int64(frames)))
 }
 
 /*
@@ -67,7 +70,7 @@ Returns a [PackedVector2Array] containing exactly [param frames] audio samples i
 The samples are signed floating-point PCM between [code]-1[/code] and [code]1[/code]. You will have to scale them if you want to use them as 8 or 16-bit integer samples. ([code]v = 0x7fff * samples[0].x[/code])
 */
 func (self Instance) GetBuffer(frames int) []Vector2.XY { //gd:AudioEffectCapture.get_buffer
-	return []Vector2.XY(slices.Collect(class(self).GetBuffer(gd.Int(frames)).Values()))
+	return []Vector2.XY(slices.Collect(class(self).GetBuffer(int64(frames)).Values()))
 }
 
 /*
@@ -130,14 +133,14 @@ func (self Instance) BufferLength() Float.X {
 }
 
 func (self Instance) SetBufferLength(value Float.X) {
-	class(self).SetBufferLength(gd.Float(value))
+	class(self).SetBufferLength(float64(value))
 }
 
 /*
 Returns [code]true[/code] if at least [param frames] audio frames are available to read in the internal ring buffer.
 */
 //go:nosplit
-func (self class) CanGetBuffer(frames gd.Int) bool { //gd:AudioEffectCapture.can_get_buffer
+func (self class) CanGetBuffer(frames int64) bool { //gd:AudioEffectCapture.can_get_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
 	var r_ret = callframe.Ret[bool](frame)
@@ -153,7 +156,7 @@ Returns a [PackedVector2Array] containing exactly [param frames] audio samples i
 The samples are signed floating-point PCM between [code]-1[/code] and [code]1[/code]. You will have to scale them if you want to use them as 8 or 16-bit integer samples. ([code]v = 0x7fff * samples[0].x[/code])
 */
 //go:nosplit
-func (self class) GetBuffer(frames gd.Int) Packed.Array[Vector2.XY] { //gd:AudioEffectCapture.get_buffer
+func (self class) GetBuffer(frames int64) Packed.Array[Vector2.XY] { //gd:AudioEffectCapture.get_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -176,7 +179,7 @@ func (self class) ClearBuffer() { //gd:AudioEffectCapture.clear_buffer
 }
 
 //go:nosplit
-func (self class) SetBufferLength(buffer_length_seconds gd.Float) { //gd:AudioEffectCapture.set_buffer_length
+func (self class) SetBufferLength(buffer_length_seconds float64) { //gd:AudioEffectCapture.set_buffer_length
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer_length_seconds)
 	var r_ret = callframe.Nil
@@ -185,9 +188,9 @@ func (self class) SetBufferLength(buffer_length_seconds gd.Float) { //gd:AudioEf
 }
 
 //go:nosplit
-func (self class) GetBufferLength() gd.Float { //gd:AudioEffectCapture.get_buffer_length
+func (self class) GetBufferLength() float64 { //gd:AudioEffectCapture.get_buffer_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectCapture.Bind_get_buffer_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -198,9 +201,9 @@ func (self class) GetBufferLength() gd.Float { //gd:AudioEffectCapture.get_buffe
 Returns the number of frames available to read using [method get_buffer].
 */
 //go:nosplit
-func (self class) GetFramesAvailable() gd.Int { //gd:AudioEffectCapture.get_frames_available
+func (self class) GetFramesAvailable() int64 { //gd:AudioEffectCapture.get_frames_available
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectCapture.Bind_get_frames_available, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -211,9 +214,9 @@ func (self class) GetFramesAvailable() gd.Int { //gd:AudioEffectCapture.get_fram
 Returns the number of audio frames discarded from the audio bus due to full buffer.
 */
 //go:nosplit
-func (self class) GetDiscardedFrames() gd.Int { //gd:AudioEffectCapture.get_discarded_frames
+func (self class) GetDiscardedFrames() int64 { //gd:AudioEffectCapture.get_discarded_frames
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectCapture.Bind_get_discarded_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -224,9 +227,9 @@ func (self class) GetDiscardedFrames() gd.Int { //gd:AudioEffectCapture.get_disc
 Returns the total size of the internal ring buffer in frames.
 */
 //go:nosplit
-func (self class) GetBufferLengthFrames() gd.Int { //gd:AudioEffectCapture.get_buffer_length_frames
+func (self class) GetBufferLengthFrames() int64 { //gd:AudioEffectCapture.get_buffer_length_frames
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectCapture.Bind_get_buffer_length_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -237,9 +240,9 @@ func (self class) GetBufferLengthFrames() gd.Int { //gd:AudioEffectCapture.get_b
 Returns the number of audio frames inserted from the audio bus.
 */
 //go:nosplit
-func (self class) GetPushedFrames() gd.Int { //gd:AudioEffectCapture.get_pushed_frames
+func (self class) GetPushedFrames() int64 { //gd:AudioEffectCapture.get_pushed_frames
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectCapture.Bind_get_pushed_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

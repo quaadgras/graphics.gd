@@ -9,20 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/BaseButton"
+import "graphics.gd/classdb/Button"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Button"
-import "graphics.gd/classdb/BaseButton"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -107,7 +111,7 @@ func (self Instance) ItemCount() int {
 }
 
 func (self Instance) SetItemCount(value int) {
-	class(self).SetItemCount(gd.Int(value))
+	class(self).SetItemCount(int64(value))
 }
 
 /*
@@ -167,7 +171,7 @@ func (self class) SetDisableShortcuts(disabled bool) { //gd:MenuButton.set_disab
 }
 
 //go:nosplit
-func (self class) SetItemCount(count gd.Int) { //gd:MenuButton.set_item_count
+func (self class) SetItemCount(count int64) { //gd:MenuButton.set_item_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -176,9 +180,9 @@ func (self class) SetItemCount(count gd.Int) { //gd:MenuButton.set_item_count
 }
 
 //go:nosplit
-func (self class) GetItemCount() gd.Int { //gd:MenuButton.get_item_count
+func (self class) GetItemCount() int64 { //gd:MenuButton.get_item_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuButton.Bind_get_item_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

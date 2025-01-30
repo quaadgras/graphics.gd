@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/MainLoop"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/MainLoop"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -88,7 +91,7 @@ public async Task SomeFunction()
 [b]Note:[/b] The timer is always updated [i]after[/i] all of the nodes in the tree. A node's [method Node._process] method would be called before the timer updates (or [method Node._physics_process] if [param process_in_physics] is set to [code]true[/code]).
 */
 func (self Instance) CreateTimer(time_sec Float.X) [1]gdclass.SceneTreeTimer { //gd:SceneTree.create_timer
-	return [1]gdclass.SceneTreeTimer(class(self).CreateTimer(gd.Float(time_sec), true, false, false))
+	return [1]gdclass.SceneTreeTimer(class(self).CreateTimer(float64(time_sec), true, false, false))
 }
 
 /*
@@ -126,7 +129,7 @@ By convention, an exit code of [code]0[/code] indicates success, whereas any oth
 [b]Note:[/b] On iOS this method doesn't work. Instead, as recommended by the [url=https://developer.apple.com/library/archive/qa/qa1561/_index.html]iOS Human Interface Guidelines[/url], the user is expected to close apps via the Home button.
 */
 func (self Instance) Quit() { //gd:SceneTree.quit
-	class(self).Quit(gd.Int(0))
+	class(self).Quit(int64(0))
 }
 
 /*
@@ -140,7 +143,7 @@ func (self Instance) QueueDelete(obj Object.Instance) { //gd:SceneTree.queue_del
 Calls [method Object.notification] with the given [param notification] to all nodes inside this tree added to the [param group]. Use [param call_flags] to customize this method's behavior (see [enum GroupCallFlags]).
 */
 func (self Instance) NotifyGroupFlags(call_flags int, group string, notification int) { //gd:SceneTree.notify_group_flags
-	class(self).NotifyGroupFlags(gd.Int(call_flags), String.Name(String.New(group)), gd.Int(notification))
+	class(self).NotifyGroupFlags(int64(call_flags), String.Name(String.New(group)), int64(notification))
 }
 
 /*
@@ -148,7 +151,7 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 func (self Instance) SetGroupFlags(call_flags int, group string, property string, value any) { //gd:SceneTree.set_group_flags
-	class(self).SetGroupFlags(gd.Int(call_flags), String.Name(String.New(group)), String.New(property), gd.NewVariant(value))
+	class(self).SetGroupFlags(int64(call_flags), String.Name(String.New(group)), String.New(property), variant.New(value))
 }
 
 /*
@@ -156,7 +159,7 @@ Calls [method Object.notification] with the given [param notification] to all no
 [b]Note:[/b] This method acts immediately on all selected nodes at once, which may cause stuttering in some performance-intensive situations.
 */
 func (self Instance) NotifyGroup(group string, notification int) { //gd:SceneTree.notify_group
-	class(self).NotifyGroup(String.Name(String.New(group)), gd.Int(notification))
+	class(self).NotifyGroup(String.Name(String.New(group)), int64(notification))
 }
 
 /*
@@ -165,7 +168,7 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 func (self Instance) SetGroup(group string, property string, value any) { //gd:SceneTree.set_group
-	class(self).SetGroup(String.Name(String.New(group)), String.New(property), gd.NewVariant(value))
+	class(self).SetGroup(String.Name(String.New(group)), String.New(property), variant.New(value))
 }
 
 /*
@@ -524,7 +527,7 @@ public async Task SomeFunction()
 [b]Note:[/b] The timer is always updated [i]after[/i] all of the nodes in the tree. A node's [method Node._process] method would be called before the timer updates (or [method Node._physics_process] if [param process_in_physics] is set to [code]true[/code]).
 */
 //go:nosplit
-func (self class) CreateTimer(time_sec gd.Float, process_always bool, process_in_physics bool, ignore_time_scale bool) [1]gdclass.SceneTreeTimer { //gd:SceneTree.create_timer
+func (self class) CreateTimer(time_sec float64, process_always bool, process_in_physics bool, ignore_time_scale bool) [1]gdclass.SceneTreeTimer { //gd:SceneTree.create_timer
 	var frame = callframe.New()
 	callframe.Arg(frame, time_sec)
 	callframe.Arg(frame, process_always)
@@ -568,9 +571,9 @@ func (self class) GetProcessedTweens() Array.Contains[[1]gdclass.Tween] { //gd:S
 Returns the number of nodes inside this tree.
 */
 //go:nosplit
-func (self class) GetNodeCount() gd.Int { //gd:SceneTree.get_node_count
+func (self class) GetNodeCount() int64 { //gd:SceneTree.get_node_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_node_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -581,9 +584,9 @@ func (self class) GetNodeCount() gd.Int { //gd:SceneTree.get_node_count
 Returns how many frames have been processed, since the application started. This is [i]not[/i] a measurement of elapsed time.
 */
 //go:nosplit
-func (self class) GetFrame() gd.Int { //gd:SceneTree.get_frame
+func (self class) GetFrame() int64 { //gd:SceneTree.get_frame
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -596,7 +599,7 @@ By convention, an exit code of [code]0[/code] indicates success, whereas any oth
 [b]Note:[/b] On iOS this method doesn't work. Instead, as recommended by the [url=https://developer.apple.com/library/archive/qa/qa1561/_index.html]iOS Human Interface Guidelines[/url], the user is expected to close apps via the Home button.
 */
 //go:nosplit
-func (self class) Quit(exit_code gd.Int) { //gd:SceneTree.quit
+func (self class) Quit(exit_code int64) { //gd:SceneTree.quit
 	var frame = callframe.New()
 	callframe.Arg(frame, exit_code)
 	var r_ret = callframe.Nil
@@ -639,7 +642,7 @@ func (self class) QueueDelete(obj [1]gd.Object) { //gd:SceneTree.queue_delete
 Calls [method Object.notification] with the given [param notification] to all nodes inside this tree added to the [param group]. Use [param call_flags] to customize this method's behavior (see [enum GroupCallFlags]).
 */
 //go:nosplit
-func (self class) NotifyGroupFlags(call_flags gd.Int, group String.Name, notification gd.Int) { //gd:SceneTree.notify_group_flags
+func (self class) NotifyGroupFlags(call_flags int64, group String.Name, notification int64) { //gd:SceneTree.notify_group_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, call_flags)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
@@ -654,12 +657,12 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self class) SetGroupFlags(call_flags gd.Int, group String.Name, property String.Readable, value gd.Variant) { //gd:SceneTree.set_group_flags
+func (self class) SetGroupFlags(call_flags int64, group String.Name, property String.Readable, value variant.Any) { //gd:SceneTree.set_group_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, call_flags)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(property)))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_set_group_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -670,7 +673,7 @@ Calls [method Object.notification] with the given [param notification] to all no
 [b]Note:[/b] This method acts immediately on all selected nodes at once, which may cause stuttering in some performance-intensive situations.
 */
 //go:nosplit
-func (self class) NotifyGroup(group String.Name, notification gd.Int) { //gd:SceneTree.notify_group
+func (self class) NotifyGroup(group String.Name, notification int64) { //gd:SceneTree.notify_group
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
 	callframe.Arg(frame, notification)
@@ -685,11 +688,11 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self class) SetGroup(group String.Name, property String.Readable, value gd.Variant) { //gd:SceneTree.set_group
+func (self class) SetGroup(group String.Name, property String.Readable, value variant.Any) { //gd:SceneTree.set_group
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(property)))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_set_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -727,10 +730,10 @@ func (self class) GetFirstNodeInGroup(group String.Name) [1]gdclass.Node { //gd:
 Returns the number of nodes assigned to the given group.
 */
 //go:nosplit
-func (self class) GetNodeCountInGroup(group String.Name) gd.Int { //gd:SceneTree.get_node_count_in_group
+func (self class) GetNodeCountInGroup(group String.Name) int64 { //gd:SceneTree.get_node_count_in_group
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_node_count_in_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -762,12 +765,12 @@ Returns [constant OK] on success, [constant ERR_CANT_OPEN] if the [param path] c
 [b]Note:[/b] See [method change_scene_to_packed] for details on the order of operations.
 */
 //go:nosplit
-func (self class) ChangeSceneToFile(path String.Readable) gd.Error { //gd:SceneTree.change_scene_to_file
+func (self class) ChangeSceneToFile(path String.Readable) Error.Code { //gd:SceneTree.change_scene_to_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_change_scene_to_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -781,12 +784,12 @@ Returns [constant OK] on success, [constant ERR_CANT_CREATE] if the scene cannot
 This ensures that both scenes aren't running at the same time, while still freeing the previous scene in a safe way similar to [method Node.queue_free].
 */
 //go:nosplit
-func (self class) ChangeSceneToPacked(packed_scene [1]gdclass.PackedScene) gd.Error { //gd:SceneTree.change_scene_to_packed
+func (self class) ChangeSceneToPacked(packed_scene [1]gdclass.PackedScene) Error.Code { //gd:SceneTree.change_scene_to_packed
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(packed_scene[0])[0])
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_change_scene_to_packed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -796,11 +799,11 @@ Reloads the currently active scene, replacing [member current_scene] with a new 
 Returns [constant OK] on success, [constant ERR_UNCONFIGURED] if no [member current_scene] is defined, [constant ERR_CANT_OPEN] if [member current_scene] cannot be loaded into a [PackedScene], or [constant ERR_CANT_CREATE] if the scene cannot be instantiated.
 */
 //go:nosplit
-func (self class) ReloadCurrentScene() gd.Error { //gd:SceneTree.reload_current_scene
+func (self class) ReloadCurrentScene() Error.Code { //gd:SceneTree.reload_current_scene
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_reload_current_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -932,120 +935,4 @@ const (
 	/*Call nodes within a group only once, even if the call is executed many times in the same frame. Must be combined with [constant GROUP_CALL_DEFERRED] to work.
 	  [b]Note:[/b] Different arguments are not taken into account. Therefore, when the same call is executed with different arguments, only the first call will be performed.*/
 	GroupCallUnique GroupCallFlags = 4
-)
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
 )

@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -78,7 +81,7 @@ func (self Instance) Strength() Float.X {
 }
 
 func (self Instance) SetStrength(value Float.X) {
-	class(self).SetStrength(gd.Float(value))
+	class(self).SetStrength(float64(value))
 }
 
 func (self Instance) Attenuation() Float.X {
@@ -86,7 +89,7 @@ func (self Instance) Attenuation() Float.X {
 }
 
 func (self Instance) SetAttenuation(value Float.X) {
-	class(self).SetAttenuation(gd.Float(value))
+	class(self).SetAttenuation(float64(value))
 }
 
 func (self Instance) Directionality() Float.X {
@@ -94,7 +97,7 @@ func (self Instance) Directionality() Float.X {
 }
 
 func (self Instance) SetDirectionality(value Float.X) {
-	class(self).SetDirectionality(gd.Float(value))
+	class(self).SetDirectionality(float64(value))
 }
 
 func (self Instance) CullMask() int {
@@ -102,11 +105,11 @@ func (self Instance) CullMask() int {
 }
 
 func (self Instance) SetCullMask(value int) {
-	class(self).SetCullMask(gd.Int(value))
+	class(self).SetCullMask(int64(value))
 }
 
 //go:nosplit
-func (self class) SetCullMask(mask gd.Int) { //gd:GPUParticlesAttractor3D.set_cull_mask
+func (self class) SetCullMask(mask int64) { //gd:GPUParticlesAttractor3D.set_cull_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -115,9 +118,9 @@ func (self class) SetCullMask(mask gd.Int) { //gd:GPUParticlesAttractor3D.set_cu
 }
 
 //go:nosplit
-func (self class) GetCullMask() gd.Int { //gd:GPUParticlesAttractor3D.get_cull_mask
+func (self class) GetCullMask() int64 { //gd:GPUParticlesAttractor3D.get_cull_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -125,7 +128,7 @@ func (self class) GetCullMask() gd.Int { //gd:GPUParticlesAttractor3D.get_cull_m
 }
 
 //go:nosplit
-func (self class) SetStrength(strength gd.Float) { //gd:GPUParticlesAttractor3D.set_strength
+func (self class) SetStrength(strength float64) { //gd:GPUParticlesAttractor3D.set_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil
@@ -134,9 +137,9 @@ func (self class) SetStrength(strength gd.Float) { //gd:GPUParticlesAttractor3D.
 }
 
 //go:nosplit
-func (self class) GetStrength() gd.Float { //gd:GPUParticlesAttractor3D.get_strength
+func (self class) GetStrength() float64 { //gd:GPUParticlesAttractor3D.get_strength
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -144,7 +147,7 @@ func (self class) GetStrength() gd.Float { //gd:GPUParticlesAttractor3D.get_stre
 }
 
 //go:nosplit
-func (self class) SetAttenuation(attenuation gd.Float) { //gd:GPUParticlesAttractor3D.set_attenuation
+func (self class) SetAttenuation(attenuation float64) { //gd:GPUParticlesAttractor3D.set_attenuation
 	var frame = callframe.New()
 	callframe.Arg(frame, attenuation)
 	var r_ret = callframe.Nil
@@ -153,9 +156,9 @@ func (self class) SetAttenuation(attenuation gd.Float) { //gd:GPUParticlesAttrac
 }
 
 //go:nosplit
-func (self class) GetAttenuation() gd.Float { //gd:GPUParticlesAttractor3D.get_attenuation
+func (self class) GetAttenuation() float64 { //gd:GPUParticlesAttractor3D.get_attenuation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_attenuation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -163,7 +166,7 @@ func (self class) GetAttenuation() gd.Float { //gd:GPUParticlesAttractor3D.get_a
 }
 
 //go:nosplit
-func (self class) SetDirectionality(amount gd.Float) { //gd:GPUParticlesAttractor3D.set_directionality
+func (self class) SetDirectionality(amount float64) { //gd:GPUParticlesAttractor3D.set_directionality
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -172,9 +175,9 @@ func (self class) SetDirectionality(amount gd.Float) { //gd:GPUParticlesAttracto
 }
 
 //go:nosplit
-func (self class) GetDirectionality() gd.Float { //gd:GPUParticlesAttractor3D.get_directionality
+func (self class) GetDirectionality() float64 { //gd:GPUParticlesAttractor3D.get_directionality
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_directionality, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

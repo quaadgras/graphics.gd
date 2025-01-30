@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -85,7 +88,7 @@ func (self Instance) Color() Color.RGBA {
 }
 
 func (self Instance) SetColor(value Color.RGBA) {
-	class(self).SetColor(gd.Color(value))
+	class(self).SetColor(Color.RGBA(value))
 }
 
 func (self Instance) CellSize() Float.X {
@@ -93,7 +96,7 @@ func (self Instance) CellSize() Float.X {
 }
 
 func (self Instance) SetCellSize(value Float.X) {
-	class(self).SetCellSize(gd.Float(value))
+	class(self).SetCellSize(float64(value))
 }
 
 func (self Instance) Radius() Float.X {
@@ -101,7 +104,7 @@ func (self Instance) Radius() Float.X {
 }
 
 func (self Instance) SetRadius(value Float.X) {
-	class(self).SetRadius(gd.Float(value))
+	class(self).SetRadius(float64(value))
 }
 
 func (self Instance) ZeroY() bool {
@@ -132,7 +135,7 @@ func (self class) GetAnimationPath() Path.ToNode { //gd:RootMotionView.get_anima
 }
 
 //go:nosplit
-func (self class) SetColor(color gd.Color) { //gd:RootMotionView.set_color
+func (self class) SetColor(color Color.RGBA) { //gd:RootMotionView.set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -141,9 +144,9 @@ func (self class) SetColor(color gd.Color) { //gd:RootMotionView.set_color
 }
 
 //go:nosplit
-func (self class) GetColor() gd.Color { //gd:RootMotionView.get_color
+func (self class) GetColor() Color.RGBA { //gd:RootMotionView.get_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RootMotionView.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -151,7 +154,7 @@ func (self class) GetColor() gd.Color { //gd:RootMotionView.get_color
 }
 
 //go:nosplit
-func (self class) SetCellSize(size gd.Float) { //gd:RootMotionView.set_cell_size
+func (self class) SetCellSize(size float64) { //gd:RootMotionView.set_cell_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -160,9 +163,9 @@ func (self class) SetCellSize(size gd.Float) { //gd:RootMotionView.set_cell_size
 }
 
 //go:nosplit
-func (self class) GetCellSize() gd.Float { //gd:RootMotionView.get_cell_size
+func (self class) GetCellSize() float64 { //gd:RootMotionView.get_cell_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RootMotionView.Bind_get_cell_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -170,7 +173,7 @@ func (self class) GetCellSize() gd.Float { //gd:RootMotionView.get_cell_size
 }
 
 //go:nosplit
-func (self class) SetRadius(size gd.Float) { //gd:RootMotionView.set_radius
+func (self class) SetRadius(size float64) { //gd:RootMotionView.set_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -179,9 +182,9 @@ func (self class) SetRadius(size gd.Float) { //gd:RootMotionView.set_radius
 }
 
 //go:nosplit
-func (self class) GetRadius() gd.Float { //gd:RootMotionView.get_radius
+func (self class) GetRadius() float64 { //gd:RootMotionView.get_radius
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RootMotionView.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

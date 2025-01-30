@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/GeometryInstance3D"
+import "graphics.gd/classdb/MeshInstance3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/MeshInstance3D"
-import "graphics.gd/classdb/GeometryInstance3D"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -40,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -68,28 +71,28 @@ func (self Instance) GetPhysicsRid() RID.SoftBody3D { //gd:SoftBody3D.get_physic
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:SoftBody3D.set_collision_mask_value
-	class(self).SetCollisionMaskValue(gd.Int(layer_number), value)
+	class(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:SoftBody3D.get_collision_mask_value
-	return bool(class(self).GetCollisionMaskValue(gd.Int(layer_number)))
+	return bool(class(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_layer], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:SoftBody3D.set_collision_layer_value
-	class(self).SetCollisionLayerValue(gd.Int(layer_number), value)
+	class(self).SetCollisionLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_layer] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:SoftBody3D.get_collision_layer_value
-	return bool(class(self).GetCollisionLayerValue(gd.Int(layer_number)))
+	return bool(class(self).GetCollisionLayerValue(int64(layer_number)))
 }
 
 /*
@@ -117,21 +120,21 @@ func (self Instance) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:S
 Returns local translation of a vertex in the surface array.
 */
 func (self Instance) GetPointTransform(point_index int) Vector3.XYZ { //gd:SoftBody3D.get_point_transform
-	return Vector3.XYZ(class(self).GetPointTransform(gd.Int(point_index)))
+	return Vector3.XYZ(class(self).GetPointTransform(int64(point_index)))
 }
 
 /*
 Sets the pinned state of a surface vertex. When set to [code]true[/code], the optional [param attachment_path] can define a [Node3D] the pinned vertex will be attached to.
 */
 func (self Instance) SetPointPinned(point_index int, pinned bool) { //gd:SoftBody3D.set_point_pinned
-	class(self).SetPointPinned(gd.Int(point_index), pinned, Path.ToNode(String.New("")))
+	class(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.New("")))
 }
 
 /*
 Returns [code]true[/code] if vertex is set to pinned.
 */
 func (self Instance) IsPointPinned(point_index int) bool { //gd:SoftBody3D.is_point_pinned
-	return bool(class(self).IsPointPinned(gd.Int(point_index)))
+	return bool(class(self).IsPointPinned(int64(point_index)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -157,7 +160,7 @@ func (self Instance) CollisionLayer() int {
 }
 
 func (self Instance) SetCollisionLayer(value int) {
-	class(self).SetCollisionLayer(gd.Int(value))
+	class(self).SetCollisionLayer(int64(value))
 }
 
 func (self Instance) CollisionMask() int {
@@ -165,7 +168,7 @@ func (self Instance) CollisionMask() int {
 }
 
 func (self Instance) SetCollisionMask(value int) {
-	class(self).SetCollisionMask(gd.Int(value))
+	class(self).SetCollisionMask(int64(value))
 }
 
 func (self Instance) ParentCollisionIgnore() string {
@@ -181,7 +184,7 @@ func (self Instance) SimulationPrecision() int {
 }
 
 func (self Instance) SetSimulationPrecision(value int) {
-	class(self).SetSimulationPrecision(gd.Int(value))
+	class(self).SetSimulationPrecision(int64(value))
 }
 
 func (self Instance) TotalMass() Float.X {
@@ -189,7 +192,7 @@ func (self Instance) TotalMass() Float.X {
 }
 
 func (self Instance) SetTotalMass(value Float.X) {
-	class(self).SetTotalMass(gd.Float(value))
+	class(self).SetTotalMass(float64(value))
 }
 
 func (self Instance) LinearStiffness() Float.X {
@@ -197,7 +200,7 @@ func (self Instance) LinearStiffness() Float.X {
 }
 
 func (self Instance) SetLinearStiffness(value Float.X) {
-	class(self).SetLinearStiffness(gd.Float(value))
+	class(self).SetLinearStiffness(float64(value))
 }
 
 func (self Instance) PressureCoefficient() Float.X {
@@ -205,7 +208,7 @@ func (self Instance) PressureCoefficient() Float.X {
 }
 
 func (self Instance) SetPressureCoefficient(value Float.X) {
-	class(self).SetPressureCoefficient(gd.Float(value))
+	class(self).SetPressureCoefficient(float64(value))
 }
 
 func (self Instance) DampingCoefficient() Float.X {
@@ -213,7 +216,7 @@ func (self Instance) DampingCoefficient() Float.X {
 }
 
 func (self Instance) SetDampingCoefficient(value Float.X) {
-	class(self).SetDampingCoefficient(gd.Float(value))
+	class(self).SetDampingCoefficient(float64(value))
 }
 
 func (self Instance) DragCoefficient() Float.X {
@@ -221,7 +224,7 @@ func (self Instance) DragCoefficient() Float.X {
 }
 
 func (self Instance) SetDragCoefficient(value Float.X) {
-	class(self).SetDragCoefficient(gd.Float(value))
+	class(self).SetDragCoefficient(float64(value))
 }
 
 func (self Instance) RayPickable() bool {
@@ -244,9 +247,9 @@ func (self Instance) SetDisableMode(value gdclass.SoftBody3DDisableMode) {
 Returns the internal [RID] used by the [PhysicsServer3D] for this body.
 */
 //go:nosplit
-func (self class) GetPhysicsRid() gd.RID { //gd:SoftBody3D.get_physics_rid
+func (self class) GetPhysicsRid() RID.Any { //gd:SoftBody3D.get_physics_rid
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_get_physics_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -254,7 +257,7 @@ func (self class) GetPhysicsRid() gd.RID { //gd:SoftBody3D.get_physics_rid
 }
 
 //go:nosplit
-func (self class) SetCollisionMask(collision_mask gd.Int) { //gd:SoftBody3D.set_collision_mask
+func (self class) SetCollisionMask(collision_mask int64) { //gd:SoftBody3D.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_mask)
 	var r_ret = callframe.Nil
@@ -263,9 +266,9 @@ func (self class) SetCollisionMask(collision_mask gd.Int) { //gd:SoftBody3D.set_
 }
 
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int { //gd:SoftBody3D.get_collision_mask
+func (self class) GetCollisionMask() int64 { //gd:SoftBody3D.get_collision_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -273,7 +276,7 @@ func (self class) GetCollisionMask() gd.Int { //gd:SoftBody3D.get_collision_mask
 }
 
 //go:nosplit
-func (self class) SetCollisionLayer(collision_layer gd.Int) { //gd:SoftBody3D.set_collision_layer
+func (self class) SetCollisionLayer(collision_layer int64) { //gd:SoftBody3D.set_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_layer)
 	var r_ret = callframe.Nil
@@ -282,9 +285,9 @@ func (self class) SetCollisionLayer(collision_layer gd.Int) { //gd:SoftBody3D.se
 }
 
 //go:nosplit
-func (self class) GetCollisionLayer() gd.Int { //gd:SoftBody3D.get_collision_layer
+func (self class) GetCollisionLayer() int64 { //gd:SoftBody3D.get_collision_layer
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -295,7 +298,7 @@ func (self class) GetCollisionLayer() gd.Int { //gd:SoftBody3D.get_collision_lay
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) { //gd:SoftBody3D.set_collision_mask_value
+func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:SoftBody3D.set_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -308,7 +311,7 @@ func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) { //gd:
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetCollisionMaskValue(layer_number gd.Int) bool { //gd:SoftBody3D.get_collision_mask_value
+func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:SoftBody3D.get_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -322,7 +325,7 @@ func (self class) GetCollisionMaskValue(layer_number gd.Int) bool { //gd:SoftBod
 Based on [param value], enables or disables the specified layer in the [member collision_layer], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetCollisionLayerValue(layer_number gd.Int, value bool) { //gd:SoftBody3D.set_collision_layer_value
+func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:SoftBody3D.set_collision_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -335,7 +338,7 @@ func (self class) SetCollisionLayerValue(layer_number gd.Int, value bool) { //gd
 Returns whether or not the specified layer of the [member collision_layer] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetCollisionLayerValue(layer_number gd.Int) bool { //gd:SoftBody3D.get_collision_layer_value
+func (self class) GetCollisionLayerValue(layer_number int64) bool { //gd:SoftBody3D.get_collision_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -421,7 +424,7 @@ func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:Soft
 }
 
 //go:nosplit
-func (self class) SetSimulationPrecision(simulation_precision gd.Int) { //gd:SoftBody3D.set_simulation_precision
+func (self class) SetSimulationPrecision(simulation_precision int64) { //gd:SoftBody3D.set_simulation_precision
 	var frame = callframe.New()
 	callframe.Arg(frame, simulation_precision)
 	var r_ret = callframe.Nil
@@ -430,9 +433,9 @@ func (self class) SetSimulationPrecision(simulation_precision gd.Int) { //gd:Sof
 }
 
 //go:nosplit
-func (self class) GetSimulationPrecision() gd.Int { //gd:SoftBody3D.get_simulation_precision
+func (self class) GetSimulationPrecision() int64 { //gd:SoftBody3D.get_simulation_precision
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_get_simulation_precision, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -440,7 +443,7 @@ func (self class) GetSimulationPrecision() gd.Int { //gd:SoftBody3D.get_simulati
 }
 
 //go:nosplit
-func (self class) SetTotalMass(mass gd.Float) { //gd:SoftBody3D.set_total_mass
+func (self class) SetTotalMass(mass float64) { //gd:SoftBody3D.set_total_mass
 	var frame = callframe.New()
 	callframe.Arg(frame, mass)
 	var r_ret = callframe.Nil
@@ -449,9 +452,9 @@ func (self class) SetTotalMass(mass gd.Float) { //gd:SoftBody3D.set_total_mass
 }
 
 //go:nosplit
-func (self class) GetTotalMass() gd.Float { //gd:SoftBody3D.get_total_mass
+func (self class) GetTotalMass() float64 { //gd:SoftBody3D.get_total_mass
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_get_total_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -459,7 +462,7 @@ func (self class) GetTotalMass() gd.Float { //gd:SoftBody3D.get_total_mass
 }
 
 //go:nosplit
-func (self class) SetLinearStiffness(linear_stiffness gd.Float) { //gd:SoftBody3D.set_linear_stiffness
+func (self class) SetLinearStiffness(linear_stiffness float64) { //gd:SoftBody3D.set_linear_stiffness
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_stiffness)
 	var r_ret = callframe.Nil
@@ -468,9 +471,9 @@ func (self class) SetLinearStiffness(linear_stiffness gd.Float) { //gd:SoftBody3
 }
 
 //go:nosplit
-func (self class) GetLinearStiffness() gd.Float { //gd:SoftBody3D.get_linear_stiffness
+func (self class) GetLinearStiffness() float64 { //gd:SoftBody3D.get_linear_stiffness
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_get_linear_stiffness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -478,7 +481,7 @@ func (self class) GetLinearStiffness() gd.Float { //gd:SoftBody3D.get_linear_sti
 }
 
 //go:nosplit
-func (self class) SetPressureCoefficient(pressure_coefficient gd.Float) { //gd:SoftBody3D.set_pressure_coefficient
+func (self class) SetPressureCoefficient(pressure_coefficient float64) { //gd:SoftBody3D.set_pressure_coefficient
 	var frame = callframe.New()
 	callframe.Arg(frame, pressure_coefficient)
 	var r_ret = callframe.Nil
@@ -487,9 +490,9 @@ func (self class) SetPressureCoefficient(pressure_coefficient gd.Float) { //gd:S
 }
 
 //go:nosplit
-func (self class) GetPressureCoefficient() gd.Float { //gd:SoftBody3D.get_pressure_coefficient
+func (self class) GetPressureCoefficient() float64 { //gd:SoftBody3D.get_pressure_coefficient
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_get_pressure_coefficient, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -497,7 +500,7 @@ func (self class) GetPressureCoefficient() gd.Float { //gd:SoftBody3D.get_pressu
 }
 
 //go:nosplit
-func (self class) SetDampingCoefficient(damping_coefficient gd.Float) { //gd:SoftBody3D.set_damping_coefficient
+func (self class) SetDampingCoefficient(damping_coefficient float64) { //gd:SoftBody3D.set_damping_coefficient
 	var frame = callframe.New()
 	callframe.Arg(frame, damping_coefficient)
 	var r_ret = callframe.Nil
@@ -506,9 +509,9 @@ func (self class) SetDampingCoefficient(damping_coefficient gd.Float) { //gd:Sof
 }
 
 //go:nosplit
-func (self class) GetDampingCoefficient() gd.Float { //gd:SoftBody3D.get_damping_coefficient
+func (self class) GetDampingCoefficient() float64 { //gd:SoftBody3D.get_damping_coefficient
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_get_damping_coefficient, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -516,7 +519,7 @@ func (self class) GetDampingCoefficient() gd.Float { //gd:SoftBody3D.get_damping
 }
 
 //go:nosplit
-func (self class) SetDragCoefficient(drag_coefficient gd.Float) { //gd:SoftBody3D.set_drag_coefficient
+func (self class) SetDragCoefficient(drag_coefficient float64) { //gd:SoftBody3D.set_drag_coefficient
 	var frame = callframe.New()
 	callframe.Arg(frame, drag_coefficient)
 	var r_ret = callframe.Nil
@@ -525,9 +528,9 @@ func (self class) SetDragCoefficient(drag_coefficient gd.Float) { //gd:SoftBody3
 }
 
 //go:nosplit
-func (self class) GetDragCoefficient() gd.Float { //gd:SoftBody3D.get_drag_coefficient
+func (self class) GetDragCoefficient() float64 { //gd:SoftBody3D.get_drag_coefficient
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_get_drag_coefficient, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -538,10 +541,10 @@ func (self class) GetDragCoefficient() gd.Float { //gd:SoftBody3D.get_drag_coeff
 Returns local translation of a vertex in the surface array.
 */
 //go:nosplit
-func (self class) GetPointTransform(point_index gd.Int) gd.Vector3 { //gd:SoftBody3D.get_point_transform
+func (self class) GetPointTransform(point_index int64) Vector3.XYZ { //gd:SoftBody3D.get_point_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, point_index)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_get_point_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -552,7 +555,7 @@ func (self class) GetPointTransform(point_index gd.Int) gd.Vector3 { //gd:SoftBo
 Sets the pinned state of a surface vertex. When set to [code]true[/code], the optional [param attachment_path] can define a [Node3D] the pinned vertex will be attached to.
 */
 //go:nosplit
-func (self class) SetPointPinned(point_index gd.Int, pinned bool, attachment_path Path.ToNode) { //gd:SoftBody3D.set_point_pinned
+func (self class) SetPointPinned(point_index int64, pinned bool, attachment_path Path.ToNode) { //gd:SoftBody3D.set_point_pinned
 	var frame = callframe.New()
 	callframe.Arg(frame, point_index)
 	callframe.Arg(frame, pinned)
@@ -566,7 +569,7 @@ func (self class) SetPointPinned(point_index gd.Int, pinned bool, attachment_pat
 Returns [code]true[/code] if vertex is set to pinned.
 */
 //go:nosplit
-func (self class) IsPointPinned(point_index gd.Int) bool { //gd:SoftBody3D.is_point_pinned
+func (self class) IsPointPinned(point_index int64) bool { //gd:SoftBody3D.is_point_pinned
 	var frame = callframe.New()
 	callframe.Arg(frame, point_index)
 	var r_ret = callframe.Ret[bool](frame)

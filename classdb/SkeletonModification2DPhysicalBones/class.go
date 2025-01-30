@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/SkeletonModification2D"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,14 +59,14 @@ Sets the [PhysicalBone2D] node at [param joint_idx].
 [b]Note:[/b] This is just the index used for this modification, not the bone index used in the [Skeleton2D].
 */
 func (self Instance) SetPhysicalBoneNode(joint_idx int, physicalbone2d_node string) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_node
-	class(self).SetPhysicalBoneNode(gd.Int(joint_idx), Path.ToNode(String.New(physicalbone2d_node)))
+	class(self).SetPhysicalBoneNode(int64(joint_idx), Path.ToNode(String.New(physicalbone2d_node)))
 }
 
 /*
 Returns the [PhysicalBone2D] node at [param joint_idx].
 */
 func (self Instance) GetPhysicalBoneNode(joint_idx int) string { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_node
-	return string(class(self).GetPhysicalBoneNode(gd.Int(joint_idx)).String())
+	return string(class(self).GetPhysicalBoneNode(int64(joint_idx)).String())
 }
 
 /*
@@ -112,11 +116,11 @@ func (self Instance) PhysicalBoneChainLength() int {
 }
 
 func (self Instance) SetPhysicalBoneChainLength(value int) {
-	class(self).SetPhysicalBoneChainLength(gd.Int(value))
+	class(self).SetPhysicalBoneChainLength(int64(value))
 }
 
 //go:nosplit
-func (self class) SetPhysicalBoneChainLength(length gd.Int) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_chain_length
+func (self class) SetPhysicalBoneChainLength(length int64) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_chain_length
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -125,9 +129,9 @@ func (self class) SetPhysicalBoneChainLength(length gd.Int) { //gd:SkeletonModif
 }
 
 //go:nosplit
-func (self class) GetPhysicalBoneChainLength() gd.Int { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_chain_length
+func (self class) GetPhysicalBoneChainLength() int64 { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_chain_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_get_physical_bone_chain_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -139,7 +143,7 @@ Sets the [PhysicalBone2D] node at [param joint_idx].
 [b]Note:[/b] This is just the index used for this modification, not the bone index used in the [Skeleton2D].
 */
 //go:nosplit
-func (self class) SetPhysicalBoneNode(joint_idx gd.Int, physicalbone2d_node Path.ToNode) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_node
+func (self class) SetPhysicalBoneNode(joint_idx int64, physicalbone2d_node Path.ToNode) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(physicalbone2d_node)))
@@ -152,7 +156,7 @@ func (self class) SetPhysicalBoneNode(joint_idx gd.Int, physicalbone2d_node Path
 Returns the [PhysicalBone2D] node at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetPhysicalBoneNode(joint_idx gd.Int) Path.ToNode { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_node
+func (self class) GetPhysicalBoneNode(joint_idx int64) Path.ToNode { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)

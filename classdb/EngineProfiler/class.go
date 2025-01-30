@@ -9,16 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -104,13 +107,13 @@ Called once every engine iteration when the profiler is active with information 
 */
 func (Instance) _tick(impl func(ptr unsafe.Pointer, frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var frame_time = gd.UnsafeGet[gd.Float](p_args, 0)
+		var frame_time = gd.UnsafeGet[float64](p_args, 0)
 
-		var process_time = gd.UnsafeGet[gd.Float](p_args, 1)
+		var process_time = gd.UnsafeGet[float64](p_args, 1)
 
-		var physics_time = gd.UnsafeGet[gd.Float](p_args, 2)
+		var physics_time = gd.UnsafeGet[float64](p_args, 2)
 
-		var physics_frame_time = gd.UnsafeGet[gd.Float](p_args, 3)
+		var physics_frame_time = gd.UnsafeGet[float64](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(frame_time), Float.X(process_time), Float.X(physics_time), Float.X(physics_frame_time))
@@ -165,15 +168,15 @@ func (class) _add_frame(impl func(ptr unsafe.Pointer, data Array.Any)) (cb gd.Ex
 /*
 Called once every engine iteration when the profiler is active with information about the current frame. All time values are in seconds. Lower values represent faster processing times and are therefore considered better.
 */
-func (class) _tick(impl func(ptr unsafe.Pointer, frame_time gd.Float, process_time gd.Float, physics_time gd.Float, physics_frame_time gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _tick(impl func(ptr unsafe.Pointer, frame_time float64, process_time float64, physics_time float64, physics_frame_time float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var frame_time = gd.UnsafeGet[gd.Float](p_args, 0)
+		var frame_time = gd.UnsafeGet[float64](p_args, 0)
 
-		var process_time = gd.UnsafeGet[gd.Float](p_args, 1)
+		var process_time = gd.UnsafeGet[float64](p_args, 1)
 
-		var physics_time = gd.UnsafeGet[gd.Float](p_args, 2)
+		var physics_time = gd.UnsafeGet[float64](p_args, 2)
 
-		var physics_frame_time = gd.UnsafeGet[gd.Float](p_args, 3)
+		var physics_frame_time = gd.UnsafeGet[float64](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, frame_time, process_time, physics_time, physics_frame_time)

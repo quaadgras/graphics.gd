@@ -10,15 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -148,7 +152,7 @@ Sets [param property] value of [param object] to [param value].
 */
 func ClassSetProperty(obj Object.Instance, property string, value any) error { //gd:ClassDB.class_set_property
 	once.Do(singleton)
-	return error(gd.ToError(class(self).ClassSetProperty(obj, String.Name(String.New(property)), gd.NewVariant(value))))
+	return error(gd.ToError(class(self).ClassSetProperty(obj, String.Name(String.New(property)), variant.New(value))))
 }
 
 /*
@@ -354,12 +358,12 @@ func (self class) CanInstantiate(class_ String.Name) bool { //gd:ClassDB.can_ins
 Creates an instance of [param class].
 */
 //go:nosplit
-func (self class) Instantiate(class_ String.Name) gd.Variant { //gd:ClassDB.instantiate
+func (self class) Instantiate(class_ String.Name) variant.Any { //gd:ClassDB.instantiate
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_instantiate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -428,13 +432,13 @@ func (self class) ClassGetPropertyList(class_ String.Name, no_inheritance bool) 
 Returns the value of [param property] of [param object] or its ancestry.
 */
 //go:nosplit
-func (self class) ClassGetProperty(obj [1]gd.Object, property String.Name) gd.Variant { //gd:ClassDB.class_get_property
+func (self class) ClassGetProperty(obj [1]gd.Object, property String.Name) variant.Any { //gd:ClassDB.class_get_property
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -443,14 +447,14 @@ func (self class) ClassGetProperty(obj [1]gd.Object, property String.Name) gd.Va
 Sets [param property] value of [param object] to [param value].
 */
 //go:nosplit
-func (self class) ClassSetProperty(obj [1]gd.Object, property String.Name, value gd.Variant) gd.Error { //gd:ClassDB.class_set_property
+func (self class) ClassSetProperty(obj [1]gd.Object, property String.Name, value variant.Any) Error.Code { //gd:ClassDB.class_set_property
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
-	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[gd.Error](frame)
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_set_property, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -459,13 +463,13 @@ func (self class) ClassSetProperty(obj [1]gd.Object, property String.Name, value
 Returns the default value of [param property] of [param class] or its ancestor classes.
 */
 //go:nosplit
-func (self class) ClassGetPropertyDefaultValue(class_ String.Name, property String.Name) gd.Variant { //gd:ClassDB.class_get_property_default_value
+func (self class) ClassGetPropertyDefaultValue(class_ String.Name, property String.Name) variant.Any { //gd:ClassDB.class_get_property_default_value
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -490,12 +494,12 @@ func (self class) ClassHasMethod(class_ String.Name, method String.Name, no_inhe
 Returns the number of arguments of the method [param method] of [param class] or its ancestry if [param no_inheritance] is [code]false[/code].
 */
 //go:nosplit
-func (self class) ClassGetMethodArgumentCount(class_ String.Name, method String.Name, no_inheritance bool) gd.Int { //gd:ClassDB.class_get_method_argument_count
+func (self class) ClassGetMethodArgumentCount(class_ String.Name, method String.Name, no_inheritance bool) int64 { //gd:ClassDB.class_get_method_argument_count
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(method)))
 	callframe.Arg(frame, no_inheritance)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_method_argument_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -552,11 +556,11 @@ func (self class) ClassHasIntegerConstant(class_ String.Name, name String.Name) 
 Returns the value of the integer constant [param name] of [param class] or its ancestry. Always returns 0 when the constant could not be found.
 */
 //go:nosplit
-func (self class) ClassGetIntegerConstant(class_ String.Name, name String.Name) gd.Int { //gd:ClassDB.class_get_integer_constant
+func (self class) ClassGetIntegerConstant(class_ String.Name, name String.Name) int64 { //gd:ClassDB.class_get_integer_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_integer_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -665,129 +669,6 @@ func init() {
 	gdclass.Register("ClassDB", func(ptr gd.Object) any { return [1]gdclass.ClassDB{*(*gdclass.ClassDB)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
-)
-
-type SignalInfo struct {
-	Name        string         `gd:"name"`
-	Flags       int            `gd:"flags"`
-	ID          int            `gd:"id"`
-	DefaultArgs []interface{}  `gd:"default_args"`
-	Args        []PropertyInfo `gd:"args"`
-}
 type PropertyInfo struct {
 	ClassName  string       `gd:"class_name"`
 	Name       string       `gd:"name"`
@@ -795,4 +676,11 @@ type PropertyInfo struct {
 	HintString string       `gd:"hint_string"`
 	Type       reflect.Type `gd:"type"`
 	Usage      int          `gd:"usage"`
+}
+type SignalInfo struct {
+	Name        string         `gd:"name"`
+	Flags       int            `gd:"flags"`
+	ID          int            `gd:"id"`
+	DefaultArgs []interface{}  `gd:"default_args"`
+	Args        []PropertyInfo `gd:"args"`
 }

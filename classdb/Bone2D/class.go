@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Transform2D"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform2D"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -95,7 +98,7 @@ func (self Instance) GetAutocalculateLengthAndAngle() bool { //gd:Bone2D.get_aut
 Sets the length of the bone in the [Bone2D].
 */
 func (self Instance) SetLength(length Float.X) { //gd:Bone2D.set_length
-	class(self).SetLength(gd.Float(length))
+	class(self).SetLength(float64(length))
 }
 
 /*
@@ -110,7 +113,7 @@ Sets the bone angle for the [Bone2D]. This is typically set to the rotation from
 [b]Note:[/b] This is different from the [Bone2D]'s rotation. The bone's angle is the rotation of the bone shown by the gizmo, which is unaffected by the [Bone2D]'s [member Node2D.transform].
 */
 func (self Instance) SetBoneAngle(angle Float.X) { //gd:Bone2D.set_bone_angle
-	class(self).SetBoneAngle(gd.Float(angle))
+	class(self).SetBoneAngle(float64(angle))
 }
 
 /*
@@ -144,11 +147,11 @@ func (self Instance) Rest() Transform2D.OriginXY {
 }
 
 func (self Instance) SetRest(value Transform2D.OriginXY) {
-	class(self).SetRest(gd.Transform2D(value))
+	class(self).SetRest(Transform2D.OriginXY(value))
 }
 
 //go:nosplit
-func (self class) SetRest(rest gd.Transform2D) { //gd:Bone2D.set_rest
+func (self class) SetRest(rest Transform2D.OriginXY) { //gd:Bone2D.set_rest
 	var frame = callframe.New()
 	callframe.Arg(frame, rest)
 	var r_ret = callframe.Nil
@@ -157,9 +160,9 @@ func (self class) SetRest(rest gd.Transform2D) { //gd:Bone2D.set_rest
 }
 
 //go:nosplit
-func (self class) GetRest() gd.Transform2D { //gd:Bone2D.get_rest
+func (self class) GetRest() Transform2D.OriginXY { //gd:Bone2D.get_rest
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform2D](frame)
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Bone2D.Bind_get_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -181,9 +184,9 @@ func (self class) ApplyRest() { //gd:Bone2D.apply_rest
 Returns the node's [member rest] [Transform2D] if it doesn't have a parent, or its rest pose relative to its parent.
 */
 //go:nosplit
-func (self class) GetSkeletonRest() gd.Transform2D { //gd:Bone2D.get_skeleton_rest
+func (self class) GetSkeletonRest() Transform2D.OriginXY { //gd:Bone2D.get_skeleton_rest
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform2D](frame)
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Bone2D.Bind_get_skeleton_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -194,9 +197,9 @@ func (self class) GetSkeletonRest() gd.Transform2D { //gd:Bone2D.get_skeleton_re
 Returns the node's index as part of the entire skeleton. See [Skeleton2D].
 */
 //go:nosplit
-func (self class) GetIndexInSkeleton() gd.Int { //gd:Bone2D.get_index_in_skeleton
+func (self class) GetIndexInSkeleton() int64 { //gd:Bone2D.get_index_in_skeleton
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Bone2D.Bind_get_index_in_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -232,7 +235,7 @@ func (self class) GetAutocalculateLengthAndAngle() bool { //gd:Bone2D.get_autoca
 Sets the length of the bone in the [Bone2D].
 */
 //go:nosplit
-func (self class) SetLength(length gd.Float) { //gd:Bone2D.set_length
+func (self class) SetLength(length float64) { //gd:Bone2D.set_length
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -244,9 +247,9 @@ func (self class) SetLength(length gd.Float) { //gd:Bone2D.set_length
 Returns the length of the bone in the [Bone2D] node.
 */
 //go:nosplit
-func (self class) GetLength() gd.Float { //gd:Bone2D.get_length
+func (self class) GetLength() float64 { //gd:Bone2D.get_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Bone2D.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -258,7 +261,7 @@ Sets the bone angle for the [Bone2D]. This is typically set to the rotation from
 [b]Note:[/b] This is different from the [Bone2D]'s rotation. The bone's angle is the rotation of the bone shown by the gizmo, which is unaffected by the [Bone2D]'s [member Node2D.transform].
 */
 //go:nosplit
-func (self class) SetBoneAngle(angle gd.Float) { //gd:Bone2D.set_bone_angle
+func (self class) SetBoneAngle(angle float64) { //gd:Bone2D.set_bone_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, angle)
 	var r_ret = callframe.Nil
@@ -271,9 +274,9 @@ Returns the angle of the bone in the [Bone2D].
 [b]Note:[/b] This is different from the [Bone2D]'s rotation. The bone's angle is the rotation of the bone shown by the gizmo, which is unaffected by the [Bone2D]'s [member Node2D.transform].
 */
 //go:nosplit
-func (self class) GetBoneAngle() gd.Float { //gd:Bone2D.get_bone_angle
+func (self class) GetBoneAngle() float64 { //gd:Bone2D.get_bone_angle
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Bone2D.Bind_get_bone_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

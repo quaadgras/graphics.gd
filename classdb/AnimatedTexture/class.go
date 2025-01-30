@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Texture2D"
-import "graphics.gd/classdb/Texture"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -61,28 +64,28 @@ Assigns a [Texture2D] to the given frame. Frame IDs start at 0, so the first fra
 You can define any number of textures up to [constant MAX_FRAMES], but keep in mind that only frames from 0 to [member frames] - 1 will be part of the animation.
 */
 func (self Instance) SetFrameTexture(frame_ int, texture [1]gdclass.Texture2D) { //gd:AnimatedTexture.set_frame_texture
-	class(self).SetFrameTexture(gd.Int(frame_), texture)
+	class(self).SetFrameTexture(int64(frame_), texture)
 }
 
 /*
 Returns the given frame's [Texture2D].
 */
 func (self Instance) GetFrameTexture(frame_ int) [1]gdclass.Texture2D { //gd:AnimatedTexture.get_frame_texture
-	return [1]gdclass.Texture2D(class(self).GetFrameTexture(gd.Int(frame_)))
+	return [1]gdclass.Texture2D(class(self).GetFrameTexture(int64(frame_)))
 }
 
 /*
 Sets the duration of any given [param frame]. The final duration is affected by the [member speed_scale]. If set to [code]0[/code], the frame is skipped during playback.
 */
 func (self Instance) SetFrameDuration(frame_ int, duration Float.X) { //gd:AnimatedTexture.set_frame_duration
-	class(self).SetFrameDuration(gd.Int(frame_), gd.Float(duration))
+	class(self).SetFrameDuration(int64(frame_), float64(duration))
 }
 
 /*
 Returns the given [param frame]'s duration, in seconds.
 */
 func (self Instance) GetFrameDuration(frame_ int) Float.X { //gd:AnimatedTexture.get_frame_duration
-	return Float.X(Float.X(class(self).GetFrameDuration(gd.Int(frame_))))
+	return Float.X(Float.X(class(self).GetFrameDuration(int64(frame_))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -109,7 +112,7 @@ func (self Instance) Frames() int {
 }
 
 func (self Instance) SetFrames(value int) {
-	class(self).SetFrames(gd.Int(value))
+	class(self).SetFrames(int64(value))
 }
 
 func (self Instance) CurrentFrame() int {
@@ -117,7 +120,7 @@ func (self Instance) CurrentFrame() int {
 }
 
 func (self Instance) SetCurrentFrame(value int) {
-	class(self).SetCurrentFrame(gd.Int(value))
+	class(self).SetCurrentFrame(int64(value))
 }
 
 func (self Instance) Pause() bool {
@@ -141,11 +144,11 @@ func (self Instance) SpeedScale() Float.X {
 }
 
 func (self Instance) SetSpeedScale(value Float.X) {
-	class(self).SetSpeedScale(gd.Float(value))
+	class(self).SetSpeedScale(float64(value))
 }
 
 //go:nosplit
-func (self class) SetFrames(frames gd.Int) { //gd:AnimatedTexture.set_frames
+func (self class) SetFrames(frames int64) { //gd:AnimatedTexture.set_frames
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
 	var r_ret = callframe.Nil
@@ -154,9 +157,9 @@ func (self class) SetFrames(frames gd.Int) { //gd:AnimatedTexture.set_frames
 }
 
 //go:nosplit
-func (self class) GetFrames() gd.Int { //gd:AnimatedTexture.get_frames
+func (self class) GetFrames() int64 { //gd:AnimatedTexture.get_frames
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedTexture.Bind_get_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -164,7 +167,7 @@ func (self class) GetFrames() gd.Int { //gd:AnimatedTexture.get_frames
 }
 
 //go:nosplit
-func (self class) SetCurrentFrame(frame_ gd.Int) { //gd:AnimatedTexture.set_current_frame
+func (self class) SetCurrentFrame(frame_ int64) { //gd:AnimatedTexture.set_current_frame
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	var r_ret = callframe.Nil
@@ -173,9 +176,9 @@ func (self class) SetCurrentFrame(frame_ gd.Int) { //gd:AnimatedTexture.set_curr
 }
 
 //go:nosplit
-func (self class) GetCurrentFrame() gd.Int { //gd:AnimatedTexture.get_current_frame
+func (self class) GetCurrentFrame() int64 { //gd:AnimatedTexture.get_current_frame
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedTexture.Bind_get_current_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -221,7 +224,7 @@ func (self class) GetOneShot() bool { //gd:AnimatedTexture.get_one_shot
 }
 
 //go:nosplit
-func (self class) SetSpeedScale(scale gd.Float) { //gd:AnimatedTexture.set_speed_scale
+func (self class) SetSpeedScale(scale float64) { //gd:AnimatedTexture.set_speed_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -230,9 +233,9 @@ func (self class) SetSpeedScale(scale gd.Float) { //gd:AnimatedTexture.set_speed
 }
 
 //go:nosplit
-func (self class) GetSpeedScale() gd.Float { //gd:AnimatedTexture.get_speed_scale
+func (self class) GetSpeedScale() float64 { //gd:AnimatedTexture.get_speed_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedTexture.Bind_get_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -244,7 +247,7 @@ Assigns a [Texture2D] to the given frame. Frame IDs start at 0, so the first fra
 You can define any number of textures up to [constant MAX_FRAMES], but keep in mind that only frames from 0 to [member frames] - 1 will be part of the animation.
 */
 //go:nosplit
-func (self class) SetFrameTexture(frame_ gd.Int, texture [1]gdclass.Texture2D) { //gd:AnimatedTexture.set_frame_texture
+func (self class) SetFrameTexture(frame_ int64, texture [1]gdclass.Texture2D) { //gd:AnimatedTexture.set_frame_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
@@ -257,7 +260,7 @@ func (self class) SetFrameTexture(frame_ gd.Int, texture [1]gdclass.Texture2D) {
 Returns the given frame's [Texture2D].
 */
 //go:nosplit
-func (self class) GetFrameTexture(frame_ gd.Int) [1]gdclass.Texture2D { //gd:AnimatedTexture.get_frame_texture
+func (self class) GetFrameTexture(frame_ int64) [1]gdclass.Texture2D { //gd:AnimatedTexture.get_frame_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -271,7 +274,7 @@ func (self class) GetFrameTexture(frame_ gd.Int) [1]gdclass.Texture2D { //gd:Ani
 Sets the duration of any given [param frame]. The final duration is affected by the [member speed_scale]. If set to [code]0[/code], the frame is skipped during playback.
 */
 //go:nosplit
-func (self class) SetFrameDuration(frame_ gd.Int, duration gd.Float) { //gd:AnimatedTexture.set_frame_duration
+func (self class) SetFrameDuration(frame_ int64, duration float64) { //gd:AnimatedTexture.set_frame_duration
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	callframe.Arg(frame, duration)
@@ -284,10 +287,10 @@ func (self class) SetFrameDuration(frame_ gd.Int, duration gd.Float) { //gd:Anim
 Returns the given [param frame]'s duration, in seconds.
 */
 //go:nosplit
-func (self class) GetFrameDuration(frame_ gd.Int) gd.Float { //gd:AnimatedTexture.get_frame_duration
+func (self class) GetFrameDuration(frame_ int64) float64 { //gd:AnimatedTexture.get_frame_duration
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedTexture.Bind_get_frame_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

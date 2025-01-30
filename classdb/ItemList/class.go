@@ -9,23 +9,24 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Color"
-import "graphics.gd/variant/Vector2i"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -41,6 +42,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -80,112 +83,112 @@ func (self Instance) AddIconItem(icon [1]gdclass.Texture2D) int { //gd:ItemList.
 Sets text of the item associated with the specified index.
 */
 func (self Instance) SetItemText(idx int, text string) { //gd:ItemList.set_item_text
-	class(self).SetItemText(gd.Int(idx), String.New(text))
+	class(self).SetItemText(int64(idx), String.New(text))
 }
 
 /*
 Returns the text associated with the specified index.
 */
 func (self Instance) GetItemText(idx int) string { //gd:ItemList.get_item_text
-	return string(class(self).GetItemText(gd.Int(idx)).String())
+	return string(class(self).GetItemText(int64(idx)).String())
 }
 
 /*
 Sets (or replaces) the icon's [Texture2D] associated with the specified index.
 */
 func (self Instance) SetItemIcon(idx int, icon [1]gdclass.Texture2D) { //gd:ItemList.set_item_icon
-	class(self).SetItemIcon(gd.Int(idx), icon)
+	class(self).SetItemIcon(int64(idx), icon)
 }
 
 /*
 Returns the icon associated with the specified index.
 */
 func (self Instance) GetItemIcon(idx int) [1]gdclass.Texture2D { //gd:ItemList.get_item_icon
-	return [1]gdclass.Texture2D(class(self).GetItemIcon(gd.Int(idx)))
+	return [1]gdclass.Texture2D(class(self).GetItemIcon(int64(idx)))
 }
 
 /*
 Sets item's text base writing direction.
 */
 func (self Instance) SetItemTextDirection(idx int, direction gdclass.ControlTextDirection) { //gd:ItemList.set_item_text_direction
-	class(self).SetItemTextDirection(gd.Int(idx), direction)
+	class(self).SetItemTextDirection(int64(idx), direction)
 }
 
 /*
 Returns item's text base writing direction.
 */
 func (self Instance) GetItemTextDirection(idx int) gdclass.ControlTextDirection { //gd:ItemList.get_item_text_direction
-	return gdclass.ControlTextDirection(class(self).GetItemTextDirection(gd.Int(idx)))
+	return gdclass.ControlTextDirection(class(self).GetItemTextDirection(int64(idx)))
 }
 
 /*
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 func (self Instance) SetItemLanguage(idx int, language string) { //gd:ItemList.set_item_language
-	class(self).SetItemLanguage(gd.Int(idx), String.New(language))
+	class(self).SetItemLanguage(int64(idx), String.New(language))
 }
 
 /*
 Returns item's text language code.
 */
 func (self Instance) GetItemLanguage(idx int) string { //gd:ItemList.get_item_language
-	return string(class(self).GetItemLanguage(gd.Int(idx)).String())
+	return string(class(self).GetItemLanguage(int64(idx)).String())
 }
 
 /*
 Sets whether the item icon will be drawn transposed.
 */
 func (self Instance) SetItemIconTransposed(idx int, transposed bool) { //gd:ItemList.set_item_icon_transposed
-	class(self).SetItemIconTransposed(gd.Int(idx), transposed)
+	class(self).SetItemIconTransposed(int64(idx), transposed)
 }
 
 /*
 Returns [code]true[/code] if the item icon will be drawn transposed, i.e. the X and Y axes are swapped.
 */
 func (self Instance) IsItemIconTransposed(idx int) bool { //gd:ItemList.is_item_icon_transposed
-	return bool(class(self).IsItemIconTransposed(gd.Int(idx)))
+	return bool(class(self).IsItemIconTransposed(int64(idx)))
 }
 
 /*
 Sets the region of item's icon used. The whole icon will be used if the region has no area.
 */
 func (self Instance) SetItemIconRegion(idx int, rect Rect2.PositionSize) { //gd:ItemList.set_item_icon_region
-	class(self).SetItemIconRegion(gd.Int(idx), gd.Rect2(rect))
+	class(self).SetItemIconRegion(int64(idx), Rect2.PositionSize(rect))
 }
 
 /*
 Returns the region of item's icon used. The whole icon will be used if the region has no area.
 */
 func (self Instance) GetItemIconRegion(idx int) Rect2.PositionSize { //gd:ItemList.get_item_icon_region
-	return Rect2.PositionSize(class(self).GetItemIconRegion(gd.Int(idx)))
+	return Rect2.PositionSize(class(self).GetItemIconRegion(int64(idx)))
 }
 
 /*
 Sets a modulating [Color] of the item associated with the specified index.
 */
 func (self Instance) SetItemIconModulate(idx int, modulate Color.RGBA) { //gd:ItemList.set_item_icon_modulate
-	class(self).SetItemIconModulate(gd.Int(idx), gd.Color(modulate))
+	class(self).SetItemIconModulate(int64(idx), Color.RGBA(modulate))
 }
 
 /*
 Returns a [Color] modulating item's icon at the specified index.
 */
 func (self Instance) GetItemIconModulate(idx int) Color.RGBA { //gd:ItemList.get_item_icon_modulate
-	return Color.RGBA(class(self).GetItemIconModulate(gd.Int(idx)))
+	return Color.RGBA(class(self).GetItemIconModulate(int64(idx)))
 }
 
 /*
 Allows or disallows selection of the item associated with the specified index.
 */
 func (self Instance) SetItemSelectable(idx int, selectable bool) { //gd:ItemList.set_item_selectable
-	class(self).SetItemSelectable(gd.Int(idx), selectable)
+	class(self).SetItemSelectable(int64(idx), selectable)
 }
 
 /*
 Returns [code]true[/code] if the item at the specified index is selectable.
 */
 func (self Instance) IsItemSelectable(idx int) bool { //gd:ItemList.is_item_selectable
-	return bool(class(self).IsItemSelectable(gd.Int(idx)))
+	return bool(class(self).IsItemSelectable(int64(idx)))
 }
 
 /*
@@ -193,56 +196,56 @@ Disables (or enables) the item at the specified index.
 Disabled items cannot be selected and do not trigger activation signals (when double-clicking or pressing [kbd]Enter[/kbd]).
 */
 func (self Instance) SetItemDisabled(idx int, disabled bool) { //gd:ItemList.set_item_disabled
-	class(self).SetItemDisabled(gd.Int(idx), disabled)
+	class(self).SetItemDisabled(int64(idx), disabled)
 }
 
 /*
 Returns [code]true[/code] if the item at the specified index is disabled.
 */
 func (self Instance) IsItemDisabled(idx int) bool { //gd:ItemList.is_item_disabled
-	return bool(class(self).IsItemDisabled(gd.Int(idx)))
+	return bool(class(self).IsItemDisabled(int64(idx)))
 }
 
 /*
 Sets a value (of any type) to be stored with the item associated with the specified index.
 */
 func (self Instance) SetItemMetadata(idx int, metadata any) { //gd:ItemList.set_item_metadata
-	class(self).SetItemMetadata(gd.Int(idx), gd.NewVariant(metadata))
+	class(self).SetItemMetadata(int64(idx), variant.New(metadata))
 }
 
 /*
 Returns the metadata value of the specified index.
 */
 func (self Instance) GetItemMetadata(idx int) any { //gd:ItemList.get_item_metadata
-	return any(class(self).GetItemMetadata(gd.Int(idx)).Interface())
+	return any(class(self).GetItemMetadata(int64(idx)).Interface())
 }
 
 /*
 Sets the background color of the item specified by [param idx] index to the specified [Color].
 */
 func (self Instance) SetItemCustomBgColor(idx int, custom_bg_color Color.RGBA) { //gd:ItemList.set_item_custom_bg_color
-	class(self).SetItemCustomBgColor(gd.Int(idx), gd.Color(custom_bg_color))
+	class(self).SetItemCustomBgColor(int64(idx), Color.RGBA(custom_bg_color))
 }
 
 /*
 Returns the custom background color of the item specified by [param idx] index.
 */
 func (self Instance) GetItemCustomBgColor(idx int) Color.RGBA { //gd:ItemList.get_item_custom_bg_color
-	return Color.RGBA(class(self).GetItemCustomBgColor(gd.Int(idx)))
+	return Color.RGBA(class(self).GetItemCustomBgColor(int64(idx)))
 }
 
 /*
 Sets the foreground color of the item specified by [param idx] index to the specified [Color].
 */
 func (self Instance) SetItemCustomFgColor(idx int, custom_fg_color Color.RGBA) { //gd:ItemList.set_item_custom_fg_color
-	class(self).SetItemCustomFgColor(gd.Int(idx), gd.Color(custom_fg_color))
+	class(self).SetItemCustomFgColor(int64(idx), Color.RGBA(custom_fg_color))
 }
 
 /*
 Returns the custom foreground color of the item specified by [param idx] index.
 */
 func (self Instance) GetItemCustomFgColor(idx int) Color.RGBA { //gd:ItemList.get_item_custom_fg_color
-	return Color.RGBA(class(self).GetItemCustomFgColor(gd.Int(idx)))
+	return Color.RGBA(class(self).GetItemCustomFgColor(int64(idx)))
 }
 
 /*
@@ -250,35 +253,35 @@ Returns the position and size of the item with the specified index, in the coord
 [b]Note:[/b] The returned value is unreliable if called right after modifying the [ItemList], before it redraws in the next frame.
 */
 func (self Instance) GetItemRect(idx int) Rect2.PositionSize { //gd:ItemList.get_item_rect
-	return Rect2.PositionSize(class(self).GetItemRect(gd.Int(idx), true))
+	return Rect2.PositionSize(class(self).GetItemRect(int64(idx), true))
 }
 
 /*
 Sets whether the tooltip hint is enabled for specified item index.
 */
 func (self Instance) SetItemTooltipEnabled(idx int, enable bool) { //gd:ItemList.set_item_tooltip_enabled
-	class(self).SetItemTooltipEnabled(gd.Int(idx), enable)
+	class(self).SetItemTooltipEnabled(int64(idx), enable)
 }
 
 /*
 Returns [code]true[/code] if the tooltip is enabled for specified item index.
 */
 func (self Instance) IsItemTooltipEnabled(idx int) bool { //gd:ItemList.is_item_tooltip_enabled
-	return bool(class(self).IsItemTooltipEnabled(gd.Int(idx)))
+	return bool(class(self).IsItemTooltipEnabled(int64(idx)))
 }
 
 /*
 Sets the tooltip hint for the item associated with the specified index.
 */
 func (self Instance) SetItemTooltip(idx int, tooltip string) { //gd:ItemList.set_item_tooltip
-	class(self).SetItemTooltip(gd.Int(idx), String.New(tooltip))
+	class(self).SetItemTooltip(int64(idx), String.New(tooltip))
 }
 
 /*
 Returns the tooltip hint associated with the specified index.
 */
 func (self Instance) GetItemTooltip(idx int) string { //gd:ItemList.get_item_tooltip
-	return string(class(self).GetItemTooltip(gd.Int(idx)).String())
+	return string(class(self).GetItemTooltip(int64(idx)).String())
 }
 
 /*
@@ -286,14 +289,14 @@ Select the item at the specified index.
 [b]Note:[/b] This method does not trigger the item selection signal.
 */
 func (self Instance) Select(idx int) { //gd:ItemList.select
-	class(self).Select(gd.Int(idx), true)
+	class(self).Select(int64(idx), true)
 }
 
 /*
 Ensures the item associated with the specified index is not selected.
 */
 func (self Instance) Deselect(idx int) { //gd:ItemList.deselect
-	class(self).Deselect(gd.Int(idx))
+	class(self).Deselect(int64(idx))
 }
 
 /*
@@ -307,7 +310,7 @@ func (self Instance) DeselectAll() { //gd:ItemList.deselect_all
 Returns [code]true[/code] if the item at the specified index is currently selected.
 */
 func (self Instance) IsSelected(idx int) bool { //gd:ItemList.is_selected
-	return bool(class(self).IsSelected(gd.Int(idx)))
+	return bool(class(self).IsSelected(int64(idx)))
 }
 
 /*
@@ -321,14 +324,14 @@ func (self Instance) GetSelectedItems() []int32 { //gd:ItemList.get_selected_ite
 Moves item from index [param from_idx] to [param to_idx].
 */
 func (self Instance) MoveItem(from_idx int, to_idx int) { //gd:ItemList.move_item
-	class(self).MoveItem(gd.Int(from_idx), gd.Int(to_idx))
+	class(self).MoveItem(int64(from_idx), int64(to_idx))
 }
 
 /*
 Removes the item specified by [param idx] index from the list.
 */
 func (self Instance) RemoveItem(idx int) { //gd:ItemList.remove_item
-	class(self).RemoveItem(gd.Int(idx))
+	class(self).RemoveItem(int64(idx))
 }
 
 /*
@@ -358,7 +361,7 @@ When there is no item at that point, -1 will be returned if [param exact] is [co
 [b]Note:[/b] The returned value is unreliable if called right after modifying the [ItemList], before it redraws in the next frame.
 */
 func (self Instance) GetItemAtPosition(position Vector2.XY) int { //gd:ItemList.get_item_at_position
-	return int(int(class(self).GetItemAtPosition(gd.Vector2(position), false)))
+	return int(int(class(self).GetItemAtPosition(Vector2.XY(position), false)))
 }
 
 /*
@@ -438,7 +441,7 @@ func (self Instance) MaxTextLines() int {
 }
 
 func (self Instance) SetMaxTextLines(value int) {
-	class(self).SetMaxTextLines(gd.Int(value))
+	class(self).SetMaxTextLines(int64(value))
 }
 
 func (self Instance) AutoHeight() bool {
@@ -462,7 +465,7 @@ func (self Instance) ItemCount() int {
 }
 
 func (self Instance) SetItemCount(value int) {
-	class(self).SetItemCount(gd.Int(value))
+	class(self).SetItemCount(int64(value))
 }
 
 func (self Instance) MaxColumns() int {
@@ -470,7 +473,7 @@ func (self Instance) MaxColumns() int {
 }
 
 func (self Instance) SetMaxColumns(value int) {
-	class(self).SetMaxColumns(gd.Int(value))
+	class(self).SetMaxColumns(int64(value))
 }
 
 func (self Instance) SameColumnWidth() bool {
@@ -486,7 +489,7 @@ func (self Instance) FixedColumnWidth() int {
 }
 
 func (self Instance) SetFixedColumnWidth(value int) {
-	class(self).SetFixedColumnWidth(gd.Int(value))
+	class(self).SetFixedColumnWidth(int64(value))
 }
 
 func (self Instance) IconMode() gdclass.ItemListIconMode {
@@ -502,7 +505,7 @@ func (self Instance) IconScale() Float.X {
 }
 
 func (self Instance) SetIconScale(value Float.X) {
-	class(self).SetIconScale(gd.Float(value))
+	class(self).SetIconScale(float64(value))
 }
 
 func (self Instance) FixedIconSize() Vector2i.XY {
@@ -510,7 +513,7 @@ func (self Instance) FixedIconSize() Vector2i.XY {
 }
 
 func (self Instance) SetFixedIconSize(value Vector2i.XY) {
-	class(self).SetFixedIconSize(gd.Vector2i(value))
+	class(self).SetFixedIconSize(Vector2i.XY(value))
 }
 
 /*
@@ -519,12 +522,12 @@ Specify an [param icon], or use [code]null[/code] as the [param icon] for a list
 If selectable is [code]true[/code], the list item will be selectable.
 */
 //go:nosplit
-func (self class) AddItem(text String.Readable, icon [1]gdclass.Texture2D, selectable bool) gd.Int { //gd:ItemList.add_item
+func (self class) AddItem(text String.Readable, icon [1]gdclass.Texture2D, selectable bool) int64 { //gd:ItemList.add_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	callframe.Arg(frame, selectable)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_add_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -535,11 +538,11 @@ func (self class) AddItem(text String.Readable, icon [1]gdclass.Texture2D, selec
 Adds an item to the item list with no text, only an icon. Returns the index of an added item.
 */
 //go:nosplit
-func (self class) AddIconItem(icon [1]gdclass.Texture2D, selectable bool) gd.Int { //gd:ItemList.add_icon_item
+func (self class) AddIconItem(icon [1]gdclass.Texture2D, selectable bool) int64 { //gd:ItemList.add_icon_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	callframe.Arg(frame, selectable)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_add_icon_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -550,7 +553,7 @@ func (self class) AddIconItem(icon [1]gdclass.Texture2D, selectable bool) gd.Int
 Sets text of the item associated with the specified index.
 */
 //go:nosplit
-func (self class) SetItemText(idx gd.Int, text String.Readable) { //gd:ItemList.set_item_text
+func (self class) SetItemText(idx int64, text String.Readable) { //gd:ItemList.set_item_text
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
@@ -563,7 +566,7 @@ func (self class) SetItemText(idx gd.Int, text String.Readable) { //gd:ItemList.
 Returns the text associated with the specified index.
 */
 //go:nosplit
-func (self class) GetItemText(idx gd.Int) String.Readable { //gd:ItemList.get_item_text
+func (self class) GetItemText(idx int64) String.Readable { //gd:ItemList.get_item_text
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -577,7 +580,7 @@ func (self class) GetItemText(idx gd.Int) String.Readable { //gd:ItemList.get_it
 Sets (or replaces) the icon's [Texture2D] associated with the specified index.
 */
 //go:nosplit
-func (self class) SetItemIcon(idx gd.Int, icon [1]gdclass.Texture2D) { //gd:ItemList.set_item_icon
+func (self class) SetItemIcon(idx int64, icon [1]gdclass.Texture2D) { //gd:ItemList.set_item_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
@@ -590,7 +593,7 @@ func (self class) SetItemIcon(idx gd.Int, icon [1]gdclass.Texture2D) { //gd:Item
 Returns the icon associated with the specified index.
 */
 //go:nosplit
-func (self class) GetItemIcon(idx gd.Int) [1]gdclass.Texture2D { //gd:ItemList.get_item_icon
+func (self class) GetItemIcon(idx int64) [1]gdclass.Texture2D { //gd:ItemList.get_item_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -604,7 +607,7 @@ func (self class) GetItemIcon(idx gd.Int) [1]gdclass.Texture2D { //gd:ItemList.g
 Sets item's text base writing direction.
 */
 //go:nosplit
-func (self class) SetItemTextDirection(idx gd.Int, direction gdclass.ControlTextDirection) { //gd:ItemList.set_item_text_direction
+func (self class) SetItemTextDirection(idx int64, direction gdclass.ControlTextDirection) { //gd:ItemList.set_item_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, direction)
@@ -617,7 +620,7 @@ func (self class) SetItemTextDirection(idx gd.Int, direction gdclass.ControlText
 Returns item's text base writing direction.
 */
 //go:nosplit
-func (self class) GetItemTextDirection(idx gd.Int) gdclass.ControlTextDirection { //gd:ItemList.get_item_text_direction
+func (self class) GetItemTextDirection(idx int64) gdclass.ControlTextDirection { //gd:ItemList.get_item_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
@@ -631,7 +634,7 @@ func (self class) GetItemTextDirection(idx gd.Int) gdclass.ControlTextDirection 
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 //go:nosplit
-func (self class) SetItemLanguage(idx gd.Int, language String.Readable) { //gd:ItemList.set_item_language
+func (self class) SetItemLanguage(idx int64, language String.Readable) { //gd:ItemList.set_item_language
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
@@ -644,7 +647,7 @@ func (self class) SetItemLanguage(idx gd.Int, language String.Readable) { //gd:I
 Returns item's text language code.
 */
 //go:nosplit
-func (self class) GetItemLanguage(idx gd.Int) String.Readable { //gd:ItemList.get_item_language
+func (self class) GetItemLanguage(idx int64) String.Readable { //gd:ItemList.get_item_language
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -658,7 +661,7 @@ func (self class) GetItemLanguage(idx gd.Int) String.Readable { //gd:ItemList.ge
 Sets whether the item icon will be drawn transposed.
 */
 //go:nosplit
-func (self class) SetItemIconTransposed(idx gd.Int, transposed bool) { //gd:ItemList.set_item_icon_transposed
+func (self class) SetItemIconTransposed(idx int64, transposed bool) { //gd:ItemList.set_item_icon_transposed
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, transposed)
@@ -671,7 +674,7 @@ func (self class) SetItemIconTransposed(idx gd.Int, transposed bool) { //gd:Item
 Returns [code]true[/code] if the item icon will be drawn transposed, i.e. the X and Y axes are swapped.
 */
 //go:nosplit
-func (self class) IsItemIconTransposed(idx gd.Int) bool { //gd:ItemList.is_item_icon_transposed
+func (self class) IsItemIconTransposed(idx int64) bool { //gd:ItemList.is_item_icon_transposed
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -685,7 +688,7 @@ func (self class) IsItemIconTransposed(idx gd.Int) bool { //gd:ItemList.is_item_
 Sets the region of item's icon used. The whole icon will be used if the region has no area.
 */
 //go:nosplit
-func (self class) SetItemIconRegion(idx gd.Int, rect gd.Rect2) { //gd:ItemList.set_item_icon_region
+func (self class) SetItemIconRegion(idx int64, rect Rect2.PositionSize) { //gd:ItemList.set_item_icon_region
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, rect)
@@ -698,10 +701,10 @@ func (self class) SetItemIconRegion(idx gd.Int, rect gd.Rect2) { //gd:ItemList.s
 Returns the region of item's icon used. The whole icon will be used if the region has no area.
 */
 //go:nosplit
-func (self class) GetItemIconRegion(idx gd.Int) gd.Rect2 { //gd:ItemList.get_item_icon_region
+func (self class) GetItemIconRegion(idx int64) Rect2.PositionSize { //gd:ItemList.get_item_icon_region
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_icon_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -712,7 +715,7 @@ func (self class) GetItemIconRegion(idx gd.Int) gd.Rect2 { //gd:ItemList.get_ite
 Sets a modulating [Color] of the item associated with the specified index.
 */
 //go:nosplit
-func (self class) SetItemIconModulate(idx gd.Int, modulate gd.Color) { //gd:ItemList.set_item_icon_modulate
+func (self class) SetItemIconModulate(idx int64, modulate Color.RGBA) { //gd:ItemList.set_item_icon_modulate
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, modulate)
@@ -725,10 +728,10 @@ func (self class) SetItemIconModulate(idx gd.Int, modulate gd.Color) { //gd:Item
 Returns a [Color] modulating item's icon at the specified index.
 */
 //go:nosplit
-func (self class) GetItemIconModulate(idx gd.Int) gd.Color { //gd:ItemList.get_item_icon_modulate
+func (self class) GetItemIconModulate(idx int64) Color.RGBA { //gd:ItemList.get_item_icon_modulate
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_icon_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -739,7 +742,7 @@ func (self class) GetItemIconModulate(idx gd.Int) gd.Color { //gd:ItemList.get_i
 Allows or disallows selection of the item associated with the specified index.
 */
 //go:nosplit
-func (self class) SetItemSelectable(idx gd.Int, selectable bool) { //gd:ItemList.set_item_selectable
+func (self class) SetItemSelectable(idx int64, selectable bool) { //gd:ItemList.set_item_selectable
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, selectable)
@@ -752,7 +755,7 @@ func (self class) SetItemSelectable(idx gd.Int, selectable bool) { //gd:ItemList
 Returns [code]true[/code] if the item at the specified index is selectable.
 */
 //go:nosplit
-func (self class) IsItemSelectable(idx gd.Int) bool { //gd:ItemList.is_item_selectable
+func (self class) IsItemSelectable(idx int64) bool { //gd:ItemList.is_item_selectable
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -767,7 +770,7 @@ Disables (or enables) the item at the specified index.
 Disabled items cannot be selected and do not trigger activation signals (when double-clicking or pressing [kbd]Enter[/kbd]).
 */
 //go:nosplit
-func (self class) SetItemDisabled(idx gd.Int, disabled bool) { //gd:ItemList.set_item_disabled
+func (self class) SetItemDisabled(idx int64, disabled bool) { //gd:ItemList.set_item_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, disabled)
@@ -780,7 +783,7 @@ func (self class) SetItemDisabled(idx gd.Int, disabled bool) { //gd:ItemList.set
 Returns [code]true[/code] if the item at the specified index is disabled.
 */
 //go:nosplit
-func (self class) IsItemDisabled(idx gd.Int) bool { //gd:ItemList.is_item_disabled
+func (self class) IsItemDisabled(idx int64) bool { //gd:ItemList.is_item_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -794,10 +797,10 @@ func (self class) IsItemDisabled(idx gd.Int) bool { //gd:ItemList.is_item_disabl
 Sets a value (of any type) to be stored with the item associated with the specified index.
 */
 //go:nosplit
-func (self class) SetItemMetadata(idx gd.Int, metadata gd.Variant) { //gd:ItemList.set_item_metadata
+func (self class) SetItemMetadata(idx int64, metadata variant.Any) { //gd:ItemList.set_item_metadata
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(metadata))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(metadata)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_set_item_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -807,12 +810,12 @@ func (self class) SetItemMetadata(idx gd.Int, metadata gd.Variant) { //gd:ItemLi
 Returns the metadata value of the specified index.
 */
 //go:nosplit
-func (self class) GetItemMetadata(idx gd.Int) gd.Variant { //gd:ItemList.get_item_metadata
+func (self class) GetItemMetadata(idx int64) variant.Any { //gd:ItemList.get_item_metadata
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -821,7 +824,7 @@ func (self class) GetItemMetadata(idx gd.Int) gd.Variant { //gd:ItemList.get_ite
 Sets the background color of the item specified by [param idx] index to the specified [Color].
 */
 //go:nosplit
-func (self class) SetItemCustomBgColor(idx gd.Int, custom_bg_color gd.Color) { //gd:ItemList.set_item_custom_bg_color
+func (self class) SetItemCustomBgColor(idx int64, custom_bg_color Color.RGBA) { //gd:ItemList.set_item_custom_bg_color
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, custom_bg_color)
@@ -834,10 +837,10 @@ func (self class) SetItemCustomBgColor(idx gd.Int, custom_bg_color gd.Color) { /
 Returns the custom background color of the item specified by [param idx] index.
 */
 //go:nosplit
-func (self class) GetItemCustomBgColor(idx gd.Int) gd.Color { //gd:ItemList.get_item_custom_bg_color
+func (self class) GetItemCustomBgColor(idx int64) Color.RGBA { //gd:ItemList.get_item_custom_bg_color
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_custom_bg_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -848,7 +851,7 @@ func (self class) GetItemCustomBgColor(idx gd.Int) gd.Color { //gd:ItemList.get_
 Sets the foreground color of the item specified by [param idx] index to the specified [Color].
 */
 //go:nosplit
-func (self class) SetItemCustomFgColor(idx gd.Int, custom_fg_color gd.Color) { //gd:ItemList.set_item_custom_fg_color
+func (self class) SetItemCustomFgColor(idx int64, custom_fg_color Color.RGBA) { //gd:ItemList.set_item_custom_fg_color
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, custom_fg_color)
@@ -861,10 +864,10 @@ func (self class) SetItemCustomFgColor(idx gd.Int, custom_fg_color gd.Color) { /
 Returns the custom foreground color of the item specified by [param idx] index.
 */
 //go:nosplit
-func (self class) GetItemCustomFgColor(idx gd.Int) gd.Color { //gd:ItemList.get_item_custom_fg_color
+func (self class) GetItemCustomFgColor(idx int64) Color.RGBA { //gd:ItemList.get_item_custom_fg_color
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_custom_fg_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -876,11 +879,11 @@ Returns the position and size of the item with the specified index, in the coord
 [b]Note:[/b] The returned value is unreliable if called right after modifying the [ItemList], before it redraws in the next frame.
 */
 //go:nosplit
-func (self class) GetItemRect(idx gd.Int, expand bool) gd.Rect2 { //gd:ItemList.get_item_rect
+func (self class) GetItemRect(idx int64, expand bool) Rect2.PositionSize { //gd:ItemList.get_item_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, expand)
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -891,7 +894,7 @@ func (self class) GetItemRect(idx gd.Int, expand bool) gd.Rect2 { //gd:ItemList.
 Sets whether the tooltip hint is enabled for specified item index.
 */
 //go:nosplit
-func (self class) SetItemTooltipEnabled(idx gd.Int, enable bool) { //gd:ItemList.set_item_tooltip_enabled
+func (self class) SetItemTooltipEnabled(idx int64, enable bool) { //gd:ItemList.set_item_tooltip_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, enable)
@@ -904,7 +907,7 @@ func (self class) SetItemTooltipEnabled(idx gd.Int, enable bool) { //gd:ItemList
 Returns [code]true[/code] if the tooltip is enabled for specified item index.
 */
 //go:nosplit
-func (self class) IsItemTooltipEnabled(idx gd.Int) bool { //gd:ItemList.is_item_tooltip_enabled
+func (self class) IsItemTooltipEnabled(idx int64) bool { //gd:ItemList.is_item_tooltip_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -918,7 +921,7 @@ func (self class) IsItemTooltipEnabled(idx gd.Int) bool { //gd:ItemList.is_item_
 Sets the tooltip hint for the item associated with the specified index.
 */
 //go:nosplit
-func (self class) SetItemTooltip(idx gd.Int, tooltip String.Readable) { //gd:ItemList.set_item_tooltip
+func (self class) SetItemTooltip(idx int64, tooltip String.Readable) { //gd:ItemList.set_item_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
@@ -931,7 +934,7 @@ func (self class) SetItemTooltip(idx gd.Int, tooltip String.Readable) { //gd:Ite
 Returns the tooltip hint associated with the specified index.
 */
 //go:nosplit
-func (self class) GetItemTooltip(idx gd.Int) String.Readable { //gd:ItemList.get_item_tooltip
+func (self class) GetItemTooltip(idx int64) String.Readable { //gd:ItemList.get_item_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -946,7 +949,7 @@ Select the item at the specified index.
 [b]Note:[/b] This method does not trigger the item selection signal.
 */
 //go:nosplit
-func (self class) Select(idx gd.Int, single bool) { //gd:ItemList.select_
+func (self class) Select(idx int64, single bool) { //gd:ItemList.select_
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, single)
@@ -959,7 +962,7 @@ func (self class) Select(idx gd.Int, single bool) { //gd:ItemList.select_
 Ensures the item associated with the specified index is not selected.
 */
 //go:nosplit
-func (self class) Deselect(idx gd.Int) { //gd:ItemList.deselect
+func (self class) Deselect(idx int64) { //gd:ItemList.deselect
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Nil
@@ -982,7 +985,7 @@ func (self class) DeselectAll() { //gd:ItemList.deselect_all
 Returns [code]true[/code] if the item at the specified index is currently selected.
 */
 //go:nosplit
-func (self class) IsSelected(idx gd.Int) bool { //gd:ItemList.is_selected
+func (self class) IsSelected(idx int64) bool { //gd:ItemList.is_selected
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1009,7 +1012,7 @@ func (self class) GetSelectedItems() Packed.Array[int32] { //gd:ItemList.get_sel
 Moves item from index [param from_idx] to [param to_idx].
 */
 //go:nosplit
-func (self class) MoveItem(from_idx gd.Int, to_idx gd.Int) { //gd:ItemList.move_item
+func (self class) MoveItem(from_idx int64, to_idx int64) { //gd:ItemList.move_item
 	var frame = callframe.New()
 	callframe.Arg(frame, from_idx)
 	callframe.Arg(frame, to_idx)
@@ -1019,7 +1022,7 @@ func (self class) MoveItem(from_idx gd.Int, to_idx gd.Int) { //gd:ItemList.move_
 }
 
 //go:nosplit
-func (self class) SetItemCount(count gd.Int) { //gd:ItemList.set_item_count
+func (self class) SetItemCount(count int64) { //gd:ItemList.set_item_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -1028,9 +1031,9 @@ func (self class) SetItemCount(count gd.Int) { //gd:ItemList.set_item_count
 }
 
 //go:nosplit
-func (self class) GetItemCount() gd.Int { //gd:ItemList.get_item_count
+func (self class) GetItemCount() int64 { //gd:ItemList.get_item_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1041,7 +1044,7 @@ func (self class) GetItemCount() gd.Int { //gd:ItemList.get_item_count
 Removes the item specified by [param idx] index from the list.
 */
 //go:nosplit
-func (self class) RemoveItem(idx gd.Int) { //gd:ItemList.remove_item
+func (self class) RemoveItem(idx int64) { //gd:ItemList.remove_item
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Nil
@@ -1072,7 +1075,7 @@ func (self class) SortItemsByText() { //gd:ItemList.sort_items_by_text
 }
 
 //go:nosplit
-func (self class) SetFixedColumnWidth(width gd.Int) { //gd:ItemList.set_fixed_column_width
+func (self class) SetFixedColumnWidth(width int64) { //gd:ItemList.set_fixed_column_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -1081,9 +1084,9 @@ func (self class) SetFixedColumnWidth(width gd.Int) { //gd:ItemList.set_fixed_co
 }
 
 //go:nosplit
-func (self class) GetFixedColumnWidth() gd.Int { //gd:ItemList.get_fixed_column_width
+func (self class) GetFixedColumnWidth() int64 { //gd:ItemList.get_fixed_column_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_fixed_column_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1110,7 +1113,7 @@ func (self class) IsSameColumnWidth() bool { //gd:ItemList.is_same_column_width
 }
 
 //go:nosplit
-func (self class) SetMaxTextLines(lines gd.Int) { //gd:ItemList.set_max_text_lines
+func (self class) SetMaxTextLines(lines int64) { //gd:ItemList.set_max_text_lines
 	var frame = callframe.New()
 	callframe.Arg(frame, lines)
 	var r_ret = callframe.Nil
@@ -1119,9 +1122,9 @@ func (self class) SetMaxTextLines(lines gd.Int) { //gd:ItemList.set_max_text_lin
 }
 
 //go:nosplit
-func (self class) GetMaxTextLines() gd.Int { //gd:ItemList.get_max_text_lines
+func (self class) GetMaxTextLines() int64 { //gd:ItemList.get_max_text_lines
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_max_text_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1129,7 +1132,7 @@ func (self class) GetMaxTextLines() gd.Int { //gd:ItemList.get_max_text_lines
 }
 
 //go:nosplit
-func (self class) SetMaxColumns(amount gd.Int) { //gd:ItemList.set_max_columns
+func (self class) SetMaxColumns(amount int64) { //gd:ItemList.set_max_columns
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -1138,9 +1141,9 @@ func (self class) SetMaxColumns(amount gd.Int) { //gd:ItemList.set_max_columns
 }
 
 //go:nosplit
-func (self class) GetMaxColumns() gd.Int { //gd:ItemList.get_max_columns
+func (self class) GetMaxColumns() int64 { //gd:ItemList.get_max_columns
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_max_columns, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1186,7 +1189,7 @@ func (self class) GetIconMode() gdclass.ItemListIconMode { //gd:ItemList.get_ico
 }
 
 //go:nosplit
-func (self class) SetFixedIconSize(size gd.Vector2i) { //gd:ItemList.set_fixed_icon_size
+func (self class) SetFixedIconSize(size Vector2i.XY) { //gd:ItemList.set_fixed_icon_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -1195,9 +1198,9 @@ func (self class) SetFixedIconSize(size gd.Vector2i) { //gd:ItemList.set_fixed_i
 }
 
 //go:nosplit
-func (self class) GetFixedIconSize() gd.Vector2i { //gd:ItemList.get_fixed_icon_size
+func (self class) GetFixedIconSize() Vector2i.XY { //gd:ItemList.get_fixed_icon_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_fixed_icon_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1205,7 +1208,7 @@ func (self class) GetFixedIconSize() gd.Vector2i { //gd:ItemList.get_fixed_icon_
 }
 
 //go:nosplit
-func (self class) SetIconScale(scale gd.Float) { //gd:ItemList.set_icon_scale
+func (self class) SetIconScale(scale float64) { //gd:ItemList.set_icon_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -1214,9 +1217,9 @@ func (self class) SetIconScale(scale gd.Float) { //gd:ItemList.set_icon_scale
 }
 
 //go:nosplit
-func (self class) GetIconScale() gd.Float { //gd:ItemList.get_icon_scale
+func (self class) GetIconScale() float64 { //gd:ItemList.get_icon_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_icon_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1318,11 +1321,11 @@ When there is no item at that point, -1 will be returned if [param exact] is [co
 [b]Note:[/b] The returned value is unreliable if called right after modifying the [ItemList], before it redraws in the next frame.
 */
 //go:nosplit
-func (self class) GetItemAtPosition(position gd.Vector2, exact bool) gd.Int { //gd:ItemList.get_item_at_position
+func (self class) GetItemAtPosition(position Vector2.XY, exact bool) int64 { //gd:ItemList.get_item_at_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, exact)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_at_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,11 +78,11 @@ func (self Instance) GizmoExtents() Float.X {
 }
 
 func (self Instance) SetGizmoExtents(value Float.X) {
-	class(self).SetGizmoExtents(gd.Float(value))
+	class(self).SetGizmoExtents(float64(value))
 }
 
 //go:nosplit
-func (self class) SetGizmoExtents(extents gd.Float) { //gd:Marker2D.set_gizmo_extents
+func (self class) SetGizmoExtents(extents float64) { //gd:Marker2D.set_gizmo_extents
 	var frame = callframe.New()
 	callframe.Arg(frame, extents)
 	var r_ret = callframe.Nil
@@ -88,9 +91,9 @@ func (self class) SetGizmoExtents(extents gd.Float) { //gd:Marker2D.set_gizmo_ex
 }
 
 //go:nosplit
-func (self class) GetGizmoExtents() gd.Float { //gd:Marker2D.get_gizmo_extents
+func (self class) GetGizmoExtents() float64 { //gd:Marker2D.get_gizmo_extents
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marker2D.Bind_get_gizmo_extents, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,20 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Container"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/PanelContainer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/PanelContainer"
-import "graphics.gd/classdb/Container"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -88,7 +92,7 @@ func (self Instance) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.E
 Goes to the specified line in the current script.
 */
 func (self Instance) GotoLine(line_number int) { //gd:ScriptEditor.goto_line
-	class(self).GotoLine(gd.Int(line_number))
+	class(self).GotoLine(int64(line_number))
 }
 
 /*
@@ -215,7 +219,7 @@ func (self class) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.Edit
 Goes to the specified line in the current script.
 */
 //go:nosplit
-func (self class) GotoLine(line_number gd.Int) { //gd:ScriptEditor.goto_line
+func (self class) GotoLine(line_number int64) { //gd:ScriptEditor.goto_line
 	var frame = callframe.New()
 	callframe.Arg(frame, line_number)
 	var r_ret = callframe.Nil

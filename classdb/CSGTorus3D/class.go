@@ -9,22 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/CSGPrimitive3D"
 import "graphics.gd/classdb/CSGShape3D"
 import "graphics.gd/classdb/GeometryInstance3D"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -79,7 +82,7 @@ func (self Instance) InnerRadius() Float.X {
 }
 
 func (self Instance) SetInnerRadius(value Float.X) {
-	class(self).SetInnerRadius(gd.Float(value))
+	class(self).SetInnerRadius(float64(value))
 }
 
 func (self Instance) OuterRadius() Float.X {
@@ -87,7 +90,7 @@ func (self Instance) OuterRadius() Float.X {
 }
 
 func (self Instance) SetOuterRadius(value Float.X) {
-	class(self).SetOuterRadius(gd.Float(value))
+	class(self).SetOuterRadius(float64(value))
 }
 
 func (self Instance) Sides() int {
@@ -95,7 +98,7 @@ func (self Instance) Sides() int {
 }
 
 func (self Instance) SetSides(value int) {
-	class(self).SetSides(gd.Int(value))
+	class(self).SetSides(int64(value))
 }
 
 func (self Instance) RingSides() int {
@@ -103,7 +106,7 @@ func (self Instance) RingSides() int {
 }
 
 func (self Instance) SetRingSides(value int) {
-	class(self).SetRingSides(gd.Int(value))
+	class(self).SetRingSides(int64(value))
 }
 
 func (self Instance) SmoothFaces() bool {
@@ -123,7 +126,7 @@ func (self Instance) SetMaterial(value [1]gdclass.Material) {
 }
 
 //go:nosplit
-func (self class) SetInnerRadius(radius gd.Float) { //gd:CSGTorus3D.set_inner_radius
+func (self class) SetInnerRadius(radius float64) { //gd:CSGTorus3D.set_inner_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -132,9 +135,9 @@ func (self class) SetInnerRadius(radius gd.Float) { //gd:CSGTorus3D.set_inner_ra
 }
 
 //go:nosplit
-func (self class) GetInnerRadius() gd.Float { //gd:CSGTorus3D.get_inner_radius
+func (self class) GetInnerRadius() float64 { //gd:CSGTorus3D.get_inner_radius
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGTorus3D.Bind_get_inner_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -142,7 +145,7 @@ func (self class) GetInnerRadius() gd.Float { //gd:CSGTorus3D.get_inner_radius
 }
 
 //go:nosplit
-func (self class) SetOuterRadius(radius gd.Float) { //gd:CSGTorus3D.set_outer_radius
+func (self class) SetOuterRadius(radius float64) { //gd:CSGTorus3D.set_outer_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -151,9 +154,9 @@ func (self class) SetOuterRadius(radius gd.Float) { //gd:CSGTorus3D.set_outer_ra
 }
 
 //go:nosplit
-func (self class) GetOuterRadius() gd.Float { //gd:CSGTorus3D.get_outer_radius
+func (self class) GetOuterRadius() float64 { //gd:CSGTorus3D.get_outer_radius
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGTorus3D.Bind_get_outer_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -161,7 +164,7 @@ func (self class) GetOuterRadius() gd.Float { //gd:CSGTorus3D.get_outer_radius
 }
 
 //go:nosplit
-func (self class) SetSides(sides gd.Int) { //gd:CSGTorus3D.set_sides
+func (self class) SetSides(sides int64) { //gd:CSGTorus3D.set_sides
 	var frame = callframe.New()
 	callframe.Arg(frame, sides)
 	var r_ret = callframe.Nil
@@ -170,9 +173,9 @@ func (self class) SetSides(sides gd.Int) { //gd:CSGTorus3D.set_sides
 }
 
 //go:nosplit
-func (self class) GetSides() gd.Int { //gd:CSGTorus3D.get_sides
+func (self class) GetSides() int64 { //gd:CSGTorus3D.get_sides
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGTorus3D.Bind_get_sides, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -180,7 +183,7 @@ func (self class) GetSides() gd.Int { //gd:CSGTorus3D.get_sides
 }
 
 //go:nosplit
-func (self class) SetRingSides(sides gd.Int) { //gd:CSGTorus3D.set_ring_sides
+func (self class) SetRingSides(sides int64) { //gd:CSGTorus3D.set_ring_sides
 	var frame = callframe.New()
 	callframe.Arg(frame, sides)
 	var r_ret = callframe.Nil
@@ -189,9 +192,9 @@ func (self class) SetRingSides(sides gd.Int) { //gd:CSGTorus3D.set_ring_sides
 }
 
 //go:nosplit
-func (self class) GetRingSides() gd.Int { //gd:CSGTorus3D.get_ring_sides
+func (self class) GetRingSides() int64 { //gd:CSGTorus3D.get_ring_sides
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGTorus3D.Bind_get_ring_sides, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

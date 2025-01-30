@@ -9,16 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -121,7 +124,7 @@ func (self Instance) DepthBiasConstantFactor() Float.X {
 }
 
 func (self Instance) SetDepthBiasConstantFactor(value Float.X) {
-	class(self).SetDepthBiasConstantFactor(gd.Float(value))
+	class(self).SetDepthBiasConstantFactor(float64(value))
 }
 
 func (self Instance) DepthBiasClamp() Float.X {
@@ -129,7 +132,7 @@ func (self Instance) DepthBiasClamp() Float.X {
 }
 
 func (self Instance) SetDepthBiasClamp(value Float.X) {
-	class(self).SetDepthBiasClamp(gd.Float(value))
+	class(self).SetDepthBiasClamp(float64(value))
 }
 
 func (self Instance) DepthBiasSlopeFactor() Float.X {
@@ -137,7 +140,7 @@ func (self Instance) DepthBiasSlopeFactor() Float.X {
 }
 
 func (self Instance) SetDepthBiasSlopeFactor(value Float.X) {
-	class(self).SetDepthBiasSlopeFactor(gd.Float(value))
+	class(self).SetDepthBiasSlopeFactor(float64(value))
 }
 
 func (self Instance) LineWidth() Float.X {
@@ -145,7 +148,7 @@ func (self Instance) LineWidth() Float.X {
 }
 
 func (self Instance) SetLineWidth(value Float.X) {
-	class(self).SetLineWidth(gd.Float(value))
+	class(self).SetLineWidth(float64(value))
 }
 
 func (self Instance) PatchControlPoints() int {
@@ -153,7 +156,7 @@ func (self Instance) PatchControlPoints() int {
 }
 
 func (self Instance) SetPatchControlPoints(value int) {
-	class(self).SetPatchControlPoints(gd.Int(value))
+	class(self).SetPatchControlPoints(int64(value))
 }
 
 //go:nosplit
@@ -271,7 +274,7 @@ func (self class) GetDepthBiasEnabled() bool { //gd:RDPipelineRasterizationState
 }
 
 //go:nosplit
-func (self class) SetDepthBiasConstantFactor(p_member gd.Float) { //gd:RDPipelineRasterizationState.set_depth_bias_constant_factor
+func (self class) SetDepthBiasConstantFactor(p_member float64) { //gd:RDPipelineRasterizationState.set_depth_bias_constant_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -280,9 +283,9 @@ func (self class) SetDepthBiasConstantFactor(p_member gd.Float) { //gd:RDPipelin
 }
 
 //go:nosplit
-func (self class) GetDepthBiasConstantFactor() gd.Float { //gd:RDPipelineRasterizationState.get_depth_bias_constant_factor
+func (self class) GetDepthBiasConstantFactor() float64 { //gd:RDPipelineRasterizationState.get_depth_bias_constant_factor
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_depth_bias_constant_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -290,7 +293,7 @@ func (self class) GetDepthBiasConstantFactor() gd.Float { //gd:RDPipelineRasteri
 }
 
 //go:nosplit
-func (self class) SetDepthBiasClamp(p_member gd.Float) { //gd:RDPipelineRasterizationState.set_depth_bias_clamp
+func (self class) SetDepthBiasClamp(p_member float64) { //gd:RDPipelineRasterizationState.set_depth_bias_clamp
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -299,9 +302,9 @@ func (self class) SetDepthBiasClamp(p_member gd.Float) { //gd:RDPipelineRasteriz
 }
 
 //go:nosplit
-func (self class) GetDepthBiasClamp() gd.Float { //gd:RDPipelineRasterizationState.get_depth_bias_clamp
+func (self class) GetDepthBiasClamp() float64 { //gd:RDPipelineRasterizationState.get_depth_bias_clamp
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_depth_bias_clamp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -309,7 +312,7 @@ func (self class) GetDepthBiasClamp() gd.Float { //gd:RDPipelineRasterizationSta
 }
 
 //go:nosplit
-func (self class) SetDepthBiasSlopeFactor(p_member gd.Float) { //gd:RDPipelineRasterizationState.set_depth_bias_slope_factor
+func (self class) SetDepthBiasSlopeFactor(p_member float64) { //gd:RDPipelineRasterizationState.set_depth_bias_slope_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -318,9 +321,9 @@ func (self class) SetDepthBiasSlopeFactor(p_member gd.Float) { //gd:RDPipelineRa
 }
 
 //go:nosplit
-func (self class) GetDepthBiasSlopeFactor() gd.Float { //gd:RDPipelineRasterizationState.get_depth_bias_slope_factor
+func (self class) GetDepthBiasSlopeFactor() float64 { //gd:RDPipelineRasterizationState.get_depth_bias_slope_factor
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_depth_bias_slope_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -328,7 +331,7 @@ func (self class) GetDepthBiasSlopeFactor() gd.Float { //gd:RDPipelineRasterizat
 }
 
 //go:nosplit
-func (self class) SetLineWidth(p_member gd.Float) { //gd:RDPipelineRasterizationState.set_line_width
+func (self class) SetLineWidth(p_member float64) { //gd:RDPipelineRasterizationState.set_line_width
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -337,9 +340,9 @@ func (self class) SetLineWidth(p_member gd.Float) { //gd:RDPipelineRasterization
 }
 
 //go:nosplit
-func (self class) GetLineWidth() gd.Float { //gd:RDPipelineRasterizationState.get_line_width
+func (self class) GetLineWidth() float64 { //gd:RDPipelineRasterizationState.get_line_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_line_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -347,7 +350,7 @@ func (self class) GetLineWidth() gd.Float { //gd:RDPipelineRasterizationState.ge
 }
 
 //go:nosplit
-func (self class) SetPatchControlPoints(p_member gd.Int) { //gd:RDPipelineRasterizationState.set_patch_control_points
+func (self class) SetPatchControlPoints(p_member int64) { //gd:RDPipelineRasterizationState.set_patch_control_points
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -356,9 +359,9 @@ func (self class) SetPatchControlPoints(p_member gd.Int) { //gd:RDPipelineRaster
 }
 
 //go:nosplit
-func (self class) GetPatchControlPoints() gd.Int { //gd:RDPipelineRasterizationState.get_patch_control_points
+func (self class) GetPatchControlPoints() int64 { //gd:RDPipelineRasterizationState.get_patch_control_points
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_patch_control_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

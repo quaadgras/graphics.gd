@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioEffect"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioEffect"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -84,7 +87,7 @@ func (self Instance) PreGain() Float.X {
 }
 
 func (self Instance) SetPreGain(value Float.X) {
-	class(self).SetPreGain(gd.Float(value))
+	class(self).SetPreGain(float64(value))
 }
 
 func (self Instance) KeepHfHz() Float.X {
@@ -92,7 +95,7 @@ func (self Instance) KeepHfHz() Float.X {
 }
 
 func (self Instance) SetKeepHfHz(value Float.X) {
-	class(self).SetKeepHfHz(gd.Float(value))
+	class(self).SetKeepHfHz(float64(value))
 }
 
 func (self Instance) Drive() Float.X {
@@ -100,7 +103,7 @@ func (self Instance) Drive() Float.X {
 }
 
 func (self Instance) SetDrive(value Float.X) {
-	class(self).SetDrive(gd.Float(value))
+	class(self).SetDrive(float64(value))
 }
 
 func (self Instance) PostGain() Float.X {
@@ -108,7 +111,7 @@ func (self Instance) PostGain() Float.X {
 }
 
 func (self Instance) SetPostGain(value Float.X) {
-	class(self).SetPostGain(gd.Float(value))
+	class(self).SetPostGain(float64(value))
 }
 
 //go:nosplit
@@ -131,7 +134,7 @@ func (self class) GetMode() gdclass.AudioEffectDistortionMode { //gd:AudioEffect
 }
 
 //go:nosplit
-func (self class) SetPreGain(pre_gain gd.Float) { //gd:AudioEffectDistortion.set_pre_gain
+func (self class) SetPreGain(pre_gain float64) { //gd:AudioEffectDistortion.set_pre_gain
 	var frame = callframe.New()
 	callframe.Arg(frame, pre_gain)
 	var r_ret = callframe.Nil
@@ -140,9 +143,9 @@ func (self class) SetPreGain(pre_gain gd.Float) { //gd:AudioEffectDistortion.set
 }
 
 //go:nosplit
-func (self class) GetPreGain() gd.Float { //gd:AudioEffectDistortion.get_pre_gain
+func (self class) GetPreGain() float64 { //gd:AudioEffectDistortion.get_pre_gain
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDistortion.Bind_get_pre_gain, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -150,7 +153,7 @@ func (self class) GetPreGain() gd.Float { //gd:AudioEffectDistortion.get_pre_gai
 }
 
 //go:nosplit
-func (self class) SetKeepHfHz(keep_hf_hz gd.Float) { //gd:AudioEffectDistortion.set_keep_hf_hz
+func (self class) SetKeepHfHz(keep_hf_hz float64) { //gd:AudioEffectDistortion.set_keep_hf_hz
 	var frame = callframe.New()
 	callframe.Arg(frame, keep_hf_hz)
 	var r_ret = callframe.Nil
@@ -159,9 +162,9 @@ func (self class) SetKeepHfHz(keep_hf_hz gd.Float) { //gd:AudioEffectDistortion.
 }
 
 //go:nosplit
-func (self class) GetKeepHfHz() gd.Float { //gd:AudioEffectDistortion.get_keep_hf_hz
+func (self class) GetKeepHfHz() float64 { //gd:AudioEffectDistortion.get_keep_hf_hz
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDistortion.Bind_get_keep_hf_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -169,7 +172,7 @@ func (self class) GetKeepHfHz() gd.Float { //gd:AudioEffectDistortion.get_keep_h
 }
 
 //go:nosplit
-func (self class) SetDrive(drive gd.Float) { //gd:AudioEffectDistortion.set_drive
+func (self class) SetDrive(drive float64) { //gd:AudioEffectDistortion.set_drive
 	var frame = callframe.New()
 	callframe.Arg(frame, drive)
 	var r_ret = callframe.Nil
@@ -178,9 +181,9 @@ func (self class) SetDrive(drive gd.Float) { //gd:AudioEffectDistortion.set_driv
 }
 
 //go:nosplit
-func (self class) GetDrive() gd.Float { //gd:AudioEffectDistortion.get_drive
+func (self class) GetDrive() float64 { //gd:AudioEffectDistortion.get_drive
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDistortion.Bind_get_drive, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -188,7 +191,7 @@ func (self class) GetDrive() gd.Float { //gd:AudioEffectDistortion.get_drive
 }
 
 //go:nosplit
-func (self class) SetPostGain(post_gain gd.Float) { //gd:AudioEffectDistortion.set_post_gain
+func (self class) SetPostGain(post_gain float64) { //gd:AudioEffectDistortion.set_post_gain
 	var frame = callframe.New()
 	callframe.Arg(frame, post_gain)
 	var r_ret = callframe.Nil
@@ -197,9 +200,9 @@ func (self class) SetPostGain(post_gain gd.Float) { //gd:AudioEffectDistortion.s
 }
 
 //go:nosplit
-func (self class) GetPostGain() gd.Float { //gd:AudioEffectDistortion.get_post_gain
+func (self class) GetPostGain() float64 { //gd:AudioEffectDistortion.get_post_gain
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDistortion.Bind_get_post_gain, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

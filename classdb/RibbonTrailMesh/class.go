@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Mesh"
+import "graphics.gd/classdb/PrimitiveMesh"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/PrimitiveMesh"
-import "graphics.gd/classdb/Mesh"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -85,7 +88,7 @@ func (self Instance) Size() Float.X {
 }
 
 func (self Instance) SetSize(value Float.X) {
-	class(self).SetSize(gd.Float(value))
+	class(self).SetSize(float64(value))
 }
 
 func (self Instance) Sections() int {
@@ -93,7 +96,7 @@ func (self Instance) Sections() int {
 }
 
 func (self Instance) SetSections(value int) {
-	class(self).SetSections(gd.Int(value))
+	class(self).SetSections(int64(value))
 }
 
 func (self Instance) SectionLength() Float.X {
@@ -101,7 +104,7 @@ func (self Instance) SectionLength() Float.X {
 }
 
 func (self Instance) SetSectionLength(value Float.X) {
-	class(self).SetSectionLength(gd.Float(value))
+	class(self).SetSectionLength(float64(value))
 }
 
 func (self Instance) SectionSegments() int {
@@ -109,7 +112,7 @@ func (self Instance) SectionSegments() int {
 }
 
 func (self Instance) SetSectionSegments(value int) {
-	class(self).SetSectionSegments(gd.Int(value))
+	class(self).SetSectionSegments(int64(value))
 }
 
 func (self Instance) Curve() [1]gdclass.Curve {
@@ -121,7 +124,7 @@ func (self Instance) SetCurve(value [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Float) { //gd:RibbonTrailMesh.set_size
+func (self class) SetSize(size float64) { //gd:RibbonTrailMesh.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -130,9 +133,9 @@ func (self class) SetSize(size gd.Float) { //gd:RibbonTrailMesh.set_size
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Float { //gd:RibbonTrailMesh.get_size
+func (self class) GetSize() float64 { //gd:RibbonTrailMesh.get_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -140,7 +143,7 @@ func (self class) GetSize() gd.Float { //gd:RibbonTrailMesh.get_size
 }
 
 //go:nosplit
-func (self class) SetSections(sections gd.Int) { //gd:RibbonTrailMesh.set_sections
+func (self class) SetSections(sections int64) { //gd:RibbonTrailMesh.set_sections
 	var frame = callframe.New()
 	callframe.Arg(frame, sections)
 	var r_ret = callframe.Nil
@@ -149,9 +152,9 @@ func (self class) SetSections(sections gd.Int) { //gd:RibbonTrailMesh.set_sectio
 }
 
 //go:nosplit
-func (self class) GetSections() gd.Int { //gd:RibbonTrailMesh.get_sections
+func (self class) GetSections() int64 { //gd:RibbonTrailMesh.get_sections
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_get_sections, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -159,7 +162,7 @@ func (self class) GetSections() gd.Int { //gd:RibbonTrailMesh.get_sections
 }
 
 //go:nosplit
-func (self class) SetSectionLength(section_length gd.Float) { //gd:RibbonTrailMesh.set_section_length
+func (self class) SetSectionLength(section_length float64) { //gd:RibbonTrailMesh.set_section_length
 	var frame = callframe.New()
 	callframe.Arg(frame, section_length)
 	var r_ret = callframe.Nil
@@ -168,9 +171,9 @@ func (self class) SetSectionLength(section_length gd.Float) { //gd:RibbonTrailMe
 }
 
 //go:nosplit
-func (self class) GetSectionLength() gd.Float { //gd:RibbonTrailMesh.get_section_length
+func (self class) GetSectionLength() float64 { //gd:RibbonTrailMesh.get_section_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_get_section_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -178,7 +181,7 @@ func (self class) GetSectionLength() gd.Float { //gd:RibbonTrailMesh.get_section
 }
 
 //go:nosplit
-func (self class) SetSectionSegments(section_segments gd.Int) { //gd:RibbonTrailMesh.set_section_segments
+func (self class) SetSectionSegments(section_segments int64) { //gd:RibbonTrailMesh.set_section_segments
 	var frame = callframe.New()
 	callframe.Arg(frame, section_segments)
 	var r_ret = callframe.Nil
@@ -187,9 +190,9 @@ func (self class) SetSectionSegments(section_segments gd.Int) { //gd:RibbonTrail
 }
 
 //go:nosplit
-func (self class) GetSectionSegments() gd.Int { //gd:RibbonTrailMesh.get_section_segments
+func (self class) GetSectionSegments() int64 { //gd:RibbonTrailMesh.get_section_segments
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_get_section_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

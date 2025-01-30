@@ -9,16 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -77,13 +80,13 @@ Note that this function is hidden in the default [AStar2D] class.
 */
 func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var from_id = gd.UnsafeGet[gd.Int](p_args, 0)
+		var from_id = gd.UnsafeGet[int64](p_args, 0)
 
-		var to_id = gd.UnsafeGet[gd.Int](p_args, 1)
+		var to_id = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(from_id), int(to_id))
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
@@ -93,13 +96,13 @@ Note that this function is hidden in the default [AStar2D] class.
 */
 func (Instance) _compute_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var from_id = gd.UnsafeGet[gd.Int](p_args, 0)
+		var from_id = gd.UnsafeGet[int64](p_args, 0)
 
-		var to_id = gd.UnsafeGet[gd.Int](p_args, 1)
+		var to_id = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(from_id), int(to_id))
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
@@ -126,49 +129,49 @@ astar.AddPoint(1, new Vector2(1, 0), 4); // Adds the point (1, 0) with weight_sc
 If there already exists a point for the given [param id], its position and weight scale are updated to the given values.
 */
 func (self Instance) AddPoint(id int, position Vector2.XY) { //gd:AStar2D.add_point
-	class(self).AddPoint(gd.Int(id), gd.Vector2(position), gd.Float(1.0))
+	class(self).AddPoint(int64(id), Vector2.XY(position), float64(1.0))
 }
 
 /*
 Returns the position of the point associated with the given [param id].
 */
 func (self Instance) GetPointPosition(id int) Vector2.XY { //gd:AStar2D.get_point_position
-	return Vector2.XY(class(self).GetPointPosition(gd.Int(id)))
+	return Vector2.XY(class(self).GetPointPosition(int64(id)))
 }
 
 /*
 Sets the [param position] for the point with the given [param id].
 */
 func (self Instance) SetPointPosition(id int, position Vector2.XY) { //gd:AStar2D.set_point_position
-	class(self).SetPointPosition(gd.Int(id), gd.Vector2(position))
+	class(self).SetPointPosition(int64(id), Vector2.XY(position))
 }
 
 /*
 Returns the weight scale of the point associated with the given [param id].
 */
 func (self Instance) GetPointWeightScale(id int) Float.X { //gd:AStar2D.get_point_weight_scale
-	return Float.X(Float.X(class(self).GetPointWeightScale(gd.Int(id))))
+	return Float.X(Float.X(class(self).GetPointWeightScale(int64(id))))
 }
 
 /*
 Sets the [param weight_scale] for the point with the given [param id]. The [param weight_scale] is multiplied by the result of [method _compute_cost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
 */
 func (self Instance) SetPointWeightScale(id int, weight_scale Float.X) { //gd:AStar2D.set_point_weight_scale
-	class(self).SetPointWeightScale(gd.Int(id), gd.Float(weight_scale))
+	class(self).SetPointWeightScale(int64(id), float64(weight_scale))
 }
 
 /*
 Removes the point associated with the given [param id] from the points pool.
 */
 func (self Instance) RemovePoint(id int) { //gd:AStar2D.remove_point
-	class(self).RemovePoint(gd.Int(id))
+	class(self).RemovePoint(int64(id))
 }
 
 /*
 Returns whether a point associated with the given [param id] exists.
 */
 func (self Instance) HasPoint(id int) bool { //gd:AStar2D.has_point
-	return bool(class(self).HasPoint(gd.Int(id)))
+	return bool(class(self).HasPoint(int64(id)))
 }
 
 /*
@@ -201,7 +204,7 @@ int[] neighbors = astar.GetPointConnections(1); // Returns [2, 3]
 [/codeblocks]
 */
 func (self Instance) GetPointConnections(id int) []int64 { //gd:AStar2D.get_point_connections
-	return []int64(slices.Collect(class(self).GetPointConnections(gd.Int(id)).Values()))
+	return []int64(slices.Collect(class(self).GetPointConnections(int64(id)).Values()))
 }
 
 /*
@@ -215,14 +218,14 @@ func (self Instance) GetPointIds() []int64 { //gd:AStar2D.get_point_ids
 Disables or enables the specified point for pathfinding. Useful for making a temporary obstacle.
 */
 func (self Instance) SetPointDisabled(id int) { //gd:AStar2D.set_point_disabled
-	class(self).SetPointDisabled(gd.Int(id), true)
+	class(self).SetPointDisabled(int64(id), true)
 }
 
 /*
 Returns whether a point is disabled or not for pathfinding. By default, all points are enabled.
 */
 func (self Instance) IsPointDisabled(id int) bool { //gd:AStar2D.is_point_disabled
-	return bool(class(self).IsPointDisabled(gd.Int(id)))
+	return bool(class(self).IsPointDisabled(int64(id)))
 }
 
 /*
@@ -243,21 +246,21 @@ astar.ConnectPoints(1, 2, false);
 [/codeblocks]
 */
 func (self Instance) ConnectPoints(id int, to_id int) { //gd:AStar2D.connect_points
-	class(self).ConnectPoints(gd.Int(id), gd.Int(to_id), true)
+	class(self).ConnectPoints(int64(id), int64(to_id), true)
 }
 
 /*
 Deletes the segment between the given points. If [param bidirectional] is [code]false[/code], only movement from [param id] to [param to_id] is prevented, and a unidirectional segment possibly remains.
 */
 func (self Instance) DisconnectPoints(id int, to_id int) { //gd:AStar2D.disconnect_points
-	class(self).DisconnectPoints(gd.Int(id), gd.Int(to_id), true)
+	class(self).DisconnectPoints(int64(id), int64(to_id), true)
 }
 
 /*
 Returns whether there is a connection/segment between the given points. If [param bidirectional] is [code]false[/code], returns whether movement from [param id] to [param to_id] is possible through this segment.
 */
 func (self Instance) ArePointsConnected(id int, to_id int) bool { //gd:AStar2D.are_points_connected
-	return bool(class(self).ArePointsConnected(gd.Int(id), gd.Int(to_id), true))
+	return bool(class(self).ArePointsConnected(int64(id), int64(to_id), true))
 }
 
 /*
@@ -278,7 +281,7 @@ func (self Instance) GetPointCapacity() int { //gd:AStar2D.get_point_capacity
 Reserves space internally for [param num_nodes] points, useful if you're adding a known large number of points at once, such as points on a grid. New capacity must be greater or equals to old capacity.
 */
 func (self Instance) ReserveSpace(num_nodes int) { //gd:AStar2D.reserve_space
-	class(self).ReserveSpace(gd.Int(num_nodes))
+	class(self).ReserveSpace(int64(num_nodes))
 }
 
 /*
@@ -293,7 +296,7 @@ Returns the ID of the closest point to [param to_position], optionally taking di
 [b]Note:[/b] If several points are the closest to [param to_position], the one with the smallest ID will be returned, ensuring a deterministic result.
 */
 func (self Instance) GetClosestPoint(to_position Vector2.XY) int { //gd:AStar2D.get_closest_point
-	return int(int(class(self).GetClosestPoint(gd.Vector2(to_position), false)))
+	return int(int(class(self).GetClosestPoint(Vector2.XY(to_position), false)))
 }
 
 /*
@@ -317,7 +320,7 @@ Vector2 res = astar.GetClosestPositionInSegment(new Vector2(3, 3)); // Returns (
 The result is in the segment that goes from [code]y = 0[/code] to [code]y = 5[/code]. It's the closest position in the segment to the given point.
 */
 func (self Instance) GetClosestPositionInSegment(to_position Vector2.XY) Vector2.XY { //gd:AStar2D.get_closest_position_in_segment
-	return Vector2.XY(class(self).GetClosestPositionInSegment(gd.Vector2(to_position)))
+	return Vector2.XY(class(self).GetClosestPositionInSegment(Vector2.XY(to_position)))
 }
 
 /*
@@ -326,7 +329,7 @@ If there is no valid path to the target, and [param allow_partial_path] is [code
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 */
 func (self Instance) GetPointPath(from_id int, to_id int) []Vector2.XY { //gd:AStar2D.get_point_path
-	return []Vector2.XY(slices.Collect(class(self).GetPointPath(gd.Int(from_id), gd.Int(to_id), false).Values()))
+	return []Vector2.XY(slices.Collect(class(self).GetPointPath(int64(from_id), int64(to_id), false).Values()))
 }
 
 /*
@@ -364,7 +367,7 @@ int[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
 If you change the 2nd point's weight to 3, then the result will be [code][1, 4, 3][/code] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */
 func (self Instance) GetIdPath(from_id int, to_id int) []int64 { //gd:AStar2D.get_id_path
-	return []int64(slices.Collect(class(self).GetIdPath(gd.Int(from_id), gd.Int(to_id), false).Values()))
+	return []int64(slices.Collect(class(self).GetIdPath(int64(from_id), int64(to_id), false).Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -390,11 +393,11 @@ func New() Instance {
 Called when estimating the cost between a point and the path's ending point.
 Note that this function is hidden in the default [AStar2D] class.
 */
-func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id gd.Int, to_id gd.Int) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int64, to_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var from_id = gd.UnsafeGet[gd.Int](p_args, 0)
+		var from_id = gd.UnsafeGet[int64](p_args, 0)
 
-		var to_id = gd.UnsafeGet[gd.Int](p_args, 1)
+		var to_id = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_id, to_id)
@@ -406,11 +409,11 @@ func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id gd.Int, to_id 
 Called when computing the cost between two connected points.
 Note that this function is hidden in the default [AStar2D] class.
 */
-func (class) _compute_cost(impl func(ptr unsafe.Pointer, from_id gd.Int, to_id gd.Int) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _compute_cost(impl func(ptr unsafe.Pointer, from_id int64, to_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var from_id = gd.UnsafeGet[gd.Int](p_args, 0)
+		var from_id = gd.UnsafeGet[int64](p_args, 0)
 
-		var to_id = gd.UnsafeGet[gd.Int](p_args, 1)
+		var to_id = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_id, to_id)
@@ -422,9 +425,9 @@ func (class) _compute_cost(impl func(ptr unsafe.Pointer, from_id gd.Int, to_id g
 Returns the next available point ID with no point associated to it.
 */
 //go:nosplit
-func (self class) GetAvailablePointId() gd.Int { //gd:AStar2D.get_available_point_id
+func (self class) GetAvailablePointId() int64 { //gd:AStar2D.get_available_point_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar2D.Bind_get_available_point_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -447,7 +450,7 @@ astar.AddPoint(1, new Vector2(1, 0), 4); // Adds the point (1, 0) with weight_sc
 If there already exists a point for the given [param id], its position and weight scale are updated to the given values.
 */
 //go:nosplit
-func (self class) AddPoint(id gd.Int, position gd.Vector2, weight_scale gd.Float) { //gd:AStar2D.add_point
+func (self class) AddPoint(id int64, position Vector2.XY, weight_scale float64) { //gd:AStar2D.add_point
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, position)
@@ -461,10 +464,10 @@ func (self class) AddPoint(id gd.Int, position gd.Vector2, weight_scale gd.Float
 Returns the position of the point associated with the given [param id].
 */
 //go:nosplit
-func (self class) GetPointPosition(id gd.Int) gd.Vector2 { //gd:AStar2D.get_point_position
+func (self class) GetPointPosition(id int64) Vector2.XY { //gd:AStar2D.get_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar2D.Bind_get_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -475,7 +478,7 @@ func (self class) GetPointPosition(id gd.Int) gd.Vector2 { //gd:AStar2D.get_poin
 Sets the [param position] for the point with the given [param id].
 */
 //go:nosplit
-func (self class) SetPointPosition(id gd.Int, position gd.Vector2) { //gd:AStar2D.set_point_position
+func (self class) SetPointPosition(id int64, position Vector2.XY) { //gd:AStar2D.set_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, position)
@@ -488,10 +491,10 @@ func (self class) SetPointPosition(id gd.Int, position gd.Vector2) { //gd:AStar2
 Returns the weight scale of the point associated with the given [param id].
 */
 //go:nosplit
-func (self class) GetPointWeightScale(id gd.Int) gd.Float { //gd:AStar2D.get_point_weight_scale
+func (self class) GetPointWeightScale(id int64) float64 { //gd:AStar2D.get_point_weight_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar2D.Bind_get_point_weight_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -502,7 +505,7 @@ func (self class) GetPointWeightScale(id gd.Int) gd.Float { //gd:AStar2D.get_poi
 Sets the [param weight_scale] for the point with the given [param id]. The [param weight_scale] is multiplied by the result of [method _compute_cost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
 */
 //go:nosplit
-func (self class) SetPointWeightScale(id gd.Int, weight_scale gd.Float) { //gd:AStar2D.set_point_weight_scale
+func (self class) SetPointWeightScale(id int64, weight_scale float64) { //gd:AStar2D.set_point_weight_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, weight_scale)
@@ -515,7 +518,7 @@ func (self class) SetPointWeightScale(id gd.Int, weight_scale gd.Float) { //gd:A
 Removes the point associated with the given [param id] from the points pool.
 */
 //go:nosplit
-func (self class) RemovePoint(id gd.Int) { //gd:AStar2D.remove_point
+func (self class) RemovePoint(id int64) { //gd:AStar2D.remove_point
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
@@ -527,7 +530,7 @@ func (self class) RemovePoint(id gd.Int) { //gd:AStar2D.remove_point
 Returns whether a point associated with the given [param id] exists.
 */
 //go:nosplit
-func (self class) HasPoint(id gd.Int) bool { //gd:AStar2D.has_point
+func (self class) HasPoint(id int64) bool { //gd:AStar2D.has_point
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -567,7 +570,7 @@ int[] neighbors = astar.GetPointConnections(1); // Returns [2, 3]
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetPointConnections(id gd.Int) Packed.Array[int64] { //gd:AStar2D.get_point_connections
+func (self class) GetPointConnections(id int64) Packed.Array[int64] { //gd:AStar2D.get_point_connections
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -594,7 +597,7 @@ func (self class) GetPointIds() Packed.Array[int64] { //gd:AStar2D.get_point_ids
 Disables or enables the specified point for pathfinding. Useful for making a temporary obstacle.
 */
 //go:nosplit
-func (self class) SetPointDisabled(id gd.Int, disabled bool) { //gd:AStar2D.set_point_disabled
+func (self class) SetPointDisabled(id int64, disabled bool) { //gd:AStar2D.set_point_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, disabled)
@@ -607,7 +610,7 @@ func (self class) SetPointDisabled(id gd.Int, disabled bool) { //gd:AStar2D.set_
 Returns whether a point is disabled or not for pathfinding. By default, all points are enabled.
 */
 //go:nosplit
-func (self class) IsPointDisabled(id gd.Int) bool { //gd:AStar2D.is_point_disabled
+func (self class) IsPointDisabled(id int64) bool { //gd:AStar2D.is_point_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -635,7 +638,7 @@ astar.ConnectPoints(1, 2, false);
 [/codeblocks]
 */
 //go:nosplit
-func (self class) ConnectPoints(id gd.Int, to_id gd.Int, bidirectional bool) { //gd:AStar2D.connect_points
+func (self class) ConnectPoints(id int64, to_id int64, bidirectional bool) { //gd:AStar2D.connect_points
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, to_id)
@@ -649,7 +652,7 @@ func (self class) ConnectPoints(id gd.Int, to_id gd.Int, bidirectional bool) { /
 Deletes the segment between the given points. If [param bidirectional] is [code]false[/code], only movement from [param id] to [param to_id] is prevented, and a unidirectional segment possibly remains.
 */
 //go:nosplit
-func (self class) DisconnectPoints(id gd.Int, to_id gd.Int, bidirectional bool) { //gd:AStar2D.disconnect_points
+func (self class) DisconnectPoints(id int64, to_id int64, bidirectional bool) { //gd:AStar2D.disconnect_points
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, to_id)
@@ -663,7 +666,7 @@ func (self class) DisconnectPoints(id gd.Int, to_id gd.Int, bidirectional bool) 
 Returns whether there is a connection/segment between the given points. If [param bidirectional] is [code]false[/code], returns whether movement from [param id] to [param to_id] is possible through this segment.
 */
 //go:nosplit
-func (self class) ArePointsConnected(id gd.Int, to_id gd.Int, bidirectional bool) bool { //gd:AStar2D.are_points_connected
+func (self class) ArePointsConnected(id int64, to_id int64, bidirectional bool) bool { //gd:AStar2D.are_points_connected
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, to_id)
@@ -679,9 +682,9 @@ func (self class) ArePointsConnected(id gd.Int, to_id gd.Int, bidirectional bool
 Returns the number of points currently in the points pool.
 */
 //go:nosplit
-func (self class) GetPointCount() gd.Int { //gd:AStar2D.get_point_count
+func (self class) GetPointCount() int64 { //gd:AStar2D.get_point_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar2D.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -692,9 +695,9 @@ func (self class) GetPointCount() gd.Int { //gd:AStar2D.get_point_count
 Returns the capacity of the structure backing the points, useful in conjunction with [method reserve_space].
 */
 //go:nosplit
-func (self class) GetPointCapacity() gd.Int { //gd:AStar2D.get_point_capacity
+func (self class) GetPointCapacity() int64 { //gd:AStar2D.get_point_capacity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar2D.Bind_get_point_capacity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -705,7 +708,7 @@ func (self class) GetPointCapacity() gd.Int { //gd:AStar2D.get_point_capacity
 Reserves space internally for [param num_nodes] points, useful if you're adding a known large number of points at once, such as points on a grid. New capacity must be greater or equals to old capacity.
 */
 //go:nosplit
-func (self class) ReserveSpace(num_nodes gd.Int) { //gd:AStar2D.reserve_space
+func (self class) ReserveSpace(num_nodes int64) { //gd:AStar2D.reserve_space
 	var frame = callframe.New()
 	callframe.Arg(frame, num_nodes)
 	var r_ret = callframe.Nil
@@ -729,11 +732,11 @@ Returns the ID of the closest point to [param to_position], optionally taking di
 [b]Note:[/b] If several points are the closest to [param to_position], the one with the smallest ID will be returned, ensuring a deterministic result.
 */
 //go:nosplit
-func (self class) GetClosestPoint(to_position gd.Vector2, include_disabled bool) gd.Int { //gd:AStar2D.get_closest_point
+func (self class) GetClosestPoint(to_position Vector2.XY, include_disabled bool) int64 { //gd:AStar2D.get_closest_point
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	callframe.Arg(frame, include_disabled)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar2D.Bind_get_closest_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -761,10 +764,10 @@ Vector2 res = astar.GetClosestPositionInSegment(new Vector2(3, 3)); // Returns (
 The result is in the segment that goes from [code]y = 0[/code] to [code]y = 5[/code]. It's the closest position in the segment to the given point.
 */
 //go:nosplit
-func (self class) GetClosestPositionInSegment(to_position gd.Vector2) gd.Vector2 { //gd:AStar2D.get_closest_position_in_segment
+func (self class) GetClosestPositionInSegment(to_position Vector2.XY) Vector2.XY { //gd:AStar2D.get_closest_position_in_segment
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar2D.Bind_get_closest_position_in_segment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -777,7 +780,7 @@ If there is no valid path to the target, and [param allow_partial_path] is [code
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 */
 //go:nosplit
-func (self class) GetPointPath(from_id gd.Int, to_id gd.Int, allow_partial_path bool) Packed.Array[Vector2.XY] { //gd:AStar2D.get_point_path
+func (self class) GetPointPath(from_id int64, to_id int64, allow_partial_path bool) Packed.Array[Vector2.XY] { //gd:AStar2D.get_point_path
 	var frame = callframe.New()
 	callframe.Arg(frame, from_id)
 	callframe.Arg(frame, to_id)
@@ -824,7 +827,7 @@ int[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
 If you change the 2nd point's weight to 3, then the result will be [code][1, 4, 3][/code] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */
 //go:nosplit
-func (self class) GetIdPath(from_id gd.Int, to_id gd.Int, allow_partial_path bool) Packed.Array[int64] { //gd:AStar2D.get_id_path
+func (self class) GetIdPath(from_id int64, to_id int64, allow_partial_path bool) Packed.Array[int64] { //gd:AStar2D.get_id_path
 	var frame = callframe.New()
 	callframe.Arg(frame, from_id)
 	callframe.Arg(frame, to_id)

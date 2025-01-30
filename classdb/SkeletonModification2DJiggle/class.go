@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/SkeletonModification2D"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -72,7 +75,7 @@ func (self Instance) GetUseColliders() bool { //gd:SkeletonModification2DJiggle.
 Sets the collision mask that the Jiggle modifier will use when reacting to colliders, if the Jiggle modifier is set to take colliders into account.
 */
 func (self Instance) SetCollisionMask(collision_mask int) { //gd:SkeletonModification2DJiggle.set_collision_mask
-	class(self).SetCollisionMask(gd.Int(collision_mask))
+	class(self).SetCollisionMask(int64(collision_mask))
 }
 
 /*
@@ -86,112 +89,112 @@ func (self Instance) GetCollisionMask() int { //gd:SkeletonModification2DJiggle.
 Sets the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
 func (self Instance) SetJiggleJointBone2dNode(joint_idx int, bone2d_node string) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone2d_node
-	class(self).SetJiggleJointBone2dNode(gd.Int(joint_idx), Path.ToNode(String.New(bone2d_node)))
+	class(self).SetJiggleJointBone2dNode(int64(joint_idx), Path.ToNode(String.New(bone2d_node)))
 }
 
 /*
 Returns the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
 func (self Instance) GetJiggleJointBone2dNode(joint_idx int) string { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone2d_node
-	return string(class(self).GetJiggleJointBone2dNode(gd.Int(joint_idx)).String())
+	return string(class(self).GetJiggleJointBone2dNode(int64(joint_idx)).String())
 }
 
 /*
 Sets the bone index, [param bone_idx], of the Jiggle joint at [param joint_idx]. When possible, this will also update the [code]bone2d_node[/code] of the Jiggle joint based on data provided by the linked skeleton.
 */
 func (self Instance) SetJiggleJointBoneIndex(joint_idx int, bone_idx int) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone_index
-	class(self).SetJiggleJointBoneIndex(gd.Int(joint_idx), gd.Int(bone_idx))
+	class(self).SetJiggleJointBoneIndex(int64(joint_idx), int64(bone_idx))
 }
 
 /*
 Returns the index of the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
 func (self Instance) GetJiggleJointBoneIndex(joint_idx int) int { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone_index
-	return int(int(class(self).GetJiggleJointBoneIndex(gd.Int(joint_idx))))
+	return int(int(class(self).GetJiggleJointBoneIndex(int64(joint_idx))))
 }
 
 /*
 Sets whether the Jiggle joint at [param joint_idx] should override the default Jiggle joint settings. Setting this to [code]true[/code] will make the joint use its own settings rather than the default ones attached to the modification.
 */
 func (self Instance) SetJiggleJointOverride(joint_idx int, override bool) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_override
-	class(self).SetJiggleJointOverride(gd.Int(joint_idx), override)
+	class(self).SetJiggleJointOverride(int64(joint_idx), override)
 }
 
 /*
 Returns a boolean that indicates whether the joint at [param joint_idx] is overriding the default Jiggle joint data defined in the modification.
 */
 func (self Instance) GetJiggleJointOverride(joint_idx int) bool { //gd:SkeletonModification2DJiggle.get_jiggle_joint_override
-	return bool(class(self).GetJiggleJointOverride(gd.Int(joint_idx)))
+	return bool(class(self).GetJiggleJointOverride(int64(joint_idx)))
 }
 
 /*
 Sets the of stiffness of the Jiggle joint at [param joint_idx].
 */
 func (self Instance) SetJiggleJointStiffness(joint_idx int, stiffness Float.X) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_stiffness
-	class(self).SetJiggleJointStiffness(gd.Int(joint_idx), gd.Float(stiffness))
+	class(self).SetJiggleJointStiffness(int64(joint_idx), float64(stiffness))
 }
 
 /*
 Returns the stiffness of the Jiggle joint at [param joint_idx].
 */
 func (self Instance) GetJiggleJointStiffness(joint_idx int) Float.X { //gd:SkeletonModification2DJiggle.get_jiggle_joint_stiffness
-	return Float.X(Float.X(class(self).GetJiggleJointStiffness(gd.Int(joint_idx))))
+	return Float.X(Float.X(class(self).GetJiggleJointStiffness(int64(joint_idx))))
 }
 
 /*
 Sets the of mass of the Jiggle joint at [param joint_idx].
 */
 func (self Instance) SetJiggleJointMass(joint_idx int, mass Float.X) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_mass
-	class(self).SetJiggleJointMass(gd.Int(joint_idx), gd.Float(mass))
+	class(self).SetJiggleJointMass(int64(joint_idx), float64(mass))
 }
 
 /*
 Returns the amount of mass of the jiggle joint at [param joint_idx].
 */
 func (self Instance) GetJiggleJointMass(joint_idx int) Float.X { //gd:SkeletonModification2DJiggle.get_jiggle_joint_mass
-	return Float.X(Float.X(class(self).GetJiggleJointMass(gd.Int(joint_idx))))
+	return Float.X(Float.X(class(self).GetJiggleJointMass(int64(joint_idx))))
 }
 
 /*
 Sets the amount of damping of the Jiggle joint at [param joint_idx].
 */
 func (self Instance) SetJiggleJointDamping(joint_idx int, damping Float.X) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_damping
-	class(self).SetJiggleJointDamping(gd.Int(joint_idx), gd.Float(damping))
+	class(self).SetJiggleJointDamping(int64(joint_idx), float64(damping))
 }
 
 /*
 Returns the amount of damping of the Jiggle joint at [param joint_idx].
 */
 func (self Instance) GetJiggleJointDamping(joint_idx int) Float.X { //gd:SkeletonModification2DJiggle.get_jiggle_joint_damping
-	return Float.X(Float.X(class(self).GetJiggleJointDamping(gd.Int(joint_idx))))
+	return Float.X(Float.X(class(self).GetJiggleJointDamping(int64(joint_idx))))
 }
 
 /*
 Sets whether the Jiggle joint at [param joint_idx] should use gravity.
 */
 func (self Instance) SetJiggleJointUseGravity(joint_idx int, use_gravity bool) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_use_gravity
-	class(self).SetJiggleJointUseGravity(gd.Int(joint_idx), use_gravity)
+	class(self).SetJiggleJointUseGravity(int64(joint_idx), use_gravity)
 }
 
 /*
 Returns a boolean that indicates whether the joint at [param joint_idx] is using gravity or not.
 */
 func (self Instance) GetJiggleJointUseGravity(joint_idx int) bool { //gd:SkeletonModification2DJiggle.get_jiggle_joint_use_gravity
-	return bool(class(self).GetJiggleJointUseGravity(gd.Int(joint_idx)))
+	return bool(class(self).GetJiggleJointUseGravity(int64(joint_idx)))
 }
 
 /*
 Sets the gravity vector of the Jiggle joint at [param joint_idx].
 */
 func (self Instance) SetJiggleJointGravity(joint_idx int, gravity Vector2.XY) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_gravity
-	class(self).SetJiggleJointGravity(gd.Int(joint_idx), gd.Vector2(gravity))
+	class(self).SetJiggleJointGravity(int64(joint_idx), Vector2.XY(gravity))
 }
 
 /*
 Returns a [Vector2] representing the amount of gravity the Jiggle joint at [param joint_idx] is influenced by.
 */
 func (self Instance) GetJiggleJointGravity(joint_idx int) Vector2.XY { //gd:SkeletonModification2DJiggle.get_jiggle_joint_gravity
-	return Vector2.XY(class(self).GetJiggleJointGravity(gd.Int(joint_idx)))
+	return Vector2.XY(class(self).GetJiggleJointGravity(int64(joint_idx)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -226,7 +229,7 @@ func (self Instance) JiggleDataChainLength() int {
 }
 
 func (self Instance) SetJiggleDataChainLength(value int) {
-	class(self).SetJiggleDataChainLength(gd.Int(value))
+	class(self).SetJiggleDataChainLength(int64(value))
 }
 
 func (self Instance) Stiffness() Float.X {
@@ -234,7 +237,7 @@ func (self Instance) Stiffness() Float.X {
 }
 
 func (self Instance) SetStiffness(value Float.X) {
-	class(self).SetStiffness(gd.Float(value))
+	class(self).SetStiffness(float64(value))
 }
 
 func (self Instance) Mass() Float.X {
@@ -242,7 +245,7 @@ func (self Instance) Mass() Float.X {
 }
 
 func (self Instance) SetMass(value Float.X) {
-	class(self).SetMass(gd.Float(value))
+	class(self).SetMass(float64(value))
 }
 
 func (self Instance) Damping() Float.X {
@@ -250,7 +253,7 @@ func (self Instance) Damping() Float.X {
 }
 
 func (self Instance) SetDamping(value Float.X) {
-	class(self).SetDamping(gd.Float(value))
+	class(self).SetDamping(float64(value))
 }
 
 func (self Instance) UseGravity() bool {
@@ -266,7 +269,7 @@ func (self Instance) Gravity() Vector2.XY {
 }
 
 func (self Instance) SetGravity(value Vector2.XY) {
-	class(self).SetGravity(gd.Vector2(value))
+	class(self).SetGravity(Vector2.XY(value))
 }
 
 //go:nosplit
@@ -289,7 +292,7 @@ func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DJiggl
 }
 
 //go:nosplit
-func (self class) SetJiggleDataChainLength(length gd.Int) { //gd:SkeletonModification2DJiggle.set_jiggle_data_chain_length
+func (self class) SetJiggleDataChainLength(length int64) { //gd:SkeletonModification2DJiggle.set_jiggle_data_chain_length
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -298,9 +301,9 @@ func (self class) SetJiggleDataChainLength(length gd.Int) { //gd:SkeletonModific
 }
 
 //go:nosplit
-func (self class) GetJiggleDataChainLength() gd.Int { //gd:SkeletonModification2DJiggle.get_jiggle_data_chain_length
+func (self class) GetJiggleDataChainLength() int64 { //gd:SkeletonModification2DJiggle.get_jiggle_data_chain_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_data_chain_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -308,7 +311,7 @@ func (self class) GetJiggleDataChainLength() gd.Int { //gd:SkeletonModification2
 }
 
 //go:nosplit
-func (self class) SetStiffness(stiffness gd.Float) { //gd:SkeletonModification2DJiggle.set_stiffness
+func (self class) SetStiffness(stiffness float64) { //gd:SkeletonModification2DJiggle.set_stiffness
 	var frame = callframe.New()
 	callframe.Arg(frame, stiffness)
 	var r_ret = callframe.Nil
@@ -317,9 +320,9 @@ func (self class) SetStiffness(stiffness gd.Float) { //gd:SkeletonModification2D
 }
 
 //go:nosplit
-func (self class) GetStiffness() gd.Float { //gd:SkeletonModification2DJiggle.get_stiffness
+func (self class) GetStiffness() float64 { //gd:SkeletonModification2DJiggle.get_stiffness
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_stiffness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -327,7 +330,7 @@ func (self class) GetStiffness() gd.Float { //gd:SkeletonModification2DJiggle.ge
 }
 
 //go:nosplit
-func (self class) SetMass(mass gd.Float) { //gd:SkeletonModification2DJiggle.set_mass
+func (self class) SetMass(mass float64) { //gd:SkeletonModification2DJiggle.set_mass
 	var frame = callframe.New()
 	callframe.Arg(frame, mass)
 	var r_ret = callframe.Nil
@@ -336,9 +339,9 @@ func (self class) SetMass(mass gd.Float) { //gd:SkeletonModification2DJiggle.set
 }
 
 //go:nosplit
-func (self class) GetMass() gd.Float { //gd:SkeletonModification2DJiggle.get_mass
+func (self class) GetMass() float64 { //gd:SkeletonModification2DJiggle.get_mass
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -346,7 +349,7 @@ func (self class) GetMass() gd.Float { //gd:SkeletonModification2DJiggle.get_mas
 }
 
 //go:nosplit
-func (self class) SetDamping(damping gd.Float) { //gd:SkeletonModification2DJiggle.set_damping
+func (self class) SetDamping(damping float64) { //gd:SkeletonModification2DJiggle.set_damping
 	var frame = callframe.New()
 	callframe.Arg(frame, damping)
 	var r_ret = callframe.Nil
@@ -355,9 +358,9 @@ func (self class) SetDamping(damping gd.Float) { //gd:SkeletonModification2DJigg
 }
 
 //go:nosplit
-func (self class) GetDamping() gd.Float { //gd:SkeletonModification2DJiggle.get_damping
+func (self class) GetDamping() float64 { //gd:SkeletonModification2DJiggle.get_damping
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_damping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -384,7 +387,7 @@ func (self class) GetUseGravity() bool { //gd:SkeletonModification2DJiggle.get_u
 }
 
 //go:nosplit
-func (self class) SetGravity(gravity gd.Vector2) { //gd:SkeletonModification2DJiggle.set_gravity
+func (self class) SetGravity(gravity Vector2.XY) { //gd:SkeletonModification2DJiggle.set_gravity
 	var frame = callframe.New()
 	callframe.Arg(frame, gravity)
 	var r_ret = callframe.Nil
@@ -393,9 +396,9 @@ func (self class) SetGravity(gravity gd.Vector2) { //gd:SkeletonModification2DJi
 }
 
 //go:nosplit
-func (self class) GetGravity() gd.Vector2 { //gd:SkeletonModification2DJiggle.get_gravity
+func (self class) GetGravity() Vector2.XY { //gd:SkeletonModification2DJiggle.get_gravity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -431,7 +434,7 @@ func (self class) GetUseColliders() bool { //gd:SkeletonModification2DJiggle.get
 Sets the collision mask that the Jiggle modifier will use when reacting to colliders, if the Jiggle modifier is set to take colliders into account.
 */
 //go:nosplit
-func (self class) SetCollisionMask(collision_mask gd.Int) { //gd:SkeletonModification2DJiggle.set_collision_mask
+func (self class) SetCollisionMask(collision_mask int64) { //gd:SkeletonModification2DJiggle.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_mask)
 	var r_ret = callframe.Nil
@@ -443,9 +446,9 @@ func (self class) SetCollisionMask(collision_mask gd.Int) { //gd:SkeletonModific
 Returns the collision mask used by the Jiggle modifier when collisions are enabled.
 */
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int { //gd:SkeletonModification2DJiggle.get_collision_mask
+func (self class) GetCollisionMask() int64 { //gd:SkeletonModification2DJiggle.get_collision_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -456,7 +459,7 @@ func (self class) GetCollisionMask() gd.Int { //gd:SkeletonModification2DJiggle.
 Sets the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) SetJiggleJointBone2dNode(joint_idx gd.Int, bone2d_node Path.ToNode) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone2d_node
+func (self class) SetJiggleJointBone2dNode(joint_idx int64, bone2d_node Path.ToNode) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(bone2d_node)))
@@ -469,7 +472,7 @@ func (self class) SetJiggleJointBone2dNode(joint_idx gd.Int, bone2d_node Path.To
 Returns the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetJiggleJointBone2dNode(joint_idx gd.Int) Path.ToNode { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone2d_node
+func (self class) GetJiggleJointBone2dNode(joint_idx int64) Path.ToNode { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -483,7 +486,7 @@ func (self class) GetJiggleJointBone2dNode(joint_idx gd.Int) Path.ToNode { //gd:
 Sets the bone index, [param bone_idx], of the Jiggle joint at [param joint_idx]. When possible, this will also update the [code]bone2d_node[/code] of the Jiggle joint based on data provided by the linked skeleton.
 */
 //go:nosplit
-func (self class) SetJiggleJointBoneIndex(joint_idx gd.Int, bone_idx gd.Int) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone_index
+func (self class) SetJiggleJointBoneIndex(joint_idx int64, bone_idx int64) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone_index
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, bone_idx)
@@ -496,10 +499,10 @@ func (self class) SetJiggleJointBoneIndex(joint_idx gd.Int, bone_idx gd.Int) { /
 Returns the index of the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetJiggleJointBoneIndex(joint_idx gd.Int) gd.Int { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone_index
+func (self class) GetJiggleJointBoneIndex(joint_idx int64) int64 { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone_index
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_joint_bone_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -510,7 +513,7 @@ func (self class) GetJiggleJointBoneIndex(joint_idx gd.Int) gd.Int { //gd:Skelet
 Sets whether the Jiggle joint at [param joint_idx] should override the default Jiggle joint settings. Setting this to [code]true[/code] will make the joint use its own settings rather than the default ones attached to the modification.
 */
 //go:nosplit
-func (self class) SetJiggleJointOverride(joint_idx gd.Int, override bool) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_override
+func (self class) SetJiggleJointOverride(joint_idx int64, override bool) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_override
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, override)
@@ -523,7 +526,7 @@ func (self class) SetJiggleJointOverride(joint_idx gd.Int, override bool) { //gd
 Returns a boolean that indicates whether the joint at [param joint_idx] is overriding the default Jiggle joint data defined in the modification.
 */
 //go:nosplit
-func (self class) GetJiggleJointOverride(joint_idx gd.Int) bool { //gd:SkeletonModification2DJiggle.get_jiggle_joint_override
+func (self class) GetJiggleJointOverride(joint_idx int64) bool { //gd:SkeletonModification2DJiggle.get_jiggle_joint_override
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -537,7 +540,7 @@ func (self class) GetJiggleJointOverride(joint_idx gd.Int) bool { //gd:SkeletonM
 Sets the of stiffness of the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) SetJiggleJointStiffness(joint_idx gd.Int, stiffness gd.Float) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_stiffness
+func (self class) SetJiggleJointStiffness(joint_idx int64, stiffness float64) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_stiffness
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, stiffness)
@@ -550,10 +553,10 @@ func (self class) SetJiggleJointStiffness(joint_idx gd.Int, stiffness gd.Float) 
 Returns the stiffness of the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetJiggleJointStiffness(joint_idx gd.Int) gd.Float { //gd:SkeletonModification2DJiggle.get_jiggle_joint_stiffness
+func (self class) GetJiggleJointStiffness(joint_idx int64) float64 { //gd:SkeletonModification2DJiggle.get_jiggle_joint_stiffness
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_joint_stiffness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -564,7 +567,7 @@ func (self class) GetJiggleJointStiffness(joint_idx gd.Int) gd.Float { //gd:Skel
 Sets the of mass of the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) SetJiggleJointMass(joint_idx gd.Int, mass gd.Float) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_mass
+func (self class) SetJiggleJointMass(joint_idx int64, mass float64) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_mass
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, mass)
@@ -577,10 +580,10 @@ func (self class) SetJiggleJointMass(joint_idx gd.Int, mass gd.Float) { //gd:Ske
 Returns the amount of mass of the jiggle joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetJiggleJointMass(joint_idx gd.Int) gd.Float { //gd:SkeletonModification2DJiggle.get_jiggle_joint_mass
+func (self class) GetJiggleJointMass(joint_idx int64) float64 { //gd:SkeletonModification2DJiggle.get_jiggle_joint_mass
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_joint_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -591,7 +594,7 @@ func (self class) GetJiggleJointMass(joint_idx gd.Int) gd.Float { //gd:SkeletonM
 Sets the amount of damping of the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) SetJiggleJointDamping(joint_idx gd.Int, damping gd.Float) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_damping
+func (self class) SetJiggleJointDamping(joint_idx int64, damping float64) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_damping
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, damping)
@@ -604,10 +607,10 @@ func (self class) SetJiggleJointDamping(joint_idx gd.Int, damping gd.Float) { //
 Returns the amount of damping of the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetJiggleJointDamping(joint_idx gd.Int) gd.Float { //gd:SkeletonModification2DJiggle.get_jiggle_joint_damping
+func (self class) GetJiggleJointDamping(joint_idx int64) float64 { //gd:SkeletonModification2DJiggle.get_jiggle_joint_damping
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_joint_damping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -618,7 +621,7 @@ func (self class) GetJiggleJointDamping(joint_idx gd.Int) gd.Float { //gd:Skelet
 Sets whether the Jiggle joint at [param joint_idx] should use gravity.
 */
 //go:nosplit
-func (self class) SetJiggleJointUseGravity(joint_idx gd.Int, use_gravity bool) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_use_gravity
+func (self class) SetJiggleJointUseGravity(joint_idx int64, use_gravity bool) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_use_gravity
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, use_gravity)
@@ -631,7 +634,7 @@ func (self class) SetJiggleJointUseGravity(joint_idx gd.Int, use_gravity bool) {
 Returns a boolean that indicates whether the joint at [param joint_idx] is using gravity or not.
 */
 //go:nosplit
-func (self class) GetJiggleJointUseGravity(joint_idx gd.Int) bool { //gd:SkeletonModification2DJiggle.get_jiggle_joint_use_gravity
+func (self class) GetJiggleJointUseGravity(joint_idx int64) bool { //gd:SkeletonModification2DJiggle.get_jiggle_joint_use_gravity
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -645,7 +648,7 @@ func (self class) GetJiggleJointUseGravity(joint_idx gd.Int) bool { //gd:Skeleto
 Sets the gravity vector of the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) SetJiggleJointGravity(joint_idx gd.Int, gravity gd.Vector2) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_gravity
+func (self class) SetJiggleJointGravity(joint_idx int64, gravity Vector2.XY) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_gravity
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, gravity)
@@ -658,10 +661,10 @@ func (self class) SetJiggleJointGravity(joint_idx gd.Int, gravity gd.Vector2) { 
 Returns a [Vector2] representing the amount of gravity the Jiggle joint at [param joint_idx] is influenced by.
 */
 //go:nosplit
-func (self class) GetJiggleJointGravity(joint_idx gd.Int) gd.Vector2 { //gd:SkeletonModification2DJiggle.get_jiggle_joint_gravity
+func (self class) GetJiggleJointGravity(joint_idx int64) Vector2.XY { //gd:SkeletonModification2DJiggle.get_jiggle_joint_gravity
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_joint_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/StreamPeer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/StreamPeer"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,7 +58,7 @@ type Any interface {
 Moves the cursor to the specified position. [param position] must be a valid index of [member data_array].
 */
 func (self Instance) SeekTo(position int) { //gd:StreamPeerBuffer.seek
-	class(self).SeekTo(gd.Int(position))
+	class(self).SeekTo(int64(position))
 }
 
 /*
@@ -75,7 +79,7 @@ func (self Instance) GetPosition() int { //gd:StreamPeerBuffer.get_position
 Resizes the [member data_array]. This [i]doesn't[/i] update the cursor.
 */
 func (self Instance) Resize(size int) { //gd:StreamPeerBuffer.resize
-	class(self).Resize(gd.Int(size))
+	class(self).Resize(int64(size))
 }
 
 /*
@@ -123,7 +127,7 @@ func (self Instance) SetDataArray(value []byte) {
 Moves the cursor to the specified position. [param position] must be a valid index of [member data_array].
 */
 //go:nosplit
-func (self class) SeekTo(position gd.Int) { //gd:StreamPeerBuffer.seek
+func (self class) SeekTo(position int64) { //gd:StreamPeerBuffer.seek
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -135,9 +139,9 @@ func (self class) SeekTo(position gd.Int) { //gd:StreamPeerBuffer.seek
 Returns the size of [member data_array].
 */
 //go:nosplit
-func (self class) GetSize() gd.Int { //gd:StreamPeerBuffer.get_size
+func (self class) GetSize() int64 { //gd:StreamPeerBuffer.get_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerBuffer.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -148,9 +152,9 @@ func (self class) GetSize() gd.Int { //gd:StreamPeerBuffer.get_size
 Returns the current cursor position.
 */
 //go:nosplit
-func (self class) GetPosition() gd.Int { //gd:StreamPeerBuffer.get_position
+func (self class) GetPosition() int64 { //gd:StreamPeerBuffer.get_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerBuffer.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -161,7 +165,7 @@ func (self class) GetPosition() gd.Int { //gd:StreamPeerBuffer.get_position
 Resizes the [member data_array]. This [i]doesn't[/i] update the cursor.
 */
 //go:nosplit
-func (self class) Resize(size gd.Int) { //gd:StreamPeerBuffer.resize
+func (self class) Resize(size int64) { //gd:StreamPeerBuffer.resize
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil

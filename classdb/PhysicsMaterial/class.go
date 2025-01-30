@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -74,7 +77,7 @@ func (self Instance) Friction() Float.X {
 }
 
 func (self Instance) SetFriction(value Float.X) {
-	class(self).SetFriction(gd.Float(value))
+	class(self).SetFriction(float64(value))
 }
 
 func (self Instance) Rough() bool {
@@ -90,7 +93,7 @@ func (self Instance) Bounce() Float.X {
 }
 
 func (self Instance) SetBounce(value Float.X) {
-	class(self).SetBounce(gd.Float(value))
+	class(self).SetBounce(float64(value))
 }
 
 func (self Instance) Absorbent() bool {
@@ -102,7 +105,7 @@ func (self Instance) SetAbsorbent(value bool) {
 }
 
 //go:nosplit
-func (self class) SetFriction(friction gd.Float) { //gd:PhysicsMaterial.set_friction
+func (self class) SetFriction(friction float64) { //gd:PhysicsMaterial.set_friction
 	var frame = callframe.New()
 	callframe.Arg(frame, friction)
 	var r_ret = callframe.Nil
@@ -111,9 +114,9 @@ func (self class) SetFriction(friction gd.Float) { //gd:PhysicsMaterial.set_fric
 }
 
 //go:nosplit
-func (self class) GetFriction() gd.Float { //gd:PhysicsMaterial.get_friction
+func (self class) GetFriction() float64 { //gd:PhysicsMaterial.get_friction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsMaterial.Bind_get_friction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -140,7 +143,7 @@ func (self class) IsRough() bool { //gd:PhysicsMaterial.is_rough
 }
 
 //go:nosplit
-func (self class) SetBounce(bounce gd.Float) { //gd:PhysicsMaterial.set_bounce
+func (self class) SetBounce(bounce float64) { //gd:PhysicsMaterial.set_bounce
 	var frame = callframe.New()
 	callframe.Arg(frame, bounce)
 	var r_ret = callframe.Nil
@@ -149,9 +152,9 @@ func (self class) SetBounce(bounce gd.Float) { //gd:PhysicsMaterial.set_bounce
 }
 
 //go:nosplit
-func (self class) GetBounce() gd.Float { //gd:PhysicsMaterial.get_bounce
+func (self class) GetBounce() float64 { //gd:PhysicsMaterial.get_bounce
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsMaterial.Bind_get_bounce, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

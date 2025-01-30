@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/SkeletonModification2D"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,7 +58,7 @@ type Any interface {
 Sets the amount of additional rotation that is to be applied after executing the modification. This allows for offsetting the results by the inputted rotation amount.
 */
 func (self Instance) SetAdditionalRotation(rotation Float.X) { //gd:SkeletonModification2DLookAt.set_additional_rotation
-	class(self).SetAdditionalRotation(gd.Float(rotation))
+	class(self).SetAdditionalRotation(float64(rotation))
 }
 
 /*
@@ -83,7 +86,7 @@ func (self Instance) GetEnableConstraint() bool { //gd:SkeletonModification2DLoo
 Sets the constraint's minimum allowed angle.
 */
 func (self Instance) SetConstraintAngleMin(angle_min Float.X) { //gd:SkeletonModification2DLookAt.set_constraint_angle_min
-	class(self).SetConstraintAngleMin(gd.Float(angle_min))
+	class(self).SetConstraintAngleMin(float64(angle_min))
 }
 
 /*
@@ -97,7 +100,7 @@ func (self Instance) GetConstraintAngleMin() Float.X { //gd:SkeletonModification
 Sets the constraint's maximum allowed angle.
 */
 func (self Instance) SetConstraintAngleMax(angle_max Float.X) { //gd:SkeletonModification2DLookAt.set_constraint_angle_max
-	class(self).SetConstraintAngleMax(gd.Float(angle_max))
+	class(self).SetConstraintAngleMax(float64(angle_max))
 }
 
 /*
@@ -146,7 +149,7 @@ func (self Instance) BoneIndex() int {
 }
 
 func (self Instance) SetBoneIndex(value int) {
-	class(self).SetBoneIndex(gd.Int(value))
+	class(self).SetBoneIndex(int64(value))
 }
 
 func (self Instance) Bone2dNode() string {
@@ -185,7 +188,7 @@ func (self class) GetBone2dNode() Path.ToNode { //gd:SkeletonModification2DLookA
 }
 
 //go:nosplit
-func (self class) SetBoneIndex(bone_idx gd.Int) { //gd:SkeletonModification2DLookAt.set_bone_index
+func (self class) SetBoneIndex(bone_idx int64) { //gd:SkeletonModification2DLookAt.set_bone_index
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Nil
@@ -194,9 +197,9 @@ func (self class) SetBoneIndex(bone_idx gd.Int) { //gd:SkeletonModification2DLoo
 }
 
 //go:nosplit
-func (self class) GetBoneIndex() gd.Int { //gd:SkeletonModification2DLookAt.get_bone_index
+func (self class) GetBoneIndex() int64 { //gd:SkeletonModification2DLookAt.get_bone_index
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_bone_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -226,7 +229,7 @@ func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DLookA
 Sets the amount of additional rotation that is to be applied after executing the modification. This allows for offsetting the results by the inputted rotation amount.
 */
 //go:nosplit
-func (self class) SetAdditionalRotation(rotation gd.Float) { //gd:SkeletonModification2DLookAt.set_additional_rotation
+func (self class) SetAdditionalRotation(rotation float64) { //gd:SkeletonModification2DLookAt.set_additional_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, rotation)
 	var r_ret = callframe.Nil
@@ -238,9 +241,9 @@ func (self class) SetAdditionalRotation(rotation gd.Float) { //gd:SkeletonModifi
 Returns the amount of additional rotation that is applied after the LookAt modification executes.
 */
 //go:nosplit
-func (self class) GetAdditionalRotation() gd.Float { //gd:SkeletonModification2DLookAt.get_additional_rotation
+func (self class) GetAdditionalRotation() float64 { //gd:SkeletonModification2DLookAt.get_additional_rotation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_additional_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -276,7 +279,7 @@ func (self class) GetEnableConstraint() bool { //gd:SkeletonModification2DLookAt
 Sets the constraint's minimum allowed angle.
 */
 //go:nosplit
-func (self class) SetConstraintAngleMin(angle_min gd.Float) { //gd:SkeletonModification2DLookAt.set_constraint_angle_min
+func (self class) SetConstraintAngleMin(angle_min float64) { //gd:SkeletonModification2DLookAt.set_constraint_angle_min
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_min)
 	var r_ret = callframe.Nil
@@ -288,9 +291,9 @@ func (self class) SetConstraintAngleMin(angle_min gd.Float) { //gd:SkeletonModif
 Returns the constraint's minimum allowed angle.
 */
 //go:nosplit
-func (self class) GetConstraintAngleMin() gd.Float { //gd:SkeletonModification2DLookAt.get_constraint_angle_min
+func (self class) GetConstraintAngleMin() float64 { //gd:SkeletonModification2DLookAt.get_constraint_angle_min
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_constraint_angle_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -301,7 +304,7 @@ func (self class) GetConstraintAngleMin() gd.Float { //gd:SkeletonModification2D
 Sets the constraint's maximum allowed angle.
 */
 //go:nosplit
-func (self class) SetConstraintAngleMax(angle_max gd.Float) { //gd:SkeletonModification2DLookAt.set_constraint_angle_max
+func (self class) SetConstraintAngleMax(angle_max float64) { //gd:SkeletonModification2DLookAt.set_constraint_angle_max
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_max)
 	var r_ret = callframe.Nil
@@ -313,9 +316,9 @@ func (self class) SetConstraintAngleMax(angle_max gd.Float) { //gd:SkeletonModif
 Returns the constraint's maximum allowed angle.
 */
 //go:nosplit
-func (self class) GetConstraintAngleMax() gd.Float { //gd:SkeletonModification2DLookAt.get_constraint_angle_max
+func (self class) GetConstraintAngleMax() float64 { //gd:SkeletonModification2DLookAt.get_constraint_angle_max
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_constraint_angle_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

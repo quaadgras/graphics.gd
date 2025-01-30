@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Light2D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Light2D"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -85,7 +88,7 @@ func (self Instance) Offset() Vector2.XY {
 }
 
 func (self Instance) SetOffset(value Vector2.XY) {
-	class(self).SetTextureOffset(gd.Vector2(value))
+	class(self).SetTextureOffset(Vector2.XY(value))
 }
 
 func (self Instance) TextureScale() Float.X {
@@ -93,7 +96,7 @@ func (self Instance) TextureScale() Float.X {
 }
 
 func (self Instance) SetTextureScale(value Float.X) {
-	class(self).SetTextureScale(gd.Float(value))
+	class(self).SetTextureScale(float64(value))
 }
 
 //go:nosplit
@@ -116,7 +119,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D { //gd:PointLight2D.get_text
 }
 
 //go:nosplit
-func (self class) SetTextureOffset(texture_offset gd.Vector2) { //gd:PointLight2D.set_texture_offset
+func (self class) SetTextureOffset(texture_offset Vector2.XY) { //gd:PointLight2D.set_texture_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_offset)
 	var r_ret = callframe.Nil
@@ -125,9 +128,9 @@ func (self class) SetTextureOffset(texture_offset gd.Vector2) { //gd:PointLight2
 }
 
 //go:nosplit
-func (self class) GetTextureOffset() gd.Vector2 { //gd:PointLight2D.get_texture_offset
+func (self class) GetTextureOffset() Vector2.XY { //gd:PointLight2D.get_texture_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PointLight2D.Bind_get_texture_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -135,7 +138,7 @@ func (self class) GetTextureOffset() gd.Vector2 { //gd:PointLight2D.get_texture_
 }
 
 //go:nosplit
-func (self class) SetTextureScale(texture_scale gd.Float) { //gd:PointLight2D.set_texture_scale
+func (self class) SetTextureScale(texture_scale float64) { //gd:PointLight2D.set_texture_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_scale)
 	var r_ret = callframe.Nil
@@ -144,9 +147,9 @@ func (self class) SetTextureScale(texture_scale gd.Float) { //gd:PointLight2D.se
 }
 
 //go:nosplit
-func (self class) GetTextureScale() gd.Float { //gd:PointLight2D.get_texture_scale
+func (self class) GetTextureScale() float64 { //gd:PointLight2D.get_texture_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PointLight2D.Bind_get_texture_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

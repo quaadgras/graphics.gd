@@ -9,21 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
-import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Plane"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -85,49 +89,49 @@ func (self Instance) SurfaceBegin(primitive gdclass.MeshPrimitiveType) { //gd:Im
 Set the color attribute that will be pushed with the next vertex.
 */
 func (self Instance) SurfaceSetColor(color Color.RGBA) { //gd:ImmediateMesh.surface_set_color
-	class(self).SurfaceSetColor(gd.Color(color))
+	class(self).SurfaceSetColor(Color.RGBA(color))
 }
 
 /*
 Set the normal attribute that will be pushed with the next vertex.
 */
 func (self Instance) SurfaceSetNormal(normal Vector3.XYZ) { //gd:ImmediateMesh.surface_set_normal
-	class(self).SurfaceSetNormal(gd.Vector3(normal))
+	class(self).SurfaceSetNormal(Vector3.XYZ(normal))
 }
 
 /*
 Set the tangent attribute that will be pushed with the next vertex.
 */
 func (self Instance) SurfaceSetTangent(tangent Plane.NormalD) { //gd:ImmediateMesh.surface_set_tangent
-	class(self).SurfaceSetTangent(gd.Plane(tangent))
+	class(self).SurfaceSetTangent(Plane.NormalD(tangent))
 }
 
 /*
 Set the UV attribute that will be pushed with the next vertex.
 */
 func (self Instance) SurfaceSetUv(uv Vector2.XY) { //gd:ImmediateMesh.surface_set_uv
-	class(self).SurfaceSetUv(gd.Vector2(uv))
+	class(self).SurfaceSetUv(Vector2.XY(uv))
 }
 
 /*
 Set the UV2 attribute that will be pushed with the next vertex.
 */
 func (self Instance) SurfaceSetUv2(uv2 Vector2.XY) { //gd:ImmediateMesh.surface_set_uv2
-	class(self).SurfaceSetUv2(gd.Vector2(uv2))
+	class(self).SurfaceSetUv2(Vector2.XY(uv2))
 }
 
 /*
 Add a 3D vertex using the current attributes previously set.
 */
 func (self Instance) SurfaceAddVertex(vertex Vector3.XYZ) { //gd:ImmediateMesh.surface_add_vertex
-	class(self).SurfaceAddVertex(gd.Vector3(vertex))
+	class(self).SurfaceAddVertex(Vector3.XYZ(vertex))
 }
 
 /*
 Add a 2D vertex using the current attributes previously set.
 */
 func (self Instance) SurfaceAddVertex2d(vertex Vector2.XY) { //gd:ImmediateMesh.surface_add_vertex_2d
-	class(self).SurfaceAddVertex2d(gd.Vector2(vertex))
+	class(self).SurfaceAddVertex2d(Vector2.XY(vertex))
 }
 
 /*
@@ -180,7 +184,7 @@ func (self class) SurfaceBegin(primitive gdclass.MeshPrimitiveType, material [1]
 Set the color attribute that will be pushed with the next vertex.
 */
 //go:nosplit
-func (self class) SurfaceSetColor(color gd.Color) { //gd:ImmediateMesh.surface_set_color
+func (self class) SurfaceSetColor(color Color.RGBA) { //gd:ImmediateMesh.surface_set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -192,7 +196,7 @@ func (self class) SurfaceSetColor(color gd.Color) { //gd:ImmediateMesh.surface_s
 Set the normal attribute that will be pushed with the next vertex.
 */
 //go:nosplit
-func (self class) SurfaceSetNormal(normal gd.Vector3) { //gd:ImmediateMesh.surface_set_normal
+func (self class) SurfaceSetNormal(normal Vector3.XYZ) { //gd:ImmediateMesh.surface_set_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, normal)
 	var r_ret = callframe.Nil
@@ -204,7 +208,7 @@ func (self class) SurfaceSetNormal(normal gd.Vector3) { //gd:ImmediateMesh.surfa
 Set the tangent attribute that will be pushed with the next vertex.
 */
 //go:nosplit
-func (self class) SurfaceSetTangent(tangent gd.Plane) { //gd:ImmediateMesh.surface_set_tangent
+func (self class) SurfaceSetTangent(tangent Plane.NormalD) { //gd:ImmediateMesh.surface_set_tangent
 	var frame = callframe.New()
 	callframe.Arg(frame, tangent)
 	var r_ret = callframe.Nil
@@ -216,7 +220,7 @@ func (self class) SurfaceSetTangent(tangent gd.Plane) { //gd:ImmediateMesh.surfa
 Set the UV attribute that will be pushed with the next vertex.
 */
 //go:nosplit
-func (self class) SurfaceSetUv(uv gd.Vector2) { //gd:ImmediateMesh.surface_set_uv
+func (self class) SurfaceSetUv(uv Vector2.XY) { //gd:ImmediateMesh.surface_set_uv
 	var frame = callframe.New()
 	callframe.Arg(frame, uv)
 	var r_ret = callframe.Nil
@@ -228,7 +232,7 @@ func (self class) SurfaceSetUv(uv gd.Vector2) { //gd:ImmediateMesh.surface_set_u
 Set the UV2 attribute that will be pushed with the next vertex.
 */
 //go:nosplit
-func (self class) SurfaceSetUv2(uv2 gd.Vector2) { //gd:ImmediateMesh.surface_set_uv2
+func (self class) SurfaceSetUv2(uv2 Vector2.XY) { //gd:ImmediateMesh.surface_set_uv2
 	var frame = callframe.New()
 	callframe.Arg(frame, uv2)
 	var r_ret = callframe.Nil
@@ -240,7 +244,7 @@ func (self class) SurfaceSetUv2(uv2 gd.Vector2) { //gd:ImmediateMesh.surface_set
 Add a 3D vertex using the current attributes previously set.
 */
 //go:nosplit
-func (self class) SurfaceAddVertex(vertex gd.Vector3) { //gd:ImmediateMesh.surface_add_vertex
+func (self class) SurfaceAddVertex(vertex Vector3.XYZ) { //gd:ImmediateMesh.surface_add_vertex
 	var frame = callframe.New()
 	callframe.Arg(frame, vertex)
 	var r_ret = callframe.Nil
@@ -252,7 +256,7 @@ func (self class) SurfaceAddVertex(vertex gd.Vector3) { //gd:ImmediateMesh.surfa
 Add a 2D vertex using the current attributes previously set.
 */
 //go:nosplit
-func (self class) SurfaceAddVertex2d(vertex gd.Vector2) { //gd:ImmediateMesh.surface_add_vertex_2d
+func (self class) SurfaceAddVertex2d(vertex Vector2.XY) { //gd:ImmediateMesh.surface_add_vertex_2d
 	var frame = callframe.New()
 	callframe.Arg(frame, vertex)
 	var r_ret = callframe.Nil

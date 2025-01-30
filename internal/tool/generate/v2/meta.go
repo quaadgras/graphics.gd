@@ -5,8 +5,9 @@ import (
 	"reflect"
 	"strings"
 
-	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdjson"
+	"graphics.gd/internal/gdtype"
+	"graphics.gd/variant/RID"
 )
 
 type ClassDB map[string]gdjson.Class
@@ -60,30 +61,10 @@ func fixReserved(name string) string {
 		return "s"
 	case "RID":
 		return "rid"
+	case "variant":
+		return "v"
 	default:
 		return name
-	}
-}
-
-func inCore(s string) bool {
-	switch s {
-	case "Object", "RefCounted":
-		return true
-	default:
-		return false
-	}
-}
-
-func isBuiltin(s string) bool {
-	switch s {
-	case "String", "StringName", "PackedStringArray", "PackedInt32Array", "PackedInt64Array", "PackedFloat32Array",
-		"PackedFloat64Array", "PackedVector2Array", "PackedVector3Array", "PackedVector4Array", "PackedColorArray", "PackedByteArray",
-		"Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
-		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath", "RID",
-		"Callable", "Signal", "Dictionary", "Array":
-		return true
-	default:
-		return false
 	}
 }
 
@@ -129,134 +110,6 @@ func importsVariant(class gdjson.Class, identifier, s string) iter.Seq[string] {
 				}
 			}
 		}
-	}
-}
-
-func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
-	maybeInternal := func(name string) string {
-		return "gd." + name
-	}
-	if strings.HasPrefix(gdType, "typedarray::") {
-		gdType = strings.TrimPrefix(gdType, "typedarray::")
-		meta, rest, ok := strings.Cut(gdType, ":")
-		if ok {
-			gdType = rest
-		}
-		return "Array.Contains[" + classDB.convertType(pkg, meta, gdType) + "]"
-	}
-	switch gdType {
-	case "int", "Int":
-		return maybeInternal("Int")
-	case "float", "Float":
-		return maybeInternal("Float")
-	case "bool", "Bool":
-		return "bool"
-	case "StringName":
-		return "String.Name"
-	case "enum::GDExtension.InitializationLevel":
-		return maybeInternal("GDExtensionInitializationLevel")
-	case "enum::GDExtensionManager.LoadStatus":
-		return "gdclass.GDExtensionManagerLoadStatus"
-	case "PackedInt32Array":
-		return "Packed.Array[int32]"
-	case "PackedInt64Array":
-		return "Packed.Array[int64]"
-	case "PackedFloat32Array":
-		return "Packed.Array[float32]"
-	case "PackedFloat64Array":
-		return "Packed.Array[float64]"
-	case "PackedVector2Array":
-		return "Packed.Array[Vector2.XY]"
-	case "PackedVector3Array":
-		return "Packed.Array[Vector3.XYZ]"
-	case "PackedVector4Array":
-		return "Packed.Array[Vector4.XYZW]"
-	case "PackedColorArray":
-		return "Packed.Array[Color.RGBA]"
-	case "PackedStringArray":
-		return "Packed.Strings"
-	case "PackedByteArray":
-		return "Packed.Bytes"
-	case "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
-		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "RID":
-		return maybeInternal(gdType)
-	case "NodePath":
-		return "Path.ToNode"
-	case "Signal":
-		return "Signal.Any"
-	case "Array":
-		return "Array.Any"
-	case "Dictionary":
-		return "Dictionary.Any"
-	case "String":
-		return "String.Readable"
-	case "Callable":
-		return "Callable.Function"
-	case "Variant":
-		return maybeInternal("Variant")
-	case "enum::Variant.Type":
-		return maybeInternal("VariantType")
-
-	// strange C++ cases
-	case "enum::Error":
-		return "gd.Error"
-	case "const uint8_t **":
-		return "unsafe.Pointer"
-	case "const void*", "const uint8_t*", "const uint8_t *":
-		return "unsafe.Pointer"
-	case "float*":
-		return "*float64"
-	case "int32_t*":
-		return "*int32"
-	case "void*", "uint8_t*":
-		return "unsafe.Pointer"
-	case "Object":
-		return "[1]gd.Object"
-	case "RefCounted":
-		return "gd." + gdType
-	default:
-		gdType = strings.TrimPrefix(gdType, "const")
-
-		if strings.HasSuffix(gdType, "*") {
-			gdType = strings.TrimPrefix(gdType, pkg)
-			return "*" + gdType[:len(gdType)-1]
-		}
-
-		if strings.HasPrefix(gdType, "enum::") || strings.HasPrefix(gdType, "bitfield::") {
-			gdType = strings.TrimPrefix(gdType, "enum::")
-			gdType = strings.TrimPrefix(gdType, "bitfield::")
-			host, sub, hasHost := strings.Cut(gdType, ".")
-			if isBuiltin(host) {
-				return "gd." + host + sub
-			}
-			if hasHost {
-				return "gdclass." + host + sub
-			} else {
-				return gdType
-			}
-		}
-
-		gdType = strings.Replace(gdType, ".", "", -1)
-		gdType = strings.Replace(gdType, ".", "", -1)
-
-		gdType = strings.Replace(gdType, ".", "", -1)
-
-		if gdType == "Object" {
-			return "[1]gd.Object"
-		}
-
-		if class, ok := classDB[gdType]; ok {
-			return "[1]gdclass." + class.Name
-		}
-
-		if inCore(gdType) {
-			return maybeInternal(gdType)
-		}
-
-		if gdType != "" {
-			return "[1]gdclass." + gdType
-		}
-		return gdType
 	}
 }
 
@@ -341,7 +194,7 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 			return "ID"
 		}
 		if typed, ok := gdjson.Resources[lookup]; ok {
-			if typed == reflect.TypeFor[gd.RID]() {
+			if typed == reflect.TypeFor[RID.Any]() {
 				return "RID.Any"
 			}
 			return typed.String()
@@ -388,7 +241,7 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 		}
 		return ftype
 	default:
-		return classDB.convertType(class.Name, meta, gdType)
+		return gdtype.EngineTypeAsGoType(class.Name, meta, gdType)
 	}
 }
 

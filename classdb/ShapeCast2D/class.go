@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -81,21 +84,21 @@ func (self Instance) ForceShapecastUpdate() { //gd:ShapeCast2D.force_shapecast_u
 Returns the collided [Object] of one of the multiple collisions at [param index], or [code]null[/code] if no object is intersecting the shape (i.e. [method is_colliding] returns [code]false[/code]).
 */
 func (self Instance) GetCollider(index int) Object.Instance { //gd:ShapeCast2D.get_collider
-	return Object.Instance(class(self).GetCollider(gd.Int(index)))
+	return Object.Instance(class(self).GetCollider(int64(index)))
 }
 
 /*
 Returns the [RID] of the collided object of one of the multiple collisions at [param index].
 */
 func (self Instance) GetColliderRid(index int) RID.Body2D { //gd:ShapeCast2D.get_collider_rid
-	return RID.Body2D(class(self).GetColliderRid(gd.Int(index)))
+	return RID.Body2D(class(self).GetColliderRid(int64(index)))
 }
 
 /*
 Returns the shape ID of the colliding shape of one of the multiple collisions at [param index], or [code]0[/code] if no object is intersecting the shape (i.e. [method is_colliding] returns [code]false[/code]).
 */
 func (self Instance) GetColliderShape(index int) int { //gd:ShapeCast2D.get_collider_shape
-	return int(int(class(self).GetColliderShape(gd.Int(index))))
+	return int(int(class(self).GetColliderShape(int64(index))))
 }
 
 /*
@@ -103,14 +106,14 @@ Returns the collision point of one of the multiple collisions at [param index] w
 [b]Note:[/b] this point is in the [b]global[/b] coordinate system.
 */
 func (self Instance) GetCollisionPoint(index int) Vector2.XY { //gd:ShapeCast2D.get_collision_point
-	return Vector2.XY(class(self).GetCollisionPoint(gd.Int(index)))
+	return Vector2.XY(class(self).GetCollisionPoint(int64(index)))
 }
 
 /*
 Returns the normal of one of the multiple collisions at [param index] of the intersecting object.
 */
 func (self Instance) GetCollisionNormal(index int) Vector2.XY { //gd:ShapeCast2D.get_collision_normal
-	return Vector2.XY(class(self).GetCollisionNormal(gd.Int(index)))
+	return Vector2.XY(class(self).GetCollisionNormal(int64(index)))
 }
 
 /*
@@ -132,7 +135,7 @@ func (self Instance) GetClosestCollisionUnsafeFraction() Float.X { //gd:ShapeCas
 Adds a collision exception so the shape does not report collisions with the specified [RID].
 */
 func (self Instance) AddExceptionRid(rid RID.Body2D) { //gd:ShapeCast2D.add_exception_rid
-	class(self).AddExceptionRid(gd.RID(rid))
+	class(self).AddExceptionRid(RID.Any(rid))
 }
 
 /*
@@ -146,7 +149,7 @@ func (self Instance) AddException(node [1]gdclass.CollisionObject2D) { //gd:Shap
 Removes a collision exception so the shape does report collisions with the specified [RID].
 */
 func (self Instance) RemoveExceptionRid(rid RID.Body2D) { //gd:ShapeCast2D.remove_exception_rid
-	class(self).RemoveExceptionRid(gd.RID(rid))
+	class(self).RemoveExceptionRid(RID.Any(rid))
 }
 
 /*
@@ -167,14 +170,14 @@ func (self Instance) ClearExceptions() { //gd:ShapeCast2D.clear_exceptions
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:ShapeCast2D.set_collision_mask_value
-	class(self).SetCollisionMaskValue(gd.Int(layer_number), value)
+	class(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:ShapeCast2D.get_collision_mask_value
-	return bool(class(self).GetCollisionMaskValue(gd.Int(layer_number)))
+	return bool(class(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -224,7 +227,7 @@ func (self Instance) TargetPosition() Vector2.XY {
 }
 
 func (self Instance) SetTargetPosition(value Vector2.XY) {
-	class(self).SetTargetPosition(gd.Vector2(value))
+	class(self).SetTargetPosition(Vector2.XY(value))
 }
 
 func (self Instance) Margin() Float.X {
@@ -232,7 +235,7 @@ func (self Instance) Margin() Float.X {
 }
 
 func (self Instance) SetMargin(value Float.X) {
-	class(self).SetMargin(gd.Float(value))
+	class(self).SetMargin(float64(value))
 }
 
 func (self Instance) MaxResults() int {
@@ -240,7 +243,7 @@ func (self Instance) MaxResults() int {
 }
 
 func (self Instance) SetMaxResults(value int) {
-	class(self).SetMaxResults(gd.Int(value))
+	class(self).SetMaxResults(int64(value))
 }
 
 func (self Instance) CollisionMask() int {
@@ -248,7 +251,7 @@ func (self Instance) CollisionMask() int {
 }
 
 func (self Instance) SetCollisionMask(value int) {
-	class(self).SetCollisionMask(gd.Int(value))
+	class(self).SetCollisionMask(int64(value))
 }
 
 func (self Instance) CollideWithAreas() bool {
@@ -306,7 +309,7 @@ func (self class) GetShape() [1]gdclass.Shape2D { //gd:ShapeCast2D.get_shape
 }
 
 //go:nosplit
-func (self class) SetTargetPosition(local_point gd.Vector2) { //gd:ShapeCast2D.set_target_position
+func (self class) SetTargetPosition(local_point Vector2.XY) { //gd:ShapeCast2D.set_target_position
 	var frame = callframe.New()
 	callframe.Arg(frame, local_point)
 	var r_ret = callframe.Nil
@@ -315,9 +318,9 @@ func (self class) SetTargetPosition(local_point gd.Vector2) { //gd:ShapeCast2D.s
 }
 
 //go:nosplit
-func (self class) GetTargetPosition() gd.Vector2 { //gd:ShapeCast2D.get_target_position
+func (self class) GetTargetPosition() Vector2.XY { //gd:ShapeCast2D.get_target_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_get_target_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -325,7 +328,7 @@ func (self class) GetTargetPosition() gd.Vector2 { //gd:ShapeCast2D.get_target_p
 }
 
 //go:nosplit
-func (self class) SetMargin(margin gd.Float) { //gd:ShapeCast2D.set_margin
+func (self class) SetMargin(margin float64) { //gd:ShapeCast2D.set_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -334,9 +337,9 @@ func (self class) SetMargin(margin gd.Float) { //gd:ShapeCast2D.set_margin
 }
 
 //go:nosplit
-func (self class) GetMargin() gd.Float { //gd:ShapeCast2D.get_margin
+func (self class) GetMargin() float64 { //gd:ShapeCast2D.get_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_get_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -344,7 +347,7 @@ func (self class) GetMargin() gd.Float { //gd:ShapeCast2D.get_margin
 }
 
 //go:nosplit
-func (self class) SetMaxResults(max_results gd.Int) { //gd:ShapeCast2D.set_max_results
+func (self class) SetMaxResults(max_results int64) { //gd:ShapeCast2D.set_max_results
 	var frame = callframe.New()
 	callframe.Arg(frame, max_results)
 	var r_ret = callframe.Nil
@@ -353,9 +356,9 @@ func (self class) SetMaxResults(max_results gd.Int) { //gd:ShapeCast2D.set_max_r
 }
 
 //go:nosplit
-func (self class) GetMaxResults() gd.Int { //gd:ShapeCast2D.get_max_results
+func (self class) GetMaxResults() int64 { //gd:ShapeCast2D.get_max_results
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_get_max_results, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -379,9 +382,9 @@ func (self class) IsColliding() bool { //gd:ShapeCast2D.is_colliding
 The number of collisions detected at the point of impact. Use this to iterate over multiple collisions as provided by [method get_collider], [method get_collider_shape], [method get_collision_point], and [method get_collision_normal] methods.
 */
 //go:nosplit
-func (self class) GetCollisionCount() gd.Int { //gd:ShapeCast2D.get_collision_count
+func (self class) GetCollisionCount() int64 { //gd:ShapeCast2D.get_collision_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_get_collision_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -404,7 +407,7 @@ func (self class) ForceShapecastUpdate() { //gd:ShapeCast2D.force_shapecast_upda
 Returns the collided [Object] of one of the multiple collisions at [param index], or [code]null[/code] if no object is intersecting the shape (i.e. [method is_colliding] returns [code]false[/code]).
 */
 //go:nosplit
-func (self class) GetCollider(index gd.Int) [1]gd.Object { //gd:ShapeCast2D.get_collider
+func (self class) GetCollider(index int64) [1]gd.Object { //gd:ShapeCast2D.get_collider
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -418,10 +421,10 @@ func (self class) GetCollider(index gd.Int) [1]gd.Object { //gd:ShapeCast2D.get_
 Returns the [RID] of the collided object of one of the multiple collisions at [param index].
 */
 //go:nosplit
-func (self class) GetColliderRid(index gd.Int) gd.RID { //gd:ShapeCast2D.get_collider_rid
+func (self class) GetColliderRid(index int64) RID.Any { //gd:ShapeCast2D.get_collider_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_get_collider_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -432,10 +435,10 @@ func (self class) GetColliderRid(index gd.Int) gd.RID { //gd:ShapeCast2D.get_col
 Returns the shape ID of the colliding shape of one of the multiple collisions at [param index], or [code]0[/code] if no object is intersecting the shape (i.e. [method is_colliding] returns [code]false[/code]).
 */
 //go:nosplit
-func (self class) GetColliderShape(index gd.Int) gd.Int { //gd:ShapeCast2D.get_collider_shape
+func (self class) GetColliderShape(index int64) int64 { //gd:ShapeCast2D.get_collider_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_get_collider_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -447,10 +450,10 @@ Returns the collision point of one of the multiple collisions at [param index] w
 [b]Note:[/b] this point is in the [b]global[/b] coordinate system.
 */
 //go:nosplit
-func (self class) GetCollisionPoint(index gd.Int) gd.Vector2 { //gd:ShapeCast2D.get_collision_point
+func (self class) GetCollisionPoint(index int64) Vector2.XY { //gd:ShapeCast2D.get_collision_point
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_get_collision_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -461,10 +464,10 @@ func (self class) GetCollisionPoint(index gd.Int) gd.Vector2 { //gd:ShapeCast2D.
 Returns the normal of one of the multiple collisions at [param index] of the intersecting object.
 */
 //go:nosplit
-func (self class) GetCollisionNormal(index gd.Int) gd.Vector2 { //gd:ShapeCast2D.get_collision_normal
+func (self class) GetCollisionNormal(index int64) Vector2.XY { //gd:ShapeCast2D.get_collision_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_get_collision_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -475,9 +478,9 @@ func (self class) GetCollisionNormal(index gd.Int) gd.Vector2 { //gd:ShapeCast2D
 The fraction from the [ShapeCast2D]'s origin to its [member target_position] (between 0 and 1) of how far the shape can move without triggering a collision.
 */
 //go:nosplit
-func (self class) GetClosestCollisionSafeFraction() gd.Float { //gd:ShapeCast2D.get_closest_collision_safe_fraction
+func (self class) GetClosestCollisionSafeFraction() float64 { //gd:ShapeCast2D.get_closest_collision_safe_fraction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_get_closest_collision_safe_fraction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -489,9 +492,9 @@ The fraction from the [ShapeCast2D]'s origin to its [member target_position] (be
 In ideal conditions this would be the same as [method get_closest_collision_safe_fraction], however shape casting is calculated in discrete steps, so the precise point of collision can occur between two calculated positions.
 */
 //go:nosplit
-func (self class) GetClosestCollisionUnsafeFraction() gd.Float { //gd:ShapeCast2D.get_closest_collision_unsafe_fraction
+func (self class) GetClosestCollisionUnsafeFraction() float64 { //gd:ShapeCast2D.get_closest_collision_unsafe_fraction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_get_closest_collision_unsafe_fraction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -502,7 +505,7 @@ func (self class) GetClosestCollisionUnsafeFraction() gd.Float { //gd:ShapeCast2
 Adds a collision exception so the shape does not report collisions with the specified [RID].
 */
 //go:nosplit
-func (self class) AddExceptionRid(rid gd.RID) { //gd:ShapeCast2D.add_exception_rid
+func (self class) AddExceptionRid(rid RID.Any) { //gd:ShapeCast2D.add_exception_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Nil
@@ -526,7 +529,7 @@ func (self class) AddException(node [1]gdclass.CollisionObject2D) { //gd:ShapeCa
 Removes a collision exception so the shape does report collisions with the specified [RID].
 */
 //go:nosplit
-func (self class) RemoveExceptionRid(rid gd.RID) { //gd:ShapeCast2D.remove_exception_rid
+func (self class) RemoveExceptionRid(rid RID.Any) { //gd:ShapeCast2D.remove_exception_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Nil
@@ -558,7 +561,7 @@ func (self class) ClearExceptions() { //gd:ShapeCast2D.clear_exceptions
 }
 
 //go:nosplit
-func (self class) SetCollisionMask(mask gd.Int) { //gd:ShapeCast2D.set_collision_mask
+func (self class) SetCollisionMask(mask int64) { //gd:ShapeCast2D.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -567,9 +570,9 @@ func (self class) SetCollisionMask(mask gd.Int) { //gd:ShapeCast2D.set_collision
 }
 
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int { //gd:ShapeCast2D.get_collision_mask
+func (self class) GetCollisionMask() int64 { //gd:ShapeCast2D.get_collision_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -580,7 +583,7 @@ func (self class) GetCollisionMask() gd.Int { //gd:ShapeCast2D.get_collision_mas
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) { //gd:ShapeCast2D.set_collision_mask_value
+func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:ShapeCast2D.set_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -593,7 +596,7 @@ func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) { //gd:
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetCollisionMaskValue(layer_number gd.Int) bool { //gd:ShapeCast2D.get_collision_mask_value
+func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:ShapeCast2D.get_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)

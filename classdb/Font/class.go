@@ -9,17 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -36,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,7 +60,7 @@ type Any interface {
 Returns [TextServer] RID of the font cache for specific variation.
 */
 func (self Instance) FindVariation(variation_coordinates map[string]float32) RID.Font { //gd:Font.find_variation
-	return RID.Font(class(self).FindVariation(gd.DictionaryFromMap(variation_coordinates), gd.Int(0), gd.Float(0.0), gd.Transform2D(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), gd.Int(0), gd.Int(0), gd.Int(0), gd.Int(0), gd.Float(0.0)))
+	return RID.Font(class(self).FindVariation(gd.DictionaryFromMap(variation_coordinates), int64(0), float64(0.0), Transform2D.OriginXY(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), int64(0), int64(0), int64(0), int64(0), float64(0.0)))
 }
 
 /*
@@ -70,7 +75,7 @@ Returns the total average font height (ascent plus descent) in pixels.
 [b]Note:[/b] Real height of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the height of empty line).
 */
 func (self Instance) GetHeight() Float.X { //gd:Font.get_height
-	return Float.X(Float.X(class(self).GetHeight(gd.Int(16))))
+	return Float.X(Float.X(class(self).GetHeight(int64(16))))
 }
 
 /*
@@ -78,7 +83,7 @@ Returns the average font ascent (number of pixels above the baseline).
 [b]Note:[/b] Real ascent of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the ascent of empty line).
 */
 func (self Instance) GetAscent() Float.X { //gd:Font.get_ascent
-	return Float.X(Float.X(class(self).GetAscent(gd.Int(16))))
+	return Float.X(Float.X(class(self).GetAscent(int64(16))))
 }
 
 /*
@@ -86,7 +91,7 @@ Returns the average font descent (number of pixels below the baseline).
 [b]Note:[/b] Real descent of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the descent of empty line).
 */
 func (self Instance) GetDescent() Float.X { //gd:Font.get_descent
-	return Float.X(Float.X(class(self).GetDescent(gd.Int(16))))
+	return Float.X(Float.X(class(self).GetDescent(int64(16))))
 }
 
 /*
@@ -94,7 +99,7 @@ Returns average pixel offset of the underline below the baseline.
 [b]Note:[/b] Real underline position of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate.
 */
 func (self Instance) GetUnderlinePosition() Float.X { //gd:Font.get_underline_position
-	return Float.X(Float.X(class(self).GetUnderlinePosition(gd.Int(16))))
+	return Float.X(Float.X(class(self).GetUnderlinePosition(int64(16))))
 }
 
 /*
@@ -102,7 +107,7 @@ Returns average thickness of the underline.
 [b]Note:[/b] Real underline thickness of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate.
 */
 func (self Instance) GetUnderlineThickness() Float.X { //gd:Font.get_underline_thickness
-	return Float.X(Float.X(class(self).GetUnderlineThickness(gd.Int(16))))
+	return Float.X(Float.X(class(self).GetUnderlineThickness(int64(16))))
 }
 
 /*
@@ -165,7 +170,7 @@ func (self Instance) GetOpentypeFeatures() map[string]string { //gd:Font.get_ope
 Sets LRU cache capacity for [code]draw_*[/code] methods.
 */
 func (self Instance) SetCacheCapacity(single_line int, multi_line int) { //gd:Font.set_cache_capacity
-	class(self).SetCacheCapacity(gd.Int(single_line), gd.Int(multi_line))
+	class(self).SetCacheCapacity(int64(single_line), int64(multi_line))
 }
 
 /*
@@ -184,7 +189,7 @@ Vector2 stringSize = label.GetThemeFont("font").GetStringSize(label.Text, Horizo
 [b]Note:[/b] Real height of the string is context-dependent and can be significantly different from the value returned by [method get_height].
 */
 func (self Instance) GetStringSize(text string) Vector2.XY { //gd:Font.get_string_size
-	return Vector2.XY(class(self).GetStringSize(String.New(text), 0, gd.Float(-1), gd.Int(16), 3, 0, 0))
+	return Vector2.XY(class(self).GetStringSize(String.New(text), 0, float64(-1), int64(16), 3, 0, 0))
 }
 
 /*
@@ -192,7 +197,7 @@ Returns the size of a bounding box of a string broken into the lines, taking ker
 See also [method draw_multiline_string].
 */
 func (self Instance) GetMultilineStringSize(text string) Vector2.XY { //gd:Font.get_multiline_string_size
-	return Vector2.XY(class(self).GetMultilineStringSize(String.New(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), 3, 3, 0, 0))
+	return Vector2.XY(class(self).GetMultilineStringSize(String.New(text), 0, float64(-1), int64(16), int64(-1), 3, 3, 0, 0))
 }
 
 /*
@@ -200,7 +205,7 @@ Draw [param text] into a canvas item using the font, at a given position, with [
 See also [method CanvasItem.draw_string].
 */
 func (self Instance) DrawString(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_string
-	class(self).DrawString(gd.RID(canvas_item), gd.Vector2(pos), String.New(text), 0, gd.Float(-1), gd.Int(16), gd.Color(gd.Color{1, 1, 1, 1}), 3, 0, 0)
+	class(self).DrawString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0)
 }
 
 /*
@@ -208,7 +213,7 @@ Breaks [param text] into lines using rules specified by [param brk_flags] and dr
 See also [method CanvasItem.draw_multiline_string].
 */
 func (self Instance) DrawMultilineString(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_multiline_string
-	class(self).DrawMultilineString(gd.RID(canvas_item), gd.Vector2(pos), String.New(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
+	class(self).DrawMultilineString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
 }
 
 /*
@@ -216,7 +221,7 @@ Draw [param text] outline into a canvas item using the font, at a given position
 See also [method CanvasItem.draw_string_outline].
 */
 func (self Instance) DrawStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_string_outline
-	class(self).DrawStringOutline(gd.RID(canvas_item), gd.Vector2(pos), String.New(text), 0, gd.Float(-1), gd.Int(16), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 0, 0)
+	class(self).DrawStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0)
 }
 
 /*
@@ -224,7 +229,7 @@ Breaks [param text] to the lines using rules specified by [param brk_flags] and 
 See also [method CanvasItem.draw_multiline_string_outline].
 */
 func (self Instance) DrawMultilineStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_multiline_string_outline
-	class(self).DrawMultilineStringOutline(gd.RID(canvas_item), gd.Vector2(pos), String.New(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
+	class(self).DrawMultilineStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
 }
 
 /*
@@ -232,7 +237,7 @@ Returns the size of a character. Does not take kerning into account.
 [b]Note:[/b] Do not use this function to calculate width of the string character by character, use [method get_string_size] or [TextLine] instead. The height returned is the font height (see also [method get_height]) and has no relation to the glyph height.
 */
 func (self Instance) GetCharSize(char int, font_size int) Vector2.XY { //gd:Font.get_char_size
-	return Vector2.XY(class(self).GetCharSize(gd.Int(char), gd.Int(font_size)))
+	return Vector2.XY(class(self).GetCharSize(int64(char), int64(font_size)))
 }
 
 /*
@@ -240,7 +245,7 @@ Draw a single Unicode character [param char] into a canvas item using the font, 
 [b]Note:[/b] Do not use this function to draw strings character by character, use [method draw_string] or [TextLine] instead.
 */
 func (self Instance) DrawChar(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int) Float.X { //gd:Font.draw_char
-	return Float.X(Float.X(class(self).DrawChar(gd.RID(canvas_item), gd.Vector2(pos), gd.Int(char), gd.Int(font_size), gd.Color(gd.Color{1, 1, 1, 1}))))
+	return Float.X(Float.X(class(self).DrawChar(RID.Any(canvas_item), Vector2.XY(pos), int64(char), int64(font_size), Color.RGBA(gd.Color{1, 1, 1, 1}))))
 }
 
 /*
@@ -248,14 +253,14 @@ Draw a single Unicode character [param char] outline into a canvas item using th
 [b]Note:[/b] Do not use this function to draw strings character by character, use [method draw_string] or [TextLine] instead.
 */
 func (self Instance) DrawCharOutline(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int) Float.X { //gd:Font.draw_char_outline
-	return Float.X(Float.X(class(self).DrawCharOutline(gd.RID(canvas_item), gd.Vector2(pos), gd.Int(char), gd.Int(font_size), gd.Int(-1), gd.Color(gd.Color{1, 1, 1, 1}))))
+	return Float.X(Float.X(class(self).DrawCharOutline(RID.Any(canvas_item), Vector2.XY(pos), int64(char), int64(font_size), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}))))
 }
 
 /*
 Returns [code]true[/code] if a Unicode [param char] is available in the font.
 */
 func (self Instance) HasChar(char int) bool { //gd:Font.has_char
-	return bool(class(self).HasChar(gd.Int(char)))
+	return bool(class(self).HasChar(int64(char)))
 }
 
 /*
@@ -365,7 +370,7 @@ func (self class) GetFallbacks() Array.Contains[[1]gdclass.Font] { //gd:Font.get
 Returns [TextServer] RID of the font cache for specific variation.
 */
 //go:nosplit
-func (self class) FindVariation(variation_coordinates Dictionary.Any, face_index gd.Int, strength gd.Float, transform gd.Transform2D, spacing_top gd.Int, spacing_bottom gd.Int, spacing_space gd.Int, spacing_glyph gd.Int, baseline_offset gd.Float) gd.RID { //gd:Font.find_variation
+func (self class) FindVariation(variation_coordinates Dictionary.Any, face_index int64, strength float64, transform Transform2D.OriginXY, spacing_top int64, spacing_bottom int64, spacing_space int64, spacing_glyph int64, baseline_offset float64) RID.Any { //gd:Font.find_variation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(variation_coordinates)))
 	callframe.Arg(frame, face_index)
@@ -376,7 +381,7 @@ func (self class) FindVariation(variation_coordinates Dictionary.Any, face_index
 	callframe.Arg(frame, spacing_space)
 	callframe.Arg(frame, spacing_glyph)
 	callframe.Arg(frame, baseline_offset)
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_find_variation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -387,11 +392,11 @@ func (self class) FindVariation(variation_coordinates Dictionary.Any, face_index
 Returns [Array] of valid [Font] [RID]s, which can be passed to the [TextServer] methods.
 */
 //go:nosplit
-func (self class) GetRids() Array.Contains[gd.RID] { //gd:Font.get_rids
+func (self class) GetRids() Array.Contains[RID.Any] { //gd:Font.get_rids
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_rids, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -401,10 +406,10 @@ Returns the total average font height (ascent plus descent) in pixels.
 [b]Note:[/b] Real height of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the height of empty line).
 */
 //go:nosplit
-func (self class) GetHeight(font_size gd.Int) gd.Float { //gd:Font.get_height
+func (self class) GetHeight(font_size int64) float64 { //gd:Font.get_height
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -416,10 +421,10 @@ Returns the average font ascent (number of pixels above the baseline).
 [b]Note:[/b] Real ascent of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the ascent of empty line).
 */
 //go:nosplit
-func (self class) GetAscent(font_size gd.Int) gd.Float { //gd:Font.get_ascent
+func (self class) GetAscent(font_size int64) float64 { //gd:Font.get_ascent
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_ascent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -431,10 +436,10 @@ Returns the average font descent (number of pixels below the baseline).
 [b]Note:[/b] Real descent of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the descent of empty line).
 */
 //go:nosplit
-func (self class) GetDescent(font_size gd.Int) gd.Float { //gd:Font.get_descent
+func (self class) GetDescent(font_size int64) float64 { //gd:Font.get_descent
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_descent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -446,10 +451,10 @@ Returns average pixel offset of the underline below the baseline.
 [b]Note:[/b] Real underline position of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate.
 */
 //go:nosplit
-func (self class) GetUnderlinePosition(font_size gd.Int) gd.Float { //gd:Font.get_underline_position
+func (self class) GetUnderlinePosition(font_size int64) float64 { //gd:Font.get_underline_position
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_underline_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -461,10 +466,10 @@ Returns average thickness of the underline.
 [b]Note:[/b] Real underline thickness of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate.
 */
 //go:nosplit
-func (self class) GetUnderlineThickness(font_size gd.Int) gd.Float { //gd:Font.get_underline_thickness
+func (self class) GetUnderlineThickness(font_size int64) float64 { //gd:Font.get_underline_thickness
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_underline_thickness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -527,9 +532,9 @@ func (self class) GetFontStyle() gdclass.TextServerFontStyle { //gd:Font.get_fon
 Returns weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
 */
 //go:nosplit
-func (self class) GetFontWeight() gd.Int { //gd:Font.get_font_weight
+func (self class) GetFontWeight() int64 { //gd:Font.get_font_weight
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_font_weight, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -540,9 +545,9 @@ func (self class) GetFontWeight() gd.Int { //gd:Font.get_font_weight
 Returns font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
 */
 //go:nosplit
-func (self class) GetFontStretch() gd.Int { //gd:Font.get_font_stretch
+func (self class) GetFontStretch() int64 { //gd:Font.get_font_stretch
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_font_stretch, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -553,10 +558,10 @@ func (self class) GetFontStretch() gd.Int { //gd:Font.get_font_stretch
 Returns the spacing for the given [code]type[/code] (see [enum TextServer.SpacingType]).
 */
 //go:nosplit
-func (self class) GetSpacing(spacing gdclass.TextServerSpacingType) gd.Int { //gd:Font.get_spacing
+func (self class) GetSpacing(spacing gdclass.TextServerSpacingType) int64 { //gd:Font.get_spacing
 	var frame = callframe.New()
 	callframe.Arg(frame, spacing)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_spacing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -580,7 +585,7 @@ func (self class) GetOpentypeFeatures() Dictionary.Any { //gd:Font.get_opentype_
 Sets LRU cache capacity for [code]draw_*[/code] methods.
 */
 //go:nosplit
-func (self class) SetCacheCapacity(single_line gd.Int, multi_line gd.Int) { //gd:Font.set_cache_capacity
+func (self class) SetCacheCapacity(single_line int64, multi_line int64) { //gd:Font.set_cache_capacity
 	var frame = callframe.New()
 	callframe.Arg(frame, single_line)
 	callframe.Arg(frame, multi_line)
@@ -605,7 +610,7 @@ Vector2 stringSize = label.GetThemeFont("font").GetStringSize(label.Text, Horizo
 [b]Note:[/b] Real height of the string is context-dependent and can be significantly different from the value returned by [method get_height].
 */
 //go:nosplit
-func (self class) GetStringSize(text String.Readable, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) gd.Vector2 { //gd:Font.get_string_size
+func (self class) GetStringSize(text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) Vector2.XY { //gd:Font.get_string_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, alignment)
@@ -614,7 +619,7 @@ func (self class) GetStringSize(text String.Readable, alignment HorizontalAlignm
 	callframe.Arg(frame, justification_flags)
 	callframe.Arg(frame, direction)
 	callframe.Arg(frame, orientation)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_string_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -626,7 +631,7 @@ Returns the size of a bounding box of a string broken into the lines, taking ker
 See also [method draw_multiline_string].
 */
 //go:nosplit
-func (self class) GetMultilineStringSize(text String.Readable, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) gd.Vector2 { //gd:Font.get_multiline_string_size
+func (self class) GetMultilineStringSize(text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, max_lines int64, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) Vector2.XY { //gd:Font.get_multiline_string_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, alignment)
@@ -637,7 +642,7 @@ func (self class) GetMultilineStringSize(text String.Readable, alignment Horizon
 	callframe.Arg(frame, justification_flags)
 	callframe.Arg(frame, direction)
 	callframe.Arg(frame, orientation)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_multiline_string_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -649,7 +654,7 @@ Draw [param text] into a canvas item using the font, at a given position, with [
 See also [method CanvasItem.draw_string].
 */
 //go:nosplit
-func (self class) DrawString(canvas_item gd.RID, pos gd.Vector2, text String.Readable, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, modulate gd.Color, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_string
+func (self class) DrawString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_string
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, pos)
@@ -671,7 +676,7 @@ Breaks [param text] into lines using rules specified by [param brk_flags] and dr
 See also [method CanvasItem.draw_multiline_string].
 */
 //go:nosplit
-func (self class) DrawMultilineString(canvas_item gd.RID, pos gd.Vector2, text String.Readable, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, modulate gd.Color, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_multiline_string
+func (self class) DrawMultilineString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, max_lines int64, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_multiline_string
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, pos)
@@ -695,7 +700,7 @@ Draw [param text] outline into a canvas item using the font, at a given position
 See also [method CanvasItem.draw_string_outline].
 */
 //go:nosplit
-func (self class) DrawStringOutline(canvas_item gd.RID, pos gd.Vector2, text String.Readable, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, size gd.Int, modulate gd.Color, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_string_outline
+func (self class) DrawStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, size int64, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_string_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, pos)
@@ -718,7 +723,7 @@ Breaks [param text] to the lines using rules specified by [param brk_flags] and 
 See also [method CanvasItem.draw_multiline_string_outline].
 */
 //go:nosplit
-func (self class) DrawMultilineStringOutline(canvas_item gd.RID, pos gd.Vector2, text String.Readable, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, size gd.Int, modulate gd.Color, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_multiline_string_outline
+func (self class) DrawMultilineStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, max_lines int64, size int64, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_multiline_string_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, pos)
@@ -743,11 +748,11 @@ Returns the size of a character. Does not take kerning into account.
 [b]Note:[/b] Do not use this function to calculate width of the string character by character, use [method get_string_size] or [TextLine] instead. The height returned is the font height (see also [method get_height]) and has no relation to the glyph height.
 */
 //go:nosplit
-func (self class) GetCharSize(char gd.Int, font_size gd.Int) gd.Vector2 { //gd:Font.get_char_size
+func (self class) GetCharSize(char int64, font_size int64) Vector2.XY { //gd:Font.get_char_size
 	var frame = callframe.New()
 	callframe.Arg(frame, char)
 	callframe.Arg(frame, font_size)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_char_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -759,14 +764,14 @@ Draw a single Unicode character [param char] into a canvas item using the font, 
 [b]Note:[/b] Do not use this function to draw strings character by character, use [method draw_string] or [TextLine] instead.
 */
 //go:nosplit
-func (self class) DrawChar(canvas_item gd.RID, pos gd.Vector2, char gd.Int, font_size gd.Int, modulate gd.Color) gd.Float { //gd:Font.draw_char
+func (self class) DrawChar(canvas_item RID.Any, pos Vector2.XY, char int64, font_size int64, modulate Color.RGBA) float64 { //gd:Font.draw_char
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, pos)
 	callframe.Arg(frame, char)
 	callframe.Arg(frame, font_size)
 	callframe.Arg(frame, modulate)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_draw_char, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -778,7 +783,7 @@ Draw a single Unicode character [param char] outline into a canvas item using th
 [b]Note:[/b] Do not use this function to draw strings character by character, use [method draw_string] or [TextLine] instead.
 */
 //go:nosplit
-func (self class) DrawCharOutline(canvas_item gd.RID, pos gd.Vector2, char gd.Int, font_size gd.Int, size gd.Int, modulate gd.Color) gd.Float { //gd:Font.draw_char_outline
+func (self class) DrawCharOutline(canvas_item RID.Any, pos Vector2.XY, char int64, font_size int64, size int64, modulate Color.RGBA) float64 { //gd:Font.draw_char_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, pos)
@@ -786,7 +791,7 @@ func (self class) DrawCharOutline(canvas_item gd.RID, pos gd.Vector2, char gd.In
 	callframe.Arg(frame, font_size)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, modulate)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_draw_char_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -797,7 +802,7 @@ func (self class) DrawCharOutline(canvas_item gd.RID, pos gd.Vector2, char gd.In
 Returns [code]true[/code] if a Unicode [param char] is available in the font.
 */
 //go:nosplit
-func (self class) HasChar(char gd.Int) bool { //gd:Font.has_char
+func (self class) HasChar(char int64) bool { //gd:Font.has_char
 	var frame = callframe.New()
 	callframe.Arg(frame, char)
 	var r_ret = callframe.Ret[bool](frame)
@@ -891,9 +896,9 @@ func (self class) GetSupportedVariationList() Dictionary.Any { //gd:Font.get_sup
 Returns number of faces in the TrueType / OpenType collection.
 */
 //go:nosplit
-func (self class) GetFaceCount() gd.Int { //gd:Font.get_face_count
+func (self class) GetFaceCount() int64 { //gd:Font.get_face_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_face_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

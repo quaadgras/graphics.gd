@@ -9,19 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/VisualShaderNode"
+import "graphics.gd/classdb/VisualShaderNodeResizableBase"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/VisualShaderNodeResizableBase"
-import "graphics.gd/classdb/VisualShaderNode"
-import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,14 +62,14 @@ type Any interface {
 Adds a node to the list of nodes attached to the frame. Should not be called directly, use the [method VisualShader.attach_node_to_frame] method instead.
 */
 func (self Instance) AddAttachedNode(node int) { //gd:VisualShaderNodeFrame.add_attached_node
-	class(self).AddAttachedNode(gd.Int(node))
+	class(self).AddAttachedNode(int64(node))
 }
 
 /*
 Removes a node from the list of nodes attached to the frame. Should not be called directly, use the [method VisualShader.detach_node_from_frame] method instead.
 */
 func (self Instance) RemoveAttachedNode(node int) { //gd:VisualShaderNodeFrame.remove_attached_node
-	class(self).RemoveAttachedNode(gd.Int(node))
+	class(self).RemoveAttachedNode(int64(node))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -108,7 +112,7 @@ func (self Instance) TintColor() Color.RGBA {
 }
 
 func (self Instance) SetTintColor(value Color.RGBA) {
-	class(self).SetTintColor(gd.Color(value))
+	class(self).SetTintColor(Color.RGBA(value))
 }
 
 func (self Instance) Autoshrink() bool {
@@ -166,7 +170,7 @@ func (self class) IsTintColorEnabled() bool { //gd:VisualShaderNodeFrame.is_tint
 }
 
 //go:nosplit
-func (self class) SetTintColor(color gd.Color) { //gd:VisualShaderNodeFrame.set_tint_color
+func (self class) SetTintColor(color Color.RGBA) { //gd:VisualShaderNodeFrame.set_tint_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -175,9 +179,9 @@ func (self class) SetTintColor(color gd.Color) { //gd:VisualShaderNodeFrame.set_
 }
 
 //go:nosplit
-func (self class) GetTintColor() gd.Color { //gd:VisualShaderNodeFrame.get_tint_color
+func (self class) GetTintColor() Color.RGBA { //gd:VisualShaderNodeFrame.get_tint_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFrame.Bind_get_tint_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -207,7 +211,7 @@ func (self class) IsAutoshrinkEnabled() bool { //gd:VisualShaderNodeFrame.is_aut
 Adds a node to the list of nodes attached to the frame. Should not be called directly, use the [method VisualShader.attach_node_to_frame] method instead.
 */
 //go:nosplit
-func (self class) AddAttachedNode(node gd.Int) { //gd:VisualShaderNodeFrame.add_attached_node
+func (self class) AddAttachedNode(node int64) { //gd:VisualShaderNodeFrame.add_attached_node
 	var frame = callframe.New()
 	callframe.Arg(frame, node)
 	var r_ret = callframe.Nil
@@ -219,7 +223,7 @@ func (self class) AddAttachedNode(node gd.Int) { //gd:VisualShaderNodeFrame.add_
 Removes a node from the list of nodes attached to the frame. Should not be called directly, use the [method VisualShader.detach_node_from_frame] method instead.
 */
 //go:nosplit
-func (self class) RemoveAttachedNode(node gd.Int) { //gd:VisualShaderNodeFrame.remove_attached_node
+func (self class) RemoveAttachedNode(node int64) { //gd:VisualShaderNodeFrame.remove_attached_node
 	var frame = callframe.New()
 	callframe.Arg(frame, node)
 	var r_ret = callframe.Nil

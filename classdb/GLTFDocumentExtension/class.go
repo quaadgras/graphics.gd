@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -180,7 +183,12 @@ func (Instance) _import_preflight(impl func(ptr unsafe.Pointer, state [1]gdclass
 		defer pointers.End(gd.InternalPackedStrings(extensions))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, extensions.Strings())
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -217,7 +225,12 @@ func (Instance) _parse_node_extensions(impl func(ptr unsafe.Pointer, state [1]gd
 		defer pointers.End(gd.InternalDictionary(extensions))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, gltf_node, gd.DictionaryAs[map[any]any](extensions))
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -239,7 +252,12 @@ func (Instance) _parse_image_data(impl func(ptr unsafe.Pointer, state [1]gdclass
 		defer pointers.End(ret_image[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, image_data.Bytes(), mime_type.String(), ret_image)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -275,7 +293,12 @@ func (Instance) _parse_texture_json(impl func(ptr unsafe.Pointer, state [1]gdcla
 		defer pointers.End(ret_gltf_texture[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, gd.DictionaryAs[map[any]any](texture_json), ret_gltf_texture)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -317,7 +340,12 @@ func (Instance) _import_post_parse(impl func(ptr unsafe.Pointer, state [1]gdclas
 		defer pointers.End(state[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -340,7 +368,12 @@ func (Instance) _import_node(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTF
 		defer pointers.End(node[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, gltf_node, gd.DictionaryAs[map[any]any](json), node)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -358,7 +391,12 @@ func (Instance) _import_post(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTF
 		defer pointers.End(root[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, root)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -376,7 +414,12 @@ func (Instance) _export_preflight(impl func(ptr unsafe.Pointer, state [1]gdclass
 		defer pointers.End(root[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, root)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -411,7 +454,12 @@ func (Instance) _export_preserialize(impl func(ptr unsafe.Pointer, state [1]gdcl
 		defer pointers.End(state[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -449,7 +497,7 @@ func (Instance) _serialize_image_to_bytes(impl func(ptr unsafe.Pointer, state [1
 		defer pointers.End(gd.InternalDictionary(image_dict))
 		var image_format = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
 		defer pointers.End(gd.InternalString(image_format))
-		var lossy_quality = gd.UnsafeGet[gd.Float](p_args, 4)
+		var lossy_quality = gd.UnsafeGet[float64](p_args, 4)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, image, gd.DictionaryAs[map[any]any](image_dict), image_format.String(), Float.X(lossy_quality))
@@ -478,11 +526,16 @@ func (Instance) _save_image_at_path(impl func(ptr unsafe.Pointer, state [1]gdcla
 		defer pointers.End(gd.InternalString(file_path))
 		var image_format = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
 		defer pointers.End(gd.InternalString(image_format))
-		var lossy_quality = gd.UnsafeGet[gd.Float](p_args, 4)
+		var lossy_quality = gd.UnsafeGet[float64](p_args, 4)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, image, file_path.String(), image_format.String(), Float.X(lossy_quality))
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -504,7 +557,12 @@ func (Instance) _serialize_texture_json(impl func(ptr unsafe.Pointer, state [1]g
 		defer pointers.End(gd.InternalString(image_format))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, gd.DictionaryAs[map[any]any](texture_json), gltf_texture, image_format.String())
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -527,7 +585,12 @@ func (Instance) _export_node(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTF
 		defer pointers.End(node[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, gltf_node, gd.DictionaryAs[map[any]any](json), node)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -542,7 +605,12 @@ func (Instance) _export_post(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTF
 		defer pointers.End(state[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -569,7 +637,7 @@ func New() Instance {
 Part of the import process. This method is run first, before all other parts of the import process.
 The return value is used to determine if this [GLTFDocumentExtension] instance should be used for importing a given GLTF file. If [constant OK], the import will use this [GLTFDocumentExtension] instance. If not overridden, [constant OK] is returned.
 */
-func (class) _import_preflight(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, extensions Packed.Strings) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _import_preflight(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, extensions Packed.Strings) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -578,7 +646,12 @@ func (class) _import_preflight(impl func(ptr unsafe.Pointer, state [1]gdclass.GL
 		defer pointers.End(gd.InternalPackedStrings(extensions))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, extensions)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -603,7 +676,7 @@ func (class) _get_supported_extensions(impl func(ptr unsafe.Pointer) Packed.Stri
 Part of the import process. This method is run after [method _get_supported_extensions] and before [method _import_post_parse].
 Runs when parsing the node extensions of a GLTFNode. This method can be used to process the extension JSON data into a format that can be used by [method _generate_scene_node]. The return value should be a member of the [enum Error] enum.
 */
-func (class) _parse_node_extensions(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, extensions Dictionary.Any) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_node_extensions(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, extensions Dictionary.Any) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -615,7 +688,12 @@ func (class) _parse_node_extensions(impl func(ptr unsafe.Pointer, state [1]gdcla
 		defer pointers.End(gd.InternalDictionary(extensions))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, gltf_node, extensions)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -623,7 +701,7 @@ func (class) _parse_node_extensions(impl func(ptr unsafe.Pointer, state [1]gdcla
 Part of the import process. This method is run after [method _parse_node_extensions] and before [method _parse_texture_json].
 Runs when parsing image data from a GLTF file. The data could be sourced from a separate file, a URI, or a buffer, and then is passed as a byte array.
 */
-func (class) _parse_image_data(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, image_data Packed.Bytes, mime_type String.Readable, ret_image [1]gdclass.Image) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_image_data(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, image_data Packed.Bytes, mime_type String.Readable, ret_image [1]gdclass.Image) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -637,7 +715,12 @@ func (class) _parse_image_data(impl func(ptr unsafe.Pointer, state [1]gdclass.GL
 		defer pointers.End(ret_image[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, image_data, mime_type, ret_image)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -661,7 +744,7 @@ func (class) _get_image_file_extension(impl func(ptr unsafe.Pointer) String.Read
 Part of the import process. This method is run after [method _parse_image_data] and before [method _generate_scene_node].
 Runs when parsing the texture JSON from the GLTF textures array. This can be used to set the source image index to use as the texture.
 */
-func (class) _parse_texture_json(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, texture_json Dictionary.Any, ret_gltf_texture [1]gdclass.GLTFTexture) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_texture_json(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, texture_json Dictionary.Any, ret_gltf_texture [1]gdclass.GLTFTexture) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -673,7 +756,12 @@ func (class) _parse_texture_json(impl func(ptr unsafe.Pointer, state [1]gdclass.
 		defer pointers.End(ret_gltf_texture[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, texture_json, ret_gltf_texture)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -708,14 +796,19 @@ func (class) _generate_scene_node(impl func(ptr unsafe.Pointer, state [1]gdclass
 Part of the import process. This method is run after [method _parse_node_extensions] and before [method _generate_scene_node].
 This method can be used to modify any of the data imported so far after parsing, before generating the nodes and then running the final per-node import step.
 */
-func (class) _import_post_parse(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _import_post_parse(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(state[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -723,7 +816,7 @@ func (class) _import_post_parse(impl func(ptr unsafe.Pointer, state [1]gdclass.G
 Part of the import process. This method is run after [method _generate_scene_node] and before [method _import_post].
 This method can be used to make modifications to each of the generated Godot scene nodes.
 */
-func (class) _import_node(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, json Dictionary.Any, node [1]gdclass.Node) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _import_node(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, json Dictionary.Any, node [1]gdclass.Node) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -738,7 +831,12 @@ func (class) _import_node(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFSta
 		defer pointers.End(node[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, gltf_node, json, node)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -746,7 +844,7 @@ func (class) _import_node(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFSta
 Part of the import process. This method is run last, after all other parts of the import process.
 This method can be used to modify the final Godot scene generated by the import process.
 */
-func (class) _import_post(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, root [1]gdclass.Node) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _import_post(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, root [1]gdclass.Node) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -756,7 +854,12 @@ func (class) _import_post(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFSta
 		defer pointers.End(root[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, root)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -764,7 +867,7 @@ func (class) _import_post(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFSta
 Part of the export process. This method is run first, before all other parts of the export process.
 The return value is used to determine if this [GLTFDocumentExtension] instance should be used for exporting a given GLTF file. If [constant OK], the export will use this [GLTFDocumentExtension] instance. If not overridden, [constant OK] is returned.
 */
-func (class) _export_preflight(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, root [1]gdclass.Node) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _export_preflight(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, root [1]gdclass.Node) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -774,7 +877,12 @@ func (class) _export_preflight(impl func(ptr unsafe.Pointer, state [1]gdclass.GL
 		defer pointers.End(root[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, root)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -802,14 +910,19 @@ func (class) _convert_scene_node(impl func(ptr unsafe.Pointer, state [1]gdclass.
 Part of the export process. This method is run after [method _convert_scene_node] and before [method _get_saveable_image_formats].
 This method can be used to alter the state before performing serialization. It runs every time when generating a buffer with [method GLTFDocument.generate_buffer] or writing to the file system with [method GLTFDocument.write_to_filesystem].
 */
-func (class) _export_preserialize(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _export_preserialize(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(state[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -835,7 +948,7 @@ Part of the export process. This method is run after [method _get_saveable_image
 This method is run when embedding images in the GLTF file. When images are saved separately, [method _save_image_at_path] runs instead. Note that these methods only run when this [GLTFDocumentExtension] is selected as the image exporter.
 This method must set the image MIME type in the [param image_dict] with the [code]"mimeType"[/code] key. For example, for a PNG image, it would be set to [code]"image/png"[/code]. The return value must be a [PackedByteArray] containing the image data.
 */
-func (class) _serialize_image_to_bytes(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, image [1]gdclass.Image, image_dict Dictionary.Any, image_format String.Readable, lossy_quality gd.Float) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _serialize_image_to_bytes(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, image [1]gdclass.Image, image_dict Dictionary.Any, image_format String.Readable, lossy_quality float64) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -847,7 +960,7 @@ func (class) _serialize_image_to_bytes(impl func(ptr unsafe.Pointer, state [1]gd
 		defer pointers.End(gd.InternalDictionary(image_dict))
 		var image_format = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
 		defer pointers.End(gd.InternalString(image_format))
-		var lossy_quality = gd.UnsafeGet[gd.Float](p_args, 4)
+		var lossy_quality = gd.UnsafeGet[float64](p_args, 4)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, image, image_dict, image_format, lossy_quality)
@@ -864,7 +977,7 @@ func (class) _serialize_image_to_bytes(impl func(ptr unsafe.Pointer, state [1]gd
 Part of the export process. This method is run after [method _get_saveable_image_formats] and before [method _serialize_texture_json].
 This method is run when saving images separately from the GLTF file. When images are embedded, [method _serialize_image_to_bytes] runs instead. Note that these methods only run when this [GLTFDocumentExtension] is selected as the image exporter.
 */
-func (class) _save_image_at_path(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, image [1]gdclass.Image, file_path String.Readable, image_format String.Readable, lossy_quality gd.Float) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _save_image_at_path(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, image [1]gdclass.Image, file_path String.Readable, image_format String.Readable, lossy_quality float64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -876,11 +989,16 @@ func (class) _save_image_at_path(impl func(ptr unsafe.Pointer, state [1]gdclass.
 		defer pointers.End(gd.InternalString(file_path))
 		var image_format = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
 		defer pointers.End(gd.InternalString(image_format))
-		var lossy_quality = gd.UnsafeGet[gd.Float](p_args, 4)
+		var lossy_quality = gd.UnsafeGet[float64](p_args, 4)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, image, file_path, image_format, lossy_quality)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -888,7 +1006,7 @@ func (class) _save_image_at_path(impl func(ptr unsafe.Pointer, state [1]gdclass.
 Part of the export process. This method is run after [method _save_image_at_path] or [method _serialize_image_to_bytes], and before [method _export_node]. Note that this method only runs when this [GLTFDocumentExtension] is selected as the image exporter.
 This method can be used to set up the extensions for the texture JSON by editing [param texture_json]. The extension must also be added as used extension with [method GLTFState.add_used_extension], be sure to set [code]required[/code] to [code]true[/code] if you are not providing a fallback.
 */
-func (class) _serialize_texture_json(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, texture_json Dictionary.Any, gltf_texture [1]gdclass.GLTFTexture, image_format String.Readable) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _serialize_texture_json(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, texture_json Dictionary.Any, gltf_texture [1]gdclass.GLTFTexture, image_format String.Readable) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -902,7 +1020,12 @@ func (class) _serialize_texture_json(impl func(ptr unsafe.Pointer, state [1]gdcl
 		defer pointers.End(gd.InternalString(image_format))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, texture_json, gltf_texture, image_format)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -910,7 +1033,7 @@ func (class) _serialize_texture_json(impl func(ptr unsafe.Pointer, state [1]gdcl
 Part of the export process. This method is run after [method _get_saveable_image_formats] and before [method _export_post]. If this [GLTFDocumentExtension] is used for exporting images, this runs after [method _serialize_texture_json].
 This method can be used to modify the final JSON of each node. Data should be primarily stored in [param gltf_node] prior to serializing the JSON, but the original Godot [param node] is also provided if available. The node may be null if not available, such as when exporting GLTF data not generated from a Godot scene.
 */
-func (class) _export_node(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, json Dictionary.Any, node [1]gdclass.Node) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _export_node(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, json Dictionary.Any, node [1]gdclass.Node) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -925,7 +1048,12 @@ func (class) _export_node(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFSta
 		defer pointers.End(node[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, gltf_node, json, node)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -933,14 +1061,19 @@ func (class) _export_node(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFSta
 Part of the export process. This method is run last, after all other parts of the export process.
 This method can be used to modify the final JSON of the generated GLTF file.
 */
-func (class) _export_post(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _export_post(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFState) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(state[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -1053,119 +1186,3 @@ func init() {
 		return [1]gdclass.GLTFDocumentExtension{*(*gdclass.GLTFDocumentExtension)(unsafe.Pointer(&ptr))}
 	})
 }
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
-)

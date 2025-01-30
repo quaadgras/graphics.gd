@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -65,7 +68,7 @@ Starts the timer, if it was not started already. Fails if the timer is not insid
 [b]Note:[/b] This method does not resume a paused timer. See [member paused].
 */
 func (self Instance) Start() { //gd:Timer.start
-	class(self).Start(gd.Float(-1))
+	class(self).Start(float64(-1))
 }
 
 /*
@@ -113,7 +116,7 @@ func (self Instance) WaitTime() Float.X {
 }
 
 func (self Instance) SetWaitTime(value Float.X) {
-	class(self).SetWaitTime(gd.Float(value))
+	class(self).SetWaitTime(float64(value))
 }
 
 func (self Instance) OneShot() bool {
@@ -145,7 +148,7 @@ func (self Instance) TimeLeft() Float.X {
 }
 
 //go:nosplit
-func (self class) SetWaitTime(time_sec gd.Float) { //gd:Timer.set_wait_time
+func (self class) SetWaitTime(time_sec float64) { //gd:Timer.set_wait_time
 	var frame = callframe.New()
 	callframe.Arg(frame, time_sec)
 	var r_ret = callframe.Nil
@@ -154,9 +157,9 @@ func (self class) SetWaitTime(time_sec gd.Float) { //gd:Timer.set_wait_time
 }
 
 //go:nosplit
-func (self class) GetWaitTime() gd.Float { //gd:Timer.get_wait_time
+func (self class) GetWaitTime() float64 { //gd:Timer.get_wait_time
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_get_wait_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -206,7 +209,7 @@ Starts the timer, if it was not started already. Fails if the timer is not insid
 [b]Note:[/b] This method does not resume a paused timer. See [member paused].
 */
 //go:nosplit
-func (self class) Start(time_sec gd.Float) { //gd:Timer.start
+func (self class) Start(time_sec float64) { //gd:Timer.start
 	var frame = callframe.New()
 	callframe.Arg(frame, time_sec)
 	var r_ret = callframe.Nil
@@ -258,9 +261,9 @@ func (self class) IsStopped() bool { //gd:Timer.is_stopped
 }
 
 //go:nosplit
-func (self class) GetTimeLeft() gd.Float { //gd:Timer.get_time_left
+func (self class) GetTimeLeft() float64 { //gd:Timer.get_time_left
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_get_time_left, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

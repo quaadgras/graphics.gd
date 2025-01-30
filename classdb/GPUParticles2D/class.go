@@ -9,23 +9,24 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
-import "graphics.gd/variant/Color"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -41,6 +42,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -79,7 +82,7 @@ Emits a single particle. Whether [param xform], [param velocity], [param color] 
 The default ParticleProcessMaterial will overwrite [param color] and use the contents of [param custom] as [code](rotation, age, animation, lifetime)[/code].
 */
 func (self Instance) EmitParticle(xform Transform2D.OriginXY, velocity Vector2.XY, color Color.RGBA, custom Color.RGBA, flags int) { //gd:GPUParticles2D.emit_particle
-	class(self).EmitParticle(gd.Transform2D(xform), gd.Vector2(velocity), gd.Color(color), gd.Color(custom), gd.Int(flags))
+	class(self).EmitParticle(Transform2D.OriginXY(xform), Vector2.XY(velocity), Color.RGBA(color), Color.RGBA(custom), int64(flags))
 }
 
 /*
@@ -120,7 +123,7 @@ func (self Instance) Amount() int {
 }
 
 func (self Instance) SetAmount(value int) {
-	class(self).SetAmount(gd.Int(value))
+	class(self).SetAmount(int64(value))
 }
 
 func (self Instance) AmountRatio() Float.X {
@@ -128,7 +131,7 @@ func (self Instance) AmountRatio() Float.X {
 }
 
 func (self Instance) SetAmountRatio(value Float.X) {
-	class(self).SetAmountRatio(gd.Float(value))
+	class(self).SetAmountRatio(float64(value))
 }
 
 func (self Instance) SubEmitter() string {
@@ -160,7 +163,7 @@ func (self Instance) Lifetime() Float.X {
 }
 
 func (self Instance) SetLifetime(value Float.X) {
-	class(self).SetLifetime(gd.Float(value))
+	class(self).SetLifetime(float64(value))
 }
 
 func (self Instance) OneShot() bool {
@@ -176,7 +179,7 @@ func (self Instance) Preprocess() Float.X {
 }
 
 func (self Instance) SetPreprocess(value Float.X) {
-	class(self).SetPreProcessTime(gd.Float(value))
+	class(self).SetPreProcessTime(float64(value))
 }
 
 func (self Instance) SpeedScale() Float.X {
@@ -184,7 +187,7 @@ func (self Instance) SpeedScale() Float.X {
 }
 
 func (self Instance) SetSpeedScale(value Float.X) {
-	class(self).SetSpeedScale(gd.Float(value))
+	class(self).SetSpeedScale(float64(value))
 }
 
 func (self Instance) Explosiveness() Float.X {
@@ -192,7 +195,7 @@ func (self Instance) Explosiveness() Float.X {
 }
 
 func (self Instance) SetExplosiveness(value Float.X) {
-	class(self).SetExplosivenessRatio(gd.Float(value))
+	class(self).SetExplosivenessRatio(float64(value))
 }
 
 func (self Instance) Randomness() Float.X {
@@ -200,7 +203,7 @@ func (self Instance) Randomness() Float.X {
 }
 
 func (self Instance) SetRandomness(value Float.X) {
-	class(self).SetRandomnessRatio(gd.Float(value))
+	class(self).SetRandomnessRatio(float64(value))
 }
 
 func (self Instance) FixedFps() int {
@@ -208,7 +211,7 @@ func (self Instance) FixedFps() int {
 }
 
 func (self Instance) SetFixedFps(value int) {
-	class(self).SetFixedFps(gd.Int(value))
+	class(self).SetFixedFps(int64(value))
 }
 
 func (self Instance) Interpolate() bool {
@@ -232,7 +235,7 @@ func (self Instance) InterpToEnd() Float.X {
 }
 
 func (self Instance) SetInterpToEnd(value Float.X) {
-	class(self).SetInterpToEnd(gd.Float(value))
+	class(self).SetInterpToEnd(float64(value))
 }
 
 func (self Instance) CollisionBaseSize() Float.X {
@@ -240,7 +243,7 @@ func (self Instance) CollisionBaseSize() Float.X {
 }
 
 func (self Instance) SetCollisionBaseSize(value Float.X) {
-	class(self).SetCollisionBaseSize(gd.Float(value))
+	class(self).SetCollisionBaseSize(float64(value))
 }
 
 func (self Instance) VisibilityRect() Rect2.PositionSize {
@@ -248,7 +251,7 @@ func (self Instance) VisibilityRect() Rect2.PositionSize {
 }
 
 func (self Instance) SetVisibilityRect(value Rect2.PositionSize) {
-	class(self).SetVisibilityRect(gd.Rect2(value))
+	class(self).SetVisibilityRect(Rect2.PositionSize(value))
 }
 
 func (self Instance) LocalCoords() bool {
@@ -280,7 +283,7 @@ func (self Instance) TrailLifetime() Float.X {
 }
 
 func (self Instance) SetTrailLifetime(value Float.X) {
-	class(self).SetTrailLifetime(gd.Float(value))
+	class(self).SetTrailLifetime(float64(value))
 }
 
 func (self Instance) TrailSections() int {
@@ -288,7 +291,7 @@ func (self Instance) TrailSections() int {
 }
 
 func (self Instance) SetTrailSections(value int) {
-	class(self).SetTrailSections(gd.Int(value))
+	class(self).SetTrailSections(int64(value))
 }
 
 func (self Instance) TrailSectionSubdivisions() int {
@@ -296,7 +299,7 @@ func (self Instance) TrailSectionSubdivisions() int {
 }
 
 func (self Instance) SetTrailSectionSubdivisions(value int) {
-	class(self).SetTrailSectionSubdivisions(gd.Int(value))
+	class(self).SetTrailSectionSubdivisions(int64(value))
 }
 
 //go:nosplit
@@ -309,7 +312,7 @@ func (self class) SetEmitting(emitting bool) { //gd:GPUParticles2D.set_emitting
 }
 
 //go:nosplit
-func (self class) SetAmount(amount gd.Int) { //gd:GPUParticles2D.set_amount
+func (self class) SetAmount(amount int64) { //gd:GPUParticles2D.set_amount
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -318,7 +321,7 @@ func (self class) SetAmount(amount gd.Int) { //gd:GPUParticles2D.set_amount
 }
 
 //go:nosplit
-func (self class) SetLifetime(secs gd.Float) { //gd:GPUParticles2D.set_lifetime
+func (self class) SetLifetime(secs float64) { //gd:GPUParticles2D.set_lifetime
 	var frame = callframe.New()
 	callframe.Arg(frame, secs)
 	var r_ret = callframe.Nil
@@ -336,7 +339,7 @@ func (self class) SetOneShot(secs bool) { //gd:GPUParticles2D.set_one_shot
 }
 
 //go:nosplit
-func (self class) SetPreProcessTime(secs gd.Float) { //gd:GPUParticles2D.set_pre_process_time
+func (self class) SetPreProcessTime(secs float64) { //gd:GPUParticles2D.set_pre_process_time
 	var frame = callframe.New()
 	callframe.Arg(frame, secs)
 	var r_ret = callframe.Nil
@@ -345,7 +348,7 @@ func (self class) SetPreProcessTime(secs gd.Float) { //gd:GPUParticles2D.set_pre
 }
 
 //go:nosplit
-func (self class) SetExplosivenessRatio(ratio gd.Float) { //gd:GPUParticles2D.set_explosiveness_ratio
+func (self class) SetExplosivenessRatio(ratio float64) { //gd:GPUParticles2D.set_explosiveness_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -354,7 +357,7 @@ func (self class) SetExplosivenessRatio(ratio gd.Float) { //gd:GPUParticles2D.se
 }
 
 //go:nosplit
-func (self class) SetRandomnessRatio(ratio gd.Float) { //gd:GPUParticles2D.set_randomness_ratio
+func (self class) SetRandomnessRatio(ratio float64) { //gd:GPUParticles2D.set_randomness_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -363,7 +366,7 @@ func (self class) SetRandomnessRatio(ratio gd.Float) { //gd:GPUParticles2D.set_r
 }
 
 //go:nosplit
-func (self class) SetVisibilityRect(visibility_rect gd.Rect2) { //gd:GPUParticles2D.set_visibility_rect
+func (self class) SetVisibilityRect(visibility_rect Rect2.PositionSize) { //gd:GPUParticles2D.set_visibility_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, visibility_rect)
 	var r_ret = callframe.Nil
@@ -381,7 +384,7 @@ func (self class) SetUseLocalCoordinates(enable bool) { //gd:GPUParticles2D.set_
 }
 
 //go:nosplit
-func (self class) SetFixedFps(fps gd.Int) { //gd:GPUParticles2D.set_fixed_fps
+func (self class) SetFixedFps(fps int64) { //gd:GPUParticles2D.set_fixed_fps
 	var frame = callframe.New()
 	callframe.Arg(frame, fps)
 	var r_ret = callframe.Nil
@@ -417,7 +420,7 @@ func (self class) SetProcessMaterial(material [1]gdclass.Material) { //gd:GPUPar
 }
 
 //go:nosplit
-func (self class) SetSpeedScale(scale gd.Float) { //gd:GPUParticles2D.set_speed_scale
+func (self class) SetSpeedScale(scale float64) { //gd:GPUParticles2D.set_speed_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -426,7 +429,7 @@ func (self class) SetSpeedScale(scale gd.Float) { //gd:GPUParticles2D.set_speed_
 }
 
 //go:nosplit
-func (self class) SetCollisionBaseSize(size gd.Float) { //gd:GPUParticles2D.set_collision_base_size
+func (self class) SetCollisionBaseSize(size float64) { //gd:GPUParticles2D.set_collision_base_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -435,7 +438,7 @@ func (self class) SetCollisionBaseSize(size gd.Float) { //gd:GPUParticles2D.set_
 }
 
 //go:nosplit
-func (self class) SetInterpToEnd(interp gd.Float) { //gd:GPUParticles2D.set_interp_to_end
+func (self class) SetInterpToEnd(interp float64) { //gd:GPUParticles2D.set_interp_to_end
 	var frame = callframe.New()
 	callframe.Arg(frame, interp)
 	var r_ret = callframe.Nil
@@ -454,9 +457,9 @@ func (self class) IsEmitting() bool { //gd:GPUParticles2D.is_emitting
 }
 
 //go:nosplit
-func (self class) GetAmount() gd.Int { //gd:GPUParticles2D.get_amount
+func (self class) GetAmount() int64 { //gd:GPUParticles2D.get_amount
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_amount, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -464,9 +467,9 @@ func (self class) GetAmount() gd.Int { //gd:GPUParticles2D.get_amount
 }
 
 //go:nosplit
-func (self class) GetLifetime() gd.Float { //gd:GPUParticles2D.get_lifetime
+func (self class) GetLifetime() float64 { //gd:GPUParticles2D.get_lifetime
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_lifetime, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -484,9 +487,9 @@ func (self class) GetOneShot() bool { //gd:GPUParticles2D.get_one_shot
 }
 
 //go:nosplit
-func (self class) GetPreProcessTime() gd.Float { //gd:GPUParticles2D.get_pre_process_time
+func (self class) GetPreProcessTime() float64 { //gd:GPUParticles2D.get_pre_process_time
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_pre_process_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -494,9 +497,9 @@ func (self class) GetPreProcessTime() gd.Float { //gd:GPUParticles2D.get_pre_pro
 }
 
 //go:nosplit
-func (self class) GetExplosivenessRatio() gd.Float { //gd:GPUParticles2D.get_explosiveness_ratio
+func (self class) GetExplosivenessRatio() float64 { //gd:GPUParticles2D.get_explosiveness_ratio
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_explosiveness_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -504,9 +507,9 @@ func (self class) GetExplosivenessRatio() gd.Float { //gd:GPUParticles2D.get_exp
 }
 
 //go:nosplit
-func (self class) GetRandomnessRatio() gd.Float { //gd:GPUParticles2D.get_randomness_ratio
+func (self class) GetRandomnessRatio() float64 { //gd:GPUParticles2D.get_randomness_ratio
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_randomness_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -514,9 +517,9 @@ func (self class) GetRandomnessRatio() gd.Float { //gd:GPUParticles2D.get_random
 }
 
 //go:nosplit
-func (self class) GetVisibilityRect() gd.Rect2 { //gd:GPUParticles2D.get_visibility_rect
+func (self class) GetVisibilityRect() Rect2.PositionSize { //gd:GPUParticles2D.get_visibility_rect
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_visibility_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -534,9 +537,9 @@ func (self class) GetUseLocalCoordinates() bool { //gd:GPUParticles2D.get_use_lo
 }
 
 //go:nosplit
-func (self class) GetFixedFps() gd.Int { //gd:GPUParticles2D.get_fixed_fps
+func (self class) GetFixedFps() int64 { //gd:GPUParticles2D.get_fixed_fps
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_fixed_fps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -574,9 +577,9 @@ func (self class) GetProcessMaterial() [1]gdclass.Material { //gd:GPUParticles2D
 }
 
 //go:nosplit
-func (self class) GetSpeedScale() gd.Float { //gd:GPUParticles2D.get_speed_scale
+func (self class) GetSpeedScale() float64 { //gd:GPUParticles2D.get_speed_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -584,9 +587,9 @@ func (self class) GetSpeedScale() gd.Float { //gd:GPUParticles2D.get_speed_scale
 }
 
 //go:nosplit
-func (self class) GetCollisionBaseSize() gd.Float { //gd:GPUParticles2D.get_collision_base_size
+func (self class) GetCollisionBaseSize() float64 { //gd:GPUParticles2D.get_collision_base_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_collision_base_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -594,9 +597,9 @@ func (self class) GetCollisionBaseSize() gd.Float { //gd:GPUParticles2D.get_coll
 }
 
 //go:nosplit
-func (self class) GetInterpToEnd() gd.Float { //gd:GPUParticles2D.get_interp_to_end
+func (self class) GetInterpToEnd() float64 { //gd:GPUParticles2D.get_interp_to_end
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_interp_to_end, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -646,9 +649,9 @@ Returns a rectangle containing the positions of all existing particles.
 [b]Note:[/b] When using threaded rendering this method synchronizes the rendering thread. Calling it often may have a negative impact on performance.
 */
 //go:nosplit
-func (self class) CaptureRect() gd.Rect2 { //gd:GPUParticles2D.capture_rect
+func (self class) CaptureRect() Rect2.PositionSize { //gd:GPUParticles2D.capture_rect
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_capture_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -691,7 +694,7 @@ Emits a single particle. Whether [param xform], [param velocity], [param color] 
 The default ParticleProcessMaterial will overwrite [param color] and use the contents of [param custom] as [code](rotation, age, animation, lifetime)[/code].
 */
 //go:nosplit
-func (self class) EmitParticle(xform gd.Transform2D, velocity gd.Vector2, color gd.Color, custom gd.Color, flags gd.Int) { //gd:GPUParticles2D.emit_particle
+func (self class) EmitParticle(xform Transform2D.OriginXY, velocity Vector2.XY, color Color.RGBA, custom Color.RGBA, flags int64) { //gd:GPUParticles2D.emit_particle
 	var frame = callframe.New()
 	callframe.Arg(frame, xform)
 	callframe.Arg(frame, velocity)
@@ -713,7 +716,7 @@ func (self class) SetTrailEnabled(enabled bool) { //gd:GPUParticles2D.set_trail_
 }
 
 //go:nosplit
-func (self class) SetTrailLifetime(secs gd.Float) { //gd:GPUParticles2D.set_trail_lifetime
+func (self class) SetTrailLifetime(secs float64) { //gd:GPUParticles2D.set_trail_lifetime
 	var frame = callframe.New()
 	callframe.Arg(frame, secs)
 	var r_ret = callframe.Nil
@@ -732,9 +735,9 @@ func (self class) IsTrailEnabled() bool { //gd:GPUParticles2D.is_trail_enabled
 }
 
 //go:nosplit
-func (self class) GetTrailLifetime() gd.Float { //gd:GPUParticles2D.get_trail_lifetime
+func (self class) GetTrailLifetime() float64 { //gd:GPUParticles2D.get_trail_lifetime
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_trail_lifetime, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -742,7 +745,7 @@ func (self class) GetTrailLifetime() gd.Float { //gd:GPUParticles2D.get_trail_li
 }
 
 //go:nosplit
-func (self class) SetTrailSections(sections gd.Int) { //gd:GPUParticles2D.set_trail_sections
+func (self class) SetTrailSections(sections int64) { //gd:GPUParticles2D.set_trail_sections
 	var frame = callframe.New()
 	callframe.Arg(frame, sections)
 	var r_ret = callframe.Nil
@@ -751,9 +754,9 @@ func (self class) SetTrailSections(sections gd.Int) { //gd:GPUParticles2D.set_tr
 }
 
 //go:nosplit
-func (self class) GetTrailSections() gd.Int { //gd:GPUParticles2D.get_trail_sections
+func (self class) GetTrailSections() int64 { //gd:GPUParticles2D.get_trail_sections
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_trail_sections, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -761,7 +764,7 @@ func (self class) GetTrailSections() gd.Int { //gd:GPUParticles2D.get_trail_sect
 }
 
 //go:nosplit
-func (self class) SetTrailSectionSubdivisions(subdivisions gd.Int) { //gd:GPUParticles2D.set_trail_section_subdivisions
+func (self class) SetTrailSectionSubdivisions(subdivisions int64) { //gd:GPUParticles2D.set_trail_section_subdivisions
 	var frame = callframe.New()
 	callframe.Arg(frame, subdivisions)
 	var r_ret = callframe.Nil
@@ -770,9 +773,9 @@ func (self class) SetTrailSectionSubdivisions(subdivisions gd.Int) { //gd:GPUPar
 }
 
 //go:nosplit
-func (self class) GetTrailSectionSubdivisions() gd.Int { //gd:GPUParticles2D.get_trail_section_subdivisions
+func (self class) GetTrailSectionSubdivisions() int64 { //gd:GPUParticles2D.get_trail_section_subdivisions
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_trail_section_subdivisions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -792,7 +795,7 @@ func (self class) ConvertFromParticles(particles [1]gdclass.Node) { //gd:GPUPart
 }
 
 //go:nosplit
-func (self class) SetAmountRatio(ratio gd.Float) { //gd:GPUParticles2D.set_amount_ratio
+func (self class) SetAmountRatio(ratio float64) { //gd:GPUParticles2D.set_amount_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -801,9 +804,9 @@ func (self class) SetAmountRatio(ratio gd.Float) { //gd:GPUParticles2D.set_amoun
 }
 
 //go:nosplit
-func (self class) GetAmountRatio() gd.Float { //gd:GPUParticles2D.get_amount_ratio
+func (self class) GetAmountRatio() float64 { //gd:GPUParticles2D.get_amount_ratio
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_amount_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,19 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/InputEvent"
+import "graphics.gd/classdb/InputEventFromWindow"
+import "graphics.gd/classdb/InputEventWithModifiers"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/InputEventWithModifiers"
-import "graphics.gd/classdb/InputEventFromWindow"
-import "graphics.gd/classdb/InputEvent"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -158,7 +162,7 @@ func (self Instance) Unicode() int {
 }
 
 func (self Instance) SetUnicode(value int) {
-	class(self).SetUnicode(gd.Int(value))
+	class(self).SetUnicode(int64(value))
 }
 
 func (self Instance) Location() KeyLocation {
@@ -240,7 +244,7 @@ func (self class) GetKeyLabel() Key { //gd:InputEventKey.get_key_label
 }
 
 //go:nosplit
-func (self class) SetUnicode(unicode gd.Int) { //gd:InputEventKey.set_unicode
+func (self class) SetUnicode(unicode int64) { //gd:InputEventKey.set_unicode
 	var frame = callframe.New()
 	callframe.Arg(frame, unicode)
 	var r_ret = callframe.Nil
@@ -249,9 +253,9 @@ func (self class) SetUnicode(unicode gd.Int) { //gd:InputEventKey.set_unicode
 }
 
 //go:nosplit
-func (self class) GetUnicode() gd.Int { //gd:InputEventKey.get_unicode
+func (self class) GetUnicode() int64 { //gd:InputEventKey.get_unicode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_unicode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

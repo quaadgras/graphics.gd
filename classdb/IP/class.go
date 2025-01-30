@@ -10,15 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "net/netip"
 
 var _ Object.ID
@@ -35,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -77,7 +81,7 @@ Returns a queued hostname's status as a [enum ResolverStatus] constant, given it
 */
 func GetResolveItemStatus(id int) gdclass.IPResolverStatus { //gd:IP.get_resolve_item_status
 	once.Do(singleton)
-	return gdclass.IPResolverStatus(class(self).GetResolveItemStatus(gd.Int(id)))
+	return gdclass.IPResolverStatus(class(self).GetResolveItemStatus(int64(id)))
 }
 
 /*
@@ -85,7 +89,7 @@ Returns a queued hostname's IP address, given its queue [param id]. Returns an e
 */
 func GetResolveItemAddress(id int) string { //gd:IP.get_resolve_item_address
 	once.Do(singleton)
-	return string(class(self).GetResolveItemAddress(gd.Int(id)).String())
+	return string(class(self).GetResolveItemAddress(int64(id)).String())
 }
 
 /*
@@ -93,7 +97,7 @@ Returns resolved addresses, or an empty array if an error happened or resolution
 */
 func GetResolveItemAddresses(id int) []any { //gd:IP.get_resolve_item_addresses
 	once.Do(singleton)
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetResolveItemAddresses(gd.Int(id)))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetResolveItemAddresses(int64(id)))))
 }
 
 /*
@@ -101,7 +105,7 @@ Removes a given item [param id] from the queue. This should be used to free a qu
 */
 func EraseResolveItem(id int) { //gd:IP.erase_resolve_item
 	once.Do(singleton)
-	class(self).EraseResolveItem(gd.Int(id))
+	class(self).EraseResolveItem(int64(id))
 }
 
 /*
@@ -183,11 +187,11 @@ func (self class) ResolveHostnameAddresses(host String.Readable, ip_type gdclass
 Creates a queue item to resolve a hostname to an IPv4 or IPv6 address depending on the [enum Type] constant given as [param ip_type]. Returns the queue ID if successful, or [constant RESOLVER_INVALID_ID] on error.
 */
 //go:nosplit
-func (self class) ResolveHostnameQueueItem(host String.Readable, ip_type gdclass.IPType) gd.Int { //gd:IP.resolve_hostname_queue_item
+func (self class) ResolveHostnameQueueItem(host String.Readable, ip_type gdclass.IPType) int64 { //gd:IP.resolve_hostname_queue_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, ip_type)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname_queue_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -198,7 +202,7 @@ func (self class) ResolveHostnameQueueItem(host String.Readable, ip_type gdclass
 Returns a queued hostname's status as a [enum ResolverStatus] constant, given its queue [param id].
 */
 //go:nosplit
-func (self class) GetResolveItemStatus(id gd.Int) gdclass.IPResolverStatus { //gd:IP.get_resolve_item_status
+func (self class) GetResolveItemStatus(id int64) gdclass.IPResolverStatus { //gd:IP.get_resolve_item_status
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gdclass.IPResolverStatus](frame)
@@ -212,7 +216,7 @@ func (self class) GetResolveItemStatus(id gd.Int) gdclass.IPResolverStatus { //g
 Returns a queued hostname's IP address, given its queue [param id]. Returns an empty string on error or if resolution hasn't happened yet (see [method get_resolve_item_status]).
 */
 //go:nosplit
-func (self class) GetResolveItemAddress(id gd.Int) String.Readable { //gd:IP.get_resolve_item_address
+func (self class) GetResolveItemAddress(id int64) String.Readable { //gd:IP.get_resolve_item_address
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -226,7 +230,7 @@ func (self class) GetResolveItemAddress(id gd.Int) String.Readable { //gd:IP.get
 Returns resolved addresses, or an empty array if an error happened or resolution didn't happen yet (see [method get_resolve_item_status]).
 */
 //go:nosplit
-func (self class) GetResolveItemAddresses(id gd.Int) Array.Any { //gd:IP.get_resolve_item_addresses
+func (self class) GetResolveItemAddresses(id int64) Array.Any { //gd:IP.get_resolve_item_addresses
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -240,7 +244,7 @@ func (self class) GetResolveItemAddresses(id gd.Int) Array.Any { //gd:IP.get_res
 Removes a given item [param id] from the queue. This should be used to free a queue after it has completed to enable more queries to happen.
 */
 //go:nosplit
-func (self class) EraseResolveItem(id gd.Int) { //gd:IP.erase_resolve_item
+func (self class) EraseResolveItem(id int64) { //gd:IP.erase_resolve_item
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil

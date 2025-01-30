@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/StyleBox"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/StyleBox"
-import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,14 +60,14 @@ type Any interface {
 Sets the margin to [param size] pixels for all sides.
 */
 func (self Instance) SetTextureMarginAll(size Float.X) { //gd:StyleBoxTexture.set_texture_margin_all
-	class(self).SetTextureMarginAll(gd.Float(size))
+	class(self).SetTextureMarginAll(float64(size))
 }
 
 /*
 Sets the expand margin to [param size] pixels for all sides.
 */
 func (self Instance) SetExpandMarginAll(size Float.X) { //gd:StyleBoxTexture.set_expand_margin_all
-	class(self).SetExpandMarginAll(gd.Float(size))
+	class(self).SetExpandMarginAll(float64(size))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -99,7 +102,7 @@ func (self Instance) TextureMarginLeft() Float.X {
 }
 
 func (self Instance) SetTextureMarginLeft(value Float.X) {
-	class(self).SetTextureMargin(0, gd.Float(value))
+	class(self).SetTextureMargin(0, float64(value))
 }
 
 func (self Instance) TextureMarginTop() Float.X {
@@ -107,7 +110,7 @@ func (self Instance) TextureMarginTop() Float.X {
 }
 
 func (self Instance) SetTextureMarginTop(value Float.X) {
-	class(self).SetTextureMargin(1, gd.Float(value))
+	class(self).SetTextureMargin(1, float64(value))
 }
 
 func (self Instance) TextureMarginRight() Float.X {
@@ -115,7 +118,7 @@ func (self Instance) TextureMarginRight() Float.X {
 }
 
 func (self Instance) SetTextureMarginRight(value Float.X) {
-	class(self).SetTextureMargin(2, gd.Float(value))
+	class(self).SetTextureMargin(2, float64(value))
 }
 
 func (self Instance) TextureMarginBottom() Float.X {
@@ -123,7 +126,7 @@ func (self Instance) TextureMarginBottom() Float.X {
 }
 
 func (self Instance) SetTextureMarginBottom(value Float.X) {
-	class(self).SetTextureMargin(3, gd.Float(value))
+	class(self).SetTextureMargin(3, float64(value))
 }
 
 func (self Instance) ExpandMarginLeft() Float.X {
@@ -131,7 +134,7 @@ func (self Instance) ExpandMarginLeft() Float.X {
 }
 
 func (self Instance) SetExpandMarginLeft(value Float.X) {
-	class(self).SetExpandMargin(0, gd.Float(value))
+	class(self).SetExpandMargin(0, float64(value))
 }
 
 func (self Instance) ExpandMarginTop() Float.X {
@@ -139,7 +142,7 @@ func (self Instance) ExpandMarginTop() Float.X {
 }
 
 func (self Instance) SetExpandMarginTop(value Float.X) {
-	class(self).SetExpandMargin(1, gd.Float(value))
+	class(self).SetExpandMargin(1, float64(value))
 }
 
 func (self Instance) ExpandMarginRight() Float.X {
@@ -147,7 +150,7 @@ func (self Instance) ExpandMarginRight() Float.X {
 }
 
 func (self Instance) SetExpandMarginRight(value Float.X) {
-	class(self).SetExpandMargin(2, gd.Float(value))
+	class(self).SetExpandMargin(2, float64(value))
 }
 
 func (self Instance) ExpandMarginBottom() Float.X {
@@ -155,7 +158,7 @@ func (self Instance) ExpandMarginBottom() Float.X {
 }
 
 func (self Instance) SetExpandMarginBottom(value Float.X) {
-	class(self).SetExpandMargin(3, gd.Float(value))
+	class(self).SetExpandMargin(3, float64(value))
 }
 
 func (self Instance) AxisStretchHorizontal() gdclass.StyleBoxTextureAxisStretchMode {
@@ -179,7 +182,7 @@ func (self Instance) RegionRect() Rect2.PositionSize {
 }
 
 func (self Instance) SetRegionRect(value Rect2.PositionSize) {
-	class(self).SetRegionRect(gd.Rect2(value))
+	class(self).SetRegionRect(Rect2.PositionSize(value))
 }
 
 func (self Instance) ModulateColor() Color.RGBA {
@@ -187,7 +190,7 @@ func (self Instance) ModulateColor() Color.RGBA {
 }
 
 func (self Instance) SetModulateColor(value Color.RGBA) {
-	class(self).SetModulate(gd.Color(value))
+	class(self).SetModulate(Color.RGBA(value))
 }
 
 func (self Instance) DrawCenter() bool {
@@ -221,7 +224,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D { //gd:StyleBoxTexture.get_t
 Sets the margin to [param size] pixels for the specified [enum Side].
 */
 //go:nosplit
-func (self class) SetTextureMargin(margin Side, size gd.Float) { //gd:StyleBoxTexture.set_texture_margin
+func (self class) SetTextureMargin(margin Side, size float64) { //gd:StyleBoxTexture.set_texture_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, size)
@@ -234,7 +237,7 @@ func (self class) SetTextureMargin(margin Side, size gd.Float) { //gd:StyleBoxTe
 Sets the margin to [param size] pixels for all sides.
 */
 //go:nosplit
-func (self class) SetTextureMarginAll(size gd.Float) { //gd:StyleBoxTexture.set_texture_margin_all
+func (self class) SetTextureMarginAll(size float64) { //gd:StyleBoxTexture.set_texture_margin_all
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -246,10 +249,10 @@ func (self class) SetTextureMarginAll(size gd.Float) { //gd:StyleBoxTexture.set_
 Returns the margin size of the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetTextureMargin(margin Side) gd.Float { //gd:StyleBoxTexture.get_texture_margin
+func (self class) GetTextureMargin(margin Side) float64 { //gd:StyleBoxTexture.get_texture_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxTexture.Bind_get_texture_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -260,7 +263,7 @@ func (self class) GetTextureMargin(margin Side) gd.Float { //gd:StyleBoxTexture.
 Sets the expand margin to [param size] pixels for the specified [enum Side].
 */
 //go:nosplit
-func (self class) SetExpandMargin(margin Side, size gd.Float) { //gd:StyleBoxTexture.set_expand_margin
+func (self class) SetExpandMargin(margin Side, size float64) { //gd:StyleBoxTexture.set_expand_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, size)
@@ -273,7 +276,7 @@ func (self class) SetExpandMargin(margin Side, size gd.Float) { //gd:StyleBoxTex
 Sets the expand margin to [param size] pixels for all sides.
 */
 //go:nosplit
-func (self class) SetExpandMarginAll(size gd.Float) { //gd:StyleBoxTexture.set_expand_margin_all
+func (self class) SetExpandMarginAll(size float64) { //gd:StyleBoxTexture.set_expand_margin_all
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -285,10 +288,10 @@ func (self class) SetExpandMarginAll(size gd.Float) { //gd:StyleBoxTexture.set_e
 Returns the expand margin size of the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetExpandMargin(margin Side) gd.Float { //gd:StyleBoxTexture.get_expand_margin
+func (self class) GetExpandMargin(margin Side) float64 { //gd:StyleBoxTexture.get_expand_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxTexture.Bind_get_expand_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -296,7 +299,7 @@ func (self class) GetExpandMargin(margin Side) gd.Float { //gd:StyleBoxTexture.g
 }
 
 //go:nosplit
-func (self class) SetRegionRect(region gd.Rect2) { //gd:StyleBoxTexture.set_region_rect
+func (self class) SetRegionRect(region Rect2.PositionSize) { //gd:StyleBoxTexture.set_region_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, region)
 	var r_ret = callframe.Nil
@@ -305,9 +308,9 @@ func (self class) SetRegionRect(region gd.Rect2) { //gd:StyleBoxTexture.set_regi
 }
 
 //go:nosplit
-func (self class) GetRegionRect() gd.Rect2 { //gd:StyleBoxTexture.get_region_rect
+func (self class) GetRegionRect() Rect2.PositionSize { //gd:StyleBoxTexture.get_region_rect
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxTexture.Bind_get_region_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -334,7 +337,7 @@ func (self class) IsDrawCenterEnabled() bool { //gd:StyleBoxTexture.is_draw_cent
 }
 
 //go:nosplit
-func (self class) SetModulate(color gd.Color) { //gd:StyleBoxTexture.set_modulate
+func (self class) SetModulate(color Color.RGBA) { //gd:StyleBoxTexture.set_modulate
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -343,9 +346,9 @@ func (self class) SetModulate(color gd.Color) { //gd:StyleBoxTexture.set_modulat
 }
 
 //go:nosplit
-func (self class) GetModulate() gd.Color { //gd:StyleBoxTexture.get_modulate
+func (self class) GetModulate() Color.RGBA { //gd:StyleBoxTexture.get_modulate
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxTexture.Bind_get_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

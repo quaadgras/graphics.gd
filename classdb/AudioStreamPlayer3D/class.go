@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,14 +61,14 @@ type Any interface {
 Queues the audio to play on the next physics frame, from the given position [param from_position], in seconds.
 */
 func (self Instance) Play() { //gd:AudioStreamPlayer3D.play
-	class(self).Play(gd.Float(0.0))
+	class(self).Play(float64(0.0))
 }
 
 /*
 Sets the position from which audio will be played, in seconds.
 */
 func (self Instance) SeekTo(to_position Float.X) { //gd:AudioStreamPlayer3D.seek
-	class(self).SeekTo(gd.Float(to_position))
+	class(self).SeekTo(float64(to_position))
 }
 
 /*
@@ -135,7 +138,7 @@ func (self Instance) VolumeDb() Float.X {
 }
 
 func (self Instance) SetVolumeDb(value Float.X) {
-	class(self).SetVolumeDb(gd.Float(value))
+	class(self).SetVolumeDb(float64(value))
 }
 
 func (self Instance) UnitSize() Float.X {
@@ -143,7 +146,7 @@ func (self Instance) UnitSize() Float.X {
 }
 
 func (self Instance) SetUnitSize(value Float.X) {
-	class(self).SetUnitSize(gd.Float(value))
+	class(self).SetUnitSize(float64(value))
 }
 
 func (self Instance) MaxDb() Float.X {
@@ -151,7 +154,7 @@ func (self Instance) MaxDb() Float.X {
 }
 
 func (self Instance) SetMaxDb(value Float.X) {
-	class(self).SetMaxDb(gd.Float(value))
+	class(self).SetMaxDb(float64(value))
 }
 
 func (self Instance) PitchScale() Float.X {
@@ -159,7 +162,7 @@ func (self Instance) PitchScale() Float.X {
 }
 
 func (self Instance) SetPitchScale(value Float.X) {
-	class(self).SetPitchScale(gd.Float(value))
+	class(self).SetPitchScale(float64(value))
 }
 
 func (self Instance) Playing() bool {
@@ -187,7 +190,7 @@ func (self Instance) MaxDistance() Float.X {
 }
 
 func (self Instance) SetMaxDistance(value Float.X) {
-	class(self).SetMaxDistance(gd.Float(value))
+	class(self).SetMaxDistance(float64(value))
 }
 
 func (self Instance) MaxPolyphony() int {
@@ -195,7 +198,7 @@ func (self Instance) MaxPolyphony() int {
 }
 
 func (self Instance) SetMaxPolyphony(value int) {
-	class(self).SetMaxPolyphony(gd.Int(value))
+	class(self).SetMaxPolyphony(int64(value))
 }
 
 func (self Instance) PanningStrength() Float.X {
@@ -203,7 +206,7 @@ func (self Instance) PanningStrength() Float.X {
 }
 
 func (self Instance) SetPanningStrength(value Float.X) {
-	class(self).SetPanningStrength(gd.Float(value))
+	class(self).SetPanningStrength(float64(value))
 }
 
 func (self Instance) Bus() string {
@@ -219,7 +222,7 @@ func (self Instance) AreaMask() int {
 }
 
 func (self Instance) SetAreaMask(value int) {
-	class(self).SetAreaMask(gd.Int(value))
+	class(self).SetAreaMask(int64(value))
 }
 
 func (self Instance) PlaybackType() gdclass.AudioServerPlaybackType {
@@ -243,7 +246,7 @@ func (self Instance) EmissionAngleDegrees() Float.X {
 }
 
 func (self Instance) SetEmissionAngleDegrees(value Float.X) {
-	class(self).SetEmissionAngle(gd.Float(value))
+	class(self).SetEmissionAngle(float64(value))
 }
 
 func (self Instance) EmissionAngleFilterAttenuationDb() Float.X {
@@ -251,7 +254,7 @@ func (self Instance) EmissionAngleFilterAttenuationDb() Float.X {
 }
 
 func (self Instance) SetEmissionAngleFilterAttenuationDb(value Float.X) {
-	class(self).SetEmissionAngleFilterAttenuationDb(gd.Float(value))
+	class(self).SetEmissionAngleFilterAttenuationDb(float64(value))
 }
 
 func (self Instance) AttenuationFilterCutoffHz() Float.X {
@@ -259,7 +262,7 @@ func (self Instance) AttenuationFilterCutoffHz() Float.X {
 }
 
 func (self Instance) SetAttenuationFilterCutoffHz(value Float.X) {
-	class(self).SetAttenuationFilterCutoffHz(gd.Float(value))
+	class(self).SetAttenuationFilterCutoffHz(float64(value))
 }
 
 func (self Instance) AttenuationFilterDb() Float.X {
@@ -267,7 +270,7 @@ func (self Instance) AttenuationFilterDb() Float.X {
 }
 
 func (self Instance) SetAttenuationFilterDb(value Float.X) {
-	class(self).SetAttenuationFilterDb(gd.Float(value))
+	class(self).SetAttenuationFilterDb(float64(value))
 }
 
 func (self Instance) DopplerTracking() gdclass.AudioStreamPlayer3DDopplerTracking {
@@ -298,7 +301,7 @@ func (self class) GetStream() [1]gdclass.AudioStream { //gd:AudioStreamPlayer3D.
 }
 
 //go:nosplit
-func (self class) SetVolumeDb(volume_db gd.Float) { //gd:AudioStreamPlayer3D.set_volume_db
+func (self class) SetVolumeDb(volume_db float64) { //gd:AudioStreamPlayer3D.set_volume_db
 	var frame = callframe.New()
 	callframe.Arg(frame, volume_db)
 	var r_ret = callframe.Nil
@@ -307,9 +310,9 @@ func (self class) SetVolumeDb(volume_db gd.Float) { //gd:AudioStreamPlayer3D.set
 }
 
 //go:nosplit
-func (self class) GetVolumeDb() gd.Float { //gd:AudioStreamPlayer3D.get_volume_db
+func (self class) GetVolumeDb() float64 { //gd:AudioStreamPlayer3D.get_volume_db
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_volume_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -317,7 +320,7 @@ func (self class) GetVolumeDb() gd.Float { //gd:AudioStreamPlayer3D.get_volume_d
 }
 
 //go:nosplit
-func (self class) SetUnitSize(unit_size gd.Float) { //gd:AudioStreamPlayer3D.set_unit_size
+func (self class) SetUnitSize(unit_size float64) { //gd:AudioStreamPlayer3D.set_unit_size
 	var frame = callframe.New()
 	callframe.Arg(frame, unit_size)
 	var r_ret = callframe.Nil
@@ -326,9 +329,9 @@ func (self class) SetUnitSize(unit_size gd.Float) { //gd:AudioStreamPlayer3D.set
 }
 
 //go:nosplit
-func (self class) GetUnitSize() gd.Float { //gd:AudioStreamPlayer3D.get_unit_size
+func (self class) GetUnitSize() float64 { //gd:AudioStreamPlayer3D.get_unit_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_unit_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -336,7 +339,7 @@ func (self class) GetUnitSize() gd.Float { //gd:AudioStreamPlayer3D.get_unit_siz
 }
 
 //go:nosplit
-func (self class) SetMaxDb(max_db gd.Float) { //gd:AudioStreamPlayer3D.set_max_db
+func (self class) SetMaxDb(max_db float64) { //gd:AudioStreamPlayer3D.set_max_db
 	var frame = callframe.New()
 	callframe.Arg(frame, max_db)
 	var r_ret = callframe.Nil
@@ -345,9 +348,9 @@ func (self class) SetMaxDb(max_db gd.Float) { //gd:AudioStreamPlayer3D.set_max_d
 }
 
 //go:nosplit
-func (self class) GetMaxDb() gd.Float { //gd:AudioStreamPlayer3D.get_max_db
+func (self class) GetMaxDb() float64 { //gd:AudioStreamPlayer3D.get_max_db
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_max_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -355,7 +358,7 @@ func (self class) GetMaxDb() gd.Float { //gd:AudioStreamPlayer3D.get_max_db
 }
 
 //go:nosplit
-func (self class) SetPitchScale(pitch_scale gd.Float) { //gd:AudioStreamPlayer3D.set_pitch_scale
+func (self class) SetPitchScale(pitch_scale float64) { //gd:AudioStreamPlayer3D.set_pitch_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, pitch_scale)
 	var r_ret = callframe.Nil
@@ -364,9 +367,9 @@ func (self class) SetPitchScale(pitch_scale gd.Float) { //gd:AudioStreamPlayer3D
 }
 
 //go:nosplit
-func (self class) GetPitchScale() gd.Float { //gd:AudioStreamPlayer3D.get_pitch_scale
+func (self class) GetPitchScale() float64 { //gd:AudioStreamPlayer3D.get_pitch_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_pitch_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -377,7 +380,7 @@ func (self class) GetPitchScale() gd.Float { //gd:AudioStreamPlayer3D.get_pitch_
 Queues the audio to play on the next physics frame, from the given position [param from_position], in seconds.
 */
 //go:nosplit
-func (self class) Play(from_position gd.Float) { //gd:AudioStreamPlayer3D.play
+func (self class) Play(from_position float64) { //gd:AudioStreamPlayer3D.play
 	var frame = callframe.New()
 	callframe.Arg(frame, from_position)
 	var r_ret = callframe.Nil
@@ -389,7 +392,7 @@ func (self class) Play(from_position gd.Float) { //gd:AudioStreamPlayer3D.play
 Sets the position from which audio will be played, in seconds.
 */
 //go:nosplit
-func (self class) SeekTo(to_position gd.Float) { //gd:AudioStreamPlayer3D.seek
+func (self class) SeekTo(to_position float64) { //gd:AudioStreamPlayer3D.seek
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	var r_ret = callframe.Nil
@@ -422,9 +425,9 @@ func (self class) IsPlaying() bool { //gd:AudioStreamPlayer3D.is_playing
 Returns the position in the [AudioStream].
 */
 //go:nosplit
-func (self class) GetPlaybackPosition() gd.Float { //gd:AudioStreamPlayer3D.get_playback_position
+func (self class) GetPlaybackPosition() float64 { //gd:AudioStreamPlayer3D.get_playback_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_playback_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -470,7 +473,7 @@ func (self class) IsAutoplayEnabled() bool { //gd:AudioStreamPlayer3D.is_autopla
 }
 
 //go:nosplit
-func (self class) SetMaxDistance(meters gd.Float) { //gd:AudioStreamPlayer3D.set_max_distance
+func (self class) SetMaxDistance(meters float64) { //gd:AudioStreamPlayer3D.set_max_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, meters)
 	var r_ret = callframe.Nil
@@ -479,9 +482,9 @@ func (self class) SetMaxDistance(meters gd.Float) { //gd:AudioStreamPlayer3D.set
 }
 
 //go:nosplit
-func (self class) GetMaxDistance() gd.Float { //gd:AudioStreamPlayer3D.get_max_distance
+func (self class) GetMaxDistance() float64 { //gd:AudioStreamPlayer3D.get_max_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -489,7 +492,7 @@ func (self class) GetMaxDistance() gd.Float { //gd:AudioStreamPlayer3D.get_max_d
 }
 
 //go:nosplit
-func (self class) SetAreaMask(mask gd.Int) { //gd:AudioStreamPlayer3D.set_area_mask
+func (self class) SetAreaMask(mask int64) { //gd:AudioStreamPlayer3D.set_area_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -498,9 +501,9 @@ func (self class) SetAreaMask(mask gd.Int) { //gd:AudioStreamPlayer3D.set_area_m
 }
 
 //go:nosplit
-func (self class) GetAreaMask() gd.Int { //gd:AudioStreamPlayer3D.get_area_mask
+func (self class) GetAreaMask() int64 { //gd:AudioStreamPlayer3D.get_area_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_area_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -508,7 +511,7 @@ func (self class) GetAreaMask() gd.Int { //gd:AudioStreamPlayer3D.get_area_mask
 }
 
 //go:nosplit
-func (self class) SetEmissionAngle(degrees gd.Float) { //gd:AudioStreamPlayer3D.set_emission_angle
+func (self class) SetEmissionAngle(degrees float64) { //gd:AudioStreamPlayer3D.set_emission_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, degrees)
 	var r_ret = callframe.Nil
@@ -517,9 +520,9 @@ func (self class) SetEmissionAngle(degrees gd.Float) { //gd:AudioStreamPlayer3D.
 }
 
 //go:nosplit
-func (self class) GetEmissionAngle() gd.Float { //gd:AudioStreamPlayer3D.get_emission_angle
+func (self class) GetEmissionAngle() float64 { //gd:AudioStreamPlayer3D.get_emission_angle
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_emission_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -546,7 +549,7 @@ func (self class) IsEmissionAngleEnabled() bool { //gd:AudioStreamPlayer3D.is_em
 }
 
 //go:nosplit
-func (self class) SetEmissionAngleFilterAttenuationDb(db gd.Float) { //gd:AudioStreamPlayer3D.set_emission_angle_filter_attenuation_db
+func (self class) SetEmissionAngleFilterAttenuationDb(db float64) { //gd:AudioStreamPlayer3D.set_emission_angle_filter_attenuation_db
 	var frame = callframe.New()
 	callframe.Arg(frame, db)
 	var r_ret = callframe.Nil
@@ -555,9 +558,9 @@ func (self class) SetEmissionAngleFilterAttenuationDb(db gd.Float) { //gd:AudioS
 }
 
 //go:nosplit
-func (self class) GetEmissionAngleFilterAttenuationDb() gd.Float { //gd:AudioStreamPlayer3D.get_emission_angle_filter_attenuation_db
+func (self class) GetEmissionAngleFilterAttenuationDb() float64 { //gd:AudioStreamPlayer3D.get_emission_angle_filter_attenuation_db
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_emission_angle_filter_attenuation_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -565,7 +568,7 @@ func (self class) GetEmissionAngleFilterAttenuationDb() gd.Float { //gd:AudioStr
 }
 
 //go:nosplit
-func (self class) SetAttenuationFilterCutoffHz(degrees gd.Float) { //gd:AudioStreamPlayer3D.set_attenuation_filter_cutoff_hz
+func (self class) SetAttenuationFilterCutoffHz(degrees float64) { //gd:AudioStreamPlayer3D.set_attenuation_filter_cutoff_hz
 	var frame = callframe.New()
 	callframe.Arg(frame, degrees)
 	var r_ret = callframe.Nil
@@ -574,9 +577,9 @@ func (self class) SetAttenuationFilterCutoffHz(degrees gd.Float) { //gd:AudioStr
 }
 
 //go:nosplit
-func (self class) GetAttenuationFilterCutoffHz() gd.Float { //gd:AudioStreamPlayer3D.get_attenuation_filter_cutoff_hz
+func (self class) GetAttenuationFilterCutoffHz() float64 { //gd:AudioStreamPlayer3D.get_attenuation_filter_cutoff_hz
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_attenuation_filter_cutoff_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -584,7 +587,7 @@ func (self class) GetAttenuationFilterCutoffHz() gd.Float { //gd:AudioStreamPlay
 }
 
 //go:nosplit
-func (self class) SetAttenuationFilterDb(db gd.Float) { //gd:AudioStreamPlayer3D.set_attenuation_filter_db
+func (self class) SetAttenuationFilterDb(db float64) { //gd:AudioStreamPlayer3D.set_attenuation_filter_db
 	var frame = callframe.New()
 	callframe.Arg(frame, db)
 	var r_ret = callframe.Nil
@@ -593,9 +596,9 @@ func (self class) SetAttenuationFilterDb(db gd.Float) { //gd:AudioStreamPlayer3D
 }
 
 //go:nosplit
-func (self class) GetAttenuationFilterDb() gd.Float { //gd:AudioStreamPlayer3D.get_attenuation_filter_db
+func (self class) GetAttenuationFilterDb() float64 { //gd:AudioStreamPlayer3D.get_attenuation_filter_db
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_attenuation_filter_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -660,7 +663,7 @@ func (self class) GetStreamPaused() bool { //gd:AudioStreamPlayer3D.get_stream_p
 }
 
 //go:nosplit
-func (self class) SetMaxPolyphony(max_polyphony gd.Int) { //gd:AudioStreamPlayer3D.set_max_polyphony
+func (self class) SetMaxPolyphony(max_polyphony int64) { //gd:AudioStreamPlayer3D.set_max_polyphony
 	var frame = callframe.New()
 	callframe.Arg(frame, max_polyphony)
 	var r_ret = callframe.Nil
@@ -669,9 +672,9 @@ func (self class) SetMaxPolyphony(max_polyphony gd.Int) { //gd:AudioStreamPlayer
 }
 
 //go:nosplit
-func (self class) GetMaxPolyphony() gd.Int { //gd:AudioStreamPlayer3D.get_max_polyphony
+func (self class) GetMaxPolyphony() int64 { //gd:AudioStreamPlayer3D.get_max_polyphony
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_max_polyphony, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -679,7 +682,7 @@ func (self class) GetMaxPolyphony() gd.Int { //gd:AudioStreamPlayer3D.get_max_po
 }
 
 //go:nosplit
-func (self class) SetPanningStrength(panning_strength gd.Float) { //gd:AudioStreamPlayer3D.set_panning_strength
+func (self class) SetPanningStrength(panning_strength float64) { //gd:AudioStreamPlayer3D.set_panning_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, panning_strength)
 	var r_ret = callframe.Nil
@@ -688,9 +691,9 @@ func (self class) SetPanningStrength(panning_strength gd.Float) { //gd:AudioStre
 }
 
 //go:nosplit
-func (self class) GetPanningStrength() gd.Float { //gd:AudioStreamPlayer3D.get_panning_strength
+func (self class) GetPanningStrength() float64 { //gd:AudioStreamPlayer3D.get_panning_strength
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_panning_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

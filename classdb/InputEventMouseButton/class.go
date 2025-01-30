@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/InputEvent"
+import "graphics.gd/classdb/InputEventFromWindow"
+import "graphics.gd/classdb/InputEventMouse"
+import "graphics.gd/classdb/InputEventWithModifiers"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/InputEventMouse"
-import "graphics.gd/classdb/InputEventWithModifiers"
-import "graphics.gd/classdb/InputEventFromWindow"
-import "graphics.gd/classdb/InputEvent"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -79,7 +82,7 @@ func (self Instance) Factor() Float.X {
 }
 
 func (self Instance) SetFactor(value Float.X) {
-	class(self).SetFactor(gd.Float(value))
+	class(self).SetFactor(float64(value))
 }
 
 func (self Instance) ButtonIndex() MouseButton {
@@ -107,7 +110,7 @@ func (self Instance) SetDoubleClick(value bool) {
 }
 
 //go:nosplit
-func (self class) SetFactor(factor gd.Float) { //gd:InputEventMouseButton.set_factor
+func (self class) SetFactor(factor float64) { //gd:InputEventMouseButton.set_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, factor)
 	var r_ret = callframe.Nil
@@ -116,9 +119,9 @@ func (self class) SetFactor(factor gd.Float) { //gd:InputEventMouseButton.set_fa
 }
 
 //go:nosplit
-func (self class) GetFactor() gd.Float { //gd:InputEventMouseButton.get_factor
+func (self class) GetFactor() float64 { //gd:InputEventMouseButton.get_factor
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouseButton.Bind_get_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

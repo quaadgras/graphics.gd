@@ -9,22 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Color"
-import "graphics.gd/variant/Plane"
-import "graphics.gd/variant/Vector2"
-import "graphics.gd/variant/AABB"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Plane"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -99,14 +102,14 @@ Sets the color format for this custom [param channel_index]. Use [constant CUSTO
 Must be invoked after [method begin] and should be set before [method commit] or [method commit_to_arrays].
 */
 func (self Instance) SetCustomFormat(channel_index int, format gdclass.SurfaceToolCustomFormat) { //gd:SurfaceTool.set_custom_format
-	class(self).SetCustomFormat(gd.Int(channel_index), format)
+	class(self).SetCustomFormat(int64(channel_index), format)
 }
 
 /*
 Returns the format for custom [param channel_index] (currently up to 4). Returns [constant CUSTOM_MAX] if this custom channel is unused.
 */
 func (self Instance) GetCustomFormat(channel_index int) gdclass.SurfaceToolCustomFormat { //gd:SurfaceTool.get_custom_format
-	return gdclass.SurfaceToolCustomFormat(class(self).GetCustomFormat(gd.Int(channel_index)))
+	return gdclass.SurfaceToolCustomFormat(class(self).GetCustomFormat(int64(channel_index)))
 }
 
 /*
@@ -120,7 +123,7 @@ func (self Instance) Begin(primitive gdclass.MeshPrimitiveType) { //gd:SurfaceTo
 Specifies the position of current vertex. Should be called after specifying other vertex properties (e.g. Color, UV).
 */
 func (self Instance) AddVertex(vertex Vector3.XYZ) { //gd:SurfaceTool.add_vertex
-	class(self).AddVertex(gd.Vector3(vertex))
+	class(self).AddVertex(Vector3.XYZ(vertex))
 }
 
 /*
@@ -128,35 +131,35 @@ Specifies a [Color] to use for the [i]next[/i] vertex. If every vertex needs to 
 [b]Note:[/b] The material must have [member BaseMaterial3D.vertex_color_use_as_albedo] enabled for the vertex color to be visible.
 */
 func (self Instance) SetColor(color Color.RGBA) { //gd:SurfaceTool.set_color
-	class(self).SetColor(gd.Color(color))
+	class(self).SetColor(Color.RGBA(color))
 }
 
 /*
 Specifies a normal to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 func (self Instance) SetNormal(normal Vector3.XYZ) { //gd:SurfaceTool.set_normal
-	class(self).SetNormal(gd.Vector3(normal))
+	class(self).SetNormal(Vector3.XYZ(normal))
 }
 
 /*
 Specifies a tangent to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 func (self Instance) SetTangent(tangent Plane.NormalD) { //gd:SurfaceTool.set_tangent
-	class(self).SetTangent(gd.Plane(tangent))
+	class(self).SetTangent(Plane.NormalD(tangent))
 }
 
 /*
 Specifies a set of UV coordinates to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 func (self Instance) SetUv(uv Vector2.XY) { //gd:SurfaceTool.set_uv
-	class(self).SetUv(gd.Vector2(uv))
+	class(self).SetUv(Vector2.XY(uv))
 }
 
 /*
 Specifies an optional second set of UV coordinates to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 func (self Instance) SetUv2(uv2 Vector2.XY) { //gd:SurfaceTool.set_uv2
-	class(self).SetUv2(gd.Vector2(uv2))
+	class(self).SetUv2(Vector2.XY(uv2))
 }
 
 /*
@@ -178,7 +181,7 @@ Sets the custom value on this vertex for [param channel_index].
 [method set_custom_format] must be called first for this [param channel_index]. Formats which are not RGBA will ignore other color channels.
 */
 func (self Instance) SetCustom(channel_index int, custom_color Color.RGBA) { //gd:SurfaceTool.set_custom
-	class(self).SetCustom(gd.Int(channel_index), gd.Color(custom_color))
+	class(self).SetCustom(int64(channel_index), Color.RGBA(custom_color))
 }
 
 /*
@@ -186,7 +189,7 @@ Specifies the smooth group to use for the [i]next[/i] vertex. If this is never c
 [b]Note:[/b] This function actually takes a [code]uint32_t[/code], so C# users should use [code]uint32.MaxValue[/code] instead of [code]-1[/code] to produce a mesh with flat normals.
 */
 func (self Instance) SetSmoothGroup(index int) { //gd:SurfaceTool.set_smooth_group
-	class(self).SetSmoothGroup(gd.Int(index))
+	class(self).SetSmoothGroup(int64(index))
 }
 
 /*
@@ -194,14 +197,14 @@ Inserts a triangle fan made of array data into [Mesh] being constructed.
 Requires the primitive type be set to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 func (self Instance) AddTriangleFan(vertices []Vector3.XYZ) { //gd:SurfaceTool.add_triangle_fan
-	class(self).AddTriangleFan(Packed.New(vertices...), Packed.New[Vector2.XY](), Packed.New([1][]Color.RGBA{}[0]...), Packed.New[Vector2.XY](), Packed.New([1][]Vector3.XYZ{}[0]...), gd.ArrayFromSlice[Array.Contains[gd.Plane]]([1][]Plane.NormalD{}[0]))
+	class(self).AddTriangleFan(Packed.New(vertices...), Packed.New[Vector2.XY](), Packed.New([1][]Color.RGBA{}[0]...), Packed.New[Vector2.XY](), Packed.New([1][]Vector3.XYZ{}[0]...), gd.ArrayFromSlice[Array.Contains[Plane.NormalD]]([1][]Plane.NormalD{}[0]))
 }
 
 /*
 Adds a vertex to index array if you are using indexed vertices. Does not need to be called before adding vertices.
 */
 func (self Instance) AddIndex(index int) { //gd:SurfaceTool.add_index
-	class(self).AddIndex(gd.Int(index))
+	class(self).AddIndex(int64(index))
 }
 
 /*
@@ -252,7 +255,7 @@ func (self Instance) GetAabb() AABB.PositionSize { //gd:SurfaceTool.get_aabb
 Generates an LOD for a given [param nd_threshold] in linear units (square root of quadric error metric), using at most [param target_index_count] indices.
 */
 func (self Instance) GenerateLod(nd_threshold Float.X) []int32 { //gd:SurfaceTool.generate_lod
-	return []int32(slices.Collect(class(self).GenerateLod(gd.Float(nd_threshold), gd.Int(3)).Values()))
+	return []int32(slices.Collect(class(self).GenerateLod(float64(nd_threshold), int64(3)).Values()))
 }
 
 /*
@@ -280,7 +283,7 @@ func (self Instance) Clear() { //gd:SurfaceTool.clear
 Creates a vertex array from an existing [Mesh].
 */
 func (self Instance) CreateFrom(existing [1]gdclass.Mesh, surface int) { //gd:SurfaceTool.create_from
-	class(self).CreateFrom(existing, gd.Int(surface))
+	class(self).CreateFrom(existing, int64(surface))
 }
 
 /*
@@ -294,14 +297,14 @@ func (self Instance) CreateFromArrays(arrays []any) { //gd:SurfaceTool.create_fr
 Creates a vertex array from the specified blend shape of an existing [Mesh]. This can be used to extract a specific pose from a blend shape.
 */
 func (self Instance) CreateFromBlendShape(existing [1]gdclass.Mesh, surface int, blend_shape string) { //gd:SurfaceTool.create_from_blend_shape
-	class(self).CreateFromBlendShape(existing, gd.Int(surface), String.New(blend_shape))
+	class(self).CreateFromBlendShape(existing, int64(surface), String.New(blend_shape))
 }
 
 /*
 Append vertices from a given [Mesh] surface onto the current vertex array with specified [Transform3D].
 */
 func (self Instance) AppendFrom(existing [1]gdclass.Mesh, surface int, transform Transform3D.BasisOrigin) { //gd:SurfaceTool.append_from
-	class(self).AppendFrom(existing, gd.Int(surface), gd.Transform3D(transform))
+	class(self).AppendFrom(existing, int64(surface), Transform3D.BasisOrigin(transform))
 }
 
 /*
@@ -309,7 +312,7 @@ Returns a constructed [ArrayMesh] from current information passed in. If an exis
 [b]FIXME:[/b] Document possible values for [param flags], it changed in 4.0. Likely some combinations of [enum Mesh.ArrayFormat].
 */
 func (self Instance) Commit() [1]gdclass.ArrayMesh { //gd:SurfaceTool.commit
-	return [1]gdclass.ArrayMesh(class(self).Commit([1][1]gdclass.ArrayMesh{}[0], gd.Int(0)))
+	return [1]gdclass.ArrayMesh(class(self).Commit([1][1]gdclass.ArrayMesh{}[0], int64(0)))
 }
 
 /*
@@ -372,7 +375,7 @@ Sets the color format for this custom [param channel_index]. Use [constant CUSTO
 Must be invoked after [method begin] and should be set before [method commit] or [method commit_to_arrays].
 */
 //go:nosplit
-func (self class) SetCustomFormat(channel_index gd.Int, format gdclass.SurfaceToolCustomFormat) { //gd:SurfaceTool.set_custom_format
+func (self class) SetCustomFormat(channel_index int64, format gdclass.SurfaceToolCustomFormat) { //gd:SurfaceTool.set_custom_format
 	var frame = callframe.New()
 	callframe.Arg(frame, channel_index)
 	callframe.Arg(frame, format)
@@ -385,7 +388,7 @@ func (self class) SetCustomFormat(channel_index gd.Int, format gdclass.SurfaceTo
 Returns the format for custom [param channel_index] (currently up to 4). Returns [constant CUSTOM_MAX] if this custom channel is unused.
 */
 //go:nosplit
-func (self class) GetCustomFormat(channel_index gd.Int) gdclass.SurfaceToolCustomFormat { //gd:SurfaceTool.get_custom_format
+func (self class) GetCustomFormat(channel_index int64) gdclass.SurfaceToolCustomFormat { //gd:SurfaceTool.get_custom_format
 	var frame = callframe.New()
 	callframe.Arg(frame, channel_index)
 	var r_ret = callframe.Ret[gdclass.SurfaceToolCustomFormat](frame)
@@ -411,7 +414,7 @@ func (self class) Begin(primitive gdclass.MeshPrimitiveType) { //gd:SurfaceTool.
 Specifies the position of current vertex. Should be called after specifying other vertex properties (e.g. Color, UV).
 */
 //go:nosplit
-func (self class) AddVertex(vertex gd.Vector3) { //gd:SurfaceTool.add_vertex
+func (self class) AddVertex(vertex Vector3.XYZ) { //gd:SurfaceTool.add_vertex
 	var frame = callframe.New()
 	callframe.Arg(frame, vertex)
 	var r_ret = callframe.Nil
@@ -424,7 +427,7 @@ Specifies a [Color] to use for the [i]next[/i] vertex. If every vertex needs to 
 [b]Note:[/b] The material must have [member BaseMaterial3D.vertex_color_use_as_albedo] enabled for the vertex color to be visible.
 */
 //go:nosplit
-func (self class) SetColor(color gd.Color) { //gd:SurfaceTool.set_color
+func (self class) SetColor(color Color.RGBA) { //gd:SurfaceTool.set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -436,7 +439,7 @@ func (self class) SetColor(color gd.Color) { //gd:SurfaceTool.set_color
 Specifies a normal to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 //go:nosplit
-func (self class) SetNormal(normal gd.Vector3) { //gd:SurfaceTool.set_normal
+func (self class) SetNormal(normal Vector3.XYZ) { //gd:SurfaceTool.set_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, normal)
 	var r_ret = callframe.Nil
@@ -448,7 +451,7 @@ func (self class) SetNormal(normal gd.Vector3) { //gd:SurfaceTool.set_normal
 Specifies a tangent to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 //go:nosplit
-func (self class) SetTangent(tangent gd.Plane) { //gd:SurfaceTool.set_tangent
+func (self class) SetTangent(tangent Plane.NormalD) { //gd:SurfaceTool.set_tangent
 	var frame = callframe.New()
 	callframe.Arg(frame, tangent)
 	var r_ret = callframe.Nil
@@ -460,7 +463,7 @@ func (self class) SetTangent(tangent gd.Plane) { //gd:SurfaceTool.set_tangent
 Specifies a set of UV coordinates to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 //go:nosplit
-func (self class) SetUv(uv gd.Vector2) { //gd:SurfaceTool.set_uv
+func (self class) SetUv(uv Vector2.XY) { //gd:SurfaceTool.set_uv
 	var frame = callframe.New()
 	callframe.Arg(frame, uv)
 	var r_ret = callframe.Nil
@@ -472,7 +475,7 @@ func (self class) SetUv(uv gd.Vector2) { //gd:SurfaceTool.set_uv
 Specifies an optional second set of UV coordinates to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 //go:nosplit
-func (self class) SetUv2(uv2 gd.Vector2) { //gd:SurfaceTool.set_uv2
+func (self class) SetUv2(uv2 Vector2.XY) { //gd:SurfaceTool.set_uv2
 	var frame = callframe.New()
 	callframe.Arg(frame, uv2)
 	var r_ret = callframe.Nil
@@ -509,7 +512,7 @@ Sets the custom value on this vertex for [param channel_index].
 [method set_custom_format] must be called first for this [param channel_index]. Formats which are not RGBA will ignore other color channels.
 */
 //go:nosplit
-func (self class) SetCustom(channel_index gd.Int, custom_color gd.Color) { //gd:SurfaceTool.set_custom
+func (self class) SetCustom(channel_index int64, custom_color Color.RGBA) { //gd:SurfaceTool.set_custom
 	var frame = callframe.New()
 	callframe.Arg(frame, channel_index)
 	callframe.Arg(frame, custom_color)
@@ -523,7 +526,7 @@ Specifies the smooth group to use for the [i]next[/i] vertex. If this is never c
 [b]Note:[/b] This function actually takes a [code]uint32_t[/code], so C# users should use [code]uint32.MaxValue[/code] instead of [code]-1[/code] to produce a mesh with flat normals.
 */
 //go:nosplit
-func (self class) SetSmoothGroup(index gd.Int) { //gd:SurfaceTool.set_smooth_group
+func (self class) SetSmoothGroup(index int64) { //gd:SurfaceTool.set_smooth_group
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -536,7 +539,7 @@ Inserts a triangle fan made of array data into [Mesh] being constructed.
 Requires the primitive type be set to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
-func (self class) AddTriangleFan(vertices Packed.Array[Vector3.XYZ], uvs Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uv2s Packed.Array[Vector2.XY], normals Packed.Array[Vector3.XYZ], tangents Array.Contains[gd.Plane]) { //gd:SurfaceTool.add_triangle_fan
+func (self class) AddTriangleFan(vertices Packed.Array[Vector3.XYZ], uvs Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uv2s Packed.Array[Vector2.XY], normals Packed.Array[Vector3.XYZ], tangents Array.Contains[Plane.NormalD]) { //gd:SurfaceTool.add_triangle_fan
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)))
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)))
@@ -553,7 +556,7 @@ func (self class) AddTriangleFan(vertices Packed.Array[Vector3.XYZ], uvs Packed.
 Adds a vertex to index array if you are using indexed vertices. Does not need to be called before adding vertices.
 */
 //go:nosplit
-func (self class) AddIndex(index gd.Int) { //gd:SurfaceTool.add_index
+func (self class) AddIndex(index int64) { //gd:SurfaceTool.add_index
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -623,9 +626,9 @@ func (self class) OptimizeIndicesForCache() { //gd:SurfaceTool.optimize_indices_
 Returns the axis-aligned bounding box of the vertex positions.
 */
 //go:nosplit
-func (self class) GetAabb() gd.AABB { //gd:SurfaceTool.get_aabb
+func (self class) GetAabb() AABB.PositionSize { //gd:SurfaceTool.get_aabb
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.AABB](frame)
+	var r_ret = callframe.Ret[AABB.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -636,7 +639,7 @@ func (self class) GetAabb() gd.AABB { //gd:SurfaceTool.get_aabb
 Generates an LOD for a given [param nd_threshold] in linear units (square root of quadric error metric), using at most [param target_index_count] indices.
 */
 //go:nosplit
-func (self class) GenerateLod(nd_threshold gd.Float, target_index_count gd.Int) Packed.Array[int32] { //gd:SurfaceTool.generate_lod
+func (self class) GenerateLod(nd_threshold float64, target_index_count int64) Packed.Array[int32] { //gd:SurfaceTool.generate_lod
 	var frame = callframe.New()
 	callframe.Arg(frame, nd_threshold)
 	callframe.Arg(frame, target_index_count)
@@ -687,7 +690,7 @@ func (self class) Clear() { //gd:SurfaceTool.clear
 Creates a vertex array from an existing [Mesh].
 */
 //go:nosplit
-func (self class) CreateFrom(existing [1]gdclass.Mesh, surface gd.Int) { //gd:SurfaceTool.create_from
+func (self class) CreateFrom(existing [1]gdclass.Mesh, surface int64) { //gd:SurfaceTool.create_from
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, surface)
@@ -713,7 +716,7 @@ func (self class) CreateFromArrays(arrays Array.Any, primitive_type gdclass.Mesh
 Creates a vertex array from the specified blend shape of an existing [Mesh]. This can be used to extract a specific pose from a blend shape.
 */
 //go:nosplit
-func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface gd.Int, blend_shape String.Readable) { //gd:SurfaceTool.create_from_blend_shape
+func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface int64, blend_shape String.Readable) { //gd:SurfaceTool.create_from_blend_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, surface)
@@ -727,7 +730,7 @@ func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface gd.Int,
 Append vertices from a given [Mesh] surface onto the current vertex array with specified [Transform3D].
 */
 //go:nosplit
-func (self class) AppendFrom(existing [1]gdclass.Mesh, surface gd.Int, transform gd.Transform3D) { //gd:SurfaceTool.append_from
+func (self class) AppendFrom(existing [1]gdclass.Mesh, surface int64, transform Transform3D.BasisOrigin) { //gd:SurfaceTool.append_from
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, surface)
@@ -742,7 +745,7 @@ Returns a constructed [ArrayMesh] from current information passed in. If an exis
 [b]FIXME:[/b] Document possible values for [param flags], it changed in 4.0. Likely some combinations of [enum Mesh.ArrayFormat].
 */
 //go:nosplit
-func (self class) Commit(existing [1]gdclass.ArrayMesh, flags gd.Int) [1]gdclass.ArrayMesh { //gd:SurfaceTool.commit
+func (self class) Commit(existing [1]gdclass.ArrayMesh, flags int64) [1]gdclass.ArrayMesh { //gd:SurfaceTool.commit
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, flags)

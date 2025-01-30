@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -94,7 +97,7 @@ func (self Instance) FitMargin() Float.X {
 }
 
 func (self Instance) SetFitMargin(value Float.X) {
-	class(self).SetFitMargin(gd.Float(value))
+	class(self).SetFitMargin(float64(value))
 }
 
 func (self Instance) ClearMargin() Float.X {
@@ -102,7 +105,7 @@ func (self Instance) ClearMargin() Float.X {
 }
 
 func (self Instance) SetClearMargin(value Float.X) {
-	class(self).SetClearMargin(gd.Float(value))
+	class(self).SetClearMargin(float64(value))
 }
 
 func (self Instance) UseMipmaps() bool {
@@ -114,7 +117,7 @@ func (self Instance) SetUseMipmaps(value bool) {
 }
 
 //go:nosplit
-func (self class) SetFitMargin(fit_margin gd.Float) { //gd:CanvasGroup.set_fit_margin
+func (self class) SetFitMargin(fit_margin float64) { //gd:CanvasGroup.set_fit_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, fit_margin)
 	var r_ret = callframe.Nil
@@ -123,9 +126,9 @@ func (self class) SetFitMargin(fit_margin gd.Float) { //gd:CanvasGroup.set_fit_m
 }
 
 //go:nosplit
-func (self class) GetFitMargin() gd.Float { //gd:CanvasGroup.get_fit_margin
+func (self class) GetFitMargin() float64 { //gd:CanvasGroup.get_fit_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_get_fit_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -133,7 +136,7 @@ func (self class) GetFitMargin() gd.Float { //gd:CanvasGroup.get_fit_margin
 }
 
 //go:nosplit
-func (self class) SetClearMargin(clear_margin gd.Float) { //gd:CanvasGroup.set_clear_margin
+func (self class) SetClearMargin(clear_margin float64) { //gd:CanvasGroup.set_clear_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, clear_margin)
 	var r_ret = callframe.Nil
@@ -142,9 +145,9 @@ func (self class) SetClearMargin(clear_margin gd.Float) { //gd:CanvasGroup.set_c
 }
 
 //go:nosplit
-func (self class) GetClearMargin() gd.Float { //gd:CanvasGroup.get_clear_margin
+func (self class) GetClearMargin() float64 { //gd:CanvasGroup.get_clear_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_get_clear_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

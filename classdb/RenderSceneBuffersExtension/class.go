@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/RenderSceneBuffers"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/RenderSceneBuffers"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -92,7 +95,7 @@ Implement this in GDExtension to record a new FSR sharpness value.
 */
 func (Instance) _set_fsr_sharpness(impl func(ptr unsafe.Pointer, fsr_sharpness Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var fsr_sharpness = gd.UnsafeGet[gd.Float](p_args, 0)
+		var fsr_sharpness = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(fsr_sharpness))
@@ -104,7 +107,7 @@ Implement this in GDExtension to change the texture mipmap bias.
 */
 func (Instance) _set_texture_mipmap_bias(impl func(ptr unsafe.Pointer, texture_mipmap_bias Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var texture_mipmap_bias = gd.UnsafeGet[gd.Float](p_args, 0)
+		var texture_mipmap_bias = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(texture_mipmap_bias))
@@ -158,9 +161,9 @@ func (class) _configure(impl func(ptr unsafe.Pointer, config [1]gdclass.RenderSc
 /*
 Implement this in GDExtension to record a new FSR sharpness value.
 */
-func (class) _set_fsr_sharpness(impl func(ptr unsafe.Pointer, fsr_sharpness gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_fsr_sharpness(impl func(ptr unsafe.Pointer, fsr_sharpness float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var fsr_sharpness = gd.UnsafeGet[gd.Float](p_args, 0)
+		var fsr_sharpness = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, fsr_sharpness)
@@ -170,9 +173,9 @@ func (class) _set_fsr_sharpness(impl func(ptr unsafe.Pointer, fsr_sharpness gd.F
 /*
 Implement this in GDExtension to change the texture mipmap bias.
 */
-func (class) _set_texture_mipmap_bias(impl func(ptr unsafe.Pointer, texture_mipmap_bias gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_texture_mipmap_bias(impl func(ptr unsafe.Pointer, texture_mipmap_bias float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var texture_mipmap_bias = gd.UnsafeGet[gd.Float](p_args, 0)
+		var texture_mipmap_bias = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, texture_mipmap_bias)

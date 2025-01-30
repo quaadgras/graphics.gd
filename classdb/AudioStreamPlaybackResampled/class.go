@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioStreamPlayback"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioStreamPlayback"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 type Instance [1]gdclass.AudioStreamPlaybackResampled
@@ -62,18 +65,18 @@ func (Instance) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFr
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 
-		var frame_count = gd.UnsafeGet[gd.Int](p_args, 1)
+		var frame_count = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, dst_buffer, int(frame_count))
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 func (Instance) _get_stream_sampling_rate(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Float(ret))
+		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 func (self Instance) BeginResample() { //gd:AudioStreamPlaybackResampled.begin_resample
@@ -99,11 +102,11 @@ func New() Instance {
 	return casted
 }
 
-func (class) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFrame, frame_count gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFrame, frame_count int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 
-		var frame_count = gd.UnsafeGet[gd.Int](p_args, 1)
+		var frame_count = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, dst_buffer, frame_count)
@@ -111,7 +114,7 @@ func (class) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFrame
 	}
 }
 
-func (class) _get_stream_sampling_rate(impl func(ptr unsafe.Pointer) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_stream_sampling_rate(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

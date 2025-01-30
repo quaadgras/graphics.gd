@@ -9,19 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/GPUParticlesAttractor3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/GPUParticlesAttractor3D"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -38,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -78,11 +82,11 @@ func (self Instance) Size() Vector3.XYZ {
 }
 
 func (self Instance) SetSize(value Vector3.XYZ) {
-	class(self).SetSize(gd.Vector3(value))
+	class(self).SetSize(Vector3.XYZ(value))
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector3) { //gd:GPUParticlesAttractorBox3D.set_size
+func (self class) SetSize(size Vector3.XYZ) { //gd:GPUParticlesAttractorBox3D.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -91,9 +95,9 @@ func (self class) SetSize(size gd.Vector3) { //gd:GPUParticlesAttractorBox3D.set
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector3 { //gd:GPUParticlesAttractorBox3D.get_size
+func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesAttractorBox3D.get_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractorBox3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

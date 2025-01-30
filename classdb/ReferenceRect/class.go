@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -76,7 +79,7 @@ func (self Instance) BorderColor() Color.RGBA {
 }
 
 func (self Instance) SetBorderColor(value Color.RGBA) {
-	class(self).SetBorderColor(gd.Color(value))
+	class(self).SetBorderColor(Color.RGBA(value))
 }
 
 func (self Instance) BorderWidth() Float.X {
@@ -84,7 +87,7 @@ func (self Instance) BorderWidth() Float.X {
 }
 
 func (self Instance) SetBorderWidth(value Float.X) {
-	class(self).SetBorderWidth(gd.Float(value))
+	class(self).SetBorderWidth(float64(value))
 }
 
 func (self Instance) EditorOnly() bool {
@@ -96,9 +99,9 @@ func (self Instance) SetEditorOnly(value bool) {
 }
 
 //go:nosplit
-func (self class) GetBorderColor() gd.Color { //gd:ReferenceRect.get_border_color
+func (self class) GetBorderColor() Color.RGBA { //gd:ReferenceRect.get_border_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReferenceRect.Bind_get_border_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -106,7 +109,7 @@ func (self class) GetBorderColor() gd.Color { //gd:ReferenceRect.get_border_colo
 }
 
 //go:nosplit
-func (self class) SetBorderColor(color gd.Color) { //gd:ReferenceRect.set_border_color
+func (self class) SetBorderColor(color Color.RGBA) { //gd:ReferenceRect.set_border_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -115,9 +118,9 @@ func (self class) SetBorderColor(color gd.Color) { //gd:ReferenceRect.set_border
 }
 
 //go:nosplit
-func (self class) GetBorderWidth() gd.Float { //gd:ReferenceRect.get_border_width
+func (self class) GetBorderWidth() float64 { //gd:ReferenceRect.get_border_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReferenceRect.Bind_get_border_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -125,7 +128,7 @@ func (self class) GetBorderWidth() gd.Float { //gd:ReferenceRect.get_border_widt
 }
 
 //go:nosplit
-func (self class) SetBorderWidth(width gd.Float) { //gd:ReferenceRect.set_border_width
+func (self class) SetBorderWidth(width float64) { //gd:ReferenceRect.set_border_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil

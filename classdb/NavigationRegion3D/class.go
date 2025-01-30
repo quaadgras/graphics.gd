@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -68,7 +71,7 @@ func (self Instance) GetRid() RID.NavigationRegion3D { //gd:NavigationRegion3D.g
 Sets the [RID] of the navigation map this region should use. By default the region will automatically join the [World3D] default navigation map so this function is only required to override the default map.
 */
 func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd:NavigationRegion3D.set_navigation_map
-	class(self).SetNavigationMap(gd.RID(navigation_map))
+	class(self).SetNavigationMap(RID.Any(navigation_map))
 }
 
 /*
@@ -82,14 +85,14 @@ func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:NavigationReg
 Based on [param value], enables or disables the specified layer in the [member navigation_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetNavigationLayerValue(layer_number int, value bool) { //gd:NavigationRegion3D.set_navigation_layer_value
-	class(self).SetNavigationLayerValue(gd.Int(layer_number), value)
+	class(self).SetNavigationLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member navigation_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:NavigationRegion3D.get_navigation_layer_value
-	return bool(class(self).GetNavigationLayerValue(gd.Int(layer_number)))
+	return bool(class(self).GetNavigationLayerValue(int64(layer_number)))
 }
 
 /*
@@ -160,7 +163,7 @@ func (self Instance) NavigationLayers() int {
 }
 
 func (self Instance) SetNavigationLayers(value int) {
-	class(self).SetNavigationLayers(gd.Int(value))
+	class(self).SetNavigationLayers(int64(value))
 }
 
 func (self Instance) EnterCost() Float.X {
@@ -168,7 +171,7 @@ func (self Instance) EnterCost() Float.X {
 }
 
 func (self Instance) SetEnterCost(value Float.X) {
-	class(self).SetEnterCost(gd.Float(value))
+	class(self).SetEnterCost(float64(value))
 }
 
 func (self Instance) TravelCost() Float.X {
@@ -176,16 +179,16 @@ func (self Instance) TravelCost() Float.X {
 }
 
 func (self Instance) SetTravelCost(value Float.X) {
-	class(self).SetTravelCost(gd.Float(value))
+	class(self).SetTravelCost(float64(value))
 }
 
 /*
 Returns the [RID] of this region on the [NavigationServer3D]. Combined with [method NavigationServer3D.map_get_closest_point_owner] can be used to identify the [NavigationRegion3D] closest to a point on the merged navigation map.
 */
 //go:nosplit
-func (self class) GetRid() gd.RID { //gd:NavigationRegion3D.get_rid
+func (self class) GetRid() RID.Any { //gd:NavigationRegion3D.get_rid
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -234,7 +237,7 @@ func (self class) IsEnabled() bool { //gd:NavigationRegion3D.is_enabled
 Sets the [RID] of the navigation map this region should use. By default the region will automatically join the [World3D] default navigation map so this function is only required to override the default map.
 */
 //go:nosplit
-func (self class) SetNavigationMap(navigation_map gd.RID) { //gd:NavigationRegion3D.set_navigation_map
+func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:NavigationRegion3D.set_navigation_map
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_map)
 	var r_ret = callframe.Nil
@@ -246,9 +249,9 @@ func (self class) SetNavigationMap(navigation_map gd.RID) { //gd:NavigationRegio
 Returns the current navigation map [RID] used by this region.
 */
 //go:nosplit
-func (self class) GetNavigationMap() gd.RID { //gd:NavigationRegion3D.get_navigation_map
+func (self class) GetNavigationMap() RID.Any { //gd:NavigationRegion3D.get_navigation_map
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -275,7 +278,7 @@ func (self class) GetUseEdgeConnections() bool { //gd:NavigationRegion3D.get_use
 }
 
 //go:nosplit
-func (self class) SetNavigationLayers(navigation_layers gd.Int) { //gd:NavigationRegion3D.set_navigation_layers
+func (self class) SetNavigationLayers(navigation_layers int64) { //gd:NavigationRegion3D.set_navigation_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_layers)
 	var r_ret = callframe.Nil
@@ -284,9 +287,9 @@ func (self class) SetNavigationLayers(navigation_layers gd.Int) { //gd:Navigatio
 }
 
 //go:nosplit
-func (self class) GetNavigationLayers() gd.Int { //gd:NavigationRegion3D.get_navigation_layers
+func (self class) GetNavigationLayers() int64 { //gd:NavigationRegion3D.get_navigation_layers
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -297,7 +300,7 @@ func (self class) GetNavigationLayers() gd.Int { //gd:NavigationRegion3D.get_nav
 Based on [param value], enables or disables the specified layer in the [member navigation_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetNavigationLayerValue(layer_number gd.Int, value bool) { //gd:NavigationRegion3D.set_navigation_layer_value
+func (self class) SetNavigationLayerValue(layer_number int64, value bool) { //gd:NavigationRegion3D.set_navigation_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -310,7 +313,7 @@ func (self class) SetNavigationLayerValue(layer_number gd.Int, value bool) { //g
 Returns whether or not the specified layer of the [member navigation_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetNavigationLayerValue(layer_number gd.Int) bool { //gd:NavigationRegion3D.get_navigation_layer_value
+func (self class) GetNavigationLayerValue(layer_number int64) bool { //gd:NavigationRegion3D.get_navigation_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -324,9 +327,9 @@ func (self class) GetNavigationLayerValue(layer_number gd.Int) bool { //gd:Navig
 Returns the [RID] of this region on the [NavigationServer3D].
 */
 //go:nosplit
-func (self class) GetRegionRid() gd.RID { //gd:NavigationRegion3D.get_region_rid
+func (self class) GetRegionRid() RID.Any { //gd:NavigationRegion3D.get_region_rid
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_region_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -334,7 +337,7 @@ func (self class) GetRegionRid() gd.RID { //gd:NavigationRegion3D.get_region_rid
 }
 
 //go:nosplit
-func (self class) SetEnterCost(enter_cost gd.Float) { //gd:NavigationRegion3D.set_enter_cost
+func (self class) SetEnterCost(enter_cost float64) { //gd:NavigationRegion3D.set_enter_cost
 	var frame = callframe.New()
 	callframe.Arg(frame, enter_cost)
 	var r_ret = callframe.Nil
@@ -343,9 +346,9 @@ func (self class) SetEnterCost(enter_cost gd.Float) { //gd:NavigationRegion3D.se
 }
 
 //go:nosplit
-func (self class) GetEnterCost() gd.Float { //gd:NavigationRegion3D.get_enter_cost
+func (self class) GetEnterCost() float64 { //gd:NavigationRegion3D.get_enter_cost
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_enter_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -353,7 +356,7 @@ func (self class) GetEnterCost() gd.Float { //gd:NavigationRegion3D.get_enter_co
 }
 
 //go:nosplit
-func (self class) SetTravelCost(travel_cost gd.Float) { //gd:NavigationRegion3D.set_travel_cost
+func (self class) SetTravelCost(travel_cost float64) { //gd:NavigationRegion3D.set_travel_cost
 	var frame = callframe.New()
 	callframe.Arg(frame, travel_cost)
 	var r_ret = callframe.Nil
@@ -362,9 +365,9 @@ func (self class) SetTravelCost(travel_cost gd.Float) { //gd:NavigationRegion3D.
 }
 
 //go:nosplit
-func (self class) GetTravelCost() gd.Float { //gd:NavigationRegion3D.get_travel_cost
+func (self class) GetTravelCost() float64 { //gd:NavigationRegion3D.get_travel_cost
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_travel_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,16 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -73,7 +76,7 @@ func (self Instance) MaxConcavity() Float.X {
 }
 
 func (self Instance) SetMaxConcavity(value Float.X) {
-	class(self).SetMaxConcavity(gd.Float(value))
+	class(self).SetMaxConcavity(float64(value))
 }
 
 func (self Instance) SymmetryPlanesClippingBias() Float.X {
@@ -81,7 +84,7 @@ func (self Instance) SymmetryPlanesClippingBias() Float.X {
 }
 
 func (self Instance) SetSymmetryPlanesClippingBias(value Float.X) {
-	class(self).SetSymmetryPlanesClippingBias(gd.Float(value))
+	class(self).SetSymmetryPlanesClippingBias(float64(value))
 }
 
 func (self Instance) RevolutionAxesClippingBias() Float.X {
@@ -89,7 +92,7 @@ func (self Instance) RevolutionAxesClippingBias() Float.X {
 }
 
 func (self Instance) SetRevolutionAxesClippingBias(value Float.X) {
-	class(self).SetRevolutionAxesClippingBias(gd.Float(value))
+	class(self).SetRevolutionAxesClippingBias(float64(value))
 }
 
 func (self Instance) MinVolumePerConvexHull() Float.X {
@@ -97,7 +100,7 @@ func (self Instance) MinVolumePerConvexHull() Float.X {
 }
 
 func (self Instance) SetMinVolumePerConvexHull(value Float.X) {
-	class(self).SetMinVolumePerConvexHull(gd.Float(value))
+	class(self).SetMinVolumePerConvexHull(float64(value))
 }
 
 func (self Instance) Resolution() int {
@@ -105,7 +108,7 @@ func (self Instance) Resolution() int {
 }
 
 func (self Instance) SetResolution(value int) {
-	class(self).SetResolution(gd.Int(value))
+	class(self).SetResolution(int64(value))
 }
 
 func (self Instance) MaxNumVerticesPerConvexHull() int {
@@ -113,7 +116,7 @@ func (self Instance) MaxNumVerticesPerConvexHull() int {
 }
 
 func (self Instance) SetMaxNumVerticesPerConvexHull(value int) {
-	class(self).SetMaxNumVerticesPerConvexHull(gd.Int(value))
+	class(self).SetMaxNumVerticesPerConvexHull(int64(value))
 }
 
 func (self Instance) PlaneDownsampling() int {
@@ -121,7 +124,7 @@ func (self Instance) PlaneDownsampling() int {
 }
 
 func (self Instance) SetPlaneDownsampling(value int) {
-	class(self).SetPlaneDownsampling(gd.Int(value))
+	class(self).SetPlaneDownsampling(int64(value))
 }
 
 func (self Instance) ConvexHullDownsampling() int {
@@ -129,7 +132,7 @@ func (self Instance) ConvexHullDownsampling() int {
 }
 
 func (self Instance) SetConvexHullDownsampling(value int) {
-	class(self).SetConvexHullDownsampling(gd.Int(value))
+	class(self).SetConvexHullDownsampling(int64(value))
 }
 
 func (self Instance) NormalizeMesh() bool {
@@ -161,7 +164,7 @@ func (self Instance) MaxConvexHulls() int {
 }
 
 func (self Instance) SetMaxConvexHulls(value int) {
-	class(self).SetMaxConvexHulls(gd.Int(value))
+	class(self).SetMaxConvexHulls(int64(value))
 }
 
 func (self Instance) ProjectHullVertices() bool {
@@ -173,7 +176,7 @@ func (self Instance) SetProjectHullVertices(value bool) {
 }
 
 //go:nosplit
-func (self class) SetMaxConcavity(max_concavity gd.Float) { //gd:MeshConvexDecompositionSettings.set_max_concavity
+func (self class) SetMaxConcavity(max_concavity float64) { //gd:MeshConvexDecompositionSettings.set_max_concavity
 	var frame = callframe.New()
 	callframe.Arg(frame, max_concavity)
 	var r_ret = callframe.Nil
@@ -182,9 +185,9 @@ func (self class) SetMaxConcavity(max_concavity gd.Float) { //gd:MeshConvexDecom
 }
 
 //go:nosplit
-func (self class) GetMaxConcavity() gd.Float { //gd:MeshConvexDecompositionSettings.get_max_concavity
+func (self class) GetMaxConcavity() float64 { //gd:MeshConvexDecompositionSettings.get_max_concavity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_max_concavity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -192,7 +195,7 @@ func (self class) GetMaxConcavity() gd.Float { //gd:MeshConvexDecompositionSetti
 }
 
 //go:nosplit
-func (self class) SetSymmetryPlanesClippingBias(symmetry_planes_clipping_bias gd.Float) { //gd:MeshConvexDecompositionSettings.set_symmetry_planes_clipping_bias
+func (self class) SetSymmetryPlanesClippingBias(symmetry_planes_clipping_bias float64) { //gd:MeshConvexDecompositionSettings.set_symmetry_planes_clipping_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, symmetry_planes_clipping_bias)
 	var r_ret = callframe.Nil
@@ -201,9 +204,9 @@ func (self class) SetSymmetryPlanesClippingBias(symmetry_planes_clipping_bias gd
 }
 
 //go:nosplit
-func (self class) GetSymmetryPlanesClippingBias() gd.Float { //gd:MeshConvexDecompositionSettings.get_symmetry_planes_clipping_bias
+func (self class) GetSymmetryPlanesClippingBias() float64 { //gd:MeshConvexDecompositionSettings.get_symmetry_planes_clipping_bias
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_symmetry_planes_clipping_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -211,7 +214,7 @@ func (self class) GetSymmetryPlanesClippingBias() gd.Float { //gd:MeshConvexDeco
 }
 
 //go:nosplit
-func (self class) SetRevolutionAxesClippingBias(revolution_axes_clipping_bias gd.Float) { //gd:MeshConvexDecompositionSettings.set_revolution_axes_clipping_bias
+func (self class) SetRevolutionAxesClippingBias(revolution_axes_clipping_bias float64) { //gd:MeshConvexDecompositionSettings.set_revolution_axes_clipping_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, revolution_axes_clipping_bias)
 	var r_ret = callframe.Nil
@@ -220,9 +223,9 @@ func (self class) SetRevolutionAxesClippingBias(revolution_axes_clipping_bias gd
 }
 
 //go:nosplit
-func (self class) GetRevolutionAxesClippingBias() gd.Float { //gd:MeshConvexDecompositionSettings.get_revolution_axes_clipping_bias
+func (self class) GetRevolutionAxesClippingBias() float64 { //gd:MeshConvexDecompositionSettings.get_revolution_axes_clipping_bias
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_revolution_axes_clipping_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -230,7 +233,7 @@ func (self class) GetRevolutionAxesClippingBias() gd.Float { //gd:MeshConvexDeco
 }
 
 //go:nosplit
-func (self class) SetMinVolumePerConvexHull(min_volume_per_convex_hull gd.Float) { //gd:MeshConvexDecompositionSettings.set_min_volume_per_convex_hull
+func (self class) SetMinVolumePerConvexHull(min_volume_per_convex_hull float64) { //gd:MeshConvexDecompositionSettings.set_min_volume_per_convex_hull
 	var frame = callframe.New()
 	callframe.Arg(frame, min_volume_per_convex_hull)
 	var r_ret = callframe.Nil
@@ -239,9 +242,9 @@ func (self class) SetMinVolumePerConvexHull(min_volume_per_convex_hull gd.Float)
 }
 
 //go:nosplit
-func (self class) GetMinVolumePerConvexHull() gd.Float { //gd:MeshConvexDecompositionSettings.get_min_volume_per_convex_hull
+func (self class) GetMinVolumePerConvexHull() float64 { //gd:MeshConvexDecompositionSettings.get_min_volume_per_convex_hull
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_min_volume_per_convex_hull, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -249,7 +252,7 @@ func (self class) GetMinVolumePerConvexHull() gd.Float { //gd:MeshConvexDecompos
 }
 
 //go:nosplit
-func (self class) SetResolution(min_volume_per_convex_hull gd.Int) { //gd:MeshConvexDecompositionSettings.set_resolution
+func (self class) SetResolution(min_volume_per_convex_hull int64) { //gd:MeshConvexDecompositionSettings.set_resolution
 	var frame = callframe.New()
 	callframe.Arg(frame, min_volume_per_convex_hull)
 	var r_ret = callframe.Nil
@@ -258,9 +261,9 @@ func (self class) SetResolution(min_volume_per_convex_hull gd.Int) { //gd:MeshCo
 }
 
 //go:nosplit
-func (self class) GetResolution() gd.Int { //gd:MeshConvexDecompositionSettings.get_resolution
+func (self class) GetResolution() int64 { //gd:MeshConvexDecompositionSettings.get_resolution
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_resolution, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -268,7 +271,7 @@ func (self class) GetResolution() gd.Int { //gd:MeshConvexDecompositionSettings.
 }
 
 //go:nosplit
-func (self class) SetMaxNumVerticesPerConvexHull(max_num_vertices_per_convex_hull gd.Int) { //gd:MeshConvexDecompositionSettings.set_max_num_vertices_per_convex_hull
+func (self class) SetMaxNumVerticesPerConvexHull(max_num_vertices_per_convex_hull int64) { //gd:MeshConvexDecompositionSettings.set_max_num_vertices_per_convex_hull
 	var frame = callframe.New()
 	callframe.Arg(frame, max_num_vertices_per_convex_hull)
 	var r_ret = callframe.Nil
@@ -277,9 +280,9 @@ func (self class) SetMaxNumVerticesPerConvexHull(max_num_vertices_per_convex_hul
 }
 
 //go:nosplit
-func (self class) GetMaxNumVerticesPerConvexHull() gd.Int { //gd:MeshConvexDecompositionSettings.get_max_num_vertices_per_convex_hull
+func (self class) GetMaxNumVerticesPerConvexHull() int64 { //gd:MeshConvexDecompositionSettings.get_max_num_vertices_per_convex_hull
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_max_num_vertices_per_convex_hull, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -287,7 +290,7 @@ func (self class) GetMaxNumVerticesPerConvexHull() gd.Int { //gd:MeshConvexDecom
 }
 
 //go:nosplit
-func (self class) SetPlaneDownsampling(plane_downsampling gd.Int) { //gd:MeshConvexDecompositionSettings.set_plane_downsampling
+func (self class) SetPlaneDownsampling(plane_downsampling int64) { //gd:MeshConvexDecompositionSettings.set_plane_downsampling
 	var frame = callframe.New()
 	callframe.Arg(frame, plane_downsampling)
 	var r_ret = callframe.Nil
@@ -296,9 +299,9 @@ func (self class) SetPlaneDownsampling(plane_downsampling gd.Int) { //gd:MeshCon
 }
 
 //go:nosplit
-func (self class) GetPlaneDownsampling() gd.Int { //gd:MeshConvexDecompositionSettings.get_plane_downsampling
+func (self class) GetPlaneDownsampling() int64 { //gd:MeshConvexDecompositionSettings.get_plane_downsampling
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_plane_downsampling, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -306,7 +309,7 @@ func (self class) GetPlaneDownsampling() gd.Int { //gd:MeshConvexDecompositionSe
 }
 
 //go:nosplit
-func (self class) SetConvexHullDownsampling(convex_hull_downsampling gd.Int) { //gd:MeshConvexDecompositionSettings.set_convex_hull_downsampling
+func (self class) SetConvexHullDownsampling(convex_hull_downsampling int64) { //gd:MeshConvexDecompositionSettings.set_convex_hull_downsampling
 	var frame = callframe.New()
 	callframe.Arg(frame, convex_hull_downsampling)
 	var r_ret = callframe.Nil
@@ -315,9 +318,9 @@ func (self class) SetConvexHullDownsampling(convex_hull_downsampling gd.Int) { /
 }
 
 //go:nosplit
-func (self class) GetConvexHullDownsampling() gd.Int { //gd:MeshConvexDecompositionSettings.get_convex_hull_downsampling
+func (self class) GetConvexHullDownsampling() int64 { //gd:MeshConvexDecompositionSettings.get_convex_hull_downsampling
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_convex_hull_downsampling, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -382,7 +385,7 @@ func (self class) GetConvexHullApproximation() bool { //gd:MeshConvexDecompositi
 }
 
 //go:nosplit
-func (self class) SetMaxConvexHulls(max_convex_hulls gd.Int) { //gd:MeshConvexDecompositionSettings.set_max_convex_hulls
+func (self class) SetMaxConvexHulls(max_convex_hulls int64) { //gd:MeshConvexDecompositionSettings.set_max_convex_hulls
 	var frame = callframe.New()
 	callframe.Arg(frame, max_convex_hulls)
 	var r_ret = callframe.Nil
@@ -391,9 +394,9 @@ func (self class) SetMaxConvexHulls(max_convex_hulls gd.Int) { //gd:MeshConvexDe
 }
 
 //go:nosplit
-func (self class) GetMaxConvexHulls() gd.Int { //gd:MeshConvexDecompositionSettings.get_max_convex_hulls
+func (self class) GetMaxConvexHulls() int64 { //gd:MeshConvexDecompositionSettings.get_max_convex_hulls
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_max_convex_hulls, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

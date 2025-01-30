@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector3"
-import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -82,7 +85,7 @@ func (self Instance) Size() Vector3.XYZ {
 }
 
 func (self Instance) SetSize(value Vector3.XYZ) {
-	class(self).SetSize(gd.Vector3(value))
+	class(self).SetSize(Vector3.XYZ(value))
 }
 
 func (self Instance) TextureAlbedo() [1]gdclass.Texture2D {
@@ -122,7 +125,7 @@ func (self Instance) EmissionEnergy() Float.X {
 }
 
 func (self Instance) SetEmissionEnergy(value Float.X) {
-	class(self).SetEmissionEnergy(gd.Float(value))
+	class(self).SetEmissionEnergy(float64(value))
 }
 
 func (self Instance) Modulate() Color.RGBA {
@@ -130,7 +133,7 @@ func (self Instance) Modulate() Color.RGBA {
 }
 
 func (self Instance) SetModulate(value Color.RGBA) {
-	class(self).SetModulate(gd.Color(value))
+	class(self).SetModulate(Color.RGBA(value))
 }
 
 func (self Instance) AlbedoMix() Float.X {
@@ -138,7 +141,7 @@ func (self Instance) AlbedoMix() Float.X {
 }
 
 func (self Instance) SetAlbedoMix(value Float.X) {
-	class(self).SetAlbedoMix(gd.Float(value))
+	class(self).SetAlbedoMix(float64(value))
 }
 
 func (self Instance) NormalFade() Float.X {
@@ -146,7 +149,7 @@ func (self Instance) NormalFade() Float.X {
 }
 
 func (self Instance) SetNormalFade(value Float.X) {
-	class(self).SetNormalFade(gd.Float(value))
+	class(self).SetNormalFade(float64(value))
 }
 
 func (self Instance) UpperFade() Float.X {
@@ -154,7 +157,7 @@ func (self Instance) UpperFade() Float.X {
 }
 
 func (self Instance) SetUpperFade(value Float.X) {
-	class(self).SetUpperFade(gd.Float(value))
+	class(self).SetUpperFade(float64(value))
 }
 
 func (self Instance) LowerFade() Float.X {
@@ -162,7 +165,7 @@ func (self Instance) LowerFade() Float.X {
 }
 
 func (self Instance) SetLowerFade(value Float.X) {
-	class(self).SetLowerFade(gd.Float(value))
+	class(self).SetLowerFade(float64(value))
 }
 
 func (self Instance) DistanceFadeEnabled() bool {
@@ -178,7 +181,7 @@ func (self Instance) DistanceFadeBegin() Float.X {
 }
 
 func (self Instance) SetDistanceFadeBegin(value Float.X) {
-	class(self).SetDistanceFadeBegin(gd.Float(value))
+	class(self).SetDistanceFadeBegin(float64(value))
 }
 
 func (self Instance) DistanceFadeLength() Float.X {
@@ -186,7 +189,7 @@ func (self Instance) DistanceFadeLength() Float.X {
 }
 
 func (self Instance) SetDistanceFadeLength(value Float.X) {
-	class(self).SetDistanceFadeLength(gd.Float(value))
+	class(self).SetDistanceFadeLength(float64(value))
 }
 
 func (self Instance) CullMask() int {
@@ -194,11 +197,11 @@ func (self Instance) CullMask() int {
 }
 
 func (self Instance) SetCullMask(value int) {
-	class(self).SetCullMask(gd.Int(value))
+	class(self).SetCullMask(int64(value))
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector3) { //gd:Decal.set_size
+func (self class) SetSize(size Vector3.XYZ) { //gd:Decal.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -207,9 +210,9 @@ func (self class) SetSize(size gd.Vector3) { //gd:Decal.set_size
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector3 { //gd:Decal.get_size
+func (self class) GetSize() Vector3.XYZ { //gd:Decal.get_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Decal.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -272,7 +275,7 @@ func (self class) GetTexture(atype gdclass.DecalDecalTexture) [1]gdclass.Texture
 }
 
 //go:nosplit
-func (self class) SetEmissionEnergy(energy gd.Float) { //gd:Decal.set_emission_energy
+func (self class) SetEmissionEnergy(energy float64) { //gd:Decal.set_emission_energy
 	var frame = callframe.New()
 	callframe.Arg(frame, energy)
 	var r_ret = callframe.Nil
@@ -281,9 +284,9 @@ func (self class) SetEmissionEnergy(energy gd.Float) { //gd:Decal.set_emission_e
 }
 
 //go:nosplit
-func (self class) GetEmissionEnergy() gd.Float { //gd:Decal.get_emission_energy
+func (self class) GetEmissionEnergy() float64 { //gd:Decal.get_emission_energy
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Decal.Bind_get_emission_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -291,7 +294,7 @@ func (self class) GetEmissionEnergy() gd.Float { //gd:Decal.get_emission_energy
 }
 
 //go:nosplit
-func (self class) SetAlbedoMix(energy gd.Float) { //gd:Decal.set_albedo_mix
+func (self class) SetAlbedoMix(energy float64) { //gd:Decal.set_albedo_mix
 	var frame = callframe.New()
 	callframe.Arg(frame, energy)
 	var r_ret = callframe.Nil
@@ -300,9 +303,9 @@ func (self class) SetAlbedoMix(energy gd.Float) { //gd:Decal.set_albedo_mix
 }
 
 //go:nosplit
-func (self class) GetAlbedoMix() gd.Float { //gd:Decal.get_albedo_mix
+func (self class) GetAlbedoMix() float64 { //gd:Decal.get_albedo_mix
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Decal.Bind_get_albedo_mix, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -310,7 +313,7 @@ func (self class) GetAlbedoMix() gd.Float { //gd:Decal.get_albedo_mix
 }
 
 //go:nosplit
-func (self class) SetModulate(color gd.Color) { //gd:Decal.set_modulate
+func (self class) SetModulate(color Color.RGBA) { //gd:Decal.set_modulate
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -319,9 +322,9 @@ func (self class) SetModulate(color gd.Color) { //gd:Decal.set_modulate
 }
 
 //go:nosplit
-func (self class) GetModulate() gd.Color { //gd:Decal.get_modulate
+func (self class) GetModulate() Color.RGBA { //gd:Decal.get_modulate
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Decal.Bind_get_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -329,7 +332,7 @@ func (self class) GetModulate() gd.Color { //gd:Decal.get_modulate
 }
 
 //go:nosplit
-func (self class) SetUpperFade(fade gd.Float) { //gd:Decal.set_upper_fade
+func (self class) SetUpperFade(fade float64) { //gd:Decal.set_upper_fade
 	var frame = callframe.New()
 	callframe.Arg(frame, fade)
 	var r_ret = callframe.Nil
@@ -338,9 +341,9 @@ func (self class) SetUpperFade(fade gd.Float) { //gd:Decal.set_upper_fade
 }
 
 //go:nosplit
-func (self class) GetUpperFade() gd.Float { //gd:Decal.get_upper_fade
+func (self class) GetUpperFade() float64 { //gd:Decal.get_upper_fade
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Decal.Bind_get_upper_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -348,7 +351,7 @@ func (self class) GetUpperFade() gd.Float { //gd:Decal.get_upper_fade
 }
 
 //go:nosplit
-func (self class) SetLowerFade(fade gd.Float) { //gd:Decal.set_lower_fade
+func (self class) SetLowerFade(fade float64) { //gd:Decal.set_lower_fade
 	var frame = callframe.New()
 	callframe.Arg(frame, fade)
 	var r_ret = callframe.Nil
@@ -357,9 +360,9 @@ func (self class) SetLowerFade(fade gd.Float) { //gd:Decal.set_lower_fade
 }
 
 //go:nosplit
-func (self class) GetLowerFade() gd.Float { //gd:Decal.get_lower_fade
+func (self class) GetLowerFade() float64 { //gd:Decal.get_lower_fade
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Decal.Bind_get_lower_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -367,7 +370,7 @@ func (self class) GetLowerFade() gd.Float { //gd:Decal.get_lower_fade
 }
 
 //go:nosplit
-func (self class) SetNormalFade(fade gd.Float) { //gd:Decal.set_normal_fade
+func (self class) SetNormalFade(fade float64) { //gd:Decal.set_normal_fade
 	var frame = callframe.New()
 	callframe.Arg(frame, fade)
 	var r_ret = callframe.Nil
@@ -376,9 +379,9 @@ func (self class) SetNormalFade(fade gd.Float) { //gd:Decal.set_normal_fade
 }
 
 //go:nosplit
-func (self class) GetNormalFade() gd.Float { //gd:Decal.get_normal_fade
+func (self class) GetNormalFade() float64 { //gd:Decal.get_normal_fade
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Decal.Bind_get_normal_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -405,7 +408,7 @@ func (self class) IsDistanceFadeEnabled() bool { //gd:Decal.is_distance_fade_ena
 }
 
 //go:nosplit
-func (self class) SetDistanceFadeBegin(distance gd.Float) { //gd:Decal.set_distance_fade_begin
+func (self class) SetDistanceFadeBegin(distance float64) { //gd:Decal.set_distance_fade_begin
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -414,9 +417,9 @@ func (self class) SetDistanceFadeBegin(distance gd.Float) { //gd:Decal.set_dista
 }
 
 //go:nosplit
-func (self class) GetDistanceFadeBegin() gd.Float { //gd:Decal.get_distance_fade_begin
+func (self class) GetDistanceFadeBegin() float64 { //gd:Decal.get_distance_fade_begin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Decal.Bind_get_distance_fade_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -424,7 +427,7 @@ func (self class) GetDistanceFadeBegin() gd.Float { //gd:Decal.get_distance_fade
 }
 
 //go:nosplit
-func (self class) SetDistanceFadeLength(distance gd.Float) { //gd:Decal.set_distance_fade_length
+func (self class) SetDistanceFadeLength(distance float64) { //gd:Decal.set_distance_fade_length
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -433,9 +436,9 @@ func (self class) SetDistanceFadeLength(distance gd.Float) { //gd:Decal.set_dist
 }
 
 //go:nosplit
-func (self class) GetDistanceFadeLength() gd.Float { //gd:Decal.get_distance_fade_length
+func (self class) GetDistanceFadeLength() float64 { //gd:Decal.get_distance_fade_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Decal.Bind_get_distance_fade_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -443,7 +446,7 @@ func (self class) GetDistanceFadeLength() gd.Float { //gd:Decal.get_distance_fad
 }
 
 //go:nosplit
-func (self class) SetCullMask(mask gd.Int) { //gd:Decal.set_cull_mask
+func (self class) SetCullMask(mask int64) { //gd:Decal.set_cull_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -452,9 +455,9 @@ func (self class) SetCullMask(mask gd.Int) { //gd:Decal.set_cull_mask
 }
 
 //go:nosplit
-func (self class) GetCullMask() gd.Int { //gd:Decal.get_cull_mask
+func (self class) GetCullMask() int64 { //gd:Decal.get_cull_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Decal.Bind_get_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

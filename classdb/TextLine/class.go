@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -70,21 +74,21 @@ func (self Instance) SetBidiOverride(override []any) { //gd:TextLine.set_bidi_ov
 Adds text span and font to draw it.
 */
 func (self Instance) AddString(text string, font [1]gdclass.Font, font_size int) bool { //gd:TextLine.add_string
-	return bool(class(self).AddString(String.New(text), font, gd.Int(font_size), String.New(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
+	return bool(class(self).AddString(String.New(text), font, int64(font_size), String.New(""), variant.New([1]any{}[0])))
 }
 
 /*
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
 func (self Instance) AddObject(key any, size Vector2.XY) bool { //gd:TextLine.add_object
-	return bool(class(self).AddObject(gd.NewVariant(key), gd.Vector2(size), 5, gd.Int(1), gd.Float(0.0)))
+	return bool(class(self).AddObject(variant.New(key), Vector2.XY(size), 5, int64(1), float64(0.0)))
 }
 
 /*
 Sets new size and alignment of embedded object.
 */
 func (self Instance) ResizeObject(key any, size Vector2.XY) bool { //gd:TextLine.resize_object
-	return bool(class(self).ResizeObject(gd.NewVariant(key), gd.Vector2(size), 5, gd.Float(0.0)))
+	return bool(class(self).ResizeObject(variant.New(key), Vector2.XY(size), 5, float64(0.0)))
 }
 
 /*
@@ -105,7 +109,7 @@ func (self Instance) GetObjects() []any { //gd:TextLine.get_objects
 Returns bounding rectangle of the inline object.
 */
 func (self Instance) GetObjectRect(key any) Rect2.PositionSize { //gd:TextLine.get_object_rect
-	return Rect2.PositionSize(class(self).GetObjectRect(gd.NewVariant(key)))
+	return Rect2.PositionSize(class(self).GetObjectRect(variant.New(key)))
 }
 
 /*
@@ -161,21 +165,21 @@ func (self Instance) GetLineUnderlineThickness() Float.X { //gd:TextLine.get_lin
 Draw text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
 func (self Instance) Draw(canvas RID.Canvas, pos Vector2.XY) { //gd:TextLine.draw
-	class(self).Draw(gd.RID(canvas), gd.Vector2(pos), gd.Color(gd.Color{1, 1, 1, 1}))
+	class(self).Draw(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
 func (self Instance) DrawOutline(canvas RID.Canvas, pos Vector2.XY) { //gd:TextLine.draw_outline
-	class(self).DrawOutline(gd.RID(canvas), gd.Vector2(pos), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}))
+	class(self).DrawOutline(RID.Any(canvas), Vector2.XY(pos), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Returns caret character offset at the specified pixel offset at the baseline. This function always returns a valid position.
 */
 func (self Instance) HitTest(coords Float.X) int { //gd:TextLine.hit_test
-	return int(int(class(self).HitTest(gd.Float(coords))))
+	return int(int(class(self).HitTest(float64(coords))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -234,7 +238,7 @@ func (self Instance) Width() Float.X {
 }
 
 func (self Instance) SetWidth(value Float.X) {
-	class(self).SetWidth(gd.Float(value))
+	class(self).SetWidth(float64(value))
 }
 
 func (self Instance) Alignment() HorizontalAlignment {
@@ -373,13 +377,13 @@ func (self class) SetBidiOverride(override Array.Any) { //gd:TextLine.set_bidi_o
 Adds text span and font to draw it.
 */
 //go:nosplit
-func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_size gd.Int, language String.Readable, meta gd.Variant) bool { //gd:TextLine.add_string
+func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_size int64, language String.Readable, meta variant.Any) bool { //gd:TextLine.add_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, font_size)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
-	callframe.Arg(frame, pointers.Get(meta))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(meta)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_add_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -391,9 +395,9 @@ func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_siz
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
 //go:nosplit
-func (self class) AddObject(key gd.Variant, size gd.Vector2, inline_align InlineAlignment, length gd.Int, baseline gd.Float) bool { //gd:TextLine.add_object
+func (self class) AddObject(key variant.Any, size Vector2.XY, inline_align InlineAlignment, length int64, baseline float64) bool { //gd:TextLine.add_object
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(key)))
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, inline_align)
 	callframe.Arg(frame, length)
@@ -409,9 +413,9 @@ func (self class) AddObject(key gd.Variant, size gd.Vector2, inline_align Inline
 Sets new size and alignment of embedded object.
 */
 //go:nosplit
-func (self class) ResizeObject(key gd.Variant, size gd.Vector2, inline_align InlineAlignment, baseline gd.Float) bool { //gd:TextLine.resize_object
+func (self class) ResizeObject(key variant.Any, size Vector2.XY, inline_align InlineAlignment, baseline float64) bool { //gd:TextLine.resize_object
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(key)))
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, inline_align)
 	callframe.Arg(frame, baseline)
@@ -423,7 +427,7 @@ func (self class) ResizeObject(key gd.Variant, size gd.Vector2, inline_align Inl
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Float) { //gd:TextLine.set_width
+func (self class) SetWidth(width float64) { //gd:TextLine.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -432,9 +436,9 @@ func (self class) SetWidth(width gd.Float) { //gd:TextLine.set_width
 }
 
 //go:nosplit
-func (self class) GetWidth() gd.Float { //gd:TextLine.get_width
+func (self class) GetWidth() float64 { //gd:TextLine.get_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -546,10 +550,10 @@ func (self class) GetObjects() Array.Any { //gd:TextLine.get_objects
 Returns bounding rectangle of the inline object.
 */
 //go:nosplit
-func (self class) GetObjectRect(key gd.Variant) gd.Rect2 { //gd:TextLine.get_object_rect
+func (self class) GetObjectRect(key variant.Any) Rect2.PositionSize { //gd:TextLine.get_object_rect
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(key))
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(key)))
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_object_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -560,9 +564,9 @@ func (self class) GetObjectRect(key gd.Variant) gd.Rect2 { //gd:TextLine.get_obj
 Returns size of the bounding box of the text.
 */
 //go:nosplit
-func (self class) GetSize() gd.Vector2 { //gd:TextLine.get_size
+func (self class) GetSize() Vector2.XY { //gd:TextLine.get_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -573,9 +577,9 @@ func (self class) GetSize() gd.Vector2 { //gd:TextLine.get_size
 Returns TextServer buffer RID.
 */
 //go:nosplit
-func (self class) GetRid() gd.RID { //gd:TextLine.get_rid
+func (self class) GetRid() RID.Any { //gd:TextLine.get_rid
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -586,9 +590,9 @@ func (self class) GetRid() gd.RID { //gd:TextLine.get_rid
 Returns the text ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
 */
 //go:nosplit
-func (self class) GetLineAscent() gd.Float { //gd:TextLine.get_line_ascent
+func (self class) GetLineAscent() float64 { //gd:TextLine.get_line_ascent
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_ascent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -599,9 +603,9 @@ func (self class) GetLineAscent() gd.Float { //gd:TextLine.get_line_ascent
 Returns the text descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
 */
 //go:nosplit
-func (self class) GetLineDescent() gd.Float { //gd:TextLine.get_line_descent
+func (self class) GetLineDescent() float64 { //gd:TextLine.get_line_descent
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_descent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -612,9 +616,9 @@ func (self class) GetLineDescent() gd.Float { //gd:TextLine.get_line_descent
 Returns width (for horizontal layout) or height (for vertical) of the text.
 */
 //go:nosplit
-func (self class) GetLineWidth() gd.Float { //gd:TextLine.get_line_width
+func (self class) GetLineWidth() float64 { //gd:TextLine.get_line_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -625,9 +629,9 @@ func (self class) GetLineWidth() gd.Float { //gd:TextLine.get_line_width
 Returns pixel offset of the underline below the baseline.
 */
 //go:nosplit
-func (self class) GetLineUnderlinePosition() gd.Float { //gd:TextLine.get_line_underline_position
+func (self class) GetLineUnderlinePosition() float64 { //gd:TextLine.get_line_underline_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_underline_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -638,9 +642,9 @@ func (self class) GetLineUnderlinePosition() gd.Float { //gd:TextLine.get_line_u
 Returns thickness of the underline.
 */
 //go:nosplit
-func (self class) GetLineUnderlineThickness() gd.Float { //gd:TextLine.get_line_underline_thickness
+func (self class) GetLineUnderlineThickness() float64 { //gd:TextLine.get_line_underline_thickness
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_underline_thickness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -651,7 +655,7 @@ func (self class) GetLineUnderlineThickness() gd.Float { //gd:TextLine.get_line_
 Draw text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
 //go:nosplit
-func (self class) Draw(canvas gd.RID, pos gd.Vector2, color gd.Color) { //gd:TextLine.draw
+func (self class) Draw(canvas RID.Any, pos Vector2.XY, color Color.RGBA) { //gd:TextLine.draw
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas)
 	callframe.Arg(frame, pos)
@@ -665,7 +669,7 @@ func (self class) Draw(canvas gd.RID, pos gd.Vector2, color gd.Color) { //gd:Tex
 Draw text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
 //go:nosplit
-func (self class) DrawOutline(canvas gd.RID, pos gd.Vector2, outline_size gd.Int, color gd.Color) { //gd:TextLine.draw_outline
+func (self class) DrawOutline(canvas RID.Any, pos Vector2.XY, outline_size int64, color Color.RGBA) { //gd:TextLine.draw_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas)
 	callframe.Arg(frame, pos)
@@ -680,10 +684,10 @@ func (self class) DrawOutline(canvas gd.RID, pos gd.Vector2, outline_size gd.Int
 Returns caret character offset at the specified pixel offset at the baseline. This function always returns a valid position.
 */
 //go:nosplit
-func (self class) HitTest(coords gd.Float) gd.Int { //gd:TextLine.hit_test
+func (self class) HitTest(coords float64) int64 { //gd:TextLine.hit_test
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_hit_test, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

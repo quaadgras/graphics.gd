@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -82,7 +86,7 @@ func (self Instance) TransformFromPose(pose unsafe.Pointer) Transform3D.BasisOri
 Returns [code]true[/code] if the provided [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] (cast to an integer) is successful. Otherwise returns [code]false[/code] and prints the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] converted to a string, with the specified additional information.
 */
 func (self Instance) XrResult(result int, format string, args []any) bool { //gd:OpenXRAPIExtension.xr_result
-	return bool(class(self).XrResult(gd.Int(result), String.New(format), gd.EngineArrayFromSlice(args)))
+	return bool(class(self).XrResult(int64(result), String.New(format), gd.EngineArrayFromSlice(args)))
 }
 
 /*
@@ -105,14 +109,14 @@ func (self Instance) GetInstanceProcAddr(name string) int { //gd:OpenXRAPIExtens
 Returns an error string for the given [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url].
 */
 func (self Instance) GetErrorString(result int) string { //gd:OpenXRAPIExtension.get_error_string
-	return string(class(self).GetErrorString(gd.Int(result)).String())
+	return string(class(self).GetErrorString(int64(result)).String())
 }
 
 /*
 Returns the name of the specified swapchain format.
 */
 func (self Instance) GetSwapchainFormatName(swapchain_format int) string { //gd:OpenXRAPIExtension.get_swapchain_format_name
-	return string(class(self).GetSwapchainFormatName(gd.Int(swapchain_format)).String())
+	return string(class(self).GetSwapchainFormatName(int64(swapchain_format)).String())
 }
 
 /*
@@ -161,7 +165,7 @@ func (self Instance) CanRender() bool { //gd:OpenXRAPIExtension.can_render
 Returns the corresponding [code]XRHandTrackerEXT[/code] handle for the given hand index value.
 */
 func (self Instance) GetHandTracker(hand_index int) int { //gd:OpenXRAPIExtension.get_hand_tracker
-	return int(int(class(self).GetHandTracker(gd.Int(hand_index))))
+	return int(int(class(self).GetHandTracker(int64(hand_index))))
 }
 
 /*
@@ -215,9 +219,9 @@ func New() Instance {
 Returns the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrInstance.html]XrInstance[/url] created during the initialization of the OpenXR API.
 */
 //go:nosplit
-func (self class) GetInstance() gd.Int { //gd:OpenXRAPIExtension.get_instance
+func (self class) GetInstance() int64 { //gd:OpenXRAPIExtension.get_instance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_instance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -228,9 +232,9 @@ func (self class) GetInstance() gd.Int { //gd:OpenXRAPIExtension.get_instance
 Returns the id of the system, which is a [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSystemId.html]XrSystemId[/url] cast to an integer.
 */
 //go:nosplit
-func (self class) GetSystemId() gd.Int { //gd:OpenXRAPIExtension.get_system_id
+func (self class) GetSystemId() int64 { //gd:OpenXRAPIExtension.get_system_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_system_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -241,9 +245,9 @@ func (self class) GetSystemId() gd.Int { //gd:OpenXRAPIExtension.get_system_id
 Returns the OpenXR session, which is an [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSession.html]XrSession[/url] cast to an integer.
 */
 //go:nosplit
-func (self class) GetSession() gd.Int { //gd:OpenXRAPIExtension.get_session
+func (self class) GetSession() int64 { //gd:OpenXRAPIExtension.get_session
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_session, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -254,10 +258,10 @@ func (self class) GetSession() gd.Int { //gd:OpenXRAPIExtension.get_session
 Creates a [Transform3D] from an [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrPosef.html]XrPosef[/url].
 */
 //go:nosplit
-func (self class) TransformFromPose(pose unsafe.Pointer) gd.Transform3D { //gd:OpenXRAPIExtension.transform_from_pose
+func (self class) TransformFromPose(pose unsafe.Pointer) Transform3D.BasisOrigin { //gd:OpenXRAPIExtension.transform_from_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, pose)
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_transform_from_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -268,7 +272,7 @@ func (self class) TransformFromPose(pose unsafe.Pointer) gd.Transform3D { //gd:O
 Returns [code]true[/code] if the provided [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] (cast to an integer) is successful. Otherwise returns [code]false[/code] and prints the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] converted to a string, with the specified additional information.
 */
 //go:nosplit
-func (self class) XrResult(result gd.Int, format String.Readable, args Array.Any) bool { //gd:OpenXRAPIExtension.xr_result
+func (self class) XrResult(result int64, format String.Readable, args Array.Any) bool { //gd:OpenXRAPIExtension.xr_result
 	var frame = callframe.New()
 	callframe.Arg(frame, result)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(format)))
@@ -299,10 +303,10 @@ Returns the function pointer of the OpenXR function with the specified name, cas
 [b]Note:[/b] [code]openxr/util.h[/code] contains utility macros for acquiring OpenXR functions, e.g. [code]GDEXTENSION_INIT_XR_FUNC_V(xrCreateAction)[/code].
 */
 //go:nosplit
-func (self class) GetInstanceProcAddr(name String.Readable) gd.Int { //gd:OpenXRAPIExtension.get_instance_proc_addr
+func (self class) GetInstanceProcAddr(name String.Readable) int64 { //gd:OpenXRAPIExtension.get_instance_proc_addr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_instance_proc_addr, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -313,7 +317,7 @@ func (self class) GetInstanceProcAddr(name String.Readable) gd.Int { //gd:OpenXR
 Returns an error string for the given [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url].
 */
 //go:nosplit
-func (self class) GetErrorString(result gd.Int) String.Readable { //gd:OpenXRAPIExtension.get_error_string
+func (self class) GetErrorString(result int64) String.Readable { //gd:OpenXRAPIExtension.get_error_string
 	var frame = callframe.New()
 	callframe.Arg(frame, result)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -327,7 +331,7 @@ func (self class) GetErrorString(result gd.Int) String.Readable { //gd:OpenXRAPI
 Returns the name of the specified swapchain format.
 */
 //go:nosplit
-func (self class) GetSwapchainFormatName(swapchain_format gd.Int) String.Readable { //gd:OpenXRAPIExtension.get_swapchain_format_name
+func (self class) GetSwapchainFormatName(swapchain_format int64) String.Readable { //gd:OpenXRAPIExtension.get_swapchain_format_name
 	var frame = callframe.New()
 	callframe.Arg(frame, swapchain_format)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -367,9 +371,9 @@ func (self class) IsRunning() bool { //gd:OpenXRAPIExtension.is_running
 Returns the play space, which is an [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSpace.html]XrSpace[/url] cast to an integer.
 */
 //go:nosplit
-func (self class) GetPlaySpace() gd.Int { //gd:OpenXRAPIExtension.get_play_space
+func (self class) GetPlaySpace() int64 { //gd:OpenXRAPIExtension.get_play_space
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_play_space, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -380,9 +384,9 @@ func (self class) GetPlaySpace() gd.Int { //gd:OpenXRAPIExtension.get_play_space
 Returns the predicted display timing for the current frame.
 */
 //go:nosplit
-func (self class) GetPredictedDisplayTime() gd.Int { //gd:OpenXRAPIExtension.get_predicted_display_time
+func (self class) GetPredictedDisplayTime() int64 { //gd:OpenXRAPIExtension.get_predicted_display_time
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_predicted_display_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -393,9 +397,9 @@ func (self class) GetPredictedDisplayTime() gd.Int { //gd:OpenXRAPIExtension.get
 Returns the predicted display timing for the next frame.
 */
 //go:nosplit
-func (self class) GetNextFrameTime() gd.Int { //gd:OpenXRAPIExtension.get_next_frame_time
+func (self class) GetNextFrameTime() int64 { //gd:OpenXRAPIExtension.get_next_frame_time
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_next_frame_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -419,10 +423,10 @@ func (self class) CanRender() bool { //gd:OpenXRAPIExtension.can_render
 Returns the corresponding [code]XRHandTrackerEXT[/code] handle for the given hand index value.
 */
 //go:nosplit
-func (self class) GetHandTracker(hand_index gd.Int) gd.Int { //gd:OpenXRAPIExtension.get_hand_tracker
+func (self class) GetHandTracker(hand_index int64) int64 { //gd:OpenXRAPIExtension.get_hand_tracker
 	var frame = callframe.New()
 	callframe.Arg(frame, hand_index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_hand_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioStreamPlayback"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioStreamPlayback"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,35 +60,35 @@ This ID becomes invalid when the stream ends (if it does not loop), when the [Au
 This function returns [constant INVALID_ID] if the amount of streams currently playing equals [member AudioStreamPolyphonic.polyphony]. If you need a higher amount of maximum polyphony, raise this value.
 */
 func (self Instance) PlayStream(stream [1]gdclass.AudioStream) int { //gd:AudioStreamPlaybackPolyphonic.play_stream
-	return int(int(class(self).PlayStream(stream, gd.Float(0), gd.Float(0), gd.Float(1.0), 0, String.Name(String.New("Master")))))
+	return int(int(class(self).PlayStream(stream, float64(0), float64(0), float64(1.0), 0, String.Name(String.New("Master")))))
 }
 
 /*
 Change the stream volume (in db). The [param stream] argument is an integer ID returned by [method play_stream].
 */
 func (self Instance) SetStreamVolume(stream int, volume_db Float.X) { //gd:AudioStreamPlaybackPolyphonic.set_stream_volume
-	class(self).SetStreamVolume(gd.Int(stream), gd.Float(volume_db))
+	class(self).SetStreamVolume(int64(stream), float64(volume_db))
 }
 
 /*
 Change the stream pitch scale. The [param stream] argument is an integer ID returned by [method play_stream].
 */
 func (self Instance) SetStreamPitchScale(stream int, pitch_scale Float.X) { //gd:AudioStreamPlaybackPolyphonic.set_stream_pitch_scale
-	class(self).SetStreamPitchScale(gd.Int(stream), gd.Float(pitch_scale))
+	class(self).SetStreamPitchScale(int64(stream), float64(pitch_scale))
 }
 
 /*
 Return true whether the stream associated with an integer ID is still playing. Check [method play_stream] for information on when this ID becomes invalid.
 */
 func (self Instance) IsStreamPlaying(stream int) bool { //gd:AudioStreamPlaybackPolyphonic.is_stream_playing
-	return bool(class(self).IsStreamPlaying(gd.Int(stream)))
+	return bool(class(self).IsStreamPlaying(int64(stream)))
 }
 
 /*
 Stop a stream. The [param stream] argument is an integer ID returned by [method play_stream], which becomes invalid after calling this function.
 */
 func (self Instance) StopStream(stream int) { //gd:AudioStreamPlaybackPolyphonic.stop_stream
-	class(self).StopStream(gd.Int(stream))
+	class(self).StopStream(int64(stream))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -114,7 +117,7 @@ This ID becomes invalid when the stream ends (if it does not loop), when the [Au
 This function returns [constant INVALID_ID] if the amount of streams currently playing equals [member AudioStreamPolyphonic.polyphony]. If you need a higher amount of maximum polyphony, raise this value.
 */
 //go:nosplit
-func (self class) PlayStream(stream [1]gdclass.AudioStream, from_offset gd.Float, volume_db gd.Float, pitch_scale gd.Float, playback_type gdclass.AudioServerPlaybackType, bus String.Name) gd.Int { //gd:AudioStreamPlaybackPolyphonic.play_stream
+func (self class) PlayStream(stream [1]gdclass.AudioStream, from_offset float64, volume_db float64, pitch_scale float64, playback_type gdclass.AudioServerPlaybackType, bus String.Name) int64 { //gd:AudioStreamPlaybackPolyphonic.play_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
 	callframe.Arg(frame, from_offset)
@@ -122,7 +125,7 @@ func (self class) PlayStream(stream [1]gdclass.AudioStream, from_offset gd.Float
 	callframe.Arg(frame, pitch_scale)
 	callframe.Arg(frame, playback_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(bus)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaybackPolyphonic.Bind_play_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -133,7 +136,7 @@ func (self class) PlayStream(stream [1]gdclass.AudioStream, from_offset gd.Float
 Change the stream volume (in db). The [param stream] argument is an integer ID returned by [method play_stream].
 */
 //go:nosplit
-func (self class) SetStreamVolume(stream gd.Int, volume_db gd.Float) { //gd:AudioStreamPlaybackPolyphonic.set_stream_volume
+func (self class) SetStreamVolume(stream int64, volume_db float64) { //gd:AudioStreamPlaybackPolyphonic.set_stream_volume
 	var frame = callframe.New()
 	callframe.Arg(frame, stream)
 	callframe.Arg(frame, volume_db)
@@ -146,7 +149,7 @@ func (self class) SetStreamVolume(stream gd.Int, volume_db gd.Float) { //gd:Audi
 Change the stream pitch scale. The [param stream] argument is an integer ID returned by [method play_stream].
 */
 //go:nosplit
-func (self class) SetStreamPitchScale(stream gd.Int, pitch_scale gd.Float) { //gd:AudioStreamPlaybackPolyphonic.set_stream_pitch_scale
+func (self class) SetStreamPitchScale(stream int64, pitch_scale float64) { //gd:AudioStreamPlaybackPolyphonic.set_stream_pitch_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, stream)
 	callframe.Arg(frame, pitch_scale)
@@ -159,7 +162,7 @@ func (self class) SetStreamPitchScale(stream gd.Int, pitch_scale gd.Float) { //g
 Return true whether the stream associated with an integer ID is still playing. Check [method play_stream] for information on when this ID becomes invalid.
 */
 //go:nosplit
-func (self class) IsStreamPlaying(stream gd.Int) bool { //gd:AudioStreamPlaybackPolyphonic.is_stream_playing
+func (self class) IsStreamPlaying(stream int64) bool { //gd:AudioStreamPlaybackPolyphonic.is_stream_playing
 	var frame = callframe.New()
 	callframe.Arg(frame, stream)
 	var r_ret = callframe.Ret[bool](frame)
@@ -173,7 +176,7 @@ func (self class) IsStreamPlaying(stream gd.Int) bool { //gd:AudioStreamPlayback
 Stop a stream. The [param stream] argument is an integer ID returned by [method play_stream], which becomes invalid after calling this function.
 */
 //go:nosplit
-func (self class) StopStream(stream gd.Int) { //gd:AudioStreamPlaybackPolyphonic.stop_stream
+func (self class) StopStream(stream int64) { //gd:AudioStreamPlaybackPolyphonic.stop_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, stream)
 	var r_ret = callframe.Nil

@@ -9,19 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Texture2D"
-import "graphics.gd/classdb/Texture"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -86,7 +90,7 @@ func (self Instance) Region() Rect2.PositionSize {
 }
 
 func (self Instance) SetRegion(value Rect2.PositionSize) {
-	class(self).SetRegion(gd.Rect2(value))
+	class(self).SetRegion(Rect2.PositionSize(value))
 }
 
 func (self Instance) Margin() Rect2.PositionSize {
@@ -94,7 +98,7 @@ func (self Instance) Margin() Rect2.PositionSize {
 }
 
 func (self Instance) SetMargin(value Rect2.PositionSize) {
-	class(self).SetMargin(gd.Rect2(value))
+	class(self).SetMargin(Rect2.PositionSize(value))
 }
 
 func (self Instance) FilterClip() bool {
@@ -125,7 +129,7 @@ func (self class) GetAtlas() [1]gdclass.Texture2D { //gd:AtlasTexture.get_atlas
 }
 
 //go:nosplit
-func (self class) SetRegion(region gd.Rect2) { //gd:AtlasTexture.set_region
+func (self class) SetRegion(region Rect2.PositionSize) { //gd:AtlasTexture.set_region
 	var frame = callframe.New()
 	callframe.Arg(frame, region)
 	var r_ret = callframe.Nil
@@ -134,9 +138,9 @@ func (self class) SetRegion(region gd.Rect2) { //gd:AtlasTexture.set_region
 }
 
 //go:nosplit
-func (self class) GetRegion() gd.Rect2 { //gd:AtlasTexture.get_region
+func (self class) GetRegion() Rect2.PositionSize { //gd:AtlasTexture.get_region
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AtlasTexture.Bind_get_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -144,7 +148,7 @@ func (self class) GetRegion() gd.Rect2 { //gd:AtlasTexture.get_region
 }
 
 //go:nosplit
-func (self class) SetMargin(margin gd.Rect2) { //gd:AtlasTexture.set_margin
+func (self class) SetMargin(margin Rect2.PositionSize) { //gd:AtlasTexture.set_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -153,9 +157,9 @@ func (self class) SetMargin(margin gd.Rect2) { //gd:AtlasTexture.set_margin
 }
 
 //go:nosplit
-func (self class) GetMargin() gd.Rect2 { //gd:AtlasTexture.get_margin
+func (self class) GetMargin() Rect2.PositionSize { //gd:AtlasTexture.get_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AtlasTexture.Bind_get_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

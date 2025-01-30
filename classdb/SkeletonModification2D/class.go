@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -80,7 +83,7 @@ Executes the given modification. This is where the modification performs whateve
 */
 func (Instance) _execute(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+		var delta = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(delta))
@@ -136,7 +139,7 @@ func (self Instance) GetIsSetup() bool { //gd:SkeletonModification2D.get_is_setu
 Takes an angle and clamps it so it is within the passed-in [param min] and [param max] range. [param invert] will inversely clamp the angle, clamping it to the range outside of the given bounds.
 */
 func (self Instance) ClampAngle(angle Float.X, min Float.X, max Float.X, invert bool) Float.X { //gd:SkeletonModification2D.clamp_angle
-	return Float.X(Float.X(class(self).ClampAngle(gd.Float(angle), gd.Float(min), gd.Float(max), invert)))
+	return Float.X(Float.X(class(self).ClampAngle(float64(angle), float64(min), float64(max), invert)))
 }
 
 /*
@@ -185,15 +188,15 @@ func (self Instance) ExecutionMode() int {
 }
 
 func (self Instance) SetExecutionMode(value int) {
-	class(self).SetExecutionMode(gd.Int(value))
+	class(self).SetExecutionMode(int64(value))
 }
 
 /*
 Executes the given modification. This is where the modification performs whatever function it is designed to do.
 */
-func (class) _execute(impl func(ptr unsafe.Pointer, delta gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _execute(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+		var delta = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, delta)
@@ -282,7 +285,7 @@ func (self class) GetIsSetup() bool { //gd:SkeletonModification2D.get_is_setup
 }
 
 //go:nosplit
-func (self class) SetExecutionMode(execution_mode gd.Int) { //gd:SkeletonModification2D.set_execution_mode
+func (self class) SetExecutionMode(execution_mode int64) { //gd:SkeletonModification2D.set_execution_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, execution_mode)
 	var r_ret = callframe.Nil
@@ -291,9 +294,9 @@ func (self class) SetExecutionMode(execution_mode gd.Int) { //gd:SkeletonModific
 }
 
 //go:nosplit
-func (self class) GetExecutionMode() gd.Int { //gd:SkeletonModification2D.get_execution_mode
+func (self class) GetExecutionMode() int64 { //gd:SkeletonModification2D.get_execution_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2D.Bind_get_execution_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -304,13 +307,13 @@ func (self class) GetExecutionMode() gd.Int { //gd:SkeletonModification2D.get_ex
 Takes an angle and clamps it so it is within the passed-in [param min] and [param max] range. [param invert] will inversely clamp the angle, clamping it to the range outside of the given bounds.
 */
 //go:nosplit
-func (self class) ClampAngle(angle gd.Float, min gd.Float, max gd.Float, invert bool) gd.Float { //gd:SkeletonModification2D.clamp_angle
+func (self class) ClampAngle(angle float64, min float64, max float64, invert bool) float64 { //gd:SkeletonModification2D.clamp_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, angle)
 	callframe.Arg(frame, min)
 	callframe.Arg(frame, max)
 	callframe.Arg(frame, invert)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2D.Bind_clamp_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

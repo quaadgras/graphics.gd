@@ -9,22 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/CollisionObject2D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/PhysicsBody2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/PhysicsBody2D"
-import "graphics.gd/classdb/CollisionObject2D"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -88,7 +91,7 @@ func (self Instance) ConstantLinearVelocity() Vector2.XY {
 }
 
 func (self Instance) SetConstantLinearVelocity(value Vector2.XY) {
-	class(self).SetConstantLinearVelocity(gd.Vector2(value))
+	class(self).SetConstantLinearVelocity(Vector2.XY(value))
 }
 
 func (self Instance) ConstantAngularVelocity() Float.X {
@@ -96,11 +99,11 @@ func (self Instance) ConstantAngularVelocity() Float.X {
 }
 
 func (self Instance) SetConstantAngularVelocity(value Float.X) {
-	class(self).SetConstantAngularVelocity(gd.Float(value))
+	class(self).SetConstantAngularVelocity(float64(value))
 }
 
 //go:nosplit
-func (self class) SetConstantLinearVelocity(vel gd.Vector2) { //gd:StaticBody2D.set_constant_linear_velocity
+func (self class) SetConstantLinearVelocity(vel Vector2.XY) { //gd:StaticBody2D.set_constant_linear_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, vel)
 	var r_ret = callframe.Nil
@@ -109,7 +112,7 @@ func (self class) SetConstantLinearVelocity(vel gd.Vector2) { //gd:StaticBody2D.
 }
 
 //go:nosplit
-func (self class) SetConstantAngularVelocity(vel gd.Float) { //gd:StaticBody2D.set_constant_angular_velocity
+func (self class) SetConstantAngularVelocity(vel float64) { //gd:StaticBody2D.set_constant_angular_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, vel)
 	var r_ret = callframe.Nil
@@ -118,9 +121,9 @@ func (self class) SetConstantAngularVelocity(vel gd.Float) { //gd:StaticBody2D.s
 }
 
 //go:nosplit
-func (self class) GetConstantLinearVelocity() gd.Vector2 { //gd:StaticBody2D.get_constant_linear_velocity
+func (self class) GetConstantLinearVelocity() Vector2.XY { //gd:StaticBody2D.get_constant_linear_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_get_constant_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -128,9 +131,9 @@ func (self class) GetConstantLinearVelocity() gd.Vector2 { //gd:StaticBody2D.get
 }
 
 //go:nosplit
-func (self class) GetConstantAngularVelocity() gd.Float { //gd:StaticBody2D.get_constant_angular_velocity
+func (self class) GetConstantAngularVelocity() float64 { //gd:StaticBody2D.get_constant_angular_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_get_constant_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

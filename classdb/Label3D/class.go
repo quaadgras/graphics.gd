@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/GeometryInstance3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/GeometryInstance3D"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -40,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -85,7 +88,7 @@ func (self Instance) PixelSize() Float.X {
 }
 
 func (self Instance) SetPixelSize(value Float.X) {
-	class(self).SetPixelSize(gd.Float(value))
+	class(self).SetPixelSize(float64(value))
 }
 
 func (self Instance) Offset() Vector2.XY {
@@ -93,7 +96,7 @@ func (self Instance) Offset() Vector2.XY {
 }
 
 func (self Instance) SetOffset(value Vector2.XY) {
-	class(self).SetOffset(gd.Vector2(value))
+	class(self).SetOffset(Vector2.XY(value))
 }
 
 func (self Instance) Billboard() gdclass.BaseMaterial3DBillboardMode {
@@ -149,7 +152,7 @@ func (self Instance) AlphaScissorThreshold() Float.X {
 }
 
 func (self Instance) SetAlphaScissorThreshold(value Float.X) {
-	class(self).SetAlphaScissorThreshold(gd.Float(value))
+	class(self).SetAlphaScissorThreshold(float64(value))
 }
 
 func (self Instance) AlphaHashScale() Float.X {
@@ -157,7 +160,7 @@ func (self Instance) AlphaHashScale() Float.X {
 }
 
 func (self Instance) SetAlphaHashScale(value Float.X) {
-	class(self).SetAlphaHashScale(gd.Float(value))
+	class(self).SetAlphaHashScale(float64(value))
 }
 
 func (self Instance) AlphaAntialiasingMode() gdclass.BaseMaterial3DAlphaAntiAliasing {
@@ -173,7 +176,7 @@ func (self Instance) AlphaAntialiasingEdge() Float.X {
 }
 
 func (self Instance) SetAlphaAntialiasingEdge(value Float.X) {
-	class(self).SetAlphaAntialiasingEdge(gd.Float(value))
+	class(self).SetAlphaAntialiasingEdge(float64(value))
 }
 
 func (self Instance) TextureFilter() gdclass.BaseMaterial3DTextureFilter {
@@ -189,7 +192,7 @@ func (self Instance) RenderPriority() int {
 }
 
 func (self Instance) SetRenderPriority(value int) {
-	class(self).SetRenderPriority(gd.Int(value))
+	class(self).SetRenderPriority(int64(value))
 }
 
 func (self Instance) OutlineRenderPriority() int {
@@ -197,7 +200,7 @@ func (self Instance) OutlineRenderPriority() int {
 }
 
 func (self Instance) SetOutlineRenderPriority(value int) {
-	class(self).SetOutlineRenderPriority(gd.Int(value))
+	class(self).SetOutlineRenderPriority(int64(value))
 }
 
 func (self Instance) Modulate() Color.RGBA {
@@ -205,7 +208,7 @@ func (self Instance) Modulate() Color.RGBA {
 }
 
 func (self Instance) SetModulate(value Color.RGBA) {
-	class(self).SetModulate(gd.Color(value))
+	class(self).SetModulate(Color.RGBA(value))
 }
 
 func (self Instance) OutlineModulate() Color.RGBA {
@@ -213,7 +216,7 @@ func (self Instance) OutlineModulate() Color.RGBA {
 }
 
 func (self Instance) SetOutlineModulate(value Color.RGBA) {
-	class(self).SetOutlineModulate(gd.Color(value))
+	class(self).SetOutlineModulate(Color.RGBA(value))
 }
 
 func (self Instance) Text() string {
@@ -237,7 +240,7 @@ func (self Instance) FontSize() int {
 }
 
 func (self Instance) SetFontSize(value int) {
-	class(self).SetFontSize(gd.Int(value))
+	class(self).SetFontSize(int64(value))
 }
 
 func (self Instance) OutlineSize() int {
@@ -245,7 +248,7 @@ func (self Instance) OutlineSize() int {
 }
 
 func (self Instance) SetOutlineSize(value int) {
-	class(self).SetOutlineSize(gd.Int(value))
+	class(self).SetOutlineSize(int64(value))
 }
 
 func (self Instance) HorizontalAlignment() HorizontalAlignment {
@@ -277,7 +280,7 @@ func (self Instance) LineSpacing() Float.X {
 }
 
 func (self Instance) SetLineSpacing(value Float.X) {
-	class(self).SetLineSpacing(gd.Float(value))
+	class(self).SetLineSpacing(float64(value))
 }
 
 func (self Instance) AutowrapMode() gdclass.TextServerAutowrapMode {
@@ -301,7 +304,7 @@ func (self Instance) Width() Float.X {
 }
 
 func (self Instance) SetWidth(value Float.X) {
-	class(self).SetWidth(gd.Float(value))
+	class(self).SetWidth(float64(value))
 }
 
 func (self Instance) TextDirection() gdclass.TextServerDirection {
@@ -375,7 +378,7 @@ func (self class) GetVerticalAlignment() VerticalAlignment { //gd:Label3D.get_ve
 }
 
 //go:nosplit
-func (self class) SetModulate(modulate gd.Color) { //gd:Label3D.set_modulate
+func (self class) SetModulate(modulate Color.RGBA) { //gd:Label3D.set_modulate
 	var frame = callframe.New()
 	callframe.Arg(frame, modulate)
 	var r_ret = callframe.Nil
@@ -384,9 +387,9 @@ func (self class) SetModulate(modulate gd.Color) { //gd:Label3D.set_modulate
 }
 
 //go:nosplit
-func (self class) GetModulate() gd.Color { //gd:Label3D.get_modulate
+func (self class) GetModulate() Color.RGBA { //gd:Label3D.get_modulate
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -394,7 +397,7 @@ func (self class) GetModulate() gd.Color { //gd:Label3D.get_modulate
 }
 
 //go:nosplit
-func (self class) SetOutlineModulate(modulate gd.Color) { //gd:Label3D.set_outline_modulate
+func (self class) SetOutlineModulate(modulate Color.RGBA) { //gd:Label3D.set_outline_modulate
 	var frame = callframe.New()
 	callframe.Arg(frame, modulate)
 	var r_ret = callframe.Nil
@@ -403,9 +406,9 @@ func (self class) SetOutlineModulate(modulate gd.Color) { //gd:Label3D.set_outli
 }
 
 //go:nosplit
-func (self class) GetOutlineModulate() gd.Color { //gd:Label3D.get_outline_modulate
+func (self class) GetOutlineModulate() Color.RGBA { //gd:Label3D.get_outline_modulate
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_outline_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -527,7 +530,7 @@ func (self class) IsUppercase() bool { //gd:Label3D.is_uppercase
 }
 
 //go:nosplit
-func (self class) SetRenderPriority(priority gd.Int) { //gd:Label3D.set_render_priority
+func (self class) SetRenderPriority(priority int64) { //gd:Label3D.set_render_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -536,9 +539,9 @@ func (self class) SetRenderPriority(priority gd.Int) { //gd:Label3D.set_render_p
 }
 
 //go:nosplit
-func (self class) GetRenderPriority() gd.Int { //gd:Label3D.get_render_priority
+func (self class) GetRenderPriority() int64 { //gd:Label3D.get_render_priority
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_render_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -546,7 +549,7 @@ func (self class) GetRenderPriority() gd.Int { //gd:Label3D.get_render_priority
 }
 
 //go:nosplit
-func (self class) SetOutlineRenderPriority(priority gd.Int) { //gd:Label3D.set_outline_render_priority
+func (self class) SetOutlineRenderPriority(priority int64) { //gd:Label3D.set_outline_render_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -555,9 +558,9 @@ func (self class) SetOutlineRenderPriority(priority gd.Int) { //gd:Label3D.set_o
 }
 
 //go:nosplit
-func (self class) GetOutlineRenderPriority() gd.Int { //gd:Label3D.get_outline_render_priority
+func (self class) GetOutlineRenderPriority() int64 { //gd:Label3D.get_outline_render_priority
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_outline_render_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -584,7 +587,7 @@ func (self class) GetFont() [1]gdclass.Font { //gd:Label3D.get_font
 }
 
 //go:nosplit
-func (self class) SetFontSize(size gd.Int) { //gd:Label3D.set_font_size
+func (self class) SetFontSize(size int64) { //gd:Label3D.set_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -593,9 +596,9 @@ func (self class) SetFontSize(size gd.Int) { //gd:Label3D.set_font_size
 }
 
 //go:nosplit
-func (self class) GetFontSize() gd.Int { //gd:Label3D.get_font_size
+func (self class) GetFontSize() int64 { //gd:Label3D.get_font_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -603,7 +606,7 @@ func (self class) GetFontSize() gd.Int { //gd:Label3D.get_font_size
 }
 
 //go:nosplit
-func (self class) SetOutlineSize(outline_size gd.Int) { //gd:Label3D.set_outline_size
+func (self class) SetOutlineSize(outline_size int64) { //gd:Label3D.set_outline_size
 	var frame = callframe.New()
 	callframe.Arg(frame, outline_size)
 	var r_ret = callframe.Nil
@@ -612,9 +615,9 @@ func (self class) SetOutlineSize(outline_size gd.Int) { //gd:Label3D.set_outline
 }
 
 //go:nosplit
-func (self class) GetOutlineSize() gd.Int { //gd:Label3D.get_outline_size
+func (self class) GetOutlineSize() int64 { //gd:Label3D.get_outline_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_outline_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -622,7 +625,7 @@ func (self class) GetOutlineSize() gd.Int { //gd:Label3D.get_outline_size
 }
 
 //go:nosplit
-func (self class) SetLineSpacing(line_spacing gd.Float) { //gd:Label3D.set_line_spacing
+func (self class) SetLineSpacing(line_spacing float64) { //gd:Label3D.set_line_spacing
 	var frame = callframe.New()
 	callframe.Arg(frame, line_spacing)
 	var r_ret = callframe.Nil
@@ -631,9 +634,9 @@ func (self class) SetLineSpacing(line_spacing gd.Float) { //gd:Label3D.set_line_
 }
 
 //go:nosplit
-func (self class) GetLineSpacing() gd.Float { //gd:Label3D.get_line_spacing
+func (self class) GetLineSpacing() float64 { //gd:Label3D.get_line_spacing
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_line_spacing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -679,7 +682,7 @@ func (self class) GetJustificationFlags() gdclass.TextServerJustificationFlag { 
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Float) { //gd:Label3D.set_width
+func (self class) SetWidth(width float64) { //gd:Label3D.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -688,9 +691,9 @@ func (self class) SetWidth(width gd.Float) { //gd:Label3D.set_width
 }
 
 //go:nosplit
-func (self class) GetWidth() gd.Float { //gd:Label3D.get_width
+func (self class) GetWidth() float64 { //gd:Label3D.get_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -698,7 +701,7 @@ func (self class) GetWidth() gd.Float { //gd:Label3D.get_width
 }
 
 //go:nosplit
-func (self class) SetPixelSize(pixel_size gd.Float) { //gd:Label3D.set_pixel_size
+func (self class) SetPixelSize(pixel_size float64) { //gd:Label3D.set_pixel_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pixel_size)
 	var r_ret = callframe.Nil
@@ -707,9 +710,9 @@ func (self class) SetPixelSize(pixel_size gd.Float) { //gd:Label3D.set_pixel_siz
 }
 
 //go:nosplit
-func (self class) GetPixelSize() gd.Float { //gd:Label3D.get_pixel_size
+func (self class) GetPixelSize() float64 { //gd:Label3D.get_pixel_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_pixel_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -717,7 +720,7 @@ func (self class) GetPixelSize() gd.Float { //gd:Label3D.get_pixel_size
 }
 
 //go:nosplit
-func (self class) SetOffset(offset gd.Vector2) { //gd:Label3D.set_offset
+func (self class) SetOffset(offset Vector2.XY) { //gd:Label3D.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -726,9 +729,9 @@ func (self class) SetOffset(offset gd.Vector2) { //gd:Label3D.set_offset
 }
 
 //go:nosplit
-func (self class) GetOffset() gd.Vector2 { //gd:Label3D.get_offset
+func (self class) GetOffset() Vector2.XY { //gd:Label3D.get_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -801,7 +804,7 @@ func (self class) GetAlphaCutMode() gdclass.Label3DAlphaCutMode { //gd:Label3D.g
 }
 
 //go:nosplit
-func (self class) SetAlphaScissorThreshold(threshold gd.Float) { //gd:Label3D.set_alpha_scissor_threshold
+func (self class) SetAlphaScissorThreshold(threshold float64) { //gd:Label3D.set_alpha_scissor_threshold
 	var frame = callframe.New()
 	callframe.Arg(frame, threshold)
 	var r_ret = callframe.Nil
@@ -810,9 +813,9 @@ func (self class) SetAlphaScissorThreshold(threshold gd.Float) { //gd:Label3D.se
 }
 
 //go:nosplit
-func (self class) GetAlphaScissorThreshold() gd.Float { //gd:Label3D.get_alpha_scissor_threshold
+func (self class) GetAlphaScissorThreshold() float64 { //gd:Label3D.get_alpha_scissor_threshold
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_alpha_scissor_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -820,7 +823,7 @@ func (self class) GetAlphaScissorThreshold() gd.Float { //gd:Label3D.get_alpha_s
 }
 
 //go:nosplit
-func (self class) SetAlphaHashScale(threshold gd.Float) { //gd:Label3D.set_alpha_hash_scale
+func (self class) SetAlphaHashScale(threshold float64) { //gd:Label3D.set_alpha_hash_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, threshold)
 	var r_ret = callframe.Nil
@@ -829,9 +832,9 @@ func (self class) SetAlphaHashScale(threshold gd.Float) { //gd:Label3D.set_alpha
 }
 
 //go:nosplit
-func (self class) GetAlphaHashScale() gd.Float { //gd:Label3D.get_alpha_hash_scale
+func (self class) GetAlphaHashScale() float64 { //gd:Label3D.get_alpha_hash_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_alpha_hash_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -858,7 +861,7 @@ func (self class) GetAlphaAntialiasing() gdclass.BaseMaterial3DAlphaAntiAliasing
 }
 
 //go:nosplit
-func (self class) SetAlphaAntialiasingEdge(edge gd.Float) { //gd:Label3D.set_alpha_antialiasing_edge
+func (self class) SetAlphaAntialiasingEdge(edge float64) { //gd:Label3D.set_alpha_antialiasing_edge
 	var frame = callframe.New()
 	callframe.Arg(frame, edge)
 	var r_ret = callframe.Nil
@@ -867,9 +870,9 @@ func (self class) SetAlphaAntialiasingEdge(edge gd.Float) { //gd:Label3D.set_alp
 }
 
 //go:nosplit
-func (self class) GetAlphaAntialiasingEdge() gd.Float { //gd:Label3D.get_alpha_antialiasing_edge
+func (self class) GetAlphaAntialiasingEdge() float64 { //gd:Label3D.get_alpha_antialiasing_edge
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_alpha_antialiasing_edge, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

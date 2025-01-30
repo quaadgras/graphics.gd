@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Mesh"
+import "graphics.gd/classdb/PrimitiveMesh"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/PrimitiveMesh"
-import "graphics.gd/classdb/Mesh"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
@@ -38,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -78,7 +82,7 @@ func (self Instance) Size() Vector2.XY {
 }
 
 func (self Instance) SetSize(value Vector2.XY) {
-	class(self).SetSize(gd.Vector2(value))
+	class(self).SetSize(Vector2.XY(value))
 }
 
 func (self Instance) SubdivideWidth() int {
@@ -86,7 +90,7 @@ func (self Instance) SubdivideWidth() int {
 }
 
 func (self Instance) SetSubdivideWidth(value int) {
-	class(self).SetSubdivideWidth(gd.Int(value))
+	class(self).SetSubdivideWidth(int64(value))
 }
 
 func (self Instance) SubdivideDepth() int {
@@ -94,7 +98,7 @@ func (self Instance) SubdivideDepth() int {
 }
 
 func (self Instance) SetSubdivideDepth(value int) {
-	class(self).SetSubdivideDepth(gd.Int(value))
+	class(self).SetSubdivideDepth(int64(value))
 }
 
 func (self Instance) CenterOffset() Vector3.XYZ {
@@ -102,7 +106,7 @@ func (self Instance) CenterOffset() Vector3.XYZ {
 }
 
 func (self Instance) SetCenterOffset(value Vector3.XYZ) {
-	class(self).SetCenterOffset(gd.Vector3(value))
+	class(self).SetCenterOffset(Vector3.XYZ(value))
 }
 
 func (self Instance) Orientation() gdclass.PlaneMeshOrientation {
@@ -114,7 +118,7 @@ func (self Instance) SetOrientation(value gdclass.PlaneMeshOrientation) {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector2) { //gd:PlaneMesh.set_size
+func (self class) SetSize(size Vector2.XY) { //gd:PlaneMesh.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -123,9 +127,9 @@ func (self class) SetSize(size gd.Vector2) { //gd:PlaneMesh.set_size
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector2 { //gd:PlaneMesh.get_size
+func (self class) GetSize() Vector2.XY { //gd:PlaneMesh.get_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaneMesh.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -133,7 +137,7 @@ func (self class) GetSize() gd.Vector2 { //gd:PlaneMesh.get_size
 }
 
 //go:nosplit
-func (self class) SetSubdivideWidth(subdivide gd.Int) { //gd:PlaneMesh.set_subdivide_width
+func (self class) SetSubdivideWidth(subdivide int64) { //gd:PlaneMesh.set_subdivide_width
 	var frame = callframe.New()
 	callframe.Arg(frame, subdivide)
 	var r_ret = callframe.Nil
@@ -142,9 +146,9 @@ func (self class) SetSubdivideWidth(subdivide gd.Int) { //gd:PlaneMesh.set_subdi
 }
 
 //go:nosplit
-func (self class) GetSubdivideWidth() gd.Int { //gd:PlaneMesh.get_subdivide_width
+func (self class) GetSubdivideWidth() int64 { //gd:PlaneMesh.get_subdivide_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaneMesh.Bind_get_subdivide_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -152,7 +156,7 @@ func (self class) GetSubdivideWidth() gd.Int { //gd:PlaneMesh.get_subdivide_widt
 }
 
 //go:nosplit
-func (self class) SetSubdivideDepth(subdivide gd.Int) { //gd:PlaneMesh.set_subdivide_depth
+func (self class) SetSubdivideDepth(subdivide int64) { //gd:PlaneMesh.set_subdivide_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, subdivide)
 	var r_ret = callframe.Nil
@@ -161,9 +165,9 @@ func (self class) SetSubdivideDepth(subdivide gd.Int) { //gd:PlaneMesh.set_subdi
 }
 
 //go:nosplit
-func (self class) GetSubdivideDepth() gd.Int { //gd:PlaneMesh.get_subdivide_depth
+func (self class) GetSubdivideDepth() int64 { //gd:PlaneMesh.get_subdivide_depth
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaneMesh.Bind_get_subdivide_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -171,7 +175,7 @@ func (self class) GetSubdivideDepth() gd.Int { //gd:PlaneMesh.get_subdivide_dept
 }
 
 //go:nosplit
-func (self class) SetCenterOffset(offset gd.Vector3) { //gd:PlaneMesh.set_center_offset
+func (self class) SetCenterOffset(offset Vector3.XYZ) { //gd:PlaneMesh.set_center_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -180,9 +184,9 @@ func (self class) SetCenterOffset(offset gd.Vector3) { //gd:PlaneMesh.set_center
 }
 
 //go:nosplit
-func (self class) GetCenterOffset() gd.Vector3 { //gd:PlaneMesh.get_center_offset
+func (self class) GetCenterOffset() Vector3.XYZ { //gd:PlaneMesh.get_center_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaneMesh.Bind_get_center_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

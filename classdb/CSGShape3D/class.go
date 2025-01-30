@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/GeometryInstance3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/GeometryInstance3D"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -65,28 +68,28 @@ func (self Instance) IsRootShape() bool { //gd:CSGShape3D.is_root_shape
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:CSGShape3D.set_collision_mask_value
-	class(self).SetCollisionMaskValue(gd.Int(layer_number), value)
+	class(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:CSGShape3D.get_collision_mask_value
-	return bool(class(self).GetCollisionMaskValue(gd.Int(layer_number)))
+	return bool(class(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_layer], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:CSGShape3D.set_collision_layer_value
-	class(self).SetCollisionLayerValue(gd.Int(layer_number), value)
+	class(self).SetCollisionLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_layer] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:CSGShape3D.get_collision_layer_value
-	return bool(class(self).GetCollisionLayerValue(gd.Int(layer_number)))
+	return bool(class(self).GetCollisionLayerValue(int64(layer_number)))
 }
 
 /*
@@ -127,7 +130,7 @@ func (self Instance) Snap() Float.X {
 }
 
 func (self Instance) SetSnap(value Float.X) {
-	class(self).SetSnap(gd.Float(value))
+	class(self).SetSnap(float64(value))
 }
 
 func (self Instance) CalculateTangents() bool {
@@ -151,7 +154,7 @@ func (self Instance) CollisionLayer() int {
 }
 
 func (self Instance) SetCollisionLayer(value int) {
-	class(self).SetCollisionLayer(gd.Int(value))
+	class(self).SetCollisionLayer(int64(value))
 }
 
 func (self Instance) CollisionMask() int {
@@ -159,7 +162,7 @@ func (self Instance) CollisionMask() int {
 }
 
 func (self Instance) SetCollisionMask(value int) {
-	class(self).SetCollisionMask(gd.Int(value))
+	class(self).SetCollisionMask(int64(value))
 }
 
 func (self Instance) CollisionPriority() Float.X {
@@ -167,7 +170,7 @@ func (self Instance) CollisionPriority() Float.X {
 }
 
 func (self Instance) SetCollisionPriority(value Float.X) {
-	class(self).SetCollisionPriority(gd.Float(value))
+	class(self).SetCollisionPriority(float64(value))
 }
 
 /*
@@ -203,7 +206,7 @@ func (self class) GetOperation() gdclass.CSGShape3DOperation { //gd:CSGShape3D.g
 }
 
 //go:nosplit
-func (self class) SetSnap(snap gd.Float) { //gd:CSGShape3D.set_snap
+func (self class) SetSnap(snap float64) { //gd:CSGShape3D.set_snap
 	var frame = callframe.New()
 	callframe.Arg(frame, snap)
 	var r_ret = callframe.Nil
@@ -212,9 +215,9 @@ func (self class) SetSnap(snap gd.Float) { //gd:CSGShape3D.set_snap
 }
 
 //go:nosplit
-func (self class) GetSnap() gd.Float { //gd:CSGShape3D.get_snap
+func (self class) GetSnap() float64 { //gd:CSGShape3D.get_snap
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_get_snap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -241,7 +244,7 @@ func (self class) IsUsingCollision() bool { //gd:CSGShape3D.is_using_collision
 }
 
 //go:nosplit
-func (self class) SetCollisionLayer(layer gd.Int) { //gd:CSGShape3D.set_collision_layer
+func (self class) SetCollisionLayer(layer int64) { //gd:CSGShape3D.set_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -250,9 +253,9 @@ func (self class) SetCollisionLayer(layer gd.Int) { //gd:CSGShape3D.set_collisio
 }
 
 //go:nosplit
-func (self class) GetCollisionLayer() gd.Int { //gd:CSGShape3D.get_collision_layer
+func (self class) GetCollisionLayer() int64 { //gd:CSGShape3D.get_collision_layer
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -260,7 +263,7 @@ func (self class) GetCollisionLayer() gd.Int { //gd:CSGShape3D.get_collision_lay
 }
 
 //go:nosplit
-func (self class) SetCollisionMask(mask gd.Int) { //gd:CSGShape3D.set_collision_mask
+func (self class) SetCollisionMask(mask int64) { //gd:CSGShape3D.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -269,9 +272,9 @@ func (self class) SetCollisionMask(mask gd.Int) { //gd:CSGShape3D.set_collision_
 }
 
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int { //gd:CSGShape3D.get_collision_mask
+func (self class) GetCollisionMask() int64 { //gd:CSGShape3D.get_collision_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -282,7 +285,7 @@ func (self class) GetCollisionMask() gd.Int { //gd:CSGShape3D.get_collision_mask
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) { //gd:CSGShape3D.set_collision_mask_value
+func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:CSGShape3D.set_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -295,7 +298,7 @@ func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) { //gd:
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetCollisionMaskValue(layer_number gd.Int) bool { //gd:CSGShape3D.get_collision_mask_value
+func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:CSGShape3D.get_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -309,7 +312,7 @@ func (self class) GetCollisionMaskValue(layer_number gd.Int) bool { //gd:CSGShap
 Based on [param value], enables or disables the specified layer in the [member collision_layer], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetCollisionLayerValue(layer_number gd.Int, value bool) { //gd:CSGShape3D.set_collision_layer_value
+func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:CSGShape3D.set_collision_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -322,7 +325,7 @@ func (self class) SetCollisionLayerValue(layer_number gd.Int, value bool) { //gd
 Returns whether or not the specified layer of the [member collision_layer] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetCollisionLayerValue(layer_number gd.Int) bool { //gd:CSGShape3D.get_collision_layer_value
+func (self class) GetCollisionLayerValue(layer_number int64) bool { //gd:CSGShape3D.get_collision_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -333,7 +336,7 @@ func (self class) GetCollisionLayerValue(layer_number gd.Int) bool { //gd:CSGSha
 }
 
 //go:nosplit
-func (self class) SetCollisionPriority(priority gd.Float) { //gd:CSGShape3D.set_collision_priority
+func (self class) SetCollisionPriority(priority float64) { //gd:CSGShape3D.set_collision_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -342,9 +345,9 @@ func (self class) SetCollisionPriority(priority gd.Float) { //gd:CSGShape3D.set_
 }
 
 //go:nosplit
-func (self class) GetCollisionPriority() gd.Float { //gd:CSGShape3D.get_collision_priority
+func (self class) GetCollisionPriority() float64 { //gd:CSGShape3D.get_collision_priority
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_get_collision_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture"
+import "graphics.gd/classdb/Texture3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Texture3D"
-import "graphics.gd/classdb/Texture"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,11 +79,11 @@ func (self Instance) TextureRdRid() RID.Any {
 }
 
 func (self Instance) SetTextureRdRid(value RID.Any) {
-	class(self).SetTextureRdRid(gd.RID(value))
+	class(self).SetTextureRdRid(RID.Any(value))
 }
 
 //go:nosplit
-func (self class) SetTextureRdRid(texture_rd_rid gd.RID) { //gd:Texture3DRD.set_texture_rd_rid
+func (self class) SetTextureRdRid(texture_rd_rid RID.Any) { //gd:Texture3DRD.set_texture_rd_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_rd_rid)
 	var r_ret = callframe.Nil
@@ -88,9 +92,9 @@ func (self class) SetTextureRdRid(texture_rd_rid gd.RID) { //gd:Texture3DRD.set_
 }
 
 //go:nosplit
-func (self class) GetTextureRdRid() gd.RID { //gd:Texture3DRD.get_texture_rd_rid
+func (self class) GetTextureRdRid() RID.Any { //gd:Texture3DRD.get_texture_rd_rid
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3DRD.Bind_get_texture_rd_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

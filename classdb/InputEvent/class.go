@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -148,7 +152,7 @@ func (self Instance) Accumulate(with_event [1]gdclass.InputEvent) bool { //gd:In
 Returns a copy of the given input event which has been offset by [param local_ofs] and transformed by [param xform]. Relevant for events of type [InputEventMouseButton], [InputEventMouseMotion], [InputEventScreenTouch], [InputEventScreenDrag], [InputEventMagnifyGesture] and [InputEventPanGesture].
 */
 func (self Instance) XformedBy(xform Transform2D.OriginXY) [1]gdclass.InputEvent { //gd:InputEvent.xformed_by
-	return [1]gdclass.InputEvent(class(self).XformedBy(gd.Transform2D(xform), gd.Vector2(gd.Vector2{0, 0})))
+	return [1]gdclass.InputEvent(class(self).XformedBy(Transform2D.OriginXY(xform), Vector2.XY(gd.Vector2{0, 0})))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -175,11 +179,11 @@ func (self Instance) Device() int {
 }
 
 func (self Instance) SetDevice(value int) {
-	class(self).SetDevice(gd.Int(value))
+	class(self).SetDevice(int64(value))
 }
 
 //go:nosplit
-func (self class) SetDevice(device gd.Int) { //gd:InputEvent.set_device
+func (self class) SetDevice(device int64) { //gd:InputEvent.set_device
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Nil
@@ -188,9 +192,9 @@ func (self class) SetDevice(device gd.Int) { //gd:InputEvent.set_device
 }
 
 //go:nosplit
-func (self class) GetDevice() gd.Int { //gd:InputEvent.get_device
+func (self class) GetDevice() int64 { //gd:InputEvent.get_device
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_get_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -252,11 +256,11 @@ Returns a value between 0.0 and 1.0 depending on the given actions' state. Usefu
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 //go:nosplit
-func (self class) GetActionStrength(action String.Name, exact_match bool) gd.Float { //gd:InputEvent.get_action_strength
+func (self class) GetActionStrength(action String.Name, exact_match bool) float64 { //gd:InputEvent.get_action_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
 	callframe.Arg(frame, exact_match)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_get_action_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -378,7 +382,7 @@ func (self class) Accumulate(with_event [1]gdclass.InputEvent) bool { //gd:Input
 Returns a copy of the given input event which has been offset by [param local_ofs] and transformed by [param xform]. Relevant for events of type [InputEventMouseButton], [InputEventMouseMotion], [InputEventScreenTouch], [InputEventScreenDrag], [InputEventMagnifyGesture] and [InputEventPanGesture].
 */
 //go:nosplit
-func (self class) XformedBy(xform gd.Transform2D, local_ofs gd.Vector2) [1]gdclass.InputEvent { //gd:InputEvent.xformed_by
+func (self class) XformedBy(xform Transform2D.OriginXY, local_ofs Vector2.XY) [1]gdclass.InputEvent { //gd:InputEvent.xformed_by
 	var frame = callframe.New()
 	callframe.Arg(frame, xform)
 	callframe.Arg(frame, local_ofs)

@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/VisualShaderNode"
+import "graphics.gd/classdb/VisualShaderNodeConstant"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/VisualShaderNodeConstant"
-import "graphics.gd/classdb/VisualShaderNode"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -76,11 +80,11 @@ func (self Instance) Constant() Transform3D.BasisOrigin {
 }
 
 func (self Instance) SetConstant(value Transform3D.BasisOrigin) {
-	class(self).SetConstant(gd.Transform3D(value))
+	class(self).SetConstant(Transform3D.BasisOrigin(value))
 }
 
 //go:nosplit
-func (self class) SetConstant(constant gd.Transform3D) { //gd:VisualShaderNodeTransformConstant.set_constant
+func (self class) SetConstant(constant Transform3D.BasisOrigin) { //gd:VisualShaderNodeTransformConstant.set_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, constant)
 	var r_ret = callframe.Nil
@@ -89,9 +93,9 @@ func (self class) SetConstant(constant gd.Transform3D) { //gd:VisualShaderNodeTr
 }
 
 //go:nosplit
-func (self class) GetConstant() gd.Transform3D { //gd:VisualShaderNodeTransformConstant.get_constant
+func (self class) GetConstant() Transform3D.BasisOrigin { //gd:VisualShaderNodeTransformConstant.get_constant
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformConstant.Bind_get_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

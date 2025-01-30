@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioEffect"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioEffect"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,11 +78,11 @@ func (self Instance) Pan() Float.X {
 }
 
 func (self Instance) SetPan(value Float.X) {
-	class(self).SetPan(gd.Float(value))
+	class(self).SetPan(float64(value))
 }
 
 //go:nosplit
-func (self class) SetPan(cpanume gd.Float) { //gd:AudioEffectPanner.set_pan
+func (self class) SetPan(cpanume float64) { //gd:AudioEffectPanner.set_pan
 	var frame = callframe.New()
 	callframe.Arg(frame, cpanume)
 	var r_ret = callframe.Nil
@@ -88,9 +91,9 @@ func (self class) SetPan(cpanume gd.Float) { //gd:AudioEffectPanner.set_pan
 }
 
 //go:nosplit
-func (self class) GetPan() gd.Float { //gd:AudioEffectPanner.get_pan
+func (self class) GetPan() float64 { //gd:AudioEffectPanner.get_pan
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPanner.Bind_get_pan, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

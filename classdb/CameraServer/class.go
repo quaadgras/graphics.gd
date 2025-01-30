@@ -10,15 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,7 +58,7 @@ Returns the [CameraFeed] corresponding to the camera with the given [param index
 */
 func GetFeed(index int) [1]gdclass.CameraFeed { //gd:CameraServer.get_feed
 	once.Do(singleton)
-	return [1]gdclass.CameraFeed(class(self).GetFeed(gd.Int(index)))
+	return [1]gdclass.CameraFeed(class(self).GetFeed(int64(index)))
 }
 
 /*
@@ -103,7 +107,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Returns the [CameraFeed] corresponding to the camera with the given [param index].
 */
 //go:nosplit
-func (self class) GetFeed(index gd.Int) [1]gdclass.CameraFeed { //gd:CameraServer.get_feed
+func (self class) GetFeed(index int64) [1]gdclass.CameraFeed { //gd:CameraServer.get_feed
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -117,9 +121,9 @@ func (self class) GetFeed(index gd.Int) [1]gdclass.CameraFeed { //gd:CameraServe
 Returns the number of [CameraFeed]s registered.
 */
 //go:nosplit
-func (self class) GetFeedCount() gd.Int { //gd:CameraServer.get_feed_count
+func (self class) GetFeedCount() int64 { //gd:CameraServer.get_feed_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_get_feed_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -102,11 +102,11 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 			var value any
 			switch vtype {
 			case gd.TypeBool:
-				value = gd.UnsafeGet[gd.Bool](p_args, i-offset)
+				value = gd.UnsafeGet[bool](p_args, i-offset)
 			case gd.TypeInt:
-				value = gd.UnsafeGet[gd.Int](p_args, i-offset)
+				value = gd.UnsafeGet[int64](p_args, i-offset)
 			case gd.TypeFloat:
-				value = gd.UnsafeGet[gd.Float](p_args, i-offset)
+				value = gd.UnsafeGet[float64](p_args, i-offset)
 			case gd.TypeString:
 				ptr := gd.UnsafeGet[[1]gd.EnginePointer](p_args, i-offset)
 				val := pointers.Let[gd.String](ptr)
@@ -239,8 +239,8 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 			panic(fmt.Sprintf("gdextension: expected %v, got %v", vtype, vvalue.Type()))
 		}
 		switch val := vvalue.Interface().(type) {
-		case gd.Bool:
-			gd.UnsafeSet[gd.Bool](p_ret, val)
+		case bool:
+			gd.UnsafeSet[bool](p_ret, val)
 		case gd.Int:
 			gd.UnsafeSet[gd.Int](p_ret, val)
 		case gd.Float:

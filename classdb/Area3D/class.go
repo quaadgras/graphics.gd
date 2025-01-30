@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CollisionObject3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/CollisionObject3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -144,7 +147,7 @@ func (self Instance) Priority() int {
 }
 
 func (self Instance) SetPriority(value int) {
-	class(self).SetPriority(gd.Int(value))
+	class(self).SetPriority(int64(value))
 }
 
 func (self Instance) GravitySpaceOverride() gdclass.Area3DSpaceOverride {
@@ -168,7 +171,7 @@ func (self Instance) GravityPointUnitDistance() Float.X {
 }
 
 func (self Instance) SetGravityPointUnitDistance(value Float.X) {
-	class(self).SetGravityPointUnitDistance(gd.Float(value))
+	class(self).SetGravityPointUnitDistance(float64(value))
 }
 
 func (self Instance) GravityPointCenter() Vector3.XYZ {
@@ -176,7 +179,7 @@ func (self Instance) GravityPointCenter() Vector3.XYZ {
 }
 
 func (self Instance) SetGravityPointCenter(value Vector3.XYZ) {
-	class(self).SetGravityPointCenter(gd.Vector3(value))
+	class(self).SetGravityPointCenter(Vector3.XYZ(value))
 }
 
 func (self Instance) GravityDirection() Vector3.XYZ {
@@ -184,7 +187,7 @@ func (self Instance) GravityDirection() Vector3.XYZ {
 }
 
 func (self Instance) SetGravityDirection(value Vector3.XYZ) {
-	class(self).SetGravityDirection(gd.Vector3(value))
+	class(self).SetGravityDirection(Vector3.XYZ(value))
 }
 
 func (self Instance) Gravity() Float.X {
@@ -192,7 +195,7 @@ func (self Instance) Gravity() Float.X {
 }
 
 func (self Instance) SetGravity(value Float.X) {
-	class(self).SetGravity(gd.Float(value))
+	class(self).SetGravity(float64(value))
 }
 
 func (self Instance) LinearDampSpaceOverride() gdclass.Area3DSpaceOverride {
@@ -208,7 +211,7 @@ func (self Instance) LinearDamp() Float.X {
 }
 
 func (self Instance) SetLinearDamp(value Float.X) {
-	class(self).SetLinearDamp(gd.Float(value))
+	class(self).SetLinearDamp(float64(value))
 }
 
 func (self Instance) AngularDampSpaceOverride() gdclass.Area3DSpaceOverride {
@@ -224,7 +227,7 @@ func (self Instance) AngularDamp() Float.X {
 }
 
 func (self Instance) SetAngularDamp(value Float.X) {
-	class(self).SetAngularDamp(gd.Float(value))
+	class(self).SetAngularDamp(float64(value))
 }
 
 func (self Instance) WindForceMagnitude() Float.X {
@@ -232,7 +235,7 @@ func (self Instance) WindForceMagnitude() Float.X {
 }
 
 func (self Instance) SetWindForceMagnitude(value Float.X) {
-	class(self).SetWindForceMagnitude(gd.Float(value))
+	class(self).SetWindForceMagnitude(float64(value))
 }
 
 func (self Instance) WindAttenuationFactor() Float.X {
@@ -240,7 +243,7 @@ func (self Instance) WindAttenuationFactor() Float.X {
 }
 
 func (self Instance) SetWindAttenuationFactor(value Float.X) {
-	class(self).SetWindAttenuationFactor(gd.Float(value))
+	class(self).SetWindAttenuationFactor(float64(value))
 }
 
 func (self Instance) WindSourcePath() string {
@@ -288,7 +291,7 @@ func (self Instance) ReverbBusAmount() Float.X {
 }
 
 func (self Instance) SetReverbBusAmount(value Float.X) {
-	class(self).SetReverbAmount(gd.Float(value))
+	class(self).SetReverbAmount(float64(value))
 }
 
 func (self Instance) ReverbBusUniformity() Float.X {
@@ -296,7 +299,7 @@ func (self Instance) ReverbBusUniformity() Float.X {
 }
 
 func (self Instance) SetReverbBusUniformity(value Float.X) {
-	class(self).SetReverbUniformity(gd.Float(value))
+	class(self).SetReverbUniformity(float64(value))
 }
 
 //go:nosplit
@@ -338,7 +341,7 @@ func (self class) IsGravityAPoint() bool { //gd:Area3D.is_gravity_a_point
 }
 
 //go:nosplit
-func (self class) SetGravityPointUnitDistance(distance_scale gd.Float) { //gd:Area3D.set_gravity_point_unit_distance
+func (self class) SetGravityPointUnitDistance(distance_scale float64) { //gd:Area3D.set_gravity_point_unit_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, distance_scale)
 	var r_ret = callframe.Nil
@@ -347,9 +350,9 @@ func (self class) SetGravityPointUnitDistance(distance_scale gd.Float) { //gd:Ar
 }
 
 //go:nosplit
-func (self class) GetGravityPointUnitDistance() gd.Float { //gd:Area3D.get_gravity_point_unit_distance
+func (self class) GetGravityPointUnitDistance() float64 { //gd:Area3D.get_gravity_point_unit_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_gravity_point_unit_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -357,7 +360,7 @@ func (self class) GetGravityPointUnitDistance() gd.Float { //gd:Area3D.get_gravi
 }
 
 //go:nosplit
-func (self class) SetGravityPointCenter(center gd.Vector3) { //gd:Area3D.set_gravity_point_center
+func (self class) SetGravityPointCenter(center Vector3.XYZ) { //gd:Area3D.set_gravity_point_center
 	var frame = callframe.New()
 	callframe.Arg(frame, center)
 	var r_ret = callframe.Nil
@@ -366,9 +369,9 @@ func (self class) SetGravityPointCenter(center gd.Vector3) { //gd:Area3D.set_gra
 }
 
 //go:nosplit
-func (self class) GetGravityPointCenter() gd.Vector3 { //gd:Area3D.get_gravity_point_center
+func (self class) GetGravityPointCenter() Vector3.XYZ { //gd:Area3D.get_gravity_point_center
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_gravity_point_center, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -376,7 +379,7 @@ func (self class) GetGravityPointCenter() gd.Vector3 { //gd:Area3D.get_gravity_p
 }
 
 //go:nosplit
-func (self class) SetGravityDirection(direction gd.Vector3) { //gd:Area3D.set_gravity_direction
+func (self class) SetGravityDirection(direction Vector3.XYZ) { //gd:Area3D.set_gravity_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -385,9 +388,9 @@ func (self class) SetGravityDirection(direction gd.Vector3) { //gd:Area3D.set_gr
 }
 
 //go:nosplit
-func (self class) GetGravityDirection() gd.Vector3 { //gd:Area3D.get_gravity_direction
+func (self class) GetGravityDirection() Vector3.XYZ { //gd:Area3D.get_gravity_direction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_gravity_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -395,7 +398,7 @@ func (self class) GetGravityDirection() gd.Vector3 { //gd:Area3D.get_gravity_dir
 }
 
 //go:nosplit
-func (self class) SetGravity(gravity gd.Float) { //gd:Area3D.set_gravity
+func (self class) SetGravity(gravity float64) { //gd:Area3D.set_gravity
 	var frame = callframe.New()
 	callframe.Arg(frame, gravity)
 	var r_ret = callframe.Nil
@@ -404,9 +407,9 @@ func (self class) SetGravity(gravity gd.Float) { //gd:Area3D.set_gravity
 }
 
 //go:nosplit
-func (self class) GetGravity() gd.Float { //gd:Area3D.get_gravity
+func (self class) GetGravity() float64 { //gd:Area3D.get_gravity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -452,7 +455,7 @@ func (self class) GetAngularDampSpaceOverrideMode() gdclass.Area3DSpaceOverride 
 }
 
 //go:nosplit
-func (self class) SetAngularDamp(angular_damp gd.Float) { //gd:Area3D.set_angular_damp
+func (self class) SetAngularDamp(angular_damp float64) { //gd:Area3D.set_angular_damp
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_damp)
 	var r_ret = callframe.Nil
@@ -461,9 +464,9 @@ func (self class) SetAngularDamp(angular_damp gd.Float) { //gd:Area3D.set_angula
 }
 
 //go:nosplit
-func (self class) GetAngularDamp() gd.Float { //gd:Area3D.get_angular_damp
+func (self class) GetAngularDamp() float64 { //gd:Area3D.get_angular_damp
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_angular_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -471,7 +474,7 @@ func (self class) GetAngularDamp() gd.Float { //gd:Area3D.get_angular_damp
 }
 
 //go:nosplit
-func (self class) SetLinearDamp(linear_damp gd.Float) { //gd:Area3D.set_linear_damp
+func (self class) SetLinearDamp(linear_damp float64) { //gd:Area3D.set_linear_damp
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_damp)
 	var r_ret = callframe.Nil
@@ -480,9 +483,9 @@ func (self class) SetLinearDamp(linear_damp gd.Float) { //gd:Area3D.set_linear_d
 }
 
 //go:nosplit
-func (self class) GetLinearDamp() gd.Float { //gd:Area3D.get_linear_damp
+func (self class) GetLinearDamp() float64 { //gd:Area3D.get_linear_damp
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_linear_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -490,7 +493,7 @@ func (self class) GetLinearDamp() gd.Float { //gd:Area3D.get_linear_damp
 }
 
 //go:nosplit
-func (self class) SetPriority(priority gd.Int) { //gd:Area3D.set_priority
+func (self class) SetPriority(priority int64) { //gd:Area3D.set_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -499,9 +502,9 @@ func (self class) SetPriority(priority gd.Int) { //gd:Area3D.set_priority
 }
 
 //go:nosplit
-func (self class) GetPriority() gd.Int { //gd:Area3D.get_priority
+func (self class) GetPriority() int64 { //gd:Area3D.get_priority
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -509,7 +512,7 @@ func (self class) GetPriority() gd.Int { //gd:Area3D.get_priority
 }
 
 //go:nosplit
-func (self class) SetWindForceMagnitude(wind_force_magnitude gd.Float) { //gd:Area3D.set_wind_force_magnitude
+func (self class) SetWindForceMagnitude(wind_force_magnitude float64) { //gd:Area3D.set_wind_force_magnitude
 	var frame = callframe.New()
 	callframe.Arg(frame, wind_force_magnitude)
 	var r_ret = callframe.Nil
@@ -518,9 +521,9 @@ func (self class) SetWindForceMagnitude(wind_force_magnitude gd.Float) { //gd:Ar
 }
 
 //go:nosplit
-func (self class) GetWindForceMagnitude() gd.Float { //gd:Area3D.get_wind_force_magnitude
+func (self class) GetWindForceMagnitude() float64 { //gd:Area3D.get_wind_force_magnitude
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_wind_force_magnitude, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -528,7 +531,7 @@ func (self class) GetWindForceMagnitude() gd.Float { //gd:Area3D.get_wind_force_
 }
 
 //go:nosplit
-func (self class) SetWindAttenuationFactor(wind_attenuation_factor gd.Float) { //gd:Area3D.set_wind_attenuation_factor
+func (self class) SetWindAttenuationFactor(wind_attenuation_factor float64) { //gd:Area3D.set_wind_attenuation_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, wind_attenuation_factor)
 	var r_ret = callframe.Nil
@@ -537,9 +540,9 @@ func (self class) SetWindAttenuationFactor(wind_attenuation_factor gd.Float) { /
 }
 
 //go:nosplit
-func (self class) GetWindAttenuationFactor() gd.Float { //gd:Area3D.get_wind_attenuation_factor
+func (self class) GetWindAttenuationFactor() float64 { //gd:Area3D.get_wind_attenuation_factor
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_wind_attenuation_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -767,7 +770,7 @@ func (self class) GetReverbBusName() String.Name { //gd:Area3D.get_reverb_bus_na
 }
 
 //go:nosplit
-func (self class) SetReverbAmount(amount gd.Float) { //gd:Area3D.set_reverb_amount
+func (self class) SetReverbAmount(amount float64) { //gd:Area3D.set_reverb_amount
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -776,9 +779,9 @@ func (self class) SetReverbAmount(amount gd.Float) { //gd:Area3D.set_reverb_amou
 }
 
 //go:nosplit
-func (self class) GetReverbAmount() gd.Float { //gd:Area3D.get_reverb_amount
+func (self class) GetReverbAmount() float64 { //gd:Area3D.get_reverb_amount
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_reverb_amount, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -786,7 +789,7 @@ func (self class) GetReverbAmount() gd.Float { //gd:Area3D.get_reverb_amount
 }
 
 //go:nosplit
-func (self class) SetReverbUniformity(amount gd.Float) { //gd:Area3D.set_reverb_uniformity
+func (self class) SetReverbUniformity(amount float64) { //gd:Area3D.set_reverb_uniformity
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -795,9 +798,9 @@ func (self class) SetReverbUniformity(amount gd.Float) { //gd:Area3D.set_reverb_
 }
 
 //go:nosplit
-func (self class) GetReverbUniformity() gd.Float { //gd:Area3D.get_reverb_uniformity
+func (self class) GetReverbUniformity() float64 { //gd:Area3D.get_reverb_uniformity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_reverb_uniformity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

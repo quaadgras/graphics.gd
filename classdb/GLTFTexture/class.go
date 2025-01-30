@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 type Instance [1]gdclass.GLTFTexture
@@ -70,7 +74,7 @@ func (self Instance) SrcImage() int {
 }
 
 func (self Instance) SetSrcImage(value int) {
-	class(self).SetSrcImage(gd.Int(value))
+	class(self).SetSrcImage(int64(value))
 }
 
 func (self Instance) Sampler() int {
@@ -78,13 +82,13 @@ func (self Instance) Sampler() int {
 }
 
 func (self Instance) SetSampler(value int) {
-	class(self).SetSampler(gd.Int(value))
+	class(self).SetSampler(int64(value))
 }
 
 //go:nosplit
-func (self class) GetSrcImage() gd.Int { //gd:GLTFTexture.get_src_image
+func (self class) GetSrcImage() int64 { //gd:GLTFTexture.get_src_image
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTexture.Bind_get_src_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -92,7 +96,7 @@ func (self class) GetSrcImage() gd.Int { //gd:GLTFTexture.get_src_image
 }
 
 //go:nosplit
-func (self class) SetSrcImage(src_image gd.Int) { //gd:GLTFTexture.set_src_image
+func (self class) SetSrcImage(src_image int64) { //gd:GLTFTexture.set_src_image
 	var frame = callframe.New()
 	callframe.Arg(frame, src_image)
 	var r_ret = callframe.Nil
@@ -101,9 +105,9 @@ func (self class) SetSrcImage(src_image gd.Int) { //gd:GLTFTexture.set_src_image
 }
 
 //go:nosplit
-func (self class) GetSampler() gd.Int { //gd:GLTFTexture.get_sampler
+func (self class) GetSampler() int64 { //gd:GLTFTexture.get_sampler
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTexture.Bind_get_sampler, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -111,7 +115,7 @@ func (self class) GetSampler() gd.Int { //gd:GLTFTexture.get_sampler
 }
 
 //go:nosplit
-func (self class) SetSampler(sampler gd.Int) { //gd:GLTFTexture.set_sampler
+func (self class) SetSampler(sampler int64) { //gd:GLTFTexture.set_sampler
 	var frame = callframe.New()
 	callframe.Arg(frame, sampler)
 	var r_ret = callframe.Nil

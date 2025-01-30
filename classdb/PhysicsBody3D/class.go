@@ -9,20 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CollisionObject3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/CollisionObject3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -63,7 +67,7 @@ If [param recovery_as_collision] is [code]true[/code], any depenetration from th
 [param max_collisions] allows to retrieve more than one collision result.
 */
 func (self Instance) MoveAndCollide(motion Vector3.XYZ) [1]gdclass.KinematicCollision3D { //gd:PhysicsBody3D.move_and_collide
-	return [1]gdclass.KinematicCollision3D(class(self).MoveAndCollide(gd.Vector3(motion), false, gd.Float(0.001), false, gd.Int(1)))
+	return [1]gdclass.KinematicCollision3D(class(self).MoveAndCollide(Vector3.XYZ(motion), false, float64(0.001), false, int64(1)))
 }
 
 /*
@@ -75,7 +79,7 @@ If [param recovery_as_collision] is [code]true[/code], any depenetration from th
 [param max_collisions] allows to retrieve more than one collision result.
 */
 func (self Instance) TestMove(from Transform3D.BasisOrigin, motion Vector3.XYZ) bool { //gd:PhysicsBody3D.test_move
-	return bool(class(self).TestMove(gd.Transform3D(from), gd.Vector3(motion), [1][1]gdclass.KinematicCollision3D{}[0], gd.Float(0.001), false, gd.Int(1)))
+	return bool(class(self).TestMove(Transform3D.BasisOrigin(from), Vector3.XYZ(motion), [1][1]gdclass.KinematicCollision3D{}[0], float64(0.001), false, int64(1)))
 }
 
 /*
@@ -181,7 +185,7 @@ If [param recovery_as_collision] is [code]true[/code], any depenetration from th
 [param max_collisions] allows to retrieve more than one collision result.
 */
 //go:nosplit
-func (self class) MoveAndCollide(motion gd.Vector3, test_only bool, safe_margin gd.Float, recovery_as_collision bool, max_collisions gd.Int) [1]gdclass.KinematicCollision3D { //gd:PhysicsBody3D.move_and_collide
+func (self class) MoveAndCollide(motion Vector3.XYZ, test_only bool, safe_margin float64, recovery_as_collision bool, max_collisions int64) [1]gdclass.KinematicCollision3D { //gd:PhysicsBody3D.move_and_collide
 	var frame = callframe.New()
 	callframe.Arg(frame, motion)
 	callframe.Arg(frame, test_only)
@@ -204,7 +208,7 @@ If [param recovery_as_collision] is [code]true[/code], any depenetration from th
 [param max_collisions] allows to retrieve more than one collision result.
 */
 //go:nosplit
-func (self class) TestMove(from gd.Transform3D, motion gd.Vector3, collision [1]gdclass.KinematicCollision3D, safe_margin gd.Float, recovery_as_collision bool, max_collisions gd.Int) bool { //gd:PhysicsBody3D.test_move
+func (self class) TestMove(from Transform3D.BasisOrigin, motion Vector3.XYZ, collision [1]gdclass.KinematicCollision3D, safe_margin float64, recovery_as_collision bool, max_collisions int64) bool { //gd:PhysicsBody3D.test_move
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, motion)
@@ -223,9 +227,9 @@ func (self class) TestMove(from gd.Transform3D, motion gd.Vector3, collision [1]
 Returns the gravity vector computed from all sources that can affect the body, including all gravity overrides from [Area3D] nodes and the global world gravity.
 */
 //go:nosplit
-func (self class) GetGravity() gd.Vector3 { //gd:PhysicsBody3D.get_gravity
+func (self class) GetGravity() Vector3.XYZ { //gd:PhysicsBody3D.get_gravity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsBody3D.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

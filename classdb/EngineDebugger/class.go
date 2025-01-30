@@ -10,15 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -165,7 +169,7 @@ Sets the current debugging lines that remain.
 */
 func SetLinesLeft(lines int) { //gd:EngineDebugger.set_lines_left
 	once.Do(singleton)
-	class(self).SetLinesLeft(gd.Int(lines))
+	class(self).SetLinesLeft(int64(lines))
 }
 
 /*
@@ -181,7 +185,7 @@ Sets the current debugging depth.
 */
 func SetDepth(depth int) { //gd:EngineDebugger.set_depth
 	once.Do(singleton)
-	class(self).SetDepth(gd.Int(depth))
+	class(self).SetDepth(int64(depth))
 }
 
 /*
@@ -197,7 +201,7 @@ Returns [code]true[/code] if the given [param source] and [param line] represent
 */
 func IsBreakpoint(line int, source string) bool { //gd:EngineDebugger.is_breakpoint
 	once.Do(singleton)
-	return bool(class(self).IsBreakpoint(gd.Int(line), String.Name(String.New(source))))
+	return bool(class(self).IsBreakpoint(int64(line), String.Name(String.New(source))))
 }
 
 /*
@@ -213,7 +217,7 @@ Inserts a new breakpoint with the given [param source] and [param line].
 */
 func InsertBreakpoint(line int, source string) { //gd:EngineDebugger.insert_breakpoint
 	once.Do(singleton)
-	class(self).InsertBreakpoint(gd.Int(line), String.Name(String.New(source)))
+	class(self).InsertBreakpoint(int64(line), String.Name(String.New(source)))
 }
 
 /*
@@ -221,7 +225,7 @@ Removes a breakpoint with the given [param source] and [param line].
 */
 func RemoveBreakpoint(line int, source string) { //gd:EngineDebugger.remove_breakpoint
 	once.Do(singleton)
-	class(self).RemoveBreakpoint(gd.Int(line), String.Name(String.New(source)))
+	class(self).RemoveBreakpoint(int64(line), String.Name(String.New(source)))
 }
 
 /*
@@ -430,7 +434,7 @@ func (self class) ScriptDebug(language [1]gdclass.ScriptLanguage, can_continue b
 Sets the current debugging lines that remain.
 */
 //go:nosplit
-func (self class) SetLinesLeft(lines gd.Int) { //gd:EngineDebugger.set_lines_left
+func (self class) SetLinesLeft(lines int64) { //gd:EngineDebugger.set_lines_left
 	var frame = callframe.New()
 	callframe.Arg(frame, lines)
 	var r_ret = callframe.Nil
@@ -442,9 +446,9 @@ func (self class) SetLinesLeft(lines gd.Int) { //gd:EngineDebugger.set_lines_lef
 Returns the number of lines that remain.
 */
 //go:nosplit
-func (self class) GetLinesLeft() gd.Int { //gd:EngineDebugger.get_lines_left
+func (self class) GetLinesLeft() int64 { //gd:EngineDebugger.get_lines_left
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EngineDebugger.Bind_get_lines_left, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -455,7 +459,7 @@ func (self class) GetLinesLeft() gd.Int { //gd:EngineDebugger.get_lines_left
 Sets the current debugging depth.
 */
 //go:nosplit
-func (self class) SetDepth(depth gd.Int) { //gd:EngineDebugger.set_depth
+func (self class) SetDepth(depth int64) { //gd:EngineDebugger.set_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, depth)
 	var r_ret = callframe.Nil
@@ -467,9 +471,9 @@ func (self class) SetDepth(depth gd.Int) { //gd:EngineDebugger.set_depth
 Returns the current debug depth.
 */
 //go:nosplit
-func (self class) GetDepth() gd.Int { //gd:EngineDebugger.get_depth
+func (self class) GetDepth() int64 { //gd:EngineDebugger.get_depth
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EngineDebugger.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -480,7 +484,7 @@ func (self class) GetDepth() gd.Int { //gd:EngineDebugger.get_depth
 Returns [code]true[/code] if the given [param source] and [param line] represent an existing breakpoint.
 */
 //go:nosplit
-func (self class) IsBreakpoint(line gd.Int, source String.Name) bool { //gd:EngineDebugger.is_breakpoint
+func (self class) IsBreakpoint(line int64, source String.Name) bool { //gd:EngineDebugger.is_breakpoint
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(source)))
@@ -508,7 +512,7 @@ func (self class) IsSkippingBreakpoints() bool { //gd:EngineDebugger.is_skipping
 Inserts a new breakpoint with the given [param source] and [param line].
 */
 //go:nosplit
-func (self class) InsertBreakpoint(line gd.Int, source String.Name) { //gd:EngineDebugger.insert_breakpoint
+func (self class) InsertBreakpoint(line int64, source String.Name) { //gd:EngineDebugger.insert_breakpoint
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(source)))
@@ -521,7 +525,7 @@ func (self class) InsertBreakpoint(line gd.Int, source String.Name) { //gd:Engin
 Removes a breakpoint with the given [param source] and [param line].
 */
 //go:nosplit
-func (self class) RemoveBreakpoint(line gd.Int, source String.Name) { //gd:EngineDebugger.remove_breakpoint
+func (self class) RemoveBreakpoint(line int64, source String.Name) { //gd:EngineDebugger.remove_breakpoint
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(source)))

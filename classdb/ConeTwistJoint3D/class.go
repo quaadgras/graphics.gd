@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Joint3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Joint3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,7 +78,7 @@ func (self Instance) SwingSpan() Float.X {
 }
 
 func (self Instance) SetSwingSpan(value Float.X) {
-	class(self).SetParam(0, gd.Float(value))
+	class(self).SetParam(0, float64(value))
 }
 
 func (self Instance) TwistSpan() Float.X {
@@ -83,7 +86,7 @@ func (self Instance) TwistSpan() Float.X {
 }
 
 func (self Instance) SetTwistSpan(value Float.X) {
-	class(self).SetParam(1, gd.Float(value))
+	class(self).SetParam(1, float64(value))
 }
 
 func (self Instance) Bias() Float.X {
@@ -91,7 +94,7 @@ func (self Instance) Bias() Float.X {
 }
 
 func (self Instance) SetBias(value Float.X) {
-	class(self).SetParam(2, gd.Float(value))
+	class(self).SetParam(2, float64(value))
 }
 
 func (self Instance) Softness() Float.X {
@@ -99,7 +102,7 @@ func (self Instance) Softness() Float.X {
 }
 
 func (self Instance) SetSoftness(value Float.X) {
-	class(self).SetParam(3, gd.Float(value))
+	class(self).SetParam(3, float64(value))
 }
 
 func (self Instance) Relaxation() Float.X {
@@ -107,14 +110,14 @@ func (self Instance) Relaxation() Float.X {
 }
 
 func (self Instance) SetRelaxation(value Float.X) {
-	class(self).SetParam(4, gd.Float(value))
+	class(self).SetParam(4, float64(value))
 }
 
 /*
 Sets the value of the specified parameter.
 */
 //go:nosplit
-func (self class) SetParam(param gdclass.ConeTwistJoint3DParam, value gd.Float) { //gd:ConeTwistJoint3D.set_param
+func (self class) SetParam(param gdclass.ConeTwistJoint3DParam, value float64) { //gd:ConeTwistJoint3D.set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -127,10 +130,10 @@ func (self class) SetParam(param gdclass.ConeTwistJoint3DParam, value gd.Float) 
 Returns the value of the specified parameter.
 */
 //go:nosplit
-func (self class) GetParam(param gdclass.ConeTwistJoint3DParam) gd.Float { //gd:ConeTwistJoint3D.get_param
+func (self class) GetParam(param gdclass.ConeTwistJoint3DParam) float64 { //gd:ConeTwistJoint3D.get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConeTwistJoint3D.Bind_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

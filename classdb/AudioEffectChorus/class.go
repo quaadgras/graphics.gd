@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioEffect"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioEffect"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,40 +55,40 @@ type Any interface {
 }
 
 func (self Instance) SetVoiceDelayMs(voice_idx int, delay_ms Float.X) { //gd:AudioEffectChorus.set_voice_delay_ms
-	class(self).SetVoiceDelayMs(gd.Int(voice_idx), gd.Float(delay_ms))
+	class(self).SetVoiceDelayMs(int64(voice_idx), float64(delay_ms))
 }
 func (self Instance) GetVoiceDelayMs(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_delay_ms
-	return Float.X(Float.X(class(self).GetVoiceDelayMs(gd.Int(voice_idx))))
+	return Float.X(Float.X(class(self).GetVoiceDelayMs(int64(voice_idx))))
 }
 func (self Instance) SetVoiceRateHz(voice_idx int, rate_hz Float.X) { //gd:AudioEffectChorus.set_voice_rate_hz
-	class(self).SetVoiceRateHz(gd.Int(voice_idx), gd.Float(rate_hz))
+	class(self).SetVoiceRateHz(int64(voice_idx), float64(rate_hz))
 }
 func (self Instance) GetVoiceRateHz(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_rate_hz
-	return Float.X(Float.X(class(self).GetVoiceRateHz(gd.Int(voice_idx))))
+	return Float.X(Float.X(class(self).GetVoiceRateHz(int64(voice_idx))))
 }
 func (self Instance) SetVoiceDepthMs(voice_idx int, depth_ms Float.X) { //gd:AudioEffectChorus.set_voice_depth_ms
-	class(self).SetVoiceDepthMs(gd.Int(voice_idx), gd.Float(depth_ms))
+	class(self).SetVoiceDepthMs(int64(voice_idx), float64(depth_ms))
 }
 func (self Instance) GetVoiceDepthMs(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_depth_ms
-	return Float.X(Float.X(class(self).GetVoiceDepthMs(gd.Int(voice_idx))))
+	return Float.X(Float.X(class(self).GetVoiceDepthMs(int64(voice_idx))))
 }
 func (self Instance) SetVoiceLevelDb(voice_idx int, level_db Float.X) { //gd:AudioEffectChorus.set_voice_level_db
-	class(self).SetVoiceLevelDb(gd.Int(voice_idx), gd.Float(level_db))
+	class(self).SetVoiceLevelDb(int64(voice_idx), float64(level_db))
 }
 func (self Instance) GetVoiceLevelDb(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_level_db
-	return Float.X(Float.X(class(self).GetVoiceLevelDb(gd.Int(voice_idx))))
+	return Float.X(Float.X(class(self).GetVoiceLevelDb(int64(voice_idx))))
 }
 func (self Instance) SetVoiceCutoffHz(voice_idx int, cutoff_hz Float.X) { //gd:AudioEffectChorus.set_voice_cutoff_hz
-	class(self).SetVoiceCutoffHz(gd.Int(voice_idx), gd.Float(cutoff_hz))
+	class(self).SetVoiceCutoffHz(int64(voice_idx), float64(cutoff_hz))
 }
 func (self Instance) GetVoiceCutoffHz(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_cutoff_hz
-	return Float.X(Float.X(class(self).GetVoiceCutoffHz(gd.Int(voice_idx))))
+	return Float.X(Float.X(class(self).GetVoiceCutoffHz(int64(voice_idx))))
 }
 func (self Instance) SetVoicePan(voice_idx int, pan Float.X) { //gd:AudioEffectChorus.set_voice_pan
-	class(self).SetVoicePan(gd.Int(voice_idx), gd.Float(pan))
+	class(self).SetVoicePan(int64(voice_idx), float64(pan))
 }
 func (self Instance) GetVoicePan(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_pan
-	return Float.X(Float.X(class(self).GetVoicePan(gd.Int(voice_idx))))
+	return Float.X(Float.X(class(self).GetVoicePan(int64(voice_idx))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -112,7 +115,7 @@ func (self Instance) VoiceCount() int {
 }
 
 func (self Instance) SetVoiceCount(value int) {
-	class(self).SetVoiceCount(gd.Int(value))
+	class(self).SetVoiceCount(int64(value))
 }
 
 func (self Instance) Dry() Float.X {
@@ -120,7 +123,7 @@ func (self Instance) Dry() Float.X {
 }
 
 func (self Instance) SetDry(value Float.X) {
-	class(self).SetDry(gd.Float(value))
+	class(self).SetDry(float64(value))
 }
 
 func (self Instance) Wet() Float.X {
@@ -128,11 +131,11 @@ func (self Instance) Wet() Float.X {
 }
 
 func (self Instance) SetWet(value Float.X) {
-	class(self).SetWet(gd.Float(value))
+	class(self).SetWet(float64(value))
 }
 
 //go:nosplit
-func (self class) SetVoiceCount(voices gd.Int) { //gd:AudioEffectChorus.set_voice_count
+func (self class) SetVoiceCount(voices int64) { //gd:AudioEffectChorus.set_voice_count
 	var frame = callframe.New()
 	callframe.Arg(frame, voices)
 	var r_ret = callframe.Nil
@@ -141,9 +144,9 @@ func (self class) SetVoiceCount(voices gd.Int) { //gd:AudioEffectChorus.set_voic
 }
 
 //go:nosplit
-func (self class) GetVoiceCount() gd.Int { //gd:AudioEffectChorus.get_voice_count
+func (self class) GetVoiceCount() int64 { //gd:AudioEffectChorus.get_voice_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectChorus.Bind_get_voice_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -151,7 +154,7 @@ func (self class) GetVoiceCount() gd.Int { //gd:AudioEffectChorus.get_voice_coun
 }
 
 //go:nosplit
-func (self class) SetVoiceDelayMs(voice_idx gd.Int, delay_ms gd.Float) { //gd:AudioEffectChorus.set_voice_delay_ms
+func (self class) SetVoiceDelayMs(voice_idx int64, delay_ms float64) { //gd:AudioEffectChorus.set_voice_delay_ms
 	var frame = callframe.New()
 	callframe.Arg(frame, voice_idx)
 	callframe.Arg(frame, delay_ms)
@@ -161,10 +164,10 @@ func (self class) SetVoiceDelayMs(voice_idx gd.Int, delay_ms gd.Float) { //gd:Au
 }
 
 //go:nosplit
-func (self class) GetVoiceDelayMs(voice_idx gd.Int) gd.Float { //gd:AudioEffectChorus.get_voice_delay_ms
+func (self class) GetVoiceDelayMs(voice_idx int64) float64 { //gd:AudioEffectChorus.get_voice_delay_ms
 	var frame = callframe.New()
 	callframe.Arg(frame, voice_idx)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectChorus.Bind_get_voice_delay_ms, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -172,7 +175,7 @@ func (self class) GetVoiceDelayMs(voice_idx gd.Int) gd.Float { //gd:AudioEffectC
 }
 
 //go:nosplit
-func (self class) SetVoiceRateHz(voice_idx gd.Int, rate_hz gd.Float) { //gd:AudioEffectChorus.set_voice_rate_hz
+func (self class) SetVoiceRateHz(voice_idx int64, rate_hz float64) { //gd:AudioEffectChorus.set_voice_rate_hz
 	var frame = callframe.New()
 	callframe.Arg(frame, voice_idx)
 	callframe.Arg(frame, rate_hz)
@@ -182,10 +185,10 @@ func (self class) SetVoiceRateHz(voice_idx gd.Int, rate_hz gd.Float) { //gd:Audi
 }
 
 //go:nosplit
-func (self class) GetVoiceRateHz(voice_idx gd.Int) gd.Float { //gd:AudioEffectChorus.get_voice_rate_hz
+func (self class) GetVoiceRateHz(voice_idx int64) float64 { //gd:AudioEffectChorus.get_voice_rate_hz
 	var frame = callframe.New()
 	callframe.Arg(frame, voice_idx)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectChorus.Bind_get_voice_rate_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -193,7 +196,7 @@ func (self class) GetVoiceRateHz(voice_idx gd.Int) gd.Float { //gd:AudioEffectCh
 }
 
 //go:nosplit
-func (self class) SetVoiceDepthMs(voice_idx gd.Int, depth_ms gd.Float) { //gd:AudioEffectChorus.set_voice_depth_ms
+func (self class) SetVoiceDepthMs(voice_idx int64, depth_ms float64) { //gd:AudioEffectChorus.set_voice_depth_ms
 	var frame = callframe.New()
 	callframe.Arg(frame, voice_idx)
 	callframe.Arg(frame, depth_ms)
@@ -203,10 +206,10 @@ func (self class) SetVoiceDepthMs(voice_idx gd.Int, depth_ms gd.Float) { //gd:Au
 }
 
 //go:nosplit
-func (self class) GetVoiceDepthMs(voice_idx gd.Int) gd.Float { //gd:AudioEffectChorus.get_voice_depth_ms
+func (self class) GetVoiceDepthMs(voice_idx int64) float64 { //gd:AudioEffectChorus.get_voice_depth_ms
 	var frame = callframe.New()
 	callframe.Arg(frame, voice_idx)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectChorus.Bind_get_voice_depth_ms, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -214,7 +217,7 @@ func (self class) GetVoiceDepthMs(voice_idx gd.Int) gd.Float { //gd:AudioEffectC
 }
 
 //go:nosplit
-func (self class) SetVoiceLevelDb(voice_idx gd.Int, level_db gd.Float) { //gd:AudioEffectChorus.set_voice_level_db
+func (self class) SetVoiceLevelDb(voice_idx int64, level_db float64) { //gd:AudioEffectChorus.set_voice_level_db
 	var frame = callframe.New()
 	callframe.Arg(frame, voice_idx)
 	callframe.Arg(frame, level_db)
@@ -224,10 +227,10 @@ func (self class) SetVoiceLevelDb(voice_idx gd.Int, level_db gd.Float) { //gd:Au
 }
 
 //go:nosplit
-func (self class) GetVoiceLevelDb(voice_idx gd.Int) gd.Float { //gd:AudioEffectChorus.get_voice_level_db
+func (self class) GetVoiceLevelDb(voice_idx int64) float64 { //gd:AudioEffectChorus.get_voice_level_db
 	var frame = callframe.New()
 	callframe.Arg(frame, voice_idx)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectChorus.Bind_get_voice_level_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -235,7 +238,7 @@ func (self class) GetVoiceLevelDb(voice_idx gd.Int) gd.Float { //gd:AudioEffectC
 }
 
 //go:nosplit
-func (self class) SetVoiceCutoffHz(voice_idx gd.Int, cutoff_hz gd.Float) { //gd:AudioEffectChorus.set_voice_cutoff_hz
+func (self class) SetVoiceCutoffHz(voice_idx int64, cutoff_hz float64) { //gd:AudioEffectChorus.set_voice_cutoff_hz
 	var frame = callframe.New()
 	callframe.Arg(frame, voice_idx)
 	callframe.Arg(frame, cutoff_hz)
@@ -245,10 +248,10 @@ func (self class) SetVoiceCutoffHz(voice_idx gd.Int, cutoff_hz gd.Float) { //gd:
 }
 
 //go:nosplit
-func (self class) GetVoiceCutoffHz(voice_idx gd.Int) gd.Float { //gd:AudioEffectChorus.get_voice_cutoff_hz
+func (self class) GetVoiceCutoffHz(voice_idx int64) float64 { //gd:AudioEffectChorus.get_voice_cutoff_hz
 	var frame = callframe.New()
 	callframe.Arg(frame, voice_idx)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectChorus.Bind_get_voice_cutoff_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -256,7 +259,7 @@ func (self class) GetVoiceCutoffHz(voice_idx gd.Int) gd.Float { //gd:AudioEffect
 }
 
 //go:nosplit
-func (self class) SetVoicePan(voice_idx gd.Int, pan gd.Float) { //gd:AudioEffectChorus.set_voice_pan
+func (self class) SetVoicePan(voice_idx int64, pan float64) { //gd:AudioEffectChorus.set_voice_pan
 	var frame = callframe.New()
 	callframe.Arg(frame, voice_idx)
 	callframe.Arg(frame, pan)
@@ -266,10 +269,10 @@ func (self class) SetVoicePan(voice_idx gd.Int, pan gd.Float) { //gd:AudioEffect
 }
 
 //go:nosplit
-func (self class) GetVoicePan(voice_idx gd.Int) gd.Float { //gd:AudioEffectChorus.get_voice_pan
+func (self class) GetVoicePan(voice_idx int64) float64 { //gd:AudioEffectChorus.get_voice_pan
 	var frame = callframe.New()
 	callframe.Arg(frame, voice_idx)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectChorus.Bind_get_voice_pan, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -277,7 +280,7 @@ func (self class) GetVoicePan(voice_idx gd.Int) gd.Float { //gd:AudioEffectChoru
 }
 
 //go:nosplit
-func (self class) SetWet(amount gd.Float) { //gd:AudioEffectChorus.set_wet
+func (self class) SetWet(amount float64) { //gd:AudioEffectChorus.set_wet
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -286,9 +289,9 @@ func (self class) SetWet(amount gd.Float) { //gd:AudioEffectChorus.set_wet
 }
 
 //go:nosplit
-func (self class) GetWet() gd.Float { //gd:AudioEffectChorus.get_wet
+func (self class) GetWet() float64 { //gd:AudioEffectChorus.get_wet
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectChorus.Bind_get_wet, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -296,7 +299,7 @@ func (self class) GetWet() gd.Float { //gd:AudioEffectChorus.get_wet
 }
 
 //go:nosplit
-func (self class) SetDry(amount gd.Float) { //gd:AudioEffectChorus.set_dry
+func (self class) SetDry(amount float64) { //gd:AudioEffectChorus.set_dry
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -305,9 +308,9 @@ func (self class) SetDry(amount gd.Float) { //gd:AudioEffectChorus.set_dry
 }
 
 //go:nosplit
-func (self class) GetDry() gd.Float { //gd:AudioEffectChorus.get_dry
+func (self class) GetDry() float64 { //gd:AudioEffectChorus.get_dry
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectChorus.Bind_get_dry, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

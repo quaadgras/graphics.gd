@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/OpenXRCompositionLayer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/OpenXRCompositionLayer"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,11 +79,11 @@ func (self Instance) QuadSize() Vector2.XY {
 }
 
 func (self Instance) SetQuadSize(value Vector2.XY) {
-	class(self).SetQuadSize(gd.Vector2(value))
+	class(self).SetQuadSize(Vector2.XY(value))
 }
 
 //go:nosplit
-func (self class) SetQuadSize(size gd.Vector2) { //gd:OpenXRCompositionLayerQuad.set_quad_size
+func (self class) SetQuadSize(size Vector2.XY) { //gd:OpenXRCompositionLayerQuad.set_quad_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -88,9 +92,9 @@ func (self class) SetQuadSize(size gd.Vector2) { //gd:OpenXRCompositionLayerQuad
 }
 
 //go:nosplit
-func (self class) GetQuadSize() gd.Vector2 { //gd:OpenXRCompositionLayerQuad.get_quad_size
+func (self class) GetQuadSize() Vector2.XY { //gd:OpenXRCompositionLayerQuad.get_quad_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerQuad.Bind_get_quad_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

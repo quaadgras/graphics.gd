@@ -10,15 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,9 +55,9 @@ func singleton() {
 Returns a Base64-encoded string of the [Variant] [param variant]. If [param full_objects] is [code]true[/code], encoding objects is allowed (and can potentially include code).
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
-func VariantToBase64(variant any) string { //gd:Marshalls.variant_to_base64
+func VariantToBase64(v any) string { //gd:Marshalls.variant_to_base64
 	once.Do(singleton)
-	return string(class(self).VariantToBase64(gd.NewVariant(variant), false).String())
+	return string(class(self).VariantToBase64(variant.New(v), false).String())
 }
 
 /*
@@ -113,9 +117,9 @@ Returns a Base64-encoded string of the [Variant] [param variant]. If [param full
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
 //go:nosplit
-func (self class) VariantToBase64(variant gd.Variant, full_objects bool) String.Readable { //gd:Marshalls.variant_to_base64
+func (self class) VariantToBase64(v variant.Any, full_objects bool) String.Readable { //gd:Marshalls.variant_to_base64
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(variant))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(v)))
 	callframe.Arg(frame, full_objects)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_variant_to_base64, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -130,13 +134,13 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 //go:nosplit
-func (self class) Base64ToVariant(base64_str String.Readable, allow_objects bool) gd.Variant { //gd:Marshalls.base64_to_variant
+func (self class) Base64ToVariant(base64_str String.Readable, allow_objects bool) variant.Any { //gd:Marshalls.base64_to_variant
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(base64_str)))
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_base64_to_variant, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

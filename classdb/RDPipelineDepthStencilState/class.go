@@ -9,16 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -105,7 +108,7 @@ func (self Instance) DepthRangeMin() Float.X {
 }
 
 func (self Instance) SetDepthRangeMin(value Float.X) {
-	class(self).SetDepthRangeMin(gd.Float(value))
+	class(self).SetDepthRangeMin(float64(value))
 }
 
 func (self Instance) DepthRangeMax() Float.X {
@@ -113,7 +116,7 @@ func (self Instance) DepthRangeMax() Float.X {
 }
 
 func (self Instance) SetDepthRangeMax(value Float.X) {
-	class(self).SetDepthRangeMax(gd.Float(value))
+	class(self).SetDepthRangeMax(float64(value))
 }
 
 func (self Instance) EnableStencil() bool {
@@ -161,7 +164,7 @@ func (self Instance) FrontOpCompareMask() int {
 }
 
 func (self Instance) SetFrontOpCompareMask(value int) {
-	class(self).SetFrontOpCompareMask(gd.Int(value))
+	class(self).SetFrontOpCompareMask(int64(value))
 }
 
 func (self Instance) FrontOpWriteMask() int {
@@ -169,7 +172,7 @@ func (self Instance) FrontOpWriteMask() int {
 }
 
 func (self Instance) SetFrontOpWriteMask(value int) {
-	class(self).SetFrontOpWriteMask(gd.Int(value))
+	class(self).SetFrontOpWriteMask(int64(value))
 }
 
 func (self Instance) FrontOpReference() int {
@@ -177,7 +180,7 @@ func (self Instance) FrontOpReference() int {
 }
 
 func (self Instance) SetFrontOpReference(value int) {
-	class(self).SetFrontOpReference(gd.Int(value))
+	class(self).SetFrontOpReference(int64(value))
 }
 
 func (self Instance) BackOpFail() gdclass.RenderingDeviceStencilOperation {
@@ -217,7 +220,7 @@ func (self Instance) BackOpCompareMask() int {
 }
 
 func (self Instance) SetBackOpCompareMask(value int) {
-	class(self).SetBackOpCompareMask(gd.Int(value))
+	class(self).SetBackOpCompareMask(int64(value))
 }
 
 func (self Instance) BackOpWriteMask() int {
@@ -225,7 +228,7 @@ func (self Instance) BackOpWriteMask() int {
 }
 
 func (self Instance) SetBackOpWriteMask(value int) {
-	class(self).SetBackOpWriteMask(gd.Int(value))
+	class(self).SetBackOpWriteMask(int64(value))
 }
 
 func (self Instance) BackOpReference() int {
@@ -233,7 +236,7 @@ func (self Instance) BackOpReference() int {
 }
 
 func (self Instance) SetBackOpReference(value int) {
-	class(self).SetBackOpReference(gd.Int(value))
+	class(self).SetBackOpReference(int64(value))
 }
 
 //go:nosplit
@@ -313,7 +316,7 @@ func (self class) GetEnableDepthRange() bool { //gd:RDPipelineDepthStencilState.
 }
 
 //go:nosplit
-func (self class) SetDepthRangeMin(p_member gd.Float) { //gd:RDPipelineDepthStencilState.set_depth_range_min
+func (self class) SetDepthRangeMin(p_member float64) { //gd:RDPipelineDepthStencilState.set_depth_range_min
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -322,9 +325,9 @@ func (self class) SetDepthRangeMin(p_member gd.Float) { //gd:RDPipelineDepthSten
 }
 
 //go:nosplit
-func (self class) GetDepthRangeMin() gd.Float { //gd:RDPipelineDepthStencilState.get_depth_range_min
+func (self class) GetDepthRangeMin() float64 { //gd:RDPipelineDepthStencilState.get_depth_range_min
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_depth_range_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -332,7 +335,7 @@ func (self class) GetDepthRangeMin() gd.Float { //gd:RDPipelineDepthStencilState
 }
 
 //go:nosplit
-func (self class) SetDepthRangeMax(p_member gd.Float) { //gd:RDPipelineDepthStencilState.set_depth_range_max
+func (self class) SetDepthRangeMax(p_member float64) { //gd:RDPipelineDepthStencilState.set_depth_range_max
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -341,9 +344,9 @@ func (self class) SetDepthRangeMax(p_member gd.Float) { //gd:RDPipelineDepthSten
 }
 
 //go:nosplit
-func (self class) GetDepthRangeMax() gd.Float { //gd:RDPipelineDepthStencilState.get_depth_range_max
+func (self class) GetDepthRangeMax() float64 { //gd:RDPipelineDepthStencilState.get_depth_range_max
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_depth_range_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -446,7 +449,7 @@ func (self class) GetFrontOpCompare() gdclass.RenderingDeviceCompareOperator { /
 }
 
 //go:nosplit
-func (self class) SetFrontOpCompareMask(p_member gd.Int) { //gd:RDPipelineDepthStencilState.set_front_op_compare_mask
+func (self class) SetFrontOpCompareMask(p_member int64) { //gd:RDPipelineDepthStencilState.set_front_op_compare_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -455,9 +458,9 @@ func (self class) SetFrontOpCompareMask(p_member gd.Int) { //gd:RDPipelineDepthS
 }
 
 //go:nosplit
-func (self class) GetFrontOpCompareMask() gd.Int { //gd:RDPipelineDepthStencilState.get_front_op_compare_mask
+func (self class) GetFrontOpCompareMask() int64 { //gd:RDPipelineDepthStencilState.get_front_op_compare_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_compare_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -465,7 +468,7 @@ func (self class) GetFrontOpCompareMask() gd.Int { //gd:RDPipelineDepthStencilSt
 }
 
 //go:nosplit
-func (self class) SetFrontOpWriteMask(p_member gd.Int) { //gd:RDPipelineDepthStencilState.set_front_op_write_mask
+func (self class) SetFrontOpWriteMask(p_member int64) { //gd:RDPipelineDepthStencilState.set_front_op_write_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -474,9 +477,9 @@ func (self class) SetFrontOpWriteMask(p_member gd.Int) { //gd:RDPipelineDepthSte
 }
 
 //go:nosplit
-func (self class) GetFrontOpWriteMask() gd.Int { //gd:RDPipelineDepthStencilState.get_front_op_write_mask
+func (self class) GetFrontOpWriteMask() int64 { //gd:RDPipelineDepthStencilState.get_front_op_write_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_write_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -484,7 +487,7 @@ func (self class) GetFrontOpWriteMask() gd.Int { //gd:RDPipelineDepthStencilStat
 }
 
 //go:nosplit
-func (self class) SetFrontOpReference(p_member gd.Int) { //gd:RDPipelineDepthStencilState.set_front_op_reference
+func (self class) SetFrontOpReference(p_member int64) { //gd:RDPipelineDepthStencilState.set_front_op_reference
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -493,9 +496,9 @@ func (self class) SetFrontOpReference(p_member gd.Int) { //gd:RDPipelineDepthSte
 }
 
 //go:nosplit
-func (self class) GetFrontOpReference() gd.Int { //gd:RDPipelineDepthStencilState.get_front_op_reference
+func (self class) GetFrontOpReference() int64 { //gd:RDPipelineDepthStencilState.get_front_op_reference
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_reference, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -579,7 +582,7 @@ func (self class) GetBackOpCompare() gdclass.RenderingDeviceCompareOperator { //
 }
 
 //go:nosplit
-func (self class) SetBackOpCompareMask(p_member gd.Int) { //gd:RDPipelineDepthStencilState.set_back_op_compare_mask
+func (self class) SetBackOpCompareMask(p_member int64) { //gd:RDPipelineDepthStencilState.set_back_op_compare_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -588,9 +591,9 @@ func (self class) SetBackOpCompareMask(p_member gd.Int) { //gd:RDPipelineDepthSt
 }
 
 //go:nosplit
-func (self class) GetBackOpCompareMask() gd.Int { //gd:RDPipelineDepthStencilState.get_back_op_compare_mask
+func (self class) GetBackOpCompareMask() int64 { //gd:RDPipelineDepthStencilState.get_back_op_compare_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_compare_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -598,7 +601,7 @@ func (self class) GetBackOpCompareMask() gd.Int { //gd:RDPipelineDepthStencilSta
 }
 
 //go:nosplit
-func (self class) SetBackOpWriteMask(p_member gd.Int) { //gd:RDPipelineDepthStencilState.set_back_op_write_mask
+func (self class) SetBackOpWriteMask(p_member int64) { //gd:RDPipelineDepthStencilState.set_back_op_write_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -607,9 +610,9 @@ func (self class) SetBackOpWriteMask(p_member gd.Int) { //gd:RDPipelineDepthSten
 }
 
 //go:nosplit
-func (self class) GetBackOpWriteMask() gd.Int { //gd:RDPipelineDepthStencilState.get_back_op_write_mask
+func (self class) GetBackOpWriteMask() int64 { //gd:RDPipelineDepthStencilState.get_back_op_write_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_write_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -617,7 +620,7 @@ func (self class) GetBackOpWriteMask() gd.Int { //gd:RDPipelineDepthStencilState
 }
 
 //go:nosplit
-func (self class) SetBackOpReference(p_member gd.Int) { //gd:RDPipelineDepthStencilState.set_back_op_reference
+func (self class) SetBackOpReference(p_member int64) { //gd:RDPipelineDepthStencilState.set_back_op_reference
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -626,9 +629,9 @@ func (self class) SetBackOpReference(p_member gd.Int) { //gd:RDPipelineDepthSten
 }
 
 //go:nosplit
-func (self class) GetBackOpReference() gd.Int { //gd:RDPipelineDepthStencilState.get_back_op_reference
+func (self class) GetBackOpReference() int64 { //gd:RDPipelineDepthStencilState.get_back_op_reference
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_reference, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

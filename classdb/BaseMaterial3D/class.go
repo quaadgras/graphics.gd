@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -85,7 +88,7 @@ func (self Instance) AlphaScissorThreshold() Float.X {
 }
 
 func (self Instance) SetAlphaScissorThreshold(value Float.X) {
-	class(self).SetAlphaScissorThreshold(gd.Float(value))
+	class(self).SetAlphaScissorThreshold(float64(value))
 }
 
 func (self Instance) AlphaHashScale() Float.X {
@@ -93,7 +96,7 @@ func (self Instance) AlphaHashScale() Float.X {
 }
 
 func (self Instance) SetAlphaHashScale(value Float.X) {
-	class(self).SetAlphaHashScale(gd.Float(value))
+	class(self).SetAlphaHashScale(float64(value))
 }
 
 func (self Instance) AlphaAntialiasingMode() gdclass.BaseMaterial3DAlphaAntiAliasing {
@@ -109,7 +112,7 @@ func (self Instance) AlphaAntialiasingEdge() Float.X {
 }
 
 func (self Instance) SetAlphaAntialiasingEdge(value Float.X) {
-	class(self).SetAlphaAntialiasingEdge(gd.Float(value))
+	class(self).SetAlphaAntialiasingEdge(float64(value))
 }
 
 func (self Instance) BlendMode() gdclass.BaseMaterial3DBlendMode {
@@ -205,7 +208,7 @@ func (self Instance) AlbedoColor() Color.RGBA {
 }
 
 func (self Instance) SetAlbedoColor(value Color.RGBA) {
-	class(self).SetAlbedo(gd.Color(value))
+	class(self).SetAlbedo(Color.RGBA(value))
 }
 
 func (self Instance) AlbedoTexture() [1]gdclass.Texture2D {
@@ -245,7 +248,7 @@ func (self Instance) Metallic() Float.X {
 }
 
 func (self Instance) SetMetallic(value Float.X) {
-	class(self).SetMetallic(gd.Float(value))
+	class(self).SetMetallic(float64(value))
 }
 
 func (self Instance) MetallicSpecular() Float.X {
@@ -253,7 +256,7 @@ func (self Instance) MetallicSpecular() Float.X {
 }
 
 func (self Instance) SetMetallicSpecular(value Float.X) {
-	class(self).SetSpecular(gd.Float(value))
+	class(self).SetSpecular(float64(value))
 }
 
 func (self Instance) MetallicTexture() [1]gdclass.Texture2D {
@@ -277,7 +280,7 @@ func (self Instance) Roughness() Float.X {
 }
 
 func (self Instance) SetRoughness(value Float.X) {
-	class(self).SetRoughness(gd.Float(value))
+	class(self).SetRoughness(float64(value))
 }
 
 func (self Instance) RoughnessTexture() [1]gdclass.Texture2D {
@@ -309,7 +312,7 @@ func (self Instance) Emission() Color.RGBA {
 }
 
 func (self Instance) SetEmission(value Color.RGBA) {
-	class(self).SetEmission(gd.Color(value))
+	class(self).SetEmission(Color.RGBA(value))
 }
 
 func (self Instance) EmissionEnergyMultiplier() Float.X {
@@ -317,7 +320,7 @@ func (self Instance) EmissionEnergyMultiplier() Float.X {
 }
 
 func (self Instance) SetEmissionEnergyMultiplier(value Float.X) {
-	class(self).SetEmissionEnergyMultiplier(gd.Float(value))
+	class(self).SetEmissionEnergyMultiplier(float64(value))
 }
 
 func (self Instance) EmissionIntensity() Float.X {
@@ -325,7 +328,7 @@ func (self Instance) EmissionIntensity() Float.X {
 }
 
 func (self Instance) SetEmissionIntensity(value Float.X) {
-	class(self).SetEmissionIntensity(gd.Float(value))
+	class(self).SetEmissionIntensity(float64(value))
 }
 
 func (self Instance) EmissionOperator() gdclass.BaseMaterial3DEmissionOperator {
@@ -365,7 +368,7 @@ func (self Instance) NormalScale() Float.X {
 }
 
 func (self Instance) SetNormalScale(value Float.X) {
-	class(self).SetNormalScale(gd.Float(value))
+	class(self).SetNormalScale(float64(value))
 }
 
 func (self Instance) NormalTexture() [1]gdclass.Texture2D {
@@ -389,7 +392,7 @@ func (self Instance) Rim() Float.X {
 }
 
 func (self Instance) SetRim(value Float.X) {
-	class(self).SetRim(gd.Float(value))
+	class(self).SetRim(float64(value))
 }
 
 func (self Instance) RimTint() Float.X {
@@ -397,7 +400,7 @@ func (self Instance) RimTint() Float.X {
 }
 
 func (self Instance) SetRimTint(value Float.X) {
-	class(self).SetRimTint(gd.Float(value))
+	class(self).SetRimTint(float64(value))
 }
 
 func (self Instance) RimTexture() [1]gdclass.Texture2D {
@@ -421,7 +424,7 @@ func (self Instance) Clearcoat() Float.X {
 }
 
 func (self Instance) SetClearcoat(value Float.X) {
-	class(self).SetClearcoat(gd.Float(value))
+	class(self).SetClearcoat(float64(value))
 }
 
 func (self Instance) ClearcoatRoughness() Float.X {
@@ -429,7 +432,7 @@ func (self Instance) ClearcoatRoughness() Float.X {
 }
 
 func (self Instance) SetClearcoatRoughness(value Float.X) {
-	class(self).SetClearcoatRoughness(gd.Float(value))
+	class(self).SetClearcoatRoughness(float64(value))
 }
 
 func (self Instance) ClearcoatTexture() [1]gdclass.Texture2D {
@@ -453,7 +456,7 @@ func (self Instance) Anisotropy() Float.X {
 }
 
 func (self Instance) SetAnisotropy(value Float.X) {
-	class(self).SetAnisotropy(gd.Float(value))
+	class(self).SetAnisotropy(float64(value))
 }
 
 func (self Instance) AnisotropyFlowmap() [1]gdclass.Texture2D {
@@ -477,7 +480,7 @@ func (self Instance) AoLightAffect() Float.X {
 }
 
 func (self Instance) SetAoLightAffect(value Float.X) {
-	class(self).SetAoLightAffect(gd.Float(value))
+	class(self).SetAoLightAffect(float64(value))
 }
 
 func (self Instance) AoTexture() [1]gdclass.Texture2D {
@@ -517,7 +520,7 @@ func (self Instance) HeightmapScale() Float.X {
 }
 
 func (self Instance) SetHeightmapScale(value Float.X) {
-	class(self).SetHeightmapScale(gd.Float(value))
+	class(self).SetHeightmapScale(float64(value))
 }
 
 func (self Instance) HeightmapDeepParallax() bool {
@@ -533,7 +536,7 @@ func (self Instance) HeightmapMinLayers() int {
 }
 
 func (self Instance) SetHeightmapMinLayers(value int) {
-	class(self).SetHeightmapDeepParallaxMinLayers(gd.Int(value))
+	class(self).SetHeightmapDeepParallaxMinLayers(int64(value))
 }
 
 func (self Instance) HeightmapMaxLayers() int {
@@ -541,7 +544,7 @@ func (self Instance) HeightmapMaxLayers() int {
 }
 
 func (self Instance) SetHeightmapMaxLayers(value int) {
-	class(self).SetHeightmapDeepParallaxMaxLayers(gd.Int(value))
+	class(self).SetHeightmapDeepParallaxMaxLayers(int64(value))
 }
 
 func (self Instance) HeightmapFlipTangent() bool {
@@ -589,7 +592,7 @@ func (self Instance) SubsurfScatterStrength() Float.X {
 }
 
 func (self Instance) SetSubsurfScatterStrength(value Float.X) {
-	class(self).SetSubsurfaceScatteringStrength(gd.Float(value))
+	class(self).SetSubsurfaceScatteringStrength(float64(value))
 }
 
 func (self Instance) SubsurfScatterSkinMode() bool {
@@ -621,7 +624,7 @@ func (self Instance) SubsurfScatterTransmittanceColor() Color.RGBA {
 }
 
 func (self Instance) SetSubsurfScatterTransmittanceColor(value Color.RGBA) {
-	class(self).SetTransmittanceColor(gd.Color(value))
+	class(self).SetTransmittanceColor(Color.RGBA(value))
 }
 
 func (self Instance) SubsurfScatterTransmittanceTexture() [1]gdclass.Texture2D {
@@ -637,7 +640,7 @@ func (self Instance) SubsurfScatterTransmittanceDepth() Float.X {
 }
 
 func (self Instance) SetSubsurfScatterTransmittanceDepth(value Float.X) {
-	class(self).SetTransmittanceDepth(gd.Float(value))
+	class(self).SetTransmittanceDepth(float64(value))
 }
 
 func (self Instance) SubsurfScatterTransmittanceBoost() Float.X {
@@ -645,7 +648,7 @@ func (self Instance) SubsurfScatterTransmittanceBoost() Float.X {
 }
 
 func (self Instance) SetSubsurfScatterTransmittanceBoost(value Float.X) {
-	class(self).SetTransmittanceBoost(gd.Float(value))
+	class(self).SetTransmittanceBoost(float64(value))
 }
 
 func (self Instance) BacklightEnabled() bool {
@@ -661,7 +664,7 @@ func (self Instance) Backlight() Color.RGBA {
 }
 
 func (self Instance) SetBacklight(value Color.RGBA) {
-	class(self).SetBacklight(gd.Color(value))
+	class(self).SetBacklight(Color.RGBA(value))
 }
 
 func (self Instance) BacklightTexture() [1]gdclass.Texture2D {
@@ -685,7 +688,7 @@ func (self Instance) RefractionScale() Float.X {
 }
 
 func (self Instance) SetRefractionScale(value Float.X) {
-	class(self).SetRefraction(gd.Float(value))
+	class(self).SetRefraction(float64(value))
 }
 
 func (self Instance) RefractionTexture() [1]gdclass.Texture2D {
@@ -757,7 +760,7 @@ func (self Instance) Uv1Scale() Vector3.XYZ {
 }
 
 func (self Instance) SetUv1Scale(value Vector3.XYZ) {
-	class(self).SetUv1Scale(gd.Vector3(value))
+	class(self).SetUv1Scale(Vector3.XYZ(value))
 }
 
 func (self Instance) Uv1Offset() Vector3.XYZ {
@@ -765,7 +768,7 @@ func (self Instance) Uv1Offset() Vector3.XYZ {
 }
 
 func (self Instance) SetUv1Offset(value Vector3.XYZ) {
-	class(self).SetUv1Offset(gd.Vector3(value))
+	class(self).SetUv1Offset(Vector3.XYZ(value))
 }
 
 func (self Instance) Uv1Triplanar() bool {
@@ -781,7 +784,7 @@ func (self Instance) Uv1TriplanarSharpness() Float.X {
 }
 
 func (self Instance) SetUv1TriplanarSharpness(value Float.X) {
-	class(self).SetUv1TriplanarBlendSharpness(gd.Float(value))
+	class(self).SetUv1TriplanarBlendSharpness(float64(value))
 }
 
 func (self Instance) Uv1WorldTriplanar() bool {
@@ -797,7 +800,7 @@ func (self Instance) Uv2Scale() Vector3.XYZ {
 }
 
 func (self Instance) SetUv2Scale(value Vector3.XYZ) {
-	class(self).SetUv2Scale(gd.Vector3(value))
+	class(self).SetUv2Scale(Vector3.XYZ(value))
 }
 
 func (self Instance) Uv2Offset() Vector3.XYZ {
@@ -805,7 +808,7 @@ func (self Instance) Uv2Offset() Vector3.XYZ {
 }
 
 func (self Instance) SetUv2Offset(value Vector3.XYZ) {
-	class(self).SetUv2Offset(gd.Vector3(value))
+	class(self).SetUv2Offset(Vector3.XYZ(value))
 }
 
 func (self Instance) Uv2Triplanar() bool {
@@ -821,7 +824,7 @@ func (self Instance) Uv2TriplanarSharpness() Float.X {
 }
 
 func (self Instance) SetUv2TriplanarSharpness(value Float.X) {
-	class(self).SetUv2TriplanarBlendSharpness(gd.Float(value))
+	class(self).SetUv2TriplanarBlendSharpness(float64(value))
 }
 
 func (self Instance) Uv2WorldTriplanar() bool {
@@ -885,7 +888,7 @@ func (self Instance) ParticlesAnimHFrames() int {
 }
 
 func (self Instance) SetParticlesAnimHFrames(value int) {
-	class(self).SetParticlesAnimHFrames(gd.Int(value))
+	class(self).SetParticlesAnimHFrames(int64(value))
 }
 
 func (self Instance) ParticlesAnimVFrames() int {
@@ -893,7 +896,7 @@ func (self Instance) ParticlesAnimVFrames() int {
 }
 
 func (self Instance) SetParticlesAnimVFrames(value int) {
-	class(self).SetParticlesAnimVFrames(gd.Int(value))
+	class(self).SetParticlesAnimVFrames(int64(value))
 }
 
 func (self Instance) ParticlesAnimLoop() bool {
@@ -917,7 +920,7 @@ func (self Instance) GrowAmount() Float.X {
 }
 
 func (self Instance) SetGrowAmount(value Float.X) {
-	class(self).SetGrow(gd.Float(value))
+	class(self).SetGrow(float64(value))
 }
 
 func (self Instance) FixedSize() bool {
@@ -941,7 +944,7 @@ func (self Instance) PointSize() Float.X {
 }
 
 func (self Instance) SetPointSize(value Float.X) {
-	class(self).SetPointSize(gd.Float(value))
+	class(self).SetPointSize(float64(value))
 }
 
 func (self Instance) UseParticleTrails() bool {
@@ -965,7 +968,7 @@ func (self Instance) ProximityFadeDistance() Float.X {
 }
 
 func (self Instance) SetProximityFadeDistance(value Float.X) {
-	class(self).SetProximityFadeDistance(gd.Float(value))
+	class(self).SetProximityFadeDistance(float64(value))
 }
 
 func (self Instance) MsdfPixelRange() Float.X {
@@ -973,7 +976,7 @@ func (self Instance) MsdfPixelRange() Float.X {
 }
 
 func (self Instance) SetMsdfPixelRange(value Float.X) {
-	class(self).SetMsdfPixelRange(gd.Float(value))
+	class(self).SetMsdfPixelRange(float64(value))
 }
 
 func (self Instance) MsdfOutlineSize() Float.X {
@@ -981,7 +984,7 @@ func (self Instance) MsdfOutlineSize() Float.X {
 }
 
 func (self Instance) SetMsdfOutlineSize(value Float.X) {
-	class(self).SetMsdfOutlineSize(gd.Float(value))
+	class(self).SetMsdfOutlineSize(float64(value))
 }
 
 func (self Instance) DistanceFadeMode() gdclass.BaseMaterial3DDistanceFadeMode {
@@ -997,7 +1000,7 @@ func (self Instance) DistanceFadeMinDistance() Float.X {
 }
 
 func (self Instance) SetDistanceFadeMinDistance(value Float.X) {
-	class(self).SetDistanceFadeMinDistance(gd.Float(value))
+	class(self).SetDistanceFadeMinDistance(float64(value))
 }
 
 func (self Instance) DistanceFadeMaxDistance() Float.X {
@@ -1005,11 +1008,11 @@ func (self Instance) DistanceFadeMaxDistance() Float.X {
 }
 
 func (self Instance) SetDistanceFadeMaxDistance(value Float.X) {
-	class(self).SetDistanceFadeMaxDistance(gd.Float(value))
+	class(self).SetDistanceFadeMaxDistance(float64(value))
 }
 
 //go:nosplit
-func (self class) SetAlbedo(albedo gd.Color) { //gd:BaseMaterial3D.set_albedo
+func (self class) SetAlbedo(albedo Color.RGBA) { //gd:BaseMaterial3D.set_albedo
 	var frame = callframe.New()
 	callframe.Arg(frame, albedo)
 	var r_ret = callframe.Nil
@@ -1018,9 +1021,9 @@ func (self class) SetAlbedo(albedo gd.Color) { //gd:BaseMaterial3D.set_albedo
 }
 
 //go:nosplit
-func (self class) GetAlbedo() gd.Color { //gd:BaseMaterial3D.get_albedo
+func (self class) GetAlbedo() Color.RGBA { //gd:BaseMaterial3D.get_albedo
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_albedo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1066,7 +1069,7 @@ func (self class) GetAlphaAntialiasing() gdclass.BaseMaterial3DAlphaAntiAliasing
 }
 
 //go:nosplit
-func (self class) SetAlphaAntialiasingEdge(edge gd.Float) { //gd:BaseMaterial3D.set_alpha_antialiasing_edge
+func (self class) SetAlphaAntialiasingEdge(edge float64) { //gd:BaseMaterial3D.set_alpha_antialiasing_edge
 	var frame = callframe.New()
 	callframe.Arg(frame, edge)
 	var r_ret = callframe.Nil
@@ -1075,9 +1078,9 @@ func (self class) SetAlphaAntialiasingEdge(edge gd.Float) { //gd:BaseMaterial3D.
 }
 
 //go:nosplit
-func (self class) GetAlphaAntialiasingEdge() gd.Float { //gd:BaseMaterial3D.get_alpha_antialiasing_edge
+func (self class) GetAlphaAntialiasingEdge() float64 { //gd:BaseMaterial3D.get_alpha_antialiasing_edge
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_antialiasing_edge, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1104,7 +1107,7 @@ func (self class) GetShadingMode() gdclass.BaseMaterial3DShadingMode { //gd:Base
 }
 
 //go:nosplit
-func (self class) SetSpecular(specular gd.Float) { //gd:BaseMaterial3D.set_specular
+func (self class) SetSpecular(specular float64) { //gd:BaseMaterial3D.set_specular
 	var frame = callframe.New()
 	callframe.Arg(frame, specular)
 	var r_ret = callframe.Nil
@@ -1113,9 +1116,9 @@ func (self class) SetSpecular(specular gd.Float) { //gd:BaseMaterial3D.set_specu
 }
 
 //go:nosplit
-func (self class) GetSpecular() gd.Float { //gd:BaseMaterial3D.get_specular
+func (self class) GetSpecular() float64 { //gd:BaseMaterial3D.get_specular
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_specular, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1123,7 +1126,7 @@ func (self class) GetSpecular() gd.Float { //gd:BaseMaterial3D.get_specular
 }
 
 //go:nosplit
-func (self class) SetMetallic(metallic gd.Float) { //gd:BaseMaterial3D.set_metallic
+func (self class) SetMetallic(metallic float64) { //gd:BaseMaterial3D.set_metallic
 	var frame = callframe.New()
 	callframe.Arg(frame, metallic)
 	var r_ret = callframe.Nil
@@ -1132,9 +1135,9 @@ func (self class) SetMetallic(metallic gd.Float) { //gd:BaseMaterial3D.set_metal
 }
 
 //go:nosplit
-func (self class) GetMetallic() gd.Float { //gd:BaseMaterial3D.get_metallic
+func (self class) GetMetallic() float64 { //gd:BaseMaterial3D.get_metallic
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_metallic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1142,7 +1145,7 @@ func (self class) GetMetallic() gd.Float { //gd:BaseMaterial3D.get_metallic
 }
 
 //go:nosplit
-func (self class) SetRoughness(roughness gd.Float) { //gd:BaseMaterial3D.set_roughness
+func (self class) SetRoughness(roughness float64) { //gd:BaseMaterial3D.set_roughness
 	var frame = callframe.New()
 	callframe.Arg(frame, roughness)
 	var r_ret = callframe.Nil
@@ -1151,9 +1154,9 @@ func (self class) SetRoughness(roughness gd.Float) { //gd:BaseMaterial3D.set_rou
 }
 
 //go:nosplit
-func (self class) GetRoughness() gd.Float { //gd:BaseMaterial3D.get_roughness
+func (self class) GetRoughness() float64 { //gd:BaseMaterial3D.get_roughness
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_roughness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1161,7 +1164,7 @@ func (self class) GetRoughness() gd.Float { //gd:BaseMaterial3D.get_roughness
 }
 
 //go:nosplit
-func (self class) SetEmission(emission gd.Color) { //gd:BaseMaterial3D.set_emission
+func (self class) SetEmission(emission Color.RGBA) { //gd:BaseMaterial3D.set_emission
 	var frame = callframe.New()
 	callframe.Arg(frame, emission)
 	var r_ret = callframe.Nil
@@ -1170,9 +1173,9 @@ func (self class) SetEmission(emission gd.Color) { //gd:BaseMaterial3D.set_emiss
 }
 
 //go:nosplit
-func (self class) GetEmission() gd.Color { //gd:BaseMaterial3D.get_emission
+func (self class) GetEmission() Color.RGBA { //gd:BaseMaterial3D.get_emission
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_emission, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1180,7 +1183,7 @@ func (self class) GetEmission() gd.Color { //gd:BaseMaterial3D.get_emission
 }
 
 //go:nosplit
-func (self class) SetEmissionEnergyMultiplier(emission_energy_multiplier gd.Float) { //gd:BaseMaterial3D.set_emission_energy_multiplier
+func (self class) SetEmissionEnergyMultiplier(emission_energy_multiplier float64) { //gd:BaseMaterial3D.set_emission_energy_multiplier
 	var frame = callframe.New()
 	callframe.Arg(frame, emission_energy_multiplier)
 	var r_ret = callframe.Nil
@@ -1189,9 +1192,9 @@ func (self class) SetEmissionEnergyMultiplier(emission_energy_multiplier gd.Floa
 }
 
 //go:nosplit
-func (self class) GetEmissionEnergyMultiplier() gd.Float { //gd:BaseMaterial3D.get_emission_energy_multiplier
+func (self class) GetEmissionEnergyMultiplier() float64 { //gd:BaseMaterial3D.get_emission_energy_multiplier
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_emission_energy_multiplier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1199,7 +1202,7 @@ func (self class) GetEmissionEnergyMultiplier() gd.Float { //gd:BaseMaterial3D.g
 }
 
 //go:nosplit
-func (self class) SetEmissionIntensity(emission_energy_multiplier gd.Float) { //gd:BaseMaterial3D.set_emission_intensity
+func (self class) SetEmissionIntensity(emission_energy_multiplier float64) { //gd:BaseMaterial3D.set_emission_intensity
 	var frame = callframe.New()
 	callframe.Arg(frame, emission_energy_multiplier)
 	var r_ret = callframe.Nil
@@ -1208,9 +1211,9 @@ func (self class) SetEmissionIntensity(emission_energy_multiplier gd.Float) { //
 }
 
 //go:nosplit
-func (self class) GetEmissionIntensity() gd.Float { //gd:BaseMaterial3D.get_emission_intensity
+func (self class) GetEmissionIntensity() float64 { //gd:BaseMaterial3D.get_emission_intensity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_emission_intensity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1218,7 +1221,7 @@ func (self class) GetEmissionIntensity() gd.Float { //gd:BaseMaterial3D.get_emis
 }
 
 //go:nosplit
-func (self class) SetNormalScale(normal_scale gd.Float) { //gd:BaseMaterial3D.set_normal_scale
+func (self class) SetNormalScale(normal_scale float64) { //gd:BaseMaterial3D.set_normal_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, normal_scale)
 	var r_ret = callframe.Nil
@@ -1227,9 +1230,9 @@ func (self class) SetNormalScale(normal_scale gd.Float) { //gd:BaseMaterial3D.se
 }
 
 //go:nosplit
-func (self class) GetNormalScale() gd.Float { //gd:BaseMaterial3D.get_normal_scale
+func (self class) GetNormalScale() float64 { //gd:BaseMaterial3D.get_normal_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_normal_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1237,7 +1240,7 @@ func (self class) GetNormalScale() gd.Float { //gd:BaseMaterial3D.get_normal_sca
 }
 
 //go:nosplit
-func (self class) SetRim(rim gd.Float) { //gd:BaseMaterial3D.set_rim
+func (self class) SetRim(rim float64) { //gd:BaseMaterial3D.set_rim
 	var frame = callframe.New()
 	callframe.Arg(frame, rim)
 	var r_ret = callframe.Nil
@@ -1246,9 +1249,9 @@ func (self class) SetRim(rim gd.Float) { //gd:BaseMaterial3D.set_rim
 }
 
 //go:nosplit
-func (self class) GetRim() gd.Float { //gd:BaseMaterial3D.get_rim
+func (self class) GetRim() float64 { //gd:BaseMaterial3D.get_rim
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_rim, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1256,7 +1259,7 @@ func (self class) GetRim() gd.Float { //gd:BaseMaterial3D.get_rim
 }
 
 //go:nosplit
-func (self class) SetRimTint(rim_tint gd.Float) { //gd:BaseMaterial3D.set_rim_tint
+func (self class) SetRimTint(rim_tint float64) { //gd:BaseMaterial3D.set_rim_tint
 	var frame = callframe.New()
 	callframe.Arg(frame, rim_tint)
 	var r_ret = callframe.Nil
@@ -1265,9 +1268,9 @@ func (self class) SetRimTint(rim_tint gd.Float) { //gd:BaseMaterial3D.set_rim_ti
 }
 
 //go:nosplit
-func (self class) GetRimTint() gd.Float { //gd:BaseMaterial3D.get_rim_tint
+func (self class) GetRimTint() float64 { //gd:BaseMaterial3D.get_rim_tint
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_rim_tint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1275,7 +1278,7 @@ func (self class) GetRimTint() gd.Float { //gd:BaseMaterial3D.get_rim_tint
 }
 
 //go:nosplit
-func (self class) SetClearcoat(clearcoat gd.Float) { //gd:BaseMaterial3D.set_clearcoat
+func (self class) SetClearcoat(clearcoat float64) { //gd:BaseMaterial3D.set_clearcoat
 	var frame = callframe.New()
 	callframe.Arg(frame, clearcoat)
 	var r_ret = callframe.Nil
@@ -1284,9 +1287,9 @@ func (self class) SetClearcoat(clearcoat gd.Float) { //gd:BaseMaterial3D.set_cle
 }
 
 //go:nosplit
-func (self class) GetClearcoat() gd.Float { //gd:BaseMaterial3D.get_clearcoat
+func (self class) GetClearcoat() float64 { //gd:BaseMaterial3D.get_clearcoat
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_clearcoat, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1294,7 +1297,7 @@ func (self class) GetClearcoat() gd.Float { //gd:BaseMaterial3D.get_clearcoat
 }
 
 //go:nosplit
-func (self class) SetClearcoatRoughness(clearcoat_roughness gd.Float) { //gd:BaseMaterial3D.set_clearcoat_roughness
+func (self class) SetClearcoatRoughness(clearcoat_roughness float64) { //gd:BaseMaterial3D.set_clearcoat_roughness
 	var frame = callframe.New()
 	callframe.Arg(frame, clearcoat_roughness)
 	var r_ret = callframe.Nil
@@ -1303,9 +1306,9 @@ func (self class) SetClearcoatRoughness(clearcoat_roughness gd.Float) { //gd:Bas
 }
 
 //go:nosplit
-func (self class) GetClearcoatRoughness() gd.Float { //gd:BaseMaterial3D.get_clearcoat_roughness
+func (self class) GetClearcoatRoughness() float64 { //gd:BaseMaterial3D.get_clearcoat_roughness
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_clearcoat_roughness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1313,7 +1316,7 @@ func (self class) GetClearcoatRoughness() gd.Float { //gd:BaseMaterial3D.get_cle
 }
 
 //go:nosplit
-func (self class) SetAnisotropy(anisotropy gd.Float) { //gd:BaseMaterial3D.set_anisotropy
+func (self class) SetAnisotropy(anisotropy float64) { //gd:BaseMaterial3D.set_anisotropy
 	var frame = callframe.New()
 	callframe.Arg(frame, anisotropy)
 	var r_ret = callframe.Nil
@@ -1322,9 +1325,9 @@ func (self class) SetAnisotropy(anisotropy gd.Float) { //gd:BaseMaterial3D.set_a
 }
 
 //go:nosplit
-func (self class) GetAnisotropy() gd.Float { //gd:BaseMaterial3D.get_anisotropy
+func (self class) GetAnisotropy() float64 { //gd:BaseMaterial3D.get_anisotropy
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_anisotropy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1332,7 +1335,7 @@ func (self class) GetAnisotropy() gd.Float { //gd:BaseMaterial3D.get_anisotropy
 }
 
 //go:nosplit
-func (self class) SetHeightmapScale(heightmap_scale gd.Float) { //gd:BaseMaterial3D.set_heightmap_scale
+func (self class) SetHeightmapScale(heightmap_scale float64) { //gd:BaseMaterial3D.set_heightmap_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, heightmap_scale)
 	var r_ret = callframe.Nil
@@ -1341,9 +1344,9 @@ func (self class) SetHeightmapScale(heightmap_scale gd.Float) { //gd:BaseMateria
 }
 
 //go:nosplit
-func (self class) GetHeightmapScale() gd.Float { //gd:BaseMaterial3D.get_heightmap_scale
+func (self class) GetHeightmapScale() float64 { //gd:BaseMaterial3D.get_heightmap_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1351,7 +1354,7 @@ func (self class) GetHeightmapScale() gd.Float { //gd:BaseMaterial3D.get_heightm
 }
 
 //go:nosplit
-func (self class) SetSubsurfaceScatteringStrength(strength gd.Float) { //gd:BaseMaterial3D.set_subsurface_scattering_strength
+func (self class) SetSubsurfaceScatteringStrength(strength float64) { //gd:BaseMaterial3D.set_subsurface_scattering_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil
@@ -1360,9 +1363,9 @@ func (self class) SetSubsurfaceScatteringStrength(strength gd.Float) { //gd:Base
 }
 
 //go:nosplit
-func (self class) GetSubsurfaceScatteringStrength() gd.Float { //gd:BaseMaterial3D.get_subsurface_scattering_strength
+func (self class) GetSubsurfaceScatteringStrength() float64 { //gd:BaseMaterial3D.get_subsurface_scattering_strength
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_subsurface_scattering_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1370,7 +1373,7 @@ func (self class) GetSubsurfaceScatteringStrength() gd.Float { //gd:BaseMaterial
 }
 
 //go:nosplit
-func (self class) SetTransmittanceColor(color gd.Color) { //gd:BaseMaterial3D.set_transmittance_color
+func (self class) SetTransmittanceColor(color Color.RGBA) { //gd:BaseMaterial3D.set_transmittance_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -1379,9 +1382,9 @@ func (self class) SetTransmittanceColor(color gd.Color) { //gd:BaseMaterial3D.se
 }
 
 //go:nosplit
-func (self class) GetTransmittanceColor() gd.Color { //gd:BaseMaterial3D.get_transmittance_color
+func (self class) GetTransmittanceColor() Color.RGBA { //gd:BaseMaterial3D.get_transmittance_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1389,7 +1392,7 @@ func (self class) GetTransmittanceColor() gd.Color { //gd:BaseMaterial3D.get_tra
 }
 
 //go:nosplit
-func (self class) SetTransmittanceDepth(depth gd.Float) { //gd:BaseMaterial3D.set_transmittance_depth
+func (self class) SetTransmittanceDepth(depth float64) { //gd:BaseMaterial3D.set_transmittance_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, depth)
 	var r_ret = callframe.Nil
@@ -1398,9 +1401,9 @@ func (self class) SetTransmittanceDepth(depth gd.Float) { //gd:BaseMaterial3D.se
 }
 
 //go:nosplit
-func (self class) GetTransmittanceDepth() gd.Float { //gd:BaseMaterial3D.get_transmittance_depth
+func (self class) GetTransmittanceDepth() float64 { //gd:BaseMaterial3D.get_transmittance_depth
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1408,7 +1411,7 @@ func (self class) GetTransmittanceDepth() gd.Float { //gd:BaseMaterial3D.get_tra
 }
 
 //go:nosplit
-func (self class) SetTransmittanceBoost(boost gd.Float) { //gd:BaseMaterial3D.set_transmittance_boost
+func (self class) SetTransmittanceBoost(boost float64) { //gd:BaseMaterial3D.set_transmittance_boost
 	var frame = callframe.New()
 	callframe.Arg(frame, boost)
 	var r_ret = callframe.Nil
@@ -1417,9 +1420,9 @@ func (self class) SetTransmittanceBoost(boost gd.Float) { //gd:BaseMaterial3D.se
 }
 
 //go:nosplit
-func (self class) GetTransmittanceBoost() gd.Float { //gd:BaseMaterial3D.get_transmittance_boost
+func (self class) GetTransmittanceBoost() float64 { //gd:BaseMaterial3D.get_transmittance_boost
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_boost, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1427,7 +1430,7 @@ func (self class) GetTransmittanceBoost() gd.Float { //gd:BaseMaterial3D.get_tra
 }
 
 //go:nosplit
-func (self class) SetBacklight(backlight gd.Color) { //gd:BaseMaterial3D.set_backlight
+func (self class) SetBacklight(backlight Color.RGBA) { //gd:BaseMaterial3D.set_backlight
 	var frame = callframe.New()
 	callframe.Arg(frame, backlight)
 	var r_ret = callframe.Nil
@@ -1436,9 +1439,9 @@ func (self class) SetBacklight(backlight gd.Color) { //gd:BaseMaterial3D.set_bac
 }
 
 //go:nosplit
-func (self class) GetBacklight() gd.Color { //gd:BaseMaterial3D.get_backlight
+func (self class) GetBacklight() Color.RGBA { //gd:BaseMaterial3D.get_backlight
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_backlight, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1446,7 +1449,7 @@ func (self class) GetBacklight() gd.Color { //gd:BaseMaterial3D.get_backlight
 }
 
 //go:nosplit
-func (self class) SetRefraction(refraction gd.Float) { //gd:BaseMaterial3D.set_refraction
+func (self class) SetRefraction(refraction float64) { //gd:BaseMaterial3D.set_refraction
 	var frame = callframe.New()
 	callframe.Arg(frame, refraction)
 	var r_ret = callframe.Nil
@@ -1455,9 +1458,9 @@ func (self class) SetRefraction(refraction gd.Float) { //gd:BaseMaterial3D.set_r
 }
 
 //go:nosplit
-func (self class) GetRefraction() gd.Float { //gd:BaseMaterial3D.get_refraction
+func (self class) GetRefraction() float64 { //gd:BaseMaterial3D.get_refraction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_refraction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1465,7 +1468,7 @@ func (self class) GetRefraction() gd.Float { //gd:BaseMaterial3D.get_refraction
 }
 
 //go:nosplit
-func (self class) SetPointSize(point_size gd.Float) { //gd:BaseMaterial3D.set_point_size
+func (self class) SetPointSize(point_size float64) { //gd:BaseMaterial3D.set_point_size
 	var frame = callframe.New()
 	callframe.Arg(frame, point_size)
 	var r_ret = callframe.Nil
@@ -1474,9 +1477,9 @@ func (self class) SetPointSize(point_size gd.Float) { //gd:BaseMaterial3D.set_po
 }
 
 //go:nosplit
-func (self class) GetPointSize() gd.Float { //gd:BaseMaterial3D.get_point_size
+func (self class) GetPointSize() float64 { //gd:BaseMaterial3D.get_point_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_point_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1717,7 +1720,7 @@ func (self class) GetDetailBlendMode() gdclass.BaseMaterial3DBlendMode { //gd:Ba
 }
 
 //go:nosplit
-func (self class) SetUv1Scale(scale gd.Vector3) { //gd:BaseMaterial3D.set_uv1_scale
+func (self class) SetUv1Scale(scale Vector3.XYZ) { //gd:BaseMaterial3D.set_uv1_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -1726,9 +1729,9 @@ func (self class) SetUv1Scale(scale gd.Vector3) { //gd:BaseMaterial3D.set_uv1_sc
 }
 
 //go:nosplit
-func (self class) GetUv1Scale() gd.Vector3 { //gd:BaseMaterial3D.get_uv1_scale
+func (self class) GetUv1Scale() Vector3.XYZ { //gd:BaseMaterial3D.get_uv1_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1736,7 +1739,7 @@ func (self class) GetUv1Scale() gd.Vector3 { //gd:BaseMaterial3D.get_uv1_scale
 }
 
 //go:nosplit
-func (self class) SetUv1Offset(offset gd.Vector3) { //gd:BaseMaterial3D.set_uv1_offset
+func (self class) SetUv1Offset(offset Vector3.XYZ) { //gd:BaseMaterial3D.set_uv1_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -1745,9 +1748,9 @@ func (self class) SetUv1Offset(offset gd.Vector3) { //gd:BaseMaterial3D.set_uv1_
 }
 
 //go:nosplit
-func (self class) GetUv1Offset() gd.Vector3 { //gd:BaseMaterial3D.get_uv1_offset
+func (self class) GetUv1Offset() Vector3.XYZ { //gd:BaseMaterial3D.get_uv1_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1755,7 +1758,7 @@ func (self class) GetUv1Offset() gd.Vector3 { //gd:BaseMaterial3D.get_uv1_offset
 }
 
 //go:nosplit
-func (self class) SetUv1TriplanarBlendSharpness(sharpness gd.Float) { //gd:BaseMaterial3D.set_uv1_triplanar_blend_sharpness
+func (self class) SetUv1TriplanarBlendSharpness(sharpness float64) { //gd:BaseMaterial3D.set_uv1_triplanar_blend_sharpness
 	var frame = callframe.New()
 	callframe.Arg(frame, sharpness)
 	var r_ret = callframe.Nil
@@ -1764,9 +1767,9 @@ func (self class) SetUv1TriplanarBlendSharpness(sharpness gd.Float) { //gd:BaseM
 }
 
 //go:nosplit
-func (self class) GetUv1TriplanarBlendSharpness() gd.Float { //gd:BaseMaterial3D.get_uv1_triplanar_blend_sharpness
+func (self class) GetUv1TriplanarBlendSharpness() float64 { //gd:BaseMaterial3D.get_uv1_triplanar_blend_sharpness
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_triplanar_blend_sharpness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1774,7 +1777,7 @@ func (self class) GetUv1TriplanarBlendSharpness() gd.Float { //gd:BaseMaterial3D
 }
 
 //go:nosplit
-func (self class) SetUv2Scale(scale gd.Vector3) { //gd:BaseMaterial3D.set_uv2_scale
+func (self class) SetUv2Scale(scale Vector3.XYZ) { //gd:BaseMaterial3D.set_uv2_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -1783,9 +1786,9 @@ func (self class) SetUv2Scale(scale gd.Vector3) { //gd:BaseMaterial3D.set_uv2_sc
 }
 
 //go:nosplit
-func (self class) GetUv2Scale() gd.Vector3 { //gd:BaseMaterial3D.get_uv2_scale
+func (self class) GetUv2Scale() Vector3.XYZ { //gd:BaseMaterial3D.get_uv2_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1793,7 +1796,7 @@ func (self class) GetUv2Scale() gd.Vector3 { //gd:BaseMaterial3D.get_uv2_scale
 }
 
 //go:nosplit
-func (self class) SetUv2Offset(offset gd.Vector3) { //gd:BaseMaterial3D.set_uv2_offset
+func (self class) SetUv2Offset(offset Vector3.XYZ) { //gd:BaseMaterial3D.set_uv2_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -1802,9 +1805,9 @@ func (self class) SetUv2Offset(offset gd.Vector3) { //gd:BaseMaterial3D.set_uv2_
 }
 
 //go:nosplit
-func (self class) GetUv2Offset() gd.Vector3 { //gd:BaseMaterial3D.get_uv2_offset
+func (self class) GetUv2Offset() Vector3.XYZ { //gd:BaseMaterial3D.get_uv2_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1812,7 +1815,7 @@ func (self class) GetUv2Offset() gd.Vector3 { //gd:BaseMaterial3D.get_uv2_offset
 }
 
 //go:nosplit
-func (self class) SetUv2TriplanarBlendSharpness(sharpness gd.Float) { //gd:BaseMaterial3D.set_uv2_triplanar_blend_sharpness
+func (self class) SetUv2TriplanarBlendSharpness(sharpness float64) { //gd:BaseMaterial3D.set_uv2_triplanar_blend_sharpness
 	var frame = callframe.New()
 	callframe.Arg(frame, sharpness)
 	var r_ret = callframe.Nil
@@ -1821,9 +1824,9 @@ func (self class) SetUv2TriplanarBlendSharpness(sharpness gd.Float) { //gd:BaseM
 }
 
 //go:nosplit
-func (self class) GetUv2TriplanarBlendSharpness() gd.Float { //gd:BaseMaterial3D.get_uv2_triplanar_blend_sharpness
+func (self class) GetUv2TriplanarBlendSharpness() float64 { //gd:BaseMaterial3D.get_uv2_triplanar_blend_sharpness
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_triplanar_blend_sharpness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1850,7 +1853,7 @@ func (self class) GetBillboardMode() gdclass.BaseMaterial3DBillboardMode { //gd:
 }
 
 //go:nosplit
-func (self class) SetParticlesAnimHFrames(frames gd.Int) { //gd:BaseMaterial3D.set_particles_anim_h_frames
+func (self class) SetParticlesAnimHFrames(frames int64) { //gd:BaseMaterial3D.set_particles_anim_h_frames
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
 	var r_ret = callframe.Nil
@@ -1859,9 +1862,9 @@ func (self class) SetParticlesAnimHFrames(frames gd.Int) { //gd:BaseMaterial3D.s
 }
 
 //go:nosplit
-func (self class) GetParticlesAnimHFrames() gd.Int { //gd:BaseMaterial3D.get_particles_anim_h_frames
+func (self class) GetParticlesAnimHFrames() int64 { //gd:BaseMaterial3D.get_particles_anim_h_frames
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_particles_anim_h_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1869,7 +1872,7 @@ func (self class) GetParticlesAnimHFrames() gd.Int { //gd:BaseMaterial3D.get_par
 }
 
 //go:nosplit
-func (self class) SetParticlesAnimVFrames(frames gd.Int) { //gd:BaseMaterial3D.set_particles_anim_v_frames
+func (self class) SetParticlesAnimVFrames(frames int64) { //gd:BaseMaterial3D.set_particles_anim_v_frames
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
 	var r_ret = callframe.Nil
@@ -1878,9 +1881,9 @@ func (self class) SetParticlesAnimVFrames(frames gd.Int) { //gd:BaseMaterial3D.s
 }
 
 //go:nosplit
-func (self class) GetParticlesAnimVFrames() gd.Int { //gd:BaseMaterial3D.get_particles_anim_v_frames
+func (self class) GetParticlesAnimVFrames() int64 { //gd:BaseMaterial3D.get_particles_anim_v_frames
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_particles_anim_v_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1926,7 +1929,7 @@ func (self class) IsHeightmapDeepParallaxEnabled() bool { //gd:BaseMaterial3D.is
 }
 
 //go:nosplit
-func (self class) SetHeightmapDeepParallaxMinLayers(layer gd.Int) { //gd:BaseMaterial3D.set_heightmap_deep_parallax_min_layers
+func (self class) SetHeightmapDeepParallaxMinLayers(layer int64) { //gd:BaseMaterial3D.set_heightmap_deep_parallax_min_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -1935,9 +1938,9 @@ func (self class) SetHeightmapDeepParallaxMinLayers(layer gd.Int) { //gd:BaseMat
 }
 
 //go:nosplit
-func (self class) GetHeightmapDeepParallaxMinLayers() gd.Int { //gd:BaseMaterial3D.get_heightmap_deep_parallax_min_layers
+func (self class) GetHeightmapDeepParallaxMinLayers() int64 { //gd:BaseMaterial3D.get_heightmap_deep_parallax_min_layers
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_min_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1945,7 +1948,7 @@ func (self class) GetHeightmapDeepParallaxMinLayers() gd.Int { //gd:BaseMaterial
 }
 
 //go:nosplit
-func (self class) SetHeightmapDeepParallaxMaxLayers(layer gd.Int) { //gd:BaseMaterial3D.set_heightmap_deep_parallax_max_layers
+func (self class) SetHeightmapDeepParallaxMaxLayers(layer int64) { //gd:BaseMaterial3D.set_heightmap_deep_parallax_max_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -1954,9 +1957,9 @@ func (self class) SetHeightmapDeepParallaxMaxLayers(layer gd.Int) { //gd:BaseMat
 }
 
 //go:nosplit
-func (self class) GetHeightmapDeepParallaxMaxLayers() gd.Int { //gd:BaseMaterial3D.get_heightmap_deep_parallax_max_layers
+func (self class) GetHeightmapDeepParallaxMaxLayers() int64 { //gd:BaseMaterial3D.get_heightmap_deep_parallax_max_layers
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_max_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2002,7 +2005,7 @@ func (self class) GetHeightmapDeepParallaxFlipBinormal() bool { //gd:BaseMateria
 }
 
 //go:nosplit
-func (self class) SetGrow(amount gd.Float) { //gd:BaseMaterial3D.set_grow
+func (self class) SetGrow(amount float64) { //gd:BaseMaterial3D.set_grow
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -2011,9 +2014,9 @@ func (self class) SetGrow(amount gd.Float) { //gd:BaseMaterial3D.set_grow
 }
 
 //go:nosplit
-func (self class) GetGrow() gd.Float { //gd:BaseMaterial3D.get_grow
+func (self class) GetGrow() float64 { //gd:BaseMaterial3D.get_grow
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_grow, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2040,7 +2043,7 @@ func (self class) GetEmissionOperator() gdclass.BaseMaterial3DEmissionOperator {
 }
 
 //go:nosplit
-func (self class) SetAoLightAffect(amount gd.Float) { //gd:BaseMaterial3D.set_ao_light_affect
+func (self class) SetAoLightAffect(amount float64) { //gd:BaseMaterial3D.set_ao_light_affect
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -2049,9 +2052,9 @@ func (self class) SetAoLightAffect(amount gd.Float) { //gd:BaseMaterial3D.set_ao
 }
 
 //go:nosplit
-func (self class) GetAoLightAffect() gd.Float { //gd:BaseMaterial3D.get_ao_light_affect
+func (self class) GetAoLightAffect() float64 { //gd:BaseMaterial3D.get_ao_light_affect
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_ao_light_affect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2059,7 +2062,7 @@ func (self class) GetAoLightAffect() gd.Float { //gd:BaseMaterial3D.get_ao_light
 }
 
 //go:nosplit
-func (self class) SetAlphaScissorThreshold(threshold gd.Float) { //gd:BaseMaterial3D.set_alpha_scissor_threshold
+func (self class) SetAlphaScissorThreshold(threshold float64) { //gd:BaseMaterial3D.set_alpha_scissor_threshold
 	var frame = callframe.New()
 	callframe.Arg(frame, threshold)
 	var r_ret = callframe.Nil
@@ -2068,9 +2071,9 @@ func (self class) SetAlphaScissorThreshold(threshold gd.Float) { //gd:BaseMateri
 }
 
 //go:nosplit
-func (self class) GetAlphaScissorThreshold() gd.Float { //gd:BaseMaterial3D.get_alpha_scissor_threshold
+func (self class) GetAlphaScissorThreshold() float64 { //gd:BaseMaterial3D.get_alpha_scissor_threshold
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_scissor_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2078,7 +2081,7 @@ func (self class) GetAlphaScissorThreshold() gd.Float { //gd:BaseMaterial3D.get_
 }
 
 //go:nosplit
-func (self class) SetAlphaHashScale(threshold gd.Float) { //gd:BaseMaterial3D.set_alpha_hash_scale
+func (self class) SetAlphaHashScale(threshold float64) { //gd:BaseMaterial3D.set_alpha_hash_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, threshold)
 	var r_ret = callframe.Nil
@@ -2087,9 +2090,9 @@ func (self class) SetAlphaHashScale(threshold gd.Float) { //gd:BaseMaterial3D.se
 }
 
 //go:nosplit
-func (self class) GetAlphaHashScale() gd.Float { //gd:BaseMaterial3D.get_alpha_hash_scale
+func (self class) GetAlphaHashScale() float64 { //gd:BaseMaterial3D.get_alpha_hash_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_hash_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2211,7 +2214,7 @@ func (self class) IsProximityFadeEnabled() bool { //gd:BaseMaterial3D.is_proximi
 }
 
 //go:nosplit
-func (self class) SetProximityFadeDistance(distance gd.Float) { //gd:BaseMaterial3D.set_proximity_fade_distance
+func (self class) SetProximityFadeDistance(distance float64) { //gd:BaseMaterial3D.set_proximity_fade_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -2220,9 +2223,9 @@ func (self class) SetProximityFadeDistance(distance gd.Float) { //gd:BaseMateria
 }
 
 //go:nosplit
-func (self class) GetProximityFadeDistance() gd.Float { //gd:BaseMaterial3D.get_proximity_fade_distance
+func (self class) GetProximityFadeDistance() float64 { //gd:BaseMaterial3D.get_proximity_fade_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_proximity_fade_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2230,7 +2233,7 @@ func (self class) GetProximityFadeDistance() gd.Float { //gd:BaseMaterial3D.get_
 }
 
 //go:nosplit
-func (self class) SetMsdfPixelRange(arange gd.Float) { //gd:BaseMaterial3D.set_msdf_pixel_range
+func (self class) SetMsdfPixelRange(arange float64) { //gd:BaseMaterial3D.set_msdf_pixel_range
 	var frame = callframe.New()
 	callframe.Arg(frame, arange)
 	var r_ret = callframe.Nil
@@ -2239,9 +2242,9 @@ func (self class) SetMsdfPixelRange(arange gd.Float) { //gd:BaseMaterial3D.set_m
 }
 
 //go:nosplit
-func (self class) GetMsdfPixelRange() gd.Float { //gd:BaseMaterial3D.get_msdf_pixel_range
+func (self class) GetMsdfPixelRange() float64 { //gd:BaseMaterial3D.get_msdf_pixel_range
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_msdf_pixel_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2249,7 +2252,7 @@ func (self class) GetMsdfPixelRange() gd.Float { //gd:BaseMaterial3D.get_msdf_pi
 }
 
 //go:nosplit
-func (self class) SetMsdfOutlineSize(size gd.Float) { //gd:BaseMaterial3D.set_msdf_outline_size
+func (self class) SetMsdfOutlineSize(size float64) { //gd:BaseMaterial3D.set_msdf_outline_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -2258,9 +2261,9 @@ func (self class) SetMsdfOutlineSize(size gd.Float) { //gd:BaseMaterial3D.set_ms
 }
 
 //go:nosplit
-func (self class) GetMsdfOutlineSize() gd.Float { //gd:BaseMaterial3D.get_msdf_outline_size
+func (self class) GetMsdfOutlineSize() float64 { //gd:BaseMaterial3D.get_msdf_outline_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_msdf_outline_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2287,7 +2290,7 @@ func (self class) GetDistanceFade() gdclass.BaseMaterial3DDistanceFadeMode { //g
 }
 
 //go:nosplit
-func (self class) SetDistanceFadeMaxDistance(distance gd.Float) { //gd:BaseMaterial3D.set_distance_fade_max_distance
+func (self class) SetDistanceFadeMaxDistance(distance float64) { //gd:BaseMaterial3D.set_distance_fade_max_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -2296,9 +2299,9 @@ func (self class) SetDistanceFadeMaxDistance(distance gd.Float) { //gd:BaseMater
 }
 
 //go:nosplit
-func (self class) GetDistanceFadeMaxDistance() gd.Float { //gd:BaseMaterial3D.get_distance_fade_max_distance
+func (self class) GetDistanceFadeMaxDistance() float64 { //gd:BaseMaterial3D.get_distance_fade_max_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2306,7 +2309,7 @@ func (self class) GetDistanceFadeMaxDistance() gd.Float { //gd:BaseMaterial3D.ge
 }
 
 //go:nosplit
-func (self class) SetDistanceFadeMinDistance(distance gd.Float) { //gd:BaseMaterial3D.set_distance_fade_min_distance
+func (self class) SetDistanceFadeMinDistance(distance float64) { //gd:BaseMaterial3D.set_distance_fade_min_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -2315,9 +2318,9 @@ func (self class) SetDistanceFadeMinDistance(distance gd.Float) { //gd:BaseMater
 }
 
 //go:nosplit
-func (self class) GetDistanceFadeMinDistance() gd.Float { //gd:BaseMaterial3D.get_distance_fade_min_distance
+func (self class) GetDistanceFadeMinDistance() float64 { //gd:BaseMaterial3D.get_distance_fade_min_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade_min_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -82,7 +85,7 @@ func (self Instance) CustomSolverBias() Float.X {
 }
 
 func (self Instance) SetCustomSolverBias(value Float.X) {
-	class(self).SetCustomSolverBias(gd.Float(value))
+	class(self).SetCustomSolverBias(float64(value))
 }
 
 func (self Instance) Margin() Float.X {
@@ -90,11 +93,11 @@ func (self Instance) Margin() Float.X {
 }
 
 func (self Instance) SetMargin(value Float.X) {
-	class(self).SetMargin(gd.Float(value))
+	class(self).SetMargin(float64(value))
 }
 
 //go:nosplit
-func (self class) SetCustomSolverBias(bias gd.Float) { //gd:Shape3D.set_custom_solver_bias
+func (self class) SetCustomSolverBias(bias float64) { //gd:Shape3D.set_custom_solver_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, bias)
 	var r_ret = callframe.Nil
@@ -103,9 +106,9 @@ func (self class) SetCustomSolverBias(bias gd.Float) { //gd:Shape3D.set_custom_s
 }
 
 //go:nosplit
-func (self class) GetCustomSolverBias() gd.Float { //gd:Shape3D.get_custom_solver_bias
+func (self class) GetCustomSolverBias() float64 { //gd:Shape3D.get_custom_solver_bias
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape3D.Bind_get_custom_solver_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -113,7 +116,7 @@ func (self class) GetCustomSolverBias() gd.Float { //gd:Shape3D.get_custom_solve
 }
 
 //go:nosplit
-func (self class) SetMargin(margin gd.Float) { //gd:Shape3D.set_margin
+func (self class) SetMargin(margin float64) { //gd:Shape3D.set_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -122,9 +125,9 @@ func (self class) SetMargin(margin gd.Float) { //gd:Shape3D.set_margin
 }
 
 //go:nosplit
-func (self class) GetMargin() gd.Float { //gd:Shape3D.get_margin
+func (self class) GetMargin() float64 { //gd:Shape3D.get_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape3D.Bind_get_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

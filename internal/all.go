@@ -8,174 +8,174 @@ import "unsafe"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 
-func Sin(angle_rad Float) Float {
+func Sin(angle_rad float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_rad)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.sin(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Cos(angle_rad Float) Float {
+func Cos(angle_rad float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_rad)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.cos(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Tan(angle_rad Float) Float {
+func Tan(angle_rad float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_rad)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.tan(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Sinh(x Float) Float {
+func Sinh(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.sinh(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Cosh(x Float) Float {
+func Cosh(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.cosh(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Tanh(x Float) Float {
+func Tanh(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.tanh(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Asin(x Float) Float {
+func Asin(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.asin(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Acos(x Float) Float {
+func Acos(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.acos(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Atan(x Float) Float {
+func Atan(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.atan(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Atan2(y Float, x Float) Float {
+func Atan2(y float64, x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, y)
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.atan2(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Asinh(x Float) Float {
+func Asinh(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.asinh(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Acosh(x Float) Float {
+func Acosh(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.acosh(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Atanh(x Float) Float {
+func Atanh(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.atanh(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Sqrt(x Float) Float {
+func Sqrt(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.sqrt(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Fmod(x Float, y Float) Float {
+func Fmod(x float64, y float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.fmod(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Fposmod(x Float, y Float) Float {
+func Fposmod(x float64, y float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.fposmod(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Posmod(x Int, y Int) Int {
+func Posmod(x int64, y int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.posmod(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -192,20 +192,20 @@ func Floor(x Variant) Variant {
 	return ret
 }
 
-func Floorf(x Float) Float {
+func Floorf(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.floorf(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Floori(x Float) Int {
+func Floori(x float64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.floori(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -222,20 +222,20 @@ func Ceil(x Variant) Variant {
 	return ret
 }
 
-func Ceilf(x Float) Float {
+func Ceilf(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.ceilf(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Ceili(x Float) Int {
+func Ceili(x float64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.ceili(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -252,20 +252,20 @@ func Round(x Variant) Variant {
 	return ret
 }
 
-func Roundf(x Float) Float {
+func Roundf(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.roundf(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Roundi(x Float) Int {
+func Roundi(x float64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.roundi(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -282,20 +282,20 @@ func Abs(x Variant) Variant {
 	return ret
 }
 
-func Absf(x Float) Float {
+func Absf(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.absf(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Absi(x Int) Int {
+func Absi(x int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.absi(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -312,20 +312,20 @@ func Sign(x Variant) Variant {
 	return ret
 }
 
-func Signf(x Float) Float {
+func Signf(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.signf(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Signi(x Int) Int {
+func Signi(x int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.signi(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -343,125 +343,125 @@ func Snapped(x Variant, step Variant) Variant {
 	return ret
 }
 
-func Snappedf(x Float, step Float) Float {
+func Snappedf(x float64, step float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, step)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.snappedf(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Snappedi(x Float, step Int) Int {
+func Snappedi(x float64, step int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, step)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.snappedi(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Pow(base Float, exp Float) Float {
+func Pow(base float64, exp float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, base)
 	callframe.Arg(frame, exp)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.pow(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Log(x Float) Float {
+func Log(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.log(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Exp(x Float) Float {
+func Exp(x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.exp(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func IsNan(x Float) Bool {
+func IsNan(x float64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.utility.is_nan(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func IsInf(x Float) Bool {
+func IsInf(x float64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.utility.is_inf(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func IsEqualApprox(a Float, b Float) Bool {
+func IsEqualApprox(a float64, b float64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.utility.is_equal_approx(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func IsZeroApprox(x Float) Bool {
+func IsZeroApprox(x float64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.utility.is_zero_approx(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func IsFinite(x Float) Bool {
+func IsFinite(x float64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.utility.is_finite(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Ease(x Float, curve Float) Float {
+func Ease(x float64, curve float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, curve)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.ease(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func StepDecimals(x Float) Int {
+func StepDecimals(x float64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.step_decimals(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -480,47 +480,47 @@ func Lerp(from Variant, to Variant, weight Variant) Variant {
 	return ret
 }
 
-func Lerpf(from Float, to Float, weight Float) Float {
+func Lerpf(from float64, to float64, weight float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, weight)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.lerpf(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func CubicInterpolate(from Float, to Float, pre Float, post Float, weight Float) Float {
+func CubicInterpolate(from float64, to float64, pre float64, post float64, weight float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, pre)
 	callframe.Arg(frame, post)
 	callframe.Arg(frame, weight)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.cubic_interpolate(r_ret.Addr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func CubicInterpolateAngle(from Float, to Float, pre Float, post Float, weight Float) Float {
+func CubicInterpolateAngle(from float64, to float64, pre float64, post float64, weight float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, pre)
 	callframe.Arg(frame, post)
 	callframe.Arg(frame, weight)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.cubic_interpolate_angle(r_ret.Addr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func CubicInterpolateInTime(from Float, to Float, pre Float, post Float, weight Float, to_t Float, pre_t Float, post_t Float) Float {
+func CubicInterpolateInTime(from float64, to float64, pre float64, post float64, weight float64, to_t float64, pre_t float64, post_t float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -530,14 +530,14 @@ func CubicInterpolateInTime(from Float, to Float, pre Float, post Float, weight 
 	callframe.Arg(frame, to_t)
 	callframe.Arg(frame, pre_t)
 	callframe.Arg(frame, post_t)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.cubic_interpolate_in_time(r_ret.Addr(), frame.Array(0), 8)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func CubicInterpolateAngleInTime(from Float, to Float, pre Float, post Float, weight Float, to_t Float, pre_t Float, post_t Float) Float {
+func CubicInterpolateAngleInTime(from float64, to float64, pre float64, post float64, weight float64, to_t float64, pre_t float64, post_t float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -547,160 +547,160 @@ func CubicInterpolateAngleInTime(from Float, to Float, pre Float, post Float, we
 	callframe.Arg(frame, to_t)
 	callframe.Arg(frame, pre_t)
 	callframe.Arg(frame, post_t)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.cubic_interpolate_angle_in_time(r_ret.Addr(), frame.Array(0), 8)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func BezierInterpolate(start Float, control_1 Float, control_2 Float, end Float, t Float) Float {
+func BezierInterpolate(start float64, control_1 float64, control_2 float64, end float64, t float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, start)
 	callframe.Arg(frame, control_1)
 	callframe.Arg(frame, control_2)
 	callframe.Arg(frame, end)
 	callframe.Arg(frame, t)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.bezier_interpolate(r_ret.Addr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func BezierDerivative(start Float, control_1 Float, control_2 Float, end Float, t Float) Float {
+func BezierDerivative(start float64, control_1 float64, control_2 float64, end float64, t float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, start)
 	callframe.Arg(frame, control_1)
 	callframe.Arg(frame, control_2)
 	callframe.Arg(frame, end)
 	callframe.Arg(frame, t)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.bezier_derivative(r_ret.Addr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func AngleDifference(from Float, to Float) Float {
+func AngleDifference(from float64, to float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.angle_difference(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func LerpAngle(from Float, to Float, weight Float) Float {
+func LerpAngle(from float64, to float64, weight float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, weight)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.lerp_angle(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func InverseLerp(from Float, to Float, weight Float) Float {
+func InverseLerp(from float64, to float64, weight float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, weight)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.inverse_lerp(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Remap(value Float, istart Float, istop Float, ostart Float, ostop Float) Float {
+func Remap(value float64, istart float64, istop float64, ostart float64, ostop float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, istart)
 	callframe.Arg(frame, istop)
 	callframe.Arg(frame, ostart)
 	callframe.Arg(frame, ostop)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.remap(r_ret.Addr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Smoothstep(from Float, to Float, x Float) Float {
+func Smoothstep(from float64, to float64, x float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.smoothstep(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func MoveToward(from Float, to Float, delta Float) Float {
+func MoveToward(from float64, to float64, delta float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, delta)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.move_toward(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func RotateToward(from Float, to Float, delta Float) Float {
+func RotateToward(from float64, to float64, delta float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, delta)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.rotate_toward(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func DegToRad(deg Float) Float {
+func DegToRad(deg float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, deg)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.deg_to_rad(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func RadToDeg(rad Float) Float {
+func RadToDeg(rad float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, rad)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.rad_to_deg(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func LinearToDb(lin Float) Float {
+func LinearToDb(lin float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, lin)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.linear_to_db(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func DbToLinear(db Float) Float {
+func DbToLinear(db float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, db)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.db_to_linear(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -719,24 +719,24 @@ func Wrap(value Variant, min Variant, max Variant) Variant {
 	return ret
 }
 
-func Wrapi(value Int, min Int, max Int) Int {
+func Wrapi(value int64, min int64, max int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, min)
 	callframe.Arg(frame, max)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.wrapi(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Wrapf(value Float, min Float, max Float) Float {
+func Wrapf(value float64, min float64, max float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, min)
 	callframe.Arg(frame, max)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.wrapf(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -757,22 +757,22 @@ func Max(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 	return ret
 }
 
-func Maxi(a Int, b Int) Int {
+func Maxi(a int64, b int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.maxi(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Maxf(a Float, b Float) Float {
+func Maxf(a float64, b float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.maxf(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -793,22 +793,22 @@ func Min(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 	return ret
 }
 
-func Mini(a Int, b Int) Int {
+func Mini(a int64, b int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.mini(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Minf(a Float, b Float) Float {
+func Minf(a float64, b float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.minf(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -827,45 +827,45 @@ func Clamp(value Variant, min Variant, max Variant) Variant {
 	return ret
 }
 
-func Clampi(value Int, min Int, max Int) Int {
+func Clampi(value int64, min int64, max int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, min)
 	callframe.Arg(frame, max)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.clampi(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Clampf(value Float, min Float, max Float) Float {
+func Clampf(value float64, min float64, max float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, min)
 	callframe.Arg(frame, max)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.clampf(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func NearestPo2(value Int) Int {
+func NearestPo2(value int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.nearest_po2(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Pingpong(value Float, length Float) Float {
+func Pingpong(value float64, length float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, length)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.pingpong(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -879,58 +879,58 @@ func Randomize() {
 	frame.Free()
 }
 
-func Randi() Int {
+func Randi() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.randi(r_ret.Addr(), frame.Array(0), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Randf() Float {
+func Randf() float64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.randf(r_ret.Addr(), frame.Array(0), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func RandiRange(from Int, to Int) Int {
+func RandiRange(from int64, to int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.randi_range(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func RandfRange(from Float, to Float) Float {
+func RandfRange(from float64, to float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.randf_range(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Randfn(mean Float, deviation Float) Float {
+func Randfn(mean float64, deviation float64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, mean)
 	callframe.Arg(frame, deviation)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	Global.utility.randfn(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func Seed(base Int) {
+func Seed(base int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, base)
 	var r_ret = callframe.Nil
@@ -938,7 +938,7 @@ func Seed(base Int) {
 	frame.Free()
 }
 
-func RandFromSeed(seed Int) PackedInt64Array {
+func RandFromSeed(seed int64) PackedInt64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, seed)
 	var r_ret = callframe.Ret[packedPointers](frame)
@@ -958,17 +958,17 @@ func Weakref(obj Variant) Variant {
 	return ret
 }
 
-func Typeof(variable Variant) Int {
+func Typeof(variable Variant) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.typeof(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func TypeConvert(variant Variant, atype Int) Variant {
+func TypeConvert(variant Variant, atype int64) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variant))
 	callframe.Arg(frame, atype)
@@ -992,7 +992,7 @@ func Str(arg1 Variant, args ...Variant) String {
 	return ret
 }
 
-func ErrorString(error Int) String {
+func ErrorString(error int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, error)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -1002,7 +1002,7 @@ func ErrorString(error Int) String {
 	return ret
 }
 
-func TypeToString(atype Int) String {
+func TypeToString(atype int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -1171,17 +1171,17 @@ func BytesToVarWithObjects(bytes PackedByteArray) Variant {
 	return ret
 }
 
-func Hash(variable Variant) Int {
+func Hash(variable Variant) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.hash(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func InstanceFromId(instance_id Int) Object {
+func InstanceFromId(instance_id int64) Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance_id)
 	var r_ret = callframe.Ret[enginePointer](frame)
@@ -1191,36 +1191,36 @@ func InstanceFromId(instance_id Int) Object {
 	return ret
 }
 
-func IsInstanceIdValid(id Int) Bool {
+func IsInstanceIdValid(id int64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.utility.is_instance_id_valid(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func IsInstanceValid(instance Variant) Bool {
+func IsInstanceValid(instance Variant) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(instance))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.utility.is_instance_valid(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func RidAllocateId() Int {
+func RidAllocateId() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.utility.rid_allocate_id(r_ret.Addr(), frame.Array(0), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func RidFromInt64(base Int) RID {
+func RidFromInt64(base int64) RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, base)
 	var r_ret = callframe.Ret[RID](frame)
@@ -1230,11 +1230,11 @@ func RidFromInt64(base Int) RID {
 	return ret
 }
 
-func IsSame(a Variant, b Variant) Bool {
+func IsSame(a Variant, b Variant) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(a))
 	callframe.Arg(frame, pointers.Get(b))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.utility.is_same(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1247,10 +1247,10 @@ With different string lengths, returns [code]1[/code] if this string is longer t
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method nocasecmp_to], [method filecasecmp_to], and [method naturalcasecmp_to].
 */
 //go:nosplit
-func (self String) CasecmpTo(to String) Int {
+func (self String) CasecmpTo(to String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.casecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -1264,10 +1264,10 @@ With different string lengths, returns [code]1[/code] if this string is longer t
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method casecmp_to], [method filenocasecmp_to], and [method naturalnocasecmp_to].
 */
 //go:nosplit
-func (self String) NocasecmpTo(to String) Int {
+func (self String) NocasecmpTo(to String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.nocasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -1282,10 +1282,10 @@ With different string lengths, returns [code]1[/code] if this string is longer t
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalnocasecmp_to], [method filecasecmp_to], and [method nocasecmp_to].
 */
 //go:nosplit
-func (self String) NaturalcasecmpTo(to String) Int {
+func (self String) NaturalcasecmpTo(to String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.naturalcasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -1300,10 +1300,10 @@ With different string lengths, returns [code]1[/code] if this string is longer t
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalcasecmp_to], [method filenocasecmp_to], and [method casecmp_to].
 */
 //go:nosplit
-func (self String) NaturalnocasecmpTo(to String) Int {
+func (self String) NaturalnocasecmpTo(to String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.naturalnocasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -1316,10 +1316,10 @@ Like [method naturalcasecmp_to] but prioritizes strings that begin with periods 
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method filenocasecmp_to], [method naturalcasecmp_to], and [method casecmp_to].
 */
 //go:nosplit
-func (self String) FilecasecmpTo(to String) Int {
+func (self String) FilecasecmpTo(to String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.filecasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -1332,10 +1332,10 @@ Like [method naturalnocasecmp_to] but prioritizes strings that begin with period
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method filecasecmp_to], [method naturalnocasecmp_to], and [method nocasecmp_to].
 */
 //go:nosplit
-func (self String) FilenocasecmpTo(to String) Int {
+func (self String) FilenocasecmpTo(to String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.filenocasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -1347,9 +1347,9 @@ func (self String) FilenocasecmpTo(to String) Int {
 Returns the number of characters in the string. Empty strings ([code]""[/code]) always return [code]0[/code]. See also [method is_empty].
 */
 //go:nosplit
-func (self String) Length() Int {
+func (self String) Length() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.length(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -1361,7 +1361,7 @@ func (self String) Length() Int {
 Returns part of the string from the position [param from] with length [param len]. If [param len] is [code]-1[/code] (as by default), returns the rest of the string starting from the given position.
 */
 //go:nosplit
-func (self String) Substr(from Int, len Int) String {
+func (self String) Substr(from int64, len int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, len)
@@ -1382,7 +1382,7 @@ print("i/am/example/hi".get_slice("/", 2)) # Prints "example"
 [/codeblock]
 */
 //go:nosplit
-func (self String) GetSlice(delimiter String, slice Int) String {
+func (self String) GetSlice(delimiter String, slice int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, slice)
@@ -1399,7 +1399,7 @@ Splits the string using a Unicode character with code [param delimiter] and retu
 This is faster than [method split], if you only need one substring.
 */
 //go:nosplit
-func (self String) GetSlicec(delimiter Int, slice Int) String {
+func (self String) GetSlicec(delimiter int64, slice int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, delimiter)
 	callframe.Arg(frame, slice)
@@ -1415,10 +1415,10 @@ func (self String) GetSlicec(delimiter Int, slice Int) String {
 Returns the total number of slices when the string is split with the given [param delimiter] (see [method split]).
 */
 //go:nosplit
-func (self String) GetSliceCount(delimiter String) Int {
+func (self String) GetSliceCount(delimiter String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.get_slice_count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -1447,11 +1447,11 @@ GD.Print("Potato".Find("t", 5)); // Prints -1
 [b]Note:[/b] If you just want to know whether the string contains [param what], use [method contains]. In GDScript, you may also use the [code]in[/code] operator.
 */
 //go:nosplit
-func (self String) Find(what String, from Int) Int {
+func (self String) Find(what String, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
@@ -1463,11 +1463,11 @@ func (self String) Find(what String, from Int) Int {
 Returns the index of the [b]first[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the end of the string.
 */
 //go:nosplit
-func (self String) Findn(what String, from Int) Int {
+func (self String) Findn(what String, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.findn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
@@ -1479,12 +1479,12 @@ func (self String) Findn(what String, from Int) Int {
 Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions. If [param to] is 0, the search continues until the end of the string.
 */
 //go:nosplit
-func (self String) Count(what String, from Int, to Int) Int {
+func (self String) Count(what String, from int64, to int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = r_ret.Get()
@@ -1496,12 +1496,12 @@ func (self String) Count(what String, from Int, to Int) Int {
 Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions, [b]ignoring case[/b]. If [param to] is 0, the search continues until the end of the string.
 */
 //go:nosplit
-func (self String) Countn(what String, from Int, to Int) Int {
+func (self String) Countn(what String, from int64, to int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.countn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = r_ret.Get()
@@ -1513,11 +1513,11 @@ func (self String) Countn(what String, from Int, to Int) Int {
 Returns the index of the [b]last[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method find].
 */
 //go:nosplit
-func (self String) Rfind(what String, from Int) Int {
+func (self String) Rfind(what String, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
@@ -1529,11 +1529,11 @@ func (self String) Rfind(what String, from Int) Int {
 Returns the index of the [b]last[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method findn].
 */
 //go:nosplit
-func (self String) Rfindn(what String, from Int) Int {
+func (self String) Rfindn(what String, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.rfindn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
@@ -1545,10 +1545,10 @@ func (self String) Rfindn(what String, from Int) Int {
 Does a simple expression match (also called "glob" or "globbing"), where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
 //go:nosplit
-func (self String) Match(expr String) Bool {
+func (self String) Match(expr String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(expr))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.match(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -1560,10 +1560,10 @@ func (self String) Match(expr String) Bool {
 Does a simple [b]case-insensitive[/b] expression match, where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
 //go:nosplit
-func (self String) Matchn(expr String) Bool {
+func (self String) Matchn(expr String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(expr))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.matchn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -1575,10 +1575,10 @@ func (self String) Matchn(expr String) Bool {
 Returns [code]true[/code] if the string begins with the given [param text]. See also [method ends_with].
 */
 //go:nosplit
-func (self String) BeginsWith(text String) Bool {
+func (self String) BeginsWith(text String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.begins_with(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -1590,10 +1590,10 @@ func (self String) BeginsWith(text String) Bool {
 Returns [code]true[/code] if the string ends with the given [param text]. See also [method begins_with].
 */
 //go:nosplit
-func (self String) EndsWith(text String) Bool {
+func (self String) EndsWith(text String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.ends_with(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -1613,10 +1613,10 @@ print("".is_subsequence_of(text))         # Prints true
 [/codeblock]
 */
 //go:nosplit
-func (self String) IsSubsequenceOf(text String) Bool {
+func (self String) IsSubsequenceOf(text String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_subsequence_of(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -1628,10 +1628,10 @@ func (self String) IsSubsequenceOf(text String) Bool {
 Returns [code]true[/code] if all characters of this string can be found in [param text] in their original order, [b]ignoring case[/b].
 */
 //go:nosplit
-func (self String) IsSubsequenceOfn(text String) Bool {
+func (self String) IsSubsequenceOfn(text String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_subsequence_ofn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -1666,10 +1666,10 @@ print("ABC123".similarity("abc123")) # Prints 0.4
 [/codeblock]
 */
 //go:nosplit
-func (self String) Similarity(text String) Float {
+func (self String) Similarity(text String) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.similarity(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -1753,7 +1753,7 @@ func (self String) Replacen(what String, forwhat String) String {
 Repeats this string a number of times. [param count] needs to be greater than [code]0[/code]. Otherwise, returns an empty string.
 */
 //go:nosplit
-func (self String) Repeat(count Int) String {
+func (self String) Repeat(count int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -1782,7 +1782,7 @@ func (self String) Reverse() String {
 Inserts [param what] at the given [param position] in the string.
 */
 //go:nosplit
-func (self String) Insert(position Int, what String) String {
+func (self String) Insert(position int64, what String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, pointers.Get(what))
@@ -1798,7 +1798,7 @@ func (self String) Insert(position Int, what String) String {
 Returns a string with [param chars] characters erased starting from [param position]. If [param chars] goes beyond the string's length given the specified [param position], fewer characters will be erased from the returned string. Returns an empty string if either [param position] or [param chars] is negative. Returns the original string unmodified if [param chars] is [code]0[/code].
 */
 //go:nosplit
-func (self String) Erase(position Int, chars Int) String {
+func (self String) Erase(position int64, chars int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, chars)
@@ -1917,7 +1917,7 @@ GD.Print(someArray[2]); // Prints "Three"
 [b]Note:[/b] If you only need one substring from the array, consider using [method get_slice] which is faster. If you need to split strings with more complex rules, use the [RegEx] class instead.
 */
 //go:nosplit
-func (self String) Split(delimiter String, allow_empty Bool, maxsplit Int) PackedStringArray {
+func (self String) Split(delimiter String, allow_empty bool, maxsplit int64) PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
@@ -1950,7 +1950,7 @@ print(some_array[1])     # Prints "Four"
 [/codeblocks]
 */
 //go:nosplit
-func (self String) Rsplit(delimiter String, allow_empty Bool, maxsplit Int) PackedStringArray {
+func (self String) Rsplit(delimiter String, allow_empty bool, maxsplit int64) PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
@@ -1973,7 +1973,7 @@ var b = "1| ||4.5".split_floats("|", false) # b is [1.0, 4.5]
 [/codeblock]
 */
 //go:nosplit
-func (self String) SplitFloats(delimiter String, allow_empty Bool) PackedFloat64Array {
+func (self String) SplitFloats(delimiter String, allow_empty bool) PackedFloat64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
@@ -2052,7 +2052,7 @@ print("Hello World!".left(-4)) # Prints "Hello Wo"
 [/codeblock]
 */
 //go:nosplit
-func (self String) Left(length Int) String {
+func (self String) Left(length int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -2071,7 +2071,7 @@ print("Hello World!".right(-4)) # Prints "o World!"
 [/codeblock]
 */
 //go:nosplit
-func (self String) Right(length Int) String {
+func (self String) Right(length int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -2087,7 +2087,7 @@ Strips all non-printable characters from the beginning and the end of the string
 If [param left] is [code]false[/code], ignores the string's beginning. Likewise, if [param right] is [code]false[/code], ignores the string's end.
 */
 //go:nosplit
-func (self String) StripEdges(left Bool, right Bool) String {
+func (self String) StripEdges(left bool, right bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, left)
 	callframe.Arg(frame, right)
@@ -2207,10 +2207,10 @@ func (self String) PathJoin(file String) String {
 Returns the character code at position [param at].
 */
 //go:nosplit
-func (self String) UnicodeAt(at Int) Int {
+func (self String) UnicodeAt(at int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, at)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.unicode_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -2253,9 +2253,9 @@ Returns the 32-bit hash value representing the string's contents.
 [b]Note:[/b] Strings with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the contrary, strings with different hash values are guaranteed to be different.
 */
 //go:nosplit
-func (self String) Hash() Int {
+func (self String) Hash() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.hash(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -2351,9 +2351,9 @@ func (self String) Sha256Buffer() PackedByteArray {
 Returns [code]true[/code] if the string's length is [code]0[/code] ([code]""[/code]). See also [method length].
 */
 //go:nosplit
-func (self String) IsEmpty() Bool {
+func (self String) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -2377,10 +2377,10 @@ GD.Print("team".Contains("I"));  // Prints false
 If you need to know where [param what] is within the string, use [method find]. See also [method containsn].
 */
 //go:nosplit
-func (self String) Contains(what String) Bool {
+func (self String) Contains(what String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.contains(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -2393,10 +2393,10 @@ Returns [code]true[/code] if the string contains [param what], [b]ignoring case[
 If you need to know where [param what] is within the string, use [method findn]. See also [method contains].
 */
 //go:nosplit
-func (self String) Containsn(what String) Bool {
+func (self String) Containsn(what String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.containsn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -2409,9 +2409,9 @@ Returns [code]true[/code] if the string is a path to a file or directory, and it
 This includes all paths starting with [code]"res://"[/code], [code]"user://"[/code], [code]"C:\"[/code], [code]"/"[/code], etc.
 */
 //go:nosplit
-func (self String) IsAbsolutePath() Bool {
+func (self String) IsAbsolutePath() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_absolute_path(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -2423,9 +2423,9 @@ func (self String) IsAbsolutePath() Bool {
 Returns [code]true[/code] if the string is a path, and its starting point is dependent on context. The path could begin from the current directory, or the current [Node] (if the string is derived from a [NodePath]), and may sometimes be prefixed with [code]"./"[/code]. This method is the opposite of [method is_absolute_path].
 */
 //go:nosplit
-func (self String) IsRelativePath() Bool {
+func (self String) IsRelativePath() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_relative_path(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -2489,7 +2489,7 @@ func (self String) GetFile() String {
 Returns a copy of the string with special characters escaped using the XML standard. If [param escape_quotes] is [code]true[/code], the single quote ([code]'[/code]) and double quote ([code]"[/code]) characters are also escaped.
 */
 //go:nosplit
-func (self String) XmlEscape(escape_quotes Bool) String {
+func (self String) XmlEscape(escape_quotes bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, escape_quotes)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -2647,9 +2647,9 @@ print("MyMethod#2".is_valid_identifier()) # Prints false
 [/codeblock]
 */
 //go:nosplit
-func (self String) IsValidIdentifier() Bool {
+func (self String) IsValidIdentifier() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_valid_identifier(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -2668,9 +2668,9 @@ print("-12".is_valid_int())  # Prints true
 [/codeblock]
 */
 //go:nosplit
-func (self String) IsValidInt() Bool {
+func (self String) IsValidInt() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_valid_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -2688,9 +2688,9 @@ print("Hello".is_valid_float()) # Prints false
 [/codeblock]
 */
 //go:nosplit
-func (self String) IsValidFloat() Bool {
+func (self String) IsValidFloat() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_valid_float(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -2710,10 +2710,10 @@ print("0xDEADC0DE".is_valid_hex_number(true)) # Prints true
 [/codeblock]
 */
 //go:nosplit
-func (self String) IsValidHexNumber(with_prefix Bool) Bool {
+func (self String) IsValidHexNumber(with_prefix bool) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, with_prefix)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_valid_hex_number(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -2725,9 +2725,9 @@ func (self String) IsValidHexNumber(with_prefix Bool) Bool {
 Returns [code]true[/code] if this string is a valid color in hexadecimal HTML notation. The string must be a hexadecimal value (see [method is_valid_hex_number]) of either 3, 4, 6 or 8 digits, and may be prefixed by a hash sign ([code]#[/code]). Other HTML notations for colors, such as names or [code]hsl()[/code], are not considered valid. See also [method Color.html].
 */
 //go:nosplit
-func (self String) IsValidHtmlColor() Bool {
+func (self String) IsValidHtmlColor() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_valid_html_color(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -2739,9 +2739,9 @@ func (self String) IsValidHtmlColor() Bool {
 Returns [code]true[/code] if this string represents a well-formatted IPv4 or IPv6 address. This method considers [url=https://en.wikipedia.org/wiki/Reserved_IP_addresses]reserved IP addresses[/url] such as [code]"0.0.0.0"[/code] and [code]"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"[/code] as valid.
 */
 //go:nosplit
-func (self String) IsValidIpAddress() Bool {
+func (self String) IsValidIpAddress() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_valid_ip_address(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -2753,9 +2753,9 @@ func (self String) IsValidIpAddress() Bool {
 Returns [code]true[/code] if this string does not contain characters that are not allowed in file names ([code]:[/code] [code]/[/code] [code]\[/code] [code]?[/code] [code]*[/code] [code]"[/code] [code]|[/code] [code]%[/code] [code]<[/code] [code]>[/code]).
 */
 //go:nosplit
-func (self String) IsValidFilename() Bool {
+func (self String) IsValidFilename() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_valid_filename(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -2773,9 +2773,9 @@ var d = "Hello!".to_int() # d is 0
 [/codeblock]
 */
 //go:nosplit
-func (self String) ToInt() Int {
+func (self String) ToInt() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.to_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -2794,9 +2794,9 @@ var e = "Hello!".to_float() # e is 0.0
 [/codeblock]
 */
 //go:nosplit
-func (self String) ToFloat() Float {
+func (self String) ToFloat() float64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.to_float(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -2818,9 +2818,9 @@ GD.Print("ab".HexToInt());   // Prints 171
 [/codeblocks]
 */
 //go:nosplit
-func (self String) HexToInt() Int {
+func (self String) HexToInt() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.hex_to_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -2844,9 +2844,9 @@ GD.Print("-0b10".BinToInt()); // Prints -2
 [/codeblocks]
 */
 //go:nosplit
-func (self String) BinToInt() Int {
+func (self String) BinToInt() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.bin_to_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -2858,7 +2858,7 @@ func (self String) BinToInt() Int {
 Formats the string to be at least [param min_length] long by adding [param character]s to the left of the string, if necessary. See also [method rpad].
 */
 //go:nosplit
-func (self String) Lpad(min_length Int, character String) String {
+func (self String) Lpad(min_length int64, character String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, min_length)
 	callframe.Arg(frame, pointers.Get(character))
@@ -2874,7 +2874,7 @@ func (self String) Lpad(min_length Int, character String) String {
 Formats the string to be at least [param min_length] long, by adding [param character]s to the right of the string, if necessary. See also [method lpad].
 */
 //go:nosplit
-func (self String) Rpad(min_length Int, character String) String {
+func (self String) Rpad(min_length int64, character String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, min_length)
 	callframe.Arg(frame, pointers.Get(character))
@@ -2890,7 +2890,7 @@ func (self String) Rpad(min_length Int, character String) String {
 Formats the string representing a number to have an exact number of [param digits] [i]after[/i] the decimal point.
 */
 //go:nosplit
-func (self String) PadDecimals(digits Int) String {
+func (self String) PadDecimals(digits int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, digits)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -2905,7 +2905,7 @@ func (self String) PadDecimals(digits Int) String {
 Formats the string representing a number to have an exact number of [param digits] [i]before[/i] the decimal point.
 */
 //go:nosplit
-func (self String) PadZeros(digits Int) String {
+func (self String) PadZeros(digits int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, digits)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -3061,7 +3061,7 @@ GD.Print(n.ToString("e1")); // Prints -5.2e+008
 [b]Note:[/b] In C#, this method is not implemented. To achieve similar results, see C#'s [url=https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings]Standard numeric format strings[/url]
 */
 //go:nosplit
-func (self String) NumScientific(number Float) String {
+func (self String) NumScientific(number float64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -3091,7 +3091,7 @@ String.num(-10000.0000012345432123454321) # Returns "-10000.0000012345"
 [/codeblock]
 */
 //go:nosplit
-func (self String) Num(number Float, decimals Int) String {
+func (self String) Num(number float64, decimals int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, decimals)
@@ -3108,7 +3108,7 @@ By default, [param base] is set to decimal ([code]10[/code]). Other common bases
 If [param capitalize_hex] is [code]true[/code], digits higher than 9 are represented in uppercase.
 */
 //go:nosplit
-func (self String) NumInt64(number Int, base Int, capitalize_hex Bool) String {
+func (self String) NumInt64(number int64, base int64, capitalize_hex bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, base)
@@ -3126,7 +3126,7 @@ By default, [param base] is set to decimal ([code]10[/code]). Other common bases
 If [param capitalize_hex] is [code]true[/code], digits higher than 9 are represented in uppercase.
 */
 //go:nosplit
-func (self String) NumUint64(number Int, base Int, capitalize_hex Bool) String {
+func (self String) NumUint64(number int64, base int64, capitalize_hex bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, base)
@@ -3146,7 +3146,7 @@ print(String.chr(129302)) # Prints "🤖" (robot face emoji)
 [/codeblock]
 */
 //go:nosplit
-func (self String) Chr(char Int) String {
+func (self String) Chr(char int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, char)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -3161,7 +3161,7 @@ Converts [param size] which represents a number of bytes into a human-readable f
 The result is in [url=https://en.wikipedia.org/wiki/Binary_prefix#IEC_prefixes]IEC prefix format[/url], which may end in either [code]"B"[/code], [code]"KiB"[/code], [code]"MiB"[/code], [code]"GiB"[/code], [code]"TiB"[/code], [code]"PiB"[/code], or [code]"EiB"[/code].
 */
 //go:nosplit
-func (self String) HumanizeSize(size Int) String {
+func (self String) HumanizeSize(size int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -3177,10 +3177,10 @@ With different string lengths, returns [code]1[/code] if this string is longer t
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method nocasecmp_to], [method filecasecmp_to], and [method naturalcasecmp_to].
 */
 //go:nosplit
-func (self StringName) CasecmpTo(to String) Int {
+func (self StringName) CasecmpTo(to String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.casecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -3194,10 +3194,10 @@ With different string lengths, returns [code]1[/code] if this string is longer t
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method casecmp_to], [method filenocasecmp_to], and [method naturalnocasecmp_to].
 */
 //go:nosplit
-func (self StringName) NocasecmpTo(to String) Int {
+func (self StringName) NocasecmpTo(to String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.nocasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -3212,10 +3212,10 @@ With different string lengths, returns [code]1[/code] if this string is longer t
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalnocasecmp_to], [method filecasecmp_to], and [method nocasecmp_to].
 */
 //go:nosplit
-func (self StringName) NaturalcasecmpTo(to String) Int {
+func (self StringName) NaturalcasecmpTo(to String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.naturalcasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -3230,10 +3230,10 @@ With different string lengths, returns [code]1[/code] if this string is longer t
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalcasecmp_to], [method filenocasecmp_to], and [method casecmp_to].
 */
 //go:nosplit
-func (self StringName) NaturalnocasecmpTo(to String) Int {
+func (self StringName) NaturalnocasecmpTo(to String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.naturalnocasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -3246,10 +3246,10 @@ Like [method naturalcasecmp_to] but prioritizes strings that begin with periods 
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method filenocasecmp_to], [method naturalcasecmp_to], and [method casecmp_to].
 */
 //go:nosplit
-func (self StringName) FilecasecmpTo(to String) Int {
+func (self StringName) FilecasecmpTo(to String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.filecasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -3262,10 +3262,10 @@ Like [method naturalnocasecmp_to] but prioritizes strings that begin with period
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method filecasecmp_to], [method naturalnocasecmp_to], and [method nocasecmp_to].
 */
 //go:nosplit
-func (self StringName) FilenocasecmpTo(to String) Int {
+func (self StringName) FilenocasecmpTo(to String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.filenocasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -3277,9 +3277,9 @@ func (self StringName) FilenocasecmpTo(to String) Int {
 Returns the number of characters in the string. Empty strings ([code]""[/code]) always return [code]0[/code]. See also [method is_empty].
 */
 //go:nosplit
-func (self StringName) Length() Int {
+func (self StringName) Length() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.length(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -3291,7 +3291,7 @@ func (self StringName) Length() Int {
 Returns part of the string from the position [param from] with length [param len]. If [param len] is [code]-1[/code] (as by default), returns the rest of the string starting from the given position.
 */
 //go:nosplit
-func (self StringName) Substr(from Int, len Int) String {
+func (self StringName) Substr(from int64, len int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, len)
@@ -3312,7 +3312,7 @@ print("i/am/example/hi".get_slice("/", 2)) # Prints "example"
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) GetSlice(delimiter String, slice Int) String {
+func (self StringName) GetSlice(delimiter String, slice int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, slice)
@@ -3329,7 +3329,7 @@ Splits the string using a Unicode character with code [param delimiter] and retu
 This is faster than [method split], if you only need one substring.
 */
 //go:nosplit
-func (self StringName) GetSlicec(delimiter Int, slice Int) String {
+func (self StringName) GetSlicec(delimiter int64, slice int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, delimiter)
 	callframe.Arg(frame, slice)
@@ -3345,10 +3345,10 @@ func (self StringName) GetSlicec(delimiter Int, slice Int) String {
 Returns the total number of slices when the string is split with the given [param delimiter] (see [method split]).
 */
 //go:nosplit
-func (self StringName) GetSliceCount(delimiter String) Int {
+func (self StringName) GetSliceCount(delimiter String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.get_slice_count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -3377,11 +3377,11 @@ GD.Print("Potato".Find("t", 5)); // Prints -1
 [b]Note:[/b] If you just want to know whether the string contains [param what], use [method contains]. In GDScript, you may also use the [code]in[/code] operator.
 */
 //go:nosplit
-func (self StringName) Find(what String, from Int) Int {
+func (self StringName) Find(what String, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
@@ -3393,11 +3393,11 @@ func (self StringName) Find(what String, from Int) Int {
 Returns the index of the [b]first[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the end of the string.
 */
 //go:nosplit
-func (self StringName) Findn(what String, from Int) Int {
+func (self StringName) Findn(what String, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.findn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
@@ -3409,12 +3409,12 @@ func (self StringName) Findn(what String, from Int) Int {
 Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions. If [param to] is 0, the search continues until the end of the string.
 */
 //go:nosplit
-func (self StringName) Count(what String, from Int, to Int) Int {
+func (self StringName) Count(what String, from int64, to int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = r_ret.Get()
@@ -3426,12 +3426,12 @@ func (self StringName) Count(what String, from Int, to Int) Int {
 Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions, [b]ignoring case[/b]. If [param to] is 0, the search continues until the end of the string.
 */
 //go:nosplit
-func (self StringName) Countn(what String, from Int, to Int) Int {
+func (self StringName) Countn(what String, from int64, to int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.countn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = r_ret.Get()
@@ -3443,11 +3443,11 @@ func (self StringName) Countn(what String, from Int, to Int) Int {
 Returns the index of the [b]last[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method find].
 */
 //go:nosplit
-func (self StringName) Rfind(what String, from Int) Int {
+func (self StringName) Rfind(what String, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
@@ -3459,11 +3459,11 @@ func (self StringName) Rfind(what String, from Int) Int {
 Returns the index of the [b]last[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method findn].
 */
 //go:nosplit
-func (self StringName) Rfindn(what String, from Int) Int {
+func (self StringName) Rfindn(what String, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.rfindn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
@@ -3475,10 +3475,10 @@ func (self StringName) Rfindn(what String, from Int) Int {
 Does a simple expression match (also called "glob" or "globbing"), where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
 //go:nosplit
-func (self StringName) Match(expr String) Bool {
+func (self StringName) Match(expr String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(expr))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.match(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -3490,10 +3490,10 @@ func (self StringName) Match(expr String) Bool {
 Does a simple [b]case-insensitive[/b] expression match, where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
 //go:nosplit
-func (self StringName) Matchn(expr String) Bool {
+func (self StringName) Matchn(expr String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(expr))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.matchn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -3505,10 +3505,10 @@ func (self StringName) Matchn(expr String) Bool {
 Returns [code]true[/code] if the string begins with the given [param text]. See also [method ends_with].
 */
 //go:nosplit
-func (self StringName) BeginsWith(text String) Bool {
+func (self StringName) BeginsWith(text String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.begins_with(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -3520,10 +3520,10 @@ func (self StringName) BeginsWith(text String) Bool {
 Returns [code]true[/code] if the string ends with the given [param text]. See also [method begins_with].
 */
 //go:nosplit
-func (self StringName) EndsWith(text String) Bool {
+func (self StringName) EndsWith(text String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.ends_with(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -3543,10 +3543,10 @@ print("".is_subsequence_of(text))         # Prints true
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) IsSubsequenceOf(text String) Bool {
+func (self StringName) IsSubsequenceOf(text String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_subsequence_of(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -3558,10 +3558,10 @@ func (self StringName) IsSubsequenceOf(text String) Bool {
 Returns [code]true[/code] if all characters of this string can be found in [param text] in their original order, [b]ignoring case[/b].
 */
 //go:nosplit
-func (self StringName) IsSubsequenceOfn(text String) Bool {
+func (self StringName) IsSubsequenceOfn(text String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_subsequence_ofn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -3596,10 +3596,10 @@ print("ABC123".similarity("abc123")) # Prints 0.4
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) Similarity(text String) Float {
+func (self StringName) Similarity(text String) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.similarity(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -3676,7 +3676,7 @@ func (self StringName) Replacen(what String, forwhat String) String {
 Repeats this string a number of times. [param count] needs to be greater than [code]0[/code]. Otherwise, returns an empty string.
 */
 //go:nosplit
-func (self StringName) Repeat(count Int) String {
+func (self StringName) Repeat(count int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -3705,7 +3705,7 @@ func (self StringName) Reverse() String {
 Inserts [param what] at the given [param position] in the string.
 */
 //go:nosplit
-func (self StringName) Insert(position Int, what String) String {
+func (self StringName) Insert(position int64, what String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, pointers.Get(what))
@@ -3721,7 +3721,7 @@ func (self StringName) Insert(position Int, what String) String {
 Returns a string with [param chars] characters erased starting from [param position]. If [param chars] goes beyond the string's length given the specified [param position], fewer characters will be erased from the returned string. Returns an empty string if either [param position] or [param chars] is negative. Returns the original string unmodified if [param chars] is [code]0[/code].
 */
 //go:nosplit
-func (self StringName) Erase(position Int, chars Int) String {
+func (self StringName) Erase(position int64, chars int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, chars)
@@ -3840,7 +3840,7 @@ GD.Print(someArray[2]); // Prints "Three"
 [b]Note:[/b] If you only need one substring from the array, consider using [method get_slice] which is faster. If you need to split strings with more complex rules, use the [RegEx] class instead.
 */
 //go:nosplit
-func (self StringName) Split(delimiter String, allow_empty Bool, maxsplit Int) PackedStringArray {
+func (self StringName) Split(delimiter String, allow_empty bool, maxsplit int64) PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
@@ -3873,7 +3873,7 @@ print(some_array[1])     # Prints "Four"
 [/codeblocks]
 */
 //go:nosplit
-func (self StringName) Rsplit(delimiter String, allow_empty Bool, maxsplit Int) PackedStringArray {
+func (self StringName) Rsplit(delimiter String, allow_empty bool, maxsplit int64) PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
@@ -3896,7 +3896,7 @@ var b = "1| ||4.5".split_floats("|", false) # b is [1.0, 4.5]
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) SplitFloats(delimiter String, allow_empty Bool) PackedFloat64Array {
+func (self StringName) SplitFloats(delimiter String, allow_empty bool) PackedFloat64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
@@ -3975,7 +3975,7 @@ print("Hello World!".left(-4)) # Prints "Hello Wo"
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) Left(length Int) String {
+func (self StringName) Left(length int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -3994,7 +3994,7 @@ print("Hello World!".right(-4)) # Prints "o World!"
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) Right(length Int) String {
+func (self StringName) Right(length int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -4010,7 +4010,7 @@ Strips all non-printable characters from the beginning and the end of the string
 If [param left] is [code]false[/code], ignores the string's beginning. Likewise, if [param right] is [code]false[/code], ignores the string's end.
 */
 //go:nosplit
-func (self StringName) StripEdges(left Bool, right Bool) String {
+func (self StringName) StripEdges(left bool, right bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, left)
 	callframe.Arg(frame, right)
@@ -4130,10 +4130,10 @@ func (self StringName) PathJoin(file String) String {
 Returns the character code at position [param at].
 */
 //go:nosplit
-func (self StringName) UnicodeAt(at Int) Int {
+func (self StringName) UnicodeAt(at int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, at)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.unicode_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -4259,9 +4259,9 @@ func (self StringName) Sha256Buffer() PackedByteArray {
 Returns [code]true[/code] if the string's length is [code]0[/code] ([code]""[/code]). See also [method length].
 */
 //go:nosplit
-func (self StringName) IsEmpty() Bool {
+func (self StringName) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4285,10 +4285,10 @@ GD.Print("team".Contains("I"));  // Prints false
 If you need to know where [param what] is within the string, use [method find]. See also [method containsn].
 */
 //go:nosplit
-func (self StringName) Contains(what String) Bool {
+func (self StringName) Contains(what String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.contains(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -4301,10 +4301,10 @@ Returns [code]true[/code] if the string contains [param what], [b]ignoring case[
 If you need to know where [param what] is within the string, use [method findn]. See also [method contains].
 */
 //go:nosplit
-func (self StringName) Containsn(what String) Bool {
+func (self StringName) Containsn(what String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.containsn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -4317,9 +4317,9 @@ Returns [code]true[/code] if the string is a path to a file or directory, and it
 This includes all paths starting with [code]"res://"[/code], [code]"user://"[/code], [code]"C:\"[/code], [code]"/"[/code], etc.
 */
 //go:nosplit
-func (self StringName) IsAbsolutePath() Bool {
+func (self StringName) IsAbsolutePath() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_absolute_path(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4331,9 +4331,9 @@ func (self StringName) IsAbsolutePath() Bool {
 Returns [code]true[/code] if the string is a path, and its starting point is dependent on context. The path could begin from the current directory, or the current [Node] (if the string is derived from a [NodePath]), and may sometimes be prefixed with [code]"./"[/code]. This method is the opposite of [method is_absolute_path].
 */
 //go:nosplit
-func (self StringName) IsRelativePath() Bool {
+func (self StringName) IsRelativePath() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_relative_path(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4397,7 +4397,7 @@ func (self StringName) GetFile() String {
 Returns a copy of the string with special characters escaped using the XML standard. If [param escape_quotes] is [code]true[/code], the single quote ([code]'[/code]) and double quote ([code]"[/code]) characters are also escaped.
 */
 //go:nosplit
-func (self StringName) XmlEscape(escape_quotes Bool) String {
+func (self StringName) XmlEscape(escape_quotes bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, escape_quotes)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -4555,9 +4555,9 @@ print("MyMethod#2".is_valid_identifier()) # Prints false
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) IsValidIdentifier() Bool {
+func (self StringName) IsValidIdentifier() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_valid_identifier(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4576,9 +4576,9 @@ print("-12".is_valid_int())  # Prints true
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) IsValidInt() Bool {
+func (self StringName) IsValidInt() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_valid_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4596,9 +4596,9 @@ print("Hello".is_valid_float()) # Prints false
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) IsValidFloat() Bool {
+func (self StringName) IsValidFloat() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_valid_float(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4618,10 +4618,10 @@ print("0xDEADC0DE".is_valid_hex_number(true)) # Prints true
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) IsValidHexNumber(with_prefix Bool) Bool {
+func (self StringName) IsValidHexNumber(with_prefix bool) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, with_prefix)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_valid_hex_number(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -4633,9 +4633,9 @@ func (self StringName) IsValidHexNumber(with_prefix Bool) Bool {
 Returns [code]true[/code] if this string is a valid color in hexadecimal HTML notation. The string must be a hexadecimal value (see [method is_valid_hex_number]) of either 3, 4, 6 or 8 digits, and may be prefixed by a hash sign ([code]#[/code]). Other HTML notations for colors, such as names or [code]hsl()[/code], are not considered valid. See also [method Color.html].
 */
 //go:nosplit
-func (self StringName) IsValidHtmlColor() Bool {
+func (self StringName) IsValidHtmlColor() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_valid_html_color(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4647,9 +4647,9 @@ func (self StringName) IsValidHtmlColor() Bool {
 Returns [code]true[/code] if this string represents a well-formatted IPv4 or IPv6 address. This method considers [url=https://en.wikipedia.org/wiki/Reserved_IP_addresses]reserved IP addresses[/url] such as [code]"0.0.0.0"[/code] and [code]"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"[/code] as valid.
 */
 //go:nosplit
-func (self StringName) IsValidIpAddress() Bool {
+func (self StringName) IsValidIpAddress() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_valid_ip_address(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4661,9 +4661,9 @@ func (self StringName) IsValidIpAddress() Bool {
 Returns [code]true[/code] if this string does not contain characters that are not allowed in file names ([code]:[/code] [code]/[/code] [code]\[/code] [code]?[/code] [code]*[/code] [code]"[/code] [code]|[/code] [code]%[/code] [code]<[/code] [code]>[/code]).
 */
 //go:nosplit
-func (self StringName) IsValidFilename() Bool {
+func (self StringName) IsValidFilename() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_valid_filename(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4681,9 +4681,9 @@ var d = "Hello!".to_int() # d is 0
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) ToInt() Int {
+func (self StringName) ToInt() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.to_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4702,9 +4702,9 @@ var e = "Hello!".to_int()  # e is 0.0
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) ToFloat() Float {
+func (self StringName) ToFloat() float64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.to_float(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4726,9 +4726,9 @@ GD.Print("ab".HexToInt());   // Prints 171
 [/codeblocks]
 */
 //go:nosplit
-func (self StringName) HexToInt() Int {
+func (self StringName) HexToInt() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.hex_to_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4752,9 +4752,9 @@ GD.Print("-0b10".BinToInt()); // Prints -2
 [/codeblocks]
 */
 //go:nosplit
-func (self StringName) BinToInt() Int {
+func (self StringName) BinToInt() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.bin_to_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4766,7 +4766,7 @@ func (self StringName) BinToInt() Int {
 Formats the string to be at least [param min_length] long by adding [param character]s to the left of the string, if necessary. See also [method rpad].
 */
 //go:nosplit
-func (self StringName) Lpad(min_length Int, character String) String {
+func (self StringName) Lpad(min_length int64, character String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, min_length)
 	callframe.Arg(frame, pointers.Get(character))
@@ -4782,7 +4782,7 @@ func (self StringName) Lpad(min_length Int, character String) String {
 Formats the string to be at least [param min_length] long, by adding [param character]s to the right of the string, if necessary. See also [method lpad].
 */
 //go:nosplit
-func (self StringName) Rpad(min_length Int, character String) String {
+func (self StringName) Rpad(min_length int64, character String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, min_length)
 	callframe.Arg(frame, pointers.Get(character))
@@ -4798,7 +4798,7 @@ func (self StringName) Rpad(min_length Int, character String) String {
 Formats the string representing a number to have an exact number of [param digits] [i]after[/i] the decimal point.
 */
 //go:nosplit
-func (self StringName) PadDecimals(digits Int) String {
+func (self StringName) PadDecimals(digits int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, digits)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -4813,7 +4813,7 @@ func (self StringName) PadDecimals(digits Int) String {
 Formats the string representing a number to have an exact number of [param digits] [i]before[/i] the decimal point.
 */
 //go:nosplit
-func (self StringName) PadZeros(digits Int) String {
+func (self StringName) PadZeros(digits int64) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, digits)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -4955,9 +4955,9 @@ Returns the 32-bit hash value representing the string's contents.
 [b]Note:[/b] Strings with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the contrary, strings with different hash values are guaranteed to be different.
 */
 //go:nosplit
-func (self StringName) Hash() Int {
+func (self StringName) Hash() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.hash(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4969,9 +4969,9 @@ func (self StringName) Hash() Int {
 Returns [code]true[/code] if the node path is absolute. Unlike a relative path, an absolute path is represented by a leading slash character ([code]/[/code]) and always begins from the [SceneTree]. It can be used to reliably access nodes from the root node (e.g. [code]"/root/Global"[/code] if an autoload named "Global" exists).
 */
 //go:nosplit
-func (self NodePath) IsAbsolute() Bool {
+func (self NodePath) IsAbsolute() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.NodePath.is_absolute(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -4984,9 +4984,9 @@ Returns the number of node names in the path. Property subnames are not included
 For example, [code]"../RigidBody2D/Sprite2D:texture"[/code] contains 3 node names.
 */
 //go:nosplit
-func (self NodePath) GetNameCount() Int {
+func (self NodePath) GetNameCount() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.NodePath.get_name_count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5012,7 +5012,7 @@ GD.Print(spritePath.GetName(2)); // Prints "Sprite".
 [/codeblocks]
 */
 //go:nosplit
-func (self NodePath) GetName(idx Int) StringName {
+func (self NodePath) GetName(idx int64) StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -5028,9 +5028,9 @@ Returns the number of property names ("subnames") in the path. Each subname in t
 For example, [code]"Level/RigidBody2D/Sprite2D:texture:resource_name"[/code] contains 2 subnames.
 */
 //go:nosplit
-func (self NodePath) GetSubnameCount() Int {
+func (self NodePath) GetSubnameCount() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.NodePath.get_subname_count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5043,9 +5043,9 @@ Returns the 32-bit hash value representing the node path's contents.
 [b]Note:[/b] Node paths with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. Node paths with different hash values are guaranteed to be different.
 */
 //go:nosplit
-func (self NodePath) Hash() Int {
+func (self NodePath) Hash() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.NodePath.hash(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5069,7 +5069,7 @@ GD.Print(pathToName.GetSubname(1)); // Prints "resource_name".
 [/codeblocks]
 */
 //go:nosplit
-func (self NodePath) GetSubname(idx Int) StringName {
+func (self NodePath) GetSubname(idx int64) StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -5124,7 +5124,7 @@ The absolute value of [param begin] and [param end] will be clamped to the sum o
 If either [param begin] or [param end] are negative, they will be relative to the end of the [NodePath] (i.e. [code]path.slice(0, -2)[/code] is a shorthand for [code]path.slice(0, path.get_name_count() + path.get_subname_count() - 2)[/code]).
 */
 //go:nosplit
-func (self NodePath) Slice(begin Int, end Int) NodePath {
+func (self NodePath) Slice(begin int64, end int64) NodePath {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
@@ -5172,9 +5172,9 @@ func (self NodePath) GetAsPropertyPath() NodePath {
 Returns [code]true[/code] if the node path has been constructed from an empty [String] ([code]""[/code]).
 */
 //go:nosplit
-func (self NodePath) IsEmpty() Bool {
+func (self NodePath) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.NodePath.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5217,9 +5217,9 @@ func (self Callable) Callv(arguments Array) Variant {
 Returns [code]true[/code] if this [Callable] has no target to call the method on.
 */
 //go:nosplit
-func (self Callable) IsNull() Bool {
+func (self Callable) IsNull() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.is_null(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5235,9 +5235,9 @@ Returns [code]true[/code] if this [Callable] is a custom callable. Custom callab
 - for other purposes in the core, GDExtension, and C#.
 */
 //go:nosplit
-func (self Callable) IsCustom() Bool {
+func (self Callable) IsCustom() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.is_custom(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5249,9 +5249,9 @@ func (self Callable) IsCustom() Bool {
 Returns [code]true[/code] if this [Callable] is a standard callable. This method is the opposite of [method is_custom]. Returns [code]false[/code] if this callable is a lambda function.
 */
 //go:nosplit
-func (self Callable) IsStandard() Bool {
+func (self Callable) IsStandard() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.is_standard(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5263,9 +5263,9 @@ func (self Callable) IsStandard() Bool {
 Returns [code]true[/code] if the callable's object exists and has a valid method name assigned, or is a custom callable.
 */
 //go:nosplit
-func (self Callable) IsValid() Bool {
+func (self Callable) IsValid() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.is_valid(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5291,9 +5291,9 @@ func (self Callable) GetObject() Object {
 Returns the ID of this [Callable]'s object (see [method Object.get_instance_id]).
 */
 //go:nosplit
-func (self Callable) GetObjectId() Int {
+func (self Callable) GetObjectId() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.get_object_id(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5319,9 +5319,9 @@ func (self Callable) GetMethod() StringName {
 Returns the total number of arguments this [Callable] should take, including optional arguments. This means that any arguments bound with [method bind] are [i]subtracted[/i] from the result, and any arguments unbound with [method unbind] are [i]added[/i] to the result.
 */
 //go:nosplit
-func (self Callable) GetArgumentCount() Int {
+func (self Callable) GetArgumentCount() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.get_argument_count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5333,9 +5333,9 @@ func (self Callable) GetArgumentCount() Int {
 Returns the total amount of arguments bound (or unbound) via successive [method bind] or [method unbind] calls. If the amount of arguments unbound is greater than the ones bound, this function returns a value less than zero.
 */
 //go:nosplit
-func (self Callable) GetBoundArgumentsCount() Int {
+func (self Callable) GetBoundArgumentsCount() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.get_bound_arguments_count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5362,9 +5362,9 @@ Returns the 32-bit hash value of this [Callable]'s object.
 [b]Note:[/b] [Callable]s with equal content will always produce identical hash values. However, the reverse is not true. Returning identical hash values does [i]not[/i] imply the callables are equal, because different callables can have identical hash values due to hash collisions. The engine uses a 32-bit hash algorithm for [method hash].
 */
 //go:nosplit
-func (self Callable) Hash() Int {
+func (self Callable) Hash() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.hash(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5398,7 +5398,7 @@ func _ready():
 [/codeblock]
 */
 //go:nosplit
-func (self Callable) Unbind(argcount Int) Callable {
+func (self Callable) Unbind(argcount int64) Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, argcount)
 	var r_ret = callframe.Ret[[2]uint64](frame)
@@ -5474,7 +5474,7 @@ func (self Callable) Rpc(args ...Variant) {
 Perform an RPC (Remote Procedure Call) on a specific peer ID (see multiplayer documentation for reference). This is used for multiplayer and is normally not available unless the function being called has been marked as [i]RPC[/i] (using [annotation @GDScript.@rpc] or [method Node.rpc_config]). Calling this method on unsupported functions will result in an error. See [method Node.rpc_id].
 */
 //go:nosplit
-func (self Callable) RpcId(peer_id Int, args ...Variant) {
+func (self Callable) RpcId(peer_id int64, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
 	for _, arg := range args {
@@ -5508,9 +5508,9 @@ func (self Callable) Bind(args ...Variant) Callable {
 Returns [code]true[/code] if the signal's name does not exist in its object, or the object is not valid.
 */
 //go:nosplit
-func (self Signal) IsNull() Bool {
+func (self Signal) IsNull() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Signal.is_null(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5536,9 +5536,9 @@ func (self Signal) GetObject() Object {
 Returns the ID of the object emitting this signal (see [method Object.get_instance_id]).
 */
 //go:nosplit
-func (self Signal) GetObjectId() Int {
+func (self Signal) GetObjectId() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Signal.get_object_id(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5572,11 +5572,11 @@ func _on_pressed(button):
 [/codeblock]
 */
 //go:nosplit
-func (self Signal) Connect(callable Callable, flags Int) Int {
+func (self Signal) Connect(callable Callable, flags int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callable))
 	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Signal.connect(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
@@ -5601,10 +5601,10 @@ func (self Signal) Disconnect(callable Callable) {
 Returns [code]true[/code] if the specified [Callable] is connected to this signal.
 */
 //go:nosplit
-func (self Signal) IsConnected(callable Callable) Bool {
+func (self Signal) IsConnected(callable Callable) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Signal.is_connected(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -5648,9 +5648,9 @@ func (self Signal) Emit(args ...Variant) {
 Returns the number of entries in the dictionary. Empty dictionaries ([code]{ }[/code]) always return [code]0[/code]. See also [method is_empty].
 */
 //go:nosplit
-func (self Dictionary) Size() Int {
+func (self Dictionary) Size() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5662,9 +5662,9 @@ func (self Dictionary) Size() Int {
 Returns [code]true[/code] if the dictionary is empty (its size is [code]0[/code]). See also [method size].
 */
 //go:nosplit
-func (self Dictionary) IsEmpty() Bool {
+func (self Dictionary) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5724,7 +5724,7 @@ GD.Print(dict); // { "item": "sword", "quantity": 15, "color": "silver" }
 [b]Note:[/b] [method merge] is [i]not[/i] recursive. Nested dictionaries are considered as keys that can be overwritten or not depending on the value of [param overwrite], but they will never be merged together.
 */
 //go:nosplit
-func (self Dictionary) Merge(dictionary Dictionary, overwrite Bool) {
+func (self Dictionary) Merge(dictionary Dictionary, overwrite bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
 	callframe.Arg(frame, overwrite)
@@ -5747,7 +5747,7 @@ print(extra.merged(base, true))
 [/codeblock]
 */
 //go:nosplit
-func (self Dictionary) Merged(dictionary Dictionary, overwrite Bool) Dictionary {
+func (self Dictionary) Merged(dictionary Dictionary, overwrite bool) Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
 	callframe.Arg(frame, overwrite)
@@ -5792,10 +5792,10 @@ if "Godot" in {"Godot": 4}:
 [b]Note:[/b] This method returns [code]true[/code] as long as the [param key] exists, even if its corresponding value is [code]null[/code].
 */
 //go:nosplit
-func (self Dictionary) Has(key Variant) Bool {
+func (self Dictionary) Has(key Variant) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -5811,10 +5811,10 @@ data.has_all(["height", "width"]) # Returns true
 [/codeblock]
 */
 //go:nosplit
-func (self Dictionary) HasAll(keys Array) Bool {
+func (self Dictionary) HasAll(keys Array) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(keys))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.has_all(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -5843,10 +5843,10 @@ Removes the dictionary entry by key, if it exists. Returns [code]true[/code] if 
 [b]Note:[/b] Do not erase entries while iterating over the dictionary. You can iterate over the [method keys] array instead.
 */
 //go:nosplit
-func (self Dictionary) Erase(key Variant) Bool {
+func (self Dictionary) Erase(key Variant) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.erase(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -5875,9 +5875,9 @@ GD.Print(GD.Hash(dict1) == GD.Hash(dict2)); // Prints true
 [b]Note:[/b] Dictionaries with equal hash values are [i]not[/i] guaranteed to be the same, because of hash collisions. On the contrary, dictionaries with different hash values are guaranteed to be different.
 */
 //go:nosplit
-func (self Dictionary) Hash() Int {
+func (self Dictionary) Hash() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.hash(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5917,7 +5917,7 @@ func (self Dictionary) Values() Array {
 Creates and returns a new copy of the dictionary. If [param deep] is [code]true[/code], inner [Dictionary] and [Array] keys and values are also copied, recursively.
 */
 //go:nosplit
-func (self Dictionary) Duplicate(deep Bool) Dictionary {
+func (self Dictionary) Duplicate(deep bool) Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, deep)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -5976,9 +5976,9 @@ func (self Dictionary) MakeReadOnly() {
 Returns [code]true[/code] if the dictionary is read-only. See [method make_read_only]. Dictionaries are automatically read-only if declared with [code]const[/code] keyword.
 */
 //go:nosplit
-func (self Dictionary) IsReadOnly() Bool {
+func (self Dictionary) IsReadOnly() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.is_read_only(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -5990,11 +5990,11 @@ func (self Dictionary) IsReadOnly() Bool {
 Returns [code]true[/code] if the two dictionaries contain the same keys and values, inner [Dictionary] and [Array] keys and values are compared recursively.
 */
 //go:nosplit
-func (self Dictionary) RecursiveEqual(dictionary Dictionary, recursion_count Int) Bool {
+func (self Dictionary) RecursiveEqual(dictionary Dictionary, recursion_count int64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
 	callframe.Arg(frame, recursion_count)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.recursive_equal(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
@@ -6006,9 +6006,9 @@ func (self Dictionary) RecursiveEqual(dictionary Dictionary, recursion_count Int
 Returns the number of elements in the array. Empty arrays ([code][][/code]) always return [code]0[/code]. See also [method is_empty].
 */
 //go:nosplit
-func (self Array) Size() Int {
+func (self Array) Size() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -6020,9 +6020,9 @@ func (self Array) Size() Int {
 Returns [code]true[/code] if the array is empty ([code][][/code]). See also [method size].
 */
 //go:nosplit
-func (self Array) IsEmpty() Bool {
+func (self Array) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -6047,9 +6047,9 @@ Returns a hashed 32-bit integer value representing the array and its contents.
 [b]Note:[/b] Arrays with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the countrary, arrays with different hash values are guaranteed to be different.
 */
 //go:nosplit
-func (self Array) Hash() Int {
+func (self Array) Hash() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.hash(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -6135,10 +6135,10 @@ Returns [constant OK] on success, or one of the other [enum Error] constants if 
 [b]Note:[/b] Calling this method once and assigning the new values is faster than calling [method append] for every new element.
 */
 //go:nosplit
-func (self Array) Resize(size Int) Int {
+func (self Array) Resize(size int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -6152,11 +6152,11 @@ Returns [constant OK] on success, or one of the other [enum Error] constants if 
 [b]Note:[/b] Every element's index after [param position] needs to be shifted forward, which may have a noticeable performance cost, especially on larger arrays.
 */
 //go:nosplit
-func (self Array) Insert(position Int, value Variant) Int {
+func (self Array) Insert(position int64, value Variant) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
@@ -6171,7 +6171,7 @@ If you need to return the removed element, use [method pop_at]. To remove an ele
 [b]Note:[/b] The [param position] cannot be negative. To remove an element relative to the end of the array, use [code]arr.remove_at(arr.size() - (i + 1))[/code]. To remove the last element from the array, use [code]arr.resize(arr.size() - 1)[/code].
 */
 //go:nosplit
-func (self Array) RemoveAt(position Int) {
+func (self Array) RemoveAt(position int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -6285,11 +6285,11 @@ Returns the index of the [b]first[/b] occurrence of [param what] in this array, 
 [b]Note:[/b] For performance reasons, the search is affected by [param what]'s [enum Variant.Type]. For example, [code]7[/code] ([int]) and [code]7.0[/code] ([float]) are not considered equal for this method.
 */
 //go:nosplit
-func (self Array) Find(what Variant, from Int) Int {
+func (self Array) Find(what Variant, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
@@ -6301,11 +6301,11 @@ func (self Array) Find(what Variant, from Int) Int {
 Returns the index of the [b]last[/b] occurrence of [param what] in this array, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the beginning of the array. This method is the reverse of [method find].
 */
 //go:nosplit
-func (self Array) Rfind(what Variant, from Int) Int {
+func (self Array) Rfind(what Variant, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
@@ -6317,10 +6317,10 @@ func (self Array) Rfind(what Variant, from Int) Int {
 Returns the number of times an element is in the array.
 */
 //go:nosplit
-func (self Array) Count(value Variant) Int {
+func (self Array) Count(value Variant) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -6354,10 +6354,10 @@ if 4 in [2, 4, 6, 8]:
 [b]Note:[/b] For performance reasons, the search is affected by the [param value]'s [enum Variant.Type]. For example, [code]7[/code] ([int]) and [code]7.0[/code] ([float]) are not considered equal for this method.
 */
 //go:nosplit
-func (self Array) Has(value Variant) Bool {
+func (self Array) Has(value Variant) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -6399,7 +6399,7 @@ Removes and returns the element of the array at index [param position]. If negat
 [b]Note:[/b] This method shifts every element's index after [param position] back, which may have a noticeable performance cost, especially on larger arrays.
 */
 //go:nosplit
-func (self Array) PopAt(position Int) Variant {
+func (self Array) PopAt(position int64) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -6503,11 +6503,11 @@ print(fruits.bsearch("Lemon", false)) # Prints 3, points at "Orange".
 [b]Note:[/b] Calling [method bsearch] on an [i]unsorted[/i] array will result in unexpected behavior. Use [method sort] before calling this method.
 */
 //go:nosplit
-func (self Array) Bsearch(value Variant, before Bool) Int {
+func (self Array) Bsearch(value Variant, before bool) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, before)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
@@ -6542,12 +6542,12 @@ func _ready():
 [b]Note:[/b] Calling [method bsearch_custom] on an [i]unsorted[/i] array will result in unexpected behavior. Use [method sort_custom] with [param func] before calling this method.
 */
 //go:nosplit
-func (self Array) BsearchCustom(value Variant, fn Callable, before Bool) Int {
+func (self Array) BsearchCustom(value Variant, fn Callable, before bool) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, pointers.Get(fn))
 	callframe.Arg(frame, before)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.bsearch_custom(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = r_ret.Get()
@@ -6572,7 +6572,7 @@ Returns a new copy of the array.
 By default, a [b]shallow[/b] copy is returned: all nested [Array] and [Dictionary] elements are shared with the original array. Modifying them in one array will also affect them in the other.[br]If [param deep] is [code]true[/code], a [b]deep[/b] copy is returned: all nested arrays and dictionaries are also duplicated (recursively).
 */
 //go:nosplit
-func (self Array) Duplicate(deep Bool) Array {
+func (self Array) Duplicate(deep bool) Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, deep)
 	var r_ret = callframe.Ret[[1]enginePointer](frame)
@@ -6600,7 +6600,7 @@ print(letters.slice(4, 1, -1)) # Prints ["E", "D", "C"]
 [/codeblock]
 */
 //go:nosplit
-func (self Array) Slice(begin Int, end Int, step Int, deep Bool) Array {
+func (self Array) Slice(begin int64, end int64, step int64, deep bool) Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
@@ -6729,10 +6729,10 @@ See also [method all], [method filter], [method map] and [method reduce].
 [b]Note:[/b] For an empty array, this method always returns [code]false[/code].
 */
 //go:nosplit
-func (self Array) Any(method Callable) Bool {
+func (self Array) Any(method Callable) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.any(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -6784,10 +6784,10 @@ See also [method any], [method filter], [method map] and [method reduce].
 [b]Note:[/b] For an empty array, this method [url=https://en.wikipedia.org/wiki/Vacuous_truth]always[/url] returns [code]true[/code].
 */
 //go:nosplit
-func (self Array) All(method Callable) Bool {
+func (self Array) All(method Callable) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.all(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -6833,9 +6833,9 @@ print(numbers.is_typed()) # Prints true
 [/codeblock]
 */
 //go:nosplit
-func (self Array) IsTyped() Bool {
+func (self Array) IsTyped() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.is_typed(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -6847,10 +6847,10 @@ func (self Array) IsTyped() Bool {
 Returns [code]true[/code] if this array is typed the same as the given [param array]. See also [method is_typed].
 */
 //go:nosplit
-func (self Array) IsSameTyped(array Array) Bool {
+func (self Array) IsSameTyped(array Array) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.is_same_typed(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
@@ -6862,9 +6862,9 @@ func (self Array) IsSameTyped(array Array) Bool {
 Returns the built-in [Variant] type of the typed array as a [enum Variant.Type] constant. If the array is not typed, returns [constant TYPE_NIL]. See also [method is_typed].
 */
 //go:nosplit
-func (self Array) GetTypedBuiltin() Int {
+func (self Array) GetTypedBuiltin() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.get_typed_builtin(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -6918,9 +6918,9 @@ Returns [code]true[/code] if the array is read-only. See [method make_read_only]
 In GDScript, arrays are automatically read-only if declared with the [code]const[/code] keyword.
 */
 //go:nosplit
-func (self Array) IsReadOnly() Bool {
+func (self Array) IsReadOnly() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.is_read_only(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
@@ -6932,9 +6932,9 @@ func (self Array) IsReadOnly() Bool {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (self PackedByteArray) Size() Int {
+func (self PackedByteArray) Size() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -6947,9 +6947,9 @@ func (self PackedByteArray) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (self PackedByteArray) IsEmpty() Bool {
+func (self PackedByteArray) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -6962,7 +6962,7 @@ func (self PackedByteArray) IsEmpty() Bool {
 Changes the byte at the given index.
 */
 //go:nosplit
-func (self PackedByteArray) Set(index Int, value Int) {
+func (self PackedByteArray) Set(index int64, value int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
@@ -6977,10 +6977,10 @@ func (self PackedByteArray) Set(index Int, value Int) {
 Appends an element at the end of the array.
 */
 //go:nosplit
-func (self PackedByteArray) PushBack(value Int) Bool {
+func (self PackedByteArray) PushBack(value int64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -6993,10 +6993,10 @@ func (self PackedByteArray) PushBack(value Int) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (self PackedByteArray) Append(value Int) Bool {
+func (self PackedByteArray) Append(value int64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7023,7 +7023,7 @@ func (self PackedByteArray) AppendArray(array PackedByteArray) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self PackedByteArray) RemoveAt(index Int) {
+func (self PackedByteArray) RemoveAt(index int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -7037,11 +7037,11 @@ func (self PackedByteArray) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (self PackedByteArray) Insert(at_index Int, value Int) Int {
+func (self PackedByteArray) Insert(at_index int64, value int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -7054,7 +7054,7 @@ func (self PackedByteArray) Insert(at_index Int, value Int) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self PackedByteArray) Fill(value Int) {
+func (self PackedByteArray) Fill(value int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -7068,10 +7068,10 @@ func (self PackedByteArray) Fill(value Int) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (self PackedByteArray) Resize(new_size Int) Int {
+func (self PackedByteArray) Resize(new_size int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7097,10 +7097,10 @@ func (self PackedByteArray) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (self PackedByteArray) Has(value Int) Bool {
+func (self PackedByteArray) Has(value int64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7128,7 +7128,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self PackedByteArray) Slice(begin Int, end Int) PackedByteArray {
+func (self PackedByteArray) Slice(begin int64, end int64) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
@@ -7159,11 +7159,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (self PackedByteArray) Bsearch(value Int, before Bool) Int {
+func (self PackedByteArray) Bsearch(value int64, before bool) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -7191,11 +7191,11 @@ func (self PackedByteArray) Duplicate() PackedByteArray {
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
 //go:nosplit
-func (self PackedByteArray) Find(value Int, from Int) Int {
+func (self PackedByteArray) Find(value int64, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -7208,11 +7208,11 @@ func (self PackedByteArray) Find(value Int, from Int) Int {
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
 //go:nosplit
-func (self PackedByteArray) Rfind(value Int, from Int) Int {
+func (self PackedByteArray) Rfind(value int64, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -7225,10 +7225,10 @@ func (self PackedByteArray) Rfind(value Int, from Int) Int {
 Returns the number of times an element is in the array.
 */
 //go:nosplit
-func (self PackedByteArray) Count(value Int) Int {
+func (self PackedByteArray) Count(value int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7341,7 +7341,7 @@ func (self PackedByteArray) HexEncode() String {
 Returns a new [PackedByteArray] with the data compressed. Set the compression mode using one of [enum FileAccess.CompressionMode]'s constants.
 */
 //go:nosplit
-func (self PackedByteArray) Compress(compression_mode Int) PackedByteArray {
+func (self PackedByteArray) Compress(compression_mode int64) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, compression_mode)
 	var r_ret = callframe.Ret[packedPointers](frame)
@@ -7358,7 +7358,7 @@ Returns a new [PackedByteArray] with the data decompressed. Set [param buffer_si
 [b]Note:[/b] Decompression is not guaranteed to work with data not compressed by Godot, for example if data compressed with the deflate compression mode lacks a checksum or header.
 */
 //go:nosplit
-func (self PackedByteArray) Decompress(buffer_size Int, compression_mode Int) PackedByteArray {
+func (self PackedByteArray) Decompress(buffer_size int64, compression_mode int64) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer_size)
 	callframe.Arg(frame, compression_mode)
@@ -7378,7 +7378,7 @@ GZIP has a maximal compression ratio of 1032:1, meaning it's very possible for a
 [b]Note:[/b] Decompression is not guaranteed to work with data not compressed by Godot, for example if data compressed with the deflate compression mode lacks a checksum or header.
 */
 //go:nosplit
-func (self PackedByteArray) DecompressDynamic(max_output_size Int, compression_mode Int) PackedByteArray {
+func (self PackedByteArray) DecompressDynamic(max_output_size int64, compression_mode int64) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_output_size)
 	callframe.Arg(frame, compression_mode)
@@ -7395,10 +7395,10 @@ func (self PackedByteArray) DecompressDynamic(max_output_size Int, compression_m
 Decodes a 8-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (self PackedByteArray) DecodeU8(byte_offset Int) Int {
+func (self PackedByteArray) DecodeU8(byte_offset int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_u8(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7411,10 +7411,10 @@ func (self PackedByteArray) DecodeU8(byte_offset Int) Int {
 Decodes a 8-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (self PackedByteArray) DecodeS8(byte_offset Int) Int {
+func (self PackedByteArray) DecodeS8(byte_offset int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_s8(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7427,10 +7427,10 @@ func (self PackedByteArray) DecodeS8(byte_offset Int) Int {
 Decodes a 16-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (self PackedByteArray) DecodeU16(byte_offset Int) Int {
+func (self PackedByteArray) DecodeU16(byte_offset int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_u16(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7443,10 +7443,10 @@ func (self PackedByteArray) DecodeU16(byte_offset Int) Int {
 Decodes a 16-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (self PackedByteArray) DecodeS16(byte_offset Int) Int {
+func (self PackedByteArray) DecodeS16(byte_offset int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_s16(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7459,10 +7459,10 @@ func (self PackedByteArray) DecodeS16(byte_offset Int) Int {
 Decodes a 32-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (self PackedByteArray) DecodeU32(byte_offset Int) Int {
+func (self PackedByteArray) DecodeU32(byte_offset int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_u32(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7475,10 +7475,10 @@ func (self PackedByteArray) DecodeU32(byte_offset Int) Int {
 Decodes a 32-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (self PackedByteArray) DecodeS32(byte_offset Int) Int {
+func (self PackedByteArray) DecodeS32(byte_offset int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_s32(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7491,10 +7491,10 @@ func (self PackedByteArray) DecodeS32(byte_offset Int) Int {
 Decodes a 64-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (self PackedByteArray) DecodeU64(byte_offset Int) Int {
+func (self PackedByteArray) DecodeU64(byte_offset int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_u64(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7507,10 +7507,10 @@ func (self PackedByteArray) DecodeU64(byte_offset Int) Int {
 Decodes a 64-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (self PackedByteArray) DecodeS64(byte_offset Int) Int {
+func (self PackedByteArray) DecodeS64(byte_offset int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_s64(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7523,10 +7523,10 @@ func (self PackedByteArray) DecodeS64(byte_offset Int) Int {
 Decodes a 16-bit floating-point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (self PackedByteArray) DecodeHalf(byte_offset Int) Float {
+func (self PackedByteArray) DecodeHalf(byte_offset int64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_half(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7539,10 +7539,10 @@ func (self PackedByteArray) DecodeHalf(byte_offset Int) Float {
 Decodes a 32-bit floating-point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (self PackedByteArray) DecodeFloat(byte_offset Int) Float {
+func (self PackedByteArray) DecodeFloat(byte_offset int64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_float(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7555,10 +7555,10 @@ func (self PackedByteArray) DecodeFloat(byte_offset Int) Float {
 Decodes a 64-bit floating-point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
-func (self PackedByteArray) DecodeDouble(byte_offset Int) Float {
+func (self PackedByteArray) DecodeDouble(byte_offset int64) float64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
-	var r_ret = callframe.Ret[Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_double(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7571,11 +7571,11 @@ func (self PackedByteArray) DecodeDouble(byte_offset Int) Float {
 Returns [code]true[/code] if a valid [Variant] value can be decoded at the [param byte_offset]. Returns [code]false[/code] otherwise or when the value is [Object]-derived and [param allow_objects] is [code]false[/code].
 */
 //go:nosplit
-func (self PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects Bool) Bool {
+func (self PackedByteArray) HasEncodedVar(byte_offset int64, allow_objects bool) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, allow_objects)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.has_encoded_var(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -7588,7 +7588,7 @@ func (self PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects Bool) B
 Decodes a [Variant] from the bytes starting at [param byte_offset]. Returns [code]null[/code] if a valid variant can't be decoded or the value is [Object]-derived and [param allow_objects] is [code]false[/code].
 */
 //go:nosplit
-func (self PackedByteArray) DecodeVar(byte_offset Int, allow_objects Bool) Variant {
+func (self PackedByteArray) DecodeVar(byte_offset int64, allow_objects bool) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, allow_objects)
@@ -7605,11 +7605,11 @@ func (self PackedByteArray) DecodeVar(byte_offset Int, allow_objects Bool) Varia
 Decodes a size of a [Variant] from the bytes starting at [param byte_offset]. Requires at least 4 bytes of data starting at the offset, otherwise fails.
 */
 //go:nosplit
-func (self PackedByteArray) DecodeVarSize(byte_offset Int, allow_objects Bool) Int {
+func (self PackedByteArray) DecodeVarSize(byte_offset int64, allow_objects bool) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, allow_objects)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_var_size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -7690,7 +7690,7 @@ func (self PackedByteArray) ToFloat64Array() PackedFloat64Array {
 Encodes a 8-bit unsigned integer number (byte) at the index of [param byte_offset] bytes. The array must have at least 1 byte of space, starting at the offset.
 */
 //go:nosplit
-func (self PackedByteArray) EncodeU8(byte_offset Int, value Int) {
+func (self PackedByteArray) EncodeU8(byte_offset int64, value int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
@@ -7705,7 +7705,7 @@ func (self PackedByteArray) EncodeU8(byte_offset Int, value Int) {
 Encodes a 8-bit signed integer number (signed byte) at the index of [param byte_offset] bytes. The array must have at least 1 byte of space, starting at the offset.
 */
 //go:nosplit
-func (self PackedByteArray) EncodeS8(byte_offset Int, value Int) {
+func (self PackedByteArray) EncodeS8(byte_offset int64, value int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
@@ -7720,7 +7720,7 @@ func (self PackedByteArray) EncodeS8(byte_offset Int, value Int) {
 Encodes a 16-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self PackedByteArray) EncodeU16(byte_offset Int, value Int) {
+func (self PackedByteArray) EncodeU16(byte_offset int64, value int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
@@ -7735,7 +7735,7 @@ func (self PackedByteArray) EncodeU16(byte_offset Int, value Int) {
 Encodes a 16-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self PackedByteArray) EncodeS16(byte_offset Int, value Int) {
+func (self PackedByteArray) EncodeS16(byte_offset int64, value int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
@@ -7750,7 +7750,7 @@ func (self PackedByteArray) EncodeS16(byte_offset Int, value Int) {
 Encodes a 32-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self PackedByteArray) EncodeU32(byte_offset Int, value Int) {
+func (self PackedByteArray) EncodeU32(byte_offset int64, value int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
@@ -7765,7 +7765,7 @@ func (self PackedByteArray) EncodeU32(byte_offset Int, value Int) {
 Encodes a 32-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self PackedByteArray) EncodeS32(byte_offset Int, value Int) {
+func (self PackedByteArray) EncodeS32(byte_offset int64, value int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
@@ -7780,7 +7780,7 @@ func (self PackedByteArray) EncodeS32(byte_offset Int, value Int) {
 Encodes a 64-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self PackedByteArray) EncodeU64(byte_offset Int, value Int) {
+func (self PackedByteArray) EncodeU64(byte_offset int64, value int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
@@ -7795,7 +7795,7 @@ func (self PackedByteArray) EncodeU64(byte_offset Int, value Int) {
 Encodes a 64-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self PackedByteArray) EncodeS64(byte_offset Int, value Int) {
+func (self PackedByteArray) EncodeS64(byte_offset int64, value int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
@@ -7810,7 +7810,7 @@ func (self PackedByteArray) EncodeS64(byte_offset Int, value Int) {
 Encodes a 16-bit floating-point number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
+func (self PackedByteArray) EncodeHalf(byte_offset int64, value float64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
@@ -7825,7 +7825,7 @@ func (self PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
 Encodes a 32-bit floating-point number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
+func (self PackedByteArray) EncodeFloat(byte_offset int64, value float64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
@@ -7840,7 +7840,7 @@ func (self PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
 Encodes a 64-bit floating-point number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of allocated space, starting at the offset.
 */
 //go:nosplit
-func (self PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
+func (self PackedByteArray) EncodeDouble(byte_offset int64, value float64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
@@ -7855,12 +7855,12 @@ func (self PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
 Encodes a [Variant] at the index of [param byte_offset] bytes. A sufficient space must be allocated, depending on the encoded variant's size. If [param allow_objects] is [code]false[/code], [Object]-derived values are not permitted and will instead be serialized as ID-only.
 */
 //go:nosplit
-func (self PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_objects Bool) Int {
+func (self PackedByteArray) EncodeVar(byte_offset int64, value Variant, allow_objects bool) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, allow_objects)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.encode_var(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	pointers.Set(self, p_self.Get())
@@ -7873,9 +7873,9 @@ func (self PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_obje
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (self PackedInt32Array) Size() Int {
+func (self PackedInt32Array) Size() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -7888,9 +7888,9 @@ func (self PackedInt32Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (self PackedInt32Array) IsEmpty() Bool {
+func (self PackedInt32Array) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -7903,7 +7903,7 @@ func (self PackedInt32Array) IsEmpty() Bool {
 Changes the integer at the given index.
 */
 //go:nosplit
-func (self PackedInt32Array) Set(index Int, value Int) {
+func (self PackedInt32Array) Set(index int64, value int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
@@ -7918,10 +7918,10 @@ func (self PackedInt32Array) Set(index Int, value Int) {
 Appends a value to the array.
 */
 //go:nosplit
-func (self PackedInt32Array) PushBack(value Int) Bool {
+func (self PackedInt32Array) PushBack(value int64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7934,10 +7934,10 @@ func (self PackedInt32Array) PushBack(value Int) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (self PackedInt32Array) Append(value Int) Bool {
+func (self PackedInt32Array) Append(value int64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -7964,7 +7964,7 @@ func (self PackedInt32Array) AppendArray(array PackedInt32Array) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self PackedInt32Array) RemoveAt(index Int) {
+func (self PackedInt32Array) RemoveAt(index int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -7978,11 +7978,11 @@ func (self PackedInt32Array) RemoveAt(index Int) {
 Inserts a new integer at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (self PackedInt32Array) Insert(at_index Int, value Int) Int {
+func (self PackedInt32Array) Insert(at_index int64, value int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -7995,7 +7995,7 @@ func (self PackedInt32Array) Insert(at_index Int, value Int) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self PackedInt32Array) Fill(value Int) {
+func (self PackedInt32Array) Fill(value int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -8009,10 +8009,10 @@ func (self PackedInt32Array) Fill(value Int) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (self PackedInt32Array) Resize(new_size Int) Int {
+func (self PackedInt32Array) Resize(new_size int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8038,10 +8038,10 @@ func (self PackedInt32Array) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (self PackedInt32Array) Has(value Int) Bool {
+func (self PackedInt32Array) Has(value int64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8069,7 +8069,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self PackedInt32Array) Slice(begin Int, end Int) PackedInt32Array {
+func (self PackedInt32Array) Slice(begin int64, end int64) PackedInt32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
@@ -8116,11 +8116,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (self PackedInt32Array) Bsearch(value Int, before Bool) Int {
+func (self PackedInt32Array) Bsearch(value int64, before bool) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -8148,11 +8148,11 @@ func (self PackedInt32Array) Duplicate() PackedInt32Array {
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
 //go:nosplit
-func (self PackedInt32Array) Find(value Int, from Int) Int {
+func (self PackedInt32Array) Find(value int64, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -8165,11 +8165,11 @@ func (self PackedInt32Array) Find(value Int, from Int) Int {
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
 //go:nosplit
-func (self PackedInt32Array) Rfind(value Int, from Int) Int {
+func (self PackedInt32Array) Rfind(value int64, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -8182,10 +8182,10 @@ func (self PackedInt32Array) Rfind(value Int, from Int) Int {
 Returns the number of times an element is in the array.
 */
 //go:nosplit
-func (self PackedInt32Array) Count(value Int) Int {
+func (self PackedInt32Array) Count(value int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8198,9 +8198,9 @@ func (self PackedInt32Array) Count(value Int) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (self PackedInt64Array) Size() Int {
+func (self PackedInt64Array) Size() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -8213,9 +8213,9 @@ func (self PackedInt64Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (self PackedInt64Array) IsEmpty() Bool {
+func (self PackedInt64Array) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -8228,7 +8228,7 @@ func (self PackedInt64Array) IsEmpty() Bool {
 Changes the integer at the given index.
 */
 //go:nosplit
-func (self PackedInt64Array) Set(index Int, value Int) {
+func (self PackedInt64Array) Set(index int64, value int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
@@ -8243,10 +8243,10 @@ func (self PackedInt64Array) Set(index Int, value Int) {
 Appends a value to the array.
 */
 //go:nosplit
-func (self PackedInt64Array) PushBack(value Int) Bool {
+func (self PackedInt64Array) PushBack(value int64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8259,10 +8259,10 @@ func (self PackedInt64Array) PushBack(value Int) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (self PackedInt64Array) Append(value Int) Bool {
+func (self PackedInt64Array) Append(value int64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8289,7 +8289,7 @@ func (self PackedInt64Array) AppendArray(array PackedInt64Array) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self PackedInt64Array) RemoveAt(index Int) {
+func (self PackedInt64Array) RemoveAt(index int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -8303,11 +8303,11 @@ func (self PackedInt64Array) RemoveAt(index Int) {
 Inserts a new integer at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (self PackedInt64Array) Insert(at_index Int, value Int) Int {
+func (self PackedInt64Array) Insert(at_index int64, value int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -8320,7 +8320,7 @@ func (self PackedInt64Array) Insert(at_index Int, value Int) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self PackedInt64Array) Fill(value Int) {
+func (self PackedInt64Array) Fill(value int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -8334,10 +8334,10 @@ func (self PackedInt64Array) Fill(value Int) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (self PackedInt64Array) Resize(new_size Int) Int {
+func (self PackedInt64Array) Resize(new_size int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8363,10 +8363,10 @@ func (self PackedInt64Array) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (self PackedInt64Array) Has(value Int) Bool {
+func (self PackedInt64Array) Has(value int64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8394,7 +8394,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self PackedInt64Array) Slice(begin Int, end Int) PackedInt64Array {
+func (self PackedInt64Array) Slice(begin int64, end int64) PackedInt64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
@@ -8441,11 +8441,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (self PackedInt64Array) Bsearch(value Int, before Bool) Int {
+func (self PackedInt64Array) Bsearch(value int64, before bool) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -8473,11 +8473,11 @@ func (self PackedInt64Array) Duplicate() PackedInt64Array {
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
 //go:nosplit
-func (self PackedInt64Array) Find(value Int, from Int) Int {
+func (self PackedInt64Array) Find(value int64, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -8490,11 +8490,11 @@ func (self PackedInt64Array) Find(value Int, from Int) Int {
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
 //go:nosplit
-func (self PackedInt64Array) Rfind(value Int, from Int) Int {
+func (self PackedInt64Array) Rfind(value int64, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -8507,10 +8507,10 @@ func (self PackedInt64Array) Rfind(value Int, from Int) Int {
 Returns the number of times an element is in the array.
 */
 //go:nosplit
-func (self PackedInt64Array) Count(value Int) Int {
+func (self PackedInt64Array) Count(value int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8523,9 +8523,9 @@ func (self PackedInt64Array) Count(value Int) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (self PackedFloat32Array) Size() Int {
+func (self PackedFloat32Array) Size() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -8538,9 +8538,9 @@ func (self PackedFloat32Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (self PackedFloat32Array) IsEmpty() Bool {
+func (self PackedFloat32Array) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -8553,7 +8553,7 @@ func (self PackedFloat32Array) IsEmpty() Bool {
 Changes the float at the given index.
 */
 //go:nosplit
-func (self PackedFloat32Array) Set(index Int, value Float) {
+func (self PackedFloat32Array) Set(index int64, value float64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
@@ -8568,10 +8568,10 @@ func (self PackedFloat32Array) Set(index Int, value Float) {
 Appends an element at the end of the array.
 */
 //go:nosplit
-func (self PackedFloat32Array) PushBack(value Float) Bool {
+func (self PackedFloat32Array) PushBack(value float64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8584,10 +8584,10 @@ func (self PackedFloat32Array) PushBack(value Float) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (self PackedFloat32Array) Append(value Float) Bool {
+func (self PackedFloat32Array) Append(value float64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8614,7 +8614,7 @@ func (self PackedFloat32Array) AppendArray(array PackedFloat32Array) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self PackedFloat32Array) RemoveAt(index Int) {
+func (self PackedFloat32Array) RemoveAt(index int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -8628,11 +8628,11 @@ func (self PackedFloat32Array) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (self PackedFloat32Array) Insert(at_index Int, value Float) Int {
+func (self PackedFloat32Array) Insert(at_index int64, value float64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -8645,7 +8645,7 @@ func (self PackedFloat32Array) Insert(at_index Int, value Float) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self PackedFloat32Array) Fill(value Float) {
+func (self PackedFloat32Array) Fill(value float64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -8659,10 +8659,10 @@ func (self PackedFloat32Array) Fill(value Float) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (self PackedFloat32Array) Resize(new_size Int) Int {
+func (self PackedFloat32Array) Resize(new_size int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8689,10 +8689,10 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedFloat32Array) Has(value Float) Bool {
+func (self PackedFloat32Array) Has(value float64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8720,7 +8720,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self PackedFloat32Array) Slice(begin Int, end Int) PackedFloat32Array {
+func (self PackedFloat32Array) Slice(begin int64, end int64) PackedFloat32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
@@ -8769,11 +8769,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedFloat32Array) Bsearch(value Float, before Bool) Int {
+func (self PackedFloat32Array) Bsearch(value float64, before bool) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -8802,11 +8802,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedFloat32Array) Find(value Float, from Int) Int {
+func (self PackedFloat32Array) Find(value float64, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -8820,11 +8820,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedFloat32Array) Rfind(value Float, from Int) Int {
+func (self PackedFloat32Array) Rfind(value float64, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -8838,10 +8838,10 @@ Returns the number of times an element is in the array.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedFloat32Array) Count(value Float) Int {
+func (self PackedFloat32Array) Count(value float64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8854,9 +8854,9 @@ func (self PackedFloat32Array) Count(value Float) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (self PackedFloat64Array) Size() Int {
+func (self PackedFloat64Array) Size() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -8869,9 +8869,9 @@ func (self PackedFloat64Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (self PackedFloat64Array) IsEmpty() Bool {
+func (self PackedFloat64Array) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -8884,7 +8884,7 @@ func (self PackedFloat64Array) IsEmpty() Bool {
 Changes the float at the given index.
 */
 //go:nosplit
-func (self PackedFloat64Array) Set(index Int, value Float) {
+func (self PackedFloat64Array) Set(index int64, value float64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
@@ -8899,10 +8899,10 @@ func (self PackedFloat64Array) Set(index Int, value Float) {
 Appends an element at the end of the array.
 */
 //go:nosplit
-func (self PackedFloat64Array) PushBack(value Float) Bool {
+func (self PackedFloat64Array) PushBack(value float64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8915,10 +8915,10 @@ func (self PackedFloat64Array) PushBack(value Float) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (self PackedFloat64Array) Append(value Float) Bool {
+func (self PackedFloat64Array) Append(value float64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -8945,7 +8945,7 @@ func (self PackedFloat64Array) AppendArray(array PackedFloat64Array) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self PackedFloat64Array) RemoveAt(index Int) {
+func (self PackedFloat64Array) RemoveAt(index int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -8959,11 +8959,11 @@ func (self PackedFloat64Array) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (self PackedFloat64Array) Insert(at_index Int, value Float) Int {
+func (self PackedFloat64Array) Insert(at_index int64, value float64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -8976,7 +8976,7 @@ func (self PackedFloat64Array) Insert(at_index Int, value Float) Int {
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self PackedFloat64Array) Fill(value Float) {
+func (self PackedFloat64Array) Fill(value float64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -8990,10 +8990,10 @@ func (self PackedFloat64Array) Fill(value Float) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (self PackedFloat64Array) Resize(new_size Int) Int {
+func (self PackedFloat64Array) Resize(new_size int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9020,10 +9020,10 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedFloat64Array) Has(value Float) Bool {
+func (self PackedFloat64Array) Has(value float64) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9051,7 +9051,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self PackedFloat64Array) Slice(begin Int, end Int) PackedFloat64Array {
+func (self PackedFloat64Array) Slice(begin int64, end int64) PackedFloat64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
@@ -9100,11 +9100,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedFloat64Array) Bsearch(value Float, before Bool) Int {
+func (self PackedFloat64Array) Bsearch(value float64, before bool) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -9133,11 +9133,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedFloat64Array) Find(value Float, from Int) Int {
+func (self PackedFloat64Array) Find(value float64, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -9151,11 +9151,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedFloat64Array) Rfind(value Float, from Int) Int {
+func (self PackedFloat64Array) Rfind(value float64, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -9169,10 +9169,10 @@ Returns the number of times an element is in the array.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedFloat64Array) Count(value Float) Int {
+func (self PackedFloat64Array) Count(value float64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9185,9 +9185,9 @@ func (self PackedFloat64Array) Count(value Float) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (self PackedStringArray) Size() Int {
+func (self PackedStringArray) Size() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -9200,9 +9200,9 @@ func (self PackedStringArray) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (self PackedStringArray) IsEmpty() Bool {
+func (self PackedStringArray) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -9215,7 +9215,7 @@ func (self PackedStringArray) IsEmpty() Bool {
 Changes the [String] at the given index.
 */
 //go:nosplit
-func (self PackedStringArray) Set(index Int, value String) {
+func (self PackedStringArray) Set(index int64, value String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(value))
@@ -9230,10 +9230,10 @@ func (self PackedStringArray) Set(index Int, value String) {
 Appends a string element at end of the array.
 */
 //go:nosplit
-func (self PackedStringArray) PushBack(value String) Bool {
+func (self PackedStringArray) PushBack(value String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9246,10 +9246,10 @@ func (self PackedStringArray) PushBack(value String) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (self PackedStringArray) Append(value String) Bool {
+func (self PackedStringArray) Append(value String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9276,7 +9276,7 @@ func (self PackedStringArray) AppendArray(array PackedStringArray) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self PackedStringArray) RemoveAt(index Int) {
+func (self PackedStringArray) RemoveAt(index int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -9290,11 +9290,11 @@ func (self PackedStringArray) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (self PackedStringArray) Insert(at_index Int, value String) Int {
+func (self PackedStringArray) Insert(at_index int64, value String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -9321,10 +9321,10 @@ func (self PackedStringArray) Fill(value String) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (self PackedStringArray) Resize(new_size Int) Int {
+func (self PackedStringArray) Resize(new_size int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9350,10 +9350,10 @@ func (self PackedStringArray) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (self PackedStringArray) Has(value String) Bool {
+func (self PackedStringArray) Has(value String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9381,7 +9381,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self PackedStringArray) Slice(begin Int, end Int) PackedStringArray {
+func (self PackedStringArray) Slice(begin int64, end int64) PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
@@ -9427,11 +9427,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (self PackedStringArray) Bsearch(value String, before Bool) Int {
+func (self PackedStringArray) Bsearch(value String, before bool) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, before)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -9459,11 +9459,11 @@ func (self PackedStringArray) Duplicate() PackedStringArray {
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
 //go:nosplit
-func (self PackedStringArray) Find(value String, from Int) Int {
+func (self PackedStringArray) Find(value String, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -9476,11 +9476,11 @@ func (self PackedStringArray) Find(value String, from Int) Int {
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
 //go:nosplit
-func (self PackedStringArray) Rfind(value String, from Int) Int {
+func (self PackedStringArray) Rfind(value String, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -9493,10 +9493,10 @@ func (self PackedStringArray) Rfind(value String, from Int) Int {
 Returns the number of times an element is in the array.
 */
 //go:nosplit
-func (self PackedStringArray) Count(value String) Int {
+func (self PackedStringArray) Count(value String) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9509,9 +9509,9 @@ func (self PackedStringArray) Count(value String) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (self PackedVector2Array) Size() Int {
+func (self PackedVector2Array) Size() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -9524,9 +9524,9 @@ func (self PackedVector2Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (self PackedVector2Array) IsEmpty() Bool {
+func (self PackedVector2Array) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -9539,7 +9539,7 @@ func (self PackedVector2Array) IsEmpty() Bool {
 Changes the [Vector2] at the given index.
 */
 //go:nosplit
-func (self PackedVector2Array) Set(index Int, value Vector2) {
+func (self PackedVector2Array) Set(index int64, value Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
@@ -9554,10 +9554,10 @@ func (self PackedVector2Array) Set(index Int, value Vector2) {
 Inserts a [Vector2] at the end.
 */
 //go:nosplit
-func (self PackedVector2Array) PushBack(value Vector2) Bool {
+func (self PackedVector2Array) PushBack(value Vector2) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9570,10 +9570,10 @@ func (self PackedVector2Array) PushBack(value Vector2) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (self PackedVector2Array) Append(value Vector2) Bool {
+func (self PackedVector2Array) Append(value Vector2) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9600,7 +9600,7 @@ func (self PackedVector2Array) AppendArray(array PackedVector2Array) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self PackedVector2Array) RemoveAt(index Int) {
+func (self PackedVector2Array) RemoveAt(index int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -9614,11 +9614,11 @@ func (self PackedVector2Array) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (self PackedVector2Array) Insert(at_index Int, value Vector2) Int {
+func (self PackedVector2Array) Insert(at_index int64, value Vector2) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -9645,10 +9645,10 @@ func (self PackedVector2Array) Fill(value Vector2) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (self PackedVector2Array) Resize(new_size Int) Int {
+func (self PackedVector2Array) Resize(new_size int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9675,10 +9675,10 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector2Array) Has(value Vector2) Bool {
+func (self PackedVector2Array) Has(value Vector2) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9706,7 +9706,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self PackedVector2Array) Slice(begin Int, end Int) PackedVector2Array {
+func (self PackedVector2Array) Slice(begin int64, end int64) PackedVector2Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
@@ -9754,11 +9754,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector2Array) Bsearch(value Vector2, before Bool) Int {
+func (self PackedVector2Array) Bsearch(value Vector2, before bool) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -9787,11 +9787,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector2Array) Find(value Vector2, from Int) Int {
+func (self PackedVector2Array) Find(value Vector2, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -9805,11 +9805,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector2Array) Rfind(value Vector2, from Int) Int {
+func (self PackedVector2Array) Rfind(value Vector2, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -9823,10 +9823,10 @@ Returns the number of times an element is in the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector2Array) Count(value Vector2) Int {
+func (self PackedVector2Array) Count(value Vector2) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9839,9 +9839,9 @@ func (self PackedVector2Array) Count(value Vector2) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (self PackedVector3Array) Size() Int {
+func (self PackedVector3Array) Size() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -9854,9 +9854,9 @@ func (self PackedVector3Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (self PackedVector3Array) IsEmpty() Bool {
+func (self PackedVector3Array) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -9869,7 +9869,7 @@ func (self PackedVector3Array) IsEmpty() Bool {
 Changes the [Vector3] at the given index.
 */
 //go:nosplit
-func (self PackedVector3Array) Set(index Int, value Vector3) {
+func (self PackedVector3Array) Set(index int64, value Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
@@ -9884,10 +9884,10 @@ func (self PackedVector3Array) Set(index Int, value Vector3) {
 Inserts a [Vector3] at the end.
 */
 //go:nosplit
-func (self PackedVector3Array) PushBack(value Vector3) Bool {
+func (self PackedVector3Array) PushBack(value Vector3) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9900,10 +9900,10 @@ func (self PackedVector3Array) PushBack(value Vector3) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (self PackedVector3Array) Append(value Vector3) Bool {
+func (self PackedVector3Array) Append(value Vector3) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -9930,7 +9930,7 @@ func (self PackedVector3Array) AppendArray(array PackedVector3Array) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self PackedVector3Array) RemoveAt(index Int) {
+func (self PackedVector3Array) RemoveAt(index int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -9944,11 +9944,11 @@ func (self PackedVector3Array) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (self PackedVector3Array) Insert(at_index Int, value Vector3) Int {
+func (self PackedVector3Array) Insert(at_index int64, value Vector3) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -9975,10 +9975,10 @@ func (self PackedVector3Array) Fill(value Vector3) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (self PackedVector3Array) Resize(new_size Int) Int {
+func (self PackedVector3Array) Resize(new_size int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -10005,10 +10005,10 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector3Array) Has(value Vector3) Bool {
+func (self PackedVector3Array) Has(value Vector3) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -10036,7 +10036,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self PackedVector3Array) Slice(begin Int, end Int) PackedVector3Array {
+func (self PackedVector3Array) Slice(begin int64, end int64) PackedVector3Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
@@ -10084,11 +10084,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector3Array) Bsearch(value Vector3, before Bool) Int {
+func (self PackedVector3Array) Bsearch(value Vector3, before bool) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -10117,11 +10117,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector3Array) Find(value Vector3, from Int) Int {
+func (self PackedVector3Array) Find(value Vector3, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -10135,11 +10135,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector3Array) Rfind(value Vector3, from Int) Int {
+func (self PackedVector3Array) Rfind(value Vector3, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -10153,10 +10153,10 @@ Returns the number of times an element is in the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector3Array) Count(value Vector3) Int {
+func (self PackedVector3Array) Count(value Vector3) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -10169,9 +10169,9 @@ func (self PackedVector3Array) Count(value Vector3) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (self PackedColorArray) Size() Int {
+func (self PackedColorArray) Size() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -10184,9 +10184,9 @@ func (self PackedColorArray) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (self PackedColorArray) IsEmpty() Bool {
+func (self PackedColorArray) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -10199,7 +10199,7 @@ func (self PackedColorArray) IsEmpty() Bool {
 Changes the [Color] at the given index.
 */
 //go:nosplit
-func (self PackedColorArray) Set(index Int, value Color) {
+func (self PackedColorArray) Set(index int64, value Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
@@ -10214,10 +10214,10 @@ func (self PackedColorArray) Set(index Int, value Color) {
 Appends a value to the array.
 */
 //go:nosplit
-func (self PackedColorArray) PushBack(value Color) Bool {
+func (self PackedColorArray) PushBack(value Color) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -10230,10 +10230,10 @@ func (self PackedColorArray) PushBack(value Color) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (self PackedColorArray) Append(value Color) Bool {
+func (self PackedColorArray) Append(value Color) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -10260,7 +10260,7 @@ func (self PackedColorArray) AppendArray(array PackedColorArray) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self PackedColorArray) RemoveAt(index Int) {
+func (self PackedColorArray) RemoveAt(index int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -10274,11 +10274,11 @@ func (self PackedColorArray) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (self PackedColorArray) Insert(at_index Int, value Color) Int {
+func (self PackedColorArray) Insert(at_index int64, value Color) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -10305,10 +10305,10 @@ func (self PackedColorArray) Fill(value Color) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
-func (self PackedColorArray) Resize(new_size Int) Int {
+func (self PackedColorArray) Resize(new_size int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -10334,10 +10334,10 @@ func (self PackedColorArray) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (self PackedColorArray) Has(value Color) Bool {
+func (self PackedColorArray) Has(value Color) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -10365,7 +10365,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self PackedColorArray) Slice(begin Int, end Int) PackedColorArray {
+func (self PackedColorArray) Slice(begin int64, end int64) PackedColorArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
@@ -10411,11 +10411,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (self PackedColorArray) Bsearch(value Color, before Bool) Int {
+func (self PackedColorArray) Bsearch(value Color, before bool) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -10443,11 +10443,11 @@ func (self PackedColorArray) Duplicate() PackedColorArray {
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
 //go:nosplit
-func (self PackedColorArray) Find(value Color, from Int) Int {
+func (self PackedColorArray) Find(value Color, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -10460,11 +10460,11 @@ func (self PackedColorArray) Find(value Color, from Int) Int {
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
 //go:nosplit
-func (self PackedColorArray) Rfind(value Color, from Int) Int {
+func (self PackedColorArray) Rfind(value Color, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -10477,10 +10477,10 @@ func (self PackedColorArray) Rfind(value Color, from Int) Int {
 Returns the number of times an element is in the array.
 */
 //go:nosplit
-func (self PackedColorArray) Count(value Color) Int {
+func (self PackedColorArray) Count(value Color) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -10493,9 +10493,9 @@ func (self PackedColorArray) Count(value Color) Int {
 Returns the number of elements in the array.
 */
 //go:nosplit
-func (self PackedVector4Array) Size() Int {
+func (self PackedVector4Array) Size() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -10508,9 +10508,9 @@ func (self PackedVector4Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (self PackedVector4Array) IsEmpty() Bool {
+func (self PackedVector4Array) IsEmpty() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(self, p_self.Get())
@@ -10523,7 +10523,7 @@ func (self PackedVector4Array) IsEmpty() Bool {
 Changes the [Vector4] at the given index.
 */
 //go:nosplit
-func (self PackedVector4Array) Set(index Int, value Vector4) {
+func (self PackedVector4Array) Set(index int64, value Vector4) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
@@ -10538,10 +10538,10 @@ func (self PackedVector4Array) Set(index Int, value Vector4) {
 Inserts a [Vector4] at the end.
 */
 //go:nosplit
-func (self PackedVector4Array) PushBack(value Vector4) Bool {
+func (self PackedVector4Array) PushBack(value Vector4) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -10554,10 +10554,10 @@ func (self PackedVector4Array) PushBack(value Vector4) Bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (self PackedVector4Array) Append(value Vector4) Bool {
+func (self PackedVector4Array) Append(value Vector4) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -10584,7 +10584,7 @@ func (self PackedVector4Array) AppendArray(array PackedVector4Array) {
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self PackedVector4Array) RemoveAt(index Int) {
+func (self PackedVector4Array) RemoveAt(index int64) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -10598,11 +10598,11 @@ func (self PackedVector4Array) RemoveAt(index Int) {
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
 //go:nosplit
-func (self PackedVector4Array) Insert(at_index Int, value Vector4) Int {
+func (self PackedVector4Array) Insert(at_index int64, value Vector4) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_index)
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -10629,10 +10629,10 @@ func (self PackedVector4Array) Fill(value Vector4) {
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
 */
 //go:nosplit
-func (self PackedVector4Array) Resize(new_size Int) Int {
+func (self PackedVector4Array) Resize(new_size int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, new_size)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -10659,10 +10659,10 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector4Array) Has(value Vector4) Bool {
+func (self PackedVector4Array) Has(value Vector4) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -10690,7 +10690,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self PackedVector4Array) Slice(begin Int, end Int) PackedVector4Array {
+func (self PackedVector4Array) Slice(begin int64, end int64) PackedVector4Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
@@ -10738,11 +10738,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector4Array) Bsearch(value Vector4, before Bool) Int {
+func (self PackedVector4Array) Bsearch(value Vector4, before bool) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, before)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -10771,11 +10771,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector4Array) Find(value Vector4, from Int) Int {
+func (self PackedVector4Array) Find(value Vector4, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -10789,11 +10789,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector4Array) Rfind(value Vector4, from Int) Int {
+func (self PackedVector4Array) Rfind(value Vector4, from int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(self, p_self.Get())
@@ -10807,10 +10807,10 @@ Returns the number of times an element is in the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self PackedVector4Array) Count(value Vector4) Int {
+func (self PackedVector4Array) Count(value Vector4) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(self, p_self.Get())
@@ -10854,10 +10854,10 @@ sprite2D.IsClass("Node3D");   // Returns false
 [b]Note:[/b] This method ignores [code]class_name[/code] declarations in the object's script.
 */
 //go:nosplit
-func (self Object) IsClass(class String) Bool {
+func (self Object) IsClass(class String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_class, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11021,10 +11021,10 @@ Returns [code]true[/code] if the given [param property] has a custom default val
 [b]Note:[/b] This method is used by the Inspector dock to display a revert icon. The object must implement [method _property_can_revert] to customize the default value. If [method _property_can_revert] is not implemented, this method returns [code]false[/code].
 */
 //go:nosplit
-func (self Object) PropertyCanRevert(property StringName) Bool {
+func (self Object) PropertyCanRevert(property StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_property_can_revert, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11073,7 +11073,7 @@ player.Notification(NotificationEnterTree, true);
 [/codeblocks]
 */
 //go:nosplit
-func (self Object) Notification(what Int, reversed Bool) {
+func (self Object) Notification(what int64, reversed bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
 	callframe.Arg(frame, reversed)
@@ -11100,9 +11100,9 @@ Returns the object's unique instance ID. This ID can be saved in [EncodedObjectA
 [b]Note:[/b] This ID is only useful during the current session. It won't correspond to a similar object if the ID is sent over a network, or loaded from a file at a later time.
 */
 //go:nosplit
-func (self Object) GetInstanceId() Int {
+func (self Object) GetInstanceId() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11188,10 +11188,10 @@ Returns [code]true[/code] if a metadata entry is found with the given [param nam
 [b]Note:[/b] Metadata that has a name starting with an underscore ([code]_[/code]) is considered editor-only. Editor-only metadata is not displayed in the Inspector and should not be edited, although it can still be found by this method.
 */
 //go:nosplit
-func (self Object) HasMeta(name StringName) Bool {
+func (self Object) HasMeta(name StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11251,10 +11251,10 @@ func (self Object) AddUserSignal(signal String, arguments Array) {
 Returns [code]true[/code] if the given user-defined [param signal] name exists. Only signals added with [method add_user_signal] are included. See also [method remove_user_signal].
 */
 //go:nosplit
-func (self Object) HasUserSignal(signal StringName) Bool {
+func (self Object) HasUserSignal(signal StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_user_signal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11340,10 +11340,10 @@ Returns [code]true[/code] if the given [param method] name exists in the object.
 [b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self Object) HasMethod(method StringName) Bool {
+func (self Object) HasMethod(method StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_method, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11355,10 +11355,10 @@ Returns the number of arguments of the given [param method] by name.
 [b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self Object) GetMethodArgumentCount(method StringName) Int {
+func (self Object) GetMethodArgumentCount(method StringName) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_method_argument_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11370,10 +11370,10 @@ Returns [code]true[/code] if the given [param signal] name exists in the object.
 [b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self Object) HasSignal(signal StringName) Bool {
+func (self Object) HasSignal(signal StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_signal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11556,7 +11556,7 @@ private void OnPlayerHit(string hitBy, int level, string weaponType, int damage)
 [/codeblocks]
 */
 //go:nosplit
-func (self Object) Connect(signal StringName, callable Callable, flags Int) int64 {
+func (self Object) Connect(signal StringName, callable Callable, flags int64) int64 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal))
 	callframe.Arg(frame, pointers.Get(callable))
@@ -11586,11 +11586,11 @@ Returns [code]true[/code] if a connection exists between the given [param signal
 [b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self Object) IsConnected(signal StringName, callable Callable) Bool {
+func (self Object) IsConnected(signal StringName, callable Callable) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal))
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_connected, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11601,7 +11601,7 @@ func (self Object) IsConnected(signal StringName, callable Callable) Bool {
 If set to [code]true[/code], the object becomes unable to emit signals. As such, [method emit_signal] and signal connections will not work, until it is set to [code]false[/code].
 */
 //go:nosplit
-func (self Object) SetBlockSignals(enable Bool) {
+func (self Object) SetBlockSignals(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -11613,9 +11613,9 @@ func (self Object) SetBlockSignals(enable Bool) {
 Returns [code]true[/code] if the object is blocking its signals from being emitted. See [method set_block_signals].
 */
 //go:nosplit
-func (self Object) IsBlockingSignals() Bool {
+func (self Object) IsBlockingSignals() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_blocking_signals, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11637,7 +11637,7 @@ func (self Object) NotifyPropertyListChanged() {
 If set to [code]true[/code], allows the object to translate messages with [method tr] and [method tr_n]. Enabled by default. See also [method can_translate_messages].
 */
 //go:nosplit
-func (self Object) SetMessageTranslation(enable Bool) {
+func (self Object) SetMessageTranslation(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -11649,9 +11649,9 @@ func (self Object) SetMessageTranslation(enable Bool) {
 Returns [code]true[/code] if the object is allowed to translate messages with [method tr] and [method tr_n]. See also [method set_message_translation].
 */
 //go:nosplit
-func (self Object) CanTranslateMessages() Bool {
+func (self Object) CanTranslateMessages() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_can_translate_messages, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11685,7 +11685,7 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 [b]Note:[/b] This method can't be used without an [Object] instance, as it requires the [method can_translate_messages] method. To translate strings in a static context, use [method TranslationServer.translate_plural].
 */
 //go:nosplit
-func (self Object) TrN(message StringName, plural_message StringName, n Int, context StringName) String {
+func (self Object) TrN(message StringName, plural_message StringName, n int64, context StringName) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(plural_message))
@@ -11702,9 +11702,9 @@ func (self Object) TrN(message StringName, plural_message StringName, n Int, con
 Returns [code]true[/code] if the [method Node.queue_free] method was called for the object.
 */
 //go:nosplit
-func (self Object) IsQueuedForDeletion() Bool {
+func (self Object) IsQueuedForDeletion() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_queued_for_deletion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11731,9 +11731,9 @@ Initializes the internal reference counter. Use this only if you really know wha
 Returns whether the initialization was successful.
 */
 //go:nosplit
-func (self RefCounted) InitRef() Bool {
+func (self RefCounted) InitRef() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_init_ref, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11745,9 +11745,9 @@ Increments the internal reference counter. Use this only if you really know what
 Returns [code]true[/code] if the increment was successful, [code]false[/code] otherwise.
 */
 //go:nosplit
-func (self RefCounted) Reference() Bool {
+func (self RefCounted) Reference() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_reference, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11759,9 +11759,9 @@ Decrements the internal reference counter. Use this only if you really know what
 Returns [code]true[/code] if the object should be freed after the decrement, [code]false[/code] otherwise.
 */
 //go:nosplit
-func (self RefCounted) Unreference() Bool {
+func (self RefCounted) Unreference() bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Bool](frame)
+	var r_ret = callframe.Ret[bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_unreference, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11772,9 +11772,9 @@ func (self RefCounted) Unreference() Bool {
 Returns the current reference count.
 */
 //go:nosplit
-func (self RefCounted) GetReferenceCount() Int {
+func (self RefCounted) GetReferenceCount() int64 {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_get_reference_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

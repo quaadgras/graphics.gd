@@ -10,15 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -61,7 +65,7 @@ Set the default [PhysicsServer2D] implementation to the one identified by [param
 */
 func SetDefaultServer(name string, priority int) { //gd:PhysicsServer2DManager.set_default_server
 	once.Do(singleton)
-	class(self).SetDefaultServer(String.New(name), gd.Int(priority))
+	class(self).SetDefaultServer(String.New(name), int64(priority))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -91,7 +95,7 @@ func (self class) RegisterServer(name String.Readable, create_callback Callable.
 Set the default [PhysicsServer2D] implementation to the one identified by [param name], if [param priority] is greater than the priority of the current default implementation.
 */
 //go:nosplit
-func (self class) SetDefaultServer(name String.Readable, priority gd.Int) { //gd:PhysicsServer2DManager.set_default_server
+func (self class) SetDefaultServer(name String.Readable, priority int64) { //gd:PhysicsServer2DManager.set_default_server
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, priority)

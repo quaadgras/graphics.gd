@@ -9,22 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/CSGPrimitive3D"
 import "graphics.gd/classdb/CSGShape3D"
 import "graphics.gd/classdb/GeometryInstance3D"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -79,7 +82,7 @@ func (self Instance) Radius() Float.X {
 }
 
 func (self Instance) SetRadius(value Float.X) {
-	class(self).SetRadius(gd.Float(value))
+	class(self).SetRadius(float64(value))
 }
 
 func (self Instance) Height() Float.X {
@@ -87,7 +90,7 @@ func (self Instance) Height() Float.X {
 }
 
 func (self Instance) SetHeight(value Float.X) {
-	class(self).SetHeight(gd.Float(value))
+	class(self).SetHeight(float64(value))
 }
 
 func (self Instance) Sides() int {
@@ -95,7 +98,7 @@ func (self Instance) Sides() int {
 }
 
 func (self Instance) SetSides(value int) {
-	class(self).SetSides(gd.Int(value))
+	class(self).SetSides(int64(value))
 }
 
 func (self Instance) Cone() bool {
@@ -123,7 +126,7 @@ func (self Instance) SetMaterial(value [1]gdclass.Material) {
 }
 
 //go:nosplit
-func (self class) SetRadius(radius gd.Float) { //gd:CSGCylinder3D.set_radius
+func (self class) SetRadius(radius float64) { //gd:CSGCylinder3D.set_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -132,9 +135,9 @@ func (self class) SetRadius(radius gd.Float) { //gd:CSGCylinder3D.set_radius
 }
 
 //go:nosplit
-func (self class) GetRadius() gd.Float { //gd:CSGCylinder3D.get_radius
+func (self class) GetRadius() float64 { //gd:CSGCylinder3D.get_radius
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -142,7 +145,7 @@ func (self class) GetRadius() gd.Float { //gd:CSGCylinder3D.get_radius
 }
 
 //go:nosplit
-func (self class) SetHeight(height gd.Float) { //gd:CSGCylinder3D.set_height
+func (self class) SetHeight(height float64) { //gd:CSGCylinder3D.set_height
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -151,9 +154,9 @@ func (self class) SetHeight(height gd.Float) { //gd:CSGCylinder3D.set_height
 }
 
 //go:nosplit
-func (self class) GetHeight() gd.Float { //gd:CSGCylinder3D.get_height
+func (self class) GetHeight() float64 { //gd:CSGCylinder3D.get_height
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -161,7 +164,7 @@ func (self class) GetHeight() gd.Float { //gd:CSGCylinder3D.get_height
 }
 
 //go:nosplit
-func (self class) SetSides(sides gd.Int) { //gd:CSGCylinder3D.set_sides
+func (self class) SetSides(sides int64) { //gd:CSGCylinder3D.set_sides
 	var frame = callframe.New()
 	callframe.Arg(frame, sides)
 	var r_ret = callframe.Nil
@@ -170,9 +173,9 @@ func (self class) SetSides(sides gd.Int) { //gd:CSGCylinder3D.set_sides
 }
 
 //go:nosplit
-func (self class) GetSides() gd.Int { //gd:CSGCylinder3D.get_sides
+func (self class) GetSides() int64 { //gd:CSGCylinder3D.get_sides
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_get_sides, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

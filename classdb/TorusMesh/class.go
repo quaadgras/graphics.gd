@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Mesh"
+import "graphics.gd/classdb/PrimitiveMesh"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/PrimitiveMesh"
-import "graphics.gd/classdb/Mesh"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -76,7 +79,7 @@ func (self Instance) InnerRadius() Float.X {
 }
 
 func (self Instance) SetInnerRadius(value Float.X) {
-	class(self).SetInnerRadius(gd.Float(value))
+	class(self).SetInnerRadius(float64(value))
 }
 
 func (self Instance) OuterRadius() Float.X {
@@ -84,7 +87,7 @@ func (self Instance) OuterRadius() Float.X {
 }
 
 func (self Instance) SetOuterRadius(value Float.X) {
-	class(self).SetOuterRadius(gd.Float(value))
+	class(self).SetOuterRadius(float64(value))
 }
 
 func (self Instance) Rings() int {
@@ -92,7 +95,7 @@ func (self Instance) Rings() int {
 }
 
 func (self Instance) SetRings(value int) {
-	class(self).SetRings(gd.Int(value))
+	class(self).SetRings(int64(value))
 }
 
 func (self Instance) RingSegments() int {
@@ -100,11 +103,11 @@ func (self Instance) RingSegments() int {
 }
 
 func (self Instance) SetRingSegments(value int) {
-	class(self).SetRingSegments(gd.Int(value))
+	class(self).SetRingSegments(int64(value))
 }
 
 //go:nosplit
-func (self class) SetInnerRadius(radius gd.Float) { //gd:TorusMesh.set_inner_radius
+func (self class) SetInnerRadius(radius float64) { //gd:TorusMesh.set_inner_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -113,9 +116,9 @@ func (self class) SetInnerRadius(radius gd.Float) { //gd:TorusMesh.set_inner_rad
 }
 
 //go:nosplit
-func (self class) GetInnerRadius() gd.Float { //gd:TorusMesh.get_inner_radius
+func (self class) GetInnerRadius() float64 { //gd:TorusMesh.get_inner_radius
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_inner_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -123,7 +126,7 @@ func (self class) GetInnerRadius() gd.Float { //gd:TorusMesh.get_inner_radius
 }
 
 //go:nosplit
-func (self class) SetOuterRadius(radius gd.Float) { //gd:TorusMesh.set_outer_radius
+func (self class) SetOuterRadius(radius float64) { //gd:TorusMesh.set_outer_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -132,9 +135,9 @@ func (self class) SetOuterRadius(radius gd.Float) { //gd:TorusMesh.set_outer_rad
 }
 
 //go:nosplit
-func (self class) GetOuterRadius() gd.Float { //gd:TorusMesh.get_outer_radius
+func (self class) GetOuterRadius() float64 { //gd:TorusMesh.get_outer_radius
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_outer_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -142,7 +145,7 @@ func (self class) GetOuterRadius() gd.Float { //gd:TorusMesh.get_outer_radius
 }
 
 //go:nosplit
-func (self class) SetRings(rings gd.Int) { //gd:TorusMesh.set_rings
+func (self class) SetRings(rings int64) { //gd:TorusMesh.set_rings
 	var frame = callframe.New()
 	callframe.Arg(frame, rings)
 	var r_ret = callframe.Nil
@@ -151,9 +154,9 @@ func (self class) SetRings(rings gd.Int) { //gd:TorusMesh.set_rings
 }
 
 //go:nosplit
-func (self class) GetRings() gd.Int { //gd:TorusMesh.get_rings
+func (self class) GetRings() int64 { //gd:TorusMesh.get_rings
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_rings, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -161,7 +164,7 @@ func (self class) GetRings() gd.Int { //gd:TorusMesh.get_rings
 }
 
 //go:nosplit
-func (self class) SetRingSegments(rings gd.Int) { //gd:TorusMesh.set_ring_segments
+func (self class) SetRingSegments(rings int64) { //gd:TorusMesh.set_ring_segments
 	var frame = callframe.New()
 	callframe.Arg(frame, rings)
 	var r_ret = callframe.Nil
@@ -170,9 +173,9 @@ func (self class) SetRingSegments(rings gd.Int) { //gd:TorusMesh.set_ring_segmen
 }
 
 //go:nosplit
-func (self class) GetRingSegments() gd.Int { //gd:TorusMesh.get_ring_segments
+func (self class) GetRingSegments() int64 { //gd:TorusMesh.get_ring_segments
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_ring_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

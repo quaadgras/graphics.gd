@@ -9,16 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -89,7 +92,7 @@ func (self Instance) MinSampleShading() Float.X {
 }
 
 func (self Instance) SetMinSampleShading(value Float.X) {
-	class(self).SetMinSampleShading(gd.Float(value))
+	class(self).SetMinSampleShading(float64(value))
 }
 
 func (self Instance) EnableAlphaToCoverage() bool {
@@ -113,7 +116,7 @@ func (self Instance) SampleMasks() []int {
 }
 
 func (self Instance) SetSampleMasks(value []int) {
-	class(self).SetSampleMasks(gd.ArrayFromSlice[Array.Contains[gd.Int]](value))
+	class(self).SetSampleMasks(gd.ArrayFromSlice[Array.Contains[int64]](value))
 }
 
 //go:nosplit
@@ -155,7 +158,7 @@ func (self class) GetEnableSampleShading() bool { //gd:RDPipelineMultisampleStat
 }
 
 //go:nosplit
-func (self class) SetMinSampleShading(p_member gd.Float) { //gd:RDPipelineMultisampleState.set_min_sample_shading
+func (self class) SetMinSampleShading(p_member float64) { //gd:RDPipelineMultisampleState.set_min_sample_shading
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -164,9 +167,9 @@ func (self class) SetMinSampleShading(p_member gd.Float) { //gd:RDPipelineMultis
 }
 
 //go:nosplit
-func (self class) GetMinSampleShading() gd.Float { //gd:RDPipelineMultisampleState.get_min_sample_shading
+func (self class) GetMinSampleShading() float64 { //gd:RDPipelineMultisampleState.get_min_sample_shading
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_min_sample_shading, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -212,7 +215,7 @@ func (self class) GetEnableAlphaToOne() bool { //gd:RDPipelineMultisampleState.g
 }
 
 //go:nosplit
-func (self class) SetSampleMasks(masks Array.Contains[gd.Int]) { //gd:RDPipelineMultisampleState.set_sample_masks
+func (self class) SetSampleMasks(masks Array.Contains[int64]) { //gd:RDPipelineMultisampleState.set_sample_masks
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(masks)))
 	var r_ret = callframe.Nil
@@ -221,11 +224,11 @@ func (self class) SetSampleMasks(masks Array.Contains[gd.Int]) { //gd:RDPipeline
 }
 
 //go:nosplit
-func (self class) GetSampleMasks() Array.Contains[gd.Int] { //gd:RDPipelineMultisampleState.get_sample_masks
+func (self class) GetSampleMasks() Array.Contains[int64] { //gd:RDPipelineMultisampleState.get_sample_masks
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_sample_masks, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Int]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

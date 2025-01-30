@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,14 +59,14 @@ type Any interface {
 Plays a sound from the beginning, or the given [param from_position] in seconds.
 */
 func (self Instance) Play() { //gd:AudioStreamPlayer.play
-	class(self).Play(gd.Float(0.0))
+	class(self).Play(float64(0.0))
 }
 
 /*
 Restarts all sounds to be played from the given [param to_position], in seconds. Does nothing if no sounds are playing.
 */
 func (self Instance) SeekTo(to_position Float.X) { //gd:AudioStreamPlayer.seek
-	class(self).SeekTo(gd.Float(to_position))
+	class(self).SeekTo(float64(to_position))
 }
 
 /*
@@ -126,7 +129,7 @@ func (self Instance) VolumeDb() Float.X {
 }
 
 func (self Instance) SetVolumeDb(value Float.X) {
-	class(self).SetVolumeDb(gd.Float(value))
+	class(self).SetVolumeDb(float64(value))
 }
 
 func (self Instance) PitchScale() Float.X {
@@ -134,7 +137,7 @@ func (self Instance) PitchScale() Float.X {
 }
 
 func (self Instance) SetPitchScale(value Float.X) {
-	class(self).SetPitchScale(gd.Float(value))
+	class(self).SetPitchScale(float64(value))
 }
 
 func (self Instance) Playing() bool {
@@ -170,7 +173,7 @@ func (self Instance) MaxPolyphony() int {
 }
 
 func (self Instance) SetMaxPolyphony(value int) {
-	class(self).SetMaxPolyphony(gd.Int(value))
+	class(self).SetMaxPolyphony(int64(value))
 }
 
 func (self Instance) Bus() string {
@@ -209,7 +212,7 @@ func (self class) GetStream() [1]gdclass.AudioStream { //gd:AudioStreamPlayer.ge
 }
 
 //go:nosplit
-func (self class) SetVolumeDb(volume_db gd.Float) { //gd:AudioStreamPlayer.set_volume_db
+func (self class) SetVolumeDb(volume_db float64) { //gd:AudioStreamPlayer.set_volume_db
 	var frame = callframe.New()
 	callframe.Arg(frame, volume_db)
 	var r_ret = callframe.Nil
@@ -218,9 +221,9 @@ func (self class) SetVolumeDb(volume_db gd.Float) { //gd:AudioStreamPlayer.set_v
 }
 
 //go:nosplit
-func (self class) GetVolumeDb() gd.Float { //gd:AudioStreamPlayer.get_volume_db
+func (self class) GetVolumeDb() float64 { //gd:AudioStreamPlayer.get_volume_db
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_volume_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -228,7 +231,7 @@ func (self class) GetVolumeDb() gd.Float { //gd:AudioStreamPlayer.get_volume_db
 }
 
 //go:nosplit
-func (self class) SetPitchScale(pitch_scale gd.Float) { //gd:AudioStreamPlayer.set_pitch_scale
+func (self class) SetPitchScale(pitch_scale float64) { //gd:AudioStreamPlayer.set_pitch_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, pitch_scale)
 	var r_ret = callframe.Nil
@@ -237,9 +240,9 @@ func (self class) SetPitchScale(pitch_scale gd.Float) { //gd:AudioStreamPlayer.s
 }
 
 //go:nosplit
-func (self class) GetPitchScale() gd.Float { //gd:AudioStreamPlayer.get_pitch_scale
+func (self class) GetPitchScale() float64 { //gd:AudioStreamPlayer.get_pitch_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_pitch_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -250,7 +253,7 @@ func (self class) GetPitchScale() gd.Float { //gd:AudioStreamPlayer.get_pitch_sc
 Plays a sound from the beginning, or the given [param from_position] in seconds.
 */
 //go:nosplit
-func (self class) Play(from_position gd.Float) { //gd:AudioStreamPlayer.play
+func (self class) Play(from_position float64) { //gd:AudioStreamPlayer.play
 	var frame = callframe.New()
 	callframe.Arg(frame, from_position)
 	var r_ret = callframe.Nil
@@ -262,7 +265,7 @@ func (self class) Play(from_position gd.Float) { //gd:AudioStreamPlayer.play
 Restarts all sounds to be played from the given [param to_position], in seconds. Does nothing if no sounds are playing.
 */
 //go:nosplit
-func (self class) SeekTo(to_position gd.Float) { //gd:AudioStreamPlayer.seek
+func (self class) SeekTo(to_position float64) { //gd:AudioStreamPlayer.seek
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	var r_ret = callframe.Nil
@@ -296,9 +299,9 @@ Returns the position in the [AudioStream] of the latest sound, in seconds. Retur
 [b]Note:[/b] The position is not always accurate, as the [AudioServer] does not mix audio every processed frame. To get more accurate results, add [method AudioServer.get_time_since_last_mix] to the returned position.
 */
 //go:nosplit
-func (self class) GetPlaybackPosition() gd.Float { //gd:AudioStreamPlayer.get_playback_position
+func (self class) GetPlaybackPosition() float64 { //gd:AudioStreamPlayer.get_playback_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_playback_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -382,7 +385,7 @@ func (self class) GetStreamPaused() bool { //gd:AudioStreamPlayer.get_stream_pau
 }
 
 //go:nosplit
-func (self class) SetMaxPolyphony(max_polyphony gd.Int) { //gd:AudioStreamPlayer.set_max_polyphony
+func (self class) SetMaxPolyphony(max_polyphony int64) { //gd:AudioStreamPlayer.set_max_polyphony
 	var frame = callframe.New()
 	callframe.Arg(frame, max_polyphony)
 	var r_ret = callframe.Nil
@@ -391,9 +394,9 @@ func (self class) SetMaxPolyphony(max_polyphony gd.Int) { //gd:AudioStreamPlayer
 }
 
 //go:nosplit
-func (self class) GetMaxPolyphony() gd.Int { //gd:AudioStreamPlayer.get_max_polyphony
+func (self class) GetMaxPolyphony() int64 { //gd:AudioStreamPlayer.get_max_polyphony
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_max_polyphony, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

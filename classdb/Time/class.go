@@ -10,16 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,7 +61,7 @@ The returned Dictionary's values will be the same as the [method get_datetime_di
 */
 func GetDatetimeDictFromUnixTime(unix_time_val int) Date { //gd:Time.get_datetime_dict_from_unix_time
 	once.Do(singleton)
-	return Date(gd.DictionaryAs[Date](class(self).GetDatetimeDictFromUnixTime(gd.Int(unix_time_val))))
+	return Date(gd.DictionaryAs[Date](class(self).GetDatetimeDictFromUnixTime(int64(unix_time_val))))
 }
 
 /*
@@ -66,7 +69,7 @@ Converts the given Unix timestamp to a dictionary of keys: [code]year[/code], [c
 */
 func GetDateDictFromUnixTime(unix_time_val int) DateOnly { //gd:Time.get_date_dict_from_unix_time
 	once.Do(singleton)
-	return DateOnly(gd.DictionaryAs[DateOnly](class(self).GetDateDictFromUnixTime(gd.Int(unix_time_val))))
+	return DateOnly(gd.DictionaryAs[DateOnly](class(self).GetDateDictFromUnixTime(int64(unix_time_val))))
 }
 
 /*
@@ -74,7 +77,7 @@ Converts the given time to a dictionary of keys: [code]hour[/code], [code]minute
 */
 func GetTimeDictFromUnixTime(unix_time_val int) OnTheClock { //gd:Time.get_time_dict_from_unix_time
 	once.Do(singleton)
-	return OnTheClock(gd.DictionaryAs[OnTheClock](class(self).GetTimeDictFromUnixTime(gd.Int(unix_time_val))))
+	return OnTheClock(gd.DictionaryAs[OnTheClock](class(self).GetTimeDictFromUnixTime(int64(unix_time_val))))
 }
 
 /*
@@ -83,7 +86,7 @@ If [param use_space] is [code]true[/code], the date and time bits are separated 
 */
 func GetDatetimeStringFromUnixTime(unix_time_val int) string { //gd:Time.get_datetime_string_from_unix_time
 	once.Do(singleton)
-	return string(class(self).GetDatetimeStringFromUnixTime(gd.Int(unix_time_val), false).String())
+	return string(class(self).GetDatetimeStringFromUnixTime(int64(unix_time_val), false).String())
 }
 
 /*
@@ -91,7 +94,7 @@ Converts the given Unix timestamp to an ISO 8601 date string (YYYY-MM-DD).
 */
 func GetDateStringFromUnixTime(unix_time_val int) string { //gd:Time.get_date_string_from_unix_time
 	once.Do(singleton)
-	return string(class(self).GetDateStringFromUnixTime(gd.Int(unix_time_val)).String())
+	return string(class(self).GetDateStringFromUnixTime(int64(unix_time_val)).String())
 }
 
 /*
@@ -99,7 +102,7 @@ Converts the given Unix timestamp to an ISO 8601 time string (HH:MM:SS).
 */
 func GetTimeStringFromUnixTime(unix_time_val int) string { //gd:Time.get_time_string_from_unix_time
 	once.Do(singleton)
-	return string(class(self).GetTimeStringFromUnixTime(gd.Int(unix_time_val)).String())
+	return string(class(self).GetTimeStringFromUnixTime(int64(unix_time_val)).String())
 }
 
 /*
@@ -150,7 +153,7 @@ Converts the given timezone offset in minutes to a timezone offset string. For e
 */
 func GetOffsetStringFromOffsetMinutes(offset_minutes int) string { //gd:Time.get_offset_string_from_offset_minutes
 	once.Do(singleton)
-	return string(class(self).GetOffsetStringFromOffsetMinutes(gd.Int(offset_minutes)).String())
+	return string(class(self).GetOffsetStringFromOffsetMinutes(int64(offset_minutes)).String())
 }
 
 /*
@@ -259,7 +262,7 @@ Converts the given Unix timestamp to a dictionary of keys: [code]year[/code], [c
 The returned Dictionary's values will be the same as the [method get_datetime_dict_from_system] if the Unix timestamp is the current time, with the exception of Daylight Savings Time as it cannot be determined from the epoch.
 */
 //go:nosplit
-func (self class) GetDatetimeDictFromUnixTime(unix_time_val gd.Int) Dictionary.Any { //gd:Time.get_datetime_dict_from_unix_time
+func (self class) GetDatetimeDictFromUnixTime(unix_time_val int64) Dictionary.Any { //gd:Time.get_datetime_dict_from_unix_time
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -273,7 +276,7 @@ func (self class) GetDatetimeDictFromUnixTime(unix_time_val gd.Int) Dictionary.A
 Converts the given Unix timestamp to a dictionary of keys: [code]year[/code], [code]month[/code], [code]day[/code], and [code]weekday[/code].
 */
 //go:nosplit
-func (self class) GetDateDictFromUnixTime(unix_time_val gd.Int) Dictionary.Any { //gd:Time.get_date_dict_from_unix_time
+func (self class) GetDateDictFromUnixTime(unix_time_val int64) Dictionary.Any { //gd:Time.get_date_dict_from_unix_time
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -287,7 +290,7 @@ func (self class) GetDateDictFromUnixTime(unix_time_val gd.Int) Dictionary.Any {
 Converts the given time to a dictionary of keys: [code]hour[/code], [code]minute[/code], and [code]second[/code].
 */
 //go:nosplit
-func (self class) GetTimeDictFromUnixTime(unix_time_val gd.Int) Dictionary.Any { //gd:Time.get_time_dict_from_unix_time
+func (self class) GetTimeDictFromUnixTime(unix_time_val int64) Dictionary.Any { //gd:Time.get_time_dict_from_unix_time
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -302,7 +305,7 @@ Converts the given Unix timestamp to an ISO 8601 date and time string (YYYY-MM-D
 If [param use_space] is [code]true[/code], the date and time bits are separated by an empty space character instead of the letter T.
 */
 //go:nosplit
-func (self class) GetDatetimeStringFromUnixTime(unix_time_val gd.Int, use_space bool) String.Readable { //gd:Time.get_datetime_string_from_unix_time
+func (self class) GetDatetimeStringFromUnixTime(unix_time_val int64, use_space bool) String.Readable { //gd:Time.get_datetime_string_from_unix_time
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
 	callframe.Arg(frame, use_space)
@@ -317,7 +320,7 @@ func (self class) GetDatetimeStringFromUnixTime(unix_time_val gd.Int, use_space 
 Converts the given Unix timestamp to an ISO 8601 date string (YYYY-MM-DD).
 */
 //go:nosplit
-func (self class) GetDateStringFromUnixTime(unix_time_val gd.Int) String.Readable { //gd:Time.get_date_string_from_unix_time
+func (self class) GetDateStringFromUnixTime(unix_time_val int64) String.Readable { //gd:Time.get_date_string_from_unix_time
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -331,7 +334,7 @@ func (self class) GetDateStringFromUnixTime(unix_time_val gd.Int) String.Readabl
 Converts the given Unix timestamp to an ISO 8601 time string (HH:MM:SS).
 */
 //go:nosplit
-func (self class) GetTimeStringFromUnixTime(unix_time_val gd.Int) String.Readable { //gd:Time.get_time_string_from_unix_time
+func (self class) GetTimeStringFromUnixTime(unix_time_val int64) String.Readable { //gd:Time.get_time_string_from_unix_time
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -384,10 +387,10 @@ You can pass the output from [method get_datetime_dict_from_unix_time] directly 
 [b]Note:[/b] Unix timestamps are often in UTC. This method does not do any timezone conversion, so the timestamp will be in the same timezone as the given datetime dictionary.
 */
 //go:nosplit
-func (self class) GetUnixTimeFromDatetimeDict(datetime Dictionary.Any) gd.Int { //gd:Time.get_unix_time_from_datetime_dict
+func (self class) GetUnixTimeFromDatetimeDict(datetime Dictionary.Any) int64 { //gd:Time.get_unix_time_from_datetime_dict
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(datetime)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_unix_time_from_datetime_dict, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -400,10 +403,10 @@ Converts the given ISO 8601 date and/or time string to a Unix timestamp. The str
 [b]Note:[/b] Any decimal fraction in the time string will be ignored silently.
 */
 //go:nosplit
-func (self class) GetUnixTimeFromDatetimeString(datetime String.Readable) gd.Int { //gd:Time.get_unix_time_from_datetime_string
+func (self class) GetUnixTimeFromDatetimeString(datetime String.Readable) int64 { //gd:Time.get_unix_time_from_datetime_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(datetime)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_unix_time_from_datetime_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -414,7 +417,7 @@ func (self class) GetUnixTimeFromDatetimeString(datetime String.Readable) gd.Int
 Converts the given timezone offset in minutes to a timezone offset string. For example, -480 returns "-08:00", 345 returns "+05:45", and 0 returns "+00:00".
 */
 //go:nosplit
-func (self class) GetOffsetStringFromOffsetMinutes(offset_minutes gd.Int) String.Readable { //gd:Time.get_offset_string_from_offset_minutes
+func (self class) GetOffsetStringFromOffsetMinutes(offset_minutes int64) String.Readable { //gd:Time.get_offset_string_from_offset_minutes
 	var frame = callframe.New()
 	callframe.Arg(frame, offset_minutes)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -535,9 +538,9 @@ Returns the current Unix timestamp in seconds based on the system time in UTC. T
 [b]Note:[/b] Unlike other methods that use integer timestamps, this method returns the timestamp as a [float] for sub-second precision.
 */
 //go:nosplit
-func (self class) GetUnixTimeFromSystem() gd.Float { //gd:Time.get_unix_time_from_system
+func (self class) GetUnixTimeFromSystem() float64 { //gd:Time.get_unix_time_from_system
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_unix_time_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -549,9 +552,9 @@ Returns the amount of time passed in milliseconds since the engine started.
 Will always be positive or 0 and uses a 64-bit value (it will wrap after roughly 500 million years).
 */
 //go:nosplit
-func (self class) GetTicksMsec() gd.Int { //gd:Time.get_ticks_msec
+func (self class) GetTicksMsec() int64 { //gd:Time.get_ticks_msec
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_ticks_msec, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -563,9 +566,9 @@ Returns the amount of time passed in microseconds since the engine started.
 Will always be positive or 0 and uses a 64-bit value (it will wrap after roughly half a million years).
 */
 //go:nosplit
-func (self class) GetTicksUsec() gd.Int { //gd:Time.get_ticks_usec
+func (self class) GetTicksUsec() int64 { //gd:Time.get_ticks_usec
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_ticks_usec, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -629,6 +632,12 @@ const (
 	WeekdaySaturday Weekday = 6
 )
 
+type DateOnly struct {
+	Year    int `gd:"year"`
+	Month   int `gd:"month"`
+	Day     int `gd:"day"`
+	Weekday int `gd:"weekday"`
+}
 type OnTheClock struct {
 	Hour   int `gd:"hour"`
 	Minute int `gd:"minute"`
@@ -642,10 +651,4 @@ type Date struct {
 	Hour    int `gd:"hour"`
 	Minute  int `gd:"minute"`
 	Second  int `gd:"second"`
-}
-type DateOnly struct {
-	Year    int `gd:"year"`
-	Month   int `gd:"month"`
-	Day     int `gd:"day"`
-	Weekday int `gd:"weekday"`
 }

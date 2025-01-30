@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AnimationNode"
+import "graphics.gd/classdb/AnimationNodeSync"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AnimationNodeSync"
-import "graphics.gd/classdb/AnimationNode"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -129,7 +132,7 @@ func (self Instance) FadeinTime() Float.X {
 }
 
 func (self Instance) SetFadeinTime(value Float.X) {
-	class(self).SetFadeinTime(gd.Float(value))
+	class(self).SetFadeinTime(float64(value))
 }
 
 func (self Instance) FadeinCurve() [1]gdclass.Curve {
@@ -145,7 +148,7 @@ func (self Instance) FadeoutTime() Float.X {
 }
 
 func (self Instance) SetFadeoutTime(value Float.X) {
-	class(self).SetFadeoutTime(gd.Float(value))
+	class(self).SetFadeoutTime(float64(value))
 }
 
 func (self Instance) FadeoutCurve() [1]gdclass.Curve {
@@ -177,7 +180,7 @@ func (self Instance) AutorestartDelay() Float.X {
 }
 
 func (self Instance) SetAutorestartDelay(value Float.X) {
-	class(self).SetAutorestartDelay(gd.Float(value))
+	class(self).SetAutorestartDelay(float64(value))
 }
 
 func (self Instance) AutorestartRandomDelay() Float.X {
@@ -185,11 +188,11 @@ func (self Instance) AutorestartRandomDelay() Float.X {
 }
 
 func (self Instance) SetAutorestartRandomDelay(value Float.X) {
-	class(self).SetAutorestartRandomDelay(gd.Float(value))
+	class(self).SetAutorestartRandomDelay(float64(value))
 }
 
 //go:nosplit
-func (self class) SetFadeinTime(time gd.Float) { //gd:AnimationNodeOneShot.set_fadein_time
+func (self class) SetFadeinTime(time float64) { //gd:AnimationNodeOneShot.set_fadein_time
 	var frame = callframe.New()
 	callframe.Arg(frame, time)
 	var r_ret = callframe.Nil
@@ -198,9 +201,9 @@ func (self class) SetFadeinTime(time gd.Float) { //gd:AnimationNodeOneShot.set_f
 }
 
 //go:nosplit
-func (self class) GetFadeinTime() gd.Float { //gd:AnimationNodeOneShot.get_fadein_time
+func (self class) GetFadeinTime() float64 { //gd:AnimationNodeOneShot.get_fadein_time
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadein_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -227,7 +230,7 @@ func (self class) GetFadeinCurve() [1]gdclass.Curve { //gd:AnimationNodeOneShot.
 }
 
 //go:nosplit
-func (self class) SetFadeoutTime(time gd.Float) { //gd:AnimationNodeOneShot.set_fadeout_time
+func (self class) SetFadeoutTime(time float64) { //gd:AnimationNodeOneShot.set_fadeout_time
 	var frame = callframe.New()
 	callframe.Arg(frame, time)
 	var r_ret = callframe.Nil
@@ -236,9 +239,9 @@ func (self class) SetFadeoutTime(time gd.Float) { //gd:AnimationNodeOneShot.set_
 }
 
 //go:nosplit
-func (self class) GetFadeoutTime() gd.Float { //gd:AnimationNodeOneShot.get_fadeout_time
+func (self class) GetFadeoutTime() float64 { //gd:AnimationNodeOneShot.get_fadeout_time
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadeout_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -303,7 +306,7 @@ func (self class) HasAutorestart() bool { //gd:AnimationNodeOneShot.has_autorest
 }
 
 //go:nosplit
-func (self class) SetAutorestartDelay(time gd.Float) { //gd:AnimationNodeOneShot.set_autorestart_delay
+func (self class) SetAutorestartDelay(time float64) { //gd:AnimationNodeOneShot.set_autorestart_delay
 	var frame = callframe.New()
 	callframe.Arg(frame, time)
 	var r_ret = callframe.Nil
@@ -312,9 +315,9 @@ func (self class) SetAutorestartDelay(time gd.Float) { //gd:AnimationNodeOneShot
 }
 
 //go:nosplit
-func (self class) GetAutorestartDelay() gd.Float { //gd:AnimationNodeOneShot.get_autorestart_delay
+func (self class) GetAutorestartDelay() float64 { //gd:AnimationNodeOneShot.get_autorestart_delay
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_get_autorestart_delay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -322,7 +325,7 @@ func (self class) GetAutorestartDelay() gd.Float { //gd:AnimationNodeOneShot.get
 }
 
 //go:nosplit
-func (self class) SetAutorestartRandomDelay(time gd.Float) { //gd:AnimationNodeOneShot.set_autorestart_random_delay
+func (self class) SetAutorestartRandomDelay(time float64) { //gd:AnimationNodeOneShot.set_autorestart_random_delay
 	var frame = callframe.New()
 	callframe.Arg(frame, time)
 	var r_ret = callframe.Nil
@@ -331,9 +334,9 @@ func (self class) SetAutorestartRandomDelay(time gd.Float) { //gd:AnimationNodeO
 }
 
 //go:nosplit
-func (self class) GetAutorestartRandomDelay() gd.Float { //gd:AnimationNodeOneShot.get_autorestart_random_delay
+func (self class) GetAutorestartRandomDelay() float64 { //gd:AnimationNodeOneShot.get_autorestart_random_delay
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_get_autorestart_random_delay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

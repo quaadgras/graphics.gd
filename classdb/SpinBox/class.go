@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Range"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Range"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -153,7 +156,7 @@ func (self Instance) CustomArrowStep() Float.X {
 }
 
 func (self Instance) SetCustomArrowStep(value Float.X) {
-	class(self).SetCustomArrowStep(gd.Float(value))
+	class(self).SetCustomArrowStep(float64(value))
 }
 
 func (self Instance) SelectAllOnFocus() bool {
@@ -231,7 +234,7 @@ func (self class) SetEditable(enabled bool) { //gd:SpinBox.set_editable
 }
 
 //go:nosplit
-func (self class) SetCustomArrowStep(arrow_step gd.Float) { //gd:SpinBox.set_custom_arrow_step
+func (self class) SetCustomArrowStep(arrow_step float64) { //gd:SpinBox.set_custom_arrow_step
 	var frame = callframe.New()
 	callframe.Arg(frame, arrow_step)
 	var r_ret = callframe.Nil
@@ -240,9 +243,9 @@ func (self class) SetCustomArrowStep(arrow_step gd.Float) { //gd:SpinBox.set_cus
 }
 
 //go:nosplit
-func (self class) GetCustomArrowStep() gd.Float { //gd:SpinBox.get_custom_arrow_step
+func (self class) GetCustomArrowStep() float64 { //gd:SpinBox.get_custom_arrow_step
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_custom_arrow_step, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

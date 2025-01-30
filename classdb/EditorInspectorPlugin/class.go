@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -67,7 +71,7 @@ type Interface interface {
 	//Called to allow adding controls at the beginning of a group or a sub-group in the property list for [param object].
 	ParseGroup(obj Object.Instance, group string)
 	//Called to allow adding property-specific editors to the property list for [param object]. The added editor control must extend [EditorProperty]. Returning [code]true[/code] removes the built-in editor for this property, otherwise allows to insert a custom editor before the built-in one.
-	ParseProperty(obj Object.Instance, atype gd.VariantType, name string, hint_type PropertyHint, hint_string string, usage_flags PropertyUsageFlags, wide bool) bool
+	ParseProperty(obj Object.Instance, atype variant.Type, name string, hint_type PropertyHint, hint_string string, usage_flags PropertyUsageFlags, wide bool) bool
 	//Called to allow adding controls at the end of the property list for [param object].
 	ParseEnd(obj Object.Instance)
 }
@@ -81,7 +85,7 @@ func (self implementation) CanHandle(obj Object.Instance) (_ bool)             {
 func (self implementation) ParseBegin(obj Object.Instance)                     { return }
 func (self implementation) ParseCategory(obj Object.Instance, category string) { return }
 func (self implementation) ParseGroup(obj Object.Instance, group string)       { return }
-func (self implementation) ParseProperty(obj Object.Instance, atype gd.VariantType, name string, hint_type PropertyHint, hint_string string, usage_flags PropertyUsageFlags, wide bool) (_ bool) {
+func (self implementation) ParseProperty(obj Object.Instance, atype variant.Type, name string, hint_type PropertyHint, hint_string string, usage_flags PropertyUsageFlags, wide bool) (_ bool) {
 	return
 }
 func (self implementation) ParseEnd(obj Object.Instance) { return }
@@ -142,11 +146,11 @@ func (Instance) _parse_group(impl func(ptr unsafe.Pointer, obj Object.Instance, 
 /*
 Called to allow adding property-specific editors to the property list for [param object]. The added editor control must extend [EditorProperty]. Returning [code]true[/code] removes the built-in editor for this property, otherwise allows to insert a custom editor before the built-in one.
 */
-func (Instance) _parse_property(impl func(ptr unsafe.Pointer, obj Object.Instance, atype gd.VariantType, name string, hint_type PropertyHint, hint_string string, usage_flags PropertyUsageFlags, wide bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _parse_property(impl func(ptr unsafe.Pointer, obj Object.Instance, atype variant.Type, name string, hint_type PropertyHint, hint_string string, usage_flags PropertyUsageFlags, wide bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
-		var atype = gd.UnsafeGet[gd.VariantType](p_args, 1)
+		var atype = gd.UnsafeGet[variant.Type](p_args, 1)
 
 		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(name))
@@ -274,11 +278,11 @@ func (class) _parse_group(impl func(ptr unsafe.Pointer, obj [1]gd.Object, group 
 /*
 Called to allow adding property-specific editors to the property list for [param object]. The added editor control must extend [EditorProperty]. Returning [code]true[/code] removes the built-in editor for this property, otherwise allows to insert a custom editor before the built-in one.
 */
-func (class) _parse_property(impl func(ptr unsafe.Pointer, obj [1]gd.Object, atype gd.VariantType, name String.Readable, hint_type PropertyHint, hint_string String.Readable, usage_flags PropertyUsageFlags, wide bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_property(impl func(ptr unsafe.Pointer, obj [1]gd.Object, atype variant.Type, name String.Readable, hint_type PropertyHint, hint_string String.Readable, usage_flags PropertyUsageFlags, wide bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
-		var atype = gd.UnsafeGet[gd.VariantType](p_args, 1)
+		var atype = gd.UnsafeGet[variant.Type](p_args, 1)
 
 		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(name))

@@ -412,7 +412,7 @@ func (variant Variant) Interface() any {
 	case TypeNil:
 		return nil
 	case TypeBool:
-		return Bool(variantAsValueType[bool](variant, vtype))
+		return variantAsValueType[bool](variant, vtype)
 	case TypeInt:
 		return variantAsValueType[Int](variant, vtype)
 	case TypeFloat:

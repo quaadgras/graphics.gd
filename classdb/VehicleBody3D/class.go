@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CollisionObject3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/PhysicsBody3D"
+import "graphics.gd/classdb/RigidBody3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/RigidBody3D"
-import "graphics.gd/classdb/PhysicsBody3D"
-import "graphics.gd/classdb/CollisionObject3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -79,7 +82,7 @@ func (self Instance) EngineForce() Float.X {
 }
 
 func (self Instance) SetEngineForce(value Float.X) {
-	class(self).SetEngineForce(gd.Float(value))
+	class(self).SetEngineForce(float64(value))
 }
 
 func (self Instance) Brake() Float.X {
@@ -87,7 +90,7 @@ func (self Instance) Brake() Float.X {
 }
 
 func (self Instance) SetBrake(value Float.X) {
-	class(self).SetBrake(gd.Float(value))
+	class(self).SetBrake(float64(value))
 }
 
 func (self Instance) Steering() Float.X {
@@ -95,11 +98,11 @@ func (self Instance) Steering() Float.X {
 }
 
 func (self Instance) SetSteering(value Float.X) {
-	class(self).SetSteering(gd.Float(value))
+	class(self).SetSteering(float64(value))
 }
 
 //go:nosplit
-func (self class) SetEngineForce(engine_force gd.Float) { //gd:VehicleBody3D.set_engine_force
+func (self class) SetEngineForce(engine_force float64) { //gd:VehicleBody3D.set_engine_force
 	var frame = callframe.New()
 	callframe.Arg(frame, engine_force)
 	var r_ret = callframe.Nil
@@ -108,9 +111,9 @@ func (self class) SetEngineForce(engine_force gd.Float) { //gd:VehicleBody3D.set
 }
 
 //go:nosplit
-func (self class) GetEngineForce() gd.Float { //gd:VehicleBody3D.get_engine_force
+func (self class) GetEngineForce() float64 { //gd:VehicleBody3D.get_engine_force
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleBody3D.Bind_get_engine_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -118,7 +121,7 @@ func (self class) GetEngineForce() gd.Float { //gd:VehicleBody3D.get_engine_forc
 }
 
 //go:nosplit
-func (self class) SetBrake(brake gd.Float) { //gd:VehicleBody3D.set_brake
+func (self class) SetBrake(brake float64) { //gd:VehicleBody3D.set_brake
 	var frame = callframe.New()
 	callframe.Arg(frame, brake)
 	var r_ret = callframe.Nil
@@ -127,9 +130,9 @@ func (self class) SetBrake(brake gd.Float) { //gd:VehicleBody3D.set_brake
 }
 
 //go:nosplit
-func (self class) GetBrake() gd.Float { //gd:VehicleBody3D.get_brake
+func (self class) GetBrake() float64 { //gd:VehicleBody3D.get_brake
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleBody3D.Bind_get_brake, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -137,7 +140,7 @@ func (self class) GetBrake() gd.Float { //gd:VehicleBody3D.get_brake
 }
 
 //go:nosplit
-func (self class) SetSteering(steering gd.Float) { //gd:VehicleBody3D.set_steering
+func (self class) SetSteering(steering float64) { //gd:VehicleBody3D.set_steering
 	var frame = callframe.New()
 	callframe.Arg(frame, steering)
 	var r_ret = callframe.Nil
@@ -146,9 +149,9 @@ func (self class) SetSteering(steering gd.Float) { //gd:VehicleBody3D.set_steeri
 }
 
 //go:nosplit
-func (self class) GetSteering() gd.Float { //gd:VehicleBody3D.get_steering
+func (self class) GetSteering() float64 { //gd:VehicleBody3D.get_steering
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleBody3D.Bind_get_steering, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

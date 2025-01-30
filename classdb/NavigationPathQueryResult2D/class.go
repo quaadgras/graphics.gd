@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -96,7 +100,7 @@ func (self Instance) PathRids() []RID.Any {
 }
 
 func (self Instance) SetPathRids(value []RID.Any) {
-	class(self).SetPathRids(gd.ArrayFromSlice[Array.Contains[gd.RID]](value))
+	class(self).SetPathRids(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 
 func (self Instance) PathOwnerIds() []int64 {
@@ -146,7 +150,7 @@ func (self class) GetPathTypes() Packed.Array[int32] { //gd:NavigationPathQueryR
 }
 
 //go:nosplit
-func (self class) SetPathRids(path_rids Array.Contains[gd.RID]) { //gd:NavigationPathQueryResult2D.set_path_rids
+func (self class) SetPathRids(path_rids Array.Contains[RID.Any]) { //gd:NavigationPathQueryResult2D.set_path_rids
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(path_rids)))
 	var r_ret = callframe.Nil
@@ -155,11 +159,11 @@ func (self class) SetPathRids(path_rids Array.Contains[gd.RID]) { //gd:Navigatio
 }
 
 //go:nosplit
-func (self class) GetPathRids() Array.Contains[gd.RID] { //gd:NavigationPathQueryResult2D.get_path_rids
+func (self class) GetPathRids() Array.Contains[RID.Any] { //gd:NavigationPathQueryResult2D.get_path_rids
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_get_path_rids, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -52,7 +52,7 @@ func generate() error {
 	}
 	for i, class := range spec.Classes {
 		var pkg = "internal"
-		if !inCore(class.Name) {
+		if !gdtype.Name(class.Name).InCore() {
 			pkg = "classdb"
 		}
 		class.Package = pkg
@@ -77,7 +77,7 @@ func generate() error {
 	fmt.Fprintln(file, `import "graphics.gd/internal/gdclass"`)
 	fmt.Fprintln(file)
 	for _, class := range spec.Classes {
-		if inCore(class.Name) {
+		if gdtype.Name(class.Name).InCore() {
 			continue
 		}
 		fmt.Fprintf(file, "type %s = [1]gdclass.%[1]s\n", class.Name)
@@ -101,7 +101,7 @@ func generateEnum(code io.Writer, prefix string, enum gdjson.Enum, classdb strin
 	enum.Name = strings.Replace(enum.Name, ".", "", -1)
 
 	if enum.Name == "Error" {
-		fmt.Fprintf(code, "type Error = gd.Error //gd:Error\n\n")
+		return
 	} else {
 		if classdb != "" {
 			fmt.Fprintf(code, "type %v = %s%s%s//gd:%s\n\n", rename, classdb, prefix, enum.Name, original)
@@ -148,70 +148,14 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import gd "graphics.gd/internal"`)
 	fmt.Fprintln(file, `import "graphics.gd/internal/gdclass"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant"`)
-	fmt.Fprintln(file, `import "graphics.gd/variant/Object"`)
-	fmt.Fprintln(file, `import "graphics.gd/variant/RefCounted"`)
-	fmt.Fprintln(file, `import "graphics.gd/variant/Array"`)
-	fmt.Fprintln(file, `import "graphics.gd/variant/Callable"`)
-	fmt.Fprintln(file, `import "graphics.gd/variant/Dictionary"`)
-	fmt.Fprintln(file, `import "graphics.gd/variant/RID"`)
-	fmt.Fprintln(file, `import "graphics.gd/variant/String"`)
-	fmt.Fprintln(file, `import "graphics.gd/variant/Path"`)
-	fmt.Fprintln(file, `import "graphics.gd/variant/Packed"`)
-	var imported = make(map[string]bool)
-	if class.Name == "TextEdit" {
-		imported["graphics.gd/variant/Rect2"] = true
-		fmt.Fprintln(file, `import "graphics.gd/variant/Rect2"`)
-	}
 	if class.Inherits != "" {
 		super := classDB[class.Inherits]
 		for super.Name != "" && super.Name != "Object" && super.Name != "RefCounted" && !classDB[super.Name].IsSingleton {
-			path := fmt.Sprintf("graphics.gd/classdb/%s", super.Name)
-			if !imported[path] {
-				imported[path] = true
-				fmt.Fprintf(file, "import %q\n", path)
-			}
 			super = classDB[super.Inherits]
 		}
 	}
-	if class.Name == "IP" {
-		imported["net/netip"] = true
-		fmt.Fprintf(file, "import %q\n", "net/netip")
-	}
-	for _, method := range class.Methods {
-		if method.IsVararg {
-			continue
-		}
-		for _, arg := range method.Arguments {
-			switch arg.Type {
-			case "Array", "Dictionary", "Signal":
-			default:
-				if arg.DefaultValue != nil {
-					continue
-				}
-			}
-			for pkg := range importsVariant(class, class.Name+"."+method.Name+"."+arg.Name, arg.Type) {
-				if !imported[pkg] {
-					imported[pkg] = true
-					fmt.Fprintf(file, "import %q\n", pkg)
-				}
-			}
-		}
-		for pkg := range importsVariant(class, "", method.ReturnValue.Type) {
-			if !imported[pkg] {
-				imported[pkg] = true
-				fmt.Fprintf(file, "import %q\n", pkg)
-			}
-		}
-	}
-	for _, signal := range class.Signals {
-		for _, arg := range signal.Arguments {
-			for pkg := range importsVariant(class, class.Name+"."+signal.Name+"."+arg.Name, arg.Type) {
-				if !imported[pkg] {
-					imported[pkg] = true
-					fmt.Fprintf(file, "import %q\n", pkg)
-				}
-			}
-		}
+	for pkg := range gdtype.ImportsForClass(class) {
+		fmt.Fprintf(file, "import %q\n", pkg)
 	}
 	fmt.Fprintln(file)
 	fmt.Fprintln(file, "var _ Object.ID")
@@ -228,6 +172,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, "var _ String.Readable")
 	fmt.Fprintln(file, "var _ Path.ToNode")
 	fmt.Fprintln(file, "var _ Packed.Bytes")
+	fmt.Fprintln(file, "var _ Error.Code")
+	fmt.Fprintln(file, "var _ Float.X")
 	fmt.Fprintln(file, "var _ = slices.Delete[[]struct{}, struct{}]")
 	fmt.Fprintln(file)
 	var local_enums = make(map[string]bool)

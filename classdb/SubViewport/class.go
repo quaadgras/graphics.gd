@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Viewport"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Viewport"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,7 +79,7 @@ func (self Instance) Size() Vector2i.XY {
 }
 
 func (self Instance) SetSize(value Vector2i.XY) {
-	class(self).SetSize(gd.Vector2i(value))
+	class(self).SetSize(Vector2i.XY(value))
 }
 
 func (self Instance) Size2dOverride() Vector2i.XY {
@@ -83,7 +87,7 @@ func (self Instance) Size2dOverride() Vector2i.XY {
 }
 
 func (self Instance) SetSize2dOverride(value Vector2i.XY) {
-	class(self).SetSize2dOverride(gd.Vector2i(value))
+	class(self).SetSize2dOverride(Vector2i.XY(value))
 }
 
 func (self Instance) Size2dOverrideStretch() bool {
@@ -111,7 +115,7 @@ func (self Instance) SetRenderTargetUpdateMode(value gdclass.SubViewportUpdateMo
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector2i) { //gd:SubViewport.set_size
+func (self class) SetSize(size Vector2i.XY) { //gd:SubViewport.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -120,9 +124,9 @@ func (self class) SetSize(size gd.Vector2i) { //gd:SubViewport.set_size
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector2i { //gd:SubViewport.get_size
+func (self class) GetSize() Vector2i.XY { //gd:SubViewport.get_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubViewport.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -130,7 +134,7 @@ func (self class) GetSize() gd.Vector2i { //gd:SubViewport.get_size
 }
 
 //go:nosplit
-func (self class) SetSize2dOverride(size gd.Vector2i) { //gd:SubViewport.set_size_2d_override
+func (self class) SetSize2dOverride(size Vector2i.XY) { //gd:SubViewport.set_size_2d_override
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -139,9 +143,9 @@ func (self class) SetSize2dOverride(size gd.Vector2i) { //gd:SubViewport.set_siz
 }
 
 //go:nosplit
-func (self class) GetSize2dOverride() gd.Vector2i { //gd:SubViewport.get_size_2d_override
+func (self class) GetSize2dOverride() Vector2i.XY { //gd:SubViewport.get_size_2d_override
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubViewport.Bind_get_size_2d_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

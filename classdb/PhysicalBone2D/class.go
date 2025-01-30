@@ -9,21 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/CollisionObject2D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/PhysicsBody2D"
+import "graphics.gd/classdb/RigidBody2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/RigidBody2D"
-import "graphics.gd/classdb/PhysicsBody2D"
-import "graphics.gd/classdb/CollisionObject2D"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -101,7 +105,7 @@ func (self Instance) Bone2dIndex() int {
 }
 
 func (self Instance) SetBone2dIndex(value int) {
-	class(self).SetBone2dIndex(gd.Int(value))
+	class(self).SetBone2dIndex(int64(value))
 }
 
 func (self Instance) AutoConfigureJoint() bool {
@@ -212,7 +216,7 @@ func (self class) GetBone2dNodepath() Path.ToNode { //gd:PhysicalBone2D.get_bone
 }
 
 //go:nosplit
-func (self class) SetBone2dIndex(bone_index gd.Int) { //gd:PhysicalBone2D.set_bone2d_index
+func (self class) SetBone2dIndex(bone_index int64) { //gd:PhysicalBone2D.set_bone2d_index
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_index)
 	var r_ret = callframe.Nil
@@ -221,9 +225,9 @@ func (self class) SetBone2dIndex(bone_index gd.Int) { //gd:PhysicalBone2D.set_bo
 }
 
 //go:nosplit
-func (self class) GetBone2dIndex() gd.Int { //gd:PhysicalBone2D.get_bone2d_index
+func (self class) GetBone2dIndex() int64 { //gd:PhysicalBone2D.get_bone2d_index
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone2D.Bind_get_bone2d_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Texture2D"
-import "graphics.gd/classdb/Texture"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -80,11 +84,11 @@ func (self Instance) SetGradient(value [1]gdclass.Gradient) {
 }
 
 func (self Instance) SetWidth(value int) {
-	class(self).SetWidth(gd.Int(value))
+	class(self).SetWidth(int64(value))
 }
 
 func (self Instance) SetHeight(value int) {
-	class(self).SetHeight(gd.Int(value))
+	class(self).SetHeight(int64(value))
 }
 
 func (self Instance) UseHdr() bool {
@@ -108,7 +112,7 @@ func (self Instance) FillFrom() Vector2.XY {
 }
 
 func (self Instance) SetFillFrom(value Vector2.XY) {
-	class(self).SetFillFrom(gd.Vector2(value))
+	class(self).SetFillFrom(Vector2.XY(value))
 }
 
 func (self Instance) FillTo() Vector2.XY {
@@ -116,7 +120,7 @@ func (self Instance) FillTo() Vector2.XY {
 }
 
 func (self Instance) SetFillTo(value Vector2.XY) {
-	class(self).SetFillTo(gd.Vector2(value))
+	class(self).SetFillTo(Vector2.XY(value))
 }
 
 func (self Instance) Repeat() gdclass.GradientTexture2DRepeat {
@@ -147,7 +151,7 @@ func (self class) GetGradient() [1]gdclass.Gradient { //gd:GradientTexture2D.get
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Int) { //gd:GradientTexture2D.set_width
+func (self class) SetWidth(width int64) { //gd:GradientTexture2D.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -156,7 +160,7 @@ func (self class) SetWidth(width gd.Int) { //gd:GradientTexture2D.set_width
 }
 
 //go:nosplit
-func (self class) SetHeight(height gd.Int) { //gd:GradientTexture2D.set_height
+func (self class) SetHeight(height int64) { //gd:GradientTexture2D.set_height
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -203,7 +207,7 @@ func (self class) GetFill() gdclass.GradientTexture2DFill { //gd:GradientTexture
 }
 
 //go:nosplit
-func (self class) SetFillFrom(fill_from gd.Vector2) { //gd:GradientTexture2D.set_fill_from
+func (self class) SetFillFrom(fill_from Vector2.XY) { //gd:GradientTexture2D.set_fill_from
 	var frame = callframe.New()
 	callframe.Arg(frame, fill_from)
 	var r_ret = callframe.Nil
@@ -212,9 +216,9 @@ func (self class) SetFillFrom(fill_from gd.Vector2) { //gd:GradientTexture2D.set
 }
 
 //go:nosplit
-func (self class) GetFillFrom() gd.Vector2 { //gd:GradientTexture2D.get_fill_from
+func (self class) GetFillFrom() Vector2.XY { //gd:GradientTexture2D.get_fill_from
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_fill_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -222,7 +226,7 @@ func (self class) GetFillFrom() gd.Vector2 { //gd:GradientTexture2D.get_fill_fro
 }
 
 //go:nosplit
-func (self class) SetFillTo(fill_to gd.Vector2) { //gd:GradientTexture2D.set_fill_to
+func (self class) SetFillTo(fill_to Vector2.XY) { //gd:GradientTexture2D.set_fill_to
 	var frame = callframe.New()
 	callframe.Arg(frame, fill_to)
 	var r_ret = callframe.Nil
@@ -231,9 +235,9 @@ func (self class) SetFillTo(fill_to gd.Vector2) { //gd:GradientTexture2D.set_fil
 }
 
 //go:nosplit
-func (self class) GetFillTo() gd.Vector2 { //gd:GradientTexture2D.get_fill_to
+func (self class) GetFillTo() Vector2.XY { //gd:GradientTexture2D.get_fill_to
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_fill_to, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

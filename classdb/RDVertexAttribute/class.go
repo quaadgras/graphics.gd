@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -72,7 +76,7 @@ func (self Instance) Location() int {
 }
 
 func (self Instance) SetLocation(value int) {
-	class(self).SetLocation(gd.Int(value))
+	class(self).SetLocation(int64(value))
 }
 
 func (self Instance) Offset() int {
@@ -80,7 +84,7 @@ func (self Instance) Offset() int {
 }
 
 func (self Instance) SetOffset(value int) {
-	class(self).SetOffset(gd.Int(value))
+	class(self).SetOffset(int64(value))
 }
 
 func (self Instance) Format() gdclass.RenderingDeviceDataFormat {
@@ -96,7 +100,7 @@ func (self Instance) Stride() int {
 }
 
 func (self Instance) SetStride(value int) {
-	class(self).SetStride(gd.Int(value))
+	class(self).SetStride(int64(value))
 }
 
 func (self Instance) Frequency() gdclass.RenderingDeviceVertexFrequency {
@@ -108,7 +112,7 @@ func (self Instance) SetFrequency(value gdclass.RenderingDeviceVertexFrequency) 
 }
 
 //go:nosplit
-func (self class) SetLocation(p_member gd.Int) { //gd:RDVertexAttribute.set_location
+func (self class) SetLocation(p_member int64) { //gd:RDVertexAttribute.set_location
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -117,9 +121,9 @@ func (self class) SetLocation(p_member gd.Int) { //gd:RDVertexAttribute.set_loca
 }
 
 //go:nosplit
-func (self class) GetLocation() gd.Int { //gd:RDVertexAttribute.get_location
+func (self class) GetLocation() int64 { //gd:RDVertexAttribute.get_location
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDVertexAttribute.Bind_get_location, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -127,7 +131,7 @@ func (self class) GetLocation() gd.Int { //gd:RDVertexAttribute.get_location
 }
 
 //go:nosplit
-func (self class) SetOffset(p_member gd.Int) { //gd:RDVertexAttribute.set_offset
+func (self class) SetOffset(p_member int64) { //gd:RDVertexAttribute.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -136,9 +140,9 @@ func (self class) SetOffset(p_member gd.Int) { //gd:RDVertexAttribute.set_offset
 }
 
 //go:nosplit
-func (self class) GetOffset() gd.Int { //gd:RDVertexAttribute.get_offset
+func (self class) GetOffset() int64 { //gd:RDVertexAttribute.get_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDVertexAttribute.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -165,7 +169,7 @@ func (self class) GetFormat() gdclass.RenderingDeviceDataFormat { //gd:RDVertexA
 }
 
 //go:nosplit
-func (self class) SetStride(p_member gd.Int) { //gd:RDVertexAttribute.set_stride
+func (self class) SetStride(p_member int64) { //gd:RDVertexAttribute.set_stride
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -174,9 +178,9 @@ func (self class) SetStride(p_member gd.Int) { //gd:RDVertexAttribute.set_stride
 }
 
 //go:nosplit
-func (self class) GetStride() gd.Int { //gd:RDVertexAttribute.get_stride
+func (self class) GetStride() int64 { //gd:RDVertexAttribute.get_stride
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDVertexAttribute.Bind_get_stride, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

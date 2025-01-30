@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Font"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Font"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -91,11 +94,11 @@ func (self Instance) SetFontItalic(value bool) {
 }
 
 func (self Instance) SetFontWeight(value int) {
-	class(self).SetFontWeight(gd.Int(value))
+	class(self).SetFontWeight(int64(value))
 }
 
 func (self Instance) SetFontStretch(value int) {
-	class(self).SetFontStretch(gd.Int(value))
+	class(self).SetFontStretch(int64(value))
 }
 
 func (self Instance) Antialiasing() gdclass.TextServerFontAntialiasing {
@@ -167,7 +170,7 @@ func (self Instance) MsdfPixelRange() int {
 }
 
 func (self Instance) SetMsdfPixelRange(value int) {
-	class(self).SetMsdfPixelRange(gd.Int(value))
+	class(self).SetMsdfPixelRange(int64(value))
 }
 
 func (self Instance) MsdfSize() int {
@@ -175,7 +178,7 @@ func (self Instance) MsdfSize() int {
 }
 
 func (self Instance) SetMsdfSize(value int) {
-	class(self).SetMsdfSize(gd.Int(value))
+	class(self).SetMsdfSize(int64(value))
 }
 
 func (self Instance) Oversampling() Float.X {
@@ -183,7 +186,7 @@ func (self Instance) Oversampling() Float.X {
 }
 
 func (self Instance) SetOversampling(value Float.X) {
-	class(self).SetOversampling(gd.Float(value))
+	class(self).SetOversampling(float64(value))
 }
 
 //go:nosplit
@@ -339,7 +342,7 @@ func (self class) IsMultichannelSignedDistanceField() bool { //gd:SystemFont.is_
 }
 
 //go:nosplit
-func (self class) SetMsdfPixelRange(msdf_pixel_range gd.Int) { //gd:SystemFont.set_msdf_pixel_range
+func (self class) SetMsdfPixelRange(msdf_pixel_range int64) { //gd:SystemFont.set_msdf_pixel_range
 	var frame = callframe.New()
 	callframe.Arg(frame, msdf_pixel_range)
 	var r_ret = callframe.Nil
@@ -348,9 +351,9 @@ func (self class) SetMsdfPixelRange(msdf_pixel_range gd.Int) { //gd:SystemFont.s
 }
 
 //go:nosplit
-func (self class) GetMsdfPixelRange() gd.Int { //gd:SystemFont.get_msdf_pixel_range
+func (self class) GetMsdfPixelRange() int64 { //gd:SystemFont.get_msdf_pixel_range
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_msdf_pixel_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -358,7 +361,7 @@ func (self class) GetMsdfPixelRange() gd.Int { //gd:SystemFont.get_msdf_pixel_ra
 }
 
 //go:nosplit
-func (self class) SetMsdfSize(msdf_size gd.Int) { //gd:SystemFont.set_msdf_size
+func (self class) SetMsdfSize(msdf_size int64) { //gd:SystemFont.set_msdf_size
 	var frame = callframe.New()
 	callframe.Arg(frame, msdf_size)
 	var r_ret = callframe.Nil
@@ -367,9 +370,9 @@ func (self class) SetMsdfSize(msdf_size gd.Int) { //gd:SystemFont.set_msdf_size
 }
 
 //go:nosplit
-func (self class) GetMsdfSize() gd.Int { //gd:SystemFont.get_msdf_size
+func (self class) GetMsdfSize() int64 { //gd:SystemFont.get_msdf_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_msdf_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -377,7 +380,7 @@ func (self class) GetMsdfSize() gd.Int { //gd:SystemFont.get_msdf_size
 }
 
 //go:nosplit
-func (self class) SetOversampling(oversampling gd.Float) { //gd:SystemFont.set_oversampling
+func (self class) SetOversampling(oversampling float64) { //gd:SystemFont.set_oversampling
 	var frame = callframe.New()
 	callframe.Arg(frame, oversampling)
 	var r_ret = callframe.Nil
@@ -386,9 +389,9 @@ func (self class) SetOversampling(oversampling gd.Float) { //gd:SystemFont.set_o
 }
 
 //go:nosplit
-func (self class) GetOversampling() gd.Float { //gd:SystemFont.get_oversampling
+func (self class) GetOversampling() float64 { //gd:SystemFont.get_oversampling
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_oversampling, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -434,7 +437,7 @@ func (self class) SetFontItalic(italic bool) { //gd:SystemFont.set_font_italic
 }
 
 //go:nosplit
-func (self class) SetFontWeight(weight gd.Int) { //gd:SystemFont.set_font_weight
+func (self class) SetFontWeight(weight int64) { //gd:SystemFont.set_font_weight
 	var frame = callframe.New()
 	callframe.Arg(frame, weight)
 	var r_ret = callframe.Nil
@@ -443,7 +446,7 @@ func (self class) SetFontWeight(weight gd.Int) { //gd:SystemFont.set_font_weight
 }
 
 //go:nosplit
-func (self class) SetFontStretch(stretch gd.Int) { //gd:SystemFont.set_font_stretch
+func (self class) SetFontStretch(stretch int64) { //gd:SystemFont.set_font_stretch
 	var frame = callframe.New()
 	callframe.Arg(frame, stretch)
 	var r_ret = callframe.Nil

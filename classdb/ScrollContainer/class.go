@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Container"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Container"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -113,7 +116,7 @@ func (self Instance) ScrollHorizontal() int {
 }
 
 func (self Instance) SetScrollHorizontal(value int) {
-	class(self).SetHScroll(gd.Int(value))
+	class(self).SetHScroll(int64(value))
 }
 
 func (self Instance) ScrollVertical() int {
@@ -121,7 +124,7 @@ func (self Instance) ScrollVertical() int {
 }
 
 func (self Instance) SetScrollVertical(value int) {
-	class(self).SetVScroll(gd.Int(value))
+	class(self).SetVScroll(int64(value))
 }
 
 func (self Instance) ScrollHorizontalCustomStep() Float.X {
@@ -129,7 +132,7 @@ func (self Instance) ScrollHorizontalCustomStep() Float.X {
 }
 
 func (self Instance) SetScrollHorizontalCustomStep(value Float.X) {
-	class(self).SetHorizontalCustomStep(gd.Float(value))
+	class(self).SetHorizontalCustomStep(float64(value))
 }
 
 func (self Instance) ScrollVerticalCustomStep() Float.X {
@@ -137,7 +140,7 @@ func (self Instance) ScrollVerticalCustomStep() Float.X {
 }
 
 func (self Instance) SetScrollVerticalCustomStep(value Float.X) {
-	class(self).SetVerticalCustomStep(gd.Float(value))
+	class(self).SetVerticalCustomStep(float64(value))
 }
 
 func (self Instance) HorizontalScrollMode() gdclass.ScrollContainerScrollMode {
@@ -161,11 +164,11 @@ func (self Instance) ScrollDeadzone() int {
 }
 
 func (self Instance) SetScrollDeadzone(value int) {
-	class(self).SetDeadzone(gd.Int(value))
+	class(self).SetDeadzone(int64(value))
 }
 
 //go:nosplit
-func (self class) SetHScroll(value gd.Int) { //gd:ScrollContainer.set_h_scroll
+func (self class) SetHScroll(value int64) { //gd:ScrollContainer.set_h_scroll
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -174,9 +177,9 @@ func (self class) SetHScroll(value gd.Int) { //gd:ScrollContainer.set_h_scroll
 }
 
 //go:nosplit
-func (self class) GetHScroll() gd.Int { //gd:ScrollContainer.get_h_scroll
+func (self class) GetHScroll() int64 { //gd:ScrollContainer.get_h_scroll
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_h_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -184,7 +187,7 @@ func (self class) GetHScroll() gd.Int { //gd:ScrollContainer.get_h_scroll
 }
 
 //go:nosplit
-func (self class) SetVScroll(value gd.Int) { //gd:ScrollContainer.set_v_scroll
+func (self class) SetVScroll(value int64) { //gd:ScrollContainer.set_v_scroll
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -193,9 +196,9 @@ func (self class) SetVScroll(value gd.Int) { //gd:ScrollContainer.set_v_scroll
 }
 
 //go:nosplit
-func (self class) GetVScroll() gd.Int { //gd:ScrollContainer.get_v_scroll
+func (self class) GetVScroll() int64 { //gd:ScrollContainer.get_v_scroll
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_v_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -203,7 +206,7 @@ func (self class) GetVScroll() gd.Int { //gd:ScrollContainer.get_v_scroll
 }
 
 //go:nosplit
-func (self class) SetHorizontalCustomStep(value gd.Float) { //gd:ScrollContainer.set_horizontal_custom_step
+func (self class) SetHorizontalCustomStep(value float64) { //gd:ScrollContainer.set_horizontal_custom_step
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -212,9 +215,9 @@ func (self class) SetHorizontalCustomStep(value gd.Float) { //gd:ScrollContainer
 }
 
 //go:nosplit
-func (self class) GetHorizontalCustomStep() gd.Float { //gd:ScrollContainer.get_horizontal_custom_step
+func (self class) GetHorizontalCustomStep() float64 { //gd:ScrollContainer.get_horizontal_custom_step
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_horizontal_custom_step, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -222,7 +225,7 @@ func (self class) GetHorizontalCustomStep() gd.Float { //gd:ScrollContainer.get_
 }
 
 //go:nosplit
-func (self class) SetVerticalCustomStep(value gd.Float) { //gd:ScrollContainer.set_vertical_custom_step
+func (self class) SetVerticalCustomStep(value float64) { //gd:ScrollContainer.set_vertical_custom_step
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -231,9 +234,9 @@ func (self class) SetVerticalCustomStep(value gd.Float) { //gd:ScrollContainer.s
 }
 
 //go:nosplit
-func (self class) GetVerticalCustomStep() gd.Float { //gd:ScrollContainer.get_vertical_custom_step
+func (self class) GetVerticalCustomStep() float64 { //gd:ScrollContainer.get_vertical_custom_step
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_vertical_custom_step, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -279,7 +282,7 @@ func (self class) GetVerticalScrollMode() gdclass.ScrollContainerScrollMode { //
 }
 
 //go:nosplit
-func (self class) SetDeadzone(deadzone gd.Int) { //gd:ScrollContainer.set_deadzone
+func (self class) SetDeadzone(deadzone int64) { //gd:ScrollContainer.set_deadzone
 	var frame = callframe.New()
 	callframe.Arg(frame, deadzone)
 	var r_ret = callframe.Nil
@@ -288,9 +291,9 @@ func (self class) SetDeadzone(deadzone gd.Int) { //gd:ScrollContainer.set_deadzo
 }
 
 //go:nosplit
-func (self class) GetDeadzone() gd.Int { //gd:ScrollContainer.get_deadzone
+func (self class) GetDeadzone() int64 { //gd:ScrollContainer.get_deadzone
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_deadzone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -217,7 +220,7 @@ func (self Instance) GetFontTypeList() []string { //gd:Theme.get_font_type_list
 Creates or changes the value of the font size property defined by [param name] and [param theme_type]. Use [method clear_font_size] to remove the property.
 */
 func (self Instance) SetFontSize(name string, theme_type string, font_size int) { //gd:Theme.set_font_size
-	class(self).SetFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type)), gd.Int(font_size))
+	class(self).SetFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type)), int64(font_size))
 }
 
 /*
@@ -271,7 +274,7 @@ func (self Instance) GetFontSizeTypeList() []string { //gd:Theme.get_font_size_t
 Creates or changes the value of the [Color] property defined by [param name] and [param theme_type]. Use [method clear_color] to remove the property.
 */
 func (self Instance) SetColor(name string, theme_type string, color Color.RGBA) { //gd:Theme.set_color
-	class(self).SetColor(String.Name(String.New(name)), String.Name(String.New(theme_type)), gd.Color(color))
+	class(self).SetColor(String.Name(String.New(name)), String.Name(String.New(theme_type)), Color.RGBA(color))
 }
 
 /*
@@ -324,7 +327,7 @@ func (self Instance) GetColorTypeList() []string { //gd:Theme.get_color_type_lis
 Creates or changes the value of the constant property defined by [param name] and [param theme_type]. Use [method clear_constant] to remove the property.
 */
 func (self Instance) SetConstant(name string, theme_type string, constant int) { //gd:Theme.set_constant
-	class(self).SetConstant(String.Name(String.New(name)), String.Name(String.New(theme_type)), gd.Int(constant))
+	class(self).SetConstant(String.Name(String.New(name)), String.Name(String.New(theme_type)), int64(constant))
 }
 
 /*
@@ -403,7 +406,7 @@ Fails if the [param value] type is not accepted by [param data_type].
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 func (self Instance) SetThemeItem(data_type gdclass.ThemeDataType, name string, theme_type string, value any) { //gd:Theme.set_theme_item
-	class(self).SetThemeItem(data_type, String.Name(String.New(name)), String.Name(String.New(theme_type)), gd.NewVariant(value))
+	class(self).SetThemeItem(data_type, String.Name(String.New(name)), String.Name(String.New(theme_type)), variant.New(value))
 }
 
 /*
@@ -557,7 +560,7 @@ func (self Instance) DefaultBaseScale() Float.X {
 }
 
 func (self Instance) SetDefaultBaseScale(value Float.X) {
-	class(self).SetDefaultBaseScale(gd.Float(value))
+	class(self).SetDefaultBaseScale(float64(value))
 }
 
 func (self Instance) DefaultFont() [1]gdclass.Font {
@@ -573,7 +576,7 @@ func (self Instance) DefaultFontSize() int {
 }
 
 func (self Instance) SetDefaultFontSize(value int) {
-	class(self).SetDefaultFontSize(gd.Int(value))
+	class(self).SetDefaultFontSize(int64(value))
 }
 
 /*
@@ -887,7 +890,7 @@ func (self class) GetFontTypeList() Packed.Strings { //gd:Theme.get_font_type_li
 Creates or changes the value of the font size property defined by [param name] and [param theme_type]. Use [method clear_font_size] to remove the property.
 */
 //go:nosplit
-func (self class) SetFontSize(name String.Name, theme_type String.Name, font_size gd.Int) { //gd:Theme.set_font_size
+func (self class) SetFontSize(name String.Name, theme_type String.Name, font_size int64) { //gd:Theme.set_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
@@ -903,11 +906,11 @@ Returns the default theme font size if the property doesn't exist and the defaul
 Returns the engine fallback font size value, if neither exist (see [member ThemeDB.fallback_font_size]).
 */
 //go:nosplit
-func (self class) GetFontSize(name String.Name, theme_type String.Name) gd.Int { //gd:Theme.get_font_size
+func (self class) GetFontSize(name String.Name, theme_type String.Name) int64 { //gd:Theme.get_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -990,7 +993,7 @@ func (self class) GetFontSizeTypeList() Packed.Strings { //gd:Theme.get_font_siz
 Creates or changes the value of the [Color] property defined by [param name] and [param theme_type]. Use [method clear_color] to remove the property.
 */
 //go:nosplit
-func (self class) SetColor(name String.Name, theme_type String.Name, color gd.Color) { //gd:Theme.set_color
+func (self class) SetColor(name String.Name, theme_type String.Name, color Color.RGBA) { //gd:Theme.set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
@@ -1005,11 +1008,11 @@ Returns the [Color] property defined by [param name] and [param theme_type], if 
 Returns the default color value if the property doesn't exist. Use [method has_color] to check for existence.
 */
 //go:nosplit
-func (self class) GetColor(name String.Name, theme_type String.Name) gd.Color { //gd:Theme.get_color
+func (self class) GetColor(name String.Name, theme_type String.Name) Color.RGBA { //gd:Theme.get_color
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1092,7 +1095,7 @@ func (self class) GetColorTypeList() Packed.Strings { //gd:Theme.get_color_type_
 Creates or changes the value of the constant property defined by [param name] and [param theme_type]. Use [method clear_constant] to remove the property.
 */
 //go:nosplit
-func (self class) SetConstant(name String.Name, theme_type String.Name, constant gd.Int) { //gd:Theme.set_constant
+func (self class) SetConstant(name String.Name, theme_type String.Name, constant int64) { //gd:Theme.set_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
@@ -1107,11 +1110,11 @@ Returns the constant property defined by [param name] and [param theme_type], if
 Returns [code]0[/code] if the property doesn't exist. Use [method has_constant] to check for existence.
 */
 //go:nosplit
-func (self class) GetConstant(name String.Name, theme_type String.Name) gd.Int { //gd:Theme.get_constant
+func (self class) GetConstant(name String.Name, theme_type String.Name) int64 { //gd:Theme.get_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1191,7 +1194,7 @@ func (self class) GetConstantTypeList() Packed.Strings { //gd:Theme.get_constant
 }
 
 //go:nosplit
-func (self class) SetDefaultBaseScale(base_scale gd.Float) { //gd:Theme.set_default_base_scale
+func (self class) SetDefaultBaseScale(base_scale float64) { //gd:Theme.set_default_base_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, base_scale)
 	var r_ret = callframe.Nil
@@ -1200,9 +1203,9 @@ func (self class) SetDefaultBaseScale(base_scale gd.Float) { //gd:Theme.set_defa
 }
 
 //go:nosplit
-func (self class) GetDefaultBaseScale() gd.Float { //gd:Theme.get_default_base_scale
+func (self class) GetDefaultBaseScale() float64 { //gd:Theme.get_default_base_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_default_base_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1257,7 +1260,7 @@ func (self class) HasDefaultFont() bool { //gd:Theme.has_default_font
 }
 
 //go:nosplit
-func (self class) SetDefaultFontSize(font_size gd.Int) { //gd:Theme.set_default_font_size
+func (self class) SetDefaultFontSize(font_size int64) { //gd:Theme.set_default_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
 	var r_ret = callframe.Nil
@@ -1266,9 +1269,9 @@ func (self class) SetDefaultFontSize(font_size gd.Int) { //gd:Theme.set_default_
 }
 
 //go:nosplit
-func (self class) GetDefaultFontSize() gd.Int { //gd:Theme.get_default_font_size
+func (self class) GetDefaultFontSize() int64 { //gd:Theme.get_default_font_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_default_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1295,12 +1298,12 @@ Fails if the [param value] type is not accepted by [param data_type].
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) SetThemeItem(data_type gdclass.ThemeDataType, name String.Name, theme_type String.Name, value gd.Variant) { //gd:Theme.set_theme_item
+func (self class) SetThemeItem(data_type gdclass.ThemeDataType, name String.Name, theme_type String.Name, value variant.Any) { //gd:Theme.set_theme_item
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_set_theme_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1312,14 +1315,14 @@ Returns the engine fallback value if the property doesn't exist (see [ThemeDB]).
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) GetThemeItem(data_type gdclass.ThemeDataType, name String.Name, theme_type String.Name) gd.Variant { //gd:Theme.get_theme_item
+func (self class) GetThemeItem(data_type gdclass.ThemeDataType, name String.Name, theme_type String.Name) variant.Any { //gd:Theme.get_theme_item
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_theme_item, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

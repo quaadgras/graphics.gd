@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,7 +62,7 @@ var collision = get_world_2d().direct_space_state.intersect_ray(query)
 */
 func Create(from Vector2.XY, to Vector2.XY) [1]gdclass.PhysicsRayQueryParameters2D { //gd:PhysicsRayQueryParameters2D.create
 	self := Instance{}
-	return [1]gdclass.PhysicsRayQueryParameters2D(class(self).Create(gd.Vector2(from), gd.Vector2(to), gd.Int(4294967295), gd.ArrayFromSlice[Array.Contains[gd.RID]]([1][]RID.Any{}[0])))
+	return [1]gdclass.PhysicsRayQueryParameters2D(class(self).Create(Vector2.XY(from), Vector2.XY(to), int64(4294967295), gd.ArrayFromSlice[Array.Contains[RID.Any]]([1][]RID.Any{}[0])))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -85,7 +89,7 @@ func (self Instance) From() Vector2.XY {
 }
 
 func (self Instance) SetFrom(value Vector2.XY) {
-	class(self).SetFrom(gd.Vector2(value))
+	class(self).SetFrom(Vector2.XY(value))
 }
 
 func (self Instance) To() Vector2.XY {
@@ -93,7 +97,7 @@ func (self Instance) To() Vector2.XY {
 }
 
 func (self Instance) SetTo(value Vector2.XY) {
-	class(self).SetTo(gd.Vector2(value))
+	class(self).SetTo(Vector2.XY(value))
 }
 
 func (self Instance) CollisionMask() int {
@@ -101,7 +105,7 @@ func (self Instance) CollisionMask() int {
 }
 
 func (self Instance) SetCollisionMask(value int) {
-	class(self).SetCollisionMask(gd.Int(value))
+	class(self).SetCollisionMask(int64(value))
 }
 
 func (self Instance) Exclude() []RID.Any {
@@ -109,7 +113,7 @@ func (self Instance) Exclude() []RID.Any {
 }
 
 func (self Instance) SetExclude(value []RID.Any) {
-	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[gd.RID]](value))
+	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 
 func (self Instance) CollideWithBodies() bool {
@@ -144,7 +148,7 @@ var collision = get_world_2d().direct_space_state.intersect_ray(query)
 [/codeblock]
 */
 //go:nosplit
-func (self class) Create(from gd.Vector2, to gd.Vector2, collision_mask gd.Int, exclude Array.Contains[gd.RID]) [1]gdclass.PhysicsRayQueryParameters2D { //gd:PhysicsRayQueryParameters2D.create
+func (self class) Create(from Vector2.XY, to Vector2.XY, collision_mask int64, exclude Array.Contains[RID.Any]) [1]gdclass.PhysicsRayQueryParameters2D { //gd:PhysicsRayQueryParameters2D.create
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -158,7 +162,7 @@ func (self class) Create(from gd.Vector2, to gd.Vector2, collision_mask gd.Int, 
 }
 
 //go:nosplit
-func (self class) SetFrom(from gd.Vector2) { //gd:PhysicsRayQueryParameters2D.set_from
+func (self class) SetFrom(from Vector2.XY) { //gd:PhysicsRayQueryParameters2D.set_from
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Nil
@@ -167,9 +171,9 @@ func (self class) SetFrom(from gd.Vector2) { //gd:PhysicsRayQueryParameters2D.se
 }
 
 //go:nosplit
-func (self class) GetFrom() gd.Vector2 { //gd:PhysicsRayQueryParameters2D.get_from
+func (self class) GetFrom() Vector2.XY { //gd:PhysicsRayQueryParameters2D.get_from
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters2D.Bind_get_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -177,7 +181,7 @@ func (self class) GetFrom() gd.Vector2 { //gd:PhysicsRayQueryParameters2D.get_fr
 }
 
 //go:nosplit
-func (self class) SetTo(to gd.Vector2) { //gd:PhysicsRayQueryParameters2D.set_to
+func (self class) SetTo(to Vector2.XY) { //gd:PhysicsRayQueryParameters2D.set_to
 	var frame = callframe.New()
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Nil
@@ -186,9 +190,9 @@ func (self class) SetTo(to gd.Vector2) { //gd:PhysicsRayQueryParameters2D.set_to
 }
 
 //go:nosplit
-func (self class) GetTo() gd.Vector2 { //gd:PhysicsRayQueryParameters2D.get_to
+func (self class) GetTo() Vector2.XY { //gd:PhysicsRayQueryParameters2D.get_to
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters2D.Bind_get_to, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -196,7 +200,7 @@ func (self class) GetTo() gd.Vector2 { //gd:PhysicsRayQueryParameters2D.get_to
 }
 
 //go:nosplit
-func (self class) SetCollisionMask(collision_mask gd.Int) { //gd:PhysicsRayQueryParameters2D.set_collision_mask
+func (self class) SetCollisionMask(collision_mask int64) { //gd:PhysicsRayQueryParameters2D.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_mask)
 	var r_ret = callframe.Nil
@@ -205,9 +209,9 @@ func (self class) SetCollisionMask(collision_mask gd.Int) { //gd:PhysicsRayQuery
 }
 
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int { //gd:PhysicsRayQueryParameters2D.get_collision_mask
+func (self class) GetCollisionMask() int64 { //gd:PhysicsRayQueryParameters2D.get_collision_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters2D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -215,7 +219,7 @@ func (self class) GetCollisionMask() gd.Int { //gd:PhysicsRayQueryParameters2D.g
 }
 
 //go:nosplit
-func (self class) SetExclude(exclude Array.Contains[gd.RID]) { //gd:PhysicsRayQueryParameters2D.set_exclude
+func (self class) SetExclude(exclude Array.Contains[RID.Any]) { //gd:PhysicsRayQueryParameters2D.set_exclude
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude)))
 	var r_ret = callframe.Nil
@@ -224,11 +228,11 @@ func (self class) SetExclude(exclude Array.Contains[gd.RID]) { //gd:PhysicsRayQu
 }
 
 //go:nosplit
-func (self class) GetExclude() Array.Contains[gd.RID] { //gd:PhysicsRayQueryParameters2D.get_exclude
+func (self class) GetExclude() Array.Contains[RID.Any] { //gd:PhysicsRayQueryParameters2D.get_exclude
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters2D.Bind_get_exclude, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

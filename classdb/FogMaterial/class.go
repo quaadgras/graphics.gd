@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -77,7 +80,7 @@ func (self Instance) Density() Float.X {
 }
 
 func (self Instance) SetDensity(value Float.X) {
-	class(self).SetDensity(gd.Float(value))
+	class(self).SetDensity(float64(value))
 }
 
 func (self Instance) Albedo() Color.RGBA {
@@ -85,7 +88,7 @@ func (self Instance) Albedo() Color.RGBA {
 }
 
 func (self Instance) SetAlbedo(value Color.RGBA) {
-	class(self).SetAlbedo(gd.Color(value))
+	class(self).SetAlbedo(Color.RGBA(value))
 }
 
 func (self Instance) Emission() Color.RGBA {
@@ -93,7 +96,7 @@ func (self Instance) Emission() Color.RGBA {
 }
 
 func (self Instance) SetEmission(value Color.RGBA) {
-	class(self).SetEmission(gd.Color(value))
+	class(self).SetEmission(Color.RGBA(value))
 }
 
 func (self Instance) HeightFalloff() Float.X {
@@ -101,7 +104,7 @@ func (self Instance) HeightFalloff() Float.X {
 }
 
 func (self Instance) SetHeightFalloff(value Float.X) {
-	class(self).SetHeightFalloff(gd.Float(value))
+	class(self).SetHeightFalloff(float64(value))
 }
 
 func (self Instance) EdgeFade() Float.X {
@@ -109,7 +112,7 @@ func (self Instance) EdgeFade() Float.X {
 }
 
 func (self Instance) SetEdgeFade(value Float.X) {
-	class(self).SetEdgeFade(gd.Float(value))
+	class(self).SetEdgeFade(float64(value))
 }
 
 func (self Instance) DensityTexture() [1]gdclass.Texture3D {
@@ -121,7 +124,7 @@ func (self Instance) SetDensityTexture(value [1]gdclass.Texture3D) {
 }
 
 //go:nosplit
-func (self class) SetDensity(density gd.Float) { //gd:FogMaterial.set_density
+func (self class) SetDensity(density float64) { //gd:FogMaterial.set_density
 	var frame = callframe.New()
 	callframe.Arg(frame, density)
 	var r_ret = callframe.Nil
@@ -130,9 +133,9 @@ func (self class) SetDensity(density gd.Float) { //gd:FogMaterial.set_density
 }
 
 //go:nosplit
-func (self class) GetDensity() gd.Float { //gd:FogMaterial.get_density
+func (self class) GetDensity() float64 { //gd:FogMaterial.get_density
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_density, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -140,7 +143,7 @@ func (self class) GetDensity() gd.Float { //gd:FogMaterial.get_density
 }
 
 //go:nosplit
-func (self class) SetAlbedo(albedo gd.Color) { //gd:FogMaterial.set_albedo
+func (self class) SetAlbedo(albedo Color.RGBA) { //gd:FogMaterial.set_albedo
 	var frame = callframe.New()
 	callframe.Arg(frame, albedo)
 	var r_ret = callframe.Nil
@@ -149,9 +152,9 @@ func (self class) SetAlbedo(albedo gd.Color) { //gd:FogMaterial.set_albedo
 }
 
 //go:nosplit
-func (self class) GetAlbedo() gd.Color { //gd:FogMaterial.get_albedo
+func (self class) GetAlbedo() Color.RGBA { //gd:FogMaterial.get_albedo
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_albedo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -159,7 +162,7 @@ func (self class) GetAlbedo() gd.Color { //gd:FogMaterial.get_albedo
 }
 
 //go:nosplit
-func (self class) SetEmission(emission gd.Color) { //gd:FogMaterial.set_emission
+func (self class) SetEmission(emission Color.RGBA) { //gd:FogMaterial.set_emission
 	var frame = callframe.New()
 	callframe.Arg(frame, emission)
 	var r_ret = callframe.Nil
@@ -168,9 +171,9 @@ func (self class) SetEmission(emission gd.Color) { //gd:FogMaterial.set_emission
 }
 
 //go:nosplit
-func (self class) GetEmission() gd.Color { //gd:FogMaterial.get_emission
+func (self class) GetEmission() Color.RGBA { //gd:FogMaterial.get_emission
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_emission, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -178,7 +181,7 @@ func (self class) GetEmission() gd.Color { //gd:FogMaterial.get_emission
 }
 
 //go:nosplit
-func (self class) SetHeightFalloff(height_falloff gd.Float) { //gd:FogMaterial.set_height_falloff
+func (self class) SetHeightFalloff(height_falloff float64) { //gd:FogMaterial.set_height_falloff
 	var frame = callframe.New()
 	callframe.Arg(frame, height_falloff)
 	var r_ret = callframe.Nil
@@ -187,9 +190,9 @@ func (self class) SetHeightFalloff(height_falloff gd.Float) { //gd:FogMaterial.s
 }
 
 //go:nosplit
-func (self class) GetHeightFalloff() gd.Float { //gd:FogMaterial.get_height_falloff
+func (self class) GetHeightFalloff() float64 { //gd:FogMaterial.get_height_falloff
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_height_falloff, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -197,7 +200,7 @@ func (self class) GetHeightFalloff() gd.Float { //gd:FogMaterial.get_height_fall
 }
 
 //go:nosplit
-func (self class) SetEdgeFade(edge_fade gd.Float) { //gd:FogMaterial.set_edge_fade
+func (self class) SetEdgeFade(edge_fade float64) { //gd:FogMaterial.set_edge_fade
 	var frame = callframe.New()
 	callframe.Arg(frame, edge_fade)
 	var r_ret = callframe.Nil
@@ -206,9 +209,9 @@ func (self class) SetEdgeFade(edge_fade gd.Float) { //gd:FogMaterial.set_edge_fa
 }
 
 //go:nosplit
-func (self class) GetEdgeFade() gd.Float { //gd:FogMaterial.get_edge_fade
+func (self class) GetEdgeFade() float64 { //gd:FogMaterial.get_edge_fade
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_edge_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

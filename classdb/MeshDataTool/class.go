@@ -9,19 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/variant/Vector3"
-import "graphics.gd/variant/Plane"
-import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Plane"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -110,14 +114,14 @@ Uses specified surface of given [Mesh] to populate data for MeshDataTool.
 Requires [Mesh] with primitive type [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 func (self Instance) CreateFromSurface(mesh [1]gdclass.ArrayMesh, surface int) error { //gd:MeshDataTool.create_from_surface
-	return error(gd.ToError(class(self).CreateFromSurface(mesh, gd.Int(surface))))
+	return error(gd.ToError(class(self).CreateFromSurface(mesh, int64(surface))))
 }
 
 /*
 Adds a new surface to specified [Mesh] with edited data.
 */
 func (self Instance) CommitToSurface(mesh [1]gdclass.ArrayMesh) error { //gd:MeshDataTool.commit_to_surface
-	return error(gd.ToError(class(self).CommitToSurface(mesh, gd.Int(0))))
+	return error(gd.ToError(class(self).CommitToSurface(mesh, int64(0))))
 }
 
 /*
@@ -152,140 +156,140 @@ func (self Instance) GetFaceCount() int { //gd:MeshDataTool.get_face_count
 Sets the position of the given vertex.
 */
 func (self Instance) SetVertex(idx int, vertex Vector3.XYZ) { //gd:MeshDataTool.set_vertex
-	class(self).SetVertex(gd.Int(idx), gd.Vector3(vertex))
+	class(self).SetVertex(int64(idx), Vector3.XYZ(vertex))
 }
 
 /*
 Returns the position of the given vertex.
 */
 func (self Instance) GetVertex(idx int) Vector3.XYZ { //gd:MeshDataTool.get_vertex
-	return Vector3.XYZ(class(self).GetVertex(gd.Int(idx)))
+	return Vector3.XYZ(class(self).GetVertex(int64(idx)))
 }
 
 /*
 Sets the normal of the given vertex.
 */
 func (self Instance) SetVertexNormal(idx int, normal Vector3.XYZ) { //gd:MeshDataTool.set_vertex_normal
-	class(self).SetVertexNormal(gd.Int(idx), gd.Vector3(normal))
+	class(self).SetVertexNormal(int64(idx), Vector3.XYZ(normal))
 }
 
 /*
 Returns the normal of the given vertex.
 */
 func (self Instance) GetVertexNormal(idx int) Vector3.XYZ { //gd:MeshDataTool.get_vertex_normal
-	return Vector3.XYZ(class(self).GetVertexNormal(gd.Int(idx)))
+	return Vector3.XYZ(class(self).GetVertexNormal(int64(idx)))
 }
 
 /*
 Sets the tangent of the given vertex.
 */
 func (self Instance) SetVertexTangent(idx int, tangent Plane.NormalD) { //gd:MeshDataTool.set_vertex_tangent
-	class(self).SetVertexTangent(gd.Int(idx), gd.Plane(tangent))
+	class(self).SetVertexTangent(int64(idx), Plane.NormalD(tangent))
 }
 
 /*
 Returns the tangent of the given vertex.
 */
 func (self Instance) GetVertexTangent(idx int) Plane.NormalD { //gd:MeshDataTool.get_vertex_tangent
-	return Plane.NormalD(class(self).GetVertexTangent(gd.Int(idx)))
+	return Plane.NormalD(class(self).GetVertexTangent(int64(idx)))
 }
 
 /*
 Sets the UV of the given vertex.
 */
 func (self Instance) SetVertexUv(idx int, uv Vector2.XY) { //gd:MeshDataTool.set_vertex_uv
-	class(self).SetVertexUv(gd.Int(idx), gd.Vector2(uv))
+	class(self).SetVertexUv(int64(idx), Vector2.XY(uv))
 }
 
 /*
 Returns the UV of the given vertex.
 */
 func (self Instance) GetVertexUv(idx int) Vector2.XY { //gd:MeshDataTool.get_vertex_uv
-	return Vector2.XY(class(self).GetVertexUv(gd.Int(idx)))
+	return Vector2.XY(class(self).GetVertexUv(int64(idx)))
 }
 
 /*
 Sets the UV2 of the given vertex.
 */
 func (self Instance) SetVertexUv2(idx int, uv2 Vector2.XY) { //gd:MeshDataTool.set_vertex_uv2
-	class(self).SetVertexUv2(gd.Int(idx), gd.Vector2(uv2))
+	class(self).SetVertexUv2(int64(idx), Vector2.XY(uv2))
 }
 
 /*
 Returns the UV2 of the given vertex.
 */
 func (self Instance) GetVertexUv2(idx int) Vector2.XY { //gd:MeshDataTool.get_vertex_uv2
-	return Vector2.XY(class(self).GetVertexUv2(gd.Int(idx)))
+	return Vector2.XY(class(self).GetVertexUv2(int64(idx)))
 }
 
 /*
 Sets the color of the given vertex.
 */
 func (self Instance) SetVertexColor(idx int, color Color.RGBA) { //gd:MeshDataTool.set_vertex_color
-	class(self).SetVertexColor(gd.Int(idx), gd.Color(color))
+	class(self).SetVertexColor(int64(idx), Color.RGBA(color))
 }
 
 /*
 Returns the color of the given vertex.
 */
 func (self Instance) GetVertexColor(idx int) Color.RGBA { //gd:MeshDataTool.get_vertex_color
-	return Color.RGBA(class(self).GetVertexColor(gd.Int(idx)))
+	return Color.RGBA(class(self).GetVertexColor(int64(idx)))
 }
 
 /*
 Sets the bones of the given vertex.
 */
 func (self Instance) SetVertexBones(idx int, bones []int32) { //gd:MeshDataTool.set_vertex_bones
-	class(self).SetVertexBones(gd.Int(idx), Packed.New(bones...))
+	class(self).SetVertexBones(int64(idx), Packed.New(bones...))
 }
 
 /*
 Returns the bones of the given vertex.
 */
 func (self Instance) GetVertexBones(idx int) []int32 { //gd:MeshDataTool.get_vertex_bones
-	return []int32(slices.Collect(class(self).GetVertexBones(gd.Int(idx)).Values()))
+	return []int32(slices.Collect(class(self).GetVertexBones(int64(idx)).Values()))
 }
 
 /*
 Sets the bone weights of the given vertex.
 */
 func (self Instance) SetVertexWeights(idx int, weights []float32) { //gd:MeshDataTool.set_vertex_weights
-	class(self).SetVertexWeights(gd.Int(idx), Packed.New(weights...))
+	class(self).SetVertexWeights(int64(idx), Packed.New(weights...))
 }
 
 /*
 Returns bone weights of the given vertex.
 */
 func (self Instance) GetVertexWeights(idx int) []float32 { //gd:MeshDataTool.get_vertex_weights
-	return []float32(slices.Collect(class(self).GetVertexWeights(gd.Int(idx)).Values()))
+	return []float32(slices.Collect(class(self).GetVertexWeights(int64(idx)).Values()))
 }
 
 /*
 Sets the metadata associated with the given vertex.
 */
 func (self Instance) SetVertexMeta(idx int, meta any) { //gd:MeshDataTool.set_vertex_meta
-	class(self).SetVertexMeta(gd.Int(idx), gd.NewVariant(meta))
+	class(self).SetVertexMeta(int64(idx), variant.New(meta))
 }
 
 /*
 Returns the metadata associated with the given vertex.
 */
 func (self Instance) GetVertexMeta(idx int) any { //gd:MeshDataTool.get_vertex_meta
-	return any(class(self).GetVertexMeta(gd.Int(idx)).Interface())
+	return any(class(self).GetVertexMeta(int64(idx)).Interface())
 }
 
 /*
 Returns an array of edges that share the given vertex.
 */
 func (self Instance) GetVertexEdges(idx int) []int32 { //gd:MeshDataTool.get_vertex_edges
-	return []int32(slices.Collect(class(self).GetVertexEdges(gd.Int(idx)).Values()))
+	return []int32(slices.Collect(class(self).GetVertexEdges(int64(idx)).Values()))
 }
 
 /*
 Returns an array of faces that share the given vertex.
 */
 func (self Instance) GetVertexFaces(idx int) []int32 { //gd:MeshDataTool.get_vertex_faces
-	return []int32(slices.Collect(class(self).GetVertexFaces(gd.Int(idx)).Values()))
+	return []int32(slices.Collect(class(self).GetVertexFaces(int64(idx)).Values()))
 }
 
 /*
@@ -293,28 +297,28 @@ Returns index of specified vertex connected to given edge.
 Vertex argument can only be 0 or 1 because edges are comprised of two vertices.
 */
 func (self Instance) GetEdgeVertex(idx int, vertex int) int { //gd:MeshDataTool.get_edge_vertex
-	return int(int(class(self).GetEdgeVertex(gd.Int(idx), gd.Int(vertex))))
+	return int(int(class(self).GetEdgeVertex(int64(idx), int64(vertex))))
 }
 
 /*
 Returns array of faces that touch given edge.
 */
 func (self Instance) GetEdgeFaces(idx int) []int32 { //gd:MeshDataTool.get_edge_faces
-	return []int32(slices.Collect(class(self).GetEdgeFaces(gd.Int(idx)).Values()))
+	return []int32(slices.Collect(class(self).GetEdgeFaces(int64(idx)).Values()))
 }
 
 /*
 Sets the metadata of the given edge.
 */
 func (self Instance) SetEdgeMeta(idx int, meta any) { //gd:MeshDataTool.set_edge_meta
-	class(self).SetEdgeMeta(gd.Int(idx), gd.NewVariant(meta))
+	class(self).SetEdgeMeta(int64(idx), variant.New(meta))
 }
 
 /*
 Returns meta information assigned to given edge.
 */
 func (self Instance) GetEdgeMeta(idx int) any { //gd:MeshDataTool.get_edge_meta
-	return any(class(self).GetEdgeMeta(gd.Int(idx)).Interface())
+	return any(class(self).GetEdgeMeta(int64(idx)).Interface())
 }
 
 /*
@@ -335,7 +339,7 @@ Vector3 normal = meshDataTool.GetVertexNormal(index);
 [/codeblocks]
 */
 func (self Instance) GetFaceVertex(idx int, vertex int) int { //gd:MeshDataTool.get_face_vertex
-	return int(int(class(self).GetFaceVertex(gd.Int(idx), gd.Int(vertex))))
+	return int(int(class(self).GetFaceVertex(int64(idx), int64(vertex))))
 }
 
 /*
@@ -343,28 +347,28 @@ Returns specified edge associated with given face.
 Edge argument must be either 0, 1, or 2 because a face only has three edges.
 */
 func (self Instance) GetFaceEdge(idx int, edge int) int { //gd:MeshDataTool.get_face_edge
-	return int(int(class(self).GetFaceEdge(gd.Int(idx), gd.Int(edge))))
+	return int(int(class(self).GetFaceEdge(int64(idx), int64(edge))))
 }
 
 /*
 Sets the metadata of the given face.
 */
 func (self Instance) SetFaceMeta(idx int, meta any) { //gd:MeshDataTool.set_face_meta
-	class(self).SetFaceMeta(gd.Int(idx), gd.NewVariant(meta))
+	class(self).SetFaceMeta(int64(idx), variant.New(meta))
 }
 
 /*
 Returns the metadata associated with the given face.
 */
 func (self Instance) GetFaceMeta(idx int) any { //gd:MeshDataTool.get_face_meta
-	return any(class(self).GetFaceMeta(gd.Int(idx)).Interface())
+	return any(class(self).GetFaceMeta(int64(idx)).Interface())
 }
 
 /*
 Calculates and returns the face normal of the given face.
 */
 func (self Instance) GetFaceNormal(idx int) Vector3.XYZ { //gd:MeshDataTool.get_face_normal
-	return Vector3.XYZ(class(self).GetFaceNormal(gd.Int(idx)))
+	return Vector3.XYZ(class(self).GetFaceNormal(int64(idx)))
 }
 
 /*
@@ -416,13 +420,13 @@ Uses specified surface of given [Mesh] to populate data for MeshDataTool.
 Requires [Mesh] with primitive type [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
-func (self class) CreateFromSurface(mesh [1]gdclass.ArrayMesh, surface gd.Int) gd.Error { //gd:MeshDataTool.create_from_surface
+func (self class) CreateFromSurface(mesh [1]gdclass.ArrayMesh, surface int64) Error.Code { //gd:MeshDataTool.create_from_surface
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	callframe.Arg(frame, surface)
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_create_from_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -431,13 +435,13 @@ func (self class) CreateFromSurface(mesh [1]gdclass.ArrayMesh, surface gd.Int) g
 Adds a new surface to specified [Mesh] with edited data.
 */
 //go:nosplit
-func (self class) CommitToSurface(mesh [1]gdclass.ArrayMesh, compression_flags gd.Int) gd.Error { //gd:MeshDataTool.commit_to_surface
+func (self class) CommitToSurface(mesh [1]gdclass.ArrayMesh, compression_flags int64) Error.Code { //gd:MeshDataTool.commit_to_surface
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	callframe.Arg(frame, compression_flags)
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_commit_to_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -446,9 +450,9 @@ func (self class) CommitToSurface(mesh [1]gdclass.ArrayMesh, compression_flags g
 Returns the [Mesh]'s format as a combination of the [enum Mesh.ArrayFormat] flags. For example, a mesh containing both vertices and normals would return a format of [code]3[/code] because [constant Mesh.ARRAY_FORMAT_VERTEX] is [code]1[/code] and [constant Mesh.ARRAY_FORMAT_NORMAL] is [code]2[/code].
 */
 //go:nosplit
-func (self class) GetFormat() gd.Int { //gd:MeshDataTool.get_format
+func (self class) GetFormat() int64 { //gd:MeshDataTool.get_format
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -459,9 +463,9 @@ func (self class) GetFormat() gd.Int { //gd:MeshDataTool.get_format
 Returns the total number of vertices in [Mesh].
 */
 //go:nosplit
-func (self class) GetVertexCount() gd.Int { //gd:MeshDataTool.get_vertex_count
+func (self class) GetVertexCount() int64 { //gd:MeshDataTool.get_vertex_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_vertex_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -472,9 +476,9 @@ func (self class) GetVertexCount() gd.Int { //gd:MeshDataTool.get_vertex_count
 Returns the number of edges in this [Mesh].
 */
 //go:nosplit
-func (self class) GetEdgeCount() gd.Int { //gd:MeshDataTool.get_edge_count
+func (self class) GetEdgeCount() int64 { //gd:MeshDataTool.get_edge_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_edge_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -485,9 +489,9 @@ func (self class) GetEdgeCount() gd.Int { //gd:MeshDataTool.get_edge_count
 Returns the number of faces in this [Mesh].
 */
 //go:nosplit
-func (self class) GetFaceCount() gd.Int { //gd:MeshDataTool.get_face_count
+func (self class) GetFaceCount() int64 { //gd:MeshDataTool.get_face_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_face_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -498,7 +502,7 @@ func (self class) GetFaceCount() gd.Int { //gd:MeshDataTool.get_face_count
 Sets the position of the given vertex.
 */
 //go:nosplit
-func (self class) SetVertex(idx gd.Int, vertex gd.Vector3) { //gd:MeshDataTool.set_vertex
+func (self class) SetVertex(idx int64, vertex Vector3.XYZ) { //gd:MeshDataTool.set_vertex
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, vertex)
@@ -511,10 +515,10 @@ func (self class) SetVertex(idx gd.Int, vertex gd.Vector3) { //gd:MeshDataTool.s
 Returns the position of the given vertex.
 */
 //go:nosplit
-func (self class) GetVertex(idx gd.Int) gd.Vector3 { //gd:MeshDataTool.get_vertex
+func (self class) GetVertex(idx int64) Vector3.XYZ { //gd:MeshDataTool.get_vertex
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_vertex, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -525,7 +529,7 @@ func (self class) GetVertex(idx gd.Int) gd.Vector3 { //gd:MeshDataTool.get_verte
 Sets the normal of the given vertex.
 */
 //go:nosplit
-func (self class) SetVertexNormal(idx gd.Int, normal gd.Vector3) { //gd:MeshDataTool.set_vertex_normal
+func (self class) SetVertexNormal(idx int64, normal Vector3.XYZ) { //gd:MeshDataTool.set_vertex_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, normal)
@@ -538,10 +542,10 @@ func (self class) SetVertexNormal(idx gd.Int, normal gd.Vector3) { //gd:MeshData
 Returns the normal of the given vertex.
 */
 //go:nosplit
-func (self class) GetVertexNormal(idx gd.Int) gd.Vector3 { //gd:MeshDataTool.get_vertex_normal
+func (self class) GetVertexNormal(idx int64) Vector3.XYZ { //gd:MeshDataTool.get_vertex_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_vertex_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -552,7 +556,7 @@ func (self class) GetVertexNormal(idx gd.Int) gd.Vector3 { //gd:MeshDataTool.get
 Sets the tangent of the given vertex.
 */
 //go:nosplit
-func (self class) SetVertexTangent(idx gd.Int, tangent gd.Plane) { //gd:MeshDataTool.set_vertex_tangent
+func (self class) SetVertexTangent(idx int64, tangent Plane.NormalD) { //gd:MeshDataTool.set_vertex_tangent
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, tangent)
@@ -565,10 +569,10 @@ func (self class) SetVertexTangent(idx gd.Int, tangent gd.Plane) { //gd:MeshData
 Returns the tangent of the given vertex.
 */
 //go:nosplit
-func (self class) GetVertexTangent(idx gd.Int) gd.Plane { //gd:MeshDataTool.get_vertex_tangent
+func (self class) GetVertexTangent(idx int64) Plane.NormalD { //gd:MeshDataTool.get_vertex_tangent
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Plane](frame)
+	var r_ret = callframe.Ret[Plane.NormalD](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_vertex_tangent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -579,7 +583,7 @@ func (self class) GetVertexTangent(idx gd.Int) gd.Plane { //gd:MeshDataTool.get_
 Sets the UV of the given vertex.
 */
 //go:nosplit
-func (self class) SetVertexUv(idx gd.Int, uv gd.Vector2) { //gd:MeshDataTool.set_vertex_uv
+func (self class) SetVertexUv(idx int64, uv Vector2.XY) { //gd:MeshDataTool.set_vertex_uv
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, uv)
@@ -592,10 +596,10 @@ func (self class) SetVertexUv(idx gd.Int, uv gd.Vector2) { //gd:MeshDataTool.set
 Returns the UV of the given vertex.
 */
 //go:nosplit
-func (self class) GetVertexUv(idx gd.Int) gd.Vector2 { //gd:MeshDataTool.get_vertex_uv
+func (self class) GetVertexUv(idx int64) Vector2.XY { //gd:MeshDataTool.get_vertex_uv
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_vertex_uv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -606,7 +610,7 @@ func (self class) GetVertexUv(idx gd.Int) gd.Vector2 { //gd:MeshDataTool.get_ver
 Sets the UV2 of the given vertex.
 */
 //go:nosplit
-func (self class) SetVertexUv2(idx gd.Int, uv2 gd.Vector2) { //gd:MeshDataTool.set_vertex_uv2
+func (self class) SetVertexUv2(idx int64, uv2 Vector2.XY) { //gd:MeshDataTool.set_vertex_uv2
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, uv2)
@@ -619,10 +623,10 @@ func (self class) SetVertexUv2(idx gd.Int, uv2 gd.Vector2) { //gd:MeshDataTool.s
 Returns the UV2 of the given vertex.
 */
 //go:nosplit
-func (self class) GetVertexUv2(idx gd.Int) gd.Vector2 { //gd:MeshDataTool.get_vertex_uv2
+func (self class) GetVertexUv2(idx int64) Vector2.XY { //gd:MeshDataTool.get_vertex_uv2
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_vertex_uv2, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -633,7 +637,7 @@ func (self class) GetVertexUv2(idx gd.Int) gd.Vector2 { //gd:MeshDataTool.get_ve
 Sets the color of the given vertex.
 */
 //go:nosplit
-func (self class) SetVertexColor(idx gd.Int, color gd.Color) { //gd:MeshDataTool.set_vertex_color
+func (self class) SetVertexColor(idx int64, color Color.RGBA) { //gd:MeshDataTool.set_vertex_color
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, color)
@@ -646,10 +650,10 @@ func (self class) SetVertexColor(idx gd.Int, color gd.Color) { //gd:MeshDataTool
 Returns the color of the given vertex.
 */
 //go:nosplit
-func (self class) GetVertexColor(idx gd.Int) gd.Color { //gd:MeshDataTool.get_vertex_color
+func (self class) GetVertexColor(idx int64) Color.RGBA { //gd:MeshDataTool.get_vertex_color
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_vertex_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -660,7 +664,7 @@ func (self class) GetVertexColor(idx gd.Int) gd.Color { //gd:MeshDataTool.get_ve
 Sets the bones of the given vertex.
 */
 //go:nosplit
-func (self class) SetVertexBones(idx gd.Int, bones Packed.Array[int32]) { //gd:MeshDataTool.set_vertex_bones
+func (self class) SetVertexBones(idx int64, bones Packed.Array[int32]) { //gd:MeshDataTool.set_vertex_bones
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bones)))
@@ -673,7 +677,7 @@ func (self class) SetVertexBones(idx gd.Int, bones Packed.Array[int32]) { //gd:M
 Returns the bones of the given vertex.
 */
 //go:nosplit
-func (self class) GetVertexBones(idx gd.Int) Packed.Array[int32] { //gd:MeshDataTool.get_vertex_bones
+func (self class) GetVertexBones(idx int64) Packed.Array[int32] { //gd:MeshDataTool.get_vertex_bones
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -687,7 +691,7 @@ func (self class) GetVertexBones(idx gd.Int) Packed.Array[int32] { //gd:MeshData
 Sets the bone weights of the given vertex.
 */
 //go:nosplit
-func (self class) SetVertexWeights(idx gd.Int, weights Packed.Array[float32]) { //gd:MeshDataTool.set_vertex_weights
+func (self class) SetVertexWeights(idx int64, weights Packed.Array[float32]) { //gd:MeshDataTool.set_vertex_weights
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)))
@@ -700,7 +704,7 @@ func (self class) SetVertexWeights(idx gd.Int, weights Packed.Array[float32]) { 
 Returns bone weights of the given vertex.
 */
 //go:nosplit
-func (self class) GetVertexWeights(idx gd.Int) Packed.Array[float32] { //gd:MeshDataTool.get_vertex_weights
+func (self class) GetVertexWeights(idx int64) Packed.Array[float32] { //gd:MeshDataTool.get_vertex_weights
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -714,10 +718,10 @@ func (self class) GetVertexWeights(idx gd.Int) Packed.Array[float32] { //gd:Mesh
 Sets the metadata associated with the given vertex.
 */
 //go:nosplit
-func (self class) SetVertexMeta(idx gd.Int, meta gd.Variant) { //gd:MeshDataTool.set_vertex_meta
+func (self class) SetVertexMeta(idx int64, meta variant.Any) { //gd:MeshDataTool.set_vertex_meta
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(meta))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(meta)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_set_vertex_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -727,12 +731,12 @@ func (self class) SetVertexMeta(idx gd.Int, meta gd.Variant) { //gd:MeshDataTool
 Returns the metadata associated with the given vertex.
 */
 //go:nosplit
-func (self class) GetVertexMeta(idx gd.Int) gd.Variant { //gd:MeshDataTool.get_vertex_meta
+func (self class) GetVertexMeta(idx int64) variant.Any { //gd:MeshDataTool.get_vertex_meta
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_vertex_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -741,7 +745,7 @@ func (self class) GetVertexMeta(idx gd.Int) gd.Variant { //gd:MeshDataTool.get_v
 Returns an array of edges that share the given vertex.
 */
 //go:nosplit
-func (self class) GetVertexEdges(idx gd.Int) Packed.Array[int32] { //gd:MeshDataTool.get_vertex_edges
+func (self class) GetVertexEdges(idx int64) Packed.Array[int32] { //gd:MeshDataTool.get_vertex_edges
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -755,7 +759,7 @@ func (self class) GetVertexEdges(idx gd.Int) Packed.Array[int32] { //gd:MeshData
 Returns an array of faces that share the given vertex.
 */
 //go:nosplit
-func (self class) GetVertexFaces(idx gd.Int) Packed.Array[int32] { //gd:MeshDataTool.get_vertex_faces
+func (self class) GetVertexFaces(idx int64) Packed.Array[int32] { //gd:MeshDataTool.get_vertex_faces
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -770,11 +774,11 @@ Returns index of specified vertex connected to given edge.
 Vertex argument can only be 0 or 1 because edges are comprised of two vertices.
 */
 //go:nosplit
-func (self class) GetEdgeVertex(idx gd.Int, vertex gd.Int) gd.Int { //gd:MeshDataTool.get_edge_vertex
+func (self class) GetEdgeVertex(idx int64, vertex int64) int64 { //gd:MeshDataTool.get_edge_vertex
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, vertex)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_edge_vertex, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -785,7 +789,7 @@ func (self class) GetEdgeVertex(idx gd.Int, vertex gd.Int) gd.Int { //gd:MeshDat
 Returns array of faces that touch given edge.
 */
 //go:nosplit
-func (self class) GetEdgeFaces(idx gd.Int) Packed.Array[int32] { //gd:MeshDataTool.get_edge_faces
+func (self class) GetEdgeFaces(idx int64) Packed.Array[int32] { //gd:MeshDataTool.get_edge_faces
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -799,10 +803,10 @@ func (self class) GetEdgeFaces(idx gd.Int) Packed.Array[int32] { //gd:MeshDataTo
 Sets the metadata of the given edge.
 */
 //go:nosplit
-func (self class) SetEdgeMeta(idx gd.Int, meta gd.Variant) { //gd:MeshDataTool.set_edge_meta
+func (self class) SetEdgeMeta(idx int64, meta variant.Any) { //gd:MeshDataTool.set_edge_meta
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(meta))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(meta)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_set_edge_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -812,12 +816,12 @@ func (self class) SetEdgeMeta(idx gd.Int, meta gd.Variant) { //gd:MeshDataTool.s
 Returns meta information assigned to given edge.
 */
 //go:nosplit
-func (self class) GetEdgeMeta(idx gd.Int) gd.Variant { //gd:MeshDataTool.get_edge_meta
+func (self class) GetEdgeMeta(idx int64) variant.Any { //gd:MeshDataTool.get_edge_meta
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_edge_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -840,11 +844,11 @@ Vector3 normal = meshDataTool.GetVertexNormal(index);
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetFaceVertex(idx gd.Int, vertex gd.Int) gd.Int { //gd:MeshDataTool.get_face_vertex
+func (self class) GetFaceVertex(idx int64, vertex int64) int64 { //gd:MeshDataTool.get_face_vertex
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, vertex)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_face_vertex, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -856,11 +860,11 @@ Returns specified edge associated with given face.
 Edge argument must be either 0, 1, or 2 because a face only has three edges.
 */
 //go:nosplit
-func (self class) GetFaceEdge(idx gd.Int, edge gd.Int) gd.Int { //gd:MeshDataTool.get_face_edge
+func (self class) GetFaceEdge(idx int64, edge int64) int64 { //gd:MeshDataTool.get_face_edge
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, edge)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_face_edge, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -871,10 +875,10 @@ func (self class) GetFaceEdge(idx gd.Int, edge gd.Int) gd.Int { //gd:MeshDataToo
 Sets the metadata of the given face.
 */
 //go:nosplit
-func (self class) SetFaceMeta(idx gd.Int, meta gd.Variant) { //gd:MeshDataTool.set_face_meta
+func (self class) SetFaceMeta(idx int64, meta variant.Any) { //gd:MeshDataTool.set_face_meta
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(meta))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(meta)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_set_face_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -884,12 +888,12 @@ func (self class) SetFaceMeta(idx gd.Int, meta gd.Variant) { //gd:MeshDataTool.s
 Returns the metadata associated with the given face.
 */
 //go:nosplit
-func (self class) GetFaceMeta(idx gd.Int) gd.Variant { //gd:MeshDataTool.get_face_meta
+func (self class) GetFaceMeta(idx int64) variant.Any { //gd:MeshDataTool.get_face_meta
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_face_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -898,10 +902,10 @@ func (self class) GetFaceMeta(idx gd.Int) gd.Variant { //gd:MeshDataTool.get_fac
 Calculates and returns the face normal of the given face.
 */
 //go:nosplit
-func (self class) GetFaceNormal(idx gd.Int) gd.Vector3 { //gd:MeshDataTool.get_face_normal
+func (self class) GetFaceNormal(idx int64) Vector3.XYZ { //gd:MeshDataTool.get_face_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_get_face_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -959,119 +963,3 @@ func init() {
 		return [1]gdclass.MeshDataTool{*(*gdclass.MeshDataTool)(unsafe.Pointer(&ptr))}
 	})
 }
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
-)

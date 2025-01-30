@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -76,7 +79,7 @@ func (self Instance) LineSpacing() Float.X {
 }
 
 func (self Instance) SetLineSpacing(value Float.X) {
-	class(self).SetLineSpacing(gd.Float(value))
+	class(self).SetLineSpacing(float64(value))
 }
 
 func (self Instance) Font() [1]gdclass.Font {
@@ -92,7 +95,7 @@ func (self Instance) FontSize() int {
 }
 
 func (self Instance) SetFontSize(value int) {
-	class(self).SetFontSize(gd.Int(value))
+	class(self).SetFontSize(int64(value))
 }
 
 func (self Instance) FontColor() Color.RGBA {
@@ -100,7 +103,7 @@ func (self Instance) FontColor() Color.RGBA {
 }
 
 func (self Instance) SetFontColor(value Color.RGBA) {
-	class(self).SetFontColor(gd.Color(value))
+	class(self).SetFontColor(Color.RGBA(value))
 }
 
 func (self Instance) OutlineSize() int {
@@ -108,7 +111,7 @@ func (self Instance) OutlineSize() int {
 }
 
 func (self Instance) SetOutlineSize(value int) {
-	class(self).SetOutlineSize(gd.Int(value))
+	class(self).SetOutlineSize(int64(value))
 }
 
 func (self Instance) OutlineColor() Color.RGBA {
@@ -116,7 +119,7 @@ func (self Instance) OutlineColor() Color.RGBA {
 }
 
 func (self Instance) SetOutlineColor(value Color.RGBA) {
-	class(self).SetOutlineColor(gd.Color(value))
+	class(self).SetOutlineColor(Color.RGBA(value))
 }
 
 func (self Instance) ShadowSize() int {
@@ -124,7 +127,7 @@ func (self Instance) ShadowSize() int {
 }
 
 func (self Instance) SetShadowSize(value int) {
-	class(self).SetShadowSize(gd.Int(value))
+	class(self).SetShadowSize(int64(value))
 }
 
 func (self Instance) ShadowColor() Color.RGBA {
@@ -132,7 +135,7 @@ func (self Instance) ShadowColor() Color.RGBA {
 }
 
 func (self Instance) SetShadowColor(value Color.RGBA) {
-	class(self).SetShadowColor(gd.Color(value))
+	class(self).SetShadowColor(Color.RGBA(value))
 }
 
 func (self Instance) ShadowOffset() Vector2.XY {
@@ -140,11 +143,11 @@ func (self Instance) ShadowOffset() Vector2.XY {
 }
 
 func (self Instance) SetShadowOffset(value Vector2.XY) {
-	class(self).SetShadowOffset(gd.Vector2(value))
+	class(self).SetShadowOffset(Vector2.XY(value))
 }
 
 //go:nosplit
-func (self class) SetLineSpacing(spacing gd.Float) { //gd:LabelSettings.set_line_spacing
+func (self class) SetLineSpacing(spacing float64) { //gd:LabelSettings.set_line_spacing
 	var frame = callframe.New()
 	callframe.Arg(frame, spacing)
 	var r_ret = callframe.Nil
@@ -153,9 +156,9 @@ func (self class) SetLineSpacing(spacing gd.Float) { //gd:LabelSettings.set_line
 }
 
 //go:nosplit
-func (self class) GetLineSpacing() gd.Float { //gd:LabelSettings.get_line_spacing
+func (self class) GetLineSpacing() float64 { //gd:LabelSettings.get_line_spacing
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LabelSettings.Bind_get_line_spacing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -182,7 +185,7 @@ func (self class) GetFont() [1]gdclass.Font { //gd:LabelSettings.get_font
 }
 
 //go:nosplit
-func (self class) SetFontSize(size gd.Int) { //gd:LabelSettings.set_font_size
+func (self class) SetFontSize(size int64) { //gd:LabelSettings.set_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -191,9 +194,9 @@ func (self class) SetFontSize(size gd.Int) { //gd:LabelSettings.set_font_size
 }
 
 //go:nosplit
-func (self class) GetFontSize() gd.Int { //gd:LabelSettings.get_font_size
+func (self class) GetFontSize() int64 { //gd:LabelSettings.get_font_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LabelSettings.Bind_get_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -201,7 +204,7 @@ func (self class) GetFontSize() gd.Int { //gd:LabelSettings.get_font_size
 }
 
 //go:nosplit
-func (self class) SetFontColor(color gd.Color) { //gd:LabelSettings.set_font_color
+func (self class) SetFontColor(color Color.RGBA) { //gd:LabelSettings.set_font_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -210,9 +213,9 @@ func (self class) SetFontColor(color gd.Color) { //gd:LabelSettings.set_font_col
 }
 
 //go:nosplit
-func (self class) GetFontColor() gd.Color { //gd:LabelSettings.get_font_color
+func (self class) GetFontColor() Color.RGBA { //gd:LabelSettings.get_font_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LabelSettings.Bind_get_font_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -220,7 +223,7 @@ func (self class) GetFontColor() gd.Color { //gd:LabelSettings.get_font_color
 }
 
 //go:nosplit
-func (self class) SetOutlineSize(size gd.Int) { //gd:LabelSettings.set_outline_size
+func (self class) SetOutlineSize(size int64) { //gd:LabelSettings.set_outline_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -229,9 +232,9 @@ func (self class) SetOutlineSize(size gd.Int) { //gd:LabelSettings.set_outline_s
 }
 
 //go:nosplit
-func (self class) GetOutlineSize() gd.Int { //gd:LabelSettings.get_outline_size
+func (self class) GetOutlineSize() int64 { //gd:LabelSettings.get_outline_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LabelSettings.Bind_get_outline_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -239,7 +242,7 @@ func (self class) GetOutlineSize() gd.Int { //gd:LabelSettings.get_outline_size
 }
 
 //go:nosplit
-func (self class) SetOutlineColor(color gd.Color) { //gd:LabelSettings.set_outline_color
+func (self class) SetOutlineColor(color Color.RGBA) { //gd:LabelSettings.set_outline_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -248,9 +251,9 @@ func (self class) SetOutlineColor(color gd.Color) { //gd:LabelSettings.set_outli
 }
 
 //go:nosplit
-func (self class) GetOutlineColor() gd.Color { //gd:LabelSettings.get_outline_color
+func (self class) GetOutlineColor() Color.RGBA { //gd:LabelSettings.get_outline_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LabelSettings.Bind_get_outline_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -258,7 +261,7 @@ func (self class) GetOutlineColor() gd.Color { //gd:LabelSettings.get_outline_co
 }
 
 //go:nosplit
-func (self class) SetShadowSize(size gd.Int) { //gd:LabelSettings.set_shadow_size
+func (self class) SetShadowSize(size int64) { //gd:LabelSettings.set_shadow_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -267,9 +270,9 @@ func (self class) SetShadowSize(size gd.Int) { //gd:LabelSettings.set_shadow_siz
 }
 
 //go:nosplit
-func (self class) GetShadowSize() gd.Int { //gd:LabelSettings.get_shadow_size
+func (self class) GetShadowSize() int64 { //gd:LabelSettings.get_shadow_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LabelSettings.Bind_get_shadow_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -277,7 +280,7 @@ func (self class) GetShadowSize() gd.Int { //gd:LabelSettings.get_shadow_size
 }
 
 //go:nosplit
-func (self class) SetShadowColor(color gd.Color) { //gd:LabelSettings.set_shadow_color
+func (self class) SetShadowColor(color Color.RGBA) { //gd:LabelSettings.set_shadow_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -286,9 +289,9 @@ func (self class) SetShadowColor(color gd.Color) { //gd:LabelSettings.set_shadow
 }
 
 //go:nosplit
-func (self class) GetShadowColor() gd.Color { //gd:LabelSettings.get_shadow_color
+func (self class) GetShadowColor() Color.RGBA { //gd:LabelSettings.get_shadow_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LabelSettings.Bind_get_shadow_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -296,7 +299,7 @@ func (self class) GetShadowColor() gd.Color { //gd:LabelSettings.get_shadow_colo
 }
 
 //go:nosplit
-func (self class) SetShadowOffset(offset gd.Vector2) { //gd:LabelSettings.set_shadow_offset
+func (self class) SetShadowOffset(offset Vector2.XY) { //gd:LabelSettings.set_shadow_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -305,9 +308,9 @@ func (self class) SetShadowOffset(offset gd.Vector2) { //gd:LabelSettings.set_sh
 }
 
 //go:nosplit
-func (self class) GetShadowOffset() gd.Vector2 { //gd:LabelSettings.get_shadow_offset
+func (self class) GetShadowOffset() Vector2.XY { //gd:LabelSettings.get_shadow_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LabelSettings.Bind_get_shadow_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

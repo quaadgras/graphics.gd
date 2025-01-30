@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Texture2D"
-import "graphics.gd/classdb/Texture"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -107,7 +111,7 @@ func (self Instance) Update(image [1]gdclass.Image) { //gd:ImageTexture.update
 Resizes the texture to the specified dimensions.
 */
 func (self Instance) SetSizeOverride(size Vector2i.XY) { //gd:ImageTexture.set_size_override
-	class(self).SetSizeOverride(gd.Vector2i(size))
+	class(self).SetSizeOverride(Vector2i.XY(size))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -187,7 +191,7 @@ func (self class) Update(image [1]gdclass.Image) { //gd:ImageTexture.update
 Resizes the texture to the specified dimensions.
 */
 //go:nosplit
-func (self class) SetSizeOverride(size gd.Vector2i) { //gd:ImageTexture.set_size_override
+func (self class) SetSizeOverride(size Vector2i.XY) { //gd:ImageTexture.set_size_override
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil

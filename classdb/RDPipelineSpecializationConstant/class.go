@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -73,7 +77,7 @@ func (self Instance) Value() any {
 }
 
 func (self Instance) SetValue(value any) {
-	class(self).SetValue(gd.NewVariant(value))
+	class(self).SetValue(variant.New(value))
 }
 
 func (self Instance) ConstantId() int {
@@ -81,30 +85,30 @@ func (self Instance) ConstantId() int {
 }
 
 func (self Instance) SetConstantId(value int) {
-	class(self).SetConstantId(gd.Int(value))
+	class(self).SetConstantId(int64(value))
 }
 
 //go:nosplit
-func (self class) SetValue(value gd.Variant) { //gd:RDPipelineSpecializationConstant.set_value
+func (self class) SetValue(value variant.Any) { //gd:RDPipelineSpecializationConstant.set_value
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineSpecializationConstant.Bind_set_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetValue() gd.Variant { //gd:RDPipelineSpecializationConstant.get_value
+func (self class) GetValue() variant.Any { //gd:RDPipelineSpecializationConstant.get_value
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineSpecializationConstant.Bind_get_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetConstantId(constant_id gd.Int) { //gd:RDPipelineSpecializationConstant.set_constant_id
+func (self class) SetConstantId(constant_id int64) { //gd:RDPipelineSpecializationConstant.set_constant_id
 	var frame = callframe.New()
 	callframe.Arg(frame, constant_id)
 	var r_ret = callframe.Nil
@@ -113,9 +117,9 @@ func (self class) SetConstantId(constant_id gd.Int) { //gd:RDPipelineSpecializat
 }
 
 //go:nosplit
-func (self class) GetConstantId() gd.Int { //gd:RDPipelineSpecializationConstant.get_constant_id
+func (self class) GetConstantId() int64 { //gd:RDPipelineSpecializationConstant.get_constant_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineSpecializationConstant.Bind_get_constant_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

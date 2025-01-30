@@ -10,15 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -160,7 +164,7 @@ The number [param n] is the number or quantity of the plural object. It will be 
 */
 func TranslatePlural(message string, plural_message string, n int) string { //gd:TranslationServer.translate_plural
 	once.Do(singleton)
-	return string(class(self).TranslatePlural(String.Name(String.New(message)), String.Name(String.New(plural_message)), gd.Int(n), String.Name(String.New(""))).String())
+	return string(class(self).TranslatePlural(String.Name(String.New(message)), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(""))).String())
 }
 
 /*
@@ -283,11 +287,11 @@ func (self class) GetToolLocale() String.Readable { //gd:TranslationServer.get_t
 Compares two locales and returns a similarity score between [code]0[/code] (no match) and [code]10[/code] (full match).
 */
 //go:nosplit
-func (self class) CompareLocales(locale_a String.Readable, locale_b String.Readable) gd.Int { //gd:TranslationServer.compare_locales
+func (self class) CompareLocales(locale_a String.Readable, locale_b String.Readable) int64 { //gd:TranslationServer.compare_locales
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(locale_a)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(locale_b)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_compare_locales, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -423,7 +427,7 @@ Returns the current locale's translation for the given message (key), plural mes
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 */
 //go:nosplit
-func (self class) TranslatePlural(message String.Name, plural_message String.Name, n gd.Int, context String.Name) String.Name { //gd:TranslationServer.translate_plural
+func (self class) TranslatePlural(message String.Name, plural_message String.Name, n int64, context String.Name) String.Name { //gd:TranslationServer.translate_plural
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(message)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(plural_message)))

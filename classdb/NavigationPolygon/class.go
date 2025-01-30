@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -106,7 +109,7 @@ func (self Instance) GetPolygonCount() int { //gd:NavigationPolygon.get_polygon_
 Returns a [PackedInt32Array] containing the indices of the vertices of a created polygon.
 */
 func (self Instance) GetPolygon(idx int) []int32 { //gd:NavigationPolygon.get_polygon
-	return []int32(slices.Collect(class(self).GetPolygon(gd.Int(idx)).Values()))
+	return []int32(slices.Collect(class(self).GetPolygon(int64(idx)).Values()))
 }
 
 /*
@@ -134,7 +137,7 @@ func (self Instance) AddOutline(outline []Vector2.XY) { //gd:NavigationPolygon.a
 Adds a [PackedVector2Array] that contains the vertices of an outline to the internal array that contains all the outlines at a fixed position.
 */
 func (self Instance) AddOutlineAtIndex(outline []Vector2.XY, index int) { //gd:NavigationPolygon.add_outline_at_index
-	class(self).AddOutlineAtIndex(Packed.New(outline...), gd.Int(index))
+	class(self).AddOutlineAtIndex(Packed.New(outline...), int64(index))
 }
 
 /*
@@ -148,21 +151,21 @@ func (self Instance) GetOutlineCount() int { //gd:NavigationPolygon.get_outline_
 Changes an outline created in the editor or by script. You have to call [method make_polygons_from_outlines] for the polygons to update.
 */
 func (self Instance) SetOutline(idx int, outline []Vector2.XY) { //gd:NavigationPolygon.set_outline
-	class(self).SetOutline(gd.Int(idx), Packed.New(outline...))
+	class(self).SetOutline(int64(idx), Packed.New(outline...))
 }
 
 /*
 Returns a [PackedVector2Array] containing the vertices of an outline that was created in the editor or by script.
 */
 func (self Instance) GetOutline(idx int) []Vector2.XY { //gd:NavigationPolygon.get_outline
-	return []Vector2.XY(slices.Collect(class(self).GetOutline(gd.Int(idx)).Values()))
+	return []Vector2.XY(slices.Collect(class(self).GetOutline(int64(idx)).Values()))
 }
 
 /*
 Removes an outline created in the editor or by script. You have to call [method make_polygons_from_outlines] for the polygons to update.
 */
 func (self Instance) RemoveOutline(idx int) { //gd:NavigationPolygon.remove_outline
-	class(self).RemoveOutline(gd.Int(idx))
+	class(self).RemoveOutline(int64(idx))
 }
 
 /*
@@ -183,14 +186,14 @@ func (self Instance) MakePolygonsFromOutlines() { //gd:NavigationPolygon.make_po
 Based on [param value], enables or disables the specified layer in the [member parsed_collision_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetParsedCollisionMaskValue(layer_number int, value bool) { //gd:NavigationPolygon.set_parsed_collision_mask_value
-	class(self).SetParsedCollisionMaskValue(gd.Int(layer_number), value)
+	class(self).SetParsedCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member parsed_collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetParsedCollisionMaskValue(layer_number int) bool { //gd:NavigationPolygon.get_parsed_collision_mask_value
-	return bool(class(self).GetParsedCollisionMaskValue(gd.Int(layer_number)))
+	return bool(class(self).GetParsedCollisionMaskValue(int64(layer_number)))
 }
 
 /*
@@ -240,7 +243,7 @@ func (self Instance) ParsedCollisionMask() int {
 }
 
 func (self Instance) SetParsedCollisionMask(value int) {
-	class(self).SetParsedCollisionMask(gd.Int(value))
+	class(self).SetParsedCollisionMask(int64(value))
 }
 
 func (self Instance) SourceGeometryMode() gdclass.NavigationPolygonSourceGeometryMode {
@@ -264,7 +267,7 @@ func (self Instance) CellSize() Float.X {
 }
 
 func (self Instance) SetCellSize(value Float.X) {
-	class(self).SetCellSize(gd.Float(value))
+	class(self).SetCellSize(float64(value))
 }
 
 func (self Instance) BorderSize() Float.X {
@@ -272,7 +275,7 @@ func (self Instance) BorderSize() Float.X {
 }
 
 func (self Instance) SetBorderSize(value Float.X) {
-	class(self).SetBorderSize(gd.Float(value))
+	class(self).SetBorderSize(float64(value))
 }
 
 func (self Instance) AgentRadius() Float.X {
@@ -280,7 +283,7 @@ func (self Instance) AgentRadius() Float.X {
 }
 
 func (self Instance) SetAgentRadius(value Float.X) {
-	class(self).SetAgentRadius(gd.Float(value))
+	class(self).SetAgentRadius(float64(value))
 }
 
 func (self Instance) BakingRect() Rect2.PositionSize {
@@ -288,7 +291,7 @@ func (self Instance) BakingRect() Rect2.PositionSize {
 }
 
 func (self Instance) SetBakingRect(value Rect2.PositionSize) {
-	class(self).SetBakingRect(gd.Rect2(value))
+	class(self).SetBakingRect(Rect2.PositionSize(value))
 }
 
 func (self Instance) BakingRectOffset() Vector2.XY {
@@ -296,7 +299,7 @@ func (self Instance) BakingRectOffset() Vector2.XY {
 }
 
 func (self Instance) SetBakingRectOffset(value Vector2.XY) {
-	class(self).SetBakingRectOffset(gd.Vector2(value))
+	class(self).SetBakingRectOffset(Vector2.XY(value))
 }
 
 /*
@@ -340,9 +343,9 @@ func (self class) AddPolygon(polygon Packed.Array[int32]) { //gd:NavigationPolyg
 Returns the count of all polygons.
 */
 //go:nosplit
-func (self class) GetPolygonCount() gd.Int { //gd:NavigationPolygon.get_polygon_count
+func (self class) GetPolygonCount() int64 { //gd:NavigationPolygon.get_polygon_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_get_polygon_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -353,7 +356,7 @@ func (self class) GetPolygonCount() gd.Int { //gd:NavigationPolygon.get_polygon_
 Returns a [PackedInt32Array] containing the indices of the vertices of a created polygon.
 */
 //go:nosplit
-func (self class) GetPolygon(idx gd.Int) Packed.Array[int32] { //gd:NavigationPolygon.get_polygon
+func (self class) GetPolygon(idx int64) Packed.Array[int32] { //gd:NavigationPolygon.get_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -403,7 +406,7 @@ func (self class) AddOutline(outline Packed.Array[Vector2.XY]) { //gd:Navigation
 Adds a [PackedVector2Array] that contains the vertices of an outline to the internal array that contains all the outlines at a fixed position.
 */
 //go:nosplit
-func (self class) AddOutlineAtIndex(outline Packed.Array[Vector2.XY], index gd.Int) { //gd:NavigationPolygon.add_outline_at_index
+func (self class) AddOutlineAtIndex(outline Packed.Array[Vector2.XY], index int64) { //gd:NavigationPolygon.add_outline_at_index
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](outline)))
 	callframe.Arg(frame, index)
@@ -416,9 +419,9 @@ func (self class) AddOutlineAtIndex(outline Packed.Array[Vector2.XY], index gd.I
 Returns the number of outlines that were created in the editor or by script.
 */
 //go:nosplit
-func (self class) GetOutlineCount() gd.Int { //gd:NavigationPolygon.get_outline_count
+func (self class) GetOutlineCount() int64 { //gd:NavigationPolygon.get_outline_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_get_outline_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -429,7 +432,7 @@ func (self class) GetOutlineCount() gd.Int { //gd:NavigationPolygon.get_outline_
 Changes an outline created in the editor or by script. You have to call [method make_polygons_from_outlines] for the polygons to update.
 */
 //go:nosplit
-func (self class) SetOutline(idx gd.Int, outline Packed.Array[Vector2.XY]) { //gd:NavigationPolygon.set_outline
+func (self class) SetOutline(idx int64, outline Packed.Array[Vector2.XY]) { //gd:NavigationPolygon.set_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](outline)))
@@ -442,7 +445,7 @@ func (self class) SetOutline(idx gd.Int, outline Packed.Array[Vector2.XY]) { //g
 Returns a [PackedVector2Array] containing the vertices of an outline that was created in the editor or by script.
 */
 //go:nosplit
-func (self class) GetOutline(idx gd.Int) Packed.Array[Vector2.XY] { //gd:NavigationPolygon.get_outline
+func (self class) GetOutline(idx int64) Packed.Array[Vector2.XY] { //gd:NavigationPolygon.get_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -456,7 +459,7 @@ func (self class) GetOutline(idx gd.Int) Packed.Array[Vector2.XY] { //gd:Navigat
 Removes an outline created in the editor or by script. You have to call [method make_polygons_from_outlines] for the polygons to update.
 */
 //go:nosplit
-func (self class) RemoveOutline(idx gd.Int) { //gd:NavigationPolygon.remove_outline
+func (self class) RemoveOutline(idx int64) { //gd:NavigationPolygon.remove_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Nil
@@ -487,7 +490,7 @@ func (self class) MakePolygonsFromOutlines() { //gd:NavigationPolygon.make_polyg
 }
 
 //go:nosplit
-func (self class) SetCellSize(cell_size gd.Float) { //gd:NavigationPolygon.set_cell_size
+func (self class) SetCellSize(cell_size float64) { //gd:NavigationPolygon.set_cell_size
 	var frame = callframe.New()
 	callframe.Arg(frame, cell_size)
 	var r_ret = callframe.Nil
@@ -496,9 +499,9 @@ func (self class) SetCellSize(cell_size gd.Float) { //gd:NavigationPolygon.set_c
 }
 
 //go:nosplit
-func (self class) GetCellSize() gd.Float { //gd:NavigationPolygon.get_cell_size
+func (self class) GetCellSize() float64 { //gd:NavigationPolygon.get_cell_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_get_cell_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -506,7 +509,7 @@ func (self class) GetCellSize() gd.Float { //gd:NavigationPolygon.get_cell_size
 }
 
 //go:nosplit
-func (self class) SetBorderSize(border_size gd.Float) { //gd:NavigationPolygon.set_border_size
+func (self class) SetBorderSize(border_size float64) { //gd:NavigationPolygon.set_border_size
 	var frame = callframe.New()
 	callframe.Arg(frame, border_size)
 	var r_ret = callframe.Nil
@@ -515,9 +518,9 @@ func (self class) SetBorderSize(border_size gd.Float) { //gd:NavigationPolygon.s
 }
 
 //go:nosplit
-func (self class) GetBorderSize() gd.Float { //gd:NavigationPolygon.get_border_size
+func (self class) GetBorderSize() float64 { //gd:NavigationPolygon.get_border_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_get_border_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -544,7 +547,7 @@ func (self class) GetParsedGeometryType() gdclass.NavigationPolygonParsedGeometr
 }
 
 //go:nosplit
-func (self class) SetParsedCollisionMask(mask gd.Int) { //gd:NavigationPolygon.set_parsed_collision_mask
+func (self class) SetParsedCollisionMask(mask int64) { //gd:NavigationPolygon.set_parsed_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -553,9 +556,9 @@ func (self class) SetParsedCollisionMask(mask gd.Int) { //gd:NavigationPolygon.s
 }
 
 //go:nosplit
-func (self class) GetParsedCollisionMask() gd.Int { //gd:NavigationPolygon.get_parsed_collision_mask
+func (self class) GetParsedCollisionMask() int64 { //gd:NavigationPolygon.get_parsed_collision_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_get_parsed_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -566,7 +569,7 @@ func (self class) GetParsedCollisionMask() gd.Int { //gd:NavigationPolygon.get_p
 Based on [param value], enables or disables the specified layer in the [member parsed_collision_mask], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetParsedCollisionMaskValue(layer_number gd.Int, value bool) { //gd:NavigationPolygon.set_parsed_collision_mask_value
+func (self class) SetParsedCollisionMaskValue(layer_number int64, value bool) { //gd:NavigationPolygon.set_parsed_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -579,7 +582,7 @@ func (self class) SetParsedCollisionMaskValue(layer_number gd.Int, value bool) {
 Returns whether or not the specified layer of the [member parsed_collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetParsedCollisionMaskValue(layer_number gd.Int) bool { //gd:NavigationPolygon.get_parsed_collision_mask_value
+func (self class) GetParsedCollisionMaskValue(layer_number int64) bool { //gd:NavigationPolygon.get_parsed_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -628,7 +631,7 @@ func (self class) GetSourceGeometryGroupName() String.Name { //gd:NavigationPoly
 }
 
 //go:nosplit
-func (self class) SetAgentRadius(agent_radius gd.Float) { //gd:NavigationPolygon.set_agent_radius
+func (self class) SetAgentRadius(agent_radius float64) { //gd:NavigationPolygon.set_agent_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, agent_radius)
 	var r_ret = callframe.Nil
@@ -637,9 +640,9 @@ func (self class) SetAgentRadius(agent_radius gd.Float) { //gd:NavigationPolygon
 }
 
 //go:nosplit
-func (self class) GetAgentRadius() gd.Float { //gd:NavigationPolygon.get_agent_radius
+func (self class) GetAgentRadius() float64 { //gd:NavigationPolygon.get_agent_radius
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_get_agent_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -647,7 +650,7 @@ func (self class) GetAgentRadius() gd.Float { //gd:NavigationPolygon.get_agent_r
 }
 
 //go:nosplit
-func (self class) SetBakingRect(rect gd.Rect2) { //gd:NavigationPolygon.set_baking_rect
+func (self class) SetBakingRect(rect Rect2.PositionSize) { //gd:NavigationPolygon.set_baking_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Nil
@@ -656,9 +659,9 @@ func (self class) SetBakingRect(rect gd.Rect2) { //gd:NavigationPolygon.set_baki
 }
 
 //go:nosplit
-func (self class) GetBakingRect() gd.Rect2 { //gd:NavigationPolygon.get_baking_rect
+func (self class) GetBakingRect() Rect2.PositionSize { //gd:NavigationPolygon.get_baking_rect
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_get_baking_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -666,7 +669,7 @@ func (self class) GetBakingRect() gd.Rect2 { //gd:NavigationPolygon.get_baking_r
 }
 
 //go:nosplit
-func (self class) SetBakingRectOffset(rect_offset gd.Vector2) { //gd:NavigationPolygon.set_baking_rect_offset
+func (self class) SetBakingRectOffset(rect_offset Vector2.XY) { //gd:NavigationPolygon.set_baking_rect_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, rect_offset)
 	var r_ret = callframe.Nil
@@ -675,9 +678,9 @@ func (self class) SetBakingRectOffset(rect_offset gd.Vector2) { //gd:NavigationP
 }
 
 //go:nosplit
-func (self class) GetBakingRectOffset() gd.Vector2 { //gd:NavigationPolygon.get_baking_rect_offset
+func (self class) GetBakingRectOffset() Vector2.XY { //gd:NavigationPolygon.get_baking_rect_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_get_baking_rect_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

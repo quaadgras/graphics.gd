@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/PacketPeer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/PacketPeer"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,7 +60,7 @@ Sets the peer to which packets will be sent.
 The [param id] can be one of: [constant TARGET_PEER_BROADCAST] to send to all connected peers, [constant TARGET_PEER_SERVER] to send to the peer acting as server, a valid peer ID to send to that specific peer, a negative peer ID to send to all peers except that one. By default, the target peer is [constant TARGET_PEER_BROADCAST].
 */
 func (self Instance) SetTargetPeer(id int) { //gd:MultiplayerPeer.set_target_peer
-	class(self).SetTargetPeer(gd.Int(id))
+	class(self).SetTargetPeer(int64(id))
 }
 
 /*
@@ -98,7 +102,7 @@ func (self Instance) Close() { //gd:MultiplayerPeer.close
 Disconnects the given [param peer] from this host. If [param force] is [code]true[/code] the [signal peer_disconnected] signal will not be emitted for this peer.
 */
 func (self Instance) DisconnectPeer(peer int) { //gd:MultiplayerPeer.disconnect_peer
-	class(self).DisconnectPeer(gd.Int(peer), false)
+	class(self).DisconnectPeer(int64(peer), false)
 }
 
 /*
@@ -169,11 +173,11 @@ func (self Instance) TransferChannel() int {
 }
 
 func (self Instance) SetTransferChannel(value int) {
-	class(self).SetTransferChannel(gd.Int(value))
+	class(self).SetTransferChannel(int64(value))
 }
 
 //go:nosplit
-func (self class) SetTransferChannel(channel gd.Int) { //gd:MultiplayerPeer.set_transfer_channel
+func (self class) SetTransferChannel(channel int64) { //gd:MultiplayerPeer.set_transfer_channel
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
 	var r_ret = callframe.Nil
@@ -182,9 +186,9 @@ func (self class) SetTransferChannel(channel gd.Int) { //gd:MultiplayerPeer.set_
 }
 
 //go:nosplit
-func (self class) GetTransferChannel() gd.Int { //gd:MultiplayerPeer.get_transfer_channel
+func (self class) GetTransferChannel() int64 { //gd:MultiplayerPeer.get_transfer_channel
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_get_transfer_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -215,7 +219,7 @@ Sets the peer to which packets will be sent.
 The [param id] can be one of: [constant TARGET_PEER_BROADCAST] to send to all connected peers, [constant TARGET_PEER_SERVER] to send to the peer acting as server, a valid peer ID to send to that specific peer, a negative peer ID to send to all peers except that one. By default, the target peer is [constant TARGET_PEER_BROADCAST].
 */
 //go:nosplit
-func (self class) SetTargetPeer(id gd.Int) { //gd:MultiplayerPeer.set_target_peer
+func (self class) SetTargetPeer(id int64) { //gd:MultiplayerPeer.set_target_peer
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
@@ -227,9 +231,9 @@ func (self class) SetTargetPeer(id gd.Int) { //gd:MultiplayerPeer.set_target_pee
 Returns the ID of the [MultiplayerPeer] who sent the next available packet. See [method PacketPeer.get_available_packet_count].
 */
 //go:nosplit
-func (self class) GetPacketPeer() gd.Int { //gd:MultiplayerPeer.get_packet_peer
+func (self class) GetPacketPeer() int64 { //gd:MultiplayerPeer.get_packet_peer
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_get_packet_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -240,9 +244,9 @@ func (self class) GetPacketPeer() gd.Int { //gd:MultiplayerPeer.get_packet_peer
 Returns the channel over which the next available packet was received. See [method PacketPeer.get_available_packet_count].
 */
 //go:nosplit
-func (self class) GetPacketChannel() gd.Int { //gd:MultiplayerPeer.get_packet_channel
+func (self class) GetPacketChannel() int64 { //gd:MultiplayerPeer.get_packet_channel
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_get_packet_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -288,7 +292,7 @@ func (self class) Close() { //gd:MultiplayerPeer.close
 Disconnects the given [param peer] from this host. If [param force] is [code]true[/code] the [signal peer_disconnected] signal will not be emitted for this peer.
 */
 //go:nosplit
-func (self class) DisconnectPeer(peer gd.Int, force bool) { //gd:MultiplayerPeer.disconnect_peer
+func (self class) DisconnectPeer(peer int64, force bool) { //gd:MultiplayerPeer.disconnect_peer
 	var frame = callframe.New()
 	callframe.Arg(frame, peer)
 	callframe.Arg(frame, force)
@@ -314,9 +318,9 @@ func (self class) GetConnectionStatus() gdclass.MultiplayerPeerConnectionStatus 
 Returns the ID of this [MultiplayerPeer].
 */
 //go:nosplit
-func (self class) GetUniqueId() gd.Int { //gd:MultiplayerPeer.get_unique_id
+func (self class) GetUniqueId() int64 { //gd:MultiplayerPeer.get_unique_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_get_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -327,9 +331,9 @@ func (self class) GetUniqueId() gd.Int { //gd:MultiplayerPeer.get_unique_id
 Returns a randomly generated integer that can be used as a network unique ID.
 */
 //go:nosplit
-func (self class) GenerateUniqueId() gd.Int { //gd:MultiplayerPeer.generate_unique_id
+func (self class) GenerateUniqueId() int64 { //gd:MultiplayerPeer.generate_unique_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_generate_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

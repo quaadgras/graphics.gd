@@ -9,22 +9,24 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/VBoxContainer"
 import "graphics.gd/classdb/BoxContainer"
+import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/VBoxContainer"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,6 +42,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -61,14 +65,14 @@ Adds the given color to a list of color presets. The presets are displayed in th
 [b]Note:[/b] The presets list is only for [i]this[/i] color picker.
 */
 func (self Instance) AddPreset(color Color.RGBA) { //gd:ColorPicker.add_preset
-	class(self).AddPreset(gd.Color(color))
+	class(self).AddPreset(Color.RGBA(color))
 }
 
 /*
 Removes the given color from the list of color presets of this color picker.
 */
 func (self Instance) ErasePreset(color Color.RGBA) { //gd:ColorPicker.erase_preset
-	class(self).ErasePreset(gd.Color(color))
+	class(self).ErasePreset(Color.RGBA(color))
 }
 
 /*
@@ -83,14 +87,14 @@ Adds the given color to a list of color recent presets so that it can be picked 
 [b]Note:[/b] The recent presets list is only for [i]this[/i] color picker.
 */
 func (self Instance) AddRecentPreset(color Color.RGBA) { //gd:ColorPicker.add_recent_preset
-	class(self).AddRecentPreset(gd.Color(color))
+	class(self).AddRecentPreset(Color.RGBA(color))
 }
 
 /*
 Removes the given color from the list of color recent presets of this color picker.
 */
 func (self Instance) EraseRecentPreset(color Color.RGBA) { //gd:ColorPicker.erase_recent_preset
-	class(self).EraseRecentPreset(gd.Color(color))
+	class(self).EraseRecentPreset(Color.RGBA(color))
 }
 
 /*
@@ -123,7 +127,7 @@ func (self Instance) Color() Color.RGBA {
 }
 
 func (self Instance) SetColor(value Color.RGBA) {
-	class(self).SetPickColor(gd.Color(value))
+	class(self).SetPickColor(Color.RGBA(value))
 }
 
 func (self Instance) EditAlpha() bool {
@@ -207,7 +211,7 @@ func (self Instance) SetPresetsVisible(value bool) {
 }
 
 //go:nosplit
-func (self class) SetPickColor(color gd.Color) { //gd:ColorPicker.set_pick_color
+func (self class) SetPickColor(color Color.RGBA) { //gd:ColorPicker.set_pick_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -216,9 +220,9 @@ func (self class) SetPickColor(color gd.Color) { //gd:ColorPicker.set_pick_color
 }
 
 //go:nosplit
-func (self class) GetPickColor() gd.Color { //gd:ColorPicker.get_pick_color
+func (self class) GetPickColor() Color.RGBA { //gd:ColorPicker.get_pick_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_get_pick_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -401,7 +405,7 @@ Adds the given color to a list of color presets. The presets are displayed in th
 [b]Note:[/b] The presets list is only for [i]this[/i] color picker.
 */
 //go:nosplit
-func (self class) AddPreset(color gd.Color) { //gd:ColorPicker.add_preset
+func (self class) AddPreset(color Color.RGBA) { //gd:ColorPicker.add_preset
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -413,7 +417,7 @@ func (self class) AddPreset(color gd.Color) { //gd:ColorPicker.add_preset
 Removes the given color from the list of color presets of this color picker.
 */
 //go:nosplit
-func (self class) ErasePreset(color gd.Color) { //gd:ColorPicker.erase_preset
+func (self class) ErasePreset(color Color.RGBA) { //gd:ColorPicker.erase_preset
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -439,7 +443,7 @@ Adds the given color to a list of color recent presets so that it can be picked 
 [b]Note:[/b] The recent presets list is only for [i]this[/i] color picker.
 */
 //go:nosplit
-func (self class) AddRecentPreset(color gd.Color) { //gd:ColorPicker.add_recent_preset
+func (self class) AddRecentPreset(color Color.RGBA) { //gd:ColorPicker.add_recent_preset
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -451,7 +455,7 @@ func (self class) AddRecentPreset(color gd.Color) { //gd:ColorPicker.add_recent_
 Removes the given color from the list of color recent presets of this color picker.
 */
 //go:nosplit
-func (self class) EraseRecentPreset(color gd.Color) { //gd:ColorPicker.erase_recent_preset
+func (self class) EraseRecentPreset(color Color.RGBA) { //gd:ColorPicker.erase_recent_preset
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil

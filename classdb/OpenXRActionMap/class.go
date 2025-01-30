@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -69,7 +73,7 @@ func (self Instance) FindActionSet(name string) [1]gdclass.OpenXRActionSet { //g
 Retrieve the action set at this index.
 */
 func (self Instance) GetActionSet(idx int) [1]gdclass.OpenXRActionSet { //gd:OpenXRActionMap.get_action_set
-	return [1]gdclass.OpenXRActionSet(class(self).GetActionSet(gd.Int(idx)))
+	return [1]gdclass.OpenXRActionSet(class(self).GetActionSet(int64(idx)))
 }
 
 /*
@@ -104,7 +108,7 @@ func (self Instance) FindInteractionProfile(name string) [1]gdclass.OpenXRIntera
 Get the interaction profile at this index.
 */
 func (self Instance) GetInteractionProfile(idx int) [1]gdclass.OpenXRInteractionProfile { //gd:OpenXRActionMap.get_interaction_profile
-	return [1]gdclass.OpenXRInteractionProfile(class(self).GetInteractionProfile(gd.Int(idx)))
+	return [1]gdclass.OpenXRInteractionProfile(class(self).GetInteractionProfile(int64(idx)))
 }
 
 /*
@@ -186,9 +190,9 @@ func (self class) GetActionSets() Array.Any { //gd:OpenXRActionMap.get_action_se
 Retrieve the number of actions sets in our action map.
 */
 //go:nosplit
-func (self class) GetActionSetCount() gd.Int { //gd:OpenXRActionMap.get_action_set_count
+func (self class) GetActionSetCount() int64 { //gd:OpenXRActionMap.get_action_set_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_get_action_set_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -213,7 +217,7 @@ func (self class) FindActionSet(name String.Readable) [1]gdclass.OpenXRActionSet
 Retrieve the action set at this index.
 */
 //go:nosplit
-func (self class) GetActionSet(idx gd.Int) [1]gdclass.OpenXRActionSet { //gd:OpenXRActionMap.get_action_set
+func (self class) GetActionSet(idx int64) [1]gdclass.OpenXRActionSet { //gd:OpenXRActionMap.get_action_set
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -270,9 +274,9 @@ func (self class) GetInteractionProfiles() Array.Any { //gd:OpenXRActionMap.get_
 Retrieve the number of interaction profiles in our action map.
 */
 //go:nosplit
-func (self class) GetInteractionProfileCount() gd.Int { //gd:OpenXRActionMap.get_interaction_profile_count
+func (self class) GetInteractionProfileCount() int64 { //gd:OpenXRActionMap.get_interaction_profile_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_get_interaction_profile_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -297,7 +301,7 @@ func (self class) FindInteractionProfile(name String.Readable) [1]gdclass.OpenXR
 Get the interaction profile at this index.
 */
 //go:nosplit
-func (self class) GetInteractionProfile(idx gd.Int) [1]gdclass.OpenXRInteractionProfile { //gd:OpenXRActionMap.get_interaction_profile
+func (self class) GetInteractionProfile(idx int64) [1]gdclass.OpenXRInteractionProfile { //gd:OpenXRActionMap.get_interaction_profile
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

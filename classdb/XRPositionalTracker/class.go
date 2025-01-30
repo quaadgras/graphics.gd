@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/XRTracker"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/XRTracker"
-import "graphics.gd/variant/Transform3D"
-import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -80,7 +83,7 @@ func (self Instance) InvalidatePose(name string) { //gd:XRPositionalTracker.inva
 Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [XRInterface] implementation and should not be used directly.
 */
 func (self Instance) SetPose(name string, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence gdclass.XRPoseTrackingConfidence) { //gd:XRPositionalTracker.set_pose
-	class(self).SetPose(String.Name(String.New(name)), gd.Transform3D(transform), gd.Vector3(linear_velocity), gd.Vector3(angular_velocity), tracking_confidence)
+	class(self).SetPose(String.Name(String.New(name)), Transform3D.BasisOrigin(transform), Vector3.XYZ(linear_velocity), Vector3.XYZ(angular_velocity), tracking_confidence)
 }
 
 /*
@@ -94,7 +97,7 @@ func (self Instance) GetInput(name string) any { //gd:XRPositionalTracker.get_in
 Changes the value for the given input. This method is called by a [XRInterface] implementation and should not be used directly.
 */
 func (self Instance) SetInput(name string, value any) { //gd:XRPositionalTracker.set_input
-	class(self).SetInput(String.Name(String.New(name)), gd.NewVariant(value))
+	class(self).SetInput(String.Name(String.New(name)), variant.New(value))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -214,7 +217,7 @@ func (self class) InvalidatePose(name String.Name) { //gd:XRPositionalTracker.in
 Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [XRInterface] implementation and should not be used directly.
 */
 //go:nosplit
-func (self class) SetPose(name String.Name, transform gd.Transform3D, linear_velocity gd.Vector3, angular_velocity gd.Vector3, tracking_confidence gdclass.XRPoseTrackingConfidence) { //gd:XRPositionalTracker.set_pose
+func (self class) SetPose(name String.Name, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence gdclass.XRPoseTrackingConfidence) { //gd:XRPositionalTracker.set_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, transform)
@@ -230,12 +233,12 @@ func (self class) SetPose(name String.Name, transform gd.Transform3D, linear_vel
 Returns an input for this tracker. It can return a boolean, float or [Vector2] value depending on whether the input is a button, trigger or thumbstick/thumbpad.
 */
 //go:nosplit
-func (self class) GetInput(name String.Name) gd.Variant { //gd:XRPositionalTracker.get_input
+func (self class) GetInput(name String.Name) variant.Any { //gd:XRPositionalTracker.get_input
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_input, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -244,10 +247,10 @@ func (self class) GetInput(name String.Name) gd.Variant { //gd:XRPositionalTrack
 Changes the value for the given input. This method is called by a [XRInterface] implementation and should not be used directly.
 */
 //go:nosplit
-func (self class) SetInput(name String.Name, value gd.Variant) { //gd:XRPositionalTracker.set_input
+func (self class) SetInput(name String.Name, value variant.Any) { //gd:XRPositionalTracker.set_input
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -9,22 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CollisionObject3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/PhysicsBody3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/PhysicsBody3D"
-import "graphics.gd/classdb/CollisionObject3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector3"
-import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -84,10 +87,10 @@ func (Instance) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass
 	}
 }
 func (self Instance) ApplyCentralImpulse(impulse Vector3.XYZ) { //gd:PhysicalBone3D.apply_central_impulse
-	class(self).ApplyCentralImpulse(gd.Vector3(impulse))
+	class(self).ApplyCentralImpulse(Vector3.XYZ(impulse))
 }
 func (self Instance) ApplyImpulse(impulse Vector3.XYZ) { //gd:PhysicalBone3D.apply_impulse
-	class(self).ApplyImpulse(gd.Vector3(impulse), gd.Vector3(gd.Vector3{0, 0, 0}))
+	class(self).ApplyImpulse(Vector3.XYZ(impulse), Vector3.XYZ(gd.Vector3{0, 0, 0}))
 }
 func (self Instance) GetSimulatePhysics() bool { //gd:PhysicalBone3D.get_simulate_physics
 	return bool(class(self).GetSimulatePhysics())
@@ -130,7 +133,7 @@ func (self Instance) JointOffset() Transform3D.BasisOrigin {
 }
 
 func (self Instance) SetJointOffset(value Transform3D.BasisOrigin) {
-	class(self).SetJointOffset(gd.Transform3D(value))
+	class(self).SetJointOffset(Transform3D.BasisOrigin(value))
 }
 
 func (self Instance) JointRotation() Vector3.XYZ {
@@ -138,7 +141,7 @@ func (self Instance) JointRotation() Vector3.XYZ {
 }
 
 func (self Instance) SetJointRotation(value Vector3.XYZ) {
-	class(self).SetJointRotation(gd.Vector3(value))
+	class(self).SetJointRotation(Vector3.XYZ(value))
 }
 
 func (self Instance) BodyOffset() Transform3D.BasisOrigin {
@@ -146,7 +149,7 @@ func (self Instance) BodyOffset() Transform3D.BasisOrigin {
 }
 
 func (self Instance) SetBodyOffset(value Transform3D.BasisOrigin) {
-	class(self).SetBodyOffset(gd.Transform3D(value))
+	class(self).SetBodyOffset(Transform3D.BasisOrigin(value))
 }
 
 func (self Instance) Mass() Float.X {
@@ -154,7 +157,7 @@ func (self Instance) Mass() Float.X {
 }
 
 func (self Instance) SetMass(value Float.X) {
-	class(self).SetMass(gd.Float(value))
+	class(self).SetMass(float64(value))
 }
 
 func (self Instance) Friction() Float.X {
@@ -162,7 +165,7 @@ func (self Instance) Friction() Float.X {
 }
 
 func (self Instance) SetFriction(value Float.X) {
-	class(self).SetFriction(gd.Float(value))
+	class(self).SetFriction(float64(value))
 }
 
 func (self Instance) Bounce() Float.X {
@@ -170,7 +173,7 @@ func (self Instance) Bounce() Float.X {
 }
 
 func (self Instance) SetBounce(value Float.X) {
-	class(self).SetBounce(gd.Float(value))
+	class(self).SetBounce(float64(value))
 }
 
 func (self Instance) GravityScale() Float.X {
@@ -178,7 +181,7 @@ func (self Instance) GravityScale() Float.X {
 }
 
 func (self Instance) SetGravityScale(value Float.X) {
-	class(self).SetGravityScale(gd.Float(value))
+	class(self).SetGravityScale(float64(value))
 }
 
 func (self Instance) CustomIntegrator() bool {
@@ -202,7 +205,7 @@ func (self Instance) LinearDamp() Float.X {
 }
 
 func (self Instance) SetLinearDamp(value Float.X) {
-	class(self).SetLinearDamp(gd.Float(value))
+	class(self).SetLinearDamp(float64(value))
 }
 
 func (self Instance) AngularDampMode() gdclass.PhysicalBone3DDampMode {
@@ -218,7 +221,7 @@ func (self Instance) AngularDamp() Float.X {
 }
 
 func (self Instance) SetAngularDamp(value Float.X) {
-	class(self).SetAngularDamp(gd.Float(value))
+	class(self).SetAngularDamp(float64(value))
 }
 
 func (self Instance) LinearVelocity() Vector3.XYZ {
@@ -226,7 +229,7 @@ func (self Instance) LinearVelocity() Vector3.XYZ {
 }
 
 func (self Instance) SetLinearVelocity(value Vector3.XYZ) {
-	class(self).SetLinearVelocity(gd.Vector3(value))
+	class(self).SetLinearVelocity(Vector3.XYZ(value))
 }
 
 func (self Instance) AngularVelocity() Vector3.XYZ {
@@ -234,7 +237,7 @@ func (self Instance) AngularVelocity() Vector3.XYZ {
 }
 
 func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
-	class(self).SetAngularVelocity(gd.Vector3(value))
+	class(self).SetAngularVelocity(Vector3.XYZ(value))
 }
 
 func (self Instance) CanSleep() bool {
@@ -259,7 +262,7 @@ func (class) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass.Ph
 }
 
 //go:nosplit
-func (self class) ApplyCentralImpulse(impulse gd.Vector3) { //gd:PhysicalBone3D.apply_central_impulse
+func (self class) ApplyCentralImpulse(impulse Vector3.XYZ) { //gd:PhysicalBone3D.apply_central_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
 	var r_ret = callframe.Nil
@@ -268,7 +271,7 @@ func (self class) ApplyCentralImpulse(impulse gd.Vector3) { //gd:PhysicalBone3D.
 }
 
 //go:nosplit
-func (self class) ApplyImpulse(impulse gd.Vector3, position gd.Vector3) { //gd:PhysicalBone3D.apply_impulse
+func (self class) ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicalBone3D.apply_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
 	callframe.Arg(frame, position)
@@ -297,7 +300,7 @@ func (self class) GetJointType() gdclass.PhysicalBone3DJointType { //gd:Physical
 }
 
 //go:nosplit
-func (self class) SetJointOffset(offset gd.Transform3D) { //gd:PhysicalBone3D.set_joint_offset
+func (self class) SetJointOffset(offset Transform3D.BasisOrigin) { //gd:PhysicalBone3D.set_joint_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -306,9 +309,9 @@ func (self class) SetJointOffset(offset gd.Transform3D) { //gd:PhysicalBone3D.se
 }
 
 //go:nosplit
-func (self class) GetJointOffset() gd.Transform3D { //gd:PhysicalBone3D.get_joint_offset
+func (self class) GetJointOffset() Transform3D.BasisOrigin { //gd:PhysicalBone3D.get_joint_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_joint_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -316,7 +319,7 @@ func (self class) GetJointOffset() gd.Transform3D { //gd:PhysicalBone3D.get_join
 }
 
 //go:nosplit
-func (self class) SetJointRotation(euler gd.Vector3) { //gd:PhysicalBone3D.set_joint_rotation
+func (self class) SetJointRotation(euler Vector3.XYZ) { //gd:PhysicalBone3D.set_joint_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, euler)
 	var r_ret = callframe.Nil
@@ -325,9 +328,9 @@ func (self class) SetJointRotation(euler gd.Vector3) { //gd:PhysicalBone3D.set_j
 }
 
 //go:nosplit
-func (self class) GetJointRotation() gd.Vector3 { //gd:PhysicalBone3D.get_joint_rotation
+func (self class) GetJointRotation() Vector3.XYZ { //gd:PhysicalBone3D.get_joint_rotation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_joint_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -335,7 +338,7 @@ func (self class) GetJointRotation() gd.Vector3 { //gd:PhysicalBone3D.get_joint_
 }
 
 //go:nosplit
-func (self class) SetBodyOffset(offset gd.Transform3D) { //gd:PhysicalBone3D.set_body_offset
+func (self class) SetBodyOffset(offset Transform3D.BasisOrigin) { //gd:PhysicalBone3D.set_body_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -344,9 +347,9 @@ func (self class) SetBodyOffset(offset gd.Transform3D) { //gd:PhysicalBone3D.set
 }
 
 //go:nosplit
-func (self class) GetBodyOffset() gd.Transform3D { //gd:PhysicalBone3D.get_body_offset
+func (self class) GetBodyOffset() Transform3D.BasisOrigin { //gd:PhysicalBone3D.get_body_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_body_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -374,9 +377,9 @@ func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBone3D.is_simulating
 }
 
 //go:nosplit
-func (self class) GetBoneId() gd.Int { //gd:PhysicalBone3D.get_bone_id
+func (self class) GetBoneId() int64 { //gd:PhysicalBone3D.get_bone_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_bone_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -384,7 +387,7 @@ func (self class) GetBoneId() gd.Int { //gd:PhysicalBone3D.get_bone_id
 }
 
 //go:nosplit
-func (self class) SetMass(mass gd.Float) { //gd:PhysicalBone3D.set_mass
+func (self class) SetMass(mass float64) { //gd:PhysicalBone3D.set_mass
 	var frame = callframe.New()
 	callframe.Arg(frame, mass)
 	var r_ret = callframe.Nil
@@ -393,9 +396,9 @@ func (self class) SetMass(mass gd.Float) { //gd:PhysicalBone3D.set_mass
 }
 
 //go:nosplit
-func (self class) GetMass() gd.Float { //gd:PhysicalBone3D.get_mass
+func (self class) GetMass() float64 { //gd:PhysicalBone3D.get_mass
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -403,7 +406,7 @@ func (self class) GetMass() gd.Float { //gd:PhysicalBone3D.get_mass
 }
 
 //go:nosplit
-func (self class) SetFriction(friction gd.Float) { //gd:PhysicalBone3D.set_friction
+func (self class) SetFriction(friction float64) { //gd:PhysicalBone3D.set_friction
 	var frame = callframe.New()
 	callframe.Arg(frame, friction)
 	var r_ret = callframe.Nil
@@ -412,9 +415,9 @@ func (self class) SetFriction(friction gd.Float) { //gd:PhysicalBone3D.set_frict
 }
 
 //go:nosplit
-func (self class) GetFriction() gd.Float { //gd:PhysicalBone3D.get_friction
+func (self class) GetFriction() float64 { //gd:PhysicalBone3D.get_friction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_friction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -422,7 +425,7 @@ func (self class) GetFriction() gd.Float { //gd:PhysicalBone3D.get_friction
 }
 
 //go:nosplit
-func (self class) SetBounce(bounce gd.Float) { //gd:PhysicalBone3D.set_bounce
+func (self class) SetBounce(bounce float64) { //gd:PhysicalBone3D.set_bounce
 	var frame = callframe.New()
 	callframe.Arg(frame, bounce)
 	var r_ret = callframe.Nil
@@ -431,9 +434,9 @@ func (self class) SetBounce(bounce gd.Float) { //gd:PhysicalBone3D.set_bounce
 }
 
 //go:nosplit
-func (self class) GetBounce() gd.Float { //gd:PhysicalBone3D.get_bounce
+func (self class) GetBounce() float64 { //gd:PhysicalBone3D.get_bounce
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_bounce, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -441,7 +444,7 @@ func (self class) GetBounce() gd.Float { //gd:PhysicalBone3D.get_bounce
 }
 
 //go:nosplit
-func (self class) SetGravityScale(gravity_scale gd.Float) { //gd:PhysicalBone3D.set_gravity_scale
+func (self class) SetGravityScale(gravity_scale float64) { //gd:PhysicalBone3D.set_gravity_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, gravity_scale)
 	var r_ret = callframe.Nil
@@ -450,9 +453,9 @@ func (self class) SetGravityScale(gravity_scale gd.Float) { //gd:PhysicalBone3D.
 }
 
 //go:nosplit
-func (self class) GetGravityScale() gd.Float { //gd:PhysicalBone3D.get_gravity_scale
+func (self class) GetGravityScale() float64 { //gd:PhysicalBone3D.get_gravity_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_gravity_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -498,7 +501,7 @@ func (self class) GetAngularDampMode() gdclass.PhysicalBone3DDampMode { //gd:Phy
 }
 
 //go:nosplit
-func (self class) SetLinearDamp(linear_damp gd.Float) { //gd:PhysicalBone3D.set_linear_damp
+func (self class) SetLinearDamp(linear_damp float64) { //gd:PhysicalBone3D.set_linear_damp
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_damp)
 	var r_ret = callframe.Nil
@@ -507,9 +510,9 @@ func (self class) SetLinearDamp(linear_damp gd.Float) { //gd:PhysicalBone3D.set_
 }
 
 //go:nosplit
-func (self class) GetLinearDamp() gd.Float { //gd:PhysicalBone3D.get_linear_damp
+func (self class) GetLinearDamp() float64 { //gd:PhysicalBone3D.get_linear_damp
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_linear_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -517,7 +520,7 @@ func (self class) GetLinearDamp() gd.Float { //gd:PhysicalBone3D.get_linear_damp
 }
 
 //go:nosplit
-func (self class) SetAngularDamp(angular_damp gd.Float) { //gd:PhysicalBone3D.set_angular_damp
+func (self class) SetAngularDamp(angular_damp float64) { //gd:PhysicalBone3D.set_angular_damp
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_damp)
 	var r_ret = callframe.Nil
@@ -526,9 +529,9 @@ func (self class) SetAngularDamp(angular_damp gd.Float) { //gd:PhysicalBone3D.se
 }
 
 //go:nosplit
-func (self class) GetAngularDamp() gd.Float { //gd:PhysicalBone3D.get_angular_damp
+func (self class) GetAngularDamp() float64 { //gd:PhysicalBone3D.get_angular_damp
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_angular_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -536,7 +539,7 @@ func (self class) GetAngularDamp() gd.Float { //gd:PhysicalBone3D.get_angular_da
 }
 
 //go:nosplit
-func (self class) SetLinearVelocity(linear_velocity gd.Vector3) { //gd:PhysicalBone3D.set_linear_velocity
+func (self class) SetLinearVelocity(linear_velocity Vector3.XYZ) { //gd:PhysicalBone3D.set_linear_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_velocity)
 	var r_ret = callframe.Nil
@@ -545,9 +548,9 @@ func (self class) SetLinearVelocity(linear_velocity gd.Vector3) { //gd:PhysicalB
 }
 
 //go:nosplit
-func (self class) GetLinearVelocity() gd.Vector3 { //gd:PhysicalBone3D.get_linear_velocity
+func (self class) GetLinearVelocity() Vector3.XYZ { //gd:PhysicalBone3D.get_linear_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -555,7 +558,7 @@ func (self class) GetLinearVelocity() gd.Vector3 { //gd:PhysicalBone3D.get_linea
 }
 
 //go:nosplit
-func (self class) SetAngularVelocity(angular_velocity gd.Vector3) { //gd:PhysicalBone3D.set_angular_velocity
+func (self class) SetAngularVelocity(angular_velocity Vector3.XYZ) { //gd:PhysicalBone3D.set_angular_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_velocity)
 	var r_ret = callframe.Nil
@@ -564,9 +567,9 @@ func (self class) SetAngularVelocity(angular_velocity gd.Vector3) { //gd:Physica
 }
 
 //go:nosplit
-func (self class) GetAngularVelocity() gd.Vector3 { //gd:PhysicalBone3D.get_angular_velocity
+func (self class) GetAngularVelocity() Vector3.XYZ { //gd:PhysicalBone3D.get_angular_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

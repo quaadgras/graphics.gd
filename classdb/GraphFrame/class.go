@@ -9,21 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/GraphElement"
+import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/GraphElement"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -102,7 +106,7 @@ func (self Instance) AutoshrinkMargin() int {
 }
 
 func (self Instance) SetAutoshrinkMargin(value int) {
-	class(self).SetAutoshrinkMargin(gd.Int(value))
+	class(self).SetAutoshrinkMargin(int64(value))
 }
 
 func (self Instance) DragMargin() int {
@@ -110,7 +114,7 @@ func (self Instance) DragMargin() int {
 }
 
 func (self Instance) SetDragMargin(value int) {
-	class(self).SetDragMargin(gd.Int(value))
+	class(self).SetDragMargin(int64(value))
 }
 
 func (self Instance) TintColorEnabled() bool {
@@ -126,7 +130,7 @@ func (self Instance) TintColor() Color.RGBA {
 }
 
 func (self Instance) SetTintColor(value Color.RGBA) {
-	class(self).SetTintColor(gd.Color(value))
+	class(self).SetTintColor(Color.RGBA(value))
 }
 
 //go:nosplit
@@ -182,7 +186,7 @@ func (self class) IsAutoshrinkEnabled() bool { //gd:GraphFrame.is_autoshrink_ena
 }
 
 //go:nosplit
-func (self class) SetAutoshrinkMargin(autoshrink_margin gd.Int) { //gd:GraphFrame.set_autoshrink_margin
+func (self class) SetAutoshrinkMargin(autoshrink_margin int64) { //gd:GraphFrame.set_autoshrink_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, autoshrink_margin)
 	var r_ret = callframe.Nil
@@ -191,9 +195,9 @@ func (self class) SetAutoshrinkMargin(autoshrink_margin gd.Int) { //gd:GraphFram
 }
 
 //go:nosplit
-func (self class) GetAutoshrinkMargin() gd.Int { //gd:GraphFrame.get_autoshrink_margin
+func (self class) GetAutoshrinkMargin() int64 { //gd:GraphFrame.get_autoshrink_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_get_autoshrink_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -201,7 +205,7 @@ func (self class) GetAutoshrinkMargin() gd.Int { //gd:GraphFrame.get_autoshrink_
 }
 
 //go:nosplit
-func (self class) SetDragMargin(drag_margin gd.Int) { //gd:GraphFrame.set_drag_margin
+func (self class) SetDragMargin(drag_margin int64) { //gd:GraphFrame.set_drag_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, drag_margin)
 	var r_ret = callframe.Nil
@@ -210,9 +214,9 @@ func (self class) SetDragMargin(drag_margin gd.Int) { //gd:GraphFrame.set_drag_m
 }
 
 //go:nosplit
-func (self class) GetDragMargin() gd.Int { //gd:GraphFrame.get_drag_margin
+func (self class) GetDragMargin() int64 { //gd:GraphFrame.get_drag_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_get_drag_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -239,7 +243,7 @@ func (self class) IsTintColorEnabled() bool { //gd:GraphFrame.is_tint_color_enab
 }
 
 //go:nosplit
-func (self class) SetTintColor(color gd.Color) { //gd:GraphFrame.set_tint_color
+func (self class) SetTintColor(color Color.RGBA) { //gd:GraphFrame.set_tint_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -248,9 +252,9 @@ func (self class) SetTintColor(color gd.Color) { //gd:GraphFrame.set_tint_color
 }
 
 //go:nosplit
-func (self class) GetTintColor() gd.Color { //gd:GraphFrame.get_tint_color
+func (self class) GetTintColor() Color.RGBA { //gd:GraphFrame.get_tint_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_get_tint_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

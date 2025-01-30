@@ -81,13 +81,13 @@ func (obj Instance) NotifyPropertyListChanged() {
 // SetBlockSignals if set to true, the object becomes unable to emit signals. Signal connections will
 // not work, until it is set to false.
 func (obj Instance) SetSignalsBlocked(enable bool) {
-	obj[0].SetBlockSignals(gd.Bool(enable))
+	obj[0].SetBlockSignals(enable)
 }
 
 // SetMessageTranslation if set to true, allows the object to translate messages with tr and tr_n.
 // Enabled by default. See also [Instance.CanTranslateMessages].
 func (obj Instance) SetMessageTranslation(enable bool) {
-	obj[0].SetMessageTranslation(gd.Bool(enable))
+	obj[0].SetMessageTranslation(enable)
 }
 
 // SetScript attaches script to the object, and instantiates it. As a result, the script's _init is called.

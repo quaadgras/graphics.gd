@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/AABB"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -141,7 +144,7 @@ func (self Instance) CustomAabb() AABB.PositionSize {
 }
 
 func (self Instance) SetCustomAabb(value AABB.PositionSize) {
-	class(self).SetCustomAabb(gd.AABB(value))
+	class(self).SetCustomAabb(AABB.PositionSize(value))
 }
 
 func (self Instance) FlipFaces() bool {
@@ -165,7 +168,7 @@ func (self Instance) Uv2Padding() Float.X {
 }
 
 func (self Instance) SetUv2Padding(value Float.X) {
-	class(self).SetUv2Padding(gd.Float(value))
+	class(self).SetUv2Padding(float64(value))
 }
 
 /*
@@ -229,7 +232,7 @@ func (self class) GetMeshArrays() Array.Any { //gd:PrimitiveMesh.get_mesh_arrays
 }
 
 //go:nosplit
-func (self class) SetCustomAabb(aabb gd.AABB) { //gd:PrimitiveMesh.set_custom_aabb
+func (self class) SetCustomAabb(aabb AABB.PositionSize) { //gd:PrimitiveMesh.set_custom_aabb
 	var frame = callframe.New()
 	callframe.Arg(frame, aabb)
 	var r_ret = callframe.Nil
@@ -238,9 +241,9 @@ func (self class) SetCustomAabb(aabb gd.AABB) { //gd:PrimitiveMesh.set_custom_aa
 }
 
 //go:nosplit
-func (self class) GetCustomAabb() gd.AABB { //gd:PrimitiveMesh.get_custom_aabb
+func (self class) GetCustomAabb() AABB.PositionSize { //gd:PrimitiveMesh.get_custom_aabb
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.AABB](frame)
+	var r_ret = callframe.Ret[AABB.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PrimitiveMesh.Bind_get_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -286,7 +289,7 @@ func (self class) GetAddUv2() bool { //gd:PrimitiveMesh.get_add_uv2
 }
 
 //go:nosplit
-func (self class) SetUv2Padding(uv2_padding gd.Float) { //gd:PrimitiveMesh.set_uv2_padding
+func (self class) SetUv2Padding(uv2_padding float64) { //gd:PrimitiveMesh.set_uv2_padding
 	var frame = callframe.New()
 	callframe.Arg(frame, uv2_padding)
 	var r_ret = callframe.Nil
@@ -295,9 +298,9 @@ func (self class) SetUv2Padding(uv2_padding gd.Float) { //gd:PrimitiveMesh.set_u
 }
 
 //go:nosplit
-func (self class) GetUv2Padding() gd.Float { //gd:PrimitiveMesh.get_uv2_padding
+func (self class) GetUv2Padding() float64 { //gd:PrimitiveMesh.get_uv2_padding
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PrimitiveMesh.Bind_get_uv2_padding, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -122,7 +125,7 @@ func (self Instance) AudioTrack() int {
 }
 
 func (self Instance) SetAudioTrack(value int) {
-	class(self).SetAudioTrack(gd.Int(value))
+	class(self).SetAudioTrack(int64(value))
 }
 
 func (self Instance) Stream() [1]gdclass.VideoStream {
@@ -138,7 +141,7 @@ func (self Instance) VolumeDb() Float.X {
 }
 
 func (self Instance) SetVolumeDb(value Float.X) {
-	class(self).SetVolumeDb(gd.Float(value))
+	class(self).SetVolumeDb(float64(value))
 }
 
 func (self Instance) Volume() Float.X {
@@ -146,7 +149,7 @@ func (self Instance) Volume() Float.X {
 }
 
 func (self Instance) SetVolume(value Float.X) {
-	class(self).SetVolume(gd.Float(value))
+	class(self).SetVolume(float64(value))
 }
 
 func (self Instance) Autoplay() bool {
@@ -186,7 +189,7 @@ func (self Instance) BufferingMsec() int {
 }
 
 func (self Instance) SetBufferingMsec(value int) {
-	class(self).SetBufferingMsec(gd.Int(value))
+	class(self).SetBufferingMsec(int64(value))
 }
 
 func (self Instance) StreamPosition() Float.X {
@@ -194,7 +197,7 @@ func (self Instance) StreamPosition() Float.X {
 }
 
 func (self Instance) SetStreamPosition(value Float.X) {
-	class(self).SetStreamPosition(gd.Float(value))
+	class(self).SetStreamPosition(float64(value))
 }
 
 func (self Instance) Bus() string {
@@ -300,7 +303,7 @@ func (self class) HasLoop() bool { //gd:VideoStreamPlayer.has_loop
 }
 
 //go:nosplit
-func (self class) SetVolume(volume gd.Float) { //gd:VideoStreamPlayer.set_volume
+func (self class) SetVolume(volume float64) { //gd:VideoStreamPlayer.set_volume
 	var frame = callframe.New()
 	callframe.Arg(frame, volume)
 	var r_ret = callframe.Nil
@@ -309,9 +312,9 @@ func (self class) SetVolume(volume gd.Float) { //gd:VideoStreamPlayer.set_volume
 }
 
 //go:nosplit
-func (self class) GetVolume() gd.Float { //gd:VideoStreamPlayer.get_volume
+func (self class) GetVolume() float64 { //gd:VideoStreamPlayer.get_volume
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_get_volume, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -319,7 +322,7 @@ func (self class) GetVolume() gd.Float { //gd:VideoStreamPlayer.get_volume
 }
 
 //go:nosplit
-func (self class) SetVolumeDb(db gd.Float) { //gd:VideoStreamPlayer.set_volume_db
+func (self class) SetVolumeDb(db float64) { //gd:VideoStreamPlayer.set_volume_db
 	var frame = callframe.New()
 	callframe.Arg(frame, db)
 	var r_ret = callframe.Nil
@@ -328,9 +331,9 @@ func (self class) SetVolumeDb(db gd.Float) { //gd:VideoStreamPlayer.set_volume_d
 }
 
 //go:nosplit
-func (self class) GetVolumeDb() gd.Float { //gd:VideoStreamPlayer.get_volume_db
+func (self class) GetVolumeDb() float64 { //gd:VideoStreamPlayer.get_volume_db
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_get_volume_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -338,7 +341,7 @@ func (self class) GetVolumeDb() gd.Float { //gd:VideoStreamPlayer.get_volume_db
 }
 
 //go:nosplit
-func (self class) SetAudioTrack(track gd.Int) { //gd:VideoStreamPlayer.set_audio_track
+func (self class) SetAudioTrack(track int64) { //gd:VideoStreamPlayer.set_audio_track
 	var frame = callframe.New()
 	callframe.Arg(frame, track)
 	var r_ret = callframe.Nil
@@ -347,9 +350,9 @@ func (self class) SetAudioTrack(track gd.Int) { //gd:VideoStreamPlayer.set_audio
 }
 
 //go:nosplit
-func (self class) GetAudioTrack() gd.Int { //gd:VideoStreamPlayer.get_audio_track
+func (self class) GetAudioTrack() int64 { //gd:VideoStreamPlayer.get_audio_track
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_get_audio_track, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -374,9 +377,9 @@ The length of the current stream, in seconds.
 [b]Note:[/b] For [VideoStreamTheora] streams (the built-in format supported by Godot), this value will always be zero, as getting the stream length is not implemented yet. The feature may be supported by video formats implemented by a GDExtension add-on.
 */
 //go:nosplit
-func (self class) GetStreamLength() gd.Float { //gd:VideoStreamPlayer.get_stream_length
+func (self class) GetStreamLength() float64 { //gd:VideoStreamPlayer.get_stream_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_get_stream_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -384,7 +387,7 @@ func (self class) GetStreamLength() gd.Float { //gd:VideoStreamPlayer.get_stream
 }
 
 //go:nosplit
-func (self class) SetStreamPosition(position gd.Float) { //gd:VideoStreamPlayer.set_stream_position
+func (self class) SetStreamPosition(position float64) { //gd:VideoStreamPlayer.set_stream_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -393,9 +396,9 @@ func (self class) SetStreamPosition(position gd.Float) { //gd:VideoStreamPlayer.
 }
 
 //go:nosplit
-func (self class) GetStreamPosition() gd.Float { //gd:VideoStreamPlayer.get_stream_position
+func (self class) GetStreamPosition() float64 { //gd:VideoStreamPlayer.get_stream_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_get_stream_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -441,7 +444,7 @@ func (self class) HasExpand() bool { //gd:VideoStreamPlayer.has_expand
 }
 
 //go:nosplit
-func (self class) SetBufferingMsec(msec gd.Int) { //gd:VideoStreamPlayer.set_buffering_msec
+func (self class) SetBufferingMsec(msec int64) { //gd:VideoStreamPlayer.set_buffering_msec
 	var frame = callframe.New()
 	callframe.Arg(frame, msec)
 	var r_ret = callframe.Nil
@@ -450,9 +453,9 @@ func (self class) SetBufferingMsec(msec gd.Int) { //gd:VideoStreamPlayer.set_buf
 }
 
 //go:nosplit
-func (self class) GetBufferingMsec() gd.Int { //gd:VideoStreamPlayer.get_buffering_msec
+func (self class) GetBufferingMsec() int64 { //gd:VideoStreamPlayer.get_buffering_msec
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_get_buffering_msec, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

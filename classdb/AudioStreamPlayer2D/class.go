@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -59,14 +62,14 @@ type Any interface {
 Queues the audio to play on the next physics frame, from the given position [param from_position], in seconds.
 */
 func (self Instance) Play() { //gd:AudioStreamPlayer2D.play
-	class(self).Play(gd.Float(0.0))
+	class(self).Play(float64(0.0))
 }
 
 /*
 Sets the position from which audio will be played, in seconds.
 */
 func (self Instance) SeekTo(to_position Float.X) { //gd:AudioStreamPlayer2D.seek
-	class(self).SeekTo(gd.Float(to_position))
+	class(self).SeekTo(float64(to_position))
 }
 
 /*
@@ -128,7 +131,7 @@ func (self Instance) VolumeDb() Float.X {
 }
 
 func (self Instance) SetVolumeDb(value Float.X) {
-	class(self).SetVolumeDb(gd.Float(value))
+	class(self).SetVolumeDb(float64(value))
 }
 
 func (self Instance) PitchScale() Float.X {
@@ -136,7 +139,7 @@ func (self Instance) PitchScale() Float.X {
 }
 
 func (self Instance) SetPitchScale(value Float.X) {
-	class(self).SetPitchScale(gd.Float(value))
+	class(self).SetPitchScale(float64(value))
 }
 
 func (self Instance) Playing() bool {
@@ -164,7 +167,7 @@ func (self Instance) MaxDistance() Float.X {
 }
 
 func (self Instance) SetMaxDistance(value Float.X) {
-	class(self).SetMaxDistance(gd.Float(value))
+	class(self).SetMaxDistance(float64(value))
 }
 
 func (self Instance) Attenuation() Float.X {
@@ -172,7 +175,7 @@ func (self Instance) Attenuation() Float.X {
 }
 
 func (self Instance) SetAttenuation(value Float.X) {
-	class(self).SetAttenuation(gd.Float(value))
+	class(self).SetAttenuation(float64(value))
 }
 
 func (self Instance) MaxPolyphony() int {
@@ -180,7 +183,7 @@ func (self Instance) MaxPolyphony() int {
 }
 
 func (self Instance) SetMaxPolyphony(value int) {
-	class(self).SetMaxPolyphony(gd.Int(value))
+	class(self).SetMaxPolyphony(int64(value))
 }
 
 func (self Instance) PanningStrength() Float.X {
@@ -188,7 +191,7 @@ func (self Instance) PanningStrength() Float.X {
 }
 
 func (self Instance) SetPanningStrength(value Float.X) {
-	class(self).SetPanningStrength(gd.Float(value))
+	class(self).SetPanningStrength(float64(value))
 }
 
 func (self Instance) Bus() string {
@@ -204,7 +207,7 @@ func (self Instance) AreaMask() int {
 }
 
 func (self Instance) SetAreaMask(value int) {
-	class(self).SetAreaMask(gd.Int(value))
+	class(self).SetAreaMask(int64(value))
 }
 
 func (self Instance) PlaybackType() gdclass.AudioServerPlaybackType {
@@ -235,7 +238,7 @@ func (self class) GetStream() [1]gdclass.AudioStream { //gd:AudioStreamPlayer2D.
 }
 
 //go:nosplit
-func (self class) SetVolumeDb(volume_db gd.Float) { //gd:AudioStreamPlayer2D.set_volume_db
+func (self class) SetVolumeDb(volume_db float64) { //gd:AudioStreamPlayer2D.set_volume_db
 	var frame = callframe.New()
 	callframe.Arg(frame, volume_db)
 	var r_ret = callframe.Nil
@@ -244,9 +247,9 @@ func (self class) SetVolumeDb(volume_db gd.Float) { //gd:AudioStreamPlayer2D.set
 }
 
 //go:nosplit
-func (self class) GetVolumeDb() gd.Float { //gd:AudioStreamPlayer2D.get_volume_db
+func (self class) GetVolumeDb() float64 { //gd:AudioStreamPlayer2D.get_volume_db
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_volume_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -254,7 +257,7 @@ func (self class) GetVolumeDb() gd.Float { //gd:AudioStreamPlayer2D.get_volume_d
 }
 
 //go:nosplit
-func (self class) SetPitchScale(pitch_scale gd.Float) { //gd:AudioStreamPlayer2D.set_pitch_scale
+func (self class) SetPitchScale(pitch_scale float64) { //gd:AudioStreamPlayer2D.set_pitch_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, pitch_scale)
 	var r_ret = callframe.Nil
@@ -263,9 +266,9 @@ func (self class) SetPitchScale(pitch_scale gd.Float) { //gd:AudioStreamPlayer2D
 }
 
 //go:nosplit
-func (self class) GetPitchScale() gd.Float { //gd:AudioStreamPlayer2D.get_pitch_scale
+func (self class) GetPitchScale() float64 { //gd:AudioStreamPlayer2D.get_pitch_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_pitch_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -276,7 +279,7 @@ func (self class) GetPitchScale() gd.Float { //gd:AudioStreamPlayer2D.get_pitch_
 Queues the audio to play on the next physics frame, from the given position [param from_position], in seconds.
 */
 //go:nosplit
-func (self class) Play(from_position gd.Float) { //gd:AudioStreamPlayer2D.play
+func (self class) Play(from_position float64) { //gd:AudioStreamPlayer2D.play
 	var frame = callframe.New()
 	callframe.Arg(frame, from_position)
 	var r_ret = callframe.Nil
@@ -288,7 +291,7 @@ func (self class) Play(from_position gd.Float) { //gd:AudioStreamPlayer2D.play
 Sets the position from which audio will be played, in seconds.
 */
 //go:nosplit
-func (self class) SeekTo(to_position gd.Float) { //gd:AudioStreamPlayer2D.seek
+func (self class) SeekTo(to_position float64) { //gd:AudioStreamPlayer2D.seek
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	var r_ret = callframe.Nil
@@ -321,9 +324,9 @@ func (self class) IsPlaying() bool { //gd:AudioStreamPlayer2D.is_playing
 Returns the position in the [AudioStream].
 */
 //go:nosplit
-func (self class) GetPlaybackPosition() gd.Float { //gd:AudioStreamPlayer2D.get_playback_position
+func (self class) GetPlaybackPosition() float64 { //gd:AudioStreamPlayer2D.get_playback_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_playback_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -369,7 +372,7 @@ func (self class) IsAutoplayEnabled() bool { //gd:AudioStreamPlayer2D.is_autopla
 }
 
 //go:nosplit
-func (self class) SetMaxDistance(pixels gd.Float) { //gd:AudioStreamPlayer2D.set_max_distance
+func (self class) SetMaxDistance(pixels float64) { //gd:AudioStreamPlayer2D.set_max_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, pixels)
 	var r_ret = callframe.Nil
@@ -378,9 +381,9 @@ func (self class) SetMaxDistance(pixels gd.Float) { //gd:AudioStreamPlayer2D.set
 }
 
 //go:nosplit
-func (self class) GetMaxDistance() gd.Float { //gd:AudioStreamPlayer2D.get_max_distance
+func (self class) GetMaxDistance() float64 { //gd:AudioStreamPlayer2D.get_max_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -388,7 +391,7 @@ func (self class) GetMaxDistance() gd.Float { //gd:AudioStreamPlayer2D.get_max_d
 }
 
 //go:nosplit
-func (self class) SetAttenuation(curve gd.Float) { //gd:AudioStreamPlayer2D.set_attenuation
+func (self class) SetAttenuation(curve float64) { //gd:AudioStreamPlayer2D.set_attenuation
 	var frame = callframe.New()
 	callframe.Arg(frame, curve)
 	var r_ret = callframe.Nil
@@ -397,9 +400,9 @@ func (self class) SetAttenuation(curve gd.Float) { //gd:AudioStreamPlayer2D.set_
 }
 
 //go:nosplit
-func (self class) GetAttenuation() gd.Float { //gd:AudioStreamPlayer2D.get_attenuation
+func (self class) GetAttenuation() float64 { //gd:AudioStreamPlayer2D.get_attenuation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_attenuation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -407,7 +410,7 @@ func (self class) GetAttenuation() gd.Float { //gd:AudioStreamPlayer2D.get_atten
 }
 
 //go:nosplit
-func (self class) SetAreaMask(mask gd.Int) { //gd:AudioStreamPlayer2D.set_area_mask
+func (self class) SetAreaMask(mask int64) { //gd:AudioStreamPlayer2D.set_area_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -416,9 +419,9 @@ func (self class) SetAreaMask(mask gd.Int) { //gd:AudioStreamPlayer2D.set_area_m
 }
 
 //go:nosplit
-func (self class) GetAreaMask() gd.Int { //gd:AudioStreamPlayer2D.get_area_mask
+func (self class) GetAreaMask() int64 { //gd:AudioStreamPlayer2D.get_area_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_area_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -445,7 +448,7 @@ func (self class) GetStreamPaused() bool { //gd:AudioStreamPlayer2D.get_stream_p
 }
 
 //go:nosplit
-func (self class) SetMaxPolyphony(max_polyphony gd.Int) { //gd:AudioStreamPlayer2D.set_max_polyphony
+func (self class) SetMaxPolyphony(max_polyphony int64) { //gd:AudioStreamPlayer2D.set_max_polyphony
 	var frame = callframe.New()
 	callframe.Arg(frame, max_polyphony)
 	var r_ret = callframe.Nil
@@ -454,9 +457,9 @@ func (self class) SetMaxPolyphony(max_polyphony gd.Int) { //gd:AudioStreamPlayer
 }
 
 //go:nosplit
-func (self class) GetMaxPolyphony() gd.Int { //gd:AudioStreamPlayer2D.get_max_polyphony
+func (self class) GetMaxPolyphony() int64 { //gd:AudioStreamPlayer2D.get_max_polyphony
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_max_polyphony, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -464,7 +467,7 @@ func (self class) GetMaxPolyphony() gd.Int { //gd:AudioStreamPlayer2D.get_max_po
 }
 
 //go:nosplit
-func (self class) SetPanningStrength(panning_strength gd.Float) { //gd:AudioStreamPlayer2D.set_panning_strength
+func (self class) SetPanningStrength(panning_strength float64) { //gd:AudioStreamPlayer2D.set_panning_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, panning_strength)
 	var r_ret = callframe.Nil
@@ -473,9 +476,9 @@ func (self class) SetPanningStrength(panning_strength gd.Float) { //gd:AudioStre
 }
 
 //go:nosplit
-func (self class) GetPanningStrength() gd.Float { //gd:AudioStreamPlayer2D.get_panning_strength
+func (self class) GetPanningStrength() float64 { //gd:AudioStreamPlayer2D.get_panning_strength
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_panning_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

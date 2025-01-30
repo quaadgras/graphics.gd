@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -77,7 +80,7 @@ func (self Instance) WorldScale() Float.X {
 }
 
 func (self Instance) SetWorldScale(value Float.X) {
-	class(self).SetWorldScale(gd.Float(value))
+	class(self).SetWorldScale(float64(value))
 }
 
 func (self Instance) Current() bool {
@@ -89,7 +92,7 @@ func (self Instance) SetCurrent(value bool) {
 }
 
 //go:nosplit
-func (self class) SetWorldScale(world_scale gd.Float) { //gd:XROrigin3D.set_world_scale
+func (self class) SetWorldScale(world_scale float64) { //gd:XROrigin3D.set_world_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, world_scale)
 	var r_ret = callframe.Nil
@@ -98,9 +101,9 @@ func (self class) SetWorldScale(world_scale gd.Float) { //gd:XROrigin3D.set_worl
 }
 
 //go:nosplit
-func (self class) GetWorldScale() gd.Float { //gd:XROrigin3D.get_world_scale
+func (self class) GetWorldScale() float64 { //gd:XROrigin3D.get_world_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XROrigin3D.Bind_get_world_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

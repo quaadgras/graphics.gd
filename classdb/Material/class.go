@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -81,7 +85,7 @@ func (Instance) _get_shader_rid(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.Ex
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -156,7 +160,7 @@ func (self Instance) RenderPriority() int {
 }
 
 func (self Instance) SetRenderPriority(value int) {
-	class(self).SetRenderPriority(gd.Int(value))
+	class(self).SetRenderPriority(int64(value))
 }
 
 func (self Instance) NextPass() [1]gdclass.Material {
@@ -170,7 +174,7 @@ func (self Instance) SetNextPass(value [1]gdclass.Material) {
 /*
 Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [Material]'s [Shader].
 */
-func (class) _get_shader_rid(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_shader_rid(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -231,7 +235,7 @@ func (self class) GetNextPass() [1]gdclass.Material { //gd:Material.get_next_pas
 }
 
 //go:nosplit
-func (self class) SetRenderPriority(priority gd.Int) { //gd:Material.set_render_priority
+func (self class) SetRenderPriority(priority int64) { //gd:Material.set_render_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -240,9 +244,9 @@ func (self class) SetRenderPriority(priority gd.Int) { //gd:Material.set_render_
 }
 
 //go:nosplit
-func (self class) GetRenderPriority() gd.Int { //gd:Material.get_render_priority
+func (self class) GetRenderPriority() int64 { //gd:Material.get_render_priority
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_get_render_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

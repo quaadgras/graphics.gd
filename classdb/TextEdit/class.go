@@ -9,24 +9,25 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/variant/Rect2"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector2i"
-import "graphics.gd/variant/Vector2"
-import "graphics.gd/variant/Rect2i"
-import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/Rect2i"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -42,6 +43,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -95,9 +98,9 @@ Override this method to define what happens when the user types in the provided 
 */
 func (Instance) _handle_unicode_input(impl func(ptr unsafe.Pointer, unicode_char int, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var unicode_char = gd.UnsafeGet[gd.Int](p_args, 0)
+		var unicode_char = gd.UnsafeGet[int64](p_args, 0)
 
-		var caret_index = gd.UnsafeGet[gd.Int](p_args, 1)
+		var caret_index = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(unicode_char), int(caret_index))
@@ -109,7 +112,7 @@ Override this method to define what happens when the user presses the backspace 
 */
 func (Instance) _backspace(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+		var caret_index = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
@@ -121,7 +124,7 @@ Override this method to define what happens when the user performs a cut operati
 */
 func (Instance) _cut(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+		var caret_index = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
@@ -133,7 +136,7 @@ Override this method to define what happens when the user performs a copy operat
 */
 func (Instance) _copy(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+		var caret_index = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
@@ -145,7 +148,7 @@ Override this method to define what happens when the user performs a paste opera
 */
 func (Instance) _paste(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+		var caret_index = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
@@ -158,7 +161,7 @@ Override this method to define what happens when the user performs a paste opera
 */
 func (Instance) _paste_primary_clipboard(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+		var caret_index = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
@@ -190,7 +193,7 @@ func (self Instance) ApplyIme() { //gd:TextEdit.apply_ime
 Sets the tab size for the [TextEdit] to use.
 */
 func (self Instance) SetTabSize(size int) { //gd:TextEdit.set_tab_size
-	class(self).SetTabSize(gd.Int(size))
+	class(self).SetTabSize(int64(size))
 }
 
 /*
@@ -233,21 +236,21 @@ Sets the text for a specific [param line].
 Carets on the line will attempt to keep their visual x position.
 */
 func (self Instance) SetLine(line int, new_text string) { //gd:TextEdit.set_line
-	class(self).SetLine(gd.Int(line), String.New(new_text))
+	class(self).SetLine(int64(line), String.New(new_text))
 }
 
 /*
 Returns the text of a specific line.
 */
 func (self Instance) GetLine(line int) string { //gd:TextEdit.get_line
-	return string(class(self).GetLine(gd.Int(line)).String())
+	return string(class(self).GetLine(int64(line)).String())
 }
 
 /*
 Returns the width in pixels of the [param wrap_index] on [param line].
 */
 func (self Instance) GetLineWidth(line int) int { //gd:TextEdit.get_line_width
-	return int(int(class(self).GetLineWidth(gd.Int(line), gd.Int(-1))))
+	return int(int(class(self).GetLineWidth(int64(line), int64(-1))))
 }
 
 /*
@@ -262,28 +265,28 @@ func (self Instance) GetLineHeight() int { //gd:TextEdit.get_line_height
 Returns the number of spaces and [code]tab * tab_size[/code] before the first char.
 */
 func (self Instance) GetIndentLevel(line int) int { //gd:TextEdit.get_indent_level
-	return int(int(class(self).GetIndentLevel(gd.Int(line))))
+	return int(int(class(self).GetIndentLevel(int64(line))))
 }
 
 /*
 Returns the first column containing a non-whitespace character.
 */
 func (self Instance) GetFirstNonWhitespaceColumn(line int) int { //gd:TextEdit.get_first_non_whitespace_column
-	return int(int(class(self).GetFirstNonWhitespaceColumn(gd.Int(line))))
+	return int(int(class(self).GetFirstNonWhitespaceColumn(int64(line))))
 }
 
 /*
 Swaps the two lines. Carets will be swapped with the lines.
 */
 func (self Instance) SwapLines(from_line int, to_line int) { //gd:TextEdit.swap_lines
-	class(self).SwapLines(gd.Int(from_line), gd.Int(to_line))
+	class(self).SwapLines(int64(from_line), int64(to_line))
 }
 
 /*
 Inserts a new line with [param text] at [param line].
 */
 func (self Instance) InsertLineAt(line int, text string) { //gd:TextEdit.insert_line_at
-	class(self).InsertLineAt(gd.Int(line), String.New(text))
+	class(self).InsertLineAt(int64(line), String.New(text))
 }
 
 /*
@@ -291,14 +294,14 @@ Removes the line of text at [param line]. Carets on this line will attempt to ma
 If [param move_carets_down] is [code]true[/code] carets will move to the next line down, otherwise carets will move up.
 */
 func (self Instance) RemoveLineAt(line int) { //gd:TextEdit.remove_line_at
-	class(self).RemoveLineAt(gd.Int(line), true)
+	class(self).RemoveLineAt(int64(line), true)
 }
 
 /*
 Insert the specified text at the caret position.
 */
 func (self Instance) InsertTextAtCaret(text string) { //gd:TextEdit.insert_text_at_caret
-	class(self).InsertTextAtCaret(String.New(text), gd.Int(-1))
+	class(self).InsertTextAtCaret(String.New(text), int64(-1))
 }
 
 /*
@@ -307,14 +310,14 @@ If [param before_selection_begin] is [code]true[/code], carets and selections th
 If [param before_selection_end] is [code]true[/code], selections that end at [param line] and [param column] will be extended to the end of the inserted text. These parameters can be used to insert text inside of or outside of selections.
 */
 func (self Instance) InsertText(text string, line int, column int) { //gd:TextEdit.insert_text
-	class(self).InsertText(String.New(text), gd.Int(line), gd.Int(column), true, false)
+	class(self).InsertText(String.New(text), int64(line), int64(column), true, false)
 }
 
 /*
 Removes text between the given positions.
 */
 func (self Instance) RemoveText(from_line int, from_column int, to_line int, to_column int) { //gd:TextEdit.remove_text
-	class(self).RemoveText(gd.Int(from_line), gd.Int(from_column), gd.Int(to_line), gd.Int(to_column))
+	class(self).RemoveText(int64(from_line), int64(from_column), int64(to_line), int64(to_column))
 }
 
 /*
@@ -328,49 +331,49 @@ func (self Instance) GetLastUnhiddenLine() int { //gd:TextEdit.get_last_unhidden
 Returns the count to the next visible line from [param line] to [code]line + visible_amount[/code]. Can also count backwards. For example if a [TextEdit] has 5 lines with lines 2 and 3 hidden, calling this with [code]line = 1, visible_amount = 1[/code] would return 3.
 */
 func (self Instance) GetNextVisibleLineOffsetFrom(line int, visible_amount int) int { //gd:TextEdit.get_next_visible_line_offset_from
-	return int(int(class(self).GetNextVisibleLineOffsetFrom(gd.Int(line), gd.Int(visible_amount))))
+	return int(int(class(self).GetNextVisibleLineOffsetFrom(int64(line), int64(visible_amount))))
 }
 
 /*
 Similar to [method get_next_visible_line_offset_from], but takes into account the line wrap indexes. In the returned vector, [code]x[/code] is the line, [code]y[/code] is the wrap index.
 */
 func (self Instance) GetNextVisibleLineIndexOffsetFrom(line int, wrap_index int, visible_amount int) Vector2i.XY { //gd:TextEdit.get_next_visible_line_index_offset_from
-	return Vector2i.XY(class(self).GetNextVisibleLineIndexOffsetFrom(gd.Int(line), gd.Int(wrap_index), gd.Int(visible_amount)))
+	return Vector2i.XY(class(self).GetNextVisibleLineIndexOffsetFrom(int64(line), int64(wrap_index), int64(visible_amount)))
 }
 
 /*
 Called when the user presses the backspace key. Can be overridden with [method _backspace].
 */
 func (self Instance) Backspace() { //gd:TextEdit.backspace
-	class(self).Backspace(gd.Int(-1))
+	class(self).Backspace(int64(-1))
 }
 
 /*
 Cut's the current selection. Can be overridden with [method _cut].
 */
 func (self Instance) Cut() { //gd:TextEdit.cut
-	class(self).Cut(gd.Int(-1))
+	class(self).Cut(int64(-1))
 }
 
 /*
 Copies the current text selection. Can be overridden with [method _copy].
 */
 func (self Instance) Copy() { //gd:TextEdit.copy
-	class(self).Copy(gd.Int(-1))
+	class(self).Copy(int64(-1))
 }
 
 /*
 Paste at the current location. Can be overridden with [method _paste].
 */
 func (self Instance) Paste() { //gd:TextEdit.paste
-	class(self).Paste(gd.Int(-1))
+	class(self).Paste(int64(-1))
 }
 
 /*
 Pastes the primary clipboard.
 */
 func (self Instance) PastePrimaryClipboard() { //gd:TextEdit.paste_primary_clipboard
-	class(self).PastePrimaryClipboard(gd.Int(-1))
+	class(self).PastePrimaryClipboard(int64(-1))
 }
 
 /*
@@ -469,7 +472,7 @@ func (self Instance) SetSearchText(search_text string) { //gd:TextEdit.set_searc
 Sets the search [param flags]. This is used with [method set_search_text] to highlight occurrences of the searched text. Search flags can be specified from the [enum SearchFlags] enum.
 */
 func (self Instance) SetSearchFlags(flags int) { //gd:TextEdit.set_search_flags
-	class(self).SetSearchFlags(gd.Int(flags))
+	class(self).SetSearchFlags(int64(flags))
 }
 
 /*
@@ -499,7 +502,7 @@ if (result.X != -1)
 [/codeblocks]
 */
 func (self Instance) Search(text string, flags int, from_line int, from_column int) Vector2i.XY { //gd:TextEdit.search
-	return Vector2i.XY(class(self).Search(String.New(text), gd.Int(flags), gd.Int(from_line), gd.Int(from_column)))
+	return Vector2i.XY(class(self).Search(String.New(text), int64(flags), int64(from_line), int64(from_column)))
 }
 
 /*
@@ -520,14 +523,14 @@ func (self Instance) GetLocalMousePos() Vector2.XY { //gd:TextEdit.get_local_mou
 Returns the word at [param position].
 */
 func (self Instance) GetWordAtPos(position Vector2.XY) string { //gd:TextEdit.get_word_at_pos
-	return string(class(self).GetWordAtPos(gd.Vector2(position)).String())
+	return string(class(self).GetWordAtPos(Vector2.XY(position)).String())
 }
 
 /*
 Returns the line and column at the given position. In the returned vector, [code]x[/code] is the column, [code]y[/code] is the line. If [param allow_out_of_bounds] is [code]false[/code] and the position is not over the text, both vector values will be set to [code]-1[/code].
 */
 func (self Instance) GetLineColumnAtPos(position Vector2i.XY) Vector2i.XY { //gd:TextEdit.get_line_column_at_pos
-	return Vector2i.XY(class(self).GetLineColumnAtPos(gd.Vector2i(position), true))
+	return Vector2i.XY(class(self).GetLineColumnAtPos(Vector2i.XY(position), true))
 }
 
 /*
@@ -535,7 +538,7 @@ Returns the local position for the given [param line] and [param column]. If [co
 [b]Note:[/b] The Y position corresponds to the bottom side of the line. Use [method get_rect_at_line_column] to get the top side position.
 */
 func (self Instance) GetPosAtLineColumn(line int, column int) Vector2i.XY { //gd:TextEdit.get_pos_at_line_column
-	return Vector2i.XY(class(self).GetPosAtLineColumn(gd.Int(line), gd.Int(column)))
+	return Vector2i.XY(class(self).GetPosAtLineColumn(int64(line), int64(column)))
 }
 
 /*
@@ -543,14 +546,14 @@ Returns the local position and size for the grapheme at the given [param line] a
 [b]Note:[/b] The Y position of the returned rect corresponds to the top side of the line, unlike [method get_pos_at_line_column] which returns the bottom side.
 */
 func (self Instance) GetRectAtLineColumn(line int, column int) Rect2i.PositionSize { //gd:TextEdit.get_rect_at_line_column
-	return Rect2i.PositionSize(class(self).GetRectAtLineColumn(gd.Int(line), gd.Int(column)))
+	return Rect2i.PositionSize(class(self).GetRectAtLineColumn(int64(line), int64(column)))
 }
 
 /*
 Returns the equivalent minimap line at [param position].
 */
 func (self Instance) GetMinimapLineAtPos(position Vector2i.XY) int { //gd:TextEdit.get_minimap_line_at_pos
-	return int(int(class(self).GetMinimapLineAtPos(gd.Vector2i(position))))
+	return int(int(class(self).GetMinimapLineAtPos(Vector2i.XY(position))))
 }
 
 /*
@@ -564,14 +567,14 @@ func (self Instance) IsDraggingCursor() bool { //gd:TextEdit.is_dragging_cursor
 Returns whether the mouse is over selection. If [param edges] is [code]true[/code], the edges are considered part of the selection.
 */
 func (self Instance) IsMouseOverSelection(edges bool) bool { //gd:TextEdit.is_mouse_over_selection
-	return bool(class(self).IsMouseOverSelection(edges, gd.Int(-1)))
+	return bool(class(self).IsMouseOverSelection(edges, int64(-1)))
 }
 
 /*
 Adds a new caret at the given location. Returns the index of the new caret, or [code]-1[/code] if the location is invalid.
 */
 func (self Instance) AddCaret(line int, column int) int { //gd:TextEdit.add_caret
-	return int(int(class(self).AddCaret(gd.Int(line), gd.Int(column))))
+	return int(int(class(self).AddCaret(int64(line), int64(column))))
 }
 
 /*
@@ -579,7 +582,7 @@ Removes the given caret index.
 [b]Note:[/b] This can result in adjustment of all other caret indices.
 */
 func (self Instance) RemoveCaret(caret int) { //gd:TextEdit.remove_caret
-	class(self).RemoveCaret(gd.Int(caret))
+	class(self).RemoveCaret(int64(caret))
 }
 
 /*
@@ -618,7 +621,7 @@ If [method is_in_mulitcaret_edit] is [code]true[/code], carets that are collapse
 [method merge_overlapping_carets] will be called if any carets were collapsed.
 */
 func (self Instance) CollapseCarets(from_line int, from_column int, to_line int, to_column int) { //gd:TextEdit.collapse_carets
-	class(self).CollapseCarets(gd.Int(from_line), gd.Int(from_column), gd.Int(to_line), gd.Int(to_column), false)
+	class(self).CollapseCarets(int64(from_line), int64(from_column), int64(to_line), int64(to_column), false)
 }
 
 /*
@@ -669,21 +672,21 @@ Returns [code]true[/code] if the given [param caret_index] should be ignored as 
 It is recommended to [code]continue[/code] within a loop iterating on multiple carets if a caret should be ignored.
 */
 func (self Instance) MulticaretEditIgnoreCaret(caret_index int) bool { //gd:TextEdit.multicaret_edit_ignore_caret
-	return bool(class(self).MulticaretEditIgnoreCaret(gd.Int(caret_index)))
+	return bool(class(self).MulticaretEditIgnoreCaret(int64(caret_index)))
 }
 
 /*
 Returns [code]true[/code] if the caret is visible on the screen.
 */
 func (self Instance) IsCaretVisible() bool { //gd:TextEdit.is_caret_visible
-	return bool(class(self).IsCaretVisible(gd.Int(0)))
+	return bool(class(self).IsCaretVisible(int64(0)))
 }
 
 /*
 Returns the caret pixel draw position.
 */
 func (self Instance) GetCaretDrawPos() Vector2.XY { //gd:TextEdit.get_caret_draw_pos
-	return Vector2.XY(class(self).GetCaretDrawPos(gd.Int(0)))
+	return Vector2.XY(class(self).GetCaretDrawPos(int64(0)))
 }
 
 /*
@@ -694,14 +697,14 @@ If [param wrap_index] is [code]-1[/code], the caret column will be clamped to th
 [b]Note:[/b] If supporting multiple carets this will not check for any overlap. See [method merge_overlapping_carets].
 */
 func (self Instance) SetCaretLine(line int) { //gd:TextEdit.set_caret_line
-	class(self).SetCaretLine(gd.Int(line), true, true, gd.Int(0), gd.Int(0))
+	class(self).SetCaretLine(int64(line), true, true, int64(0), int64(0))
 }
 
 /*
 Returns the line the editing caret is on.
 */
 func (self Instance) GetCaretLine() int { //gd:TextEdit.get_caret_line
-	return int(int(class(self).GetCaretLine(gd.Int(0))))
+	return int(int(class(self).GetCaretLine(int64(0))))
 }
 
 /*
@@ -710,28 +713,28 @@ If [param adjust_viewport] is [code]true[/code], the viewport will center at the
 [b]Note:[/b] If supporting multiple carets this will not check for any overlap. See [method merge_overlapping_carets].
 */
 func (self Instance) SetCaretColumn(column int) { //gd:TextEdit.set_caret_column
-	class(self).SetCaretColumn(gd.Int(column), true, gd.Int(0))
+	class(self).SetCaretColumn(int64(column), true, int64(0))
 }
 
 /*
 Returns the column the editing caret is at.
 */
 func (self Instance) GetCaretColumn() int { //gd:TextEdit.get_caret_column
-	return int(int(class(self).GetCaretColumn(gd.Int(0))))
+	return int(int(class(self).GetCaretColumn(int64(0))))
 }
 
 /*
 Returns the wrap index the editing caret is on.
 */
 func (self Instance) GetCaretWrapIndex() int { //gd:TextEdit.get_caret_wrap_index
-	return int(int(class(self).GetCaretWrapIndex(gd.Int(0))))
+	return int(int(class(self).GetCaretWrapIndex(int64(0))))
 }
 
 /*
 Returns a [String] text with the word under the caret's location.
 */
 func (self Instance) GetWordUnderCaret() string { //gd:TextEdit.get_word_under_caret
-	return string(class(self).GetWordUnderCaret(gd.Int(-1)).String())
+	return string(class(self).GetWordUnderCaret(int64(-1)).String())
 }
 
 /*
@@ -760,7 +763,7 @@ func (self Instance) SelectAll() { //gd:TextEdit.select_all
 Selects the word under the caret.
 */
 func (self Instance) SelectWordUnderCaret() { //gd:TextEdit.select_word_under_caret
-	class(self).SelectWordUnderCaret(gd.Int(-1))
+	class(self).SelectWordUnderCaret(int64(-1))
 }
 
 /*
@@ -783,21 +786,21 @@ If [member selecting_enabled] is [code]false[/code], no selection will occur.
 [b]Note:[/b] If supporting multiple carets this will not check for any overlap. See [method merge_overlapping_carets].
 */
 func (self Instance) Select(origin_line int, origin_column int, caret_line int, caret_column int) { //gd:TextEdit.select
-	class(self).Select(gd.Int(origin_line), gd.Int(origin_column), gd.Int(caret_line), gd.Int(caret_column), gd.Int(0))
+	class(self).Select(int64(origin_line), int64(origin_column), int64(caret_line), int64(caret_column), int64(0))
 }
 
 /*
 Returns [code]true[/code] if the user has selected text.
 */
 func (self Instance) HasSelection() bool { //gd:TextEdit.has_selection
-	return bool(class(self).HasSelection(gd.Int(-1)))
+	return bool(class(self).HasSelection(int64(-1)))
 }
 
 /*
 Returns the text inside the selection of a caret, or all the carets if [param caret_index] is its default value [code]-1[/code].
 */
 func (self Instance) GetSelectedText() string { //gd:TextEdit.get_selected_text
-	return string(class(self).GetSelectedText(gd.Int(-1)).String())
+	return string(class(self).GetSelectedText(int64(-1)).String())
 }
 
 /*
@@ -805,7 +808,7 @@ Returns the caret index of the selection at the given [param line] and [param co
 If [param include_edges] is [code]false[/code], the position must be inside the selection and not at either end. If [param only_selections] is [code]false[/code], carets without a selection will also be considered.
 */
 func (self Instance) GetSelectionAtLineColumn(line int, column int) int { //gd:TextEdit.get_selection_at_line_column
-	return int(int(class(self).GetSelectionAtLineColumn(gd.Int(line), gd.Int(column), true, true)))
+	return int(int(class(self).GetSelectionAtLineColumn(int64(line), int64(column), true, true)))
 }
 
 /*
@@ -820,14 +823,14 @@ func (self Instance) GetLineRangesFromCarets() []Vector2i.XY { //gd:TextEdit.get
 Returns the origin line of the selection. This is the opposite end from the caret.
 */
 func (self Instance) GetSelectionOriginLine() int { //gd:TextEdit.get_selection_origin_line
-	return int(int(class(self).GetSelectionOriginLine(gd.Int(0))))
+	return int(int(class(self).GetSelectionOriginLine(int64(0))))
 }
 
 /*
 Returns the origin column of the selection. This is the opposite end from the caret.
 */
 func (self Instance) GetSelectionOriginColumn() int { //gd:TextEdit.get_selection_origin_column
-	return int(int(class(self).GetSelectionOriginColumn(gd.Int(0))))
+	return int(int(class(self).GetSelectionOriginColumn(int64(0))))
 }
 
 /*
@@ -836,91 +839,91 @@ If [param can_be_hidden] is [code]false[/code], The line will be set to the near
 If [param wrap_index] is [code]-1[/code], the selection origin column will be clamped to the [param line]'s length. If [param wrap_index] is greater than [code]-1[/code], the column will be moved to attempt to match the visual x position on the line's [param wrap_index] to the position from the last time [method set_selection_origin_column] or [method select] was called.
 */
 func (self Instance) SetSelectionOriginLine(line int) { //gd:TextEdit.set_selection_origin_line
-	class(self).SetSelectionOriginLine(gd.Int(line), true, gd.Int(-1), gd.Int(0))
+	class(self).SetSelectionOriginLine(int64(line), true, int64(-1), int64(0))
 }
 
 /*
 Sets the selection origin column to the [param column] for the given [param caret_index]. If the selection origin is moved to the caret position, the selection will deselect.
 */
 func (self Instance) SetSelectionOriginColumn(column int) { //gd:TextEdit.set_selection_origin_column
-	class(self).SetSelectionOriginColumn(gd.Int(column), gd.Int(0))
+	class(self).SetSelectionOriginColumn(int64(column), int64(0))
 }
 
 /*
 Returns the selection begin line. Returns the caret line if there is no selection.
 */
 func (self Instance) GetSelectionFromLine() int { //gd:TextEdit.get_selection_from_line
-	return int(int(class(self).GetSelectionFromLine(gd.Int(0))))
+	return int(int(class(self).GetSelectionFromLine(int64(0))))
 }
 
 /*
 Returns the selection begin column. Returns the caret column if there is no selection.
 */
 func (self Instance) GetSelectionFromColumn() int { //gd:TextEdit.get_selection_from_column
-	return int(int(class(self).GetSelectionFromColumn(gd.Int(0))))
+	return int(int(class(self).GetSelectionFromColumn(int64(0))))
 }
 
 /*
 Returns the selection end line. Returns the caret line if there is no selection.
 */
 func (self Instance) GetSelectionToLine() int { //gd:TextEdit.get_selection_to_line
-	return int(int(class(self).GetSelectionToLine(gd.Int(0))))
+	return int(int(class(self).GetSelectionToLine(int64(0))))
 }
 
 /*
 Returns the selection end column. Returns the caret column if there is no selection.
 */
 func (self Instance) GetSelectionToColumn() int { //gd:TextEdit.get_selection_to_column
-	return int(int(class(self).GetSelectionToColumn(gd.Int(0))))
+	return int(int(class(self).GetSelectionToColumn(int64(0))))
 }
 
 /*
 Returns [code]true[/code] if the caret of the selection is after the selection origin. This can be used to determine the direction of the selection.
 */
 func (self Instance) IsCaretAfterSelectionOrigin() bool { //gd:TextEdit.is_caret_after_selection_origin
-	return bool(class(self).IsCaretAfterSelectionOrigin(gd.Int(0)))
+	return bool(class(self).IsCaretAfterSelectionOrigin(int64(0)))
 }
 
 /*
 Deselects the current selection.
 */
 func (self Instance) Deselect() { //gd:TextEdit.deselect
-	class(self).Deselect(gd.Int(-1))
+	class(self).Deselect(int64(-1))
 }
 
 /*
 Deletes the selected text.
 */
 func (self Instance) DeleteSelection() { //gd:TextEdit.delete_selection
-	class(self).DeleteSelection(gd.Int(-1))
+	class(self).DeleteSelection(int64(-1))
 }
 
 /*
 Returns if the given line is wrapped.
 */
 func (self Instance) IsLineWrapped(line int) bool { //gd:TextEdit.is_line_wrapped
-	return bool(class(self).IsLineWrapped(gd.Int(line)))
+	return bool(class(self).IsLineWrapped(int64(line)))
 }
 
 /*
 Returns the number of times the given line is wrapped.
 */
 func (self Instance) GetLineWrapCount(line int) int { //gd:TextEdit.get_line_wrap_count
-	return int(int(class(self).GetLineWrapCount(gd.Int(line))))
+	return int(int(class(self).GetLineWrapCount(int64(line))))
 }
 
 /*
 Returns the wrap index of the given line column.
 */
 func (self Instance) GetLineWrapIndexAtColumn(line int, column int) int { //gd:TextEdit.get_line_wrap_index_at_column
-	return int(int(class(self).GetLineWrapIndexAtColumn(gd.Int(line), gd.Int(column))))
+	return int(int(class(self).GetLineWrapIndexAtColumn(int64(line), int64(column))))
 }
 
 /*
 Returns an array of [String]s representing each wrapped index.
 */
 func (self Instance) GetLineWrappedText(line int) []string { //gd:TextEdit.get_line_wrapped_text
-	return []string(class(self).GetLineWrappedText(gd.Int(line)).Strings())
+	return []string(class(self).GetLineWrappedText(int64(line)).Strings())
 }
 
 /*
@@ -941,14 +944,14 @@ func (self Instance) GetHScrollBar() [1]gdclass.HScrollBar { //gd:TextEdit.get_h
 Returns the scroll position for [param wrap_index] of [param line].
 */
 func (self Instance) GetScrollPosForLine(line int) Float.X { //gd:TextEdit.get_scroll_pos_for_line
-	return Float.X(Float.X(class(self).GetScrollPosForLine(gd.Int(line), gd.Int(0))))
+	return Float.X(Float.X(class(self).GetScrollPosForLine(int64(line), int64(0))))
 }
 
 /*
 Positions the [param wrap_index] of [param line] at the top of the viewport.
 */
 func (self Instance) SetLineAsFirstVisible(line int) { //gd:TextEdit.set_line_as_first_visible
-	class(self).SetLineAsFirstVisible(gd.Int(line), gd.Int(0))
+	class(self).SetLineAsFirstVisible(int64(line), int64(0))
 }
 
 /*
@@ -962,14 +965,14 @@ func (self Instance) GetFirstVisibleLine() int { //gd:TextEdit.get_first_visible
 Positions the [param wrap_index] of [param line] at the center of the viewport.
 */
 func (self Instance) SetLineAsCenterVisible(line int) { //gd:TextEdit.set_line_as_center_visible
-	class(self).SetLineAsCenterVisible(gd.Int(line), gd.Int(0))
+	class(self).SetLineAsCenterVisible(int64(line), int64(0))
 }
 
 /*
 Positions the [param wrap_index] of [param line] at the bottom of the viewport.
 */
 func (self Instance) SetLineAsLastVisible(line int) { //gd:TextEdit.set_line_as_last_visible
-	class(self).SetLineAsLastVisible(gd.Int(line), gd.Int(0))
+	class(self).SetLineAsLastVisible(int64(line), int64(0))
 }
 
 /*
@@ -997,7 +1000,7 @@ func (self Instance) GetVisibleLineCount() int { //gd:TextEdit.get_visible_line_
 Returns the total number of visible + wrapped lines between the two lines.
 */
 func (self Instance) GetVisibleLineCountInRange(from_line int, to_line int) int { //gd:TextEdit.get_visible_line_count_in_range
-	return int(int(class(self).GetVisibleLineCountInRange(gd.Int(from_line), gd.Int(to_line))))
+	return int(int(class(self).GetVisibleLineCountInRange(int64(from_line), int64(to_line))))
 }
 
 /*
@@ -1011,14 +1014,14 @@ func (self Instance) GetTotalVisibleLineCount() int { //gd:TextEdit.get_total_vi
 Adjust the viewport so the caret is visible.
 */
 func (self Instance) AdjustViewportToCaret() { //gd:TextEdit.adjust_viewport_to_caret
-	class(self).AdjustViewportToCaret(gd.Int(0))
+	class(self).AdjustViewportToCaret(int64(0))
 }
 
 /*
 Centers the viewport on the line the editing caret is at. This also resets the [member scroll_horizontal] value to [code]0[/code].
 */
 func (self Instance) CenterViewportToCaret() { //gd:TextEdit.center_viewport_to_caret
-	class(self).CenterViewportToCaret(gd.Int(0))
+	class(self).CenterViewportToCaret(int64(0))
 }
 
 /*
@@ -1032,14 +1035,14 @@ func (self Instance) GetMinimapVisibleLines() int { //gd:TextEdit.get_minimap_vi
 Register a new gutter to this [TextEdit]. Use [param at] to have a specific gutter order. A value of [code]-1[/code] appends the gutter to the right.
 */
 func (self Instance) AddGutter() { //gd:TextEdit.add_gutter
-	class(self).AddGutter(gd.Int(-1))
+	class(self).AddGutter(int64(-1))
 }
 
 /*
 Removes the gutter from this [TextEdit].
 */
 func (self Instance) RemoveGutter(gutter int) { //gd:TextEdit.remove_gutter
-	class(self).RemoveGutter(gd.Int(gutter))
+	class(self).RemoveGutter(int64(gutter))
 }
 
 /*
@@ -1053,98 +1056,98 @@ func (self Instance) GetGutterCount() int { //gd:TextEdit.get_gutter_count
 Sets the name of the gutter.
 */
 func (self Instance) SetGutterName(gutter int, name string) { //gd:TextEdit.set_gutter_name
-	class(self).SetGutterName(gd.Int(gutter), String.New(name))
+	class(self).SetGutterName(int64(gutter), String.New(name))
 }
 
 /*
 Returns the name of the gutter at the given index.
 */
 func (self Instance) GetGutterName(gutter int) string { //gd:TextEdit.get_gutter_name
-	return string(class(self).GetGutterName(gd.Int(gutter)).String())
+	return string(class(self).GetGutterName(int64(gutter)).String())
 }
 
 /*
 Sets the type of gutter. Gutters can contain icons, text, or custom visuals. See [enum TextEdit.GutterType] for options.
 */
 func (self Instance) SetGutterType(gutter int, atype gdclass.TextEditGutterType) { //gd:TextEdit.set_gutter_type
-	class(self).SetGutterType(gd.Int(gutter), atype)
+	class(self).SetGutterType(int64(gutter), atype)
 }
 
 /*
 Returns the type of the gutter at the given index. Gutters can contain icons, text, or custom visuals. See [enum TextEdit.GutterType] for options.
 */
 func (self Instance) GetGutterType(gutter int) gdclass.TextEditGutterType { //gd:TextEdit.get_gutter_type
-	return gdclass.TextEditGutterType(class(self).GetGutterType(gd.Int(gutter)))
+	return gdclass.TextEditGutterType(class(self).GetGutterType(int64(gutter)))
 }
 
 /*
 Set the width of the gutter.
 */
 func (self Instance) SetGutterWidth(gutter int, width int) { //gd:TextEdit.set_gutter_width
-	class(self).SetGutterWidth(gd.Int(gutter), gd.Int(width))
+	class(self).SetGutterWidth(int64(gutter), int64(width))
 }
 
 /*
 Returns the width of the gutter at the given index.
 */
 func (self Instance) GetGutterWidth(gutter int) int { //gd:TextEdit.get_gutter_width
-	return int(int(class(self).GetGutterWidth(gd.Int(gutter))))
+	return int(int(class(self).GetGutterWidth(int64(gutter))))
 }
 
 /*
 Sets whether the gutter should be drawn.
 */
 func (self Instance) SetGutterDraw(gutter int, draw bool) { //gd:TextEdit.set_gutter_draw
-	class(self).SetGutterDraw(gd.Int(gutter), draw)
+	class(self).SetGutterDraw(int64(gutter), draw)
 }
 
 /*
 Returns whether the gutter is currently drawn.
 */
 func (self Instance) IsGutterDrawn(gutter int) bool { //gd:TextEdit.is_gutter_drawn
-	return bool(class(self).IsGutterDrawn(gd.Int(gutter)))
+	return bool(class(self).IsGutterDrawn(int64(gutter)))
 }
 
 /*
 Sets the gutter as clickable. This will change the mouse cursor to a pointing hand when hovering over the gutter.
 */
 func (self Instance) SetGutterClickable(gutter int, clickable bool) { //gd:TextEdit.set_gutter_clickable
-	class(self).SetGutterClickable(gd.Int(gutter), clickable)
+	class(self).SetGutterClickable(int64(gutter), clickable)
 }
 
 /*
 Returns whether the gutter is clickable.
 */
 func (self Instance) IsGutterClickable(gutter int) bool { //gd:TextEdit.is_gutter_clickable
-	return bool(class(self).IsGutterClickable(gd.Int(gutter)))
+	return bool(class(self).IsGutterClickable(int64(gutter)))
 }
 
 /*
 Sets the gutter to overwritable. See [method merge_gutters].
 */
 func (self Instance) SetGutterOverwritable(gutter int, overwritable bool) { //gd:TextEdit.set_gutter_overwritable
-	class(self).SetGutterOverwritable(gd.Int(gutter), overwritable)
+	class(self).SetGutterOverwritable(int64(gutter), overwritable)
 }
 
 /*
 Returns whether the gutter is overwritable.
 */
 func (self Instance) IsGutterOverwritable(gutter int) bool { //gd:TextEdit.is_gutter_overwritable
-	return bool(class(self).IsGutterOverwritable(gd.Int(gutter)))
+	return bool(class(self).IsGutterOverwritable(int64(gutter)))
 }
 
 /*
 Merge the gutters from [param from_line] into [param to_line]. Only overwritable gutters will be copied.
 */
 func (self Instance) MergeGutters(from_line int, to_line int) { //gd:TextEdit.merge_gutters
-	class(self).MergeGutters(gd.Int(from_line), gd.Int(to_line))
+	class(self).MergeGutters(int64(from_line), int64(to_line))
 }
 
 /*
 Set a custom draw method for the gutter. The callback method must take the following args: [code]line: int, gutter: int, Area: Rect2[/code]. This only works when the gutter type is [constant GUTTER_TYPE_CUSTOM] (see [method set_gutter_type]).
 */
 func (self Instance) SetGutterCustomDraw(column int, draw_callback func(line int, gutter int, area Rect2.PositionSize)) { //gd:TextEdit.set_gutter_custom_draw
-	class(self).SetGutterCustomDraw(gd.Int(column), Callable.New(draw_callback))
+	class(self).SetGutterCustomDraw(int64(column), Callable.New(draw_callback))
 }
 
 /*
@@ -1158,84 +1161,84 @@ func (self Instance) GetTotalGutterWidth() int { //gd:TextEdit.get_total_gutter_
 Sets the metadata for [param gutter] on [param line] to [param metadata].
 */
 func (self Instance) SetLineGutterMetadata(line int, gutter int, metadata any) { //gd:TextEdit.set_line_gutter_metadata
-	class(self).SetLineGutterMetadata(gd.Int(line), gd.Int(gutter), gd.NewVariant(metadata))
+	class(self).SetLineGutterMetadata(int64(line), int64(gutter), variant.New(metadata))
 }
 
 /*
 Returns the metadata currently in [param gutter] at [param line].
 */
 func (self Instance) GetLineGutterMetadata(line int, gutter int) any { //gd:TextEdit.get_line_gutter_metadata
-	return any(class(self).GetLineGutterMetadata(gd.Int(line), gd.Int(gutter)).Interface())
+	return any(class(self).GetLineGutterMetadata(int64(line), int64(gutter)).Interface())
 }
 
 /*
 Sets the text for [param gutter] on [param line] to [param text]. This only works when the gutter type is [constant GUTTER_TYPE_STRING] (see [method set_gutter_type]).
 */
 func (self Instance) SetLineGutterText(line int, gutter int, text string) { //gd:TextEdit.set_line_gutter_text
-	class(self).SetLineGutterText(gd.Int(line), gd.Int(gutter), String.New(text))
+	class(self).SetLineGutterText(int64(line), int64(gutter), String.New(text))
 }
 
 /*
 Returns the text currently in [param gutter] at [param line]. This only works when the gutter type is [constant GUTTER_TYPE_STRING] (see [method set_gutter_type]).
 */
 func (self Instance) GetLineGutterText(line int, gutter int) string { //gd:TextEdit.get_line_gutter_text
-	return string(class(self).GetLineGutterText(gd.Int(line), gd.Int(gutter)).String())
+	return string(class(self).GetLineGutterText(int64(line), int64(gutter)).String())
 }
 
 /*
 Sets the icon for [param gutter] on [param line] to [param icon]. This only works when the gutter type is [constant GUTTER_TYPE_ICON] (see [method set_gutter_type]).
 */
 func (self Instance) SetLineGutterIcon(line int, gutter int, icon [1]gdclass.Texture2D) { //gd:TextEdit.set_line_gutter_icon
-	class(self).SetLineGutterIcon(gd.Int(line), gd.Int(gutter), icon)
+	class(self).SetLineGutterIcon(int64(line), int64(gutter), icon)
 }
 
 /*
 Returns the icon currently in [param gutter] at [param line]. This only works when the gutter type is [constant GUTTER_TYPE_ICON] (see [method set_gutter_type]).
 */
 func (self Instance) GetLineGutterIcon(line int, gutter int) [1]gdclass.Texture2D { //gd:TextEdit.get_line_gutter_icon
-	return [1]gdclass.Texture2D(class(self).GetLineGutterIcon(gd.Int(line), gd.Int(gutter)))
+	return [1]gdclass.Texture2D(class(self).GetLineGutterIcon(int64(line), int64(gutter)))
 }
 
 /*
 Sets the color for [param gutter] on [param line] to [param color].
 */
 func (self Instance) SetLineGutterItemColor(line int, gutter int, color Color.RGBA) { //gd:TextEdit.set_line_gutter_item_color
-	class(self).SetLineGutterItemColor(gd.Int(line), gd.Int(gutter), gd.Color(color))
+	class(self).SetLineGutterItemColor(int64(line), int64(gutter), Color.RGBA(color))
 }
 
 /*
 Returns the color currently in [param gutter] at [param line].
 */
 func (self Instance) GetLineGutterItemColor(line int, gutter int) Color.RGBA { //gd:TextEdit.get_line_gutter_item_color
-	return Color.RGBA(class(self).GetLineGutterItemColor(gd.Int(line), gd.Int(gutter)))
+	return Color.RGBA(class(self).GetLineGutterItemColor(int64(line), int64(gutter)))
 }
 
 /*
 If [param clickable] is [code]true[/code], makes the [param gutter] on [param line] clickable. See [signal gutter_clicked].
 */
 func (self Instance) SetLineGutterClickable(line int, gutter int, clickable bool) { //gd:TextEdit.set_line_gutter_clickable
-	class(self).SetLineGutterClickable(gd.Int(line), gd.Int(gutter), clickable)
+	class(self).SetLineGutterClickable(int64(line), int64(gutter), clickable)
 }
 
 /*
 Returns whether the gutter on the given line is clickable.
 */
 func (self Instance) IsLineGutterClickable(line int, gutter int) bool { //gd:TextEdit.is_line_gutter_clickable
-	return bool(class(self).IsLineGutterClickable(gd.Int(line), gd.Int(gutter)))
+	return bool(class(self).IsLineGutterClickable(int64(line), int64(gutter)))
 }
 
 /*
 Sets the current background color of the line. Set to [code]Color(0, 0, 0, 0)[/code] for no color.
 */
 func (self Instance) SetLineBackgroundColor(line int, color Color.RGBA) { //gd:TextEdit.set_line_background_color
-	class(self).SetLineBackgroundColor(gd.Int(line), gd.Color(color))
+	class(self).SetLineBackgroundColor(int64(line), Color.RGBA(color))
 }
 
 /*
 Returns the current background color of the line. [code]Color(0, 0, 0, 0)[/code] is returned if no color is set.
 */
 func (self Instance) GetLineBackgroundColor(line int) Color.RGBA { //gd:TextEdit.get_line_background_color
-	return Color.RGBA(class(self).GetLineBackgroundColor(gd.Int(line)))
+	return Color.RGBA(class(self).GetLineBackgroundColor(int64(line)))
 }
 
 /*
@@ -1302,14 +1305,14 @@ func (self Instance) IsMenuVisible() bool { //gd:TextEdit.is_menu_visible
 Executes a given action as defined in the [enum MenuItems] enum.
 */
 func (self Instance) MenuOption(option int) { //gd:TextEdit.menu_option
-	class(self).MenuOption(gd.Int(option))
+	class(self).MenuOption(int64(option))
 }
 
 /*
 This method does nothing.
 */
 func (self Instance) AdjustCaretsAfterEdit(caret int, from_line int, from_col int, to_line int, to_col int) { //gd:TextEdit.adjust_carets_after_edit
-	class(self).AdjustCaretsAfterEdit(gd.Int(caret), gd.Int(from_line), gd.Int(from_col), gd.Int(to_line), gd.Int(to_col))
+	class(self).AdjustCaretsAfterEdit(int64(caret), int64(from_line), int64(from_col), int64(to_line), int64(to_col))
 }
 
 /*
@@ -1323,14 +1326,14 @@ func (self Instance) GetCaretIndexEditOrder() []int32 { //gd:TextEdit.get_caret_
 Returns the original start line of the selection.
 */
 func (self Instance) GetSelectionLine() int { //gd:TextEdit.get_selection_line
-	return int(int(class(self).GetSelectionLine(gd.Int(0))))
+	return int(int(class(self).GetSelectionLine(int64(0))))
 }
 
 /*
 Returns the original start column of the selection.
 */
 func (self Instance) GetSelectionColumn() int { //gd:TextEdit.get_selection_column
-	return int(int(class(self).GetSelectionColumn(gd.Int(0))))
+	return int(int(class(self).GetSelectionColumn(int64(0))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -1468,7 +1471,7 @@ func (self Instance) ScrollVScrollSpeed() Float.X {
 }
 
 func (self Instance) SetScrollVScrollSpeed(value Float.X) {
-	class(self).SetVScrollSpeed(gd.Float(value))
+	class(self).SetVScrollSpeed(float64(value))
 }
 
 func (self Instance) ScrollPastEndOfFile() bool {
@@ -1484,7 +1487,7 @@ func (self Instance) ScrollVertical() Float.X {
 }
 
 func (self Instance) SetScrollVertical(value Float.X) {
-	class(self).SetVScroll(gd.Float(value))
+	class(self).SetVScroll(float64(value))
 }
 
 func (self Instance) ScrollHorizontal() int {
@@ -1492,7 +1495,7 @@ func (self Instance) ScrollHorizontal() int {
 }
 
 func (self Instance) SetScrollHorizontal(value int) {
-	class(self).SetHScroll(gd.Int(value))
+	class(self).SetHScroll(int64(value))
 }
 
 func (self Instance) ScrollFitContentHeight() bool {
@@ -1516,7 +1519,7 @@ func (self Instance) MinimapWidth() int {
 }
 
 func (self Instance) SetMinimapWidth(value int) {
-	class(self).SetMinimapWidth(gd.Int(value))
+	class(self).SetMinimapWidth(int64(value))
 }
 
 func (self Instance) CaretType() gdclass.TextEditCaretType {
@@ -1540,7 +1543,7 @@ func (self Instance) CaretBlinkInterval() Float.X {
 }
 
 func (self Instance) SetCaretBlinkInterval(value Float.X) {
-	class(self).SetCaretBlinkInterval(gd.Float(value))
+	class(self).SetCaretBlinkInterval(float64(value))
 }
 
 func (self Instance) CaretDrawWhenEditableDisabled() bool {
@@ -1682,11 +1685,11 @@ func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 /*
 Override this method to define what happens when the user types in the provided key [param unicode_char].
 */
-func (class) _handle_unicode_input(impl func(ptr unsafe.Pointer, unicode_char gd.Int, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _handle_unicode_input(impl func(ptr unsafe.Pointer, unicode_char int64, caret_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var unicode_char = gd.UnsafeGet[gd.Int](p_args, 0)
+		var unicode_char = gd.UnsafeGet[int64](p_args, 0)
 
-		var caret_index = gd.UnsafeGet[gd.Int](p_args, 1)
+		var caret_index = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, unicode_char, caret_index)
@@ -1696,9 +1699,9 @@ func (class) _handle_unicode_input(impl func(ptr unsafe.Pointer, unicode_char gd
 /*
 Override this method to define what happens when the user presses the backspace key.
 */
-func (class) _backspace(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _backspace(impl func(ptr unsafe.Pointer, caret_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+		var caret_index = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)
@@ -1708,9 +1711,9 @@ func (class) _backspace(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb g
 /*
 Override this method to define what happens when the user performs a cut operation.
 */
-func (class) _cut(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _cut(impl func(ptr unsafe.Pointer, caret_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+		var caret_index = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)
@@ -1720,9 +1723,9 @@ func (class) _cut(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.Exte
 /*
 Override this method to define what happens when the user performs a copy operation.
 */
-func (class) _copy(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _copy(impl func(ptr unsafe.Pointer, caret_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+		var caret_index = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)
@@ -1732,9 +1735,9 @@ func (class) _copy(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.Ext
 /*
 Override this method to define what happens when the user performs a paste operation.
 */
-func (class) _paste(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _paste(impl func(ptr unsafe.Pointer, caret_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+		var caret_index = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)
@@ -1745,9 +1748,9 @@ func (class) _paste(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.Ex
 Override this method to define what happens when the user performs a paste operation with middle mouse button.
 [b]Note:[/b] This method is only implemented on Linux.
 */
-func (class) _paste_primary_clipboard(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _paste_primary_clipboard(impl func(ptr unsafe.Pointer, caret_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+		var caret_index = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)
@@ -1888,7 +1891,7 @@ func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:TextEd
 Sets the tab size for the [TextEdit] to use.
 */
 //go:nosplit
-func (self class) SetTabSize(size gd.Int) { //gd:TextEdit.set_tab_size
+func (self class) SetTabSize(size int64) { //gd:TextEdit.set_tab_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -1900,9 +1903,9 @@ func (self class) SetTabSize(size gd.Int) { //gd:TextEdit.set_tab_size
 Returns the [TextEdit]'s' tab size.
 */
 //go:nosplit
-func (self class) GetTabSize() gd.Int { //gd:TextEdit.get_tab_size
+func (self class) GetTabSize() int64 { //gd:TextEdit.get_tab_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_tab_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2063,9 +2066,9 @@ func (self class) GetText() String.Readable { //gd:TextEdit.get_text
 Returns the number of lines in the text.
 */
 //go:nosplit
-func (self class) GetLineCount() gd.Int { //gd:TextEdit.get_line_count
+func (self class) GetLineCount() int64 { //gd:TextEdit.get_line_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2096,7 +2099,7 @@ Sets the text for a specific [param line].
 Carets on the line will attempt to keep their visual x position.
 */
 //go:nosplit
-func (self class) SetLine(line gd.Int, new_text String.Readable) { //gd:TextEdit.set_line
+func (self class) SetLine(line int64, new_text String.Readable) { //gd:TextEdit.set_line
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(new_text)))
@@ -2109,7 +2112,7 @@ func (self class) SetLine(line gd.Int, new_text String.Readable) { //gd:TextEdit
 Returns the text of a specific line.
 */
 //go:nosplit
-func (self class) GetLine(line gd.Int) String.Readable { //gd:TextEdit.get_line
+func (self class) GetLine(line int64) String.Readable { //gd:TextEdit.get_line
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -2123,11 +2126,11 @@ func (self class) GetLine(line gd.Int) String.Readable { //gd:TextEdit.get_line
 Returns the width in pixels of the [param wrap_index] on [param line].
 */
 //go:nosplit
-func (self class) GetLineWidth(line gd.Int, wrap_index gd.Int) gd.Int { //gd:TextEdit.get_line_width
+func (self class) GetLineWidth(line int64, wrap_index int64) int64 { //gd:TextEdit.get_line_width
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, wrap_index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2139,9 +2142,9 @@ Returns the maximum value of the line height among all lines.
 [b]Note:[/b] The return value is influenced by [theme_item line_spacing] and [theme_item font_size]. And it will not be less than [code]1[/code].
 */
 //go:nosplit
-func (self class) GetLineHeight() gd.Int { //gd:TextEdit.get_line_height
+func (self class) GetLineHeight() int64 { //gd:TextEdit.get_line_height
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2152,10 +2155,10 @@ func (self class) GetLineHeight() gd.Int { //gd:TextEdit.get_line_height
 Returns the number of spaces and [code]tab * tab_size[/code] before the first char.
 */
 //go:nosplit
-func (self class) GetIndentLevel(line gd.Int) gd.Int { //gd:TextEdit.get_indent_level
+func (self class) GetIndentLevel(line int64) int64 { //gd:TextEdit.get_indent_level
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_indent_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2166,10 +2169,10 @@ func (self class) GetIndentLevel(line gd.Int) gd.Int { //gd:TextEdit.get_indent_
 Returns the first column containing a non-whitespace character.
 */
 //go:nosplit
-func (self class) GetFirstNonWhitespaceColumn(line gd.Int) gd.Int { //gd:TextEdit.get_first_non_whitespace_column
+func (self class) GetFirstNonWhitespaceColumn(line int64) int64 { //gd:TextEdit.get_first_non_whitespace_column
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_first_non_whitespace_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2180,7 +2183,7 @@ func (self class) GetFirstNonWhitespaceColumn(line gd.Int) gd.Int { //gd:TextEdi
 Swaps the two lines. Carets will be swapped with the lines.
 */
 //go:nosplit
-func (self class) SwapLines(from_line gd.Int, to_line gd.Int) { //gd:TextEdit.swap_lines
+func (self class) SwapLines(from_line int64, to_line int64) { //gd:TextEdit.swap_lines
 	var frame = callframe.New()
 	callframe.Arg(frame, from_line)
 	callframe.Arg(frame, to_line)
@@ -2193,7 +2196,7 @@ func (self class) SwapLines(from_line gd.Int, to_line gd.Int) { //gd:TextEdit.sw
 Inserts a new line with [param text] at [param line].
 */
 //go:nosplit
-func (self class) InsertLineAt(line gd.Int, text String.Readable) { //gd:TextEdit.insert_line_at
+func (self class) InsertLineAt(line int64, text String.Readable) { //gd:TextEdit.insert_line_at
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
@@ -2207,7 +2210,7 @@ Removes the line of text at [param line]. Carets on this line will attempt to ma
 If [param move_carets_down] is [code]true[/code] carets will move to the next line down, otherwise carets will move up.
 */
 //go:nosplit
-func (self class) RemoveLineAt(line gd.Int, move_carets_down bool) { //gd:TextEdit.remove_line_at
+func (self class) RemoveLineAt(line int64, move_carets_down bool) { //gd:TextEdit.remove_line_at
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, move_carets_down)
@@ -2220,7 +2223,7 @@ func (self class) RemoveLineAt(line gd.Int, move_carets_down bool) { //gd:TextEd
 Insert the specified text at the caret position.
 */
 //go:nosplit
-func (self class) InsertTextAtCaret(text String.Readable, caret_index gd.Int) { //gd:TextEdit.insert_text_at_caret
+func (self class) InsertTextAtCaret(text String.Readable, caret_index int64) { //gd:TextEdit.insert_text_at_caret
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, caret_index)
@@ -2235,7 +2238,7 @@ If [param before_selection_begin] is [code]true[/code], carets and selections th
 If [param before_selection_end] is [code]true[/code], selections that end at [param line] and [param column] will be extended to the end of the inserted text. These parameters can be used to insert text inside of or outside of selections.
 */
 //go:nosplit
-func (self class) InsertText(text String.Readable, line gd.Int, column gd.Int, before_selection_begin bool, before_selection_end bool) { //gd:TextEdit.insert_text
+func (self class) InsertText(text String.Readable, line int64, column int64, before_selection_begin bool, before_selection_end bool) { //gd:TextEdit.insert_text
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, line)
@@ -2251,7 +2254,7 @@ func (self class) InsertText(text String.Readable, line gd.Int, column gd.Int, b
 Removes text between the given positions.
 */
 //go:nosplit
-func (self class) RemoveText(from_line gd.Int, from_column gd.Int, to_line gd.Int, to_column gd.Int) { //gd:TextEdit.remove_text
+func (self class) RemoveText(from_line int64, from_column int64, to_line int64, to_column int64) { //gd:TextEdit.remove_text
 	var frame = callframe.New()
 	callframe.Arg(frame, from_line)
 	callframe.Arg(frame, from_column)
@@ -2266,9 +2269,9 @@ func (self class) RemoveText(from_line gd.Int, from_column gd.Int, to_line gd.In
 Returns the last unhidden line in the entire [TextEdit].
 */
 //go:nosplit
-func (self class) GetLastUnhiddenLine() gd.Int { //gd:TextEdit.get_last_unhidden_line
+func (self class) GetLastUnhiddenLine() int64 { //gd:TextEdit.get_last_unhidden_line
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_last_unhidden_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2279,11 +2282,11 @@ func (self class) GetLastUnhiddenLine() gd.Int { //gd:TextEdit.get_last_unhidden
 Returns the count to the next visible line from [param line] to [code]line + visible_amount[/code]. Can also count backwards. For example if a [TextEdit] has 5 lines with lines 2 and 3 hidden, calling this with [code]line = 1, visible_amount = 1[/code] would return 3.
 */
 //go:nosplit
-func (self class) GetNextVisibleLineOffsetFrom(line gd.Int, visible_amount gd.Int) gd.Int { //gd:TextEdit.get_next_visible_line_offset_from
+func (self class) GetNextVisibleLineOffsetFrom(line int64, visible_amount int64) int64 { //gd:TextEdit.get_next_visible_line_offset_from
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, visible_amount)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_next_visible_line_offset_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2294,12 +2297,12 @@ func (self class) GetNextVisibleLineOffsetFrom(line gd.Int, visible_amount gd.In
 Similar to [method get_next_visible_line_offset_from], but takes into account the line wrap indexes. In the returned vector, [code]x[/code] is the line, [code]y[/code] is the wrap index.
 */
 //go:nosplit
-func (self class) GetNextVisibleLineIndexOffsetFrom(line gd.Int, wrap_index gd.Int, visible_amount gd.Int) gd.Vector2i { //gd:TextEdit.get_next_visible_line_index_offset_from
+func (self class) GetNextVisibleLineIndexOffsetFrom(line int64, wrap_index int64, visible_amount int64) Vector2i.XY { //gd:TextEdit.get_next_visible_line_index_offset_from
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, wrap_index)
 	callframe.Arg(frame, visible_amount)
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_next_visible_line_index_offset_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2310,7 +2313,7 @@ func (self class) GetNextVisibleLineIndexOffsetFrom(line gd.Int, wrap_index gd.I
 Called when the user presses the backspace key. Can be overridden with [method _backspace].
 */
 //go:nosplit
-func (self class) Backspace(caret_index gd.Int) { //gd:TextEdit.backspace
+func (self class) Backspace(caret_index int64) { //gd:TextEdit.backspace
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Nil
@@ -2322,7 +2325,7 @@ func (self class) Backspace(caret_index gd.Int) { //gd:TextEdit.backspace
 Cut's the current selection. Can be overridden with [method _cut].
 */
 //go:nosplit
-func (self class) Cut(caret_index gd.Int) { //gd:TextEdit.cut
+func (self class) Cut(caret_index int64) { //gd:TextEdit.cut
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Nil
@@ -2334,7 +2337,7 @@ func (self class) Cut(caret_index gd.Int) { //gd:TextEdit.cut
 Copies the current text selection. Can be overridden with [method _copy].
 */
 //go:nosplit
-func (self class) Copy(caret_index gd.Int) { //gd:TextEdit.copy
+func (self class) Copy(caret_index int64) { //gd:TextEdit.copy
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Nil
@@ -2346,7 +2349,7 @@ func (self class) Copy(caret_index gd.Int) { //gd:TextEdit.copy
 Paste at the current location. Can be overridden with [method _paste].
 */
 //go:nosplit
-func (self class) Paste(caret_index gd.Int) { //gd:TextEdit.paste
+func (self class) Paste(caret_index int64) { //gd:TextEdit.paste
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Nil
@@ -2358,7 +2361,7 @@ func (self class) Paste(caret_index gd.Int) { //gd:TextEdit.paste
 Pastes the primary clipboard.
 */
 //go:nosplit
-func (self class) PastePrimaryClipboard(caret_index gd.Int) { //gd:TextEdit.paste_primary_clipboard
+func (self class) PastePrimaryClipboard(caret_index int64) { //gd:TextEdit.paste_primary_clipboard
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Nil
@@ -2486,9 +2489,9 @@ func (self class) TagSavedVersion() { //gd:TextEdit.tag_saved_version
 Returns the current version of the [TextEdit]. The version is a count of recorded operations by the undo/redo history.
 */
 //go:nosplit
-func (self class) GetVersion() gd.Int { //gd:TextEdit.get_version
+func (self class) GetVersion() int64 { //gd:TextEdit.get_version
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2499,9 +2502,9 @@ func (self class) GetVersion() gd.Int { //gd:TextEdit.get_version
 Returns the last tagged saved version from [method tag_saved_version].
 */
 //go:nosplit
-func (self class) GetSavedVersion() gd.Int { //gd:TextEdit.get_saved_version
+func (self class) GetSavedVersion() int64 { //gd:TextEdit.get_saved_version
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_saved_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2524,7 +2527,7 @@ func (self class) SetSearchText(search_text String.Readable) { //gd:TextEdit.set
 Sets the search [param flags]. This is used with [method set_search_text] to highlight occurrences of the searched text. Search flags can be specified from the [enum SearchFlags] enum.
 */
 //go:nosplit
-func (self class) SetSearchFlags(flags gd.Int) { //gd:TextEdit.set_search_flags
+func (self class) SetSearchFlags(flags int64) { //gd:TextEdit.set_search_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -2555,13 +2558,13 @@ if (result.X != -1)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) Search(text String.Readable, flags gd.Int, from_line gd.Int, from_column gd.Int) gd.Vector2i { //gd:TextEdit.search
+func (self class) Search(text String.Readable, flags int64, from_line int64, from_column int64) Vector2i.XY { //gd:TextEdit.search
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, flags)
 	callframe.Arg(frame, from_line)
 	callframe.Arg(frame, from_column)
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_search, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2584,9 +2587,9 @@ func (self class) SetTooltipRequestFunc(callback Callable.Function) { //gd:TextE
 Returns the local mouse position adjusted for the text direction.
 */
 //go:nosplit
-func (self class) GetLocalMousePos() gd.Vector2 { //gd:TextEdit.get_local_mouse_pos
+func (self class) GetLocalMousePos() Vector2.XY { //gd:TextEdit.get_local_mouse_pos
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_local_mouse_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2597,7 +2600,7 @@ func (self class) GetLocalMousePos() gd.Vector2 { //gd:TextEdit.get_local_mouse_
 Returns the word at [param position].
 */
 //go:nosplit
-func (self class) GetWordAtPos(position gd.Vector2) String.Readable { //gd:TextEdit.get_word_at_pos
+func (self class) GetWordAtPos(position Vector2.XY) String.Readable { //gd:TextEdit.get_word_at_pos
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -2611,11 +2614,11 @@ func (self class) GetWordAtPos(position gd.Vector2) String.Readable { //gd:TextE
 Returns the line and column at the given position. In the returned vector, [code]x[/code] is the column, [code]y[/code] is the line. If [param allow_out_of_bounds] is [code]false[/code] and the position is not over the text, both vector values will be set to [code]-1[/code].
 */
 //go:nosplit
-func (self class) GetLineColumnAtPos(position gd.Vector2i, allow_out_of_bounds bool) gd.Vector2i { //gd:TextEdit.get_line_column_at_pos
+func (self class) GetLineColumnAtPos(position Vector2i.XY, allow_out_of_bounds bool) Vector2i.XY { //gd:TextEdit.get_line_column_at_pos
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, allow_out_of_bounds)
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_column_at_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2627,11 +2630,11 @@ Returns the local position for the given [param line] and [param column]. If [co
 [b]Note:[/b] The Y position corresponds to the bottom side of the line. Use [method get_rect_at_line_column] to get the top side position.
 */
 //go:nosplit
-func (self class) GetPosAtLineColumn(line gd.Int, column gd.Int) gd.Vector2i { //gd:TextEdit.get_pos_at_line_column
+func (self class) GetPosAtLineColumn(line int64, column int64) Vector2i.XY { //gd:TextEdit.get_pos_at_line_column
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_pos_at_line_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2643,11 +2646,11 @@ Returns the local position and size for the grapheme at the given [param line] a
 [b]Note:[/b] The Y position of the returned rect corresponds to the top side of the line, unlike [method get_pos_at_line_column] which returns the bottom side.
 */
 //go:nosplit
-func (self class) GetRectAtLineColumn(line gd.Int, column gd.Int) gd.Rect2i { //gd:TextEdit.get_rect_at_line_column
+func (self class) GetRectAtLineColumn(line int64, column int64) Rect2i.PositionSize { //gd:TextEdit.get_rect_at_line_column
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gd.Rect2i](frame)
+	var r_ret = callframe.Ret[Rect2i.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_rect_at_line_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2658,10 +2661,10 @@ func (self class) GetRectAtLineColumn(line gd.Int, column gd.Int) gd.Rect2i { //
 Returns the equivalent minimap line at [param position].
 */
 //go:nosplit
-func (self class) GetMinimapLineAtPos(position gd.Vector2i) gd.Int { //gd:TextEdit.get_minimap_line_at_pos
+func (self class) GetMinimapLineAtPos(position Vector2i.XY) int64 { //gd:TextEdit.get_minimap_line_at_pos
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_minimap_line_at_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2685,7 +2688,7 @@ func (self class) IsDraggingCursor() bool { //gd:TextEdit.is_dragging_cursor
 Returns whether the mouse is over selection. If [param edges] is [code]true[/code], the edges are considered part of the selection.
 */
 //go:nosplit
-func (self class) IsMouseOverSelection(edges bool, caret_index gd.Int) bool { //gd:TextEdit.is_mouse_over_selection
+func (self class) IsMouseOverSelection(edges bool, caret_index int64) bool { //gd:TextEdit.is_mouse_over_selection
 	var frame = callframe.New()
 	callframe.Arg(frame, edges)
 	callframe.Arg(frame, caret_index)
@@ -2735,7 +2738,7 @@ func (self class) IsCaretBlinkEnabled() bool { //gd:TextEdit.is_caret_blink_enab
 }
 
 //go:nosplit
-func (self class) SetCaretBlinkInterval(interval gd.Float) { //gd:TextEdit.set_caret_blink_interval
+func (self class) SetCaretBlinkInterval(interval float64) { //gd:TextEdit.set_caret_blink_interval
 	var frame = callframe.New()
 	callframe.Arg(frame, interval)
 	var r_ret = callframe.Nil
@@ -2744,9 +2747,9 @@ func (self class) SetCaretBlinkInterval(interval gd.Float) { //gd:TextEdit.set_c
 }
 
 //go:nosplit
-func (self class) GetCaretBlinkInterval() gd.Float { //gd:TextEdit.get_caret_blink_interval
+func (self class) GetCaretBlinkInterval() float64 { //gd:TextEdit.get_caret_blink_interval
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_blink_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2833,11 +2836,11 @@ func (self class) IsMultipleCaretsEnabled() bool { //gd:TextEdit.is_multiple_car
 Adds a new caret at the given location. Returns the index of the new caret, or [code]-1[/code] if the location is invalid.
 */
 //go:nosplit
-func (self class) AddCaret(line gd.Int, column gd.Int) gd.Int { //gd:TextEdit.add_caret
+func (self class) AddCaret(line int64, column int64) int64 { //gd:TextEdit.add_caret
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_add_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2849,7 +2852,7 @@ Removes the given caret index.
 [b]Note:[/b] This can result in adjustment of all other caret indices.
 */
 //go:nosplit
-func (self class) RemoveCaret(caret gd.Int) { //gd:TextEdit.remove_caret
+func (self class) RemoveCaret(caret int64) { //gd:TextEdit.remove_caret
 	var frame = callframe.New()
 	callframe.Arg(frame, caret)
 	var r_ret = callframe.Nil
@@ -2872,9 +2875,9 @@ func (self class) RemoveSecondaryCarets() { //gd:TextEdit.remove_secondary_caret
 Returns the number of carets in this [TextEdit].
 */
 //go:nosplit
-func (self class) GetCaretCount() gd.Int { //gd:TextEdit.get_caret_count
+func (self class) GetCaretCount() int64 { //gd:TextEdit.get_caret_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2915,7 +2918,7 @@ If [method is_in_mulitcaret_edit] is [code]true[/code], carets that are collapse
 [method merge_overlapping_carets] will be called if any carets were collapsed.
 */
 //go:nosplit
-func (self class) CollapseCarets(from_line gd.Int, from_column gd.Int, to_line gd.Int, to_column gd.Int, inclusive bool) { //gd:TextEdit.collapse_carets
+func (self class) CollapseCarets(from_line int64, from_column int64, to_line int64, to_column int64, inclusive bool) { //gd:TextEdit.collapse_carets
 	var frame = callframe.New()
 	callframe.Arg(frame, from_line)
 	callframe.Arg(frame, from_column)
@@ -2991,7 +2994,7 @@ Returns [code]true[/code] if the given [param caret_index] should be ignored as 
 It is recommended to [code]continue[/code] within a loop iterating on multiple carets if a caret should be ignored.
 */
 //go:nosplit
-func (self class) MulticaretEditIgnoreCaret(caret_index gd.Int) bool { //gd:TextEdit.multicaret_edit_ignore_caret
+func (self class) MulticaretEditIgnoreCaret(caret_index int64) bool { //gd:TextEdit.multicaret_edit_ignore_caret
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[bool](frame)
@@ -3005,7 +3008,7 @@ func (self class) MulticaretEditIgnoreCaret(caret_index gd.Int) bool { //gd:Text
 Returns [code]true[/code] if the caret is visible on the screen.
 */
 //go:nosplit
-func (self class) IsCaretVisible(caret_index gd.Int) bool { //gd:TextEdit.is_caret_visible
+func (self class) IsCaretVisible(caret_index int64) bool { //gd:TextEdit.is_caret_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[bool](frame)
@@ -3019,10 +3022,10 @@ func (self class) IsCaretVisible(caret_index gd.Int) bool { //gd:TextEdit.is_car
 Returns the caret pixel draw position.
 */
 //go:nosplit
-func (self class) GetCaretDrawPos(caret_index gd.Int) gd.Vector2 { //gd:TextEdit.get_caret_draw_pos
+func (self class) GetCaretDrawPos(caret_index int64) Vector2.XY { //gd:TextEdit.get_caret_draw_pos
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_draw_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3037,7 +3040,7 @@ If [param wrap_index] is [code]-1[/code], the caret column will be clamped to th
 [b]Note:[/b] If supporting multiple carets this will not check for any overlap. See [method merge_overlapping_carets].
 */
 //go:nosplit
-func (self class) SetCaretLine(line gd.Int, adjust_viewport bool, can_be_hidden bool, wrap_index gd.Int, caret_index gd.Int) { //gd:TextEdit.set_caret_line
+func (self class) SetCaretLine(line int64, adjust_viewport bool, can_be_hidden bool, wrap_index int64, caret_index int64) { //gd:TextEdit.set_caret_line
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, adjust_viewport)
@@ -3053,10 +3056,10 @@ func (self class) SetCaretLine(line gd.Int, adjust_viewport bool, can_be_hidden 
 Returns the line the editing caret is on.
 */
 //go:nosplit
-func (self class) GetCaretLine(caret_index gd.Int) gd.Int { //gd:TextEdit.get_caret_line
+func (self class) GetCaretLine(caret_index int64) int64 { //gd:TextEdit.get_caret_line
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3069,7 +3072,7 @@ If [param adjust_viewport] is [code]true[/code], the viewport will center at the
 [b]Note:[/b] If supporting multiple carets this will not check for any overlap. See [method merge_overlapping_carets].
 */
 //go:nosplit
-func (self class) SetCaretColumn(column gd.Int, adjust_viewport bool, caret_index gd.Int) { //gd:TextEdit.set_caret_column
+func (self class) SetCaretColumn(column int64, adjust_viewport bool, caret_index int64) { //gd:TextEdit.set_caret_column
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, adjust_viewport)
@@ -3083,10 +3086,10 @@ func (self class) SetCaretColumn(column gd.Int, adjust_viewport bool, caret_inde
 Returns the column the editing caret is at.
 */
 //go:nosplit
-func (self class) GetCaretColumn(caret_index gd.Int) gd.Int { //gd:TextEdit.get_caret_column
+func (self class) GetCaretColumn(caret_index int64) int64 { //gd:TextEdit.get_caret_column
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3097,10 +3100,10 @@ func (self class) GetCaretColumn(caret_index gd.Int) gd.Int { //gd:TextEdit.get_
 Returns the wrap index the editing caret is on.
 */
 //go:nosplit
-func (self class) GetCaretWrapIndex(caret_index gd.Int) gd.Int { //gd:TextEdit.get_caret_wrap_index
+func (self class) GetCaretWrapIndex(caret_index int64) int64 { //gd:TextEdit.get_caret_wrap_index
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_wrap_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3111,7 +3114,7 @@ func (self class) GetCaretWrapIndex(caret_index gd.Int) gd.Int { //gd:TextEdit.g
 Returns a [String] text with the word under the caret's location.
 */
 //go:nosplit
-func (self class) GetWordUnderCaret(caret_index gd.Int) String.Readable { //gd:TextEdit.get_word_under_caret
+func (self class) GetWordUnderCaret(caret_index int64) String.Readable { //gd:TextEdit.get_word_under_caret
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -3276,7 +3279,7 @@ func (self class) SelectAll() { //gd:TextEdit.select_all
 Selects the word under the caret.
 */
 //go:nosplit
-func (self class) SelectWordUnderCaret(caret_index gd.Int) { //gd:TextEdit.select_word_under_caret
+func (self class) SelectWordUnderCaret(caret_index int64) { //gd:TextEdit.select_word_under_caret
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Nil
@@ -3312,7 +3315,7 @@ If [member selecting_enabled] is [code]false[/code], no selection will occur.
 [b]Note:[/b] If supporting multiple carets this will not check for any overlap. See [method merge_overlapping_carets].
 */
 //go:nosplit
-func (self class) Select(origin_line gd.Int, origin_column gd.Int, caret_line gd.Int, caret_column gd.Int, caret_index gd.Int) { //gd:TextEdit.select_
+func (self class) Select(origin_line int64, origin_column int64, caret_line int64, caret_column int64, caret_index int64) { //gd:TextEdit.select_
 	var frame = callframe.New()
 	callframe.Arg(frame, origin_line)
 	callframe.Arg(frame, origin_column)
@@ -3328,7 +3331,7 @@ func (self class) Select(origin_line gd.Int, origin_column gd.Int, caret_line gd
 Returns [code]true[/code] if the user has selected text.
 */
 //go:nosplit
-func (self class) HasSelection(caret_index gd.Int) bool { //gd:TextEdit.has_selection
+func (self class) HasSelection(caret_index int64) bool { //gd:TextEdit.has_selection
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[bool](frame)
@@ -3342,7 +3345,7 @@ func (self class) HasSelection(caret_index gd.Int) bool { //gd:TextEdit.has_sele
 Returns the text inside the selection of a caret, or all the carets if [param caret_index] is its default value [code]-1[/code].
 */
 //go:nosplit
-func (self class) GetSelectedText(caret_index gd.Int) String.Readable { //gd:TextEdit.get_selected_text
+func (self class) GetSelectedText(caret_index int64) String.Readable { //gd:TextEdit.get_selected_text
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -3357,13 +3360,13 @@ Returns the caret index of the selection at the given [param line] and [param co
 If [param include_edges] is [code]false[/code], the position must be inside the selection and not at either end. If [param only_selections] is [code]false[/code], carets without a selection will also be considered.
 */
 //go:nosplit
-func (self class) GetSelectionAtLineColumn(line gd.Int, column gd.Int, include_edges bool, only_selections bool) gd.Int { //gd:TextEdit.get_selection_at_line_column
+func (self class) GetSelectionAtLineColumn(line int64, column int64, include_edges bool, only_selections bool) int64 { //gd:TextEdit.get_selection_at_line_column
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, include_edges)
 	callframe.Arg(frame, only_selections)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_at_line_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3375,13 +3378,13 @@ Returns an [Array] of line ranges where [code]x[/code] is the first line and [co
 If a selection's end column ([method get_selection_to_column]) is at column [code]0[/code], that line will not be included. If a selection begins on the line after another selection ends and [param merge_adjacent] is [code]true[/code], or they begin and end on the same line, one line range will include both selections.
 */
 //go:nosplit
-func (self class) GetLineRangesFromCarets(only_selections bool, merge_adjacent bool) Array.Contains[gd.Vector2i] { //gd:TextEdit.get_line_ranges_from_carets
+func (self class) GetLineRangesFromCarets(only_selections bool, merge_adjacent bool) Array.Contains[Vector2i.XY] { //gd:TextEdit.get_line_ranges_from_carets
 	var frame = callframe.New()
 	callframe.Arg(frame, only_selections)
 	callframe.Arg(frame, merge_adjacent)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_ranges_from_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Vector2i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3390,10 +3393,10 @@ func (self class) GetLineRangesFromCarets(only_selections bool, merge_adjacent b
 Returns the origin line of the selection. This is the opposite end from the caret.
 */
 //go:nosplit
-func (self class) GetSelectionOriginLine(caret_index gd.Int) gd.Int { //gd:TextEdit.get_selection_origin_line
+func (self class) GetSelectionOriginLine(caret_index int64) int64 { //gd:TextEdit.get_selection_origin_line
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_origin_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3404,10 +3407,10 @@ func (self class) GetSelectionOriginLine(caret_index gd.Int) gd.Int { //gd:TextE
 Returns the origin column of the selection. This is the opposite end from the caret.
 */
 //go:nosplit
-func (self class) GetSelectionOriginColumn(caret_index gd.Int) gd.Int { //gd:TextEdit.get_selection_origin_column
+func (self class) GetSelectionOriginColumn(caret_index int64) int64 { //gd:TextEdit.get_selection_origin_column
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_origin_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3420,7 +3423,7 @@ If [param can_be_hidden] is [code]false[/code], The line will be set to the near
 If [param wrap_index] is [code]-1[/code], the selection origin column will be clamped to the [param line]'s length. If [param wrap_index] is greater than [code]-1[/code], the column will be moved to attempt to match the visual x position on the line's [param wrap_index] to the position from the last time [method set_selection_origin_column] or [method select] was called.
 */
 //go:nosplit
-func (self class) SetSelectionOriginLine(line gd.Int, can_be_hidden bool, wrap_index gd.Int, caret_index gd.Int) { //gd:TextEdit.set_selection_origin_line
+func (self class) SetSelectionOriginLine(line int64, can_be_hidden bool, wrap_index int64, caret_index int64) { //gd:TextEdit.set_selection_origin_line
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, can_be_hidden)
@@ -3435,7 +3438,7 @@ func (self class) SetSelectionOriginLine(line gd.Int, can_be_hidden bool, wrap_i
 Sets the selection origin column to the [param column] for the given [param caret_index]. If the selection origin is moved to the caret position, the selection will deselect.
 */
 //go:nosplit
-func (self class) SetSelectionOriginColumn(column gd.Int, caret_index gd.Int) { //gd:TextEdit.set_selection_origin_column
+func (self class) SetSelectionOriginColumn(column int64, caret_index int64) { //gd:TextEdit.set_selection_origin_column
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, caret_index)
@@ -3448,10 +3451,10 @@ func (self class) SetSelectionOriginColumn(column gd.Int, caret_index gd.Int) { 
 Returns the selection begin line. Returns the caret line if there is no selection.
 */
 //go:nosplit
-func (self class) GetSelectionFromLine(caret_index gd.Int) gd.Int { //gd:TextEdit.get_selection_from_line
+func (self class) GetSelectionFromLine(caret_index int64) int64 { //gd:TextEdit.get_selection_from_line
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_from_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3462,10 +3465,10 @@ func (self class) GetSelectionFromLine(caret_index gd.Int) gd.Int { //gd:TextEdi
 Returns the selection begin column. Returns the caret column if there is no selection.
 */
 //go:nosplit
-func (self class) GetSelectionFromColumn(caret_index gd.Int) gd.Int { //gd:TextEdit.get_selection_from_column
+func (self class) GetSelectionFromColumn(caret_index int64) int64 { //gd:TextEdit.get_selection_from_column
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_from_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3476,10 +3479,10 @@ func (self class) GetSelectionFromColumn(caret_index gd.Int) gd.Int { //gd:TextE
 Returns the selection end line. Returns the caret line if there is no selection.
 */
 //go:nosplit
-func (self class) GetSelectionToLine(caret_index gd.Int) gd.Int { //gd:TextEdit.get_selection_to_line
+func (self class) GetSelectionToLine(caret_index int64) int64 { //gd:TextEdit.get_selection_to_line
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_to_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3490,10 +3493,10 @@ func (self class) GetSelectionToLine(caret_index gd.Int) gd.Int { //gd:TextEdit.
 Returns the selection end column. Returns the caret column if there is no selection.
 */
 //go:nosplit
-func (self class) GetSelectionToColumn(caret_index gd.Int) gd.Int { //gd:TextEdit.get_selection_to_column
+func (self class) GetSelectionToColumn(caret_index int64) int64 { //gd:TextEdit.get_selection_to_column
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_to_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3504,7 +3507,7 @@ func (self class) GetSelectionToColumn(caret_index gd.Int) gd.Int { //gd:TextEdi
 Returns [code]true[/code] if the caret of the selection is after the selection origin. This can be used to determine the direction of the selection.
 */
 //go:nosplit
-func (self class) IsCaretAfterSelectionOrigin(caret_index gd.Int) bool { //gd:TextEdit.is_caret_after_selection_origin
+func (self class) IsCaretAfterSelectionOrigin(caret_index int64) bool { //gd:TextEdit.is_caret_after_selection_origin
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[bool](frame)
@@ -3518,7 +3521,7 @@ func (self class) IsCaretAfterSelectionOrigin(caret_index gd.Int) bool { //gd:Te
 Deselects the current selection.
 */
 //go:nosplit
-func (self class) Deselect(caret_index gd.Int) { //gd:TextEdit.deselect
+func (self class) Deselect(caret_index int64) { //gd:TextEdit.deselect
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Nil
@@ -3530,7 +3533,7 @@ func (self class) Deselect(caret_index gd.Int) { //gd:TextEdit.deselect
 Deletes the selected text.
 */
 //go:nosplit
-func (self class) DeleteSelection(caret_index gd.Int) { //gd:TextEdit.delete_selection
+func (self class) DeleteSelection(caret_index int64) { //gd:TextEdit.delete_selection
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Nil
@@ -3580,7 +3583,7 @@ func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode { //gd:TextEd
 Returns if the given line is wrapped.
 */
 //go:nosplit
-func (self class) IsLineWrapped(line gd.Int) bool { //gd:TextEdit.is_line_wrapped
+func (self class) IsLineWrapped(line int64) bool { //gd:TextEdit.is_line_wrapped
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
@@ -3594,10 +3597,10 @@ func (self class) IsLineWrapped(line gd.Int) bool { //gd:TextEdit.is_line_wrappe
 Returns the number of times the given line is wrapped.
 */
 //go:nosplit
-func (self class) GetLineWrapCount(line gd.Int) gd.Int { //gd:TextEdit.get_line_wrap_count
+func (self class) GetLineWrapCount(line int64) int64 { //gd:TextEdit.get_line_wrap_count
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrap_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3608,11 +3611,11 @@ func (self class) GetLineWrapCount(line gd.Int) gd.Int { //gd:TextEdit.get_line_
 Returns the wrap index of the given line column.
 */
 //go:nosplit
-func (self class) GetLineWrapIndexAtColumn(line gd.Int, column gd.Int) gd.Int { //gd:TextEdit.get_line_wrap_index_at_column
+func (self class) GetLineWrapIndexAtColumn(line int64, column int64) int64 { //gd:TextEdit.get_line_wrap_index_at_column
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrap_index_at_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3623,7 +3626,7 @@ func (self class) GetLineWrapIndexAtColumn(line gd.Int, column gd.Int) gd.Int { 
 Returns an array of [String]s representing each wrapped index.
 */
 //go:nosplit
-func (self class) GetLineWrappedText(line gd.Int) Packed.Strings { //gd:TextEdit.get_line_wrapped_text
+func (self class) GetLineWrappedText(line int64) Packed.Strings { //gd:TextEdit.get_line_wrapped_text
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -3679,7 +3682,7 @@ func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:TextEdit.get_h_sc
 }
 
 //go:nosplit
-func (self class) SetVScroll(value gd.Float) { //gd:TextEdit.set_v_scroll
+func (self class) SetVScroll(value float64) { //gd:TextEdit.set_v_scroll
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -3688,9 +3691,9 @@ func (self class) SetVScroll(value gd.Float) { //gd:TextEdit.set_v_scroll
 }
 
 //go:nosplit
-func (self class) GetVScroll() gd.Float { //gd:TextEdit.get_v_scroll
+func (self class) GetVScroll() float64 { //gd:TextEdit.get_v_scroll
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_v_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3698,7 +3701,7 @@ func (self class) GetVScroll() gd.Float { //gd:TextEdit.get_v_scroll
 }
 
 //go:nosplit
-func (self class) SetHScroll(value gd.Int) { //gd:TextEdit.set_h_scroll
+func (self class) SetHScroll(value int64) { //gd:TextEdit.set_h_scroll
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -3707,9 +3710,9 @@ func (self class) SetHScroll(value gd.Int) { //gd:TextEdit.set_h_scroll
 }
 
 //go:nosplit
-func (self class) GetHScroll() gd.Int { //gd:TextEdit.get_h_scroll
+func (self class) GetHScroll() int64 { //gd:TextEdit.get_h_scroll
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_h_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3736,7 +3739,7 @@ func (self class) IsScrollPastEndOfFileEnabled() bool { //gd:TextEdit.is_scroll_
 }
 
 //go:nosplit
-func (self class) SetVScrollSpeed(speed gd.Float) { //gd:TextEdit.set_v_scroll_speed
+func (self class) SetVScrollSpeed(speed float64) { //gd:TextEdit.set_v_scroll_speed
 	var frame = callframe.New()
 	callframe.Arg(frame, speed)
 	var r_ret = callframe.Nil
@@ -3745,9 +3748,9 @@ func (self class) SetVScrollSpeed(speed gd.Float) { //gd:TextEdit.set_v_scroll_s
 }
 
 //go:nosplit
-func (self class) GetVScrollSpeed() gd.Float { //gd:TextEdit.get_v_scroll_speed
+func (self class) GetVScrollSpeed() float64 { //gd:TextEdit.get_v_scroll_speed
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_v_scroll_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3777,11 +3780,11 @@ func (self class) IsFitContentHeightEnabled() bool { //gd:TextEdit.is_fit_conten
 Returns the scroll position for [param wrap_index] of [param line].
 */
 //go:nosplit
-func (self class) GetScrollPosForLine(line gd.Int, wrap_index gd.Int) gd.Float { //gd:TextEdit.get_scroll_pos_for_line
+func (self class) GetScrollPosForLine(line int64, wrap_index int64) float64 { //gd:TextEdit.get_scroll_pos_for_line
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, wrap_index)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_scroll_pos_for_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3792,7 +3795,7 @@ func (self class) GetScrollPosForLine(line gd.Int, wrap_index gd.Int) gd.Float {
 Positions the [param wrap_index] of [param line] at the top of the viewport.
 */
 //go:nosplit
-func (self class) SetLineAsFirstVisible(line gd.Int, wrap_index gd.Int) { //gd:TextEdit.set_line_as_first_visible
+func (self class) SetLineAsFirstVisible(line int64, wrap_index int64) { //gd:TextEdit.set_line_as_first_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, wrap_index)
@@ -3805,9 +3808,9 @@ func (self class) SetLineAsFirstVisible(line gd.Int, wrap_index gd.Int) { //gd:T
 Returns the first visible line.
 */
 //go:nosplit
-func (self class) GetFirstVisibleLine() gd.Int { //gd:TextEdit.get_first_visible_line
+func (self class) GetFirstVisibleLine() int64 { //gd:TextEdit.get_first_visible_line
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_first_visible_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3818,7 +3821,7 @@ func (self class) GetFirstVisibleLine() gd.Int { //gd:TextEdit.get_first_visible
 Positions the [param wrap_index] of [param line] at the center of the viewport.
 */
 //go:nosplit
-func (self class) SetLineAsCenterVisible(line gd.Int, wrap_index gd.Int) { //gd:TextEdit.set_line_as_center_visible
+func (self class) SetLineAsCenterVisible(line int64, wrap_index int64) { //gd:TextEdit.set_line_as_center_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, wrap_index)
@@ -3831,7 +3834,7 @@ func (self class) SetLineAsCenterVisible(line gd.Int, wrap_index gd.Int) { //gd:
 Positions the [param wrap_index] of [param line] at the bottom of the viewport.
 */
 //go:nosplit
-func (self class) SetLineAsLastVisible(line gd.Int, wrap_index gd.Int) { //gd:TextEdit.set_line_as_last_visible
+func (self class) SetLineAsLastVisible(line int64, wrap_index int64) { //gd:TextEdit.set_line_as_last_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, wrap_index)
@@ -3844,9 +3847,9 @@ func (self class) SetLineAsLastVisible(line gd.Int, wrap_index gd.Int) { //gd:Te
 Returns the last visible line. Use [method get_last_full_visible_line_wrap_index] for the wrap index.
 */
 //go:nosplit
-func (self class) GetLastFullVisibleLine() gd.Int { //gd:TextEdit.get_last_full_visible_line
+func (self class) GetLastFullVisibleLine() int64 { //gd:TextEdit.get_last_full_visible_line
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_last_full_visible_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3857,9 +3860,9 @@ func (self class) GetLastFullVisibleLine() gd.Int { //gd:TextEdit.get_last_full_
 Returns the last visible wrap index of the last visible line.
 */
 //go:nosplit
-func (self class) GetLastFullVisibleLineWrapIndex() gd.Int { //gd:TextEdit.get_last_full_visible_line_wrap_index
+func (self class) GetLastFullVisibleLineWrapIndex() int64 { //gd:TextEdit.get_last_full_visible_line_wrap_index
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_last_full_visible_line_wrap_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3870,9 +3873,9 @@ func (self class) GetLastFullVisibleLineWrapIndex() gd.Int { //gd:TextEdit.get_l
 Returns the number of visible lines, including wrapped text.
 */
 //go:nosplit
-func (self class) GetVisibleLineCount() gd.Int { //gd:TextEdit.get_visible_line_count
+func (self class) GetVisibleLineCount() int64 { //gd:TextEdit.get_visible_line_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_visible_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3883,11 +3886,11 @@ func (self class) GetVisibleLineCount() gd.Int { //gd:TextEdit.get_visible_line_
 Returns the total number of visible + wrapped lines between the two lines.
 */
 //go:nosplit
-func (self class) GetVisibleLineCountInRange(from_line gd.Int, to_line gd.Int) gd.Int { //gd:TextEdit.get_visible_line_count_in_range
+func (self class) GetVisibleLineCountInRange(from_line int64, to_line int64) int64 { //gd:TextEdit.get_visible_line_count_in_range
 	var frame = callframe.New()
 	callframe.Arg(frame, from_line)
 	callframe.Arg(frame, to_line)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_visible_line_count_in_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3898,9 +3901,9 @@ func (self class) GetVisibleLineCountInRange(from_line gd.Int, to_line gd.Int) g
 Returns the number of lines that may be drawn.
 */
 //go:nosplit
-func (self class) GetTotalVisibleLineCount() gd.Int { //gd:TextEdit.get_total_visible_line_count
+func (self class) GetTotalVisibleLineCount() int64 { //gd:TextEdit.get_total_visible_line_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_total_visible_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3911,7 +3914,7 @@ func (self class) GetTotalVisibleLineCount() gd.Int { //gd:TextEdit.get_total_vi
 Adjust the viewport so the caret is visible.
 */
 //go:nosplit
-func (self class) AdjustViewportToCaret(caret_index gd.Int) { //gd:TextEdit.adjust_viewport_to_caret
+func (self class) AdjustViewportToCaret(caret_index int64) { //gd:TextEdit.adjust_viewport_to_caret
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Nil
@@ -3923,7 +3926,7 @@ func (self class) AdjustViewportToCaret(caret_index gd.Int) { //gd:TextEdit.adju
 Centers the viewport on the line the editing caret is at. This also resets the [member scroll_horizontal] value to [code]0[/code].
 */
 //go:nosplit
-func (self class) CenterViewportToCaret(caret_index gd.Int) { //gd:TextEdit.center_viewport_to_caret
+func (self class) CenterViewportToCaret(caret_index int64) { //gd:TextEdit.center_viewport_to_caret
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Nil
@@ -3951,7 +3954,7 @@ func (self class) IsDrawingMinimap() bool { //gd:TextEdit.is_drawing_minimap
 }
 
 //go:nosplit
-func (self class) SetMinimapWidth(width gd.Int) { //gd:TextEdit.set_minimap_width
+func (self class) SetMinimapWidth(width int64) { //gd:TextEdit.set_minimap_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -3960,9 +3963,9 @@ func (self class) SetMinimapWidth(width gd.Int) { //gd:TextEdit.set_minimap_widt
 }
 
 //go:nosplit
-func (self class) GetMinimapWidth() gd.Int { //gd:TextEdit.get_minimap_width
+func (self class) GetMinimapWidth() int64 { //gd:TextEdit.get_minimap_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_minimap_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3973,9 +3976,9 @@ func (self class) GetMinimapWidth() gd.Int { //gd:TextEdit.get_minimap_width
 Returns the number of lines that may be drawn on the minimap.
 */
 //go:nosplit
-func (self class) GetMinimapVisibleLines() gd.Int { //gd:TextEdit.get_minimap_visible_lines
+func (self class) GetMinimapVisibleLines() int64 { //gd:TextEdit.get_minimap_visible_lines
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_minimap_visible_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3986,7 +3989,7 @@ func (self class) GetMinimapVisibleLines() gd.Int { //gd:TextEdit.get_minimap_vi
 Register a new gutter to this [TextEdit]. Use [param at] to have a specific gutter order. A value of [code]-1[/code] appends the gutter to the right.
 */
 //go:nosplit
-func (self class) AddGutter(at gd.Int) { //gd:TextEdit.add_gutter
+func (self class) AddGutter(at int64) { //gd:TextEdit.add_gutter
 	var frame = callframe.New()
 	callframe.Arg(frame, at)
 	var r_ret = callframe.Nil
@@ -3998,7 +4001,7 @@ func (self class) AddGutter(at gd.Int) { //gd:TextEdit.add_gutter
 Removes the gutter from this [TextEdit].
 */
 //go:nosplit
-func (self class) RemoveGutter(gutter gd.Int) { //gd:TextEdit.remove_gutter
+func (self class) RemoveGutter(gutter int64) { //gd:TextEdit.remove_gutter
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Nil
@@ -4010,9 +4013,9 @@ func (self class) RemoveGutter(gutter gd.Int) { //gd:TextEdit.remove_gutter
 Returns the number of gutters registered.
 */
 //go:nosplit
-func (self class) GetGutterCount() gd.Int { //gd:TextEdit.get_gutter_count
+func (self class) GetGutterCount() int64 { //gd:TextEdit.get_gutter_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4023,7 +4026,7 @@ func (self class) GetGutterCount() gd.Int { //gd:TextEdit.get_gutter_count
 Sets the name of the gutter.
 */
 //go:nosplit
-func (self class) SetGutterName(gutter gd.Int, name String.Readable) { //gd:TextEdit.set_gutter_name
+func (self class) SetGutterName(gutter int64, name String.Readable) { //gd:TextEdit.set_gutter_name
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
@@ -4036,7 +4039,7 @@ func (self class) SetGutterName(gutter gd.Int, name String.Readable) { //gd:Text
 Returns the name of the gutter at the given index.
 */
 //go:nosplit
-func (self class) GetGutterName(gutter gd.Int) String.Readable { //gd:TextEdit.get_gutter_name
+func (self class) GetGutterName(gutter int64) String.Readable { //gd:TextEdit.get_gutter_name
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -4050,7 +4053,7 @@ func (self class) GetGutterName(gutter gd.Int) String.Readable { //gd:TextEdit.g
 Sets the type of gutter. Gutters can contain icons, text, or custom visuals. See [enum TextEdit.GutterType] for options.
 */
 //go:nosplit
-func (self class) SetGutterType(gutter gd.Int, atype gdclass.TextEditGutterType) { //gd:TextEdit.set_gutter_type
+func (self class) SetGutterType(gutter int64, atype gdclass.TextEditGutterType) { //gd:TextEdit.set_gutter_type
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, atype)
@@ -4063,7 +4066,7 @@ func (self class) SetGutterType(gutter gd.Int, atype gdclass.TextEditGutterType)
 Returns the type of the gutter at the given index. Gutters can contain icons, text, or custom visuals. See [enum TextEdit.GutterType] for options.
 */
 //go:nosplit
-func (self class) GetGutterType(gutter gd.Int) gdclass.TextEditGutterType { //gd:TextEdit.get_gutter_type
+func (self class) GetGutterType(gutter int64) gdclass.TextEditGutterType { //gd:TextEdit.get_gutter_type
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[gdclass.TextEditGutterType](frame)
@@ -4077,7 +4080,7 @@ func (self class) GetGutterType(gutter gd.Int) gdclass.TextEditGutterType { //gd
 Set the width of the gutter.
 */
 //go:nosplit
-func (self class) SetGutterWidth(gutter gd.Int, width gd.Int) { //gd:TextEdit.set_gutter_width
+func (self class) SetGutterWidth(gutter int64, width int64) { //gd:TextEdit.set_gutter_width
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, width)
@@ -4090,10 +4093,10 @@ func (self class) SetGutterWidth(gutter gd.Int, width gd.Int) { //gd:TextEdit.se
 Returns the width of the gutter at the given index.
 */
 //go:nosplit
-func (self class) GetGutterWidth(gutter gd.Int) gd.Int { //gd:TextEdit.get_gutter_width
+func (self class) GetGutterWidth(gutter int64) int64 { //gd:TextEdit.get_gutter_width
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4104,7 +4107,7 @@ func (self class) GetGutterWidth(gutter gd.Int) gd.Int { //gd:TextEdit.get_gutte
 Sets whether the gutter should be drawn.
 */
 //go:nosplit
-func (self class) SetGutterDraw(gutter gd.Int, draw bool) { //gd:TextEdit.set_gutter_draw
+func (self class) SetGutterDraw(gutter int64, draw bool) { //gd:TextEdit.set_gutter_draw
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, draw)
@@ -4117,7 +4120,7 @@ func (self class) SetGutterDraw(gutter gd.Int, draw bool) { //gd:TextEdit.set_gu
 Returns whether the gutter is currently drawn.
 */
 //go:nosplit
-func (self class) IsGutterDrawn(gutter gd.Int) bool { //gd:TextEdit.is_gutter_drawn
+func (self class) IsGutterDrawn(gutter int64) bool { //gd:TextEdit.is_gutter_drawn
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[bool](frame)
@@ -4131,7 +4134,7 @@ func (self class) IsGutterDrawn(gutter gd.Int) bool { //gd:TextEdit.is_gutter_dr
 Sets the gutter as clickable. This will change the mouse cursor to a pointing hand when hovering over the gutter.
 */
 //go:nosplit
-func (self class) SetGutterClickable(gutter gd.Int, clickable bool) { //gd:TextEdit.set_gutter_clickable
+func (self class) SetGutterClickable(gutter int64, clickable bool) { //gd:TextEdit.set_gutter_clickable
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, clickable)
@@ -4144,7 +4147,7 @@ func (self class) SetGutterClickable(gutter gd.Int, clickable bool) { //gd:TextE
 Returns whether the gutter is clickable.
 */
 //go:nosplit
-func (self class) IsGutterClickable(gutter gd.Int) bool { //gd:TextEdit.is_gutter_clickable
+func (self class) IsGutterClickable(gutter int64) bool { //gd:TextEdit.is_gutter_clickable
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[bool](frame)
@@ -4158,7 +4161,7 @@ func (self class) IsGutterClickable(gutter gd.Int) bool { //gd:TextEdit.is_gutte
 Sets the gutter to overwritable. See [method merge_gutters].
 */
 //go:nosplit
-func (self class) SetGutterOverwritable(gutter gd.Int, overwritable bool) { //gd:TextEdit.set_gutter_overwritable
+func (self class) SetGutterOverwritable(gutter int64, overwritable bool) { //gd:TextEdit.set_gutter_overwritable
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, overwritable)
@@ -4171,7 +4174,7 @@ func (self class) SetGutterOverwritable(gutter gd.Int, overwritable bool) { //gd
 Returns whether the gutter is overwritable.
 */
 //go:nosplit
-func (self class) IsGutterOverwritable(gutter gd.Int) bool { //gd:TextEdit.is_gutter_overwritable
+func (self class) IsGutterOverwritable(gutter int64) bool { //gd:TextEdit.is_gutter_overwritable
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[bool](frame)
@@ -4185,7 +4188,7 @@ func (self class) IsGutterOverwritable(gutter gd.Int) bool { //gd:TextEdit.is_gu
 Merge the gutters from [param from_line] into [param to_line]. Only overwritable gutters will be copied.
 */
 //go:nosplit
-func (self class) MergeGutters(from_line gd.Int, to_line gd.Int) { //gd:TextEdit.merge_gutters
+func (self class) MergeGutters(from_line int64, to_line int64) { //gd:TextEdit.merge_gutters
 	var frame = callframe.New()
 	callframe.Arg(frame, from_line)
 	callframe.Arg(frame, to_line)
@@ -4198,7 +4201,7 @@ func (self class) MergeGutters(from_line gd.Int, to_line gd.Int) { //gd:TextEdit
 Set a custom draw method for the gutter. The callback method must take the following args: [code]line: int, gutter: int, Area: Rect2[/code]. This only works when the gutter type is [constant GUTTER_TYPE_CUSTOM] (see [method set_gutter_type]).
 */
 //go:nosplit
-func (self class) SetGutterCustomDraw(column gd.Int, draw_callback Callable.Function) { //gd:TextEdit.set_gutter_custom_draw
+func (self class) SetGutterCustomDraw(column int64, draw_callback Callable.Function) { //gd:TextEdit.set_gutter_custom_draw
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(draw_callback)))
@@ -4211,9 +4214,9 @@ func (self class) SetGutterCustomDraw(column gd.Int, draw_callback Callable.Func
 Returns the total width of all gutters and internal padding.
 */
 //go:nosplit
-func (self class) GetTotalGutterWidth() gd.Int { //gd:TextEdit.get_total_gutter_width
+func (self class) GetTotalGutterWidth() int64 { //gd:TextEdit.get_total_gutter_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_total_gutter_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4224,11 +4227,11 @@ func (self class) GetTotalGutterWidth() gd.Int { //gd:TextEdit.get_total_gutter_
 Sets the metadata for [param gutter] on [param line] to [param metadata].
 */
 //go:nosplit
-func (self class) SetLineGutterMetadata(line gd.Int, gutter gd.Int, metadata gd.Variant) { //gd:TextEdit.set_line_gutter_metadata
+func (self class) SetLineGutterMetadata(line int64, gutter int64, metadata variant.Any) { //gd:TextEdit.set_line_gutter_metadata
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
-	callframe.Arg(frame, pointers.Get(metadata))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(metadata)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -4238,13 +4241,13 @@ func (self class) SetLineGutterMetadata(line gd.Int, gutter gd.Int, metadata gd.
 Returns the metadata currently in [param gutter] at [param line].
 */
 //go:nosplit
-func (self class) GetLineGutterMetadata(line gd.Int, gutter gd.Int) gd.Variant { //gd:TextEdit.get_line_gutter_metadata
+func (self class) GetLineGutterMetadata(line int64, gutter int64) variant.Any { //gd:TextEdit.get_line_gutter_metadata
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4253,7 +4256,7 @@ func (self class) GetLineGutterMetadata(line gd.Int, gutter gd.Int) gd.Variant {
 Sets the text for [param gutter] on [param line] to [param text]. This only works when the gutter type is [constant GUTTER_TYPE_STRING] (see [method set_gutter_type]).
 */
 //go:nosplit
-func (self class) SetLineGutterText(line gd.Int, gutter gd.Int, text String.Readable) { //gd:TextEdit.set_line_gutter_text
+func (self class) SetLineGutterText(line int64, gutter int64, text String.Readable) { //gd:TextEdit.set_line_gutter_text
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
@@ -4267,7 +4270,7 @@ func (self class) SetLineGutterText(line gd.Int, gutter gd.Int, text String.Read
 Returns the text currently in [param gutter] at [param line]. This only works when the gutter type is [constant GUTTER_TYPE_STRING] (see [method set_gutter_type]).
 */
 //go:nosplit
-func (self class) GetLineGutterText(line gd.Int, gutter gd.Int) String.Readable { //gd:TextEdit.get_line_gutter_text
+func (self class) GetLineGutterText(line int64, gutter int64) String.Readable { //gd:TextEdit.get_line_gutter_text
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
@@ -4282,7 +4285,7 @@ func (self class) GetLineGutterText(line gd.Int, gutter gd.Int) String.Readable 
 Sets the icon for [param gutter] on [param line] to [param icon]. This only works when the gutter type is [constant GUTTER_TYPE_ICON] (see [method set_gutter_type]).
 */
 //go:nosplit
-func (self class) SetLineGutterIcon(line gd.Int, gutter gd.Int, icon [1]gdclass.Texture2D) { //gd:TextEdit.set_line_gutter_icon
+func (self class) SetLineGutterIcon(line int64, gutter int64, icon [1]gdclass.Texture2D) { //gd:TextEdit.set_line_gutter_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
@@ -4296,7 +4299,7 @@ func (self class) SetLineGutterIcon(line gd.Int, gutter gd.Int, icon [1]gdclass.
 Returns the icon currently in [param gutter] at [param line]. This only works when the gutter type is [constant GUTTER_TYPE_ICON] (see [method set_gutter_type]).
 */
 //go:nosplit
-func (self class) GetLineGutterIcon(line gd.Int, gutter gd.Int) [1]gdclass.Texture2D { //gd:TextEdit.get_line_gutter_icon
+func (self class) GetLineGutterIcon(line int64, gutter int64) [1]gdclass.Texture2D { //gd:TextEdit.get_line_gutter_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
@@ -4311,7 +4314,7 @@ func (self class) GetLineGutterIcon(line gd.Int, gutter gd.Int) [1]gdclass.Textu
 Sets the color for [param gutter] on [param line] to [param color].
 */
 //go:nosplit
-func (self class) SetLineGutterItemColor(line gd.Int, gutter gd.Int, color gd.Color) { //gd:TextEdit.set_line_gutter_item_color
+func (self class) SetLineGutterItemColor(line int64, gutter int64, color Color.RGBA) { //gd:TextEdit.set_line_gutter_item_color
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
@@ -4325,11 +4328,11 @@ func (self class) SetLineGutterItemColor(line gd.Int, gutter gd.Int, color gd.Co
 Returns the color currently in [param gutter] at [param line].
 */
 //go:nosplit
-func (self class) GetLineGutterItemColor(line gd.Int, gutter gd.Int) gd.Color { //gd:TextEdit.get_line_gutter_item_color
+func (self class) GetLineGutterItemColor(line int64, gutter int64) Color.RGBA { //gd:TextEdit.get_line_gutter_item_color
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_item_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4340,7 +4343,7 @@ func (self class) GetLineGutterItemColor(line gd.Int, gutter gd.Int) gd.Color { 
 If [param clickable] is [code]true[/code], makes the [param gutter] on [param line] clickable. See [signal gutter_clicked].
 */
 //go:nosplit
-func (self class) SetLineGutterClickable(line gd.Int, gutter gd.Int, clickable bool) { //gd:TextEdit.set_line_gutter_clickable
+func (self class) SetLineGutterClickable(line int64, gutter int64, clickable bool) { //gd:TextEdit.set_line_gutter_clickable
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
@@ -4354,7 +4357,7 @@ func (self class) SetLineGutterClickable(line gd.Int, gutter gd.Int, clickable b
 Returns whether the gutter on the given line is clickable.
 */
 //go:nosplit
-func (self class) IsLineGutterClickable(line gd.Int, gutter gd.Int) bool { //gd:TextEdit.is_line_gutter_clickable
+func (self class) IsLineGutterClickable(line int64, gutter int64) bool { //gd:TextEdit.is_line_gutter_clickable
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
@@ -4369,7 +4372,7 @@ func (self class) IsLineGutterClickable(line gd.Int, gutter gd.Int) bool { //gd:
 Sets the current background color of the line. Set to [code]Color(0, 0, 0, 0)[/code] for no color.
 */
 //go:nosplit
-func (self class) SetLineBackgroundColor(line gd.Int, color gd.Color) { //gd:TextEdit.set_line_background_color
+func (self class) SetLineBackgroundColor(line int64, color Color.RGBA) { //gd:TextEdit.set_line_background_color
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, color)
@@ -4382,10 +4385,10 @@ func (self class) SetLineBackgroundColor(line gd.Int, color gd.Color) { //gd:Tex
 Returns the current background color of the line. [code]Color(0, 0, 0, 0)[/code] is returned if no color is set.
 */
 //go:nosplit
-func (self class) GetLineBackgroundColor(line gd.Int) gd.Color { //gd:TextEdit.get_line_background_color
+func (self class) GetLineBackgroundColor(line int64) Color.RGBA { //gd:TextEdit.get_line_background_color
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_background_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4576,7 +4579,7 @@ func (self class) IsMenuVisible() bool { //gd:TextEdit.is_menu_visible
 Executes a given action as defined in the [enum MenuItems] enum.
 */
 //go:nosplit
-func (self class) MenuOption(option gd.Int) { //gd:TextEdit.menu_option
+func (self class) MenuOption(option int64) { //gd:TextEdit.menu_option
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Nil
@@ -4588,7 +4591,7 @@ func (self class) MenuOption(option gd.Int) { //gd:TextEdit.menu_option
 This method does nothing.
 */
 //go:nosplit
-func (self class) AdjustCaretsAfterEdit(caret gd.Int, from_line gd.Int, from_col gd.Int, to_line gd.Int, to_col gd.Int) { //gd:TextEdit.adjust_carets_after_edit
+func (self class) AdjustCaretsAfterEdit(caret int64, from_line int64, from_col int64, to_line int64, to_col int64) { //gd:TextEdit.adjust_carets_after_edit
 	var frame = callframe.New()
 	callframe.Arg(frame, caret)
 	callframe.Arg(frame, from_line)
@@ -4617,10 +4620,10 @@ func (self class) GetCaretIndexEditOrder() Packed.Array[int32] { //gd:TextEdit.g
 Returns the original start line of the selection.
 */
 //go:nosplit
-func (self class) GetSelectionLine(caret_index gd.Int) gd.Int { //gd:TextEdit.get_selection_line
+func (self class) GetSelectionLine(caret_index int64) int64 { //gd:TextEdit.get_selection_line
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4631,10 +4634,10 @@ func (self class) GetSelectionLine(caret_index gd.Int) gd.Int { //gd:TextEdit.ge
 Returns the original start column of the selection.
 */
 //go:nosplit
-func (self class) GetSelectionColumn(caret_index gd.Int) gd.Int { //gd:TextEdit.get_selection_column
+func (self class) GetSelectionColumn(caret_index int64) int64 { //gd:TextEdit.get_selection_column
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

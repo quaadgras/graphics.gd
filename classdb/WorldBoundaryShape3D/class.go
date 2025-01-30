@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Shape3D"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Plane"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,11 +79,11 @@ func (self Instance) Plane() Plane.NormalD {
 }
 
 func (self Instance) SetPlane(value Plane.NormalD) {
-	class(self).SetPlane(gd.Plane(value))
+	class(self).SetPlane(Plane.NormalD(value))
 }
 
 //go:nosplit
-func (self class) SetPlane(plane gd.Plane) { //gd:WorldBoundaryShape3D.set_plane
+func (self class) SetPlane(plane Plane.NormalD) { //gd:WorldBoundaryShape3D.set_plane
 	var frame = callframe.New()
 	callframe.Arg(frame, plane)
 	var r_ret = callframe.Nil
@@ -88,9 +92,9 @@ func (self class) SetPlane(plane gd.Plane) { //gd:WorldBoundaryShape3D.set_plane
 }
 
 //go:nosplit
-func (self class) GetPlane() gd.Plane { //gd:WorldBoundaryShape3D.get_plane
+func (self class) GetPlane() Plane.NormalD { //gd:WorldBoundaryShape3D.get_plane
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Plane](frame)
+	var r_ret = callframe.Ret[Plane.NormalD](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldBoundaryShape3D.Bind_get_plane, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

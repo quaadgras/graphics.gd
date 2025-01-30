@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/XRInterface"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Quaternion"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -200,7 +203,7 @@ func (self Instance) DisplayRefreshRate() Float.X {
 }
 
 func (self Instance) SetDisplayRefreshRate(value Float.X) {
-	class(self).SetDisplayRefreshRate(gd.Float(value))
+	class(self).SetDisplayRefreshRate(float64(value))
 }
 
 func (self Instance) RenderTargetSizeMultiplier() Float.X {
@@ -208,7 +211,7 @@ func (self Instance) RenderTargetSizeMultiplier() Float.X {
 }
 
 func (self Instance) SetRenderTargetSizeMultiplier(value Float.X) {
-	class(self).SetRenderTargetSizeMultiplier(gd.Float(value))
+	class(self).SetRenderTargetSizeMultiplier(float64(value))
 }
 
 func (self Instance) FoveationLevel() int {
@@ -216,7 +219,7 @@ func (self Instance) FoveationLevel() int {
 }
 
 func (self Instance) SetFoveationLevel(value int) {
-	class(self).SetFoveationLevel(gd.Int(value))
+	class(self).SetFoveationLevel(int64(value))
 }
 
 func (self Instance) FoveationDynamic() bool {
@@ -232,7 +235,7 @@ func (self Instance) VrsMinRadius() Float.X {
 }
 
 func (self Instance) SetVrsMinRadius(value Float.X) {
-	class(self).SetVrsMinRadius(gd.Float(value))
+	class(self).SetVrsMinRadius(float64(value))
 }
 
 func (self Instance) VrsStrength() Float.X {
@@ -240,13 +243,13 @@ func (self Instance) VrsStrength() Float.X {
 }
 
 func (self Instance) SetVrsStrength(value Float.X) {
-	class(self).SetVrsStrength(gd.Float(value))
+	class(self).SetVrsStrength(float64(value))
 }
 
 //go:nosplit
-func (self class) GetDisplayRefreshRate() gd.Float { //gd:OpenXRInterface.get_display_refresh_rate
+func (self class) GetDisplayRefreshRate() float64 { //gd:OpenXRInterface.get_display_refresh_rate
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_display_refresh_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -254,7 +257,7 @@ func (self class) GetDisplayRefreshRate() gd.Float { //gd:OpenXRInterface.get_di
 }
 
 //go:nosplit
-func (self class) SetDisplayRefreshRate(refresh_rate gd.Float) { //gd:OpenXRInterface.set_display_refresh_rate
+func (self class) SetDisplayRefreshRate(refresh_rate float64) { //gd:OpenXRInterface.set_display_refresh_rate
 	var frame = callframe.New()
 	callframe.Arg(frame, refresh_rate)
 	var r_ret = callframe.Nil
@@ -263,9 +266,9 @@ func (self class) SetDisplayRefreshRate(refresh_rate gd.Float) { //gd:OpenXRInte
 }
 
 //go:nosplit
-func (self class) GetRenderTargetSizeMultiplier() gd.Float { //gd:OpenXRInterface.get_render_target_size_multiplier
+func (self class) GetRenderTargetSizeMultiplier() float64 { //gd:OpenXRInterface.get_render_target_size_multiplier
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_render_target_size_multiplier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -273,7 +276,7 @@ func (self class) GetRenderTargetSizeMultiplier() gd.Float { //gd:OpenXRInterfac
 }
 
 //go:nosplit
-func (self class) SetRenderTargetSizeMultiplier(multiplier gd.Float) { //gd:OpenXRInterface.set_render_target_size_multiplier
+func (self class) SetRenderTargetSizeMultiplier(multiplier float64) { //gd:OpenXRInterface.set_render_target_size_multiplier
 	var frame = callframe.New()
 	callframe.Arg(frame, multiplier)
 	var r_ret = callframe.Nil
@@ -296,9 +299,9 @@ func (self class) IsFoveationSupported() bool { //gd:OpenXRInterface.is_foveatio
 }
 
 //go:nosplit
-func (self class) GetFoveationLevel() gd.Int { //gd:OpenXRInterface.get_foveation_level
+func (self class) GetFoveationLevel() int64 { //gd:OpenXRInterface.get_foveation_level
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_foveation_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -306,7 +309,7 @@ func (self class) GetFoveationLevel() gd.Int { //gd:OpenXRInterface.get_foveatio
 }
 
 //go:nosplit
-func (self class) SetFoveationLevel(foveation_level gd.Int) { //gd:OpenXRInterface.set_foveation_level
+func (self class) SetFoveationLevel(foveation_level int64) { //gd:OpenXRInterface.set_foveation_level
 	var frame = callframe.New()
 	callframe.Arg(frame, foveation_level)
 	var r_ret = callframe.Nil
@@ -446,11 +449,11 @@ func (self class) GetHandJointFlags(hand gdclass.OpenXRInterfaceHand, joint gdcl
 If handtracking is enabled, returns the rotation of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR.
 */
 //go:nosplit
-func (self class) GetHandJointRotation(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Quaternion { //gd:OpenXRInterface.get_hand_joint_rotation
+func (self class) GetHandJointRotation(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) Quaternion.IJKX { //gd:OpenXRInterface.get_hand_joint_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[gd.Quaternion](frame)
+	var r_ret = callframe.Ret[Quaternion.IJKX](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -461,11 +464,11 @@ func (self class) GetHandJointRotation(hand gdclass.OpenXRInterfaceHand, joint g
 If handtracking is enabled, returns the position of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
 */
 //go:nosplit
-func (self class) GetHandJointPosition(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Vector3 { //gd:OpenXRInterface.get_hand_joint_position
+func (self class) GetHandJointPosition(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_position
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -476,11 +479,11 @@ func (self class) GetHandJointPosition(hand gdclass.OpenXRInterfaceHand, joint g
 If handtracking is enabled, returns the radius of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is without worldscale applied!
 */
 //go:nosplit
-func (self class) GetHandJointRadius(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Float { //gd:OpenXRInterface.get_hand_joint_radius
+func (self class) GetHandJointRadius(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) float64 { //gd:OpenXRInterface.get_hand_joint_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -491,11 +494,11 @@ func (self class) GetHandJointRadius(hand gdclass.OpenXRInterfaceHand, joint gdc
 If handtracking is enabled, returns the linear velocity of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
 */
 //go:nosplit
-func (self class) GetHandJointLinearVelocity(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Vector3 { //gd:OpenXRInterface.get_hand_joint_linear_velocity
+func (self class) GetHandJointLinearVelocity(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_linear_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -506,11 +509,11 @@ func (self class) GetHandJointLinearVelocity(hand gdclass.OpenXRInterfaceHand, j
 If handtracking is enabled, returns the angular velocity of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is relative to [XROrigin3D]!
 */
 //go:nosplit
-func (self class) GetHandJointAngularVelocity(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Vector3 { //gd:OpenXRInterface.get_hand_joint_angular_velocity
+func (self class) GetHandJointAngularVelocity(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_angular_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -560,9 +563,9 @@ func (self class) IsEyeGazeInteractionSupported() bool { //gd:OpenXRInterface.is
 }
 
 //go:nosplit
-func (self class) GetVrsMinRadius() gd.Float { //gd:OpenXRInterface.get_vrs_min_radius
+func (self class) GetVrsMinRadius() float64 { //gd:OpenXRInterface.get_vrs_min_radius
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_vrs_min_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -570,7 +573,7 @@ func (self class) GetVrsMinRadius() gd.Float { //gd:OpenXRInterface.get_vrs_min_
 }
 
 //go:nosplit
-func (self class) SetVrsMinRadius(radius gd.Float) { //gd:OpenXRInterface.set_vrs_min_radius
+func (self class) SetVrsMinRadius(radius float64) { //gd:OpenXRInterface.set_vrs_min_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -579,9 +582,9 @@ func (self class) SetVrsMinRadius(radius gd.Float) { //gd:OpenXRInterface.set_vr
 }
 
 //go:nosplit
-func (self class) GetVrsStrength() gd.Float { //gd:OpenXRInterface.get_vrs_strength
+func (self class) GetVrsStrength() float64 { //gd:OpenXRInterface.get_vrs_strength
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -589,7 +592,7 @@ func (self class) GetVrsStrength() gd.Float { //gd:OpenXRInterface.get_vrs_stren
 }
 
 //go:nosplit
-func (self class) SetVrsStrength(strength gd.Float) { //gd:OpenXRInterface.set_vrs_strength
+func (self class) SetVrsStrength(strength float64) { //gd:OpenXRInterface.set_vrs_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil

@@ -9,20 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
@@ -39,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -59,7 +63,7 @@ Returns [code]true[/code], if the pixel at the given position is opaque and [cod
 [b]Note:[/b] It also returns [code]false[/code], if the sprite's texture is [code]null[/code] or if the given position is invalid.
 */
 func (self Instance) IsPixelOpaque(pos Vector2.XY) bool { //gd:Sprite2D.is_pixel_opaque
-	return bool(class(self).IsPixelOpaque(gd.Vector2(pos)))
+	return bool(class(self).IsPixelOpaque(Vector2.XY(pos)))
 }
 
 /*
@@ -136,7 +140,7 @@ func (self Instance) Offset() Vector2.XY {
 }
 
 func (self Instance) SetOffset(value Vector2.XY) {
-	class(self).SetOffset(gd.Vector2(value))
+	class(self).SetOffset(Vector2.XY(value))
 }
 
 func (self Instance) FlipH() bool {
@@ -160,7 +164,7 @@ func (self Instance) Hframes() int {
 }
 
 func (self Instance) SetHframes(value int) {
-	class(self).SetHframes(gd.Int(value))
+	class(self).SetHframes(int64(value))
 }
 
 func (self Instance) Vframes() int {
@@ -168,7 +172,7 @@ func (self Instance) Vframes() int {
 }
 
 func (self Instance) SetVframes(value int) {
-	class(self).SetVframes(gd.Int(value))
+	class(self).SetVframes(int64(value))
 }
 
 func (self Instance) Frame() int {
@@ -176,7 +180,7 @@ func (self Instance) Frame() int {
 }
 
 func (self Instance) SetFrame(value int) {
-	class(self).SetFrame(gd.Int(value))
+	class(self).SetFrame(int64(value))
 }
 
 func (self Instance) FrameCoords() Vector2i.XY {
@@ -184,7 +188,7 @@ func (self Instance) FrameCoords() Vector2i.XY {
 }
 
 func (self Instance) SetFrameCoords(value Vector2i.XY) {
-	class(self).SetFrameCoords(gd.Vector2i(value))
+	class(self).SetFrameCoords(Vector2i.XY(value))
 }
 
 func (self Instance) RegionEnabled() bool {
@@ -200,7 +204,7 @@ func (self Instance) RegionRect() Rect2.PositionSize {
 }
 
 func (self Instance) SetRegionRect(value Rect2.PositionSize) {
-	class(self).SetRegionRect(gd.Rect2(value))
+	class(self).SetRegionRect(Rect2.PositionSize(value))
 }
 
 func (self Instance) RegionFilterClipEnabled() bool {
@@ -250,7 +254,7 @@ func (self class) IsCentered() bool { //gd:Sprite2D.is_centered
 }
 
 //go:nosplit
-func (self class) SetOffset(offset gd.Vector2) { //gd:Sprite2D.set_offset
+func (self class) SetOffset(offset Vector2.XY) { //gd:Sprite2D.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -259,9 +263,9 @@ func (self class) SetOffset(offset gd.Vector2) { //gd:Sprite2D.set_offset
 }
 
 //go:nosplit
-func (self class) GetOffset() gd.Vector2 { //gd:Sprite2D.get_offset
+func (self class) GetOffset() Vector2.XY { //gd:Sprite2D.get_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -330,7 +334,7 @@ Returns [code]true[/code], if the pixel at the given position is opaque and [cod
 [b]Note:[/b] It also returns [code]false[/code], if the sprite's texture is [code]null[/code] or if the given position is invalid.
 */
 //go:nosplit
-func (self class) IsPixelOpaque(pos gd.Vector2) bool { //gd:Sprite2D.is_pixel_opaque
+func (self class) IsPixelOpaque(pos Vector2.XY) bool { //gd:Sprite2D.is_pixel_opaque
 	var frame = callframe.New()
 	callframe.Arg(frame, pos)
 	var r_ret = callframe.Ret[bool](frame)
@@ -341,7 +345,7 @@ func (self class) IsPixelOpaque(pos gd.Vector2) bool { //gd:Sprite2D.is_pixel_op
 }
 
 //go:nosplit
-func (self class) SetRegionRect(rect gd.Rect2) { //gd:Sprite2D.set_region_rect
+func (self class) SetRegionRect(rect Rect2.PositionSize) { //gd:Sprite2D.set_region_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Nil
@@ -350,9 +354,9 @@ func (self class) SetRegionRect(rect gd.Rect2) { //gd:Sprite2D.set_region_rect
 }
 
 //go:nosplit
-func (self class) GetRegionRect() gd.Rect2 { //gd:Sprite2D.get_region_rect
+func (self class) GetRegionRect() Rect2.PositionSize { //gd:Sprite2D.get_region_rect
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_region_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -379,7 +383,7 @@ func (self class) IsRegionFilterClipEnabled() bool { //gd:Sprite2D.is_region_fil
 }
 
 //go:nosplit
-func (self class) SetFrame(frame_ gd.Int) { //gd:Sprite2D.set_frame
+func (self class) SetFrame(frame_ int64) { //gd:Sprite2D.set_frame
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	var r_ret = callframe.Nil
@@ -388,9 +392,9 @@ func (self class) SetFrame(frame_ gd.Int) { //gd:Sprite2D.set_frame
 }
 
 //go:nosplit
-func (self class) GetFrame() gd.Int { //gd:Sprite2D.get_frame
+func (self class) GetFrame() int64 { //gd:Sprite2D.get_frame
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -398,7 +402,7 @@ func (self class) GetFrame() gd.Int { //gd:Sprite2D.get_frame
 }
 
 //go:nosplit
-func (self class) SetFrameCoords(coords gd.Vector2i) { //gd:Sprite2D.set_frame_coords
+func (self class) SetFrameCoords(coords Vector2i.XY) { //gd:Sprite2D.set_frame_coords
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Nil
@@ -407,9 +411,9 @@ func (self class) SetFrameCoords(coords gd.Vector2i) { //gd:Sprite2D.set_frame_c
 }
 
 //go:nosplit
-func (self class) GetFrameCoords() gd.Vector2i { //gd:Sprite2D.get_frame_coords
+func (self class) GetFrameCoords() Vector2i.XY { //gd:Sprite2D.get_frame_coords
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_frame_coords, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -417,7 +421,7 @@ func (self class) GetFrameCoords() gd.Vector2i { //gd:Sprite2D.get_frame_coords
 }
 
 //go:nosplit
-func (self class) SetVframes(vframes gd.Int) { //gd:Sprite2D.set_vframes
+func (self class) SetVframes(vframes int64) { //gd:Sprite2D.set_vframes
 	var frame = callframe.New()
 	callframe.Arg(frame, vframes)
 	var r_ret = callframe.Nil
@@ -426,9 +430,9 @@ func (self class) SetVframes(vframes gd.Int) { //gd:Sprite2D.set_vframes
 }
 
 //go:nosplit
-func (self class) GetVframes() gd.Int { //gd:Sprite2D.get_vframes
+func (self class) GetVframes() int64 { //gd:Sprite2D.get_vframes
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_vframes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -436,7 +440,7 @@ func (self class) GetVframes() gd.Int { //gd:Sprite2D.get_vframes
 }
 
 //go:nosplit
-func (self class) SetHframes(hframes gd.Int) { //gd:Sprite2D.set_hframes
+func (self class) SetHframes(hframes int64) { //gd:Sprite2D.set_hframes
 	var frame = callframe.New()
 	callframe.Arg(frame, hframes)
 	var r_ret = callframe.Nil
@@ -445,9 +449,9 @@ func (self class) SetHframes(hframes gd.Int) { //gd:Sprite2D.set_hframes
 }
 
 //go:nosplit
-func (self class) GetHframes() gd.Int { //gd:Sprite2D.get_hframes
+func (self class) GetHframes() int64 { //gd:Sprite2D.get_hframes
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_hframes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -482,9 +486,9 @@ public override void _Input(InputEvent @event)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetRect() gd.Rect2 { //gd:Sprite2D.get_rect
+func (self class) GetRect() Rect2.PositionSize { //gd:Sprite2D.get_rect
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

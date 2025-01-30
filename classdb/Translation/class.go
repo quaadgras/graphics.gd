@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -78,7 +82,7 @@ func (Instance) _get_plural_message(impl func(ptr unsafe.Pointer, src_message st
 		defer pointers.End(gd.InternalStringName(src_message))
 		var src_plural_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
 		defer pointers.End(gd.InternalStringName(src_plural_message))
-		var n = gd.UnsafeGet[gd.Int](p_args, 2)
+		var n = gd.UnsafeGet[int64](p_args, 2)
 
 		var context = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3)))))
 		defer pointers.End(gd.InternalStringName(context))
@@ -141,7 +145,7 @@ Returns a message's translation involving plurals.
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 */
 func (self Instance) GetPluralMessage(src_message string, src_plural_message string, n int) string { //gd:Translation.get_plural_message
-	return string(class(self).GetPluralMessage(String.Name(String.New(src_message)), String.Name(String.New(src_plural_message)), gd.Int(n), String.Name(String.New(""))).String())
+	return string(class(self).GetPluralMessage(String.Name(String.New(src_message)), String.Name(String.New(src_plural_message)), int64(n), String.Name(String.New(""))).String())
 }
 
 /*
@@ -202,13 +206,13 @@ func (self Instance) SetLocale(value string) {
 /*
 Virtual method to override [method get_plural_message].
 */
-func (class) _get_plural_message(impl func(ptr unsafe.Pointer, src_message String.Name, src_plural_message String.Name, n gd.Int, context String.Name) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_plural_message(impl func(ptr unsafe.Pointer, src_message String.Name, src_plural_message String.Name, n int64, context String.Name) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var src_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(src_message))
 		var src_plural_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
 		defer pointers.End(gd.InternalStringName(src_plural_message))
-		var n = gd.UnsafeGet[gd.Int](p_args, 2)
+		var n = gd.UnsafeGet[int64](p_args, 2)
 
 		var context = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3)))))
 		defer pointers.End(gd.InternalStringName(context))
@@ -312,7 +316,7 @@ Returns a message's translation involving plurals.
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 */
 //go:nosplit
-func (self class) GetPluralMessage(src_message String.Name, src_plural_message String.Name, n gd.Int, context String.Name) String.Name { //gd:Translation.get_plural_message
+func (self class) GetPluralMessage(src_message String.Name, src_plural_message String.Name, n int64, context String.Name) String.Name { //gd:Translation.get_plural_message
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_message)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_plural_message)))
@@ -368,9 +372,9 @@ func (self class) GetTranslatedMessageList() Packed.Strings { //gd:Translation.g
 Returns the number of existing messages.
 */
 //go:nosplit
-func (self class) GetMessageCount() gd.Int { //gd:Translation.get_message_count
+func (self class) GetMessageCount() int64 { //gd:Translation.get_message_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

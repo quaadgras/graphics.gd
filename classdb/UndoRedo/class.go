@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -181,14 +185,14 @@ func (self Instance) AddUndoMethod(callable func()) { //gd:UndoRedo.add_undo_met
 Register a [param property] that would change its value to [param value] when the action is committed.
 */
 func (self Instance) AddDoProperty(obj Object.Instance, property string, value any) { //gd:UndoRedo.add_do_property
-	class(self).AddDoProperty(obj, String.Name(String.New(property)), gd.NewVariant(value))
+	class(self).AddDoProperty(obj, String.Name(String.New(property)), variant.New(value))
 }
 
 /*
 Register a [param property] that would change its value to [param value] when the action is undone.
 */
 func (self Instance) AddUndoProperty(obj Object.Instance, property string, value any) { //gd:UndoRedo.add_undo_property
-	class(self).AddUndoProperty(obj, String.Name(String.New(property)), gd.NewVariant(value))
+	class(self).AddUndoProperty(obj, String.Name(String.New(property)), variant.New(value))
 }
 
 /*
@@ -255,7 +259,7 @@ func (self Instance) GetCurrentAction() int { //gd:UndoRedo.get_current_action
 Gets the action name from its index.
 */
 func (self Instance) GetActionName(id int) string { //gd:UndoRedo.get_action_name
-	return string(class(self).GetActionName(gd.Int(id)).String())
+	return string(class(self).GetActionName(int64(id)).String())
 }
 
 /*
@@ -332,7 +336,7 @@ func (self Instance) MaxSteps() int {
 }
 
 func (self Instance) SetMaxSteps(value int) {
-	class(self).SetMaxSteps(gd.Int(value))
+	class(self).SetMaxSteps(int64(value))
 }
 
 /*
@@ -404,11 +408,11 @@ func (self class) AddUndoMethod(callable Callable.Function) { //gd:UndoRedo.add_
 Register a [param property] that would change its value to [param value] when the action is committed.
 */
 //go:nosplit
-func (self class) AddDoProperty(obj [1]gd.Object, property String.Name, value gd.Variant) { //gd:UndoRedo.add_do_property
+func (self class) AddDoProperty(obj [1]gd.Object, property String.Name, value variant.Any) { //gd:UndoRedo.add_do_property
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_do_property, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -418,11 +422,11 @@ func (self class) AddDoProperty(obj [1]gd.Object, property String.Name, value gd
 Register a [param property] that would change its value to [param value] when the action is undone.
 */
 //go:nosplit
-func (self class) AddUndoProperty(obj [1]gd.Object, property String.Name, value gd.Variant) { //gd:UndoRedo.add_undo_property
+func (self class) AddUndoProperty(obj [1]gd.Object, property String.Name, value variant.Any) { //gd:UndoRedo.add_undo_property
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_undo_property, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -496,9 +500,9 @@ func (self class) EndForceKeepInMergeEnds() { //gd:UndoRedo.end_force_keep_in_me
 Returns how many elements are in the history.
 */
 //go:nosplit
-func (self class) GetHistoryCount() gd.Int { //gd:UndoRedo.get_history_count
+func (self class) GetHistoryCount() int64 { //gd:UndoRedo.get_history_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_history_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -509,9 +513,9 @@ func (self class) GetHistoryCount() gd.Int { //gd:UndoRedo.get_history_count
 Gets the index of the current action.
 */
 //go:nosplit
-func (self class) GetCurrentAction() gd.Int { //gd:UndoRedo.get_current_action
+func (self class) GetCurrentAction() int64 { //gd:UndoRedo.get_current_action
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_current_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -522,7 +526,7 @@ func (self class) GetCurrentAction() gd.Int { //gd:UndoRedo.get_current_action
 Gets the action name from its index.
 */
 //go:nosplit
-func (self class) GetActionName(id gd.Int) String.Readable { //gd:UndoRedo.get_action_name
+func (self class) GetActionName(id int64) String.Readable { //gd:UndoRedo.get_action_name
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -589,9 +593,9 @@ Gets the version. Every time a new action is committed, the [UndoRedo]'s version
 This is useful mostly to check if something changed from a saved version.
 */
 //go:nosplit
-func (self class) GetVersion() gd.Int { //gd:UndoRedo.get_version
+func (self class) GetVersion() int64 { //gd:UndoRedo.get_version
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -599,7 +603,7 @@ func (self class) GetVersion() gd.Int { //gd:UndoRedo.get_version
 }
 
 //go:nosplit
-func (self class) SetMaxSteps(max_steps gd.Int) { //gd:UndoRedo.set_max_steps
+func (self class) SetMaxSteps(max_steps int64) { //gd:UndoRedo.set_max_steps
 	var frame = callframe.New()
 	callframe.Arg(frame, max_steps)
 	var r_ret = callframe.Nil
@@ -608,9 +612,9 @@ func (self class) SetMaxSteps(max_steps gd.Int) { //gd:UndoRedo.set_max_steps
 }
 
 //go:nosplit
-func (self class) GetMaxSteps() gd.Int { //gd:UndoRedo.get_max_steps
+func (self class) GetMaxSteps() int64 { //gd:UndoRedo.get_max_steps
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_max_steps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,22 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Color"
-import "graphics.gd/variant/Vector2"
-import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -82,14 +85,14 @@ If [param pad] is set, and the image is smaller than the size specified by [para
 If [param size_in_percent] is set, [param width] and [param height] values are percentages of the control width instead of pixels.
 */
 func (self Instance) AddImage(image [1]gdclass.Texture2D) { //gd:RichTextLabel.add_image
-	class(self).AddImage(image, gd.Int(0), gd.Int(0), gd.Color(gd.Color{1, 1, 1, 1}), 5, gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), false, String.New(""), false)
+	class(self).AddImage(image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), variant.New([1]any{}[0]), false, String.New(""), false)
 }
 
 /*
 Updates the existing images with the key [param key]. Only properties specified by [param mask] bits are updated. See [method add_image].
 */
 func (self Instance) UpdateImage(key any, mask gdclass.RichTextLabelImageUpdateMask, image [1]gdclass.Texture2D) { //gd:RichTextLabel.update_image
-	class(self).UpdateImage(gd.NewVariant(key), mask, image, gd.Int(0), gd.Int(0), gd.Color(gd.Color{1, 1, 1, 1}), 5, gd.Rect2(gd.NewRect2(0, 0, 0, 0)), false, String.New(""), false)
+	class(self).UpdateImage(variant.New(key), mask, image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), false, String.New(""), false)
 }
 
 /*
@@ -105,14 +108,14 @@ The [param paragraph] argument is the index of the paragraph to remove, it can t
 If [param no_invalidate] is set to [code]true[/code], cache for the subsequent paragraphs is not invalidated. Use it for faster updates if deleted paragraph is fully self-contained (have no unclosed tags), or this call is part of the complex edit operation and [method invalidate_paragraph] will be called at the end of operation.
 */
 func (self Instance) RemoveParagraph(paragraph int) bool { //gd:RichTextLabel.remove_paragraph
-	return bool(class(self).RemoveParagraph(gd.Int(paragraph), false))
+	return bool(class(self).RemoveParagraph(int64(paragraph), false))
 }
 
 /*
 Invalidates [param paragraph] and all subsequent paragraphs cache.
 */
 func (self Instance) InvalidateParagraph(paragraph int) bool { //gd:RichTextLabel.invalidate_paragraph
-	return bool(class(self).InvalidateParagraph(gd.Int(paragraph)))
+	return bool(class(self).InvalidateParagraph(int64(paragraph)))
 }
 
 /*
@@ -120,14 +123,14 @@ Adds a [code skip-lint][font][/code] tag to the tag stack. Overrides default fon
 Passing [code]0[/code] to [param font_size] will use the existing default font size.
 */
 func (self Instance) PushFont(font [1]gdclass.Font) { //gd:RichTextLabel.push_font
-	class(self).PushFont(font, gd.Int(0))
+	class(self).PushFont(font, int64(0))
 }
 
 /*
 Adds a [code skip-lint][font_size][/code] tag to the tag stack. Overrides default font size for its duration.
 */
 func (self Instance) PushFontSize(font_size int) { //gd:RichTextLabel.push_font_size
-	class(self).PushFontSize(gd.Int(font_size))
+	class(self).PushFontSize(int64(font_size))
 }
 
 /*
@@ -169,21 +172,21 @@ func (self Instance) PushMono() { //gd:RichTextLabel.push_mono
 Adds a [code skip-lint][color][/code] tag to the tag stack.
 */
 func (self Instance) PushColor(color Color.RGBA) { //gd:RichTextLabel.push_color
-	class(self).PushColor(gd.Color(color))
+	class(self).PushColor(Color.RGBA(color))
 }
 
 /*
 Adds a [code skip-lint][outline_size][/code] tag to the tag stack. Overrides default text outline size for its duration.
 */
 func (self Instance) PushOutlineSize(outline_size int) { //gd:RichTextLabel.push_outline_size
-	class(self).PushOutlineSize(gd.Int(outline_size))
+	class(self).PushOutlineSize(int64(outline_size))
 }
 
 /*
 Adds a [code skip-lint][outline_color][/code] tag to the tag stack. Adds text outline for its duration.
 */
 func (self Instance) PushOutlineColor(color Color.RGBA) { //gd:RichTextLabel.push_outline_color
-	class(self).PushOutlineColor(gd.Color(color))
+	class(self).PushOutlineColor(Color.RGBA(color))
 }
 
 /*
@@ -197,14 +200,14 @@ func (self Instance) PushParagraph(alignment HorizontalAlignment) { //gd:RichTex
 Adds an [code skip-lint][indent][/code] tag to the tag stack. Multiplies [param level] by current [member tab_size] to determine new margin length.
 */
 func (self Instance) PushIndent(level int) { //gd:RichTextLabel.push_indent
-	class(self).PushIndent(gd.Int(level))
+	class(self).PushIndent(int64(level))
 }
 
 /*
 Adds [code skip-lint][ol][/code] or [code skip-lint][ul][/code] tag to the tag stack. Multiplies [param level] by current [member tab_size] to determine new margin length.
 */
 func (self Instance) PushList(level int, atype gdclass.RichTextLabelListType, capitalize bool) { //gd:RichTextLabel.push_list
-	class(self).PushList(gd.Int(level), atype, capitalize, String.New("•"))
+	class(self).PushList(int64(level), atype, capitalize, String.New("•"))
 }
 
 /*
@@ -213,7 +216,7 @@ If [member meta_underlined] is [code]true[/code], meta tags display an underline
 [b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
 */
 func (self Instance) PushMeta(data any) { //gd:RichTextLabel.push_meta
-	class(self).PushMeta(gd.NewVariant(data), 1)
+	class(self).PushMeta(variant.New(data), 1)
 }
 
 /*
@@ -248,14 +251,14 @@ func (self Instance) PushStrikethrough() { //gd:RichTextLabel.push_strikethrough
 Adds a [code skip-lint][table=columns,inline_align][/code] tag to the tag stack. Use [method set_table_column_expand] to set column expansion ratio. Use [method push_cell] to add cells.
 */
 func (self Instance) PushTable(columns int) { //gd:RichTextLabel.push_table
-	class(self).PushTable(gd.Int(columns), 0, gd.Int(-1))
+	class(self).PushTable(int64(columns), 0, int64(-1))
 }
 
 /*
 Adds a [code skip-lint][dropcap][/code] tag to the tag stack. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
 func (self Instance) PushDropcap(s string, font [1]gdclass.Font, size int) { //gd:RichTextLabel.push_dropcap
-	class(self).PushDropcap(String.New(s), font, gd.Int(size), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.Color(gd.Color{1, 1, 1, 1}), gd.Int(0), gd.Color(gd.Color{0, 0, 0, 0}))
+	class(self).PushDropcap(String.New(s), font, int64(size), Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), Color.RGBA(gd.Color{1, 1, 1, 1}), int64(0), Color.RGBA(gd.Color{0, 0, 0, 0}))
 }
 
 /*
@@ -264,35 +267,35 @@ For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width wou
 If [param expand] is [code]false[/code], the column will not contribute to the total ratio.
 */
 func (self Instance) SetTableColumnExpand(column int, expand bool) { //gd:RichTextLabel.set_table_column_expand
-	class(self).SetTableColumnExpand(gd.Int(column), expand, gd.Int(1))
+	class(self).SetTableColumnExpand(int64(column), expand, int64(1))
 }
 
 /*
 Sets color of a table cell. Separate colors for alternating rows can be specified.
 */
 func (self Instance) SetCellRowBackgroundColor(odd_row_bg Color.RGBA, even_row_bg Color.RGBA) { //gd:RichTextLabel.set_cell_row_background_color
-	class(self).SetCellRowBackgroundColor(gd.Color(odd_row_bg), gd.Color(even_row_bg))
+	class(self).SetCellRowBackgroundColor(Color.RGBA(odd_row_bg), Color.RGBA(even_row_bg))
 }
 
 /*
 Sets color of a table cell border.
 */
 func (self Instance) SetCellBorderColor(color Color.RGBA) { //gd:RichTextLabel.set_cell_border_color
-	class(self).SetCellBorderColor(gd.Color(color))
+	class(self).SetCellBorderColor(Color.RGBA(color))
 }
 
 /*
 Sets minimum and maximum size overrides for a table cell.
 */
 func (self Instance) SetCellSizeOverride(min_size Vector2.XY, max_size Vector2.XY) { //gd:RichTextLabel.set_cell_size_override
-	class(self).SetCellSizeOverride(gd.Vector2(min_size), gd.Vector2(max_size))
+	class(self).SetCellSizeOverride(Vector2.XY(min_size), Vector2.XY(max_size))
 }
 
 /*
 Sets inner padding of a table cell.
 */
 func (self Instance) SetCellPadding(padding Rect2.PositionSize) { //gd:RichTextLabel.set_cell_padding
-	class(self).SetCellPadding(gd.Rect2(padding))
+	class(self).SetCellPadding(Rect2.PositionSize(padding))
 }
 
 /*
@@ -306,14 +309,14 @@ func (self Instance) PushCell() { //gd:RichTextLabel.push_cell
 Adds a [code skip-lint][fgcolor][/code] tag to the tag stack.
 */
 func (self Instance) PushFgcolor(fgcolor Color.RGBA) { //gd:RichTextLabel.push_fgcolor
-	class(self).PushFgcolor(gd.Color(fgcolor))
+	class(self).PushFgcolor(Color.RGBA(fgcolor))
 }
 
 /*
 Adds a [code skip-lint][bgcolor][/code] tag to the tag stack.
 */
 func (self Instance) PushBgcolor(bgcolor Color.RGBA) { //gd:RichTextLabel.push_bgcolor
-	class(self).PushBgcolor(gd.Color(bgcolor))
+	class(self).PushBgcolor(Color.RGBA(bgcolor))
 }
 
 /*
@@ -371,14 +374,14 @@ func (self Instance) GetVScrollBar() [1]gdclass.VScrollBar { //gd:RichTextLabel.
 Scrolls the window's top line to match [param line].
 */
 func (self Instance) ScrollToLine(line int) { //gd:RichTextLabel.scroll_to_line
-	class(self).ScrollToLine(gd.Int(line))
+	class(self).ScrollToLine(int64(line))
 }
 
 /*
 Scrolls the window's top line to match first line of the [param paragraph].
 */
 func (self Instance) ScrollToParagraph(paragraph int) { //gd:RichTextLabel.scroll_to_paragraph
-	class(self).ScrollToParagraph(gd.Int(paragraph))
+	class(self).ScrollToParagraph(int64(paragraph))
 }
 
 /*
@@ -451,7 +454,7 @@ Returns the line number of the character position provided. Line and character n
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetCharacterLine(character int) int { //gd:RichTextLabel.get_character_line
-	return int(int(class(self).GetCharacterLine(gd.Int(character))))
+	return int(int(class(self).GetCharacterLine(int64(character))))
 }
 
 /*
@@ -459,7 +462,7 @@ Returns the paragraph number of the character position provided. Paragraph and c
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetCharacterParagraph(character int) int { //gd:RichTextLabel.get_character_paragraph
-	return int(int(class(self).GetCharacterParagraph(gd.Int(character))))
+	return int(int(class(self).GetCharacterParagraph(int64(character))))
 }
 
 /*
@@ -521,7 +524,7 @@ Returns the vertical offset of the line found at the provided index.
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetLineOffset(line int) Float.X { //gd:RichTextLabel.get_line_offset
-	return Float.X(Float.X(class(self).GetLineOffset(gd.Int(line))))
+	return Float.X(Float.X(class(self).GetLineOffset(int64(line))))
 }
 
 /*
@@ -529,7 +532,7 @@ Returns the vertical offset of the paragraph found at the provided index.
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetParagraphOffset(paragraph int) Float.X { //gd:RichTextLabel.get_paragraph_offset
-	return Float.X(Float.X(class(self).GetParagraphOffset(gd.Int(paragraph))))
+	return Float.X(Float.X(class(self).GetParagraphOffset(int64(paragraph))))
 }
 
 /*
@@ -566,7 +569,7 @@ func _ready():
 [/codeblock]
 */
 func (self Instance) InstallEffect(effect any) { //gd:RichTextLabel.install_effect
-	class(self).InstallEffect(gd.NewVariant(effect))
+	class(self).InstallEffect(variant.New(effect))
 }
 
 /*
@@ -633,7 +636,7 @@ func (self Instance) IsMenuVisible() bool { //gd:RichTextLabel.is_menu_visible
 Executes a given action as defined in the [enum MenuItems] enum.
 */
 func (self Instance) MenuOption(option int) { //gd:RichTextLabel.menu_option
-	class(self).MenuOption(gd.Int(option))
+	class(self).MenuOption(int64(option))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -707,7 +710,7 @@ func (self Instance) TabSize() int {
 }
 
 func (self Instance) SetTabSize(value int) {
-	class(self).SetTabSize(gd.Int(value))
+	class(self).SetTabSize(int64(value))
 }
 
 func (self Instance) ContextMenuEnabled() bool {
@@ -763,7 +766,7 @@ func (self Instance) ProgressBarDelay() int {
 }
 
 func (self Instance) SetProgressBarDelay(value int) {
-	class(self).SetProgressBarDelay(gd.Int(value))
+	class(self).SetProgressBarDelay(int64(value))
 }
 
 func (self Instance) SelectionEnabled() bool {
@@ -795,7 +798,7 @@ func (self Instance) VisibleCharacters() int {
 }
 
 func (self Instance) SetVisibleCharacters(value int) {
-	class(self).SetVisibleCharacters(gd.Int(value))
+	class(self).SetVisibleCharacters(int64(value))
 }
 
 func (self Instance) VisibleCharactersBehavior() gdclass.TextServerVisibleCharactersBehavior {
@@ -811,7 +814,7 @@ func (self Instance) VisibleRatio() Float.X {
 }
 
 func (self Instance) SetVisibleRatio(value Float.X) {
-	class(self).SetVisibleRatio(gd.Float(value))
+	class(self).SetVisibleRatio(float64(value))
 }
 
 func (self Instance) TextDirection() gdclass.ControlTextDirection {
@@ -889,7 +892,7 @@ If [param pad] is set, and the image is smaller than the size specified by [para
 If [param size_in_percent] is set, [param width] and [param height] values are percentages of the control width instead of pixels.
 */
 //go:nosplit
-func (self class) AddImage(image [1]gdclass.Texture2D, width gd.Int, height gd.Int, color gd.Color, inline_align InlineAlignment, region gd.Rect2, key gd.Variant, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.add_image
+func (self class) AddImage(image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align InlineAlignment, region Rect2.PositionSize, key variant.Any, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.add_image
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, width)
@@ -897,7 +900,7 @@ func (self class) AddImage(image [1]gdclass.Texture2D, width gd.Int, height gd.I
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, inline_align)
 	callframe.Arg(frame, region)
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(key)))
 	callframe.Arg(frame, pad)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	callframe.Arg(frame, size_in_percent)
@@ -910,9 +913,9 @@ func (self class) AddImage(image [1]gdclass.Texture2D, width gd.Int, height gd.I
 Updates the existing images with the key [param key]. Only properties specified by [param mask] bits are updated. See [method add_image].
 */
 //go:nosplit
-func (self class) UpdateImage(key gd.Variant, mask gdclass.RichTextLabelImageUpdateMask, image [1]gdclass.Texture2D, width gd.Int, height gd.Int, color gd.Color, inline_align InlineAlignment, region gd.Rect2, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.update_image
+func (self class) UpdateImage(key variant.Any, mask gdclass.RichTextLabelImageUpdateMask, image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align InlineAlignment, region Rect2.PositionSize, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.update_image
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(key)))
 	callframe.Arg(frame, mask)
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, width)
@@ -945,7 +948,7 @@ The [param paragraph] argument is the index of the paragraph to remove, it can t
 If [param no_invalidate] is set to [code]true[/code], cache for the subsequent paragraphs is not invalidated. Use it for faster updates if deleted paragraph is fully self-contained (have no unclosed tags), or this call is part of the complex edit operation and [method invalidate_paragraph] will be called at the end of operation.
 */
 //go:nosplit
-func (self class) RemoveParagraph(paragraph gd.Int, no_invalidate bool) bool { //gd:RichTextLabel.remove_paragraph
+func (self class) RemoveParagraph(paragraph int64, no_invalidate bool) bool { //gd:RichTextLabel.remove_paragraph
 	var frame = callframe.New()
 	callframe.Arg(frame, paragraph)
 	callframe.Arg(frame, no_invalidate)
@@ -960,7 +963,7 @@ func (self class) RemoveParagraph(paragraph gd.Int, no_invalidate bool) bool { /
 Invalidates [param paragraph] and all subsequent paragraphs cache.
 */
 //go:nosplit
-func (self class) InvalidateParagraph(paragraph gd.Int) bool { //gd:RichTextLabel.invalidate_paragraph
+func (self class) InvalidateParagraph(paragraph int64) bool { //gd:RichTextLabel.invalidate_paragraph
 	var frame = callframe.New()
 	callframe.Arg(frame, paragraph)
 	var r_ret = callframe.Ret[bool](frame)
@@ -975,7 +978,7 @@ Adds a [code skip-lint][font][/code] tag to the tag stack. Overrides default fon
 Passing [code]0[/code] to [param font_size] will use the existing default font size.
 */
 //go:nosplit
-func (self class) PushFont(font [1]gdclass.Font, font_size gd.Int) { //gd:RichTextLabel.push_font
+func (self class) PushFont(font [1]gdclass.Font, font_size int64) { //gd:RichTextLabel.push_font
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, font_size)
@@ -988,7 +991,7 @@ func (self class) PushFont(font [1]gdclass.Font, font_size gd.Int) { //gd:RichTe
 Adds a [code skip-lint][font_size][/code] tag to the tag stack. Overrides default font size for its duration.
 */
 //go:nosplit
-func (self class) PushFontSize(font_size gd.Int) { //gd:RichTextLabel.push_font_size
+func (self class) PushFontSize(font_size int64) { //gd:RichTextLabel.push_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
 	var r_ret = callframe.Nil
@@ -1055,7 +1058,7 @@ func (self class) PushMono() { //gd:RichTextLabel.push_mono
 Adds a [code skip-lint][color][/code] tag to the tag stack.
 */
 //go:nosplit
-func (self class) PushColor(color gd.Color) { //gd:RichTextLabel.push_color
+func (self class) PushColor(color Color.RGBA) { //gd:RichTextLabel.push_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -1067,7 +1070,7 @@ func (self class) PushColor(color gd.Color) { //gd:RichTextLabel.push_color
 Adds a [code skip-lint][outline_size][/code] tag to the tag stack. Overrides default text outline size for its duration.
 */
 //go:nosplit
-func (self class) PushOutlineSize(outline_size gd.Int) { //gd:RichTextLabel.push_outline_size
+func (self class) PushOutlineSize(outline_size int64) { //gd:RichTextLabel.push_outline_size
 	var frame = callframe.New()
 	callframe.Arg(frame, outline_size)
 	var r_ret = callframe.Nil
@@ -1079,7 +1082,7 @@ func (self class) PushOutlineSize(outline_size gd.Int) { //gd:RichTextLabel.push
 Adds a [code skip-lint][outline_color][/code] tag to the tag stack. Adds text outline for its duration.
 */
 //go:nosplit
-func (self class) PushOutlineColor(color gd.Color) { //gd:RichTextLabel.push_outline_color
+func (self class) PushOutlineColor(color Color.RGBA) { //gd:RichTextLabel.push_outline_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -1108,7 +1111,7 @@ func (self class) PushParagraph(alignment HorizontalAlignment, base_direction gd
 Adds an [code skip-lint][indent][/code] tag to the tag stack. Multiplies [param level] by current [member tab_size] to determine new margin length.
 */
 //go:nosplit
-func (self class) PushIndent(level gd.Int) { //gd:RichTextLabel.push_indent
+func (self class) PushIndent(level int64) { //gd:RichTextLabel.push_indent
 	var frame = callframe.New()
 	callframe.Arg(frame, level)
 	var r_ret = callframe.Nil
@@ -1120,7 +1123,7 @@ func (self class) PushIndent(level gd.Int) { //gd:RichTextLabel.push_indent
 Adds [code skip-lint][ol][/code] or [code skip-lint][ul][/code] tag to the tag stack. Multiplies [param level] by current [member tab_size] to determine new margin length.
 */
 //go:nosplit
-func (self class) PushList(level gd.Int, atype gdclass.RichTextLabelListType, capitalize bool, bullet String.Readable) { //gd:RichTextLabel.push_list
+func (self class) PushList(level int64, atype gdclass.RichTextLabelListType, capitalize bool, bullet String.Readable) { //gd:RichTextLabel.push_list
 	var frame = callframe.New()
 	callframe.Arg(frame, level)
 	callframe.Arg(frame, atype)
@@ -1137,9 +1140,9 @@ If [member meta_underlined] is [code]true[/code], meta tags display an underline
 [b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
 */
 //go:nosplit
-func (self class) PushMeta(data gd.Variant, underline_mode gdclass.RichTextLabelMetaUnderline) { //gd:RichTextLabel.push_meta
+func (self class) PushMeta(data variant.Any, underline_mode gdclass.RichTextLabelMetaUnderline) { //gd:RichTextLabel.push_meta
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(data)))
 	callframe.Arg(frame, underline_mode)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1196,7 +1199,7 @@ func (self class) PushStrikethrough() { //gd:RichTextLabel.push_strikethrough
 Adds a [code skip-lint][table=columns,inline_align][/code] tag to the tag stack. Use [method set_table_column_expand] to set column expansion ratio. Use [method push_cell] to add cells.
 */
 //go:nosplit
-func (self class) PushTable(columns gd.Int, inline_align InlineAlignment, align_to_row gd.Int) { //gd:RichTextLabel.push_table
+func (self class) PushTable(columns int64, inline_align InlineAlignment, align_to_row int64) { //gd:RichTextLabel.push_table
 	var frame = callframe.New()
 	callframe.Arg(frame, columns)
 	callframe.Arg(frame, inline_align)
@@ -1210,7 +1213,7 @@ func (self class) PushTable(columns gd.Int, inline_align InlineAlignment, align_
 Adds a [code skip-lint][dropcap][/code] tag to the tag stack. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
 //go:nosplit
-func (self class) PushDropcap(s String.Readable, font [1]gdclass.Font, size gd.Int, dropcap_margins gd.Rect2, color gd.Color, outline_size gd.Int, outline_color gd.Color) { //gd:RichTextLabel.push_dropcap
+func (self class) PushDropcap(s String.Readable, font [1]gdclass.Font, size int64, dropcap_margins Rect2.PositionSize, color Color.RGBA, outline_size int64, outline_color Color.RGBA) { //gd:RichTextLabel.push_dropcap
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
 	callframe.Arg(frame, pointers.Get(font[0])[0])
@@ -1230,7 +1233,7 @@ For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width wou
 If [param expand] is [code]false[/code], the column will not contribute to the total ratio.
 */
 //go:nosplit
-func (self class) SetTableColumnExpand(column gd.Int, expand bool, ratio gd.Int) { //gd:RichTextLabel.set_table_column_expand
+func (self class) SetTableColumnExpand(column int64, expand bool, ratio int64) { //gd:RichTextLabel.set_table_column_expand
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, expand)
@@ -1244,7 +1247,7 @@ func (self class) SetTableColumnExpand(column gd.Int, expand bool, ratio gd.Int)
 Sets color of a table cell. Separate colors for alternating rows can be specified.
 */
 //go:nosplit
-func (self class) SetCellRowBackgroundColor(odd_row_bg gd.Color, even_row_bg gd.Color) { //gd:RichTextLabel.set_cell_row_background_color
+func (self class) SetCellRowBackgroundColor(odd_row_bg Color.RGBA, even_row_bg Color.RGBA) { //gd:RichTextLabel.set_cell_row_background_color
 	var frame = callframe.New()
 	callframe.Arg(frame, odd_row_bg)
 	callframe.Arg(frame, even_row_bg)
@@ -1257,7 +1260,7 @@ func (self class) SetCellRowBackgroundColor(odd_row_bg gd.Color, even_row_bg gd.
 Sets color of a table cell border.
 */
 //go:nosplit
-func (self class) SetCellBorderColor(color gd.Color) { //gd:RichTextLabel.set_cell_border_color
+func (self class) SetCellBorderColor(color Color.RGBA) { //gd:RichTextLabel.set_cell_border_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -1269,7 +1272,7 @@ func (self class) SetCellBorderColor(color gd.Color) { //gd:RichTextLabel.set_ce
 Sets minimum and maximum size overrides for a table cell.
 */
 //go:nosplit
-func (self class) SetCellSizeOverride(min_size gd.Vector2, max_size gd.Vector2) { //gd:RichTextLabel.set_cell_size_override
+func (self class) SetCellSizeOverride(min_size Vector2.XY, max_size Vector2.XY) { //gd:RichTextLabel.set_cell_size_override
 	var frame = callframe.New()
 	callframe.Arg(frame, min_size)
 	callframe.Arg(frame, max_size)
@@ -1282,7 +1285,7 @@ func (self class) SetCellSizeOverride(min_size gd.Vector2, max_size gd.Vector2) 
 Sets inner padding of a table cell.
 */
 //go:nosplit
-func (self class) SetCellPadding(padding gd.Rect2) { //gd:RichTextLabel.set_cell_padding
+func (self class) SetCellPadding(padding Rect2.PositionSize) { //gd:RichTextLabel.set_cell_padding
 	var frame = callframe.New()
 	callframe.Arg(frame, padding)
 	var r_ret = callframe.Nil
@@ -1305,7 +1308,7 @@ func (self class) PushCell() { //gd:RichTextLabel.push_cell
 Adds a [code skip-lint][fgcolor][/code] tag to the tag stack.
 */
 //go:nosplit
-func (self class) PushFgcolor(fgcolor gd.Color) { //gd:RichTextLabel.push_fgcolor
+func (self class) PushFgcolor(fgcolor Color.RGBA) { //gd:RichTextLabel.push_fgcolor
 	var frame = callframe.New()
 	callframe.Arg(frame, fgcolor)
 	var r_ret = callframe.Nil
@@ -1317,7 +1320,7 @@ func (self class) PushFgcolor(fgcolor gd.Color) { //gd:RichTextLabel.push_fgcolo
 Adds a [code skip-lint][bgcolor][/code] tag to the tag stack.
 */
 //go:nosplit
-func (self class) PushBgcolor(bgcolor gd.Color) { //gd:RichTextLabel.push_bgcolor
+func (self class) PushBgcolor(bgcolor Color.RGBA) { //gd:RichTextLabel.push_bgcolor
 	var frame = callframe.New()
 	callframe.Arg(frame, bgcolor)
 	var r_ret = callframe.Nil
@@ -1583,7 +1586,7 @@ func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:RichTextLabel.get
 Scrolls the window's top line to match [param line].
 */
 //go:nosplit
-func (self class) ScrollToLine(line gd.Int) { //gd:RichTextLabel.scroll_to_line
+func (self class) ScrollToLine(line int64) { //gd:RichTextLabel.scroll_to_line
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Nil
@@ -1595,7 +1598,7 @@ func (self class) ScrollToLine(line gd.Int) { //gd:RichTextLabel.scroll_to_line
 Scrolls the window's top line to match first line of the [param paragraph].
 */
 //go:nosplit
-func (self class) ScrollToParagraph(paragraph gd.Int) { //gd:RichTextLabel.scroll_to_paragraph
+func (self class) ScrollToParagraph(paragraph int64) { //gd:RichTextLabel.scroll_to_paragraph
 	var frame = callframe.New()
 	callframe.Arg(frame, paragraph)
 	var r_ret = callframe.Nil
@@ -1615,7 +1618,7 @@ func (self class) ScrollToSelection() { //gd:RichTextLabel.scroll_to_selection
 }
 
 //go:nosplit
-func (self class) SetTabSize(spaces gd.Int) { //gd:RichTextLabel.set_tab_size
+func (self class) SetTabSize(spaces int64) { //gd:RichTextLabel.set_tab_size
 	var frame = callframe.New()
 	callframe.Arg(frame, spaces)
 	var r_ret = callframe.Nil
@@ -1624,9 +1627,9 @@ func (self class) SetTabSize(spaces gd.Int) { //gd:RichTextLabel.set_tab_size
 }
 
 //go:nosplit
-func (self class) GetTabSize() gd.Int { //gd:RichTextLabel.get_tab_size
+func (self class) GetTabSize() int64 { //gd:RichTextLabel.get_tab_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_tab_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1751,9 +1754,9 @@ func (self class) IsDragAndDropSelectionEnabled() bool { //gd:RichTextLabel.is_d
 Returns the current selection first character index if a selection is active, [code]-1[/code] otherwise. Does not include BBCodes.
 */
 //go:nosplit
-func (self class) GetSelectionFrom() gd.Int { //gd:RichTextLabel.get_selection_from
+func (self class) GetSelectionFrom() int64 { //gd:RichTextLabel.get_selection_from
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_selection_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1764,9 +1767,9 @@ func (self class) GetSelectionFrom() gd.Int { //gd:RichTextLabel.get_selection_f
 Returns the current selection last character index if a selection is active, [code]-1[/code] otherwise. Does not include BBCodes.
 */
 //go:nosplit
-func (self class) GetSelectionTo() gd.Int { //gd:RichTextLabel.get_selection_to
+func (self class) GetSelectionTo() int64 { //gd:RichTextLabel.get_selection_to
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_selection_to, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1877,7 +1880,7 @@ func (self class) IsThreaded() bool { //gd:RichTextLabel.is_threaded
 }
 
 //go:nosplit
-func (self class) SetProgressBarDelay(delay_ms gd.Int) { //gd:RichTextLabel.set_progress_bar_delay
+func (self class) SetProgressBarDelay(delay_ms int64) { //gd:RichTextLabel.set_progress_bar_delay
 	var frame = callframe.New()
 	callframe.Arg(frame, delay_ms)
 	var r_ret = callframe.Nil
@@ -1886,9 +1889,9 @@ func (self class) SetProgressBarDelay(delay_ms gd.Int) { //gd:RichTextLabel.set_
 }
 
 //go:nosplit
-func (self class) GetProgressBarDelay() gd.Int { //gd:RichTextLabel.get_progress_bar_delay
+func (self class) GetProgressBarDelay() int64 { //gd:RichTextLabel.get_progress_bar_delay
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_progress_bar_delay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1896,7 +1899,7 @@ func (self class) GetProgressBarDelay() gd.Int { //gd:RichTextLabel.get_progress
 }
 
 //go:nosplit
-func (self class) SetVisibleCharacters(amount gd.Int) { //gd:RichTextLabel.set_visible_characters
+func (self class) SetVisibleCharacters(amount int64) { //gd:RichTextLabel.set_visible_characters
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -1905,9 +1908,9 @@ func (self class) SetVisibleCharacters(amount gd.Int) { //gd:RichTextLabel.set_v
 }
 
 //go:nosplit
-func (self class) GetVisibleCharacters() gd.Int { //gd:RichTextLabel.get_visible_characters
+func (self class) GetVisibleCharacters() int64 { //gd:RichTextLabel.get_visible_characters
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_visible_characters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1934,7 +1937,7 @@ func (self class) SetVisibleCharactersBehavior(behavior gdclass.TextServerVisibl
 }
 
 //go:nosplit
-func (self class) SetVisibleRatio(ratio gd.Float) { //gd:RichTextLabel.set_visible_ratio
+func (self class) SetVisibleRatio(ratio float64) { //gd:RichTextLabel.set_visible_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -1943,9 +1946,9 @@ func (self class) SetVisibleRatio(ratio gd.Float) { //gd:RichTextLabel.set_visib
 }
 
 //go:nosplit
-func (self class) GetVisibleRatio() gd.Float { //gd:RichTextLabel.get_visible_ratio
+func (self class) GetVisibleRatio() float64 { //gd:RichTextLabel.get_visible_ratio
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_visible_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1957,10 +1960,10 @@ Returns the line number of the character position provided. Line and character n
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
-func (self class) GetCharacterLine(character gd.Int) gd.Int { //gd:RichTextLabel.get_character_line
+func (self class) GetCharacterLine(character int64) int64 { //gd:RichTextLabel.get_character_line
 	var frame = callframe.New()
 	callframe.Arg(frame, character)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_character_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1972,10 +1975,10 @@ Returns the paragraph number of the character position provided. Paragraph and c
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
-func (self class) GetCharacterParagraph(character gd.Int) gd.Int { //gd:RichTextLabel.get_character_paragraph
+func (self class) GetCharacterParagraph(character int64) int64 { //gd:RichTextLabel.get_character_paragraph
 	var frame = callframe.New()
 	callframe.Arg(frame, character)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_character_paragraph, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1986,9 +1989,9 @@ func (self class) GetCharacterParagraph(character gd.Int) gd.Int { //gd:RichText
 Returns the total number of characters from text tags. Does not include BBCodes.
 */
 //go:nosplit
-func (self class) GetTotalCharacterCount() gd.Int { //gd:RichTextLabel.get_total_character_count
+func (self class) GetTotalCharacterCount() int64 { //gd:RichTextLabel.get_total_character_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_total_character_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2019,9 +2022,9 @@ Returns the total number of lines in the text. Wrapped text is counted as multip
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
-func (self class) GetLineCount() gd.Int { //gd:RichTextLabel.get_line_count
+func (self class) GetLineCount() int64 { //gd:RichTextLabel.get_line_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2033,9 +2036,9 @@ Returns the number of visible lines.
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
-func (self class) GetVisibleLineCount() gd.Int { //gd:RichTextLabel.get_visible_line_count
+func (self class) GetVisibleLineCount() int64 { //gd:RichTextLabel.get_visible_line_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_visible_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2046,9 +2049,9 @@ func (self class) GetVisibleLineCount() gd.Int { //gd:RichTextLabel.get_visible_
 Returns the total number of paragraphs (newlines or [code]p[/code] tags in the tag stack's text tags). Considers wrapped text as one paragraph.
 */
 //go:nosplit
-func (self class) GetParagraphCount() gd.Int { //gd:RichTextLabel.get_paragraph_count
+func (self class) GetParagraphCount() int64 { //gd:RichTextLabel.get_paragraph_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_paragraph_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2060,9 +2063,9 @@ Returns the number of visible paragraphs. A paragraph is considered visible if a
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
-func (self class) GetVisibleParagraphCount() gd.Int { //gd:RichTextLabel.get_visible_paragraph_count
+func (self class) GetVisibleParagraphCount() int64 { //gd:RichTextLabel.get_visible_paragraph_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_visible_paragraph_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2074,9 +2077,9 @@ Returns the height of the content.
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
-func (self class) GetContentHeight() gd.Int { //gd:RichTextLabel.get_content_height
+func (self class) GetContentHeight() int64 { //gd:RichTextLabel.get_content_height
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_content_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2088,9 +2091,9 @@ Returns the width of the content.
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
-func (self class) GetContentWidth() gd.Int { //gd:RichTextLabel.get_content_width
+func (self class) GetContentWidth() int64 { //gd:RichTextLabel.get_content_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_content_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2102,10 +2105,10 @@ Returns the vertical offset of the line found at the provided index.
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
-func (self class) GetLineOffset(line gd.Int) gd.Float { //gd:RichTextLabel.get_line_offset
+func (self class) GetLineOffset(line int64) float64 { //gd:RichTextLabel.get_line_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_line_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2117,10 +2120,10 @@ Returns the vertical offset of the paragraph found at the provided index.
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
-func (self class) GetParagraphOffset(paragraph gd.Int) gd.Float { //gd:RichTextLabel.get_paragraph_offset
+func (self class) GetParagraphOffset(paragraph int64) float64 { //gd:RichTextLabel.get_paragraph_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, paragraph)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_paragraph_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2185,9 +2188,9 @@ func _ready():
 [/codeblock]
 */
 //go:nosplit
-func (self class) InstallEffect(effect gd.Variant) { //gd:RichTextLabel.install_effect
+func (self class) InstallEffect(effect variant.Any) { //gd:RichTextLabel.install_effect
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(effect))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(effect)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_install_effect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2263,7 +2266,7 @@ func (self class) IsMenuVisible() bool { //gd:RichTextLabel.is_menu_visible
 Executes a given action as defined in the [enum MenuItems] enum.
 */
 //go:nosplit
-func (self class) MenuOption(option gd.Int) { //gd:RichTextLabel.menu_option
+func (self class) MenuOption(option int64) { //gd:RichTextLabel.menu_option
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Nil

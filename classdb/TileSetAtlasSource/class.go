@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/TileSetSource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/TileSetSource"
-import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Vector2i"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2i"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -62,14 +65,14 @@ type Any interface {
 Creates a new tile at coordinates [param atlas_coords] with the given [param size].
 */
 func (self Instance) CreateTile(atlas_coords Vector2i.XY) { //gd:TileSetAtlasSource.create_tile
-	class(self).CreateTile(gd.Vector2i(atlas_coords), gd.Vector2i(gd.Vector2i{1, 1}))
+	class(self).CreateTile(Vector2i.XY(atlas_coords), Vector2i.XY(gd.Vector2i{1, 1}))
 }
 
 /*
 Remove a tile and its alternative at coordinates [param atlas_coords].
 */
 func (self Instance) RemoveTile(atlas_coords Vector2i.XY) { //gd:TileSetAtlasSource.remove_tile
-	class(self).RemoveTile(gd.Vector2i(atlas_coords))
+	class(self).RemoveTile(Vector2i.XY(atlas_coords))
 }
 
 /*
@@ -78,35 +81,35 @@ If [param new_atlas_coords] is [code]Vector2i(-1, -1)[/code], keeps the tile's c
 To avoid an error, first check if a move is possible using [method has_room_for_tile].
 */
 func (self Instance) MoveTileInAtlas(atlas_coords Vector2i.XY) { //gd:TileSetAtlasSource.move_tile_in_atlas
-	class(self).MoveTileInAtlas(gd.Vector2i(atlas_coords), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Vector2i(gd.Vector2i{-1, -1}))
+	class(self).MoveTileInAtlas(Vector2i.XY(atlas_coords), Vector2i.XY(gd.Vector2i{-1, -1}), Vector2i.XY(gd.Vector2i{-1, -1}))
 }
 
 /*
 Returns the size of the tile (in the grid coordinates system) at coordinates [param atlas_coords].
 */
 func (self Instance) GetTileSizeInAtlas(atlas_coords Vector2i.XY) Vector2i.XY { //gd:TileSetAtlasSource.get_tile_size_in_atlas
-	return Vector2i.XY(class(self).GetTileSizeInAtlas(gd.Vector2i(atlas_coords)))
+	return Vector2i.XY(class(self).GetTileSizeInAtlas(Vector2i.XY(atlas_coords)))
 }
 
 /*
 Returns whether there is enough room in an atlas to create/modify a tile with the given properties. If [param ignored_tile] is provided, act as is the given tile was not present in the atlas. This may be used when you want to modify a tile's properties.
 */
 func (self Instance) HasRoomForTile(atlas_coords Vector2i.XY, size Vector2i.XY, animation_columns int, animation_separation Vector2i.XY, frames_count int) bool { //gd:TileSetAtlasSource.has_room_for_tile
-	return bool(class(self).HasRoomForTile(gd.Vector2i(atlas_coords), gd.Vector2i(size), gd.Int(animation_columns), gd.Vector2i(animation_separation), gd.Int(frames_count), gd.Vector2i(gd.Vector2i{-1, -1})))
+	return bool(class(self).HasRoomForTile(Vector2i.XY(atlas_coords), Vector2i.XY(size), int64(animation_columns), Vector2i.XY(animation_separation), int64(frames_count), Vector2i.XY(gd.Vector2i{-1, -1})))
 }
 
 /*
 Returns an array of tiles coordinates ID that will be automatically removed when modifying one or several of those properties: [param texture], [param margins], [param separation] or [param texture_region_size]. This can be used to undo changes that would have caused tiles data loss.
 */
 func (self Instance) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, margins Vector2i.XY, separation Vector2i.XY, texture_region_size Vector2i.XY) []Vector2.XY { //gd:TileSetAtlasSource.get_tiles_to_be_removed_on_change
-	return []Vector2.XY(slices.Collect(class(self).GetTilesToBeRemovedOnChange(texture, gd.Vector2i(margins), gd.Vector2i(separation), gd.Vector2i(texture_region_size)).Values()))
+	return []Vector2.XY(slices.Collect(class(self).GetTilesToBeRemovedOnChange(texture, Vector2i.XY(margins), Vector2i.XY(separation), Vector2i.XY(texture_region_size)).Values()))
 }
 
 /*
 If there is a tile covering the [param atlas_coords] coordinates, returns the top-left coordinates of the tile (thus its coordinate ID). Returns [code]Vector2i(-1, -1)[/code] otherwise.
 */
 func (self Instance) GetTileAtCoords(atlas_coords Vector2i.XY) Vector2i.XY { //gd:TileSetAtlasSource.get_tile_at_coords
-	return Vector2i.XY(class(self).GetTileAtCoords(gd.Vector2i(atlas_coords)))
+	return Vector2i.XY(class(self).GetTileAtCoords(Vector2i.XY(atlas_coords)))
 }
 
 /*
@@ -127,91 +130,91 @@ func (self Instance) ClearTilesOutsideTexture() { //gd:TileSetAtlasSource.clear_
 Sets the number of columns in the animation layout of the tile at coordinates [param atlas_coords]. If set to 0, then the different frames of the animation are laid out as a single horizontal line in the atlas.
 */
 func (self Instance) SetTileAnimationColumns(atlas_coords Vector2i.XY, frame_columns int) { //gd:TileSetAtlasSource.set_tile_animation_columns
-	class(self).SetTileAnimationColumns(gd.Vector2i(atlas_coords), gd.Int(frame_columns))
+	class(self).SetTileAnimationColumns(Vector2i.XY(atlas_coords), int64(frame_columns))
 }
 
 /*
 Returns how many columns the tile at [param atlas_coords] has in its animation layout.
 */
 func (self Instance) GetTileAnimationColumns(atlas_coords Vector2i.XY) int { //gd:TileSetAtlasSource.get_tile_animation_columns
-	return int(int(class(self).GetTileAnimationColumns(gd.Vector2i(atlas_coords))))
+	return int(int(class(self).GetTileAnimationColumns(Vector2i.XY(atlas_coords))))
 }
 
 /*
 Sets the margin (in grid tiles) between each tile in the animation layout of the tile at coordinates [param atlas_coords] has.
 */
 func (self Instance) SetTileAnimationSeparation(atlas_coords Vector2i.XY, separation Vector2i.XY) { //gd:TileSetAtlasSource.set_tile_animation_separation
-	class(self).SetTileAnimationSeparation(gd.Vector2i(atlas_coords), gd.Vector2i(separation))
+	class(self).SetTileAnimationSeparation(Vector2i.XY(atlas_coords), Vector2i.XY(separation))
 }
 
 /*
 Returns the separation (as in the atlas grid) between each frame of an animated tile at coordinates [param atlas_coords].
 */
 func (self Instance) GetTileAnimationSeparation(atlas_coords Vector2i.XY) Vector2i.XY { //gd:TileSetAtlasSource.get_tile_animation_separation
-	return Vector2i.XY(class(self).GetTileAnimationSeparation(gd.Vector2i(atlas_coords)))
+	return Vector2i.XY(class(self).GetTileAnimationSeparation(Vector2i.XY(atlas_coords)))
 }
 
 /*
 Sets the animation speed of the tile at coordinates [param atlas_coords] has.
 */
 func (self Instance) SetTileAnimationSpeed(atlas_coords Vector2i.XY, speed Float.X) { //gd:TileSetAtlasSource.set_tile_animation_speed
-	class(self).SetTileAnimationSpeed(gd.Vector2i(atlas_coords), gd.Float(speed))
+	class(self).SetTileAnimationSpeed(Vector2i.XY(atlas_coords), float64(speed))
 }
 
 /*
 Returns the animation speed of the tile at coordinates [param atlas_coords].
 */
 func (self Instance) GetTileAnimationSpeed(atlas_coords Vector2i.XY) Float.X { //gd:TileSetAtlasSource.get_tile_animation_speed
-	return Float.X(Float.X(class(self).GetTileAnimationSpeed(gd.Vector2i(atlas_coords))))
+	return Float.X(Float.X(class(self).GetTileAnimationSpeed(Vector2i.XY(atlas_coords))))
 }
 
 /*
 Sets the tile animation mode of the tile at [param atlas_coords] to [param mode]. See also [method get_tile_animation_mode].
 */
 func (self Instance) SetTileAnimationMode(atlas_coords Vector2i.XY, mode gdclass.TileSetAtlasSourceTileAnimationMode) { //gd:TileSetAtlasSource.set_tile_animation_mode
-	class(self).SetTileAnimationMode(gd.Vector2i(atlas_coords), mode)
+	class(self).SetTileAnimationMode(Vector2i.XY(atlas_coords), mode)
 }
 
 /*
 Returns the tile animation mode of the tile at [param atlas_coords]. See also [method set_tile_animation_mode].
 */
 func (self Instance) GetTileAnimationMode(atlas_coords Vector2i.XY) gdclass.TileSetAtlasSourceTileAnimationMode { //gd:TileSetAtlasSource.get_tile_animation_mode
-	return gdclass.TileSetAtlasSourceTileAnimationMode(class(self).GetTileAnimationMode(gd.Vector2i(atlas_coords)))
+	return gdclass.TileSetAtlasSourceTileAnimationMode(class(self).GetTileAnimationMode(Vector2i.XY(atlas_coords)))
 }
 
 /*
 Sets how many animation frames the tile at coordinates [param atlas_coords] has.
 */
 func (self Instance) SetTileAnimationFramesCount(atlas_coords Vector2i.XY, frames_count int) { //gd:TileSetAtlasSource.set_tile_animation_frames_count
-	class(self).SetTileAnimationFramesCount(gd.Vector2i(atlas_coords), gd.Int(frames_count))
+	class(self).SetTileAnimationFramesCount(Vector2i.XY(atlas_coords), int64(frames_count))
 }
 
 /*
 Returns how many animation frames has the tile at coordinates [param atlas_coords].
 */
 func (self Instance) GetTileAnimationFramesCount(atlas_coords Vector2i.XY) int { //gd:TileSetAtlasSource.get_tile_animation_frames_count
-	return int(int(class(self).GetTileAnimationFramesCount(gd.Vector2i(atlas_coords))))
+	return int(int(class(self).GetTileAnimationFramesCount(Vector2i.XY(atlas_coords))))
 }
 
 /*
 Sets the animation frame [param duration] of frame [param frame_index] for the tile at coordinates [param atlas_coords].
 */
 func (self Instance) SetTileAnimationFrameDuration(atlas_coords Vector2i.XY, frame_index int, duration Float.X) { //gd:TileSetAtlasSource.set_tile_animation_frame_duration
-	class(self).SetTileAnimationFrameDuration(gd.Vector2i(atlas_coords), gd.Int(frame_index), gd.Float(duration))
+	class(self).SetTileAnimationFrameDuration(Vector2i.XY(atlas_coords), int64(frame_index), float64(duration))
 }
 
 /*
 Returns the animation frame duration of frame [param frame_index] for the tile at coordinates [param atlas_coords].
 */
 func (self Instance) GetTileAnimationFrameDuration(atlas_coords Vector2i.XY, frame_index int) Float.X { //gd:TileSetAtlasSource.get_tile_animation_frame_duration
-	return Float.X(Float.X(class(self).GetTileAnimationFrameDuration(gd.Vector2i(atlas_coords), gd.Int(frame_index))))
+	return Float.X(Float.X(class(self).GetTileAnimationFrameDuration(Vector2i.XY(atlas_coords), int64(frame_index))))
 }
 
 /*
 Returns the sum of the sum of the frame durations of the tile at coordinates [param atlas_coords]. This value needs to be divided by the animation speed to get the actual animation loop duration.
 */
 func (self Instance) GetTileAnimationTotalDuration(atlas_coords Vector2i.XY) Float.X { //gd:TileSetAtlasSource.get_tile_animation_total_duration
-	return Float.X(Float.X(class(self).GetTileAnimationTotalDuration(gd.Vector2i(atlas_coords))))
+	return Float.X(Float.X(class(self).GetTileAnimationTotalDuration(Vector2i.XY(atlas_coords))))
 }
 
 /*
@@ -219,7 +222,7 @@ Creates an alternative tile for the tile at coordinates [param atlas_coords]. If
 Returns the new alternative identifier, or -1 if the alternative could not be created with a provided [param alternative_id_override].
 */
 func (self Instance) CreateAlternativeTile(atlas_coords Vector2i.XY) int { //gd:TileSetAtlasSource.create_alternative_tile
-	return int(int(class(self).CreateAlternativeTile(gd.Vector2i(atlas_coords), gd.Int(-1))))
+	return int(int(class(self).CreateAlternativeTile(Vector2i.XY(atlas_coords), int64(-1))))
 }
 
 /*
@@ -227,7 +230,7 @@ Remove a tile's alternative with alternative ID [param alternative_tile].
 Calling this function with [param alternative_tile] equals to 0 will fail, as the base tile alternative cannot be removed.
 */
 func (self Instance) RemoveAlternativeTile(atlas_coords Vector2i.XY, alternative_tile int) { //gd:TileSetAtlasSource.remove_alternative_tile
-	class(self).RemoveAlternativeTile(gd.Vector2i(atlas_coords), gd.Int(alternative_tile))
+	class(self).RemoveAlternativeTile(Vector2i.XY(atlas_coords), int64(alternative_tile))
 }
 
 /*
@@ -235,21 +238,21 @@ Change a tile's alternative ID from [param alternative_tile] to [param new_id].
 Calling this function with [param new_id] of 0 will fail, as the base tile alternative cannot be moved.
 */
 func (self Instance) SetAlternativeTileId(atlas_coords Vector2i.XY, alternative_tile int, new_id int) { //gd:TileSetAtlasSource.set_alternative_tile_id
-	class(self).SetAlternativeTileId(gd.Vector2i(atlas_coords), gd.Int(alternative_tile), gd.Int(new_id))
+	class(self).SetAlternativeTileId(Vector2i.XY(atlas_coords), int64(alternative_tile), int64(new_id))
 }
 
 /*
 Returns the alternative ID a following call to [method create_alternative_tile] would return.
 */
 func (self Instance) GetNextAlternativeTileId(atlas_coords Vector2i.XY) int { //gd:TileSetAtlasSource.get_next_alternative_tile_id
-	return int(int(class(self).GetNextAlternativeTileId(gd.Vector2i(atlas_coords))))
+	return int(int(class(self).GetNextAlternativeTileId(Vector2i.XY(atlas_coords))))
 }
 
 /*
 Returns the [TileData] object for the given atlas coordinates and alternative ID.
 */
 func (self Instance) GetTileData(atlas_coords Vector2i.XY, alternative_tile int) [1]gdclass.TileData { //gd:TileSetAtlasSource.get_tile_data
-	return [1]gdclass.TileData(class(self).GetTileData(gd.Vector2i(atlas_coords), gd.Int(alternative_tile)))
+	return [1]gdclass.TileData(class(self).GetTileData(Vector2i.XY(atlas_coords), int64(alternative_tile)))
 }
 
 /*
@@ -263,7 +266,7 @@ func (self Instance) GetAtlasGridSize() Vector2i.XY { //gd:TileSetAtlasSource.ge
 Returns a tile's texture region in the atlas texture. For animated tiles, a [param frame] argument might be provided for the different frames of the animation.
 */
 func (self Instance) GetTileTextureRegion(atlas_coords Vector2i.XY) Rect2i.PositionSize { //gd:TileSetAtlasSource.get_tile_texture_region
-	return Rect2i.PositionSize(class(self).GetTileTextureRegion(gd.Vector2i(atlas_coords), gd.Int(0)))
+	return Rect2i.PositionSize(class(self).GetTileTextureRegion(Vector2i.XY(atlas_coords), int64(0)))
 }
 
 /*
@@ -278,7 +281,7 @@ Returns the region of the tile at coordinates [param atlas_coords] for the given
 [b]Note:[/b] If [member use_texture_padding] is [code]false[/code], returns the same as [method get_tile_texture_region].
 */
 func (self Instance) GetRuntimeTileTextureRegion(atlas_coords Vector2i.XY, frame_ int) Rect2i.PositionSize { //gd:TileSetAtlasSource.get_runtime_tile_texture_region
-	return Rect2i.PositionSize(class(self).GetRuntimeTileTextureRegion(gd.Vector2i(atlas_coords), gd.Int(frame_)))
+	return Rect2i.PositionSize(class(self).GetRuntimeTileTextureRegion(Vector2i.XY(atlas_coords), int64(frame_)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -313,7 +316,7 @@ func (self Instance) Margins() Vector2i.XY {
 }
 
 func (self Instance) SetMargins(value Vector2i.XY) {
-	class(self).SetMargins(gd.Vector2i(value))
+	class(self).SetMargins(Vector2i.XY(value))
 }
 
 func (self Instance) Separation() Vector2i.XY {
@@ -321,7 +324,7 @@ func (self Instance) Separation() Vector2i.XY {
 }
 
 func (self Instance) SetSeparation(value Vector2i.XY) {
-	class(self).SetSeparation(gd.Vector2i(value))
+	class(self).SetSeparation(Vector2i.XY(value))
 }
 
 func (self Instance) TextureRegionSize() Vector2i.XY {
@@ -329,7 +332,7 @@ func (self Instance) TextureRegionSize() Vector2i.XY {
 }
 
 func (self Instance) SetTextureRegionSize(value Vector2i.XY) {
-	class(self).SetTextureRegionSize(gd.Vector2i(value))
+	class(self).SetTextureRegionSize(Vector2i.XY(value))
 }
 
 func (self Instance) UseTexturePadding() bool {
@@ -360,7 +363,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D { //gd:TileSetAtlasSource.ge
 }
 
 //go:nosplit
-func (self class) SetMargins(margins gd.Vector2i) { //gd:TileSetAtlasSource.set_margins
+func (self class) SetMargins(margins Vector2i.XY) { //gd:TileSetAtlasSource.set_margins
 	var frame = callframe.New()
 	callframe.Arg(frame, margins)
 	var r_ret = callframe.Nil
@@ -369,9 +372,9 @@ func (self class) SetMargins(margins gd.Vector2i) { //gd:TileSetAtlasSource.set_
 }
 
 //go:nosplit
-func (self class) GetMargins() gd.Vector2i { //gd:TileSetAtlasSource.get_margins
+func (self class) GetMargins() Vector2i.XY { //gd:TileSetAtlasSource.get_margins
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_margins, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -379,7 +382,7 @@ func (self class) GetMargins() gd.Vector2i { //gd:TileSetAtlasSource.get_margins
 }
 
 //go:nosplit
-func (self class) SetSeparation(separation gd.Vector2i) { //gd:TileSetAtlasSource.set_separation
+func (self class) SetSeparation(separation Vector2i.XY) { //gd:TileSetAtlasSource.set_separation
 	var frame = callframe.New()
 	callframe.Arg(frame, separation)
 	var r_ret = callframe.Nil
@@ -388,9 +391,9 @@ func (self class) SetSeparation(separation gd.Vector2i) { //gd:TileSetAtlasSourc
 }
 
 //go:nosplit
-func (self class) GetSeparation() gd.Vector2i { //gd:TileSetAtlasSource.get_separation
+func (self class) GetSeparation() Vector2i.XY { //gd:TileSetAtlasSource.get_separation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_separation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -398,7 +401,7 @@ func (self class) GetSeparation() gd.Vector2i { //gd:TileSetAtlasSource.get_sepa
 }
 
 //go:nosplit
-func (self class) SetTextureRegionSize(texture_region_size gd.Vector2i) { //gd:TileSetAtlasSource.set_texture_region_size
+func (self class) SetTextureRegionSize(texture_region_size Vector2i.XY) { //gd:TileSetAtlasSource.set_texture_region_size
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_region_size)
 	var r_ret = callframe.Nil
@@ -407,9 +410,9 @@ func (self class) SetTextureRegionSize(texture_region_size gd.Vector2i) { //gd:T
 }
 
 //go:nosplit
-func (self class) GetTextureRegionSize() gd.Vector2i { //gd:TileSetAtlasSource.get_texture_region_size
+func (self class) GetTextureRegionSize() Vector2i.XY { //gd:TileSetAtlasSource.get_texture_region_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_texture_region_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -439,7 +442,7 @@ func (self class) GetUseTexturePadding() bool { //gd:TileSetAtlasSource.get_use_
 Creates a new tile at coordinates [param atlas_coords] with the given [param size].
 */
 //go:nosplit
-func (self class) CreateTile(atlas_coords gd.Vector2i, size gd.Vector2i) { //gd:TileSetAtlasSource.create_tile
+func (self class) CreateTile(atlas_coords Vector2i.XY, size Vector2i.XY) { //gd:TileSetAtlasSource.create_tile
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, size)
@@ -452,7 +455,7 @@ func (self class) CreateTile(atlas_coords gd.Vector2i, size gd.Vector2i) { //gd:
 Remove a tile and its alternative at coordinates [param atlas_coords].
 */
 //go:nosplit
-func (self class) RemoveTile(atlas_coords gd.Vector2i) { //gd:TileSetAtlasSource.remove_tile
+func (self class) RemoveTile(atlas_coords Vector2i.XY) { //gd:TileSetAtlasSource.remove_tile
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Nil
@@ -466,7 +469,7 @@ If [param new_atlas_coords] is [code]Vector2i(-1, -1)[/code], keeps the tile's c
 To avoid an error, first check if a move is possible using [method has_room_for_tile].
 */
 //go:nosplit
-func (self class) MoveTileInAtlas(atlas_coords gd.Vector2i, new_atlas_coords gd.Vector2i, new_size gd.Vector2i) { //gd:TileSetAtlasSource.move_tile_in_atlas
+func (self class) MoveTileInAtlas(atlas_coords Vector2i.XY, new_atlas_coords Vector2i.XY, new_size Vector2i.XY) { //gd:TileSetAtlasSource.move_tile_in_atlas
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, new_atlas_coords)
@@ -480,10 +483,10 @@ func (self class) MoveTileInAtlas(atlas_coords gd.Vector2i, new_atlas_coords gd.
 Returns the size of the tile (in the grid coordinates system) at coordinates [param atlas_coords].
 */
 //go:nosplit
-func (self class) GetTileSizeInAtlas(atlas_coords gd.Vector2i) gd.Vector2i { //gd:TileSetAtlasSource.get_tile_size_in_atlas
+func (self class) GetTileSizeInAtlas(atlas_coords Vector2i.XY) Vector2i.XY { //gd:TileSetAtlasSource.get_tile_size_in_atlas
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_size_in_atlas, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -494,7 +497,7 @@ func (self class) GetTileSizeInAtlas(atlas_coords gd.Vector2i) gd.Vector2i { //g
 Returns whether there is enough room in an atlas to create/modify a tile with the given properties. If [param ignored_tile] is provided, act as is the given tile was not present in the atlas. This may be used when you want to modify a tile's properties.
 */
 //go:nosplit
-func (self class) HasRoomForTile(atlas_coords gd.Vector2i, size gd.Vector2i, animation_columns gd.Int, animation_separation gd.Vector2i, frames_count gd.Int, ignored_tile gd.Vector2i) bool { //gd:TileSetAtlasSource.has_room_for_tile
+func (self class) HasRoomForTile(atlas_coords Vector2i.XY, size Vector2i.XY, animation_columns int64, animation_separation Vector2i.XY, frames_count int64, ignored_tile Vector2i.XY) bool { //gd:TileSetAtlasSource.has_room_for_tile
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, size)
@@ -513,7 +516,7 @@ func (self class) HasRoomForTile(atlas_coords gd.Vector2i, size gd.Vector2i, ani
 Returns an array of tiles coordinates ID that will be automatically removed when modifying one or several of those properties: [param texture], [param margins], [param separation] or [param texture_region_size]. This can be used to undo changes that would have caused tiles data loss.
 */
 //go:nosplit
-func (self class) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, margins gd.Vector2i, separation gd.Vector2i, texture_region_size gd.Vector2i) Packed.Array[Vector2.XY] { //gd:TileSetAtlasSource.get_tiles_to_be_removed_on_change
+func (self class) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, margins Vector2i.XY, separation Vector2i.XY, texture_region_size Vector2i.XY) Packed.Array[Vector2.XY] { //gd:TileSetAtlasSource.get_tiles_to_be_removed_on_change
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, margins)
@@ -530,10 +533,10 @@ func (self class) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, marg
 If there is a tile covering the [param atlas_coords] coordinates, returns the top-left coordinates of the tile (thus its coordinate ID). Returns [code]Vector2i(-1, -1)[/code] otherwise.
 */
 //go:nosplit
-func (self class) GetTileAtCoords(atlas_coords gd.Vector2i) gd.Vector2i { //gd:TileSetAtlasSource.get_tile_at_coords
+func (self class) GetTileAtCoords(atlas_coords Vector2i.XY) Vector2i.XY { //gd:TileSetAtlasSource.get_tile_at_coords
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_at_coords, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -568,7 +571,7 @@ func (self class) ClearTilesOutsideTexture() { //gd:TileSetAtlasSource.clear_til
 Sets the number of columns in the animation layout of the tile at coordinates [param atlas_coords]. If set to 0, then the different frames of the animation are laid out as a single horizontal line in the atlas.
 */
 //go:nosplit
-func (self class) SetTileAnimationColumns(atlas_coords gd.Vector2i, frame_columns gd.Int) { //gd:TileSetAtlasSource.set_tile_animation_columns
+func (self class) SetTileAnimationColumns(atlas_coords Vector2i.XY, frame_columns int64) { //gd:TileSetAtlasSource.set_tile_animation_columns
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, frame_columns)
@@ -581,10 +584,10 @@ func (self class) SetTileAnimationColumns(atlas_coords gd.Vector2i, frame_column
 Returns how many columns the tile at [param atlas_coords] has in its animation layout.
 */
 //go:nosplit
-func (self class) GetTileAnimationColumns(atlas_coords gd.Vector2i) gd.Int { //gd:TileSetAtlasSource.get_tile_animation_columns
+func (self class) GetTileAnimationColumns(atlas_coords Vector2i.XY) int64 { //gd:TileSetAtlasSource.get_tile_animation_columns
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_columns, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -595,7 +598,7 @@ func (self class) GetTileAnimationColumns(atlas_coords gd.Vector2i) gd.Int { //g
 Sets the margin (in grid tiles) between each tile in the animation layout of the tile at coordinates [param atlas_coords] has.
 */
 //go:nosplit
-func (self class) SetTileAnimationSeparation(atlas_coords gd.Vector2i, separation gd.Vector2i) { //gd:TileSetAtlasSource.set_tile_animation_separation
+func (self class) SetTileAnimationSeparation(atlas_coords Vector2i.XY, separation Vector2i.XY) { //gd:TileSetAtlasSource.set_tile_animation_separation
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, separation)
@@ -608,10 +611,10 @@ func (self class) SetTileAnimationSeparation(atlas_coords gd.Vector2i, separatio
 Returns the separation (as in the atlas grid) between each frame of an animated tile at coordinates [param atlas_coords].
 */
 //go:nosplit
-func (self class) GetTileAnimationSeparation(atlas_coords gd.Vector2i) gd.Vector2i { //gd:TileSetAtlasSource.get_tile_animation_separation
+func (self class) GetTileAnimationSeparation(atlas_coords Vector2i.XY) Vector2i.XY { //gd:TileSetAtlasSource.get_tile_animation_separation
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_separation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -622,7 +625,7 @@ func (self class) GetTileAnimationSeparation(atlas_coords gd.Vector2i) gd.Vector
 Sets the animation speed of the tile at coordinates [param atlas_coords] has.
 */
 //go:nosplit
-func (self class) SetTileAnimationSpeed(atlas_coords gd.Vector2i, speed gd.Float) { //gd:TileSetAtlasSource.set_tile_animation_speed
+func (self class) SetTileAnimationSpeed(atlas_coords Vector2i.XY, speed float64) { //gd:TileSetAtlasSource.set_tile_animation_speed
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, speed)
@@ -635,10 +638,10 @@ func (self class) SetTileAnimationSpeed(atlas_coords gd.Vector2i, speed gd.Float
 Returns the animation speed of the tile at coordinates [param atlas_coords].
 */
 //go:nosplit
-func (self class) GetTileAnimationSpeed(atlas_coords gd.Vector2i) gd.Float { //gd:TileSetAtlasSource.get_tile_animation_speed
+func (self class) GetTileAnimationSpeed(atlas_coords Vector2i.XY) float64 { //gd:TileSetAtlasSource.get_tile_animation_speed
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -649,7 +652,7 @@ func (self class) GetTileAnimationSpeed(atlas_coords gd.Vector2i) gd.Float { //g
 Sets the tile animation mode of the tile at [param atlas_coords] to [param mode]. See also [method get_tile_animation_mode].
 */
 //go:nosplit
-func (self class) SetTileAnimationMode(atlas_coords gd.Vector2i, mode gdclass.TileSetAtlasSourceTileAnimationMode) { //gd:TileSetAtlasSource.set_tile_animation_mode
+func (self class) SetTileAnimationMode(atlas_coords Vector2i.XY, mode gdclass.TileSetAtlasSourceTileAnimationMode) { //gd:TileSetAtlasSource.set_tile_animation_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, mode)
@@ -662,7 +665,7 @@ func (self class) SetTileAnimationMode(atlas_coords gd.Vector2i, mode gdclass.Ti
 Returns the tile animation mode of the tile at [param atlas_coords]. See also [method set_tile_animation_mode].
 */
 //go:nosplit
-func (self class) GetTileAnimationMode(atlas_coords gd.Vector2i) gdclass.TileSetAtlasSourceTileAnimationMode { //gd:TileSetAtlasSource.get_tile_animation_mode
+func (self class) GetTileAnimationMode(atlas_coords Vector2i.XY) gdclass.TileSetAtlasSourceTileAnimationMode { //gd:TileSetAtlasSource.get_tile_animation_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[gdclass.TileSetAtlasSourceTileAnimationMode](frame)
@@ -676,7 +679,7 @@ func (self class) GetTileAnimationMode(atlas_coords gd.Vector2i) gdclass.TileSet
 Sets how many animation frames the tile at coordinates [param atlas_coords] has.
 */
 //go:nosplit
-func (self class) SetTileAnimationFramesCount(atlas_coords gd.Vector2i, frames_count gd.Int) { //gd:TileSetAtlasSource.set_tile_animation_frames_count
+func (self class) SetTileAnimationFramesCount(atlas_coords Vector2i.XY, frames_count int64) { //gd:TileSetAtlasSource.set_tile_animation_frames_count
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, frames_count)
@@ -689,10 +692,10 @@ func (self class) SetTileAnimationFramesCount(atlas_coords gd.Vector2i, frames_c
 Returns how many animation frames has the tile at coordinates [param atlas_coords].
 */
 //go:nosplit
-func (self class) GetTileAnimationFramesCount(atlas_coords gd.Vector2i) gd.Int { //gd:TileSetAtlasSource.get_tile_animation_frames_count
+func (self class) GetTileAnimationFramesCount(atlas_coords Vector2i.XY) int64 { //gd:TileSetAtlasSource.get_tile_animation_frames_count
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_frames_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -703,7 +706,7 @@ func (self class) GetTileAnimationFramesCount(atlas_coords gd.Vector2i) gd.Int {
 Sets the animation frame [param duration] of frame [param frame_index] for the tile at coordinates [param atlas_coords].
 */
 //go:nosplit
-func (self class) SetTileAnimationFrameDuration(atlas_coords gd.Vector2i, frame_index gd.Int, duration gd.Float) { //gd:TileSetAtlasSource.set_tile_animation_frame_duration
+func (self class) SetTileAnimationFrameDuration(atlas_coords Vector2i.XY, frame_index int64, duration float64) { //gd:TileSetAtlasSource.set_tile_animation_frame_duration
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, frame_index)
@@ -717,11 +720,11 @@ func (self class) SetTileAnimationFrameDuration(atlas_coords gd.Vector2i, frame_
 Returns the animation frame duration of frame [param frame_index] for the tile at coordinates [param atlas_coords].
 */
 //go:nosplit
-func (self class) GetTileAnimationFrameDuration(atlas_coords gd.Vector2i, frame_index gd.Int) gd.Float { //gd:TileSetAtlasSource.get_tile_animation_frame_duration
+func (self class) GetTileAnimationFrameDuration(atlas_coords Vector2i.XY, frame_index int64) float64 { //gd:TileSetAtlasSource.get_tile_animation_frame_duration
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, frame_index)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_frame_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -732,10 +735,10 @@ func (self class) GetTileAnimationFrameDuration(atlas_coords gd.Vector2i, frame_
 Returns the sum of the sum of the frame durations of the tile at coordinates [param atlas_coords]. This value needs to be divided by the animation speed to get the actual animation loop duration.
 */
 //go:nosplit
-func (self class) GetTileAnimationTotalDuration(atlas_coords gd.Vector2i) gd.Float { //gd:TileSetAtlasSource.get_tile_animation_total_duration
+func (self class) GetTileAnimationTotalDuration(atlas_coords Vector2i.XY) float64 { //gd:TileSetAtlasSource.get_tile_animation_total_duration
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_total_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -747,11 +750,11 @@ Creates an alternative tile for the tile at coordinates [param atlas_coords]. If
 Returns the new alternative identifier, or -1 if the alternative could not be created with a provided [param alternative_id_override].
 */
 //go:nosplit
-func (self class) CreateAlternativeTile(atlas_coords gd.Vector2i, alternative_id_override gd.Int) gd.Int { //gd:TileSetAtlasSource.create_alternative_tile
+func (self class) CreateAlternativeTile(atlas_coords Vector2i.XY, alternative_id_override int64) int64 { //gd:TileSetAtlasSource.create_alternative_tile
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, alternative_id_override)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_create_alternative_tile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -763,7 +766,7 @@ Remove a tile's alternative with alternative ID [param alternative_tile].
 Calling this function with [param alternative_tile] equals to 0 will fail, as the base tile alternative cannot be removed.
 */
 //go:nosplit
-func (self class) RemoveAlternativeTile(atlas_coords gd.Vector2i, alternative_tile gd.Int) { //gd:TileSetAtlasSource.remove_alternative_tile
+func (self class) RemoveAlternativeTile(atlas_coords Vector2i.XY, alternative_tile int64) { //gd:TileSetAtlasSource.remove_alternative_tile
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, alternative_tile)
@@ -777,7 +780,7 @@ Change a tile's alternative ID from [param alternative_tile] to [param new_id].
 Calling this function with [param new_id] of 0 will fail, as the base tile alternative cannot be moved.
 */
 //go:nosplit
-func (self class) SetAlternativeTileId(atlas_coords gd.Vector2i, alternative_tile gd.Int, new_id gd.Int) { //gd:TileSetAtlasSource.set_alternative_tile_id
+func (self class) SetAlternativeTileId(atlas_coords Vector2i.XY, alternative_tile int64, new_id int64) { //gd:TileSetAtlasSource.set_alternative_tile_id
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, alternative_tile)
@@ -791,10 +794,10 @@ func (self class) SetAlternativeTileId(atlas_coords gd.Vector2i, alternative_til
 Returns the alternative ID a following call to [method create_alternative_tile] would return.
 */
 //go:nosplit
-func (self class) GetNextAlternativeTileId(atlas_coords gd.Vector2i) gd.Int { //gd:TileSetAtlasSource.get_next_alternative_tile_id
+func (self class) GetNextAlternativeTileId(atlas_coords Vector2i.XY) int64 { //gd:TileSetAtlasSource.get_next_alternative_tile_id
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_next_alternative_tile_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -805,7 +808,7 @@ func (self class) GetNextAlternativeTileId(atlas_coords gd.Vector2i) gd.Int { //
 Returns the [TileData] object for the given atlas coordinates and alternative ID.
 */
 //go:nosplit
-func (self class) GetTileData(atlas_coords gd.Vector2i, alternative_tile gd.Int) [1]gdclass.TileData { //gd:TileSetAtlasSource.get_tile_data
+func (self class) GetTileData(atlas_coords Vector2i.XY, alternative_tile int64) [1]gdclass.TileData { //gd:TileSetAtlasSource.get_tile_data
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, alternative_tile)
@@ -820,9 +823,9 @@ func (self class) GetTileData(atlas_coords gd.Vector2i, alternative_tile gd.Int)
 Returns the atlas grid size, which depends on how many tiles can fit in the texture. It thus depends on the [member texture]'s size, the atlas [member margins], and the tiles' [member texture_region_size].
 */
 //go:nosplit
-func (self class) GetAtlasGridSize() gd.Vector2i { //gd:TileSetAtlasSource.get_atlas_grid_size
+func (self class) GetAtlasGridSize() Vector2i.XY { //gd:TileSetAtlasSource.get_atlas_grid_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_atlas_grid_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -833,11 +836,11 @@ func (self class) GetAtlasGridSize() gd.Vector2i { //gd:TileSetAtlasSource.get_a
 Returns a tile's texture region in the atlas texture. For animated tiles, a [param frame] argument might be provided for the different frames of the animation.
 */
 //go:nosplit
-func (self class) GetTileTextureRegion(atlas_coords gd.Vector2i, frame_ gd.Int) gd.Rect2i { //gd:TileSetAtlasSource.get_tile_texture_region
+func (self class) GetTileTextureRegion(atlas_coords Vector2i.XY, frame_ int64) Rect2i.PositionSize { //gd:TileSetAtlasSource.get_tile_texture_region
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, frame_)
-	var r_ret = callframe.Ret[gd.Rect2i](frame)
+	var r_ret = callframe.Ret[Rect2i.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_texture_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -862,11 +865,11 @@ Returns the region of the tile at coordinates [param atlas_coords] for the given
 [b]Note:[/b] If [member use_texture_padding] is [code]false[/code], returns the same as [method get_tile_texture_region].
 */
 //go:nosplit
-func (self class) GetRuntimeTileTextureRegion(atlas_coords gd.Vector2i, frame_ gd.Int) gd.Rect2i { //gd:TileSetAtlasSource.get_runtime_tile_texture_region
+func (self class) GetRuntimeTileTextureRegion(atlas_coords Vector2i.XY, frame_ int64) Rect2i.PositionSize { //gd:TileSetAtlasSource.get_runtime_tile_texture_region
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, frame_)
-	var r_ret = callframe.Ret[gd.Rect2i](frame)
+	var r_ret = callframe.Ret[Rect2i.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_runtime_tile_texture_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,16 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,7 +58,7 @@ Generates the VRS texture based on a render [param target_size] adjusted by our 
 The result will be cached, requesting a VRS texture with unchanged parameters and settings will return the cached RID.
 */
 func (self Instance) MakeVrsTexture(target_size Vector2.XY, eye_foci []Vector2.XY) RID.Texture { //gd:XRVRS.make_vrs_texture
-	return RID.Texture(class(self).MakeVrsTexture(gd.Vector2(target_size), Packed.New(eye_foci...)))
+	return RID.Texture(class(self).MakeVrsTexture(Vector2.XY(target_size), Packed.New(eye_foci...)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -81,7 +84,7 @@ func (self Instance) VrsMinRadius() Float.X {
 }
 
 func (self Instance) SetVrsMinRadius(value Float.X) {
-	class(self).SetVrsMinRadius(gd.Float(value))
+	class(self).SetVrsMinRadius(float64(value))
 }
 
 func (self Instance) VrsStrength() Float.X {
@@ -89,13 +92,13 @@ func (self Instance) VrsStrength() Float.X {
 }
 
 func (self Instance) SetVrsStrength(value Float.X) {
-	class(self).SetVrsStrength(gd.Float(value))
+	class(self).SetVrsStrength(float64(value))
 }
 
 //go:nosplit
-func (self class) GetVrsMinRadius() gd.Float { //gd:XRVRS.get_vrs_min_radius
+func (self class) GetVrsMinRadius() float64 { //gd:XRVRS.get_vrs_min_radius
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRVRS.Bind_get_vrs_min_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -103,7 +106,7 @@ func (self class) GetVrsMinRadius() gd.Float { //gd:XRVRS.get_vrs_min_radius
 }
 
 //go:nosplit
-func (self class) SetVrsMinRadius(radius gd.Float) { //gd:XRVRS.set_vrs_min_radius
+func (self class) SetVrsMinRadius(radius float64) { //gd:XRVRS.set_vrs_min_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -112,9 +115,9 @@ func (self class) SetVrsMinRadius(radius gd.Float) { //gd:XRVRS.set_vrs_min_radi
 }
 
 //go:nosplit
-func (self class) GetVrsStrength() gd.Float { //gd:XRVRS.get_vrs_strength
+func (self class) GetVrsStrength() float64 { //gd:XRVRS.get_vrs_strength
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRVRS.Bind_get_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -122,7 +125,7 @@ func (self class) GetVrsStrength() gd.Float { //gd:XRVRS.get_vrs_strength
 }
 
 //go:nosplit
-func (self class) SetVrsStrength(strength gd.Float) { //gd:XRVRS.set_vrs_strength
+func (self class) SetVrsStrength(strength float64) { //gd:XRVRS.set_vrs_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil
@@ -135,11 +138,11 @@ Generates the VRS texture based on a render [param target_size] adjusted by our 
 The result will be cached, requesting a VRS texture with unchanged parameters and settings will return the cached RID.
 */
 //go:nosplit
-func (self class) MakeVrsTexture(target_size gd.Vector2, eye_foci Packed.Array[Vector2.XY]) gd.RID { //gd:XRVRS.make_vrs_texture
+func (self class) MakeVrsTexture(target_size Vector2.XY, eye_foci Packed.Array[Vector2.XY]) RID.Any { //gd:XRVRS.make_vrs_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, target_size)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](eye_foci)))
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRVRS.Bind_make_vrs_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

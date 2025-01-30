@@ -9,22 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Viewport"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Viewport"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2i"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
-import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Color"
-import "graphics.gd/variant/Rect2i"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -78,7 +81,7 @@ func (Instance) _get_contents_minimum_size(impl func(ptr unsafe.Pointer) Vector2
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Vector2(ret))
+		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
 }
 
@@ -194,7 +197,7 @@ func (self Instance) SetImeActive(active bool) { //gd:Window.set_ime_active
 Moves IME to the given position.
 */
 func (self Instance) SetImePosition(position Vector2i.XY) { //gd:Window.set_ime_position
-	class(self).SetImePosition(gd.Vector2i(position))
+	class(self).SetImePosition(Vector2i.XY(position))
 }
 
 /*
@@ -276,7 +279,7 @@ Creates a local override for a theme font size with the specified [param name]. 
 See also [method get_theme_font_size].
 */
 func (self Instance) AddThemeFontSizeOverride(name string, font_size int) { //gd:Window.add_theme_font_size_override
-	class(self).AddThemeFontSizeOverride(String.Name(String.New(name)), gd.Int(font_size))
+	class(self).AddThemeFontSizeOverride(String.Name(String.New(name)), int64(font_size))
 }
 
 /*
@@ -284,7 +287,7 @@ Creates a local override for a theme [Color] with the specified [param name]. Lo
 See also [method get_theme_color] and [method Control.add_theme_color_override] for more details.
 */
 func (self Instance) AddThemeColorOverride(name string, color Color.RGBA) { //gd:Window.add_theme_color_override
-	class(self).AddThemeColorOverride(String.Name(String.New(name)), gd.Color(color))
+	class(self).AddThemeColorOverride(String.Name(String.New(name)), Color.RGBA(color))
 }
 
 /*
@@ -292,7 +295,7 @@ Creates a local override for a theme constant with the specified [param name]. L
 See also [method get_theme_constant].
 */
 func (self Instance) AddThemeConstantOverride(name string, constant int) { //gd:Window.add_theme_constant_override
-	class(self).AddThemeConstantOverride(String.Name(String.New(name)), gd.Int(constant))
+	class(self).AddThemeConstantOverride(String.Name(String.New(name)), int64(constant))
 }
 
 /*
@@ -533,14 +536,14 @@ If [member ProjectSettings.display/window/subwindows/embed_subwindows] is [code]
 [b]Note:[/b] [param rect] must be in global coordinates if specified.
 */
 func (self Instance) Popup() { //gd:Window.popup
-	class(self).Popup(gd.Rect2i(gd.NewRect2i(0, 0, 0, 0)))
+	class(self).Popup(Rect2i.PositionSize(gd.NewRect2i(0, 0, 0, 0)))
 }
 
 /*
 Popups the [Window] with a position shifted by parent [Window]'s position. If the [Window] is embedded, has the same effect as [method popup].
 */
 func (self Instance) PopupOnParent(parent_rect Rect2i.PositionSize) { //gd:Window.popup_on_parent
-	class(self).PopupOnParent(gd.Rect2i(parent_rect))
+	class(self).PopupOnParent(Rect2i.PositionSize(parent_rect))
 }
 
 /*
@@ -548,7 +551,7 @@ Popups the [Window] at the center of the current screen, with optionally given m
 [b]Note:[/b] Calling it with the default value of [param minsize] is equivalent to calling it with [member size].
 */
 func (self Instance) PopupCentered() { //gd:Window.popup_centered
-	class(self).PopupCentered(gd.Vector2i(gd.Vector2i{0, 0}))
+	class(self).PopupCentered(Vector2i.XY(gd.Vector2i{0, 0}))
 }
 
 /*
@@ -556,7 +559,7 @@ If [Window] is embedded, popups the [Window] centered inside its embedder and se
 If [Window] is a native window, popups the [Window] centered inside the screen of its parent [Window] and sets its size as a [param ratio] of the screen size.
 */
 func (self Instance) PopupCenteredRatio() { //gd:Window.popup_centered_ratio
-	class(self).PopupCenteredRatio(gd.Float(0.8))
+	class(self).PopupCenteredRatio(float64(0.8))
 }
 
 /*
@@ -564,7 +567,7 @@ Popups the [Window] centered inside its parent [Window]. [param fallback_ratio] 
 [b]Note:[/b] Calling it with the default value of [param minsize] is equivalent to calling it with [member size].
 */
 func (self Instance) PopupCenteredClamped() { //gd:Window.popup_centered_clamped
-	class(self).PopupCenteredClamped(gd.Vector2i(gd.Vector2i{0, 0}), gd.Float(0.75))
+	class(self).PopupCenteredClamped(Vector2i.XY(gd.Vector2i{0, 0}), float64(0.75))
 }
 
 /*
@@ -572,7 +575,7 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 func (self Instance) PopupExclusive(from_node [1]gdclass.Node) { //gd:Window.popup_exclusive
-	class(self).PopupExclusive(from_node, gd.Rect2i(gd.NewRect2i(0, 0, 0, 0)))
+	class(self).PopupExclusive(from_node, Rect2i.PositionSize(gd.NewRect2i(0, 0, 0, 0)))
 }
 
 /*
@@ -580,7 +583,7 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 func (self Instance) PopupExclusiveOnParent(from_node [1]gdclass.Node, parent_rect Rect2i.PositionSize) { //gd:Window.popup_exclusive_on_parent
-	class(self).PopupExclusiveOnParent(from_node, gd.Rect2i(parent_rect))
+	class(self).PopupExclusiveOnParent(from_node, Rect2i.PositionSize(parent_rect))
 }
 
 /*
@@ -588,7 +591,7 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 func (self Instance) PopupExclusiveCentered(from_node [1]gdclass.Node) { //gd:Window.popup_exclusive_centered
-	class(self).PopupExclusiveCentered(from_node, gd.Vector2i(gd.Vector2i{0, 0}))
+	class(self).PopupExclusiveCentered(from_node, Vector2i.XY(gd.Vector2i{0, 0}))
 }
 
 /*
@@ -596,7 +599,7 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 func (self Instance) PopupExclusiveCenteredRatio(from_node [1]gdclass.Node) { //gd:Window.popup_exclusive_centered_ratio
-	class(self).PopupExclusiveCenteredRatio(from_node, gd.Float(0.8))
+	class(self).PopupExclusiveCenteredRatio(from_node, float64(0.8))
 }
 
 /*
@@ -604,7 +607,7 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 func (self Instance) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node) { //gd:Window.popup_exclusive_centered_clamped
-	class(self).PopupExclusiveCenteredClamped(from_node, gd.Vector2i(gd.Vector2i{0, 0}), gd.Float(0.75))
+	class(self).PopupExclusiveCenteredClamped(from_node, Vector2i.XY(gd.Vector2i{0, 0}), float64(0.75))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -654,7 +657,7 @@ func (self Instance) Position() Vector2i.XY {
 }
 
 func (self Instance) SetPosition(value Vector2i.XY) {
-	class(self).SetPosition(gd.Vector2i(value))
+	class(self).SetPosition(Vector2i.XY(value))
 }
 
 func (self Instance) Size() Vector2i.XY {
@@ -662,7 +665,7 @@ func (self Instance) Size() Vector2i.XY {
 }
 
 func (self Instance) SetSize(value Vector2i.XY) {
-	class(self).SetSize(gd.Vector2i(value))
+	class(self).SetSize(Vector2i.XY(value))
 }
 
 func (self Instance) CurrentScreen() int {
@@ -670,7 +673,7 @@ func (self Instance) CurrentScreen() int {
 }
 
 func (self Instance) SetCurrentScreen(value int) {
-	class(self).SetCurrentScreen(gd.Int(value))
+	class(self).SetCurrentScreen(int64(value))
 }
 
 func (self Instance) MousePassthroughPolygon() []Vector2.XY {
@@ -798,7 +801,7 @@ func (self Instance) MinSize() Vector2i.XY {
 }
 
 func (self Instance) SetMinSize(value Vector2i.XY) {
-	class(self).SetMinSize(gd.Vector2i(value))
+	class(self).SetMinSize(Vector2i.XY(value))
 }
 
 func (self Instance) MaxSize() Vector2i.XY {
@@ -806,7 +809,7 @@ func (self Instance) MaxSize() Vector2i.XY {
 }
 
 func (self Instance) SetMaxSize(value Vector2i.XY) {
-	class(self).SetMaxSize(gd.Vector2i(value))
+	class(self).SetMaxSize(Vector2i.XY(value))
 }
 
 func (self Instance) KeepTitleVisible() bool {
@@ -822,7 +825,7 @@ func (self Instance) ContentScaleSize() Vector2i.XY {
 }
 
 func (self Instance) SetContentScaleSize(value Vector2i.XY) {
-	class(self).SetContentScaleSize(gd.Vector2i(value))
+	class(self).SetContentScaleSize(Vector2i.XY(value))
 }
 
 func (self Instance) ContentScaleMode() gdclass.WindowContentScaleMode {
@@ -854,7 +857,7 @@ func (self Instance) ContentScaleFactor() Float.X {
 }
 
 func (self Instance) SetContentScaleFactor(value Float.X) {
-	class(self).SetContentScaleFactor(gd.Float(value))
+	class(self).SetContentScaleFactor(float64(value))
 }
 
 func (self Instance) AutoTranslate() bool {
@@ -884,7 +887,7 @@ func (self Instance) SetThemeTypeVariation(value string) {
 /*
 Virtual method to be implemented by the user. Overrides the value returned by [method get_contents_minimum_size].
 */
-func (class) _get_contents_minimum_size(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_contents_minimum_size(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -915,9 +918,9 @@ func (self class) GetTitle() String.Readable { //gd:Window.get_title
 Returns the ID of the window.
 */
 //go:nosplit
-func (self class) GetWindowId() gd.Int { //gd:Window.get_window_id
+func (self class) GetWindowId() int64 { //gd:Window.get_window_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_window_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -944,7 +947,7 @@ func (self class) GetInitialPosition() gdclass.WindowWindowInitialPosition { //g
 }
 
 //go:nosplit
-func (self class) SetCurrentScreen(index gd.Int) { //gd:Window.set_current_screen
+func (self class) SetCurrentScreen(index int64) { //gd:Window.set_current_screen
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -953,9 +956,9 @@ func (self class) SetCurrentScreen(index gd.Int) { //gd:Window.set_current_scree
 }
 
 //go:nosplit
-func (self class) GetCurrentScreen() gd.Int { //gd:Window.get_current_screen
+func (self class) GetCurrentScreen() int64 { //gd:Window.get_current_screen
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_current_screen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -963,7 +966,7 @@ func (self class) GetCurrentScreen() gd.Int { //gd:Window.get_current_screen
 }
 
 //go:nosplit
-func (self class) SetPosition(position gd.Vector2i) { //gd:Window.set_position
+func (self class) SetPosition(position Vector2i.XY) { //gd:Window.set_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -972,9 +975,9 @@ func (self class) SetPosition(position gd.Vector2i) { //gd:Window.set_position
 }
 
 //go:nosplit
-func (self class) GetPosition() gd.Vector2i { //gd:Window.get_position
+func (self class) GetPosition() Vector2i.XY { //gd:Window.get_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -993,7 +996,7 @@ func (self class) MoveToCenter() { //gd:Window.move_to_center
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector2i) { //gd:Window.set_size
+func (self class) SetSize(size Vector2i.XY) { //gd:Window.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -1002,9 +1005,9 @@ func (self class) SetSize(size gd.Vector2i) { //gd:Window.set_size
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector2i { //gd:Window.get_size
+func (self class) GetSize() Vector2i.XY { //gd:Window.get_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1027,9 +1030,9 @@ Returns the window's position including its border.
 [b]Note:[/b] If [member visible] is [code]false[/code], this method returns the same value as [member position].
 */
 //go:nosplit
-func (self class) GetPositionWithDecorations() gd.Vector2i { //gd:Window.get_position_with_decorations
+func (self class) GetPositionWithDecorations() Vector2i.XY { //gd:Window.get_position_with_decorations
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_position_with_decorations, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1041,9 +1044,9 @@ Returns the window's size including its border.
 [b]Note:[/b] If [member visible] is [code]false[/code], this method returns the same value as [member size].
 */
 //go:nosplit
-func (self class) GetSizeWithDecorations() gd.Vector2i { //gd:Window.get_size_with_decorations
+func (self class) GetSizeWithDecorations() Vector2i.XY { //gd:Window.get_size_with_decorations
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_size_with_decorations, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1051,7 +1054,7 @@ func (self class) GetSizeWithDecorations() gd.Vector2i { //gd:Window.get_size_wi
 }
 
 //go:nosplit
-func (self class) SetMaxSize(max_size gd.Vector2i) { //gd:Window.set_max_size
+func (self class) SetMaxSize(max_size Vector2i.XY) { //gd:Window.set_max_size
 	var frame = callframe.New()
 	callframe.Arg(frame, max_size)
 	var r_ret = callframe.Nil
@@ -1060,9 +1063,9 @@ func (self class) SetMaxSize(max_size gd.Vector2i) { //gd:Window.set_max_size
 }
 
 //go:nosplit
-func (self class) GetMaxSize() gd.Vector2i { //gd:Window.get_max_size
+func (self class) GetMaxSize() Vector2i.XY { //gd:Window.get_max_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_max_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1070,7 +1073,7 @@ func (self class) GetMaxSize() gd.Vector2i { //gd:Window.get_max_size
 }
 
 //go:nosplit
-func (self class) SetMinSize(min_size gd.Vector2i) { //gd:Window.set_min_size
+func (self class) SetMinSize(min_size Vector2i.XY) { //gd:Window.set_min_size
 	var frame = callframe.New()
 	callframe.Arg(frame, min_size)
 	var r_ret = callframe.Nil
@@ -1079,9 +1082,9 @@ func (self class) SetMinSize(min_size gd.Vector2i) { //gd:Window.set_min_size
 }
 
 //go:nosplit
-func (self class) GetMinSize() gd.Vector2i { //gd:Window.get_min_size
+func (self class) GetMinSize() Vector2i.XY { //gd:Window.get_min_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_min_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1333,7 +1336,7 @@ func (self class) SetImeActive(active bool) { //gd:Window.set_ime_active
 Moves IME to the given position.
 */
 //go:nosplit
-func (self class) SetImePosition(position gd.Vector2i) { //gd:Window.set_ime_position
+func (self class) SetImePosition(position Vector2i.XY) { //gd:Window.set_ime_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -1359,9 +1362,9 @@ Returns the combined minimum size from the child [Control] nodes of the window. 
 The value returned by this method can be overridden with [method _get_contents_minimum_size].
 */
 //go:nosplit
-func (self class) GetContentsMinimumSize() gd.Vector2 { //gd:Window.get_contents_minimum_size
+func (self class) GetContentsMinimumSize() Vector2.XY { //gd:Window.get_contents_minimum_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_contents_minimum_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1388,7 +1391,7 @@ func (self class) GetForceNative() bool { //gd:Window.get_force_native
 }
 
 //go:nosplit
-func (self class) SetContentScaleSize(size gd.Vector2i) { //gd:Window.set_content_scale_size
+func (self class) SetContentScaleSize(size Vector2i.XY) { //gd:Window.set_content_scale_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -1397,9 +1400,9 @@ func (self class) SetContentScaleSize(size gd.Vector2i) { //gd:Window.set_conten
 }
 
 //go:nosplit
-func (self class) GetContentScaleSize() gd.Vector2i { //gd:Window.get_content_scale_size
+func (self class) GetContentScaleSize() Vector2i.XY { //gd:Window.get_content_scale_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2i](frame)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1483,7 +1486,7 @@ func (self class) GetKeepTitleVisible() bool { //gd:Window.get_keep_title_visibl
 }
 
 //go:nosplit
-func (self class) SetContentScaleFactor(factor gd.Float) { //gd:Window.set_content_scale_factor
+func (self class) SetContentScaleFactor(factor float64) { //gd:Window.set_content_scale_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, factor)
 	var r_ret = callframe.Nil
@@ -1492,9 +1495,9 @@ func (self class) SetContentScaleFactor(factor gd.Float) { //gd:Window.set_conte
 }
 
 //go:nosplit
-func (self class) GetContentScaleFactor() gd.Float { //gd:Window.get_content_scale_factor
+func (self class) GetContentScaleFactor() float64 { //gd:Window.get_content_scale_factor
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1682,7 +1685,7 @@ Creates a local override for a theme font size with the specified [param name]. 
 See also [method get_theme_font_size].
 */
 //go:nosplit
-func (self class) AddThemeFontSizeOverride(name String.Name, font_size gd.Int) { //gd:Window.add_theme_font_size_override
+func (self class) AddThemeFontSizeOverride(name String.Name, font_size int64) { //gd:Window.add_theme_font_size_override
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, font_size)
@@ -1696,7 +1699,7 @@ Creates a local override for a theme [Color] with the specified [param name]. Lo
 See also [method get_theme_color] and [method Control.add_theme_color_override] for more details.
 */
 //go:nosplit
-func (self class) AddThemeColorOverride(name String.Name, color gd.Color) { //gd:Window.add_theme_color_override
+func (self class) AddThemeColorOverride(name String.Name, color Color.RGBA) { //gd:Window.add_theme_color_override
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, color)
@@ -1710,7 +1713,7 @@ Creates a local override for a theme constant with the specified [param name]. L
 See also [method get_theme_constant].
 */
 //go:nosplit
-func (self class) AddThemeConstantOverride(name String.Name, constant gd.Int) { //gd:Window.add_theme_constant_override
+func (self class) AddThemeConstantOverride(name String.Name, constant int64) { //gd:Window.add_theme_constant_override
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, constant)
@@ -1844,11 +1847,11 @@ Returns a font size from the first matching [Theme] in the tree if that [Theme] 
 See [method Control.get_theme_color] for details.
 */
 //go:nosplit
-func (self class) GetThemeFontSize(name String.Name, theme_type String.Name) gd.Int { //gd:Window.get_theme_font_size
+func (self class) GetThemeFontSize(name String.Name, theme_type String.Name) int64 { //gd:Window.get_theme_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1860,11 +1863,11 @@ Returns a [Color] from the first matching [Theme] in the tree if that [Theme] ha
 See [method Control.get_theme_color] for more details.
 */
 //go:nosplit
-func (self class) GetThemeColor(name String.Name, theme_type String.Name) gd.Color { //gd:Window.get_theme_color
+func (self class) GetThemeColor(name String.Name, theme_type String.Name) Color.RGBA { //gd:Window.get_theme_color
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1876,11 +1879,11 @@ Returns a constant from the first matching [Theme] in the tree if that [Theme] h
 See [method Control.get_theme_color] for more details.
 */
 //go:nosplit
-func (self class) GetThemeConstant(name String.Name, theme_type String.Name) gd.Int { //gd:Window.get_theme_constant
+func (self class) GetThemeConstant(name String.Name, theme_type String.Name) int64 { //gd:Window.get_theme_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(theme_type)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2078,9 +2081,9 @@ Returns the default base scale value from the first matching [Theme] in the tree
 See [method Control.get_theme_color] for details.
 */
 //go:nosplit
-func (self class) GetThemeDefaultBaseScale() gd.Float { //gd:Window.get_theme_default_base_scale
+func (self class) GetThemeDefaultBaseScale() float64 { //gd:Window.get_theme_default_base_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_default_base_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2106,9 +2109,9 @@ Returns the default font size value from the first matching [Theme] in the tree 
 See [method Control.get_theme_color] for details.
 */
 //go:nosplit
-func (self class) GetThemeDefaultFontSize() gd.Int { //gd:Window.get_theme_default_font_size
+func (self class) GetThemeDefaultFontSize() int64 { //gd:Window.get_theme_default_font_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_default_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2179,7 +2182,7 @@ If [member ProjectSettings.display/window/subwindows/embed_subwindows] is [code]
 [b]Note:[/b] [param rect] must be in global coordinates if specified.
 */
 //go:nosplit
-func (self class) Popup(rect gd.Rect2i) { //gd:Window.popup
+func (self class) Popup(rect Rect2i.PositionSize) { //gd:Window.popup
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Nil
@@ -2191,7 +2194,7 @@ func (self class) Popup(rect gd.Rect2i) { //gd:Window.popup
 Popups the [Window] with a position shifted by parent [Window]'s position. If the [Window] is embedded, has the same effect as [method popup].
 */
 //go:nosplit
-func (self class) PopupOnParent(parent_rect gd.Rect2i) { //gd:Window.popup_on_parent
+func (self class) PopupOnParent(parent_rect Rect2i.PositionSize) { //gd:Window.popup_on_parent
 	var frame = callframe.New()
 	callframe.Arg(frame, parent_rect)
 	var r_ret = callframe.Nil
@@ -2204,7 +2207,7 @@ Popups the [Window] at the center of the current screen, with optionally given m
 [b]Note:[/b] Calling it with the default value of [param minsize] is equivalent to calling it with [member size].
 */
 //go:nosplit
-func (self class) PopupCentered(minsize gd.Vector2i) { //gd:Window.popup_centered
+func (self class) PopupCentered(minsize Vector2i.XY) { //gd:Window.popup_centered
 	var frame = callframe.New()
 	callframe.Arg(frame, minsize)
 	var r_ret = callframe.Nil
@@ -2217,7 +2220,7 @@ If [Window] is embedded, popups the [Window] centered inside its embedder and se
 If [Window] is a native window, popups the [Window] centered inside the screen of its parent [Window] and sets its size as a [param ratio] of the screen size.
 */
 //go:nosplit
-func (self class) PopupCenteredRatio(ratio gd.Float) { //gd:Window.popup_centered_ratio
+func (self class) PopupCenteredRatio(ratio float64) { //gd:Window.popup_centered_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -2230,7 +2233,7 @@ Popups the [Window] centered inside its parent [Window]. [param fallback_ratio] 
 [b]Note:[/b] Calling it with the default value of [param minsize] is equivalent to calling it with [member size].
 */
 //go:nosplit
-func (self class) PopupCenteredClamped(minsize gd.Vector2i, fallback_ratio gd.Float) { //gd:Window.popup_centered_clamped
+func (self class) PopupCenteredClamped(minsize Vector2i.XY, fallback_ratio float64) { //gd:Window.popup_centered_clamped
 	var frame = callframe.New()
 	callframe.Arg(frame, minsize)
 	callframe.Arg(frame, fallback_ratio)
@@ -2244,7 +2247,7 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 //go:nosplit
-func (self class) PopupExclusive(from_node [1]gdclass.Node, rect gd.Rect2i) { //gd:Window.popup_exclusive
+func (self class) PopupExclusive(from_node [1]gdclass.Node, rect Rect2i.PositionSize) { //gd:Window.popup_exclusive
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node[0])[0])
 	callframe.Arg(frame, rect)
@@ -2258,7 +2261,7 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 //go:nosplit
-func (self class) PopupExclusiveOnParent(from_node [1]gdclass.Node, parent_rect gd.Rect2i) { //gd:Window.popup_exclusive_on_parent
+func (self class) PopupExclusiveOnParent(from_node [1]gdclass.Node, parent_rect Rect2i.PositionSize) { //gd:Window.popup_exclusive_on_parent
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node[0])[0])
 	callframe.Arg(frame, parent_rect)
@@ -2272,7 +2275,7 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 //go:nosplit
-func (self class) PopupExclusiveCentered(from_node [1]gdclass.Node, minsize gd.Vector2i) { //gd:Window.popup_exclusive_centered
+func (self class) PopupExclusiveCentered(from_node [1]gdclass.Node, minsize Vector2i.XY) { //gd:Window.popup_exclusive_centered
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node[0])[0])
 	callframe.Arg(frame, minsize)
@@ -2286,7 +2289,7 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 //go:nosplit
-func (self class) PopupExclusiveCenteredRatio(from_node [1]gdclass.Node, ratio gd.Float) { //gd:Window.popup_exclusive_centered_ratio
+func (self class) PopupExclusiveCenteredRatio(from_node [1]gdclass.Node, ratio float64) { //gd:Window.popup_exclusive_centered_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node[0])[0])
 	callframe.Arg(frame, ratio)
@@ -2300,7 +2303,7 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 //go:nosplit
-func (self class) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node, minsize gd.Vector2i, fallback_ratio gd.Float) { //gd:Window.popup_exclusive_centered_clamped
+func (self class) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node, minsize Vector2i.XY, fallback_ratio float64) { //gd:Window.popup_exclusive_centered_clamped
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node[0])[0])
 	callframe.Arg(frame, minsize)

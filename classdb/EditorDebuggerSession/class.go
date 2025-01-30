@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -102,7 +106,7 @@ func (self Instance) RemoveSessionTab(control [1]gdclass.Control) { //gd:EditorD
 Enables or disables a specific breakpoint based on [param enabled], updating the Editor Breakpoint Panel accordingly.
 */
 func (self Instance) SetBreakpoint(path string, line int, enabled bool) { //gd:EditorDebuggerSession.set_breakpoint
-	class(self).SetBreakpoint(String.New(path), gd.Int(line), enabled)
+	class(self).SetBreakpoint(String.New(path), int64(line), enabled)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -218,7 +222,7 @@ func (self class) RemoveSessionTab(control [1]gdclass.Control) { //gd:EditorDebu
 Enables or disables a specific breakpoint based on [param enabled], updating the Editor Breakpoint Panel accordingly.
 */
 //go:nosplit
-func (self class) SetBreakpoint(path String.Readable, line gd.Int, enabled bool) { //gd:EditorDebuggerSession.set_breakpoint
+func (self class) SetBreakpoint(path String.Readable, line int64, enabled bool) { //gd:EditorDebuggerSession.set_breakpoint
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, line)

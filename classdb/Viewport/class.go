@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Transform2D"
-import "graphics.gd/variant/Rect2"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform2D"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -165,7 +168,7 @@ Moves the mouse pointer to the specified position in this [Viewport] using the c
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 */
 func (self Instance) WarpMouse(position Vector2.XY) { //gd:Viewport.warp_mouse
-	class(self).WarpMouse(gd.Vector2(position))
+	class(self).WarpMouse(Vector2.XY(position))
 }
 
 /*
@@ -248,14 +251,14 @@ func (self Instance) GetEmbeddedSubwindows() [][1]gdclass.Window { //gd:Viewport
 Set/clear individual bits on the rendering layer mask. This simplifies editing this [Viewport]'s layers.
 */
 func (self Instance) SetCanvasCullMaskBit(layer int, enable bool) { //gd:Viewport.set_canvas_cull_mask_bit
-	class(self).SetCanvasCullMaskBit(gd.Int(layer), enable)
+	class(self).SetCanvasCullMaskBit(int64(layer), enable)
 }
 
 /*
 Returns an individual bit on the rendering layer mask.
 */
 func (self Instance) GetCanvasCullMaskBit(layer int) bool { //gd:Viewport.get_canvas_cull_mask_bit
-	return bool(class(self).GetCanvasCullMaskBit(gd.Int(layer)))
+	return bool(class(self).GetCanvasCullMaskBit(int64(layer)))
 }
 
 /*
@@ -422,7 +425,7 @@ func (self Instance) MeshLodThreshold() Float.X {
 }
 
 func (self Instance) SetMeshLodThreshold(value Float.X) {
-	class(self).SetMeshLodThreshold(gd.Float(value))
+	class(self).SetMeshLodThreshold(float64(value))
 }
 
 func (self Instance) DebugDraw() gdclass.ViewportDebugDraw {
@@ -454,7 +457,7 @@ func (self Instance) Scaling3dScale() Float.X {
 }
 
 func (self Instance) SetScaling3dScale(value Float.X) {
-	class(self).SetScaling3dScale(gd.Float(value))
+	class(self).SetScaling3dScale(float64(value))
 }
 
 func (self Instance) TextureMipmapBias() Float.X {
@@ -462,7 +465,7 @@ func (self Instance) TextureMipmapBias() Float.X {
 }
 
 func (self Instance) SetTextureMipmapBias(value Float.X) {
-	class(self).SetTextureMipmapBias(gd.Float(value))
+	class(self).SetTextureMipmapBias(float64(value))
 }
 
 func (self Instance) FsrSharpness() Float.X {
@@ -470,7 +473,7 @@ func (self Instance) FsrSharpness() Float.X {
 }
 
 func (self Instance) SetFsrSharpness(value Float.X) {
-	class(self).SetFsrSharpness(gd.Float(value))
+	class(self).SetFsrSharpness(float64(value))
 }
 
 func (self Instance) VrsMode() gdclass.ViewportVRSMode {
@@ -598,7 +601,7 @@ func (self Instance) PositionalShadowAtlasSize() int {
 }
 
 func (self Instance) SetPositionalShadowAtlasSize(value int) {
-	class(self).SetPositionalShadowAtlasSize(gd.Int(value))
+	class(self).SetPositionalShadowAtlasSize(int64(value))
 }
 
 func (self Instance) PositionalShadowAtlas16Bits() bool {
@@ -646,7 +649,7 @@ func (self Instance) CanvasTransform() Transform2D.OriginXY {
 }
 
 func (self Instance) SetCanvasTransform(value Transform2D.OriginXY) {
-	class(self).SetCanvasTransform(gd.Transform2D(value))
+	class(self).SetCanvasTransform(Transform2D.OriginXY(value))
 }
 
 func (self Instance) GlobalCanvasTransform() Transform2D.OriginXY {
@@ -654,7 +657,7 @@ func (self Instance) GlobalCanvasTransform() Transform2D.OriginXY {
 }
 
 func (self Instance) SetGlobalCanvasTransform(value Transform2D.OriginXY) {
-	class(self).SetGlobalCanvasTransform(gd.Transform2D(value))
+	class(self).SetGlobalCanvasTransform(Transform2D.OriginXY(value))
 }
 
 func (self Instance) CanvasCullMask() int {
@@ -662,7 +665,7 @@ func (self Instance) CanvasCullMask() int {
 }
 
 func (self Instance) SetCanvasCullMask(value int) {
-	class(self).SetCanvasCullMask(gd.Int(value))
+	class(self).SetCanvasCullMask(int64(value))
 }
 
 //go:nosplit
@@ -698,7 +701,7 @@ func (self class) FindWorld2d() [1]gdclass.World2D { //gd:Viewport.find_world_2d
 }
 
 //go:nosplit
-func (self class) SetCanvasTransform(xform gd.Transform2D) { //gd:Viewport.set_canvas_transform
+func (self class) SetCanvasTransform(xform Transform2D.OriginXY) { //gd:Viewport.set_canvas_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, xform)
 	var r_ret = callframe.Nil
@@ -707,9 +710,9 @@ func (self class) SetCanvasTransform(xform gd.Transform2D) { //gd:Viewport.set_c
 }
 
 //go:nosplit
-func (self class) GetCanvasTransform() gd.Transform2D { //gd:Viewport.get_canvas_transform
+func (self class) GetCanvasTransform() Transform2D.OriginXY { //gd:Viewport.get_canvas_transform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform2D](frame)
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -717,7 +720,7 @@ func (self class) GetCanvasTransform() gd.Transform2D { //gd:Viewport.get_canvas
 }
 
 //go:nosplit
-func (self class) SetGlobalCanvasTransform(xform gd.Transform2D) { //gd:Viewport.set_global_canvas_transform
+func (self class) SetGlobalCanvasTransform(xform Transform2D.OriginXY) { //gd:Viewport.set_global_canvas_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, xform)
 	var r_ret = callframe.Nil
@@ -726,9 +729,9 @@ func (self class) SetGlobalCanvasTransform(xform gd.Transform2D) { //gd:Viewport
 }
 
 //go:nosplit
-func (self class) GetGlobalCanvasTransform() gd.Transform2D { //gd:Viewport.get_global_canvas_transform
+func (self class) GetGlobalCanvasTransform() Transform2D.OriginXY { //gd:Viewport.get_global_canvas_transform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform2D](frame)
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_global_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -739,9 +742,9 @@ func (self class) GetGlobalCanvasTransform() gd.Transform2D { //gd:Viewport.get_
 Returns the transform from the viewport's coordinate system to the embedder's coordinate system.
 */
 //go:nosplit
-func (self class) GetFinalTransform() gd.Transform2D { //gd:Viewport.get_final_transform
+func (self class) GetFinalTransform() Transform2D.OriginXY { //gd:Viewport.get_final_transform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform2D](frame)
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_final_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -752,9 +755,9 @@ func (self class) GetFinalTransform() gd.Transform2D { //gd:Viewport.get_final_t
 Returns the transform from the Viewport's coordinates to the screen coordinates of the containing window manager window.
 */
 //go:nosplit
-func (self class) GetScreenTransform() gd.Transform2D { //gd:Viewport.get_screen_transform
+func (self class) GetScreenTransform() Transform2D.OriginXY { //gd:Viewport.get_screen_transform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform2D](frame)
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_screen_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -765,9 +768,9 @@ func (self class) GetScreenTransform() gd.Transform2D { //gd:Viewport.get_screen
 Returns the visible rectangle in global screen coordinates.
 */
 //go:nosplit
-func (self class) GetVisibleRect() gd.Rect2 { //gd:Viewport.get_visible_rect
+func (self class) GetVisibleRect() Rect2.PositionSize { //gd:Viewport.get_visible_rect
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Rect2](frame)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_visible_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -949,11 +952,11 @@ func (self class) GetDebugDraw() gdclass.ViewportDebugDraw { //gd:Viewport.get_d
 Returns rendering statistics of the given type. See [enum RenderInfoType] and [enum RenderInfo] for options.
 */
 //go:nosplit
-func (self class) GetRenderInfo(atype gdclass.ViewportRenderInfoType, info gdclass.ViewportRenderInfo) gd.Int { //gd:Viewport.get_render_info
+func (self class) GetRenderInfo(atype gdclass.ViewportRenderInfoType, info gdclass.ViewportRenderInfo) int64 { //gd:Viewport.get_render_info
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, info)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_render_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1040,9 +1043,9 @@ func (self class) GetPhysicsObjectPickingFirstOnly() bool { //gd:Viewport.get_ph
 Returns the viewport's RID from the [RenderingServer].
 */
 //go:nosplit
-func (self class) GetViewportRid() gd.RID { //gd:Viewport.get_viewport_rid
+func (self class) GetViewportRid() RID.Any { //gd:Viewport.get_viewport_rid
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_viewport_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1109,9 +1112,9 @@ func (self class) PushUnhandledInput(event [1]gdclass.InputEvent, in_local_coord
 Returns the mouse's position in this [Viewport] using the coordinate system of this [Viewport].
 */
 //go:nosplit
-func (self class) GetMousePosition() gd.Vector2 { //gd:Viewport.get_mouse_position
+func (self class) GetMousePosition() Vector2.XY { //gd:Viewport.get_mouse_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_mouse_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1123,7 +1126,7 @@ Moves the mouse pointer to the specified position in this [Viewport] using the c
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 */
 //go:nosplit
-func (self class) WarpMouse(position gd.Vector2) { //gd:Viewport.warp_mouse
+func (self class) WarpMouse(position Vector2.XY) { //gd:Viewport.warp_mouse
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -1146,11 +1149,11 @@ func (self class) UpdateMouseCursorState() { //gd:Viewport.update_mouse_cursor_s
 Returns the drag data from the GUI, that was previously returned by [method Control._get_drag_data].
 */
 //go:nosplit
-func (self class) GuiGetDragData() gd.Variant { //gd:Viewport.gui_get_drag_data
+func (self class) GuiGetDragData() variant.Any { //gd:Viewport.gui_get_drag_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_get_drag_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1240,7 +1243,7 @@ func (self class) IsInputDisabled() bool { //gd:Viewport.is_input_disabled
 }
 
 //go:nosplit
-func (self class) SetPositionalShadowAtlasSize(size gd.Int) { //gd:Viewport.set_positional_shadow_atlas_size
+func (self class) SetPositionalShadowAtlasSize(size int64) { //gd:Viewport.set_positional_shadow_atlas_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -1249,9 +1252,9 @@ func (self class) SetPositionalShadowAtlasSize(size gd.Int) { //gd:Viewport.set_
 }
 
 //go:nosplit
-func (self class) GetPositionalShadowAtlasSize() gd.Int { //gd:Viewport.get_positional_shadow_atlas_size
+func (self class) GetPositionalShadowAtlasSize() int64 { //gd:Viewport.get_positional_shadow_atlas_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_positional_shadow_atlas_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1338,7 +1341,7 @@ func (self class) IsSnap2dVerticesToPixelEnabled() bool { //gd:Viewport.is_snap_
 Sets the number of subdivisions to use in the specified quadrant. A higher number of subdivisions allows you to have more shadows in the scene at once, but reduces the quality of the shadows. A good practice is to have quadrants with a varying number of subdivisions and to have as few subdivisions as possible.
 */
 //go:nosplit
-func (self class) SetPositionalShadowAtlasQuadrantSubdiv(quadrant gd.Int, subdiv gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv) { //gd:Viewport.set_positional_shadow_atlas_quadrant_subdiv
+func (self class) SetPositionalShadowAtlasQuadrantSubdiv(quadrant int64, subdiv gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv) { //gd:Viewport.set_positional_shadow_atlas_quadrant_subdiv
 	var frame = callframe.New()
 	callframe.Arg(frame, quadrant)
 	callframe.Arg(frame, subdiv)
@@ -1351,7 +1354,7 @@ func (self class) SetPositionalShadowAtlasQuadrantSubdiv(quadrant gd.Int, subdiv
 Returns the positional shadow atlas quadrant subdivision of the specified quadrant.
 */
 //go:nosplit
-func (self class) GetPositionalShadowAtlasQuadrantSubdiv(quadrant gd.Int) gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv { //gd:Viewport.get_positional_shadow_atlas_quadrant_subdiv
+func (self class) GetPositionalShadowAtlasQuadrantSubdiv(quadrant int64) gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv { //gd:Viewport.get_positional_shadow_atlas_quadrant_subdiv
 	var frame = callframe.New()
 	callframe.Arg(frame, quadrant)
 	var r_ret = callframe.Ret[gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv](frame)
@@ -1460,7 +1463,7 @@ func (self class) GetEmbeddedSubwindows() Array.Contains[[1]gdclass.Window] { //
 }
 
 //go:nosplit
-func (self class) SetCanvasCullMask(mask gd.Int) { //gd:Viewport.set_canvas_cull_mask
+func (self class) SetCanvasCullMask(mask int64) { //gd:Viewport.set_canvas_cull_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -1469,9 +1472,9 @@ func (self class) SetCanvasCullMask(mask gd.Int) { //gd:Viewport.set_canvas_cull
 }
 
 //go:nosplit
-func (self class) GetCanvasCullMask() gd.Int { //gd:Viewport.get_canvas_cull_mask
+func (self class) GetCanvasCullMask() int64 { //gd:Viewport.get_canvas_cull_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_canvas_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1482,7 +1485,7 @@ func (self class) GetCanvasCullMask() gd.Int { //gd:Viewport.get_canvas_cull_mas
 Set/clear individual bits on the rendering layer mask. This simplifies editing this [Viewport]'s layers.
 */
 //go:nosplit
-func (self class) SetCanvasCullMaskBit(layer gd.Int, enable bool) { //gd:Viewport.set_canvas_cull_mask_bit
+func (self class) SetCanvasCullMaskBit(layer int64, enable bool) { //gd:Viewport.set_canvas_cull_mask_bit
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, enable)
@@ -1495,7 +1498,7 @@ func (self class) SetCanvasCullMaskBit(layer gd.Int, enable bool) { //gd:Viewpor
 Returns an individual bit on the rendering layer mask.
 */
 //go:nosplit
-func (self class) GetCanvasCullMaskBit(layer gd.Int) bool { //gd:Viewport.get_canvas_cull_mask_bit
+func (self class) GetCanvasCullMaskBit(layer int64) bool { //gd:Viewport.get_canvas_cull_mask_bit
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1563,7 +1566,7 @@ func (self class) GetSdfScale() gdclass.ViewportSDFScale { //gd:Viewport.get_sdf
 }
 
 //go:nosplit
-func (self class) SetMeshLodThreshold(pixels gd.Float) { //gd:Viewport.set_mesh_lod_threshold
+func (self class) SetMeshLodThreshold(pixels float64) { //gd:Viewport.set_mesh_lod_threshold
 	var frame = callframe.New()
 	callframe.Arg(frame, pixels)
 	var r_ret = callframe.Nil
@@ -1572,9 +1575,9 @@ func (self class) SetMeshLodThreshold(pixels gd.Float) { //gd:Viewport.set_mesh_
 }
 
 //go:nosplit
-func (self class) GetMeshLodThreshold() gd.Float { //gd:Viewport.get_mesh_lod_threshold
+func (self class) GetMeshLodThreshold() float64 { //gd:Viewport.get_mesh_lod_threshold
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1754,7 +1757,7 @@ func (self class) GetScaling3dMode() gdclass.ViewportScaling3DMode { //gd:Viewpo
 }
 
 //go:nosplit
-func (self class) SetScaling3dScale(scale gd.Float) { //gd:Viewport.set_scaling_3d_scale
+func (self class) SetScaling3dScale(scale float64) { //gd:Viewport.set_scaling_3d_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -1763,9 +1766,9 @@ func (self class) SetScaling3dScale(scale gd.Float) { //gd:Viewport.set_scaling_
 }
 
 //go:nosplit
-func (self class) GetScaling3dScale() gd.Float { //gd:Viewport.get_scaling_3d_scale
+func (self class) GetScaling3dScale() float64 { //gd:Viewport.get_scaling_3d_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_scaling_3d_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1773,7 +1776,7 @@ func (self class) GetScaling3dScale() gd.Float { //gd:Viewport.get_scaling_3d_sc
 }
 
 //go:nosplit
-func (self class) SetFsrSharpness(fsr_sharpness gd.Float) { //gd:Viewport.set_fsr_sharpness
+func (self class) SetFsrSharpness(fsr_sharpness float64) { //gd:Viewport.set_fsr_sharpness
 	var frame = callframe.New()
 	callframe.Arg(frame, fsr_sharpness)
 	var r_ret = callframe.Nil
@@ -1782,9 +1785,9 @@ func (self class) SetFsrSharpness(fsr_sharpness gd.Float) { //gd:Viewport.set_fs
 }
 
 //go:nosplit
-func (self class) GetFsrSharpness() gd.Float { //gd:Viewport.get_fsr_sharpness
+func (self class) GetFsrSharpness() float64 { //gd:Viewport.get_fsr_sharpness
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_fsr_sharpness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1792,7 +1795,7 @@ func (self class) GetFsrSharpness() gd.Float { //gd:Viewport.get_fsr_sharpness
 }
 
 //go:nosplit
-func (self class) SetTextureMipmapBias(texture_mipmap_bias gd.Float) { //gd:Viewport.set_texture_mipmap_bias
+func (self class) SetTextureMipmapBias(texture_mipmap_bias float64) { //gd:Viewport.set_texture_mipmap_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_mipmap_bias)
 	var r_ret = callframe.Nil
@@ -1801,9 +1804,9 @@ func (self class) SetTextureMipmapBias(texture_mipmap_bias gd.Float) { //gd:View
 }
 
 //go:nosplit
-func (self class) GetTextureMipmapBias() gd.Float { //gd:Viewport.get_texture_mipmap_bias
+func (self class) GetTextureMipmapBias() float64 { //gd:Viewport.get_texture_mipmap_bias
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_texture_mipmap_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

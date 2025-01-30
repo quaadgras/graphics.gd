@@ -4,6 +4,13 @@ package Error
 // Code is an error code.
 type Code uint8
 
+func New(err error) Code {
+	if err == nil {
+		return 0
+	}
+	return Failed
+}
+
 // Code constants.
 const (
 	Failed                  Code = 1

@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -72,7 +75,7 @@ Called when the [Range]'s value is changed (following the same conditions as [si
 */
 func (Instance) _value_changed(impl func(ptr unsafe.Pointer, new_value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var new_value = gd.UnsafeGet[gd.Float](p_args, 0)
+		var new_value = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(new_value))
@@ -83,7 +86,7 @@ func (Instance) _value_changed(impl func(ptr unsafe.Pointer, new_value Float.X))
 Sets the [Range]'s current value to the specified [param value], without emitting the [signal value_changed] signal.
 */
 func (self Instance) SetValueNoSignal(value Float.X) { //gd:Range.set_value_no_signal
-	class(self).SetValueNoSignal(gd.Float(value))
+	class(self).SetValueNoSignal(float64(value))
 }
 
 /*
@@ -123,7 +126,7 @@ func (self Instance) MinValue() Float.X {
 }
 
 func (self Instance) SetMinValue(value Float.X) {
-	class(self).SetMin(gd.Float(value))
+	class(self).SetMin(float64(value))
 }
 
 func (self Instance) MaxValue() Float.X {
@@ -131,7 +134,7 @@ func (self Instance) MaxValue() Float.X {
 }
 
 func (self Instance) SetMaxValue(value Float.X) {
-	class(self).SetMax(gd.Float(value))
+	class(self).SetMax(float64(value))
 }
 
 func (self Instance) Step() Float.X {
@@ -139,7 +142,7 @@ func (self Instance) Step() Float.X {
 }
 
 func (self Instance) SetStep(value Float.X) {
-	class(self).SetStep(gd.Float(value))
+	class(self).SetStep(float64(value))
 }
 
 func (self Instance) Page() Float.X {
@@ -147,7 +150,7 @@ func (self Instance) Page() Float.X {
 }
 
 func (self Instance) SetPage(value Float.X) {
-	class(self).SetPage(gd.Float(value))
+	class(self).SetPage(float64(value))
 }
 
 func (self Instance) Value() Float.X {
@@ -155,7 +158,7 @@ func (self Instance) Value() Float.X {
 }
 
 func (self Instance) SetValue(value Float.X) {
-	class(self).SetValue(gd.Float(value))
+	class(self).SetValue(float64(value))
 }
 
 func (self Instance) Ratio() Float.X {
@@ -163,7 +166,7 @@ func (self Instance) Ratio() Float.X {
 }
 
 func (self Instance) SetRatio(value Float.X) {
-	class(self).SetAsRatio(gd.Float(value))
+	class(self).SetAsRatio(float64(value))
 }
 
 func (self Instance) ExpEdit() bool {
@@ -201,9 +204,9 @@ func (self Instance) SetAllowLesser(value bool) {
 /*
 Called when the [Range]'s value is changed (following the same conditions as [signal value_changed]).
 */
-func (class) _value_changed(impl func(ptr unsafe.Pointer, new_value gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _value_changed(impl func(ptr unsafe.Pointer, new_value float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var new_value = gd.UnsafeGet[gd.Float](p_args, 0)
+		var new_value = gd.UnsafeGet[float64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, new_value)
@@ -211,9 +214,9 @@ func (class) _value_changed(impl func(ptr unsafe.Pointer, new_value gd.Float)) (
 }
 
 //go:nosplit
-func (self class) GetValue() gd.Float { //gd:Range.get_value
+func (self class) GetValue() float64 { //gd:Range.get_value
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -221,9 +224,9 @@ func (self class) GetValue() gd.Float { //gd:Range.get_value
 }
 
 //go:nosplit
-func (self class) GetMin() gd.Float { //gd:Range.get_min
+func (self class) GetMin() float64 { //gd:Range.get_min
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -231,9 +234,9 @@ func (self class) GetMin() gd.Float { //gd:Range.get_min
 }
 
 //go:nosplit
-func (self class) GetMax() gd.Float { //gd:Range.get_max
+func (self class) GetMax() float64 { //gd:Range.get_max
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -241,9 +244,9 @@ func (self class) GetMax() gd.Float { //gd:Range.get_max
 }
 
 //go:nosplit
-func (self class) GetStep() gd.Float { //gd:Range.get_step
+func (self class) GetStep() float64 { //gd:Range.get_step
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -251,9 +254,9 @@ func (self class) GetStep() gd.Float { //gd:Range.get_step
 }
 
 //go:nosplit
-func (self class) GetPage() gd.Float { //gd:Range.get_page
+func (self class) GetPage() float64 { //gd:Range.get_page
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_page, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -261,9 +264,9 @@ func (self class) GetPage() gd.Float { //gd:Range.get_page
 }
 
 //go:nosplit
-func (self class) GetAsRatio() gd.Float { //gd:Range.get_as_ratio
+func (self class) GetAsRatio() float64 { //gd:Range.get_as_ratio
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_as_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -271,7 +274,7 @@ func (self class) GetAsRatio() gd.Float { //gd:Range.get_as_ratio
 }
 
 //go:nosplit
-func (self class) SetValue(value gd.Float) { //gd:Range.set_value
+func (self class) SetValue(value float64) { //gd:Range.set_value
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -283,7 +286,7 @@ func (self class) SetValue(value gd.Float) { //gd:Range.set_value
 Sets the [Range]'s current value to the specified [param value], without emitting the [signal value_changed] signal.
 */
 //go:nosplit
-func (self class) SetValueNoSignal(value gd.Float) { //gd:Range.set_value_no_signal
+func (self class) SetValueNoSignal(value float64) { //gd:Range.set_value_no_signal
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -292,7 +295,7 @@ func (self class) SetValueNoSignal(value gd.Float) { //gd:Range.set_value_no_sig
 }
 
 //go:nosplit
-func (self class) SetMin(minimum gd.Float) { //gd:Range.set_min
+func (self class) SetMin(minimum float64) { //gd:Range.set_min
 	var frame = callframe.New()
 	callframe.Arg(frame, minimum)
 	var r_ret = callframe.Nil
@@ -301,7 +304,7 @@ func (self class) SetMin(minimum gd.Float) { //gd:Range.set_min
 }
 
 //go:nosplit
-func (self class) SetMax(maximum gd.Float) { //gd:Range.set_max
+func (self class) SetMax(maximum float64) { //gd:Range.set_max
 	var frame = callframe.New()
 	callframe.Arg(frame, maximum)
 	var r_ret = callframe.Nil
@@ -310,7 +313,7 @@ func (self class) SetMax(maximum gd.Float) { //gd:Range.set_max
 }
 
 //go:nosplit
-func (self class) SetStep(step gd.Float) { //gd:Range.set_step
+func (self class) SetStep(step float64) { //gd:Range.set_step
 	var frame = callframe.New()
 	callframe.Arg(frame, step)
 	var r_ret = callframe.Nil
@@ -319,7 +322,7 @@ func (self class) SetStep(step gd.Float) { //gd:Range.set_step
 }
 
 //go:nosplit
-func (self class) SetPage(pagesize gd.Float) { //gd:Range.set_page
+func (self class) SetPage(pagesize float64) { //gd:Range.set_page
 	var frame = callframe.New()
 	callframe.Arg(frame, pagesize)
 	var r_ret = callframe.Nil
@@ -328,7 +331,7 @@ func (self class) SetPage(pagesize gd.Float) { //gd:Range.set_page
 }
 
 //go:nosplit
-func (self class) SetAsRatio(value gd.Float) { //gd:Range.set_as_ratio
+func (self class) SetAsRatio(value float64) { //gd:Range.set_as_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil

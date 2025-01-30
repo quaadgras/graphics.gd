@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -80,7 +84,7 @@ func (Instance) _process(impl func(ptr unsafe.Pointer, src_buffer unsafe.Pointer
 
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 1)
 
-		var frame_count = gd.UnsafeGet[gd.Int](p_args, 2)
+		var frame_count = gd.UnsafeGet[int64](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, src_buffer, dst_buffer, int(frame_count))
@@ -122,13 +126,13 @@ func New() Instance {
 Called by the [AudioServer] to process this effect. When [method _process_silence] is not overridden or it returns [code]false[/code], this method is called only when the bus is active.
 [b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
 */
-func (class) _process(impl func(ptr unsafe.Pointer, src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _process(impl func(ptr unsafe.Pointer, src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var src_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 1)
 
-		var frame_count = gd.UnsafeGet[gd.Int](p_args, 2)
+		var frame_count = gd.UnsafeGet[int64](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, src_buffer, dst_buffer, frame_count)

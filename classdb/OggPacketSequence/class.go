@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -97,7 +100,7 @@ func (self Instance) SamplingRate() Float.X {
 }
 
 func (self Instance) SetSamplingRate(value Float.X) {
-	class(self).SetSamplingRate(gd.Float(value))
+	class(self).SetSamplingRate(float64(value))
 }
 
 //go:nosplit
@@ -139,7 +142,7 @@ func (self class) GetPacketGranulePositions() Packed.Array[int64] { //gd:OggPack
 }
 
 //go:nosplit
-func (self class) SetSamplingRate(sampling_rate gd.Float) { //gd:OggPacketSequence.set_sampling_rate
+func (self class) SetSamplingRate(sampling_rate float64) { //gd:OggPacketSequence.set_sampling_rate
 	var frame = callframe.New()
 	callframe.Arg(frame, sampling_rate)
 	var r_ret = callframe.Nil
@@ -148,9 +151,9 @@ func (self class) SetSamplingRate(sampling_rate gd.Float) { //gd:OggPacketSequen
 }
 
 //go:nosplit
-func (self class) GetSamplingRate() gd.Float { //gd:OggPacketSequence.get_sampling_rate
+func (self class) GetSamplingRate() float64 { //gd:OggPacketSequence.get_sampling_rate
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OggPacketSequence.Bind_get_sampling_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -161,9 +164,9 @@ func (self class) GetSamplingRate() gd.Float { //gd:OggPacketSequence.get_sampli
 The length of this stream, in seconds.
 */
 //go:nosplit
-func (self class) GetLength() gd.Float { //gd:OggPacketSequence.get_length
+func (self class) GetLength() float64 { //gd:OggPacketSequence.get_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OggPacketSequence.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

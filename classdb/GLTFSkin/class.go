@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
@@ -35,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 type Instance [1]gdclass.GLTFSkin
@@ -71,7 +75,7 @@ func (self Instance) SkinRoot() int {
 }
 
 func (self Instance) SetSkinRoot(value int) {
-	class(self).SetSkinRoot(gd.Int(value))
+	class(self).SetSkinRoot(int64(value))
 }
 
 func (self Instance) JointsOriginal() []int32 {
@@ -87,7 +91,7 @@ func (self Instance) InverseBinds() []Transform3D.BasisOrigin {
 }
 
 func (self Instance) SetInverseBinds(value []Transform3D.BasisOrigin) {
-	class(self).SetInverseBinds(gd.ArrayFromSlice[Array.Contains[gd.Transform3D]](value))
+	class(self).SetInverseBinds(gd.ArrayFromSlice[Array.Contains[Transform3D.BasisOrigin]](value))
 }
 
 func (self Instance) Joints() []int32 {
@@ -119,7 +123,7 @@ func (self Instance) Skeleton() int {
 }
 
 func (self Instance) SetSkeleton(value int) {
-	class(self).SetSkeleton(gd.Int(value))
+	class(self).SetSkeleton(int64(value))
 }
 
 func (self Instance) JointIToBoneI() map[any]any {
@@ -147,9 +151,9 @@ func (self Instance) SetGodotSkin(value [1]gdclass.Skin) {
 }
 
 //go:nosplit
-func (self class) GetSkinRoot() gd.Int { //gd:GLTFSkin.get_skin_root
+func (self class) GetSkinRoot() int64 { //gd:GLTFSkin.get_skin_root
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_skin_root, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -157,7 +161,7 @@ func (self class) GetSkinRoot() gd.Int { //gd:GLTFSkin.get_skin_root
 }
 
 //go:nosplit
-func (self class) SetSkinRoot(skin_root gd.Int) { //gd:GLTFSkin.set_skin_root
+func (self class) SetSkinRoot(skin_root int64) { //gd:GLTFSkin.set_skin_root
 	var frame = callframe.New()
 	callframe.Arg(frame, skin_root)
 	var r_ret = callframe.Nil
@@ -185,17 +189,17 @@ func (self class) SetJointsOriginal(joints_original Packed.Array[int32]) { //gd:
 }
 
 //go:nosplit
-func (self class) GetInverseBinds() Array.Contains[gd.Transform3D] { //gd:GLTFSkin.get_inverse_binds
+func (self class) GetInverseBinds() Array.Contains[Transform3D.BasisOrigin] { //gd:GLTFSkin.get_inverse_binds
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_inverse_binds, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Transform3D]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Transform3D.BasisOrigin]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetInverseBinds(inverse_binds Array.Contains[gd.Transform3D]) { //gd:GLTFSkin.set_inverse_binds
+func (self class) SetInverseBinds(inverse_binds Array.Contains[Transform3D.BasisOrigin]) { //gd:GLTFSkin.set_inverse_binds
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(inverse_binds)))
 	var r_ret = callframe.Nil
@@ -261,9 +265,9 @@ func (self class) SetRoots(roots Packed.Array[int32]) { //gd:GLTFSkin.set_roots
 }
 
 //go:nosplit
-func (self class) GetSkeleton() gd.Int { //gd:GLTFSkin.get_skeleton
+func (self class) GetSkeleton() int64 { //gd:GLTFSkin.get_skeleton
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -271,7 +275,7 @@ func (self class) GetSkeleton() gd.Int { //gd:GLTFSkin.get_skeleton
 }
 
 //go:nosplit
-func (self class) SetSkeleton(skeleton gd.Int) { //gd:GLTFSkin.set_skeleton
+func (self class) SetSkeleton(skeleton int64) { //gd:GLTFSkin.set_skeleton
 	var frame = callframe.New()
 	callframe.Arg(frame, skeleton)
 	var r_ret = callframe.Nil

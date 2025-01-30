@@ -9,19 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Container"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Container"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -131,7 +135,7 @@ func (self Instance) SetBottomEditor(editor [1]gdclass.Control) { //gd:EditorPro
 If one or several properties have changed, this must be called. [param field] is used in case your editor can modify fields separately (as an example, Vector3.x). The [param changing] argument avoids the editor requesting this property to be refreshed (leave as [code]false[/code] if unsure).
 */
 func (self Instance) EmitChanged(property string, value any) { //gd:EditorProperty.emit_changed
-	class(self).EmitChanged(String.Name(String.New(property)), gd.NewVariant(value), String.Name(String.New("")), false)
+	class(self).EmitChanged(String.Name(String.New(property)), variant.New(value), String.Name(String.New("")), false)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -424,10 +428,10 @@ func (self class) SetBottomEditor(editor [1]gdclass.Control) { //gd:EditorProper
 If one or several properties have changed, this must be called. [param field] is used in case your editor can modify fields separately (as an example, Vector3.x). The [param changing] argument avoids the editor requesting this property to be refreshed (leave as [code]false[/code] if unsure).
 */
 //go:nosplit
-func (self class) EmitChanged(property String.Name, value gd.Variant, field String.Name, changing bool) { //gd:EditorProperty.emit_changed
+func (self class) EmitChanged(property String.Name, value variant.Any, field String.Name, changing bool) { //gd:EditorProperty.emit_changed
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(field)))
 	callframe.Arg(frame, changing)
 	var r_ret = callframe.Nil

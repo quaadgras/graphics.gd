@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -90,7 +94,7 @@ func (self Instance) OccluderLightMask() int {
 }
 
 func (self Instance) SetOccluderLightMask(value int) {
-	class(self).SetOccluderLightMask(gd.Int(value))
+	class(self).SetOccluderLightMask(int64(value))
 }
 
 //go:nosplit
@@ -113,7 +117,7 @@ func (self class) GetOccluderPolygon() [1]gdclass.OccluderPolygon2D { //gd:Light
 }
 
 //go:nosplit
-func (self class) SetOccluderLightMask(mask gd.Int) { //gd:LightOccluder2D.set_occluder_light_mask
+func (self class) SetOccluderLightMask(mask int64) { //gd:LightOccluder2D.set_occluder_light_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -122,9 +126,9 @@ func (self class) SetOccluderLightMask(mask gd.Int) { //gd:LightOccluder2D.set_o
 }
 
 //go:nosplit
-func (self class) GetOccluderLightMask() gd.Int { //gd:LightOccluder2D.get_occluder_light_mask
+func (self class) GetOccluderLightMask() int64 { //gd:LightOccluder2D.get_occluder_light_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightOccluder2D.Bind_get_occluder_light_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

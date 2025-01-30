@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioStream"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioStream"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,28 +58,28 @@ type Any interface {
 Set one of the synchronized streams, by index.
 */
 func (self Instance) SetSyncStream(stream_index int, audio_stream [1]gdclass.AudioStream) { //gd:AudioStreamSynchronized.set_sync_stream
-	class(self).SetSyncStream(gd.Int(stream_index), audio_stream)
+	class(self).SetSyncStream(int64(stream_index), audio_stream)
 }
 
 /*
 Get one of the synchronized streams, by index.
 */
 func (self Instance) GetSyncStream(stream_index int) [1]gdclass.AudioStream { //gd:AudioStreamSynchronized.get_sync_stream
-	return [1]gdclass.AudioStream(class(self).GetSyncStream(gd.Int(stream_index)))
+	return [1]gdclass.AudioStream(class(self).GetSyncStream(int64(stream_index)))
 }
 
 /*
 Set the volume of one of the synchronized streams, by index.
 */
 func (self Instance) SetSyncStreamVolume(stream_index int, volume_db Float.X) { //gd:AudioStreamSynchronized.set_sync_stream_volume
-	class(self).SetSyncStreamVolume(gd.Int(stream_index), gd.Float(volume_db))
+	class(self).SetSyncStreamVolume(int64(stream_index), float64(volume_db))
 }
 
 /*
 Get the volume of one of the synchronized streams, by index.
 */
 func (self Instance) GetSyncStreamVolume(stream_index int) Float.X { //gd:AudioStreamSynchronized.get_sync_stream_volume
-	return Float.X(Float.X(class(self).GetSyncStreamVolume(gd.Int(stream_index))))
+	return Float.X(Float.X(class(self).GetSyncStreamVolume(int64(stream_index))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -103,11 +106,11 @@ func (self Instance) StreamCount() int {
 }
 
 func (self Instance) SetStreamCount(value int) {
-	class(self).SetStreamCount(gd.Int(value))
+	class(self).SetStreamCount(int64(value))
 }
 
 //go:nosplit
-func (self class) SetStreamCount(stream_count gd.Int) { //gd:AudioStreamSynchronized.set_stream_count
+func (self class) SetStreamCount(stream_count int64) { //gd:AudioStreamSynchronized.set_stream_count
 	var frame = callframe.New()
 	callframe.Arg(frame, stream_count)
 	var r_ret = callframe.Nil
@@ -116,9 +119,9 @@ func (self class) SetStreamCount(stream_count gd.Int) { //gd:AudioStreamSynchron
 }
 
 //go:nosplit
-func (self class) GetStreamCount() gd.Int { //gd:AudioStreamSynchronized.get_stream_count
+func (self class) GetStreamCount() int64 { //gd:AudioStreamSynchronized.get_stream_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamSynchronized.Bind_get_stream_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -129,7 +132,7 @@ func (self class) GetStreamCount() gd.Int { //gd:AudioStreamSynchronized.get_str
 Set one of the synchronized streams, by index.
 */
 //go:nosplit
-func (self class) SetSyncStream(stream_index gd.Int, audio_stream [1]gdclass.AudioStream) { //gd:AudioStreamSynchronized.set_sync_stream
+func (self class) SetSyncStream(stream_index int64, audio_stream [1]gdclass.AudioStream) { //gd:AudioStreamSynchronized.set_sync_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, stream_index)
 	callframe.Arg(frame, pointers.Get(audio_stream[0])[0])
@@ -142,7 +145,7 @@ func (self class) SetSyncStream(stream_index gd.Int, audio_stream [1]gdclass.Aud
 Get one of the synchronized streams, by index.
 */
 //go:nosplit
-func (self class) GetSyncStream(stream_index gd.Int) [1]gdclass.AudioStream { //gd:AudioStreamSynchronized.get_sync_stream
+func (self class) GetSyncStream(stream_index int64) [1]gdclass.AudioStream { //gd:AudioStreamSynchronized.get_sync_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, stream_index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -156,7 +159,7 @@ func (self class) GetSyncStream(stream_index gd.Int) [1]gdclass.AudioStream { //
 Set the volume of one of the synchronized streams, by index.
 */
 //go:nosplit
-func (self class) SetSyncStreamVolume(stream_index gd.Int, volume_db gd.Float) { //gd:AudioStreamSynchronized.set_sync_stream_volume
+func (self class) SetSyncStreamVolume(stream_index int64, volume_db float64) { //gd:AudioStreamSynchronized.set_sync_stream_volume
 	var frame = callframe.New()
 	callframe.Arg(frame, stream_index)
 	callframe.Arg(frame, volume_db)
@@ -169,10 +172,10 @@ func (self class) SetSyncStreamVolume(stream_index gd.Int, volume_db gd.Float) {
 Get the volume of one of the synchronized streams, by index.
 */
 //go:nosplit
-func (self class) GetSyncStreamVolume(stream_index gd.Int) gd.Float { //gd:AudioStreamSynchronized.get_sync_stream_volume
+func (self class) GetSyncStreamVolume(stream_index int64) float64 { //gd:AudioStreamSynchronized.get_sync_stream_volume
 	var frame = callframe.New()
 	callframe.Arg(frame, stream_index)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamSynchronized.Bind_get_sync_stream_volume, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

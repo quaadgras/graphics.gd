@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -77,7 +80,7 @@ func (self Instance) RayleighCoefficient() Float.X {
 }
 
 func (self Instance) SetRayleighCoefficient(value Float.X) {
-	class(self).SetRayleighCoefficient(gd.Float(value))
+	class(self).SetRayleighCoefficient(float64(value))
 }
 
 func (self Instance) RayleighColor() Color.RGBA {
@@ -85,7 +88,7 @@ func (self Instance) RayleighColor() Color.RGBA {
 }
 
 func (self Instance) SetRayleighColor(value Color.RGBA) {
-	class(self).SetRayleighColor(gd.Color(value))
+	class(self).SetRayleighColor(Color.RGBA(value))
 }
 
 func (self Instance) MieCoefficient() Float.X {
@@ -93,7 +96,7 @@ func (self Instance) MieCoefficient() Float.X {
 }
 
 func (self Instance) SetMieCoefficient(value Float.X) {
-	class(self).SetMieCoefficient(gd.Float(value))
+	class(self).SetMieCoefficient(float64(value))
 }
 
 func (self Instance) MieEccentricity() Float.X {
@@ -101,7 +104,7 @@ func (self Instance) MieEccentricity() Float.X {
 }
 
 func (self Instance) SetMieEccentricity(value Float.X) {
-	class(self).SetMieEccentricity(gd.Float(value))
+	class(self).SetMieEccentricity(float64(value))
 }
 
 func (self Instance) MieColor() Color.RGBA {
@@ -109,7 +112,7 @@ func (self Instance) MieColor() Color.RGBA {
 }
 
 func (self Instance) SetMieColor(value Color.RGBA) {
-	class(self).SetMieColor(gd.Color(value))
+	class(self).SetMieColor(Color.RGBA(value))
 }
 
 func (self Instance) Turbidity() Float.X {
@@ -117,7 +120,7 @@ func (self Instance) Turbidity() Float.X {
 }
 
 func (self Instance) SetTurbidity(value Float.X) {
-	class(self).SetTurbidity(gd.Float(value))
+	class(self).SetTurbidity(float64(value))
 }
 
 func (self Instance) SunDiskScale() Float.X {
@@ -125,7 +128,7 @@ func (self Instance) SunDiskScale() Float.X {
 }
 
 func (self Instance) SetSunDiskScale(value Float.X) {
-	class(self).SetSunDiskScale(gd.Float(value))
+	class(self).SetSunDiskScale(float64(value))
 }
 
 func (self Instance) GroundColor() Color.RGBA {
@@ -133,7 +136,7 @@ func (self Instance) GroundColor() Color.RGBA {
 }
 
 func (self Instance) SetGroundColor(value Color.RGBA) {
-	class(self).SetGroundColor(gd.Color(value))
+	class(self).SetGroundColor(Color.RGBA(value))
 }
 
 func (self Instance) EnergyMultiplier() Float.X {
@@ -141,7 +144,7 @@ func (self Instance) EnergyMultiplier() Float.X {
 }
 
 func (self Instance) SetEnergyMultiplier(value Float.X) {
-	class(self).SetEnergyMultiplier(gd.Float(value))
+	class(self).SetEnergyMultiplier(float64(value))
 }
 
 func (self Instance) UseDebanding() bool {
@@ -161,7 +164,7 @@ func (self Instance) SetNightSky(value [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) SetRayleighCoefficient(rayleigh gd.Float) { //gd:PhysicalSkyMaterial.set_rayleigh_coefficient
+func (self class) SetRayleighCoefficient(rayleigh float64) { //gd:PhysicalSkyMaterial.set_rayleigh_coefficient
 	var frame = callframe.New()
 	callframe.Arg(frame, rayleigh)
 	var r_ret = callframe.Nil
@@ -170,9 +173,9 @@ func (self class) SetRayleighCoefficient(rayleigh gd.Float) { //gd:PhysicalSkyMa
 }
 
 //go:nosplit
-func (self class) GetRayleighCoefficient() gd.Float { //gd:PhysicalSkyMaterial.get_rayleigh_coefficient
+func (self class) GetRayleighCoefficient() float64 { //gd:PhysicalSkyMaterial.get_rayleigh_coefficient
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalSkyMaterial.Bind_get_rayleigh_coefficient, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -180,7 +183,7 @@ func (self class) GetRayleighCoefficient() gd.Float { //gd:PhysicalSkyMaterial.g
 }
 
 //go:nosplit
-func (self class) SetRayleighColor(color gd.Color) { //gd:PhysicalSkyMaterial.set_rayleigh_color
+func (self class) SetRayleighColor(color Color.RGBA) { //gd:PhysicalSkyMaterial.set_rayleigh_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -189,9 +192,9 @@ func (self class) SetRayleighColor(color gd.Color) { //gd:PhysicalSkyMaterial.se
 }
 
 //go:nosplit
-func (self class) GetRayleighColor() gd.Color { //gd:PhysicalSkyMaterial.get_rayleigh_color
+func (self class) GetRayleighColor() Color.RGBA { //gd:PhysicalSkyMaterial.get_rayleigh_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalSkyMaterial.Bind_get_rayleigh_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -199,7 +202,7 @@ func (self class) GetRayleighColor() gd.Color { //gd:PhysicalSkyMaterial.get_ray
 }
 
 //go:nosplit
-func (self class) SetMieCoefficient(mie gd.Float) { //gd:PhysicalSkyMaterial.set_mie_coefficient
+func (self class) SetMieCoefficient(mie float64) { //gd:PhysicalSkyMaterial.set_mie_coefficient
 	var frame = callframe.New()
 	callframe.Arg(frame, mie)
 	var r_ret = callframe.Nil
@@ -208,9 +211,9 @@ func (self class) SetMieCoefficient(mie gd.Float) { //gd:PhysicalSkyMaterial.set
 }
 
 //go:nosplit
-func (self class) GetMieCoefficient() gd.Float { //gd:PhysicalSkyMaterial.get_mie_coefficient
+func (self class) GetMieCoefficient() float64 { //gd:PhysicalSkyMaterial.get_mie_coefficient
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalSkyMaterial.Bind_get_mie_coefficient, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -218,7 +221,7 @@ func (self class) GetMieCoefficient() gd.Float { //gd:PhysicalSkyMaterial.get_mi
 }
 
 //go:nosplit
-func (self class) SetMieEccentricity(eccentricity gd.Float) { //gd:PhysicalSkyMaterial.set_mie_eccentricity
+func (self class) SetMieEccentricity(eccentricity float64) { //gd:PhysicalSkyMaterial.set_mie_eccentricity
 	var frame = callframe.New()
 	callframe.Arg(frame, eccentricity)
 	var r_ret = callframe.Nil
@@ -227,9 +230,9 @@ func (self class) SetMieEccentricity(eccentricity gd.Float) { //gd:PhysicalSkyMa
 }
 
 //go:nosplit
-func (self class) GetMieEccentricity() gd.Float { //gd:PhysicalSkyMaterial.get_mie_eccentricity
+func (self class) GetMieEccentricity() float64 { //gd:PhysicalSkyMaterial.get_mie_eccentricity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalSkyMaterial.Bind_get_mie_eccentricity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -237,7 +240,7 @@ func (self class) GetMieEccentricity() gd.Float { //gd:PhysicalSkyMaterial.get_m
 }
 
 //go:nosplit
-func (self class) SetMieColor(color gd.Color) { //gd:PhysicalSkyMaterial.set_mie_color
+func (self class) SetMieColor(color Color.RGBA) { //gd:PhysicalSkyMaterial.set_mie_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -246,9 +249,9 @@ func (self class) SetMieColor(color gd.Color) { //gd:PhysicalSkyMaterial.set_mie
 }
 
 //go:nosplit
-func (self class) GetMieColor() gd.Color { //gd:PhysicalSkyMaterial.get_mie_color
+func (self class) GetMieColor() Color.RGBA { //gd:PhysicalSkyMaterial.get_mie_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalSkyMaterial.Bind_get_mie_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -256,7 +259,7 @@ func (self class) GetMieColor() gd.Color { //gd:PhysicalSkyMaterial.get_mie_colo
 }
 
 //go:nosplit
-func (self class) SetTurbidity(turbidity gd.Float) { //gd:PhysicalSkyMaterial.set_turbidity
+func (self class) SetTurbidity(turbidity float64) { //gd:PhysicalSkyMaterial.set_turbidity
 	var frame = callframe.New()
 	callframe.Arg(frame, turbidity)
 	var r_ret = callframe.Nil
@@ -265,9 +268,9 @@ func (self class) SetTurbidity(turbidity gd.Float) { //gd:PhysicalSkyMaterial.se
 }
 
 //go:nosplit
-func (self class) GetTurbidity() gd.Float { //gd:PhysicalSkyMaterial.get_turbidity
+func (self class) GetTurbidity() float64 { //gd:PhysicalSkyMaterial.get_turbidity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalSkyMaterial.Bind_get_turbidity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -275,7 +278,7 @@ func (self class) GetTurbidity() gd.Float { //gd:PhysicalSkyMaterial.get_turbidi
 }
 
 //go:nosplit
-func (self class) SetSunDiskScale(scale gd.Float) { //gd:PhysicalSkyMaterial.set_sun_disk_scale
+func (self class) SetSunDiskScale(scale float64) { //gd:PhysicalSkyMaterial.set_sun_disk_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -284,9 +287,9 @@ func (self class) SetSunDiskScale(scale gd.Float) { //gd:PhysicalSkyMaterial.set
 }
 
 //go:nosplit
-func (self class) GetSunDiskScale() gd.Float { //gd:PhysicalSkyMaterial.get_sun_disk_scale
+func (self class) GetSunDiskScale() float64 { //gd:PhysicalSkyMaterial.get_sun_disk_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalSkyMaterial.Bind_get_sun_disk_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -294,7 +297,7 @@ func (self class) GetSunDiskScale() gd.Float { //gd:PhysicalSkyMaterial.get_sun_
 }
 
 //go:nosplit
-func (self class) SetGroundColor(color gd.Color) { //gd:PhysicalSkyMaterial.set_ground_color
+func (self class) SetGroundColor(color Color.RGBA) { //gd:PhysicalSkyMaterial.set_ground_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -303,9 +306,9 @@ func (self class) SetGroundColor(color gd.Color) { //gd:PhysicalSkyMaterial.set_
 }
 
 //go:nosplit
-func (self class) GetGroundColor() gd.Color { //gd:PhysicalSkyMaterial.get_ground_color
+func (self class) GetGroundColor() Color.RGBA { //gd:PhysicalSkyMaterial.get_ground_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalSkyMaterial.Bind_get_ground_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -313,7 +316,7 @@ func (self class) GetGroundColor() gd.Color { //gd:PhysicalSkyMaterial.get_groun
 }
 
 //go:nosplit
-func (self class) SetEnergyMultiplier(multiplier gd.Float) { //gd:PhysicalSkyMaterial.set_energy_multiplier
+func (self class) SetEnergyMultiplier(multiplier float64) { //gd:PhysicalSkyMaterial.set_energy_multiplier
 	var frame = callframe.New()
 	callframe.Arg(frame, multiplier)
 	var r_ret = callframe.Nil
@@ -322,9 +325,9 @@ func (self class) SetEnergyMultiplier(multiplier gd.Float) { //gd:PhysicalSkyMat
 }
 
 //go:nosplit
-func (self class) GetEnergyMultiplier() gd.Float { //gd:PhysicalSkyMaterial.get_energy_multiplier
+func (self class) GetEnergyMultiplier() float64 { //gd:PhysicalSkyMaterial.get_energy_multiplier
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalSkyMaterial.Bind_get_energy_multiplier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

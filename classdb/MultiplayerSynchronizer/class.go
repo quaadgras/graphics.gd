@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,7 +61,7 @@ type Any interface {
 Updates the visibility of [param for_peer] according to visibility filters. If [param for_peer] is [code]0[/code] (the default), all peers' visibilties are updated.
 */
 func (self Instance) UpdateVisibility() { //gd:MultiplayerSynchronizer.update_visibility
-	class(self).UpdateVisibility(gd.Int(0))
+	class(self).UpdateVisibility(int64(0))
 }
 
 /*
@@ -80,14 +83,14 @@ func (self Instance) RemoveVisibilityFilter(filter Callable.Function) { //gd:Mul
 Sets the visibility of [param peer] to [param visible]. If [param peer] is [code]0[/code], the value of [member public_visibility] will be updated instead.
 */
 func (self Instance) SetVisibilityFor(peer int, visible bool) { //gd:MultiplayerSynchronizer.set_visibility_for
-	class(self).SetVisibilityFor(gd.Int(peer), visible)
+	class(self).SetVisibilityFor(int64(peer), visible)
 }
 
 /*
 Queries the current visibility for peer [param peer].
 */
 func (self Instance) GetVisibilityFor(peer int) bool { //gd:MultiplayerSynchronizer.get_visibility_for
-	return bool(class(self).GetVisibilityFor(gd.Int(peer)))
+	return bool(class(self).GetVisibilityFor(int64(peer)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -121,7 +124,7 @@ func (self Instance) ReplicationInterval() Float.X {
 }
 
 func (self Instance) SetReplicationInterval(value Float.X) {
-	class(self).SetReplicationInterval(gd.Float(value))
+	class(self).SetReplicationInterval(float64(value))
 }
 
 func (self Instance) DeltaInterval() Float.X {
@@ -129,7 +132,7 @@ func (self Instance) DeltaInterval() Float.X {
 }
 
 func (self Instance) SetDeltaInterval(value Float.X) {
-	class(self).SetDeltaInterval(gd.Float(value))
+	class(self).SetDeltaInterval(float64(value))
 }
 
 func (self Instance) ReplicationConfig() [1]gdclass.SceneReplicationConfig {
@@ -176,7 +179,7 @@ func (self class) GetRootPath() Path.ToNode { //gd:MultiplayerSynchronizer.get_r
 }
 
 //go:nosplit
-func (self class) SetReplicationInterval(milliseconds gd.Float) { //gd:MultiplayerSynchronizer.set_replication_interval
+func (self class) SetReplicationInterval(milliseconds float64) { //gd:MultiplayerSynchronizer.set_replication_interval
 	var frame = callframe.New()
 	callframe.Arg(frame, milliseconds)
 	var r_ret = callframe.Nil
@@ -185,9 +188,9 @@ func (self class) SetReplicationInterval(milliseconds gd.Float) { //gd:Multiplay
 }
 
 //go:nosplit
-func (self class) GetReplicationInterval() gd.Float { //gd:MultiplayerSynchronizer.get_replication_interval
+func (self class) GetReplicationInterval() float64 { //gd:MultiplayerSynchronizer.get_replication_interval
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_replication_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -195,7 +198,7 @@ func (self class) GetReplicationInterval() gd.Float { //gd:MultiplayerSynchroniz
 }
 
 //go:nosplit
-func (self class) SetDeltaInterval(milliseconds gd.Float) { //gd:MultiplayerSynchronizer.set_delta_interval
+func (self class) SetDeltaInterval(milliseconds float64) { //gd:MultiplayerSynchronizer.set_delta_interval
 	var frame = callframe.New()
 	callframe.Arg(frame, milliseconds)
 	var r_ret = callframe.Nil
@@ -204,9 +207,9 @@ func (self class) SetDeltaInterval(milliseconds gd.Float) { //gd:MultiplayerSync
 }
 
 //go:nosplit
-func (self class) GetDeltaInterval() gd.Float { //gd:MultiplayerSynchronizer.get_delta_interval
+func (self class) GetDeltaInterval() float64 { //gd:MultiplayerSynchronizer.get_delta_interval
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_delta_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -255,7 +258,7 @@ func (self class) GetVisibilityUpdateMode() gdclass.MultiplayerSynchronizerVisib
 Updates the visibility of [param for_peer] according to visibility filters. If [param for_peer] is [code]0[/code] (the default), all peers' visibilties are updated.
 */
 //go:nosplit
-func (self class) UpdateVisibility(for_peer gd.Int) { //gd:MultiplayerSynchronizer.update_visibility
+func (self class) UpdateVisibility(for_peer int64) { //gd:MultiplayerSynchronizer.update_visibility
 	var frame = callframe.New()
 	callframe.Arg(frame, for_peer)
 	var r_ret = callframe.Nil
@@ -311,7 +314,7 @@ func (self class) RemoveVisibilityFilter(filter Callable.Function) { //gd:Multip
 Sets the visibility of [param peer] to [param visible]. If [param peer] is [code]0[/code], the value of [member public_visibility] will be updated instead.
 */
 //go:nosplit
-func (self class) SetVisibilityFor(peer gd.Int, visible bool) { //gd:MultiplayerSynchronizer.set_visibility_for
+func (self class) SetVisibilityFor(peer int64, visible bool) { //gd:MultiplayerSynchronizer.set_visibility_for
 	var frame = callframe.New()
 	callframe.Arg(frame, peer)
 	callframe.Arg(frame, visible)
@@ -324,7 +327,7 @@ func (self class) SetVisibilityFor(peer gd.Int, visible bool) { //gd:Multiplayer
 Queries the current visibility for peer [param peer].
 */
 //go:nosplit
-func (self class) GetVisibilityFor(peer gd.Int) bool { //gd:MultiplayerSynchronizer.get_visibility_for
+func (self class) GetVisibilityFor(peer int64) bool { //gd:MultiplayerSynchronizer.get_visibility_for
 	var frame = callframe.New()
 	callframe.Arg(frame, peer)
 	var r_ret = callframe.Ret[bool](frame)

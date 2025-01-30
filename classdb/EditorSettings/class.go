@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -81,7 +85,7 @@ func (self Instance) HasSetting(name string) bool { //gd:EditorSettings.has_sett
 Sets the [param value] of the setting specified by [param name]. This is equivalent to using [method Object.set] on the EditorSettings instance.
 */
 func (self Instance) SetSetting(name string, value any) { //gd:EditorSettings.set_setting
-	class(self).SetSetting(String.New(name), gd.NewVariant(value))
+	class(self).SetSetting(String.New(name), variant.New(value))
 }
 
 /*
@@ -102,7 +106,7 @@ func (self Instance) Erase(property string) { //gd:EditorSettings.erase
 Sets the initial value of the setting specified by [param name] to [param value]. This is used to provide a value for the Revert button in the Editor Settings. If [param update_current] is true, the current value of the setting will be set to [param value] as well.
 */
 func (self Instance) SetInitialValue(name string, value any, update_current bool) { //gd:EditorSettings.set_initial_value
-	class(self).SetInitialValue(String.Name(String.New(name)), gd.NewVariant(value), update_current)
+	class(self).SetInitialValue(String.Name(String.New(name)), variant.New(value), update_current)
 }
 
 /*
@@ -150,14 +154,14 @@ func (self Instance) AddPropertyInfo(info PropertyInfo) { //gd:EditorSettings.ad
 Sets project-specific metadata with the [param section], [param key] and [param data] specified. This metadata is stored outside the project folder and therefore won't be checked into version control. See also [method get_project_metadata].
 */
 func (self Instance) SetProjectMetadata(section string, key string, data any) { //gd:EditorSettings.set_project_metadata
-	class(self).SetProjectMetadata(String.New(section), String.New(key), gd.NewVariant(data))
+	class(self).SetProjectMetadata(String.New(section), String.New(key), variant.New(data))
 }
 
 /*
 Returns project-specific metadata for the [param section] and [param key] specified. If the metadata doesn't exist, [param default] will be returned instead. See also [method set_project_metadata].
 */
 func (self Instance) GetProjectMetadata(section string, key string) any { //gd:EditorSettings.get_project_metadata
-	return any(class(self).GetProjectMetadata(String.New(section), String.New(key), gd.NewVariant(gd.NewVariant(([1]any{}[0])))).Interface())
+	return any(class(self).GetProjectMetadata(String.New(section), String.New(key), variant.New([1]any{}[0])).Interface())
 }
 
 /*
@@ -253,10 +257,10 @@ func (self class) HasSetting(name String.Readable) bool { //gd:EditorSettings.ha
 Sets the [param value] of the setting specified by [param name]. This is equivalent to using [method Object.set] on the EditorSettings instance.
 */
 //go:nosplit
-func (self class) SetSetting(name String.Readable, value gd.Variant) { //gd:EditorSettings.set_setting
+func (self class) SetSetting(name String.Readable, value variant.Any) { //gd:EditorSettings.set_setting
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_set_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -266,12 +270,12 @@ func (self class) SetSetting(name String.Readable, value gd.Variant) { //gd:Edit
 Returns the value of the setting specified by [param name]. This is equivalent to using [method Object.get] on the EditorSettings instance.
 */
 //go:nosplit
-func (self class) GetSetting(name String.Readable) gd.Variant { //gd:EditorSettings.get_setting
+func (self class) GetSetting(name String.Readable) variant.Any { //gd:EditorSettings.get_setting
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_get_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -292,10 +296,10 @@ func (self class) Erase(property String.Readable) { //gd:EditorSettings.erase
 Sets the initial value of the setting specified by [param name] to [param value]. This is used to provide a value for the Revert button in the Editor Settings. If [param update_current] is true, the current value of the setting will be set to [param value] as well.
 */
 //go:nosplit
-func (self class) SetInitialValue(name String.Name, value gd.Variant, update_current bool) { //gd:EditorSettings.set_initial_value
+func (self class) SetInitialValue(name String.Name, value variant.Any, update_current bool) { //gd:EditorSettings.set_initial_value
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	callframe.Arg(frame, update_current)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_set_initial_value, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -351,11 +355,11 @@ func (self class) AddPropertyInfo(info Dictionary.Any) { //gd:EditorSettings.add
 Sets project-specific metadata with the [param section], [param key] and [param data] specified. This metadata is stored outside the project folder and therefore won't be checked into version control. See also [method get_project_metadata].
 */
 //go:nosplit
-func (self class) SetProjectMetadata(section String.Readable, key String.Readable, data gd.Variant) { //gd:EditorSettings.set_project_metadata
+func (self class) SetProjectMetadata(section String.Readable, key String.Readable, data variant.Any) { //gd:EditorSettings.set_project_metadata
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(data)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_set_project_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -365,14 +369,14 @@ func (self class) SetProjectMetadata(section String.Readable, key String.Readabl
 Returns project-specific metadata for the [param section] and [param key] specified. If the metadata doesn't exist, [param default] will be returned instead. See also [method set_project_metadata].
 */
 //go:nosplit
-func (self class) GetProjectMetadata(section String.Readable, key String.Readable, def gd.Variant) gd.Variant { //gd:EditorSettings.get_project_metadata
+func (self class) GetProjectMetadata(section String.Readable, key String.Readable, def variant.Any) variant.Any { //gd:EditorSettings.get_project_metadata
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
-	callframe.Arg(frame, pointers.Get(def))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(def)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_get_project_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

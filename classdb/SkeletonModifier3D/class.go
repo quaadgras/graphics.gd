@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -118,7 +121,7 @@ func (self Instance) Influence() Float.X {
 }
 
 func (self Instance) SetInfluence(value Float.X) {
-	class(self).SetInfluence(gd.Float(value))
+	class(self).SetInfluence(float64(value))
 }
 
 /*
@@ -165,7 +168,7 @@ func (self class) IsActive() bool { //gd:SkeletonModifier3D.is_active
 }
 
 //go:nosplit
-func (self class) SetInfluence(influence gd.Float) { //gd:SkeletonModifier3D.set_influence
+func (self class) SetInfluence(influence float64) { //gd:SkeletonModifier3D.set_influence
 	var frame = callframe.New()
 	callframe.Arg(frame, influence)
 	var r_ret = callframe.Nil
@@ -174,9 +177,9 @@ func (self class) SetInfluence(influence gd.Float) { //gd:SkeletonModifier3D.set
 }
 
 //go:nosplit
-func (self class) GetInfluence() gd.Float { //gd:SkeletonModifier3D.get_influence
+func (self class) GetInfluence() float64 { //gd:SkeletonModifier3D.get_influence
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModifier3D.Bind_get_influence, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/XRInterface"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -157,7 +160,7 @@ func (self Instance) IsSessionSupported(session_mode string) { //gd:WebXRInterfa
 Returns [code]true[/code] if there is an active input source with the given [param input_source_id].
 */
 func (self Instance) IsInputSourceActive(input_source_id int) bool { //gd:WebXRInterface.is_input_source_active
-	return bool(class(self).IsInputSourceActive(gd.Int(input_source_id)))
+	return bool(class(self).IsInputSourceActive(int64(input_source_id)))
 }
 
 /*
@@ -172,7 +175,7 @@ Use this method to get information about the input source that triggered one of 
 - [signal squeezestart]
 */
 func (self Instance) GetInputSourceTracker(input_source_id int) [1]gdclass.XRControllerTracker { //gd:WebXRInterface.get_input_source_tracker
-	return [1]gdclass.XRControllerTracker(class(self).GetInputSourceTracker(gd.Int(input_source_id)))
+	return [1]gdclass.XRControllerTracker(class(self).GetInputSourceTracker(int64(input_source_id)))
 }
 
 /*
@@ -180,7 +183,7 @@ Returns the target ray mode for the given [param input_source_id].
 This can help interpret the input coming from that input source. See [url=https://developer.mozilla.org/en-US/docs/Web/API/XRInputSource/targetRayMode]XRInputSource.targetRayMode[/url] for more information.
 */
 func (self Instance) GetInputSourceTargetRayMode(input_source_id int) gdclass.WebXRInterfaceTargetRayMode { //gd:WebXRInterface.get_input_source_target_ray_mode
-	return gdclass.WebXRInterfaceTargetRayMode(class(self).GetInputSourceTargetRayMode(gd.Int(input_source_id)))
+	return gdclass.WebXRInterfaceTargetRayMode(class(self).GetInputSourceTargetRayMode(int64(input_source_id)))
 }
 
 /*
@@ -194,7 +197,7 @@ func (self Instance) GetDisplayRefreshRate() Float.X { //gd:WebXRInterface.get_d
 Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [signal display_refresh_rate_changed] is emitted.
 */
 func (self Instance) SetDisplayRefreshRate(refresh_rate Float.X) { //gd:WebXRInterface.set_display_refresh_rate
-	class(self).SetDisplayRefreshRate(gd.Float(refresh_rate))
+	class(self).SetDisplayRefreshRate(float64(refresh_rate))
 }
 
 /*
@@ -381,7 +384,7 @@ func (self class) GetRequestedReferenceSpaceTypes() String.Readable { //gd:WebXR
 Returns [code]true[/code] if there is an active input source with the given [param input_source_id].
 */
 //go:nosplit
-func (self class) IsInputSourceActive(input_source_id gd.Int) bool { //gd:WebXRInterface.is_input_source_active
+func (self class) IsInputSourceActive(input_source_id int64) bool { //gd:WebXRInterface.is_input_source_active
 	var frame = callframe.New()
 	callframe.Arg(frame, input_source_id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -403,7 +406,7 @@ Use this method to get information about the input source that triggered one of 
 - [signal squeezestart]
 */
 //go:nosplit
-func (self class) GetInputSourceTracker(input_source_id gd.Int) [1]gdclass.XRControllerTracker { //gd:WebXRInterface.get_input_source_tracker
+func (self class) GetInputSourceTracker(input_source_id int64) [1]gdclass.XRControllerTracker { //gd:WebXRInterface.get_input_source_tracker
 	var frame = callframe.New()
 	callframe.Arg(frame, input_source_id)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -418,7 +421,7 @@ Returns the target ray mode for the given [param input_source_id].
 This can help interpret the input coming from that input source. See [url=https://developer.mozilla.org/en-US/docs/Web/API/XRInputSource/targetRayMode]XRInputSource.targetRayMode[/url] for more information.
 */
 //go:nosplit
-func (self class) GetInputSourceTargetRayMode(input_source_id gd.Int) gdclass.WebXRInterfaceTargetRayMode { //gd:WebXRInterface.get_input_source_target_ray_mode
+func (self class) GetInputSourceTargetRayMode(input_source_id int64) gdclass.WebXRInterfaceTargetRayMode { //gd:WebXRInterface.get_input_source_target_ray_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, input_source_id)
 	var r_ret = callframe.Ret[gdclass.WebXRInterfaceTargetRayMode](frame)
@@ -442,9 +445,9 @@ func (self class) GetVisibilityState() String.Readable { //gd:WebXRInterface.get
 Returns the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It may not report an accurate value until after using [method set_display_refresh_rate].
 */
 //go:nosplit
-func (self class) GetDisplayRefreshRate() gd.Float { //gd:WebXRInterface.get_display_refresh_rate
+func (self class) GetDisplayRefreshRate() float64 { //gd:WebXRInterface.get_display_refresh_rate
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_display_refresh_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -455,7 +458,7 @@ func (self class) GetDisplayRefreshRate() gd.Float { //gd:WebXRInterface.get_dis
 Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [signal display_refresh_rate_changed] is emitted.
 */
 //go:nosplit
-func (self class) SetDisplayRefreshRate(refresh_rate gd.Float) { //gd:WebXRInterface.set_display_refresh_rate
+func (self class) SetDisplayRefreshRate(refresh_rate float64) { //gd:WebXRInterface.set_display_refresh_rate
 	var frame = callframe.New()
 	callframe.Arg(frame, refresh_rate)
 	var r_ret = callframe.Nil

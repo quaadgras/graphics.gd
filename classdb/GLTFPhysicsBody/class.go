@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Basis"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Quaternion"
-import "graphics.gd/variant/Basis"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -115,7 +118,7 @@ func (self Instance) Mass() Float.X {
 }
 
 func (self Instance) SetMass(value Float.X) {
-	class(self).SetMass(gd.Float(value))
+	class(self).SetMass(float64(value))
 }
 
 func (self Instance) LinearVelocity() Vector3.XYZ {
@@ -123,7 +126,7 @@ func (self Instance) LinearVelocity() Vector3.XYZ {
 }
 
 func (self Instance) SetLinearVelocity(value Vector3.XYZ) {
-	class(self).SetLinearVelocity(gd.Vector3(value))
+	class(self).SetLinearVelocity(Vector3.XYZ(value))
 }
 
 func (self Instance) AngularVelocity() Vector3.XYZ {
@@ -131,7 +134,7 @@ func (self Instance) AngularVelocity() Vector3.XYZ {
 }
 
 func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
-	class(self).SetAngularVelocity(gd.Vector3(value))
+	class(self).SetAngularVelocity(Vector3.XYZ(value))
 }
 
 func (self Instance) CenterOfMass() Vector3.XYZ {
@@ -139,7 +142,7 @@ func (self Instance) CenterOfMass() Vector3.XYZ {
 }
 
 func (self Instance) SetCenterOfMass(value Vector3.XYZ) {
-	class(self).SetCenterOfMass(gd.Vector3(value))
+	class(self).SetCenterOfMass(Vector3.XYZ(value))
 }
 
 func (self Instance) InertiaDiagonal() Vector3.XYZ {
@@ -147,7 +150,7 @@ func (self Instance) InertiaDiagonal() Vector3.XYZ {
 }
 
 func (self Instance) SetInertiaDiagonal(value Vector3.XYZ) {
-	class(self).SetInertiaDiagonal(gd.Vector3(value))
+	class(self).SetInertiaDiagonal(Vector3.XYZ(value))
 }
 
 func (self Instance) InertiaOrientation() Quaternion.IJKX {
@@ -155,7 +158,7 @@ func (self Instance) InertiaOrientation() Quaternion.IJKX {
 }
 
 func (self Instance) SetInertiaOrientation(value Quaternion.IJKX) {
-	class(self).SetInertiaOrientation(gd.Quaternion(value))
+	class(self).SetInertiaOrientation(value)
 }
 
 func (self Instance) InertiaTensor() Basis.XYZ {
@@ -163,7 +166,7 @@ func (self Instance) InertiaTensor() Basis.XYZ {
 }
 
 func (self Instance) SetInertiaTensor(value Basis.XYZ) {
-	class(self).SetInertiaTensor(gd.Basis(value))
+	class(self).SetInertiaTensor(Basis.XYZ(value))
 }
 
 /*
@@ -240,9 +243,9 @@ func (self class) SetBodyType(body_type String.Readable) { //gd:GLTFPhysicsBody.
 }
 
 //go:nosplit
-func (self class) GetMass() gd.Float { //gd:GLTFPhysicsBody.get_mass
+func (self class) GetMass() float64 { //gd:GLTFPhysicsBody.get_mass
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -250,7 +253,7 @@ func (self class) GetMass() gd.Float { //gd:GLTFPhysicsBody.get_mass
 }
 
 //go:nosplit
-func (self class) SetMass(mass gd.Float) { //gd:GLTFPhysicsBody.set_mass
+func (self class) SetMass(mass float64) { //gd:GLTFPhysicsBody.set_mass
 	var frame = callframe.New()
 	callframe.Arg(frame, mass)
 	var r_ret = callframe.Nil
@@ -259,9 +262,9 @@ func (self class) SetMass(mass gd.Float) { //gd:GLTFPhysicsBody.set_mass
 }
 
 //go:nosplit
-func (self class) GetLinearVelocity() gd.Vector3 { //gd:GLTFPhysicsBody.get_linear_velocity
+func (self class) GetLinearVelocity() Vector3.XYZ { //gd:GLTFPhysicsBody.get_linear_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -269,7 +272,7 @@ func (self class) GetLinearVelocity() gd.Vector3 { //gd:GLTFPhysicsBody.get_line
 }
 
 //go:nosplit
-func (self class) SetLinearVelocity(linear_velocity gd.Vector3) { //gd:GLTFPhysicsBody.set_linear_velocity
+func (self class) SetLinearVelocity(linear_velocity Vector3.XYZ) { //gd:GLTFPhysicsBody.set_linear_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_velocity)
 	var r_ret = callframe.Nil
@@ -278,9 +281,9 @@ func (self class) SetLinearVelocity(linear_velocity gd.Vector3) { //gd:GLTFPhysi
 }
 
 //go:nosplit
-func (self class) GetAngularVelocity() gd.Vector3 { //gd:GLTFPhysicsBody.get_angular_velocity
+func (self class) GetAngularVelocity() Vector3.XYZ { //gd:GLTFPhysicsBody.get_angular_velocity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -288,7 +291,7 @@ func (self class) GetAngularVelocity() gd.Vector3 { //gd:GLTFPhysicsBody.get_ang
 }
 
 //go:nosplit
-func (self class) SetAngularVelocity(angular_velocity gd.Vector3) { //gd:GLTFPhysicsBody.set_angular_velocity
+func (self class) SetAngularVelocity(angular_velocity Vector3.XYZ) { //gd:GLTFPhysicsBody.set_angular_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_velocity)
 	var r_ret = callframe.Nil
@@ -297,9 +300,9 @@ func (self class) SetAngularVelocity(angular_velocity gd.Vector3) { //gd:GLTFPhy
 }
 
 //go:nosplit
-func (self class) GetCenterOfMass() gd.Vector3 { //gd:GLTFPhysicsBody.get_center_of_mass
+func (self class) GetCenterOfMass() Vector3.XYZ { //gd:GLTFPhysicsBody.get_center_of_mass
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_center_of_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -307,7 +310,7 @@ func (self class) GetCenterOfMass() gd.Vector3 { //gd:GLTFPhysicsBody.get_center
 }
 
 //go:nosplit
-func (self class) SetCenterOfMass(center_of_mass gd.Vector3) { //gd:GLTFPhysicsBody.set_center_of_mass
+func (self class) SetCenterOfMass(center_of_mass Vector3.XYZ) { //gd:GLTFPhysicsBody.set_center_of_mass
 	var frame = callframe.New()
 	callframe.Arg(frame, center_of_mass)
 	var r_ret = callframe.Nil
@@ -316,9 +319,9 @@ func (self class) SetCenterOfMass(center_of_mass gd.Vector3) { //gd:GLTFPhysicsB
 }
 
 //go:nosplit
-func (self class) GetInertiaDiagonal() gd.Vector3 { //gd:GLTFPhysicsBody.get_inertia_diagonal
+func (self class) GetInertiaDiagonal() Vector3.XYZ { //gd:GLTFPhysicsBody.get_inertia_diagonal
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_inertia_diagonal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -326,7 +329,7 @@ func (self class) GetInertiaDiagonal() gd.Vector3 { //gd:GLTFPhysicsBody.get_ine
 }
 
 //go:nosplit
-func (self class) SetInertiaDiagonal(inertia_diagonal gd.Vector3) { //gd:GLTFPhysicsBody.set_inertia_diagonal
+func (self class) SetInertiaDiagonal(inertia_diagonal Vector3.XYZ) { //gd:GLTFPhysicsBody.set_inertia_diagonal
 	var frame = callframe.New()
 	callframe.Arg(frame, inertia_diagonal)
 	var r_ret = callframe.Nil
@@ -335,9 +338,9 @@ func (self class) SetInertiaDiagonal(inertia_diagonal gd.Vector3) { //gd:GLTFPhy
 }
 
 //go:nosplit
-func (self class) GetInertiaOrientation() gd.Quaternion { //gd:GLTFPhysicsBody.get_inertia_orientation
+func (self class) GetInertiaOrientation() Quaternion.IJKX { //gd:GLTFPhysicsBody.get_inertia_orientation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Quaternion](frame)
+	var r_ret = callframe.Ret[Quaternion.IJKX](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_inertia_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -345,7 +348,7 @@ func (self class) GetInertiaOrientation() gd.Quaternion { //gd:GLTFPhysicsBody.g
 }
 
 //go:nosplit
-func (self class) SetInertiaOrientation(inertia_orientation gd.Quaternion) { //gd:GLTFPhysicsBody.set_inertia_orientation
+func (self class) SetInertiaOrientation(inertia_orientation Quaternion.IJKX) { //gd:GLTFPhysicsBody.set_inertia_orientation
 	var frame = callframe.New()
 	callframe.Arg(frame, inertia_orientation)
 	var r_ret = callframe.Nil
@@ -354,9 +357,9 @@ func (self class) SetInertiaOrientation(inertia_orientation gd.Quaternion) { //g
 }
 
 //go:nosplit
-func (self class) GetInertiaTensor() gd.Basis { //gd:GLTFPhysicsBody.get_inertia_tensor
+func (self class) GetInertiaTensor() Basis.XYZ { //gd:GLTFPhysicsBody.get_inertia_tensor
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Basis](frame)
+	var r_ret = callframe.Ret[Basis.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_inertia_tensor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -364,7 +367,7 @@ func (self class) GetInertiaTensor() gd.Basis { //gd:GLTFPhysicsBody.get_inertia
 }
 
 //go:nosplit
-func (self class) SetInertiaTensor(inertia_tensor gd.Basis) { //gd:GLTFPhysicsBody.set_inertia_tensor
+func (self class) SetInertiaTensor(inertia_tensor Basis.XYZ) { //gd:GLTFPhysicsBody.set_inertia_tensor
 	var frame = callframe.New()
 	callframe.Arg(frame, inertia_tensor)
 	var r_ret = callframe.Nil

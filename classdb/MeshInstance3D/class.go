@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/GeometryInstance3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/GeometryInstance3D"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -72,7 +75,7 @@ Sets the override [param material] for the specified [param surface] of the [Mes
 [b]Note:[/b] This assigns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To set the material within the [Mesh] resource, use [method Mesh.surface_get_material] instead.
 */
 func (self Instance) SetSurfaceOverrideMaterial(surface int, material [1]gdclass.Material) { //gd:MeshInstance3D.set_surface_override_material
-	class(self).SetSurfaceOverrideMaterial(gd.Int(surface), material)
+	class(self).SetSurfaceOverrideMaterial(int64(surface), material)
 }
 
 /*
@@ -80,7 +83,7 @@ Returns the override [Material] for the specified [param surface] of the [Mesh] 
 [b]Note:[/b] This returns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To get the material within the [Mesh] resource, use [method Mesh.surface_get_material] instead.
 */
 func (self Instance) GetSurfaceOverrideMaterial(surface int) [1]gdclass.Material { //gd:MeshInstance3D.get_surface_override_material
-	return [1]gdclass.Material(class(self).GetSurfaceOverrideMaterial(gd.Int(surface)))
+	return [1]gdclass.Material(class(self).GetSurfaceOverrideMaterial(int64(surface)))
 }
 
 /*
@@ -88,7 +91,7 @@ Returns the [Material] that will be used by the [Mesh] when drawing. This can re
 Returns [code]null[/code] if no material is active, including when [member mesh] is [code]null[/code].
 */
 func (self Instance) GetActiveMaterial(surface int) [1]gdclass.Material { //gd:MeshInstance3D.get_active_material
-	return [1]gdclass.Material(class(self).GetActiveMaterial(gd.Int(surface)))
+	return [1]gdclass.Material(class(self).GetActiveMaterial(int64(surface)))
 }
 
 /*
@@ -132,14 +135,14 @@ func (self Instance) FindBlendShapeByName(name string) int { //gd:MeshInstance3D
 Returns the value of the blend shape at the given [param blend_shape_idx]. Returns [code]0.0[/code] and produces an error if [member mesh] is [code]null[/code] or doesn't have a blend shape at that index.
 */
 func (self Instance) GetBlendShapeValue(blend_shape_idx int) Float.X { //gd:MeshInstance3D.get_blend_shape_value
-	return Float.X(Float.X(class(self).GetBlendShapeValue(gd.Int(blend_shape_idx))))
+	return Float.X(Float.X(class(self).GetBlendShapeValue(int64(blend_shape_idx))))
 }
 
 /*
 Sets the value of the blend shape at [param blend_shape_idx] to [param value]. Produces an error if [member mesh] is [code]null[/code] or doesn't have a blend shape at that index.
 */
 func (self Instance) SetBlendShapeValue(blend_shape_idx int, value Float.X) { //gd:MeshInstance3D.set_blend_shape_value
-	class(self).SetBlendShapeValue(gd.Int(blend_shape_idx), gd.Float(value))
+	class(self).SetBlendShapeValue(int64(blend_shape_idx), float64(value))
 }
 
 /*
@@ -273,9 +276,9 @@ func (self class) GetSkinReference() [1]gdclass.SkinReference { //gd:MeshInstanc
 Returns the number of surface override materials. This is equivalent to [method Mesh.get_surface_count]. See also [method get_surface_override_material].
 */
 //go:nosplit
-func (self class) GetSurfaceOverrideMaterialCount() gd.Int { //gd:MeshInstance3D.get_surface_override_material_count
+func (self class) GetSurfaceOverrideMaterialCount() int64 { //gd:MeshInstance3D.get_surface_override_material_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_surface_override_material_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -287,7 +290,7 @@ Sets the override [param material] for the specified [param surface] of the [Mes
 [b]Note:[/b] This assigns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To set the material within the [Mesh] resource, use [method Mesh.surface_get_material] instead.
 */
 //go:nosplit
-func (self class) SetSurfaceOverrideMaterial(surface gd.Int, material [1]gdclass.Material) { //gd:MeshInstance3D.set_surface_override_material
+func (self class) SetSurfaceOverrideMaterial(surface int64, material [1]gdclass.Material) { //gd:MeshInstance3D.set_surface_override_material
 	var frame = callframe.New()
 	callframe.Arg(frame, surface)
 	callframe.Arg(frame, pointers.Get(material[0])[0])
@@ -301,7 +304,7 @@ Returns the override [Material] for the specified [param surface] of the [Mesh] 
 [b]Note:[/b] This returns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To get the material within the [Mesh] resource, use [method Mesh.surface_get_material] instead.
 */
 //go:nosplit
-func (self class) GetSurfaceOverrideMaterial(surface gd.Int) [1]gdclass.Material { //gd:MeshInstance3D.get_surface_override_material
+func (self class) GetSurfaceOverrideMaterial(surface int64) [1]gdclass.Material { //gd:MeshInstance3D.get_surface_override_material
 	var frame = callframe.New()
 	callframe.Arg(frame, surface)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -316,7 +319,7 @@ Returns the [Material] that will be used by the [Mesh] when drawing. This can re
 Returns [code]null[/code] if no material is active, including when [member mesh] is [code]null[/code].
 */
 //go:nosplit
-func (self class) GetActiveMaterial(surface gd.Int) [1]gdclass.Material { //gd:MeshInstance3D.get_active_material
+func (self class) GetActiveMaterial(surface int64) [1]gdclass.Material { //gd:MeshInstance3D.get_active_material
 	var frame = callframe.New()
 	callframe.Arg(frame, surface)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -368,9 +371,9 @@ func (self class) CreateMultipleConvexCollisions(settings [1]gdclass.MeshConvexD
 Returns the number of blend shapes available. Produces an error if [member mesh] is [code]null[/code].
 */
 //go:nosplit
-func (self class) GetBlendShapeCount() gd.Int { //gd:MeshInstance3D.get_blend_shape_count
+func (self class) GetBlendShapeCount() int64 { //gd:MeshInstance3D.get_blend_shape_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_blend_shape_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -381,10 +384,10 @@ func (self class) GetBlendShapeCount() gd.Int { //gd:MeshInstance3D.get_blend_sh
 Returns the index of the blend shape with the given [param name]. Returns [code]-1[/code] if no blend shape with this name exists, including when [member mesh] is [code]null[/code].
 */
 //go:nosplit
-func (self class) FindBlendShapeByName(name String.Name) gd.Int { //gd:MeshInstance3D.find_blend_shape_by_name
+func (self class) FindBlendShapeByName(name String.Name) int64 { //gd:MeshInstance3D.find_blend_shape_by_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_find_blend_shape_by_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -395,10 +398,10 @@ func (self class) FindBlendShapeByName(name String.Name) gd.Int { //gd:MeshInsta
 Returns the value of the blend shape at the given [param blend_shape_idx]. Returns [code]0.0[/code] and produces an error if [member mesh] is [code]null[/code] or doesn't have a blend shape at that index.
 */
 //go:nosplit
-func (self class) GetBlendShapeValue(blend_shape_idx gd.Int) gd.Float { //gd:MeshInstance3D.get_blend_shape_value
+func (self class) GetBlendShapeValue(blend_shape_idx int64) float64 { //gd:MeshInstance3D.get_blend_shape_value
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_shape_idx)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_blend_shape_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -409,7 +412,7 @@ func (self class) GetBlendShapeValue(blend_shape_idx gd.Int) gd.Float { //gd:Mes
 Sets the value of the blend shape at [param blend_shape_idx] to [param value]. Produces an error if [member mesh] is [code]null[/code] or doesn't have a blend shape at that index.
 */
 //go:nosplit
-func (self class) SetBlendShapeValue(blend_shape_idx gd.Int, value gd.Float) { //gd:MeshInstance3D.set_blend_shape_value
+func (self class) SetBlendShapeValue(blend_shape_idx int64, value float64) { //gd:MeshInstance3D.set_blend_shape_value
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_shape_idx)
 	callframe.Arg(frame, value)

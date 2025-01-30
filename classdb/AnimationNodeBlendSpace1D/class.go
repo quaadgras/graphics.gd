@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AnimationNode"
+import "graphics.gd/classdb/AnimationRootNode"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AnimationRootNode"
-import "graphics.gd/classdb/AnimationNode"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,42 +61,42 @@ type Any interface {
 Adds a new point that represents a [param node] on the virtual axis at a given position set by [param pos]. You can insert it at a specific index using the [param at_index] argument. If you use the default value for [param at_index], the point is inserted at the end of the blend points array.
 */
 func (self Instance) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos Float.X) { //gd:AnimationNodeBlendSpace1D.add_blend_point
-	class(self).AddBlendPoint(node, gd.Float(pos), gd.Int(-1))
+	class(self).AddBlendPoint(node, float64(pos), int64(-1))
 }
 
 /*
 Updates the position of the point at index [param point] on the blend axis.
 */
 func (self Instance) SetBlendPointPosition(point int, pos Float.X) { //gd:AnimationNodeBlendSpace1D.set_blend_point_position
-	class(self).SetBlendPointPosition(gd.Int(point), gd.Float(pos))
+	class(self).SetBlendPointPosition(int64(point), float64(pos))
 }
 
 /*
 Returns the position of the point at index [param point].
 */
 func (self Instance) GetBlendPointPosition(point int) Float.X { //gd:AnimationNodeBlendSpace1D.get_blend_point_position
-	return Float.X(Float.X(class(self).GetBlendPointPosition(gd.Int(point))))
+	return Float.X(Float.X(class(self).GetBlendPointPosition(int64(point))))
 }
 
 /*
 Changes the [AnimationNode] referenced by the point at index [param point].
 */
 func (self Instance) SetBlendPointNode(point int, node [1]gdclass.AnimationRootNode) { //gd:AnimationNodeBlendSpace1D.set_blend_point_node
-	class(self).SetBlendPointNode(gd.Int(point), node)
+	class(self).SetBlendPointNode(int64(point), node)
 }
 
 /*
 Returns the [AnimationNode] referenced by the point at index [param point].
 */
 func (self Instance) GetBlendPointNode(point int) [1]gdclass.AnimationRootNode { //gd:AnimationNodeBlendSpace1D.get_blend_point_node
-	return [1]gdclass.AnimationRootNode(class(self).GetBlendPointNode(gd.Int(point)))
+	return [1]gdclass.AnimationRootNode(class(self).GetBlendPointNode(int64(point)))
 }
 
 /*
 Removes the point at index [param point] from the blend axis.
 */
 func (self Instance) RemoveBlendPoint(point int) { //gd:AnimationNodeBlendSpace1D.remove_blend_point
-	class(self).RemoveBlendPoint(gd.Int(point))
+	class(self).RemoveBlendPoint(int64(point))
 }
 
 /*
@@ -127,7 +130,7 @@ func (self Instance) MinSpace() Float.X {
 }
 
 func (self Instance) SetMinSpace(value Float.X) {
-	class(self).SetMinSpace(gd.Float(value))
+	class(self).SetMinSpace(float64(value))
 }
 
 func (self Instance) MaxSpace() Float.X {
@@ -135,7 +138,7 @@ func (self Instance) MaxSpace() Float.X {
 }
 
 func (self Instance) SetMaxSpace(value Float.X) {
-	class(self).SetMaxSpace(gd.Float(value))
+	class(self).SetMaxSpace(float64(value))
 }
 
 func (self Instance) Snap() Float.X {
@@ -143,7 +146,7 @@ func (self Instance) Snap() Float.X {
 }
 
 func (self Instance) SetSnap(value Float.X) {
-	class(self).SetSnap(gd.Float(value))
+	class(self).SetSnap(float64(value))
 }
 
 func (self Instance) ValueLabel() string {
@@ -174,7 +177,7 @@ func (self Instance) SetSync(value bool) {
 Adds a new point that represents a [param node] on the virtual axis at a given position set by [param pos]. You can insert it at a specific index using the [param at_index] argument. If you use the default value for [param at_index], the point is inserted at the end of the blend points array.
 */
 //go:nosplit
-func (self class) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos gd.Float, at_index gd.Int) { //gd:AnimationNodeBlendSpace1D.add_blend_point
+func (self class) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos float64, at_index int64) { //gd:AnimationNodeBlendSpace1D.add_blend_point
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	callframe.Arg(frame, pos)
@@ -188,7 +191,7 @@ func (self class) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos gd.Float,
 Updates the position of the point at index [param point] on the blend axis.
 */
 //go:nosplit
-func (self class) SetBlendPointPosition(point gd.Int, pos gd.Float) { //gd:AnimationNodeBlendSpace1D.set_blend_point_position
+func (self class) SetBlendPointPosition(point int64, pos float64) { //gd:AnimationNodeBlendSpace1D.set_blend_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, pos)
@@ -201,10 +204,10 @@ func (self class) SetBlendPointPosition(point gd.Int, pos gd.Float) { //gd:Anima
 Returns the position of the point at index [param point].
 */
 //go:nosplit
-func (self class) GetBlendPointPosition(point gd.Int) gd.Float { //gd:AnimationNodeBlendSpace1D.get_blend_point_position
+func (self class) GetBlendPointPosition(point int64) float64 { //gd:AnimationNodeBlendSpace1D.get_blend_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace1D.Bind_get_blend_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -215,7 +218,7 @@ func (self class) GetBlendPointPosition(point gd.Int) gd.Float { //gd:AnimationN
 Changes the [AnimationNode] referenced by the point at index [param point].
 */
 //go:nosplit
-func (self class) SetBlendPointNode(point gd.Int, node [1]gdclass.AnimationRootNode) { //gd:AnimationNodeBlendSpace1D.set_blend_point_node
+func (self class) SetBlendPointNode(point int64, node [1]gdclass.AnimationRootNode) { //gd:AnimationNodeBlendSpace1D.set_blend_point_node
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, pointers.Get(node[0])[0])
@@ -228,7 +231,7 @@ func (self class) SetBlendPointNode(point gd.Int, node [1]gdclass.AnimationRootN
 Returns the [AnimationNode] referenced by the point at index [param point].
 */
 //go:nosplit
-func (self class) GetBlendPointNode(point gd.Int) [1]gdclass.AnimationRootNode { //gd:AnimationNodeBlendSpace1D.get_blend_point_node
+func (self class) GetBlendPointNode(point int64) [1]gdclass.AnimationRootNode { //gd:AnimationNodeBlendSpace1D.get_blend_point_node
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -242,7 +245,7 @@ func (self class) GetBlendPointNode(point gd.Int) [1]gdclass.AnimationRootNode {
 Removes the point at index [param point] from the blend axis.
 */
 //go:nosplit
-func (self class) RemoveBlendPoint(point gd.Int) { //gd:AnimationNodeBlendSpace1D.remove_blend_point
+func (self class) RemoveBlendPoint(point int64) { //gd:AnimationNodeBlendSpace1D.remove_blend_point
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	var r_ret = callframe.Nil
@@ -254,9 +257,9 @@ func (self class) RemoveBlendPoint(point gd.Int) { //gd:AnimationNodeBlendSpace1
 Returns the number of points on the blend axis.
 */
 //go:nosplit
-func (self class) GetBlendPointCount() gd.Int { //gd:AnimationNodeBlendSpace1D.get_blend_point_count
+func (self class) GetBlendPointCount() int64 { //gd:AnimationNodeBlendSpace1D.get_blend_point_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace1D.Bind_get_blend_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -264,7 +267,7 @@ func (self class) GetBlendPointCount() gd.Int { //gd:AnimationNodeBlendSpace1D.g
 }
 
 //go:nosplit
-func (self class) SetMinSpace(min_space gd.Float) { //gd:AnimationNodeBlendSpace1D.set_min_space
+func (self class) SetMinSpace(min_space float64) { //gd:AnimationNodeBlendSpace1D.set_min_space
 	var frame = callframe.New()
 	callframe.Arg(frame, min_space)
 	var r_ret = callframe.Nil
@@ -273,9 +276,9 @@ func (self class) SetMinSpace(min_space gd.Float) { //gd:AnimationNodeBlendSpace
 }
 
 //go:nosplit
-func (self class) GetMinSpace() gd.Float { //gd:AnimationNodeBlendSpace1D.get_min_space
+func (self class) GetMinSpace() float64 { //gd:AnimationNodeBlendSpace1D.get_min_space
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace1D.Bind_get_min_space, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -283,7 +286,7 @@ func (self class) GetMinSpace() gd.Float { //gd:AnimationNodeBlendSpace1D.get_mi
 }
 
 //go:nosplit
-func (self class) SetMaxSpace(max_space gd.Float) { //gd:AnimationNodeBlendSpace1D.set_max_space
+func (self class) SetMaxSpace(max_space float64) { //gd:AnimationNodeBlendSpace1D.set_max_space
 	var frame = callframe.New()
 	callframe.Arg(frame, max_space)
 	var r_ret = callframe.Nil
@@ -292,9 +295,9 @@ func (self class) SetMaxSpace(max_space gd.Float) { //gd:AnimationNodeBlendSpace
 }
 
 //go:nosplit
-func (self class) GetMaxSpace() gd.Float { //gd:AnimationNodeBlendSpace1D.get_max_space
+func (self class) GetMaxSpace() float64 { //gd:AnimationNodeBlendSpace1D.get_max_space
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace1D.Bind_get_max_space, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -302,7 +305,7 @@ func (self class) GetMaxSpace() gd.Float { //gd:AnimationNodeBlendSpace1D.get_ma
 }
 
 //go:nosplit
-func (self class) SetSnap(snap gd.Float) { //gd:AnimationNodeBlendSpace1D.set_snap
+func (self class) SetSnap(snap float64) { //gd:AnimationNodeBlendSpace1D.set_snap
 	var frame = callframe.New()
 	callframe.Arg(frame, snap)
 	var r_ret = callframe.Nil
@@ -311,9 +314,9 @@ func (self class) SetSnap(snap gd.Float) { //gd:AnimationNodeBlendSpace1D.set_sn
 }
 
 //go:nosplit
-func (self class) GetSnap() gd.Float { //gd:AnimationNodeBlendSpace1D.get_snap
+func (self class) GetSnap() float64 { //gd:AnimationNodeBlendSpace1D.get_snap
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace1D.Bind_get_snap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

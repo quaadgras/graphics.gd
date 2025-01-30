@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/SkeletonModifier3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/SkeletonModifier3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -78,7 +82,7 @@ Adds a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
 func (self Instance) PhysicalBonesAddCollisionException(exception RID.Body3D) { //gd:PhysicalBoneSimulator3D.physical_bones_add_collision_exception
-	class(self).PhysicalBonesAddCollisionException(gd.RID(exception))
+	class(self).PhysicalBonesAddCollisionException(RID.Any(exception))
 }
 
 /*
@@ -86,7 +90,7 @@ Removes a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
 func (self Instance) PhysicalBonesRemoveCollisionException(exception RID.Body3D) { //gd:PhysicalBoneSimulator3D.physical_bones_remove_collision_exception
-	class(self).PhysicalBonesRemoveCollisionException(gd.RID(exception))
+	class(self).PhysicalBonesRemoveCollisionException(RID.Any(exception))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -149,7 +153,7 @@ Adds a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
 //go:nosplit
-func (self class) PhysicalBonesAddCollisionException(exception gd.RID) { //gd:PhysicalBoneSimulator3D.physical_bones_add_collision_exception
+func (self class) PhysicalBonesAddCollisionException(exception RID.Any) { //gd:PhysicalBoneSimulator3D.physical_bones_add_collision_exception
 	var frame = callframe.New()
 	callframe.Arg(frame, exception)
 	var r_ret = callframe.Nil
@@ -162,7 +166,7 @@ Removes a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
 //go:nosplit
-func (self class) PhysicalBonesRemoveCollisionException(exception gd.RID) { //gd:PhysicalBoneSimulator3D.physical_bones_remove_collision_exception
+func (self class) PhysicalBonesRemoveCollisionException(exception RID.Any) { //gd:PhysicalBoneSimulator3D.physical_bones_remove_collision_exception
 	var frame = callframe.New()
 	callframe.Arg(frame, exception)
 	var r_ret = callframe.Nil

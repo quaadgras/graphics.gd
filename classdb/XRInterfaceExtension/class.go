@@ -9,22 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/XRInterface"
-import "graphics.gd/variant/Vector3"
-import "graphics.gd/variant/Vector2"
-import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Rect2i"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -192,7 +195,7 @@ func (Instance) _get_capabilities(impl func(ptr unsafe.Pointer) int) (cb gd.Exte
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -304,7 +307,7 @@ func (Instance) _get_render_target_size(impl func(ptr unsafe.Pointer) Vector2.XY
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Vector2(ret))
+		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
 }
 
@@ -315,7 +318,7 @@ func (Instance) _get_view_count(impl func(ptr unsafe.Pointer) int) (cb gd.Extens
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -326,7 +329,7 @@ func (Instance) _get_camera_transform(impl func(ptr unsafe.Pointer) Transform3D.
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Transform3D(ret))
+		gd.UnsafeSet(p_back, Transform3D.BasisOrigin(ret))
 	}
 }
 
@@ -335,13 +338,13 @@ Returns a [Transform3D] for a given view.
 */
 func (Instance) _get_transform_for_view(impl func(ptr unsafe.Pointer, view int, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var view = gd.UnsafeGet[gd.Int](p_args, 0)
+		var view = gd.UnsafeGet[int64](p_args, 0)
 
-		var cam_transform = gd.UnsafeGet[gd.Transform3D](p_args, 1)
+		var cam_transform = gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(view), cam_transform)
-		gd.UnsafeSet(p_back, gd.Transform3D(ret))
+		gd.UnsafeSet(p_back, Transform3D.BasisOrigin(ret))
 	}
 }
 
@@ -350,13 +353,13 @@ Returns the projection matrix for the given view as a [PackedFloat64Array].
 */
 func (Instance) _get_projection_for_view(impl func(ptr unsafe.Pointer, view int, aspect Float.X, z_near Float.X, z_far Float.X) []float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var view = gd.UnsafeGet[gd.Int](p_args, 0)
+		var view = gd.UnsafeGet[int64](p_args, 0)
 
-		var aspect = gd.UnsafeGet[gd.Float](p_args, 1)
+		var aspect = gd.UnsafeGet[float64](p_args, 1)
 
-		var z_near = gd.UnsafeGet[gd.Float](p_args, 2)
+		var z_near = gd.UnsafeGet[float64](p_args, 2)
 
-		var z_far = gd.UnsafeGet[gd.Float](p_args, 3)
+		var z_far = gd.UnsafeGet[float64](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(view), Float.X(aspect), Float.X(z_near), Float.X(z_far))
@@ -372,7 +375,7 @@ func (Instance) _get_vrs_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.E
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -401,7 +404,7 @@ Called if this is our primary [XRInterfaceExtension] before we start processing 
 */
 func (Instance) _pre_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var render_target = gd.UnsafeGet[gd.RID](p_args, 0)
+		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, render_target)
@@ -414,9 +417,9 @@ Called after the XR [Viewport] draw logic has completed.
 */
 func (Instance) _post_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.Any, screen_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var render_target = gd.UnsafeGet[gd.RID](p_args, 0)
+		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var screen_rect = gd.UnsafeGet[gd.Rect2](p_args, 1)
+		var screen_rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, render_target, screen_rect)
@@ -487,13 +490,13 @@ func (Instance) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name 
 		defer pointers.End(gd.InternalString(action_name))
 		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
 		defer pointers.End(gd.InternalStringName(tracker_name))
-		var frequency = gd.UnsafeGet[gd.Float](p_args, 2)
+		var frequency = gd.UnsafeGet[float64](p_args, 2)
 
-		var amplitude = gd.UnsafeGet[gd.Float](p_args, 3)
+		var amplitude = gd.UnsafeGet[float64](p_args, 3)
 
-		var duration_sec = gd.UnsafeGet[gd.Float](p_args, 4)
+		var duration_sec = gd.UnsafeGet[float64](p_args, 4)
 
-		var delay_sec = gd.UnsafeGet[gd.Float](p_args, 5)
+		var delay_sec = gd.UnsafeGet[float64](p_args, 5)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, action_name.String(), tracker_name.String(), Float.X(frequency), Float.X(amplitude), Float.X(duration_sec), Float.X(delay_sec))
@@ -530,7 +533,7 @@ func (Instance) _get_camera_feed_id(impl func(ptr unsafe.Pointer) int) (cb gd.Ex
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -541,7 +544,7 @@ func (Instance) _get_color_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -552,7 +555,7 @@ func (Instance) _get_depth_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -563,7 +566,7 @@ func (Instance) _get_velocity_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.RID(ret))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 func (self Instance) GetColorTexture() RID.Texture { //gd:XRInterfaceExtension.get_color_texture
@@ -580,14 +583,14 @@ func (self Instance) GetVelocityTexture() RID.Texture { //gd:XRInterfaceExtensio
 Blits our render results to screen optionally applying lens distortion. This can only be called while processing [code]_commit_views[/code].
 */
 func (self Instance) AddBlit(render_target RID.Framebuffer, src_rect Rect2.PositionSize, dst_rect Rect2i.PositionSize, use_layer bool, layer int, apply_lens_distortion bool, eye_center Vector2.XY, k1 Float.X, k2 Float.X, upscale Float.X, aspect_ratio Float.X) { //gd:XRInterfaceExtension.add_blit
-	class(self).AddBlit(gd.RID(render_target), gd.Rect2(src_rect), gd.Rect2i(dst_rect), use_layer, gd.Int(layer), apply_lens_distortion, gd.Vector2(eye_center), gd.Float(k1), gd.Float(k2), gd.Float(upscale), gd.Float(aspect_ratio))
+	class(self).AddBlit(RID.Any(render_target), Rect2.PositionSize(src_rect), Rect2i.PositionSize(dst_rect), use_layer, int64(layer), apply_lens_distortion, Vector2.XY(eye_center), float64(k1), float64(k2), float64(upscale), float64(aspect_ratio))
 }
 
 /*
 Returns a valid [RID] for a texture to which we should render the current frame if supported by the interface.
 */
 func (self Instance) GetRenderTargetTexture(render_target RID.Framebuffer) RID.Texture { //gd:XRInterfaceExtension.get_render_target_texture
-	return RID.Texture(class(self).GetRenderTargetTexture(gd.RID(render_target)))
+	return RID.Texture(class(self).GetRenderTargetTexture(RID.Any(render_target)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -628,7 +631,7 @@ func (class) _get_name(impl func(ptr unsafe.Pointer) String.Name) (cb gd.Extensi
 /*
 Returns the capabilities of this interface.
 */
-func (class) _get_capabilities(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_capabilities(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -740,7 +743,7 @@ func (class) _get_play_area(impl func(ptr unsafe.Pointer) Packed.Array[Vector3.X
 /*
 Returns the size of our render target for this interface, this overrides the size of the [Viewport] marked as the xr viewport.
 */
-func (class) _get_render_target_size(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_render_target_size(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -751,7 +754,7 @@ func (class) _get_render_target_size(impl func(ptr unsafe.Pointer) gd.Vector2) (
 /*
 Returns the number of views this interface requires, 1 for mono, 2 for stereoscopic.
 */
-func (class) _get_view_count(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_view_count(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -762,7 +765,7 @@ func (class) _get_view_count(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.Extens
 /*
 Returns the [Transform3D] that positions the [XRCamera3D] in the world.
 */
-func (class) _get_camera_transform(impl func(ptr unsafe.Pointer) gd.Transform3D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_camera_transform(impl func(ptr unsafe.Pointer) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -773,11 +776,11 @@ func (class) _get_camera_transform(impl func(ptr unsafe.Pointer) gd.Transform3D)
 /*
 Returns a [Transform3D] for a given view.
 */
-func (class) _get_transform_for_view(impl func(ptr unsafe.Pointer, view gd.Int, cam_transform gd.Transform3D) gd.Transform3D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_transform_for_view(impl func(ptr unsafe.Pointer, view int64, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var view = gd.UnsafeGet[gd.Int](p_args, 0)
+		var view = gd.UnsafeGet[int64](p_args, 0)
 
-		var cam_transform = gd.UnsafeGet[gd.Transform3D](p_args, 1)
+		var cam_transform = gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, view, cam_transform)
@@ -788,15 +791,15 @@ func (class) _get_transform_for_view(impl func(ptr unsafe.Pointer, view gd.Int, 
 /*
 Returns the projection matrix for the given view as a [PackedFloat64Array].
 */
-func (class) _get_projection_for_view(impl func(ptr unsafe.Pointer, view gd.Int, aspect gd.Float, z_near gd.Float, z_far gd.Float) Packed.Array[float64]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_projection_for_view(impl func(ptr unsafe.Pointer, view int64, aspect float64, z_near float64, z_far float64) Packed.Array[float64]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var view = gd.UnsafeGet[gd.Int](p_args, 0)
+		var view = gd.UnsafeGet[int64](p_args, 0)
 
-		var aspect = gd.UnsafeGet[gd.Float](p_args, 1)
+		var aspect = gd.UnsafeGet[float64](p_args, 1)
 
-		var z_near = gd.UnsafeGet[gd.Float](p_args, 2)
+		var z_near = gd.UnsafeGet[float64](p_args, 2)
 
-		var z_far = gd.UnsafeGet[gd.Float](p_args, 3)
+		var z_far = gd.UnsafeGet[float64](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, view, aspect, z_near, z_far)
@@ -809,7 +812,7 @@ func (class) _get_projection_for_view(impl func(ptr unsafe.Pointer, view gd.Int,
 	}
 }
 
-func (class) _get_vrs_texture(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_vrs_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -840,9 +843,9 @@ func (class) _pre_render(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCal
 /*
 Called if this is our primary [XRInterfaceExtension] before we start processing a [Viewport] for every active XR [Viewport], returns [code]true[/code] if that viewport should be rendered. An XR interface may return [code]false[/code] if the user has taken off their headset and we can pause rendering.
 */
-func (class) _pre_draw_viewport(impl func(ptr unsafe.Pointer, render_target gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _pre_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var render_target = gd.UnsafeGet[gd.RID](p_args, 0)
+		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, render_target)
@@ -853,11 +856,11 @@ func (class) _pre_draw_viewport(impl func(ptr unsafe.Pointer, render_target gd.R
 /*
 Called after the XR [Viewport] draw logic has completed.
 */
-func (class) _post_draw_viewport(impl func(ptr unsafe.Pointer, render_target gd.RID, screen_rect gd.Rect2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _post_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.Any, screen_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var render_target = gd.UnsafeGet[gd.RID](p_args, 0)
+		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
 
-		var screen_rect = gd.UnsafeGet[gd.Rect2](p_args, 1)
+		var screen_rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, render_target, screen_rect)
@@ -922,19 +925,19 @@ func (class) _get_tracking_status(impl func(ptr unsafe.Pointer) gdclass.XRInterf
 /*
 Triggers a haptic pulse to be emitted on the specified tracker.
 */
-func (class) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name String.Readable, tracker_name String.Name, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name String.Readable, tracker_name String.Name, frequency float64, amplitude float64, duration_sec float64, delay_sec float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var action_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(action_name))
 		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
 		defer pointers.End(gd.InternalStringName(tracker_name))
-		var frequency = gd.UnsafeGet[gd.Float](p_args, 2)
+		var frequency = gd.UnsafeGet[float64](p_args, 2)
 
-		var amplitude = gd.UnsafeGet[gd.Float](p_args, 3)
+		var amplitude = gd.UnsafeGet[float64](p_args, 3)
 
-		var duration_sec = gd.UnsafeGet[gd.Float](p_args, 4)
+		var duration_sec = gd.UnsafeGet[float64](p_args, 4)
 
-		var delay_sec = gd.UnsafeGet[gd.Float](p_args, 5)
+		var delay_sec = gd.UnsafeGet[float64](p_args, 5)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, action_name, tracker_name, frequency, amplitude, duration_sec, delay_sec)
@@ -967,7 +970,7 @@ func (class) _set_anchor_detection_is_enabled(impl func(ptr unsafe.Pointer, enab
 /*
 Returns the camera feed ID for the [CameraFeed] registered with the [CameraServer] that should be presented as the background on an AR capable device (if applicable).
 */
-func (class) _get_camera_feed_id(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_camera_feed_id(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -978,7 +981,7 @@ func (class) _get_camera_feed_id(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.Ex
 /*
 Return color texture into which to render (if applicable).
 */
-func (class) _get_color_texture(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_color_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -989,7 +992,7 @@ func (class) _get_color_texture(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.Ext
 /*
 Return depth texture into which to render (if applicable).
 */
-func (class) _get_depth_texture(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_depth_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -1000,7 +1003,7 @@ func (class) _get_depth_texture(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.Ext
 /*
 Return velocity texture into which to render (if applicable).
 */
-func (class) _get_velocity_texture(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_velocity_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -1009,9 +1012,9 @@ func (class) _get_velocity_texture(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.
 }
 
 //go:nosplit
-func (self class) GetColorTexture() gd.RID { //gd:XRInterfaceExtension.get_color_texture
+func (self class) GetColorTexture() RID.Any { //gd:XRInterfaceExtension.get_color_texture
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_color_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1019,9 +1022,9 @@ func (self class) GetColorTexture() gd.RID { //gd:XRInterfaceExtension.get_color
 }
 
 //go:nosplit
-func (self class) GetDepthTexture() gd.RID { //gd:XRInterfaceExtension.get_depth_texture
+func (self class) GetDepthTexture() RID.Any { //gd:XRInterfaceExtension.get_depth_texture
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_depth_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1029,9 +1032,9 @@ func (self class) GetDepthTexture() gd.RID { //gd:XRInterfaceExtension.get_depth
 }
 
 //go:nosplit
-func (self class) GetVelocityTexture() gd.RID { //gd:XRInterfaceExtension.get_velocity_texture
+func (self class) GetVelocityTexture() RID.Any { //gd:XRInterfaceExtension.get_velocity_texture
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_velocity_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1042,7 +1045,7 @@ func (self class) GetVelocityTexture() gd.RID { //gd:XRInterfaceExtension.get_ve
 Blits our render results to screen optionally applying lens distortion. This can only be called while processing [code]_commit_views[/code].
 */
 //go:nosplit
-func (self class) AddBlit(render_target gd.RID, src_rect gd.Rect2, dst_rect gd.Rect2i, use_layer bool, layer gd.Int, apply_lens_distortion bool, eye_center gd.Vector2, k1 gd.Float, k2 gd.Float, upscale gd.Float, aspect_ratio gd.Float) { //gd:XRInterfaceExtension.add_blit
+func (self class) AddBlit(render_target RID.Any, src_rect Rect2.PositionSize, dst_rect Rect2i.PositionSize, use_layer bool, layer int64, apply_lens_distortion bool, eye_center Vector2.XY, k1 float64, k2 float64, upscale float64, aspect_ratio float64) { //gd:XRInterfaceExtension.add_blit
 	var frame = callframe.New()
 	callframe.Arg(frame, render_target)
 	callframe.Arg(frame, src_rect)
@@ -1064,10 +1067,10 @@ func (self class) AddBlit(render_target gd.RID, src_rect gd.Rect2, dst_rect gd.R
 Returns a valid [RID] for a texture to which we should render the current frame if supported by the interface.
 */
 //go:nosplit
-func (self class) GetRenderTargetTexture(render_target gd.RID) gd.RID { //gd:XRInterfaceExtension.get_render_target_texture
+func (self class) GetRenderTargetTexture(render_target RID.Any) RID.Any { //gd:XRInterfaceExtension.get_render_target_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, render_target)
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_render_target_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

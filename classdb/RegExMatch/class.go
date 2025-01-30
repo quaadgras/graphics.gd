@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -60,7 +64,7 @@ Returns the substring of the match from the source string. Capturing groups can 
 Returns an empty string if the group did not match or doesn't exist.
 */
 func (self Instance) GetString() string { //gd:RegExMatch.get_string
-	return string(class(self).GetString(gd.NewVariant(gd.NewVariant(0))).String())
+	return string(class(self).GetString(variant.New(0)).String())
 }
 
 /*
@@ -68,7 +72,7 @@ Returns the starting position of the match within the source string. The startin
 Returns -1 if the group did not match or doesn't exist.
 */
 func (self Instance) GetStart() int { //gd:RegExMatch.get_start
-	return int(int(class(self).GetStart(gd.NewVariant(gd.NewVariant(0)))))
+	return int(int(class(self).GetStart(variant.New(0))))
 }
 
 /*
@@ -76,7 +80,7 @@ Returns the end position of the match within the source string. The end position
 Returns -1 if the group did not match or doesn't exist.
 */
 func (self Instance) GetEnd() int { //gd:RegExMatch.get_end
-	return int(int(class(self).GetEnd(gd.NewVariant(gd.NewVariant(0)))))
+	return int(int(class(self).GetEnd(variant.New(0))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -124,9 +128,9 @@ func (self class) GetSubject() String.Readable { //gd:RegExMatch.get_subject
 Returns the number of capturing groups.
 */
 //go:nosplit
-func (self class) GetGroupCount() gd.Int { //gd:RegExMatch.get_group_count
+func (self class) GetGroupCount() int64 { //gd:RegExMatch.get_group_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegExMatch.Bind_get_group_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -158,9 +162,9 @@ Returns the substring of the match from the source string. Capturing groups can 
 Returns an empty string if the group did not match or doesn't exist.
 */
 //go:nosplit
-func (self class) GetString(name gd.Variant) String.Readable { //gd:RegExMatch.get_string
+func (self class) GetString(name variant.Any) String.Readable { //gd:RegExMatch.get_string
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(name)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegExMatch.Bind_get_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
@@ -173,10 +177,10 @@ Returns the starting position of the match within the source string. The startin
 Returns -1 if the group did not match or doesn't exist.
 */
 //go:nosplit
-func (self class) GetStart(name gd.Variant) gd.Int { //gd:RegExMatch.get_start
+func (self class) GetStart(name variant.Any) int64 { //gd:RegExMatch.get_start
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(name)))
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegExMatch.Bind_get_start, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -188,10 +192,10 @@ Returns the end position of the match within the source string. The end position
 Returns -1 if the group did not match or doesn't exist.
 */
 //go:nosplit
-func (self class) GetEnd(name gd.Variant) gd.Int { //gd:RegExMatch.get_end
+func (self class) GetEnd(name variant.Any) int64 { //gd:RegExMatch.get_end
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(name)))
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegExMatch.Bind_get_end, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

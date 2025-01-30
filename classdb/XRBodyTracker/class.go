@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/XRPositionalTracker"
+import "graphics.gd/classdb/XRTracker"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/XRPositionalTracker"
-import "graphics.gd/classdb/XRTracker"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -70,7 +74,7 @@ func (self Instance) GetJointFlags(joint gdclass.XRBodyTrackerJoint) gdclass.XRB
 Sets the transform for the given body joint.
 */
 func (self Instance) SetJointTransform(joint gdclass.XRBodyTrackerJoint, transform Transform3D.BasisOrigin) { //gd:XRBodyTracker.set_joint_transform
-	class(self).SetJointTransform(joint, gd.Transform3D(transform))
+	class(self).SetJointTransform(joint, Transform3D.BasisOrigin(transform))
 }
 
 /*
@@ -184,7 +188,7 @@ func (self class) GetJointFlags(joint gdclass.XRBodyTrackerJoint) gdclass.XRBody
 Sets the transform for the given body joint.
 */
 //go:nosplit
-func (self class) SetJointTransform(joint gdclass.XRBodyTrackerJoint, transform gd.Transform3D) { //gd:XRBodyTracker.set_joint_transform
+func (self class) SetJointTransform(joint gdclass.XRBodyTrackerJoint, transform Transform3D.BasisOrigin) { //gd:XRBodyTracker.set_joint_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, transform)
@@ -197,10 +201,10 @@ func (self class) SetJointTransform(joint gdclass.XRBodyTrackerJoint, transform 
 Returns the transform for the given body joint.
 */
 //go:nosplit
-func (self class) GetJointTransform(joint gdclass.XRBodyTrackerJoint) gd.Transform3D { //gd:XRBodyTracker.get_joint_transform
+func (self class) GetJointTransform(joint gdclass.XRBodyTrackerJoint) Transform3D.BasisOrigin { //gd:XRBodyTracker.get_joint_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_get_joint_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

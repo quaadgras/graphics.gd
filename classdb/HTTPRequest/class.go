@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -267,7 +270,7 @@ Sets the proxy server for HTTP requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Instance) SetHttpProxy(host string, port int) { //gd:HTTPRequest.set_http_proxy
-	class(self).SetHttpProxy(String.New(host), gd.Int(port))
+	class(self).SetHttpProxy(String.New(host), int64(port))
 }
 
 /*
@@ -275,7 +278,7 @@ Sets the proxy server for HTTPS requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Instance) SetHttpsProxy(host string, port int) { //gd:HTTPRequest.set_https_proxy
-	class(self).SetHttpsProxy(String.New(host), gd.Int(port))
+	class(self).SetHttpsProxy(String.New(host), int64(port))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -309,7 +312,7 @@ func (self Instance) DownloadChunkSize() int {
 }
 
 func (self Instance) SetDownloadChunkSize(value int) {
-	class(self).SetDownloadChunkSize(gd.Int(value))
+	class(self).SetDownloadChunkSize(int64(value))
 }
 
 func (self Instance) UseThreads() bool {
@@ -333,7 +336,7 @@ func (self Instance) BodySizeLimit() int {
 }
 
 func (self Instance) SetBodySizeLimit(value int) {
-	class(self).SetBodySizeLimit(gd.Int(value))
+	class(self).SetBodySizeLimit(int64(value))
 }
 
 func (self Instance) MaxRedirects() int {
@@ -341,7 +344,7 @@ func (self Instance) MaxRedirects() int {
 }
 
 func (self Instance) SetMaxRedirects(value int) {
-	class(self).SetMaxRedirects(gd.Int(value))
+	class(self).SetMaxRedirects(int64(value))
 }
 
 func (self Instance) Timeout() Float.X {
@@ -349,7 +352,7 @@ func (self Instance) Timeout() Float.X {
 }
 
 func (self Instance) SetTimeout(value Float.X) {
-	class(self).SetTimeout(gd.Float(value))
+	class(self).SetTimeout(float64(value))
 }
 
 /*
@@ -359,15 +362,15 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 [b]Note:[/b] It's recommended to use transport encryption (TLS) and to avoid sending sensitive information (such as login credentials) in HTTP GET URL parameters. Consider using HTTP POST requests or HTTP headers for such information instead.
 */
 //go:nosplit
-func (self class) Request(url String.Readable, custom_headers Packed.Strings, method gdclass.HTTPClientMethod, request_data String.Readable) gd.Error { //gd:HTTPRequest.request
+func (self class) Request(url String.Readable, custom_headers Packed.Strings, method gdclass.HTTPClientMethod, request_data String.Readable) Error.Code { //gd:HTTPRequest.request
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
 	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(custom_headers)))
 	callframe.Arg(frame, method)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(request_data)))
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_request, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -377,15 +380,15 @@ Creates request on the underlying [HTTPClient] using a raw array of bytes for th
 Returns [constant OK] if request is successfully created. (Does not imply that the server has responded), [constant ERR_UNCONFIGURED] if not in the tree, [constant ERR_BUSY] if still processing previous request, [constant ERR_INVALID_PARAMETER] if given string is not a valid URL format, or [constant ERR_CANT_CONNECT] if not using thread and the [HTTPClient] cannot connect to host.
 */
 //go:nosplit
-func (self class) RequestRaw(url String.Readable, custom_headers Packed.Strings, method gdclass.HTTPClientMethod, request_data_raw Packed.Bytes) gd.Error { //gd:HTTPRequest.request_raw
+func (self class) RequestRaw(url String.Readable, custom_headers Packed.Strings, method gdclass.HTTPClientMethod, request_data_raw Packed.Bytes) Error.Code { //gd:HTTPRequest.request_raw
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
 	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(custom_headers)))
 	callframe.Arg(frame, method)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](request_data_raw))))
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_request_raw, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -465,7 +468,7 @@ func (self class) IsAcceptingGzip() bool { //gd:HTTPRequest.is_accepting_gzip
 }
 
 //go:nosplit
-func (self class) SetBodySizeLimit(bytes gd.Int) { //gd:HTTPRequest.set_body_size_limit
+func (self class) SetBodySizeLimit(bytes int64) { //gd:HTTPRequest.set_body_size_limit
 	var frame = callframe.New()
 	callframe.Arg(frame, bytes)
 	var r_ret = callframe.Nil
@@ -474,9 +477,9 @@ func (self class) SetBodySizeLimit(bytes gd.Int) { //gd:HTTPRequest.set_body_siz
 }
 
 //go:nosplit
-func (self class) GetBodySizeLimit() gd.Int { //gd:HTTPRequest.get_body_size_limit
+func (self class) GetBodySizeLimit() int64 { //gd:HTTPRequest.get_body_size_limit
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_body_size_limit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -484,7 +487,7 @@ func (self class) GetBodySizeLimit() gd.Int { //gd:HTTPRequest.get_body_size_lim
 }
 
 //go:nosplit
-func (self class) SetMaxRedirects(amount gd.Int) { //gd:HTTPRequest.set_max_redirects
+func (self class) SetMaxRedirects(amount int64) { //gd:HTTPRequest.set_max_redirects
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -493,9 +496,9 @@ func (self class) SetMaxRedirects(amount gd.Int) { //gd:HTTPRequest.set_max_redi
 }
 
 //go:nosplit
-func (self class) GetMaxRedirects() gd.Int { //gd:HTTPRequest.get_max_redirects
+func (self class) GetMaxRedirects() int64 { //gd:HTTPRequest.get_max_redirects
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_max_redirects, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -525,9 +528,9 @@ func (self class) GetDownloadFile() String.Readable { //gd:HTTPRequest.get_downl
 Returns the number of bytes this HTTPRequest downloaded.
 */
 //go:nosplit
-func (self class) GetDownloadedBytes() gd.Int { //gd:HTTPRequest.get_downloaded_bytes
+func (self class) GetDownloadedBytes() int64 { //gd:HTTPRequest.get_downloaded_bytes
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_downloaded_bytes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -539,9 +542,9 @@ Returns the response body length.
 [b]Note:[/b] Some Web servers may not send a body length. In this case, the value returned will be [code]-1[/code]. If using chunked transfer encoding, the body length will also be [code]-1[/code].
 */
 //go:nosplit
-func (self class) GetBodySize() gd.Int { //gd:HTTPRequest.get_body_size
+func (self class) GetBodySize() int64 { //gd:HTTPRequest.get_body_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_body_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -549,7 +552,7 @@ func (self class) GetBodySize() gd.Int { //gd:HTTPRequest.get_body_size
 }
 
 //go:nosplit
-func (self class) SetTimeout(timeout gd.Float) { //gd:HTTPRequest.set_timeout
+func (self class) SetTimeout(timeout float64) { //gd:HTTPRequest.set_timeout
 	var frame = callframe.New()
 	callframe.Arg(frame, timeout)
 	var r_ret = callframe.Nil
@@ -558,9 +561,9 @@ func (self class) SetTimeout(timeout gd.Float) { //gd:HTTPRequest.set_timeout
 }
 
 //go:nosplit
-func (self class) GetTimeout() gd.Float { //gd:HTTPRequest.get_timeout
+func (self class) GetTimeout() float64 { //gd:HTTPRequest.get_timeout
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_timeout, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -568,7 +571,7 @@ func (self class) GetTimeout() gd.Float { //gd:HTTPRequest.get_timeout
 }
 
 //go:nosplit
-func (self class) SetDownloadChunkSize(chunk_size gd.Int) { //gd:HTTPRequest.set_download_chunk_size
+func (self class) SetDownloadChunkSize(chunk_size int64) { //gd:HTTPRequest.set_download_chunk_size
 	var frame = callframe.New()
 	callframe.Arg(frame, chunk_size)
 	var r_ret = callframe.Nil
@@ -577,9 +580,9 @@ func (self class) SetDownloadChunkSize(chunk_size gd.Int) { //gd:HTTPRequest.set
 }
 
 //go:nosplit
-func (self class) GetDownloadChunkSize() gd.Int { //gd:HTTPRequest.get_download_chunk_size
+func (self class) GetDownloadChunkSize() int64 { //gd:HTTPRequest.get_download_chunk_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_download_chunk_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -591,7 +594,7 @@ Sets the proxy server for HTTP requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
-func (self class) SetHttpProxy(host String.Readable, port gd.Int) { //gd:HTTPRequest.set_http_proxy
+func (self class) SetHttpProxy(host String.Readable, port int64) { //gd:HTTPRequest.set_http_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, port)
@@ -605,7 +608,7 @@ Sets the proxy server for HTTPS requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
-func (self class) SetHttpsProxy(host String.Readable, port gd.Int) { //gd:HTTPRequest.set_https_proxy
+func (self class) SetHttpsProxy(host String.Readable, port int64) { //gd:HTTPRequest.set_https_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
 	callframe.Arg(frame, port)
@@ -668,120 +671,4 @@ const (
 	ResultRedirectLimitReached Result = 12
 	/*Request failed due to a timeout. If you expect requests to take a long time, try increasing the value of [member timeout] or setting it to [code]0.0[/code] to remove the timeout completely.*/
 	ResultTimeout Result = 13
-)
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
 )

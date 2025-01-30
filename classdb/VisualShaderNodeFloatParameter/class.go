@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/VisualShaderNode"
+import "graphics.gd/classdb/VisualShaderNodeParameter"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/VisualShaderNodeParameter"
-import "graphics.gd/classdb/VisualShaderNode"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -84,7 +87,7 @@ func (self Instance) Min() Float.X {
 }
 
 func (self Instance) SetMin(value Float.X) {
-	class(self).SetMin(gd.Float(value))
+	class(self).SetMin(float64(value))
 }
 
 func (self Instance) Max() Float.X {
@@ -92,7 +95,7 @@ func (self Instance) Max() Float.X {
 }
 
 func (self Instance) SetMax(value Float.X) {
-	class(self).SetMax(gd.Float(value))
+	class(self).SetMax(float64(value))
 }
 
 func (self Instance) Step() Float.X {
@@ -100,7 +103,7 @@ func (self Instance) Step() Float.X {
 }
 
 func (self Instance) SetStep(value Float.X) {
-	class(self).SetStep(gd.Float(value))
+	class(self).SetStep(float64(value))
 }
 
 func (self Instance) DefaultValueEnabled() bool {
@@ -116,7 +119,7 @@ func (self Instance) DefaultValue() Float.X {
 }
 
 func (self Instance) SetDefaultValue(value Float.X) {
-	class(self).SetDefaultValue(gd.Float(value))
+	class(self).SetDefaultValue(float64(value))
 }
 
 //go:nosplit
@@ -139,7 +142,7 @@ func (self class) GetHint() gdclass.VisualShaderNodeFloatParameterHint { //gd:Vi
 }
 
 //go:nosplit
-func (self class) SetMin(value gd.Float) { //gd:VisualShaderNodeFloatParameter.set_min
+func (self class) SetMin(value float64) { //gd:VisualShaderNodeFloatParameter.set_min
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -148,9 +151,9 @@ func (self class) SetMin(value gd.Float) { //gd:VisualShaderNodeFloatParameter.s
 }
 
 //go:nosplit
-func (self class) GetMin() gd.Float { //gd:VisualShaderNodeFloatParameter.get_min
+func (self class) GetMin() float64 { //gd:VisualShaderNodeFloatParameter.get_min
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -158,7 +161,7 @@ func (self class) GetMin() gd.Float { //gd:VisualShaderNodeFloatParameter.get_mi
 }
 
 //go:nosplit
-func (self class) SetMax(value gd.Float) { //gd:VisualShaderNodeFloatParameter.set_max
+func (self class) SetMax(value float64) { //gd:VisualShaderNodeFloatParameter.set_max
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -167,9 +170,9 @@ func (self class) SetMax(value gd.Float) { //gd:VisualShaderNodeFloatParameter.s
 }
 
 //go:nosplit
-func (self class) GetMax() gd.Float { //gd:VisualShaderNodeFloatParameter.get_max
+func (self class) GetMax() float64 { //gd:VisualShaderNodeFloatParameter.get_max
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -177,7 +180,7 @@ func (self class) GetMax() gd.Float { //gd:VisualShaderNodeFloatParameter.get_ma
 }
 
 //go:nosplit
-func (self class) SetStep(value gd.Float) { //gd:VisualShaderNodeFloatParameter.set_step
+func (self class) SetStep(value float64) { //gd:VisualShaderNodeFloatParameter.set_step
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -186,9 +189,9 @@ func (self class) SetStep(value gd.Float) { //gd:VisualShaderNodeFloatParameter.
 }
 
 //go:nosplit
-func (self class) GetStep() gd.Float { //gd:VisualShaderNodeFloatParameter.get_step
+func (self class) GetStep() float64 { //gd:VisualShaderNodeFloatParameter.get_step
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -215,7 +218,7 @@ func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeFloatParam
 }
 
 //go:nosplit
-func (self class) SetDefaultValue(value gd.Float) { //gd:VisualShaderNodeFloatParameter.set_default_value
+func (self class) SetDefaultValue(value float64) { //gd:VisualShaderNodeFloatParameter.set_default_value
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -224,9 +227,9 @@ func (self class) SetDefaultValue(value gd.Float) { //gd:VisualShaderNodeFloatPa
 }
 
 //go:nosplit
-func (self class) GetDefaultValue() gd.Float { //gd:VisualShaderNodeFloatParameter.get_default_value
+func (self class) GetDefaultValue() float64 { //gd:VisualShaderNodeFloatParameter.get_default_value
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

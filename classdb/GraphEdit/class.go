@@ -9,21 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +40,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -141,9 +144,9 @@ func (Instance) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node Objec
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
-		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
+		var in_port = gd.UnsafeGet[int64](p_args, 1)
 
-		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, in_node, int(in_port), mouse_position)
@@ -169,9 +172,9 @@ func (Instance) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node Obje
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
-		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
+		var in_port = gd.UnsafeGet[int64](p_args, 1)
 
-		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, in_node, int(in_port), mouse_position)
@@ -184,9 +187,9 @@ Virtual method which can be overridden to customize how connections are drawn.
 */
 func (Instance) _get_connection_line(impl func(ptr unsafe.Pointer, from_position Vector2.XY, to_position Vector2.XY) []Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var from_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+		var from_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
-		var to_position = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var to_position = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_position, to_position)
@@ -224,11 +227,11 @@ func (Instance) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node str
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(from_node))
-		var from_port = gd.UnsafeGet[gd.Int](p_args, 1)
+		var from_port = gd.UnsafeGet[int64](p_args, 1)
 
 		var to_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2)))))
 		defer pointers.End(gd.InternalStringName(to_node))
-		var to_port = gd.UnsafeGet[gd.Int](p_args, 3)
+		var to_port = gd.UnsafeGet[int64](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_node.String(), int(from_port), to_node.String(), int(to_port))
@@ -240,28 +243,28 @@ func (Instance) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node str
 Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
 */
 func (self Instance) ConnectNode(from_node string, from_port int, to_node string, to_port int) error { //gd:GraphEdit.connect_node
-	return error(gd.ToError(class(self).ConnectNode(String.Name(String.New(from_node)), gd.Int(from_port), String.Name(String.New(to_node)), gd.Int(to_port))))
+	return error(gd.ToError(class(self).ConnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port))))
 }
 
 /*
 Returns [code]true[/code] if the [param from_port] of the [param from_node] [GraphNode] is connected to the [param to_port] of the [param to_node] [GraphNode].
 */
 func (self Instance) IsNodeConnected(from_node string, from_port int, to_node string, to_port int) bool { //gd:GraphEdit.is_node_connected
-	return bool(class(self).IsNodeConnected(String.Name(String.New(from_node)), gd.Int(from_port), String.Name(String.New(to_node)), gd.Int(to_port)))
+	return bool(class(self).IsNodeConnected(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port)))
 }
 
 /*
 Removes the connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection does not exist, no connection is removed.
 */
 func (self Instance) DisconnectNode(from_node string, from_port int, to_node string, to_port int) { //gd:GraphEdit.disconnect_node
-	class(self).DisconnectNode(String.Name(String.New(from_node)), gd.Int(from_port), String.Name(String.New(to_node)), gd.Int(to_port))
+	class(self).DisconnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port))
 }
 
 /*
 Sets the coloration of the connection between [param from_node]'s [param from_port] and [param to_node]'s [param to_port] with the color provided in the [theme_item activity] theme property. The color is linearly interpolated between the connection color and the activity color using [param amount] as weight.
 */
 func (self Instance) SetConnectionActivity(from_node string, from_port int, to_node string, to_port int, amount Float.X) { //gd:GraphEdit.set_connection_activity
-	class(self).SetConnectionActivity(String.Name(String.New(from_node)), gd.Int(from_port), String.Name(String.New(to_node)), gd.Int(to_port), gd.Float(amount))
+	class(self).SetConnectionActivity(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), float64(amount))
 }
 
 /*
@@ -282,14 +285,14 @@ var connection = get_closest_connection_at_point(mouse_event.get_position())
 [/codeblocks]
 */
 func (self Instance) GetClosestConnectionAtPoint(point Vector2.XY) Connection { //gd:GraphEdit.get_closest_connection_at_point
-	return Connection(gd.DictionaryAs[Connection](class(self).GetClosestConnectionAtPoint(gd.Vector2(point), gd.Float(4.0))))
+	return Connection(gd.DictionaryAs[Connection](class(self).GetClosestConnectionAtPoint(Vector2.XY(point), float64(4.0))))
 }
 
 /*
 Returns an [Array] containing the list of connections that intersect with the given [Rect2]. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
 func (self Instance) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) []Connection { //gd:GraphEdit.get_connections_intersecting_with_rect
-	return []Connection(gd.ArrayAs[[]Connection](gd.InternalArray(class(self).GetConnectionsIntersectingWithRect(gd.Rect2(rect)))))
+	return []Connection(gd.ArrayAs[[]Connection](gd.InternalArray(class(self).GetConnectionsIntersectingWithRect(Rect2.PositionSize(rect)))))
 }
 
 /*
@@ -312,28 +315,28 @@ func (self Instance) ForceConnectionDragEnd() { //gd:GraphEdit.force_connection_
 Allows to disconnect nodes when dragging from the right port of the [GraphNode]'s slot if it has the specified type. See also [method remove_valid_right_disconnect_type].
 */
 func (self Instance) AddValidRightDisconnectType(atype int) { //gd:GraphEdit.add_valid_right_disconnect_type
-	class(self).AddValidRightDisconnectType(gd.Int(atype))
+	class(self).AddValidRightDisconnectType(int64(atype))
 }
 
 /*
 Disallows to disconnect nodes when dragging from the right port of the [GraphNode]'s slot if it has the specified type. Use this to disable disconnection previously allowed with [method add_valid_right_disconnect_type].
 */
 func (self Instance) RemoveValidRightDisconnectType(atype int) { //gd:GraphEdit.remove_valid_right_disconnect_type
-	class(self).RemoveValidRightDisconnectType(gd.Int(atype))
+	class(self).RemoveValidRightDisconnectType(int64(atype))
 }
 
 /*
 Allows to disconnect nodes when dragging from the left port of the [GraphNode]'s slot if it has the specified type. See also [method remove_valid_left_disconnect_type].
 */
 func (self Instance) AddValidLeftDisconnectType(atype int) { //gd:GraphEdit.add_valid_left_disconnect_type
-	class(self).AddValidLeftDisconnectType(gd.Int(atype))
+	class(self).AddValidLeftDisconnectType(int64(atype))
 }
 
 /*
 Disallows to disconnect nodes when dragging from the left port of the [GraphNode]'s slot if it has the specified type. Use this to disable disconnection previously allowed with [method add_valid_left_disconnect_type].
 */
 func (self Instance) RemoveValidLeftDisconnectType(atype int) { //gd:GraphEdit.remove_valid_left_disconnect_type
-	class(self).RemoveValidLeftDisconnectType(gd.Int(atype))
+	class(self).RemoveValidLeftDisconnectType(int64(atype))
 }
 
 /*
@@ -341,7 +344,7 @@ Allows the connection between two different port types. The port type is defined
 See also [method is_valid_connection_type] and [method remove_valid_connection_type].
 */
 func (self Instance) AddValidConnectionType(from_type int, to_type int) { //gd:GraphEdit.add_valid_connection_type
-	class(self).AddValidConnectionType(gd.Int(from_type), gd.Int(to_type))
+	class(self).AddValidConnectionType(int64(from_type), int64(to_type))
 }
 
 /*
@@ -349,7 +352,7 @@ Disallows the connection between two different port types previously allowed by 
 See also [method is_valid_connection_type].
 */
 func (self Instance) RemoveValidConnectionType(from_type int, to_type int) { //gd:GraphEdit.remove_valid_connection_type
-	class(self).RemoveValidConnectionType(gd.Int(from_type), gd.Int(to_type))
+	class(self).RemoveValidConnectionType(int64(from_type), int64(to_type))
 }
 
 /*
@@ -357,14 +360,14 @@ Returns whether it's possible to make a connection between two different port ty
 See also [method add_valid_connection_type] and [method remove_valid_connection_type].
 */
 func (self Instance) IsValidConnectionType(from_type int, to_type int) bool { //gd:GraphEdit.is_valid_connection_type
-	return bool(class(self).IsValidConnectionType(gd.Int(from_type), gd.Int(to_type)))
+	return bool(class(self).IsValidConnectionType(int64(from_type), int64(to_type)))
 }
 
 /*
 Returns the points which would make up a connection between [param from_node] and [param to_node].
 */
 func (self Instance) GetConnectionLine(from_node Vector2.XY, to_node Vector2.XY) []Vector2.XY { //gd:GraphEdit.get_connection_line
-	return []Vector2.XY(slices.Collect(class(self).GetConnectionLine(gd.Vector2(from_node), gd.Vector2(to_node)).Values()))
+	return []Vector2.XY(slices.Collect(class(self).GetConnectionLine(Vector2.XY(from_node), Vector2.XY(to_node)).Values()))
 }
 
 /*
@@ -440,7 +443,7 @@ func (self Instance) ScrollOffset() Vector2.XY {
 }
 
 func (self Instance) SetScrollOffset(value Vector2.XY) {
-	class(self).SetScrollOffset(gd.Vector2(value))
+	class(self).SetScrollOffset(Vector2.XY(value))
 }
 
 func (self Instance) ShowGrid() bool {
@@ -472,7 +475,7 @@ func (self Instance) SnappingDistance() int {
 }
 
 func (self Instance) SetSnappingDistance(value int) {
-	class(self).SetSnappingDistance(gd.Int(value))
+	class(self).SetSnappingDistance(int64(value))
 }
 
 func (self Instance) PanningScheme() gdclass.GraphEditPanningScheme {
@@ -496,7 +499,7 @@ func (self Instance) ConnectionLinesCurvature() Float.X {
 }
 
 func (self Instance) SetConnectionLinesCurvature(value Float.X) {
-	class(self).SetConnectionLinesCurvature(gd.Float(value))
+	class(self).SetConnectionLinesCurvature(float64(value))
 }
 
 func (self Instance) ConnectionLinesThickness() Float.X {
@@ -504,7 +507,7 @@ func (self Instance) ConnectionLinesThickness() Float.X {
 }
 
 func (self Instance) SetConnectionLinesThickness(value Float.X) {
-	class(self).SetConnectionLinesThickness(gd.Float(value))
+	class(self).SetConnectionLinesThickness(float64(value))
 }
 
 func (self Instance) ConnectionLinesAntialiased() bool {
@@ -520,7 +523,7 @@ func (self Instance) Zoom() Float.X {
 }
 
 func (self Instance) SetZoom(value Float.X) {
-	class(self).SetZoom(gd.Float(value))
+	class(self).SetZoom(float64(value))
 }
 
 func (self Instance) ZoomMin() Float.X {
@@ -528,7 +531,7 @@ func (self Instance) ZoomMin() Float.X {
 }
 
 func (self Instance) SetZoomMin(value Float.X) {
-	class(self).SetZoomMin(gd.Float(value))
+	class(self).SetZoomMin(float64(value))
 }
 
 func (self Instance) ZoomMax() Float.X {
@@ -536,7 +539,7 @@ func (self Instance) ZoomMax() Float.X {
 }
 
 func (self Instance) SetZoomMax(value Float.X) {
-	class(self).SetZoomMax(gd.Float(value))
+	class(self).SetZoomMax(float64(value))
 }
 
 func (self Instance) ZoomStep() Float.X {
@@ -544,7 +547,7 @@ func (self Instance) ZoomStep() Float.X {
 }
 
 func (self Instance) SetZoomStep(value Float.X) {
-	class(self).SetZoomStep(gd.Float(value))
+	class(self).SetZoomStep(float64(value))
 }
 
 func (self Instance) MinimapEnabled() bool {
@@ -560,7 +563,7 @@ func (self Instance) MinimapSize() Vector2.XY {
 }
 
 func (self Instance) SetMinimapSize(value Vector2.XY) {
-	class(self).SetMinimapSize(gd.Vector2(value))
+	class(self).SetMinimapSize(Vector2.XY(value))
 }
 
 func (self Instance) MinimapOpacity() Float.X {
@@ -568,7 +571,7 @@ func (self Instance) MinimapOpacity() Float.X {
 }
 
 func (self Instance) SetMinimapOpacity(value Float.X) {
-	class(self).SetMinimapOpacity(gd.Float(value))
+	class(self).SetMinimapOpacity(float64(value))
 }
 
 func (self Instance) ShowMenu() bool {
@@ -634,13 +637,13 @@ func _is_in_input_hotzone(in_node, in_port, mouse_position):
 
 [/codeblock]
 */
-func (class) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.Object, in_port gd.Int, mouse_position gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.Object, in_port int64, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
-		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
+		var in_port = gd.UnsafeGet[int64](p_args, 1)
 
-		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, in_node, in_port, mouse_position)
@@ -662,13 +665,13 @@ func _is_in_output_hotzone(in_node, in_port, mouse_position):
 
 [/codeblock]
 */
-func (class) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.Object, in_port gd.Int, mouse_position gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.Object, in_port int64, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
-		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
+		var in_port = gd.UnsafeGet[int64](p_args, 1)
 
-		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
+		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, in_node, in_port, mouse_position)
@@ -679,11 +682,11 @@ func (class) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.O
 /*
 Virtual method which can be overridden to customize how connections are drawn.
 */
-func (class) _get_connection_line(impl func(ptr unsafe.Pointer, from_position gd.Vector2, to_position gd.Vector2) Packed.Array[Vector2.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_connection_line(impl func(ptr unsafe.Pointer, from_position Vector2.XY, to_position Vector2.XY) Packed.Array[Vector2.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var from_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+		var from_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 
-		var to_position = gd.UnsafeGet[gd.Vector2](p_args, 1)
+		var to_position = gd.UnsafeGet[Vector2.XY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_position, to_position)
@@ -717,15 +720,15 @@ public override bool _IsNodeHoverValid(StringName fromNode, int fromPort, String
 [/csharp]
 [/codeblocks]
 */
-func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node String.Name, from_port gd.Int, to_node String.Name, to_port gd.Int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node String.Name, from_port int64, to_node String.Name, to_port int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(from_node))
-		var from_port = gd.UnsafeGet[gd.Int](p_args, 1)
+		var from_port = gd.UnsafeGet[int64](p_args, 1)
 
 		var to_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2)))))
 		defer pointers.End(gd.InternalStringName(to_node))
-		var to_port = gd.UnsafeGet[gd.Int](p_args, 3)
+		var to_port = gd.UnsafeGet[int64](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_node, from_port, to_node, to_port)
@@ -737,15 +740,15 @@ func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node String
 Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
 */
 //go:nosplit
-func (self class) ConnectNode(from_node String.Name, from_port gd.Int, to_node String.Name, to_port gd.Int) gd.Error { //gd:GraphEdit.connect_node
+func (self class) ConnectNode(from_node String.Name, from_port int64, to_node String.Name, to_port int64) Error.Code { //gd:GraphEdit.connect_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(from_node)))
 	callframe.Arg(frame, from_port)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(to_node)))
 	callframe.Arg(frame, to_port)
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_connect_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -754,7 +757,7 @@ func (self class) ConnectNode(from_node String.Name, from_port gd.Int, to_node S
 Returns [code]true[/code] if the [param from_port] of the [param from_node] [GraphNode] is connected to the [param to_port] of the [param to_node] [GraphNode].
 */
 //go:nosplit
-func (self class) IsNodeConnected(from_node String.Name, from_port gd.Int, to_node String.Name, to_port gd.Int) bool { //gd:GraphEdit.is_node_connected
+func (self class) IsNodeConnected(from_node String.Name, from_port int64, to_node String.Name, to_port int64) bool { //gd:GraphEdit.is_node_connected
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(from_node)))
 	callframe.Arg(frame, from_port)
@@ -771,7 +774,7 @@ func (self class) IsNodeConnected(from_node String.Name, from_port gd.Int, to_no
 Removes the connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection does not exist, no connection is removed.
 */
 //go:nosplit
-func (self class) DisconnectNode(from_node String.Name, from_port gd.Int, to_node String.Name, to_port gd.Int) { //gd:GraphEdit.disconnect_node
+func (self class) DisconnectNode(from_node String.Name, from_port int64, to_node String.Name, to_port int64) { //gd:GraphEdit.disconnect_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(from_node)))
 	callframe.Arg(frame, from_port)
@@ -786,7 +789,7 @@ func (self class) DisconnectNode(from_node String.Name, from_port gd.Int, to_nod
 Sets the coloration of the connection between [param from_node]'s [param from_port] and [param to_node]'s [param to_port] with the color provided in the [theme_item activity] theme property. The color is linearly interpolated between the connection color and the activity color using [param amount] as weight.
 */
 //go:nosplit
-func (self class) SetConnectionActivity(from_node String.Name, from_port gd.Int, to_node String.Name, to_port gd.Int, amount gd.Float) { //gd:GraphEdit.set_connection_activity
+func (self class) SetConnectionActivity(from_node String.Name, from_port int64, to_node String.Name, to_port int64, amount float64) { //gd:GraphEdit.set_connection_activity
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(from_node)))
 	callframe.Arg(frame, from_port)
@@ -822,7 +825,7 @@ var connection = get_closest_connection_at_point(mouse_event.get_position())
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetClosestConnectionAtPoint(point gd.Vector2, max_distance gd.Float) Dictionary.Any { //gd:GraphEdit.get_closest_connection_at_point
+func (self class) GetClosestConnectionAtPoint(point Vector2.XY, max_distance float64) Dictionary.Any { //gd:GraphEdit.get_closest_connection_at_point
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, max_distance)
@@ -837,7 +840,7 @@ func (self class) GetClosestConnectionAtPoint(point gd.Vector2, max_distance gd.
 Returns an [Array] containing the list of connections that intersect with the given [Rect2]. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
 //go:nosplit
-func (self class) GetConnectionsIntersectingWithRect(rect gd.Rect2) Array.Contains[Dictionary.Any] { //gd:GraphEdit.get_connections_intersecting_with_rect
+func (self class) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) Array.Contains[Dictionary.Any] { //gd:GraphEdit.get_connections_intersecting_with_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -872,9 +875,9 @@ func (self class) ForceConnectionDragEnd() { //gd:GraphEdit.force_connection_dra
 }
 
 //go:nosplit
-func (self class) GetScrollOffset() gd.Vector2 { //gd:GraphEdit.get_scroll_offset
+func (self class) GetScrollOffset() Vector2.XY { //gd:GraphEdit.get_scroll_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_scroll_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -882,7 +885,7 @@ func (self class) GetScrollOffset() gd.Vector2 { //gd:GraphEdit.get_scroll_offse
 }
 
 //go:nosplit
-func (self class) SetScrollOffset(offset gd.Vector2) { //gd:GraphEdit.set_scroll_offset
+func (self class) SetScrollOffset(offset Vector2.XY) { //gd:GraphEdit.set_scroll_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -894,7 +897,7 @@ func (self class) SetScrollOffset(offset gd.Vector2) { //gd:GraphEdit.set_scroll
 Allows to disconnect nodes when dragging from the right port of the [GraphNode]'s slot if it has the specified type. See also [method remove_valid_right_disconnect_type].
 */
 //go:nosplit
-func (self class) AddValidRightDisconnectType(atype gd.Int) { //gd:GraphEdit.add_valid_right_disconnect_type
+func (self class) AddValidRightDisconnectType(atype int64) { //gd:GraphEdit.add_valid_right_disconnect_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -906,7 +909,7 @@ func (self class) AddValidRightDisconnectType(atype gd.Int) { //gd:GraphEdit.add
 Disallows to disconnect nodes when dragging from the right port of the [GraphNode]'s slot if it has the specified type. Use this to disable disconnection previously allowed with [method add_valid_right_disconnect_type].
 */
 //go:nosplit
-func (self class) RemoveValidRightDisconnectType(atype gd.Int) { //gd:GraphEdit.remove_valid_right_disconnect_type
+func (self class) RemoveValidRightDisconnectType(atype int64) { //gd:GraphEdit.remove_valid_right_disconnect_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -918,7 +921,7 @@ func (self class) RemoveValidRightDisconnectType(atype gd.Int) { //gd:GraphEdit.
 Allows to disconnect nodes when dragging from the left port of the [GraphNode]'s slot if it has the specified type. See also [method remove_valid_left_disconnect_type].
 */
 //go:nosplit
-func (self class) AddValidLeftDisconnectType(atype gd.Int) { //gd:GraphEdit.add_valid_left_disconnect_type
+func (self class) AddValidLeftDisconnectType(atype int64) { //gd:GraphEdit.add_valid_left_disconnect_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -930,7 +933,7 @@ func (self class) AddValidLeftDisconnectType(atype gd.Int) { //gd:GraphEdit.add_
 Disallows to disconnect nodes when dragging from the left port of the [GraphNode]'s slot if it has the specified type. Use this to disable disconnection previously allowed with [method add_valid_left_disconnect_type].
 */
 //go:nosplit
-func (self class) RemoveValidLeftDisconnectType(atype gd.Int) { //gd:GraphEdit.remove_valid_left_disconnect_type
+func (self class) RemoveValidLeftDisconnectType(atype int64) { //gd:GraphEdit.remove_valid_left_disconnect_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -943,7 +946,7 @@ Allows the connection between two different port types. The port type is defined
 See also [method is_valid_connection_type] and [method remove_valid_connection_type].
 */
 //go:nosplit
-func (self class) AddValidConnectionType(from_type gd.Int, to_type gd.Int) { //gd:GraphEdit.add_valid_connection_type
+func (self class) AddValidConnectionType(from_type int64, to_type int64) { //gd:GraphEdit.add_valid_connection_type
 	var frame = callframe.New()
 	callframe.Arg(frame, from_type)
 	callframe.Arg(frame, to_type)
@@ -957,7 +960,7 @@ Disallows the connection between two different port types previously allowed by 
 See also [method is_valid_connection_type].
 */
 //go:nosplit
-func (self class) RemoveValidConnectionType(from_type gd.Int, to_type gd.Int) { //gd:GraphEdit.remove_valid_connection_type
+func (self class) RemoveValidConnectionType(from_type int64, to_type int64) { //gd:GraphEdit.remove_valid_connection_type
 	var frame = callframe.New()
 	callframe.Arg(frame, from_type)
 	callframe.Arg(frame, to_type)
@@ -971,7 +974,7 @@ Returns whether it's possible to make a connection between two different port ty
 See also [method add_valid_connection_type] and [method remove_valid_connection_type].
 */
 //go:nosplit
-func (self class) IsValidConnectionType(from_type gd.Int, to_type gd.Int) bool { //gd:GraphEdit.is_valid_connection_type
+func (self class) IsValidConnectionType(from_type int64, to_type int64) bool { //gd:GraphEdit.is_valid_connection_type
 	var frame = callframe.New()
 	callframe.Arg(frame, from_type)
 	callframe.Arg(frame, to_type)
@@ -986,7 +989,7 @@ func (self class) IsValidConnectionType(from_type gd.Int, to_type gd.Int) bool {
 Returns the points which would make up a connection between [param from_node] and [param to_node].
 */
 //go:nosplit
-func (self class) GetConnectionLine(from_node gd.Vector2, to_node gd.Vector2) Packed.Array[Vector2.XY] { //gd:GraphEdit.get_connection_line
+func (self class) GetConnectionLine(from_node Vector2.XY, to_node Vector2.XY) Packed.Array[Vector2.XY] { //gd:GraphEdit.get_connection_line
 	var frame = callframe.New()
 	callframe.Arg(frame, from_node)
 	callframe.Arg(frame, to_node)
@@ -1070,7 +1073,7 @@ func (self class) GetPanningScheme() gdclass.GraphEditPanningScheme { //gd:Graph
 }
 
 //go:nosplit
-func (self class) SetZoom(zoom gd.Float) { //gd:GraphEdit.set_zoom
+func (self class) SetZoom(zoom float64) { //gd:GraphEdit.set_zoom
 	var frame = callframe.New()
 	callframe.Arg(frame, zoom)
 	var r_ret = callframe.Nil
@@ -1079,9 +1082,9 @@ func (self class) SetZoom(zoom gd.Float) { //gd:GraphEdit.set_zoom
 }
 
 //go:nosplit
-func (self class) GetZoom() gd.Float { //gd:GraphEdit.get_zoom
+func (self class) GetZoom() float64 { //gd:GraphEdit.get_zoom
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_zoom, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1089,7 +1092,7 @@ func (self class) GetZoom() gd.Float { //gd:GraphEdit.get_zoom
 }
 
 //go:nosplit
-func (self class) SetZoomMin(zoom_min gd.Float) { //gd:GraphEdit.set_zoom_min
+func (self class) SetZoomMin(zoom_min float64) { //gd:GraphEdit.set_zoom_min
 	var frame = callframe.New()
 	callframe.Arg(frame, zoom_min)
 	var r_ret = callframe.Nil
@@ -1098,9 +1101,9 @@ func (self class) SetZoomMin(zoom_min gd.Float) { //gd:GraphEdit.set_zoom_min
 }
 
 //go:nosplit
-func (self class) GetZoomMin() gd.Float { //gd:GraphEdit.get_zoom_min
+func (self class) GetZoomMin() float64 { //gd:GraphEdit.get_zoom_min
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_zoom_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1108,7 +1111,7 @@ func (self class) GetZoomMin() gd.Float { //gd:GraphEdit.get_zoom_min
 }
 
 //go:nosplit
-func (self class) SetZoomMax(zoom_max gd.Float) { //gd:GraphEdit.set_zoom_max
+func (self class) SetZoomMax(zoom_max float64) { //gd:GraphEdit.set_zoom_max
 	var frame = callframe.New()
 	callframe.Arg(frame, zoom_max)
 	var r_ret = callframe.Nil
@@ -1117,9 +1120,9 @@ func (self class) SetZoomMax(zoom_max gd.Float) { //gd:GraphEdit.set_zoom_max
 }
 
 //go:nosplit
-func (self class) GetZoomMax() gd.Float { //gd:GraphEdit.get_zoom_max
+func (self class) GetZoomMax() float64 { //gd:GraphEdit.get_zoom_max
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_zoom_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1127,7 +1130,7 @@ func (self class) GetZoomMax() gd.Float { //gd:GraphEdit.get_zoom_max
 }
 
 //go:nosplit
-func (self class) SetZoomStep(zoom_step gd.Float) { //gd:GraphEdit.set_zoom_step
+func (self class) SetZoomStep(zoom_step float64) { //gd:GraphEdit.set_zoom_step
 	var frame = callframe.New()
 	callframe.Arg(frame, zoom_step)
 	var r_ret = callframe.Nil
@@ -1136,9 +1139,9 @@ func (self class) SetZoomStep(zoom_step gd.Float) { //gd:GraphEdit.set_zoom_step
 }
 
 //go:nosplit
-func (self class) GetZoomStep() gd.Float { //gd:GraphEdit.get_zoom_step
+func (self class) GetZoomStep() float64 { //gd:GraphEdit.get_zoom_step
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_zoom_step, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1203,7 +1206,7 @@ func (self class) IsSnappingEnabled() bool { //gd:GraphEdit.is_snapping_enabled
 }
 
 //go:nosplit
-func (self class) SetSnappingDistance(pixels gd.Int) { //gd:GraphEdit.set_snapping_distance
+func (self class) SetSnappingDistance(pixels int64) { //gd:GraphEdit.set_snapping_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, pixels)
 	var r_ret = callframe.Nil
@@ -1212,9 +1215,9 @@ func (self class) SetSnappingDistance(pixels gd.Int) { //gd:GraphEdit.set_snappi
 }
 
 //go:nosplit
-func (self class) GetSnappingDistance() gd.Int { //gd:GraphEdit.get_snapping_distance
+func (self class) GetSnappingDistance() int64 { //gd:GraphEdit.get_snapping_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_snapping_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1222,7 +1225,7 @@ func (self class) GetSnappingDistance() gd.Int { //gd:GraphEdit.get_snapping_dis
 }
 
 //go:nosplit
-func (self class) SetConnectionLinesCurvature(curvature gd.Float) { //gd:GraphEdit.set_connection_lines_curvature
+func (self class) SetConnectionLinesCurvature(curvature float64) { //gd:GraphEdit.set_connection_lines_curvature
 	var frame = callframe.New()
 	callframe.Arg(frame, curvature)
 	var r_ret = callframe.Nil
@@ -1231,9 +1234,9 @@ func (self class) SetConnectionLinesCurvature(curvature gd.Float) { //gd:GraphEd
 }
 
 //go:nosplit
-func (self class) GetConnectionLinesCurvature() gd.Float { //gd:GraphEdit.get_connection_lines_curvature
+func (self class) GetConnectionLinesCurvature() float64 { //gd:GraphEdit.get_connection_lines_curvature
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connection_lines_curvature, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1241,7 +1244,7 @@ func (self class) GetConnectionLinesCurvature() gd.Float { //gd:GraphEdit.get_co
 }
 
 //go:nosplit
-func (self class) SetConnectionLinesThickness(pixels gd.Float) { //gd:GraphEdit.set_connection_lines_thickness
+func (self class) SetConnectionLinesThickness(pixels float64) { //gd:GraphEdit.set_connection_lines_thickness
 	var frame = callframe.New()
 	callframe.Arg(frame, pixels)
 	var r_ret = callframe.Nil
@@ -1250,9 +1253,9 @@ func (self class) SetConnectionLinesThickness(pixels gd.Float) { //gd:GraphEdit.
 }
 
 //go:nosplit
-func (self class) GetConnectionLinesThickness() gd.Float { //gd:GraphEdit.get_connection_lines_thickness
+func (self class) GetConnectionLinesThickness() float64 { //gd:GraphEdit.get_connection_lines_thickness
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connection_lines_thickness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1279,7 +1282,7 @@ func (self class) IsConnectionLinesAntialiased() bool { //gd:GraphEdit.is_connec
 }
 
 //go:nosplit
-func (self class) SetMinimapSize(size gd.Vector2) { //gd:GraphEdit.set_minimap_size
+func (self class) SetMinimapSize(size Vector2.XY) { //gd:GraphEdit.set_minimap_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -1288,9 +1291,9 @@ func (self class) SetMinimapSize(size gd.Vector2) { //gd:GraphEdit.set_minimap_s
 }
 
 //go:nosplit
-func (self class) GetMinimapSize() gd.Vector2 { //gd:GraphEdit.get_minimap_size
+func (self class) GetMinimapSize() Vector2.XY { //gd:GraphEdit.get_minimap_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_minimap_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1298,7 +1301,7 @@ func (self class) GetMinimapSize() gd.Vector2 { //gd:GraphEdit.get_minimap_size
 }
 
 //go:nosplit
-func (self class) SetMinimapOpacity(opacity gd.Float) { //gd:GraphEdit.set_minimap_opacity
+func (self class) SetMinimapOpacity(opacity float64) { //gd:GraphEdit.set_minimap_opacity
 	var frame = callframe.New()
 	callframe.Arg(frame, opacity)
 	var r_ret = callframe.Nil
@@ -1307,9 +1310,9 @@ func (self class) SetMinimapOpacity(opacity gd.Float) { //gd:GraphEdit.set_minim
 }
 
 //go:nosplit
-func (self class) GetMinimapOpacity() gd.Float { //gd:GraphEdit.get_minimap_opacity
+func (self class) GetMinimapOpacity() float64 { //gd:GraphEdit.get_minimap_opacity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_minimap_opacity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1640,122 +1643,6 @@ const (
 	GridPatternLines GridPattern = 0
 	/*Draw the grid using dots.*/
 	GridPatternDots GridPattern = 1
-)
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
 )
 
 type Connection struct {

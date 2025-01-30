@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,7 +57,7 @@ Creates/returns a cached uniform set based on the provided uniforms for a given 
 */
 func GetCache(shader RID.Shader, set int, uniforms [][1]gdclass.RDUniform) RID.UniformSet { //gd:UniformSetCacheRD.get_cache
 	self := Instance{}
-	return RID.UniformSet(class(self).GetCache(gd.RID(shader), gd.Int(set), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms)))
+	return RID.UniformSet(class(self).GetCache(RID.Any(shader), int64(set), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -78,12 +82,12 @@ func New() Instance {
 Creates/returns a cached uniform set based on the provided uniforms for a given shader.
 */
 //go:nosplit
-func (self class) GetCache(shader gd.RID, set gd.Int, uniforms Array.Contains[[1]gdclass.RDUniform]) gd.RID { //gd:UniformSetCacheRD.get_cache
+func (self class) GetCache(shader RID.Any, set int64, uniforms Array.Contains[[1]gdclass.RDUniform]) RID.Any { //gd:UniformSetCacheRD.get_cache
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
 	callframe.Arg(frame, set)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(uniforms)))
-	var r_ret = callframe.Ret[gd.RID](frame)
+	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UniformSetCacheRD.Bind_get_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

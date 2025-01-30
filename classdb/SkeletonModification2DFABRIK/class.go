@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/SkeletonModification2D"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -59,42 +63,42 @@ type Any interface {
 Sets the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
 func (self Instance) SetFabrikJointBone2dNode(joint_idx int, bone2d_nodepath string) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone2d_node
-	class(self).SetFabrikJointBone2dNode(gd.Int(joint_idx), Path.ToNode(String.New(bone2d_nodepath)))
+	class(self).SetFabrikJointBone2dNode(int64(joint_idx), Path.ToNode(String.New(bone2d_nodepath)))
 }
 
 /*
 Returns the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
 func (self Instance) GetFabrikJointBone2dNode(joint_idx int) string { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_bone2d_node
-	return string(class(self).GetFabrikJointBone2dNode(gd.Int(joint_idx)).String())
+	return string(class(self).GetFabrikJointBone2dNode(int64(joint_idx)).String())
 }
 
 /*
 Sets the bone index, [param bone_idx], of the FABRIK joint at [param joint_idx]. When possible, this will also update the [code]bone2d_node[/code] of the FABRIK joint based on data provided by the linked skeleton.
 */
 func (self Instance) SetFabrikJointBoneIndex(joint_idx int, bone_idx int) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone_index
-	class(self).SetFabrikJointBoneIndex(gd.Int(joint_idx), gd.Int(bone_idx))
+	class(self).SetFabrikJointBoneIndex(int64(joint_idx), int64(bone_idx))
 }
 
 /*
 Returns the index of the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
 func (self Instance) GetFabrikJointBoneIndex(joint_idx int) int { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_bone_index
-	return int(int(class(self).GetFabrikJointBoneIndex(gd.Int(joint_idx))))
+	return int(int(class(self).GetFabrikJointBoneIndex(int64(joint_idx))))
 }
 
 /*
 Sets the magnet position vector for the joint at [param joint_idx].
 */
 func (self Instance) SetFabrikJointMagnetPosition(joint_idx int, magnet_position Vector2.XY) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_magnet_position
-	class(self).SetFabrikJointMagnetPosition(gd.Int(joint_idx), gd.Vector2(magnet_position))
+	class(self).SetFabrikJointMagnetPosition(int64(joint_idx), Vector2.XY(magnet_position))
 }
 
 /*
 Returns the magnet position vector for the joint at [param joint_idx].
 */
 func (self Instance) GetFabrikJointMagnetPosition(joint_idx int) Vector2.XY { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_magnet_position
-	return Vector2.XY(class(self).GetFabrikJointMagnetPosition(gd.Int(joint_idx)))
+	return Vector2.XY(class(self).GetFabrikJointMagnetPosition(int64(joint_idx)))
 }
 
 /*
@@ -102,14 +106,14 @@ Sets whether the joint at [param joint_idx] will use the target node's rotation 
 [b]Note:[/b] This option only works for the tip/final joint in the chain. For all other nodes, this option will be ignored.
 */
 func (self Instance) SetFabrikJointUseTargetRotation(joint_idx int, use_target_rotation bool) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_use_target_rotation
-	class(self).SetFabrikJointUseTargetRotation(gd.Int(joint_idx), use_target_rotation)
+	class(self).SetFabrikJointUseTargetRotation(int64(joint_idx), use_target_rotation)
 }
 
 /*
 Returns whether the joint is using the target's rotation rather than allowing FABRIK to rotate the joint. This option only applies to the tip/final joint in the chain.
 */
 func (self Instance) GetFabrikJointUseTargetRotation(joint_idx int) bool { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_use_target_rotation
-	return bool(class(self).GetFabrikJointUseTargetRotation(gd.Int(joint_idx)))
+	return bool(class(self).GetFabrikJointUseTargetRotation(int64(joint_idx)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -144,7 +148,7 @@ func (self Instance) FabrikDataChainLength() int {
 }
 
 func (self Instance) SetFabrikDataChainLength(value int) {
-	class(self).SetFabrikDataChainLength(gd.Int(value))
+	class(self).SetFabrikDataChainLength(int64(value))
 }
 
 //go:nosplit
@@ -167,7 +171,7 @@ func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DFABRI
 }
 
 //go:nosplit
-func (self class) SetFabrikDataChainLength(length gd.Int) { //gd:SkeletonModification2DFABRIK.set_fabrik_data_chain_length
+func (self class) SetFabrikDataChainLength(length int64) { //gd:SkeletonModification2DFABRIK.set_fabrik_data_chain_length
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -176,9 +180,9 @@ func (self class) SetFabrikDataChainLength(length gd.Int) { //gd:SkeletonModific
 }
 
 //go:nosplit
-func (self class) GetFabrikDataChainLength() gd.Int { //gd:SkeletonModification2DFABRIK.get_fabrik_data_chain_length
+func (self class) GetFabrikDataChainLength() int64 { //gd:SkeletonModification2DFABRIK.get_fabrik_data_chain_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_get_fabrik_data_chain_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -189,7 +193,7 @@ func (self class) GetFabrikDataChainLength() gd.Int { //gd:SkeletonModification2
 Sets the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) SetFabrikJointBone2dNode(joint_idx gd.Int, bone2d_nodepath Path.ToNode) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone2d_node
+func (self class) SetFabrikJointBone2dNode(joint_idx int64, bone2d_nodepath Path.ToNode) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(bone2d_nodepath)))
@@ -202,7 +206,7 @@ func (self class) SetFabrikJointBone2dNode(joint_idx gd.Int, bone2d_nodepath Pat
 Returns the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetFabrikJointBone2dNode(joint_idx gd.Int) Path.ToNode { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_bone2d_node
+func (self class) GetFabrikJointBone2dNode(joint_idx int64) Path.ToNode { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -216,7 +220,7 @@ func (self class) GetFabrikJointBone2dNode(joint_idx gd.Int) Path.ToNode { //gd:
 Sets the bone index, [param bone_idx], of the FABRIK joint at [param joint_idx]. When possible, this will also update the [code]bone2d_node[/code] of the FABRIK joint based on data provided by the linked skeleton.
 */
 //go:nosplit
-func (self class) SetFabrikJointBoneIndex(joint_idx gd.Int, bone_idx gd.Int) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone_index
+func (self class) SetFabrikJointBoneIndex(joint_idx int64, bone_idx int64) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone_index
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, bone_idx)
@@ -229,10 +233,10 @@ func (self class) SetFabrikJointBoneIndex(joint_idx gd.Int, bone_idx gd.Int) { /
 Returns the index of the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetFabrikJointBoneIndex(joint_idx gd.Int) gd.Int { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_bone_index
+func (self class) GetFabrikJointBoneIndex(joint_idx int64) int64 { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_bone_index
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_get_fabrik_joint_bone_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -243,7 +247,7 @@ func (self class) GetFabrikJointBoneIndex(joint_idx gd.Int) gd.Int { //gd:Skelet
 Sets the magnet position vector for the joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) SetFabrikJointMagnetPosition(joint_idx gd.Int, magnet_position gd.Vector2) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_magnet_position
+func (self class) SetFabrikJointMagnetPosition(joint_idx int64, magnet_position Vector2.XY) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_magnet_position
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, magnet_position)
@@ -256,10 +260,10 @@ func (self class) SetFabrikJointMagnetPosition(joint_idx gd.Int, magnet_position
 Returns the magnet position vector for the joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetFabrikJointMagnetPosition(joint_idx gd.Int) gd.Vector2 { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_magnet_position
+func (self class) GetFabrikJointMagnetPosition(joint_idx int64) Vector2.XY { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_magnet_position
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_get_fabrik_joint_magnet_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -271,7 +275,7 @@ Sets whether the joint at [param joint_idx] will use the target node's rotation 
 [b]Note:[/b] This option only works for the tip/final joint in the chain. For all other nodes, this option will be ignored.
 */
 //go:nosplit
-func (self class) SetFabrikJointUseTargetRotation(joint_idx gd.Int, use_target_rotation bool) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_use_target_rotation
+func (self class) SetFabrikJointUseTargetRotation(joint_idx int64, use_target_rotation bool) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_use_target_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, use_target_rotation)
@@ -284,7 +288,7 @@ func (self class) SetFabrikJointUseTargetRotation(joint_idx gd.Int, use_target_r
 Returns whether the joint is using the target's rotation rather than allowing FABRIK to rotate the joint. This option only applies to the tip/final joint in the chain.
 */
 //go:nosplit
-func (self class) GetFabrikJointUseTargetRotation(joint_idx gd.Int) bool { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_use_target_rotation
+func (self class) GetFabrikJointUseTargetRotation(joint_idx int64) bool { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_use_target_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[bool](frame)

@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Transform3D"
-import "graphics.gd/variant/AABB"
-import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,7 +58,7 @@ type Any interface {
 }
 
 func (self Instance) Allocate(to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3.XYZ, octree_cells []byte, data_cells []byte, distance_field []byte, level_counts []int32) { //gd:VoxelGIData.allocate
-	class(self).Allocate(gd.Transform3D(to_cell_xform), gd.AABB(aabb), gd.Vector3(octree_size), Packed.Bytes(Packed.New(octree_cells...)), Packed.Bytes(Packed.New(data_cells...)), Packed.Bytes(Packed.New(distance_field...)), Packed.New(level_counts...))
+	class(self).Allocate(Transform3D.BasisOrigin(to_cell_xform), AABB.PositionSize(aabb), Vector3.XYZ(octree_size), Packed.Bytes(Packed.New(octree_cells...)), Packed.Bytes(Packed.New(data_cells...)), Packed.Bytes(Packed.New(distance_field...)), Packed.New(level_counts...))
 }
 
 /*
@@ -105,7 +108,7 @@ func (self Instance) DynamicRange() Float.X {
 }
 
 func (self Instance) SetDynamicRange(value Float.X) {
-	class(self).SetDynamicRange(gd.Float(value))
+	class(self).SetDynamicRange(float64(value))
 }
 
 func (self Instance) Energy() Float.X {
@@ -113,7 +116,7 @@ func (self Instance) Energy() Float.X {
 }
 
 func (self Instance) SetEnergy(value Float.X) {
-	class(self).SetEnergy(gd.Float(value))
+	class(self).SetEnergy(float64(value))
 }
 
 func (self Instance) Bias() Float.X {
@@ -121,7 +124,7 @@ func (self Instance) Bias() Float.X {
 }
 
 func (self Instance) SetBias(value Float.X) {
-	class(self).SetBias(gd.Float(value))
+	class(self).SetBias(float64(value))
 }
 
 func (self Instance) NormalBias() Float.X {
@@ -129,7 +132,7 @@ func (self Instance) NormalBias() Float.X {
 }
 
 func (self Instance) SetNormalBias(value Float.X) {
-	class(self).SetNormalBias(gd.Float(value))
+	class(self).SetNormalBias(float64(value))
 }
 
 func (self Instance) Propagation() Float.X {
@@ -137,7 +140,7 @@ func (self Instance) Propagation() Float.X {
 }
 
 func (self Instance) SetPropagation(value Float.X) {
-	class(self).SetPropagation(gd.Float(value))
+	class(self).SetPropagation(float64(value))
 }
 
 func (self Instance) UseTwoBounces() bool {
@@ -157,7 +160,7 @@ func (self Instance) SetInterior(value bool) {
 }
 
 //go:nosplit
-func (self class) Allocate(to_cell_xform gd.Transform3D, aabb gd.AABB, octree_size gd.Vector3, octree_cells Packed.Bytes, data_cells Packed.Bytes, distance_field Packed.Bytes, level_counts Packed.Array[int32]) { //gd:VoxelGIData.allocate
+func (self class) Allocate(to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3.XYZ, octree_cells Packed.Bytes, data_cells Packed.Bytes, distance_field Packed.Bytes, level_counts Packed.Array[int32]) { //gd:VoxelGIData.allocate
 	var frame = callframe.New()
 	callframe.Arg(frame, to_cell_xform)
 	callframe.Arg(frame, aabb)
@@ -176,9 +179,9 @@ Returns the bounds of the baked voxel data as an [AABB], which should match [mem
 [b]Note:[/b] If the size was modified without baking the VoxelGI data, then the value of [method get_bounds] and [member VoxelGI.size] will not match.
 */
 //go:nosplit
-func (self class) GetBounds() gd.AABB { //gd:VoxelGIData.get_bounds
+func (self class) GetBounds() AABB.PositionSize { //gd:VoxelGIData.get_bounds
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.AABB](frame)
+	var r_ret = callframe.Ret[AABB.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGIData.Bind_get_bounds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -186,9 +189,9 @@ func (self class) GetBounds() gd.AABB { //gd:VoxelGIData.get_bounds
 }
 
 //go:nosplit
-func (self class) GetOctreeSize() gd.Vector3 { //gd:VoxelGIData.get_octree_size
+func (self class) GetOctreeSize() Vector3.XYZ { //gd:VoxelGIData.get_octree_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3](frame)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGIData.Bind_get_octree_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -196,9 +199,9 @@ func (self class) GetOctreeSize() gd.Vector3 { //gd:VoxelGIData.get_octree_size
 }
 
 //go:nosplit
-func (self class) GetToCellXform() gd.Transform3D { //gd:VoxelGIData.get_to_cell_xform
+func (self class) GetToCellXform() Transform3D.BasisOrigin { //gd:VoxelGIData.get_to_cell_xform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGIData.Bind_get_to_cell_xform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -236,7 +239,7 @@ func (self class) GetLevelCounts() Packed.Array[int32] { //gd:VoxelGIData.get_le
 }
 
 //go:nosplit
-func (self class) SetDynamicRange(dynamic_range gd.Float) { //gd:VoxelGIData.set_dynamic_range
+func (self class) SetDynamicRange(dynamic_range float64) { //gd:VoxelGIData.set_dynamic_range
 	var frame = callframe.New()
 	callframe.Arg(frame, dynamic_range)
 	var r_ret = callframe.Nil
@@ -245,9 +248,9 @@ func (self class) SetDynamicRange(dynamic_range gd.Float) { //gd:VoxelGIData.set
 }
 
 //go:nosplit
-func (self class) GetDynamicRange() gd.Float { //gd:VoxelGIData.get_dynamic_range
+func (self class) GetDynamicRange() float64 { //gd:VoxelGIData.get_dynamic_range
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGIData.Bind_get_dynamic_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -255,7 +258,7 @@ func (self class) GetDynamicRange() gd.Float { //gd:VoxelGIData.get_dynamic_rang
 }
 
 //go:nosplit
-func (self class) SetEnergy(energy gd.Float) { //gd:VoxelGIData.set_energy
+func (self class) SetEnergy(energy float64) { //gd:VoxelGIData.set_energy
 	var frame = callframe.New()
 	callframe.Arg(frame, energy)
 	var r_ret = callframe.Nil
@@ -264,9 +267,9 @@ func (self class) SetEnergy(energy gd.Float) { //gd:VoxelGIData.set_energy
 }
 
 //go:nosplit
-func (self class) GetEnergy() gd.Float { //gd:VoxelGIData.get_energy
+func (self class) GetEnergy() float64 { //gd:VoxelGIData.get_energy
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGIData.Bind_get_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -274,7 +277,7 @@ func (self class) GetEnergy() gd.Float { //gd:VoxelGIData.get_energy
 }
 
 //go:nosplit
-func (self class) SetBias(bias gd.Float) { //gd:VoxelGIData.set_bias
+func (self class) SetBias(bias float64) { //gd:VoxelGIData.set_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, bias)
 	var r_ret = callframe.Nil
@@ -283,9 +286,9 @@ func (self class) SetBias(bias gd.Float) { //gd:VoxelGIData.set_bias
 }
 
 //go:nosplit
-func (self class) GetBias() gd.Float { //gd:VoxelGIData.get_bias
+func (self class) GetBias() float64 { //gd:VoxelGIData.get_bias
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGIData.Bind_get_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -293,7 +296,7 @@ func (self class) GetBias() gd.Float { //gd:VoxelGIData.get_bias
 }
 
 //go:nosplit
-func (self class) SetNormalBias(bias gd.Float) { //gd:VoxelGIData.set_normal_bias
+func (self class) SetNormalBias(bias float64) { //gd:VoxelGIData.set_normal_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, bias)
 	var r_ret = callframe.Nil
@@ -302,9 +305,9 @@ func (self class) SetNormalBias(bias gd.Float) { //gd:VoxelGIData.set_normal_bia
 }
 
 //go:nosplit
-func (self class) GetNormalBias() gd.Float { //gd:VoxelGIData.get_normal_bias
+func (self class) GetNormalBias() float64 { //gd:VoxelGIData.get_normal_bias
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGIData.Bind_get_normal_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -312,7 +315,7 @@ func (self class) GetNormalBias() gd.Float { //gd:VoxelGIData.get_normal_bias
 }
 
 //go:nosplit
-func (self class) SetPropagation(propagation gd.Float) { //gd:VoxelGIData.set_propagation
+func (self class) SetPropagation(propagation float64) { //gd:VoxelGIData.set_propagation
 	var frame = callframe.New()
 	callframe.Arg(frame, propagation)
 	var r_ret = callframe.Nil
@@ -321,9 +324,9 @@ func (self class) SetPropagation(propagation gd.Float) { //gd:VoxelGIData.set_pr
 }
 
 //go:nosplit
-func (self class) GetPropagation() gd.Float { //gd:VoxelGIData.get_propagation
+func (self class) GetPropagation() float64 { //gd:VoxelGIData.get_propagation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGIData.Bind_get_propagation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

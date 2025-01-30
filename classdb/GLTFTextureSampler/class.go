@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -73,7 +77,7 @@ func (self Instance) MagFilter() int {
 }
 
 func (self Instance) SetMagFilter(value int) {
-	class(self).SetMagFilter(gd.Int(value))
+	class(self).SetMagFilter(int64(value))
 }
 
 func (self Instance) MinFilter() int {
@@ -81,7 +85,7 @@ func (self Instance) MinFilter() int {
 }
 
 func (self Instance) SetMinFilter(value int) {
-	class(self).SetMinFilter(gd.Int(value))
+	class(self).SetMinFilter(int64(value))
 }
 
 func (self Instance) WrapS() int {
@@ -89,7 +93,7 @@ func (self Instance) WrapS() int {
 }
 
 func (self Instance) SetWrapS(value int) {
-	class(self).SetWrapS(gd.Int(value))
+	class(self).SetWrapS(int64(value))
 }
 
 func (self Instance) WrapT() int {
@@ -97,13 +101,13 @@ func (self Instance) WrapT() int {
 }
 
 func (self Instance) SetWrapT(value int) {
-	class(self).SetWrapT(gd.Int(value))
+	class(self).SetWrapT(int64(value))
 }
 
 //go:nosplit
-func (self class) GetMagFilter() gd.Int { //gd:GLTFTextureSampler.get_mag_filter
+func (self class) GetMagFilter() int64 { //gd:GLTFTextureSampler.get_mag_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTextureSampler.Bind_get_mag_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -111,7 +115,7 @@ func (self class) GetMagFilter() gd.Int { //gd:GLTFTextureSampler.get_mag_filter
 }
 
 //go:nosplit
-func (self class) SetMagFilter(filter_mode gd.Int) { //gd:GLTFTextureSampler.set_mag_filter
+func (self class) SetMagFilter(filter_mode int64) { //gd:GLTFTextureSampler.set_mag_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, filter_mode)
 	var r_ret = callframe.Nil
@@ -120,9 +124,9 @@ func (self class) SetMagFilter(filter_mode gd.Int) { //gd:GLTFTextureSampler.set
 }
 
 //go:nosplit
-func (self class) GetMinFilter() gd.Int { //gd:GLTFTextureSampler.get_min_filter
+func (self class) GetMinFilter() int64 { //gd:GLTFTextureSampler.get_min_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTextureSampler.Bind_get_min_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -130,7 +134,7 @@ func (self class) GetMinFilter() gd.Int { //gd:GLTFTextureSampler.get_min_filter
 }
 
 //go:nosplit
-func (self class) SetMinFilter(filter_mode gd.Int) { //gd:GLTFTextureSampler.set_min_filter
+func (self class) SetMinFilter(filter_mode int64) { //gd:GLTFTextureSampler.set_min_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, filter_mode)
 	var r_ret = callframe.Nil
@@ -139,9 +143,9 @@ func (self class) SetMinFilter(filter_mode gd.Int) { //gd:GLTFTextureSampler.set
 }
 
 //go:nosplit
-func (self class) GetWrapS() gd.Int { //gd:GLTFTextureSampler.get_wrap_s
+func (self class) GetWrapS() int64 { //gd:GLTFTextureSampler.get_wrap_s
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTextureSampler.Bind_get_wrap_s, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -149,7 +153,7 @@ func (self class) GetWrapS() gd.Int { //gd:GLTFTextureSampler.get_wrap_s
 }
 
 //go:nosplit
-func (self class) SetWrapS(wrap_mode gd.Int) { //gd:GLTFTextureSampler.set_wrap_s
+func (self class) SetWrapS(wrap_mode int64) { //gd:GLTFTextureSampler.set_wrap_s
 	var frame = callframe.New()
 	callframe.Arg(frame, wrap_mode)
 	var r_ret = callframe.Nil
@@ -158,9 +162,9 @@ func (self class) SetWrapS(wrap_mode gd.Int) { //gd:GLTFTextureSampler.set_wrap_
 }
 
 //go:nosplit
-func (self class) GetWrapT() gd.Int { //gd:GLTFTextureSampler.get_wrap_t
+func (self class) GetWrapT() int64 { //gd:GLTFTextureSampler.get_wrap_t
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTextureSampler.Bind_get_wrap_t, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -168,7 +172,7 @@ func (self class) GetWrapT() gd.Int { //gd:GLTFTextureSampler.get_wrap_t
 }
 
 //go:nosplit
-func (self class) SetWrapT(wrap_mode gd.Int) { //gd:GLTFTextureSampler.set_wrap_t
+func (self class) SetWrapT(wrap_mode int64) { //gd:GLTFTextureSampler.set_wrap_t
 	var frame = callframe.New()
 	callframe.Arg(frame, wrap_mode)
 	var r_ret = callframe.Nil

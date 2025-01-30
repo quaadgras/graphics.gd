@@ -9,19 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -66,7 +70,7 @@ Returns UV coordinates where the given ray intersects with the composition layer
 Returns [code]Vector2(-1.0, -1.0)[/code] if the ray doesn't intersect.
 */
 func (self Instance) IntersectsRay(origin Vector3.XYZ, direction Vector3.XYZ) Vector2.XY { //gd:OpenXRCompositionLayer.intersects_ray
-	return Vector2.XY(class(self).IntersectsRay(gd.Vector3(origin), gd.Vector3(direction)))
+	return Vector2.XY(class(self).IntersectsRay(Vector3.XYZ(origin), Vector3.XYZ(direction)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -100,7 +104,7 @@ func (self Instance) SortOrder() int {
 }
 
 func (self Instance) SetSortOrder(value int) {
-	class(self).SetSortOrder(gd.Int(value))
+	class(self).SetSortOrder(int64(value))
 }
 
 func (self Instance) AlphaBlend() bool {
@@ -158,7 +162,7 @@ func (self class) GetEnableHolePunch() bool { //gd:OpenXRCompositionLayer.get_en
 }
 
 //go:nosplit
-func (self class) SetSortOrder(order gd.Int) { //gd:OpenXRCompositionLayer.set_sort_order
+func (self class) SetSortOrder(order int64) { //gd:OpenXRCompositionLayer.set_sort_order
 	var frame = callframe.New()
 	callframe.Arg(frame, order)
 	var r_ret = callframe.Nil
@@ -167,9 +171,9 @@ func (self class) SetSortOrder(order gd.Int) { //gd:OpenXRCompositionLayer.set_s
 }
 
 //go:nosplit
-func (self class) GetSortOrder() gd.Int { //gd:OpenXRCompositionLayer.get_sort_order
+func (self class) GetSortOrder() int64 { //gd:OpenXRCompositionLayer.get_sort_order
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_sort_order, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -214,11 +218,11 @@ Returns UV coordinates where the given ray intersects with the composition layer
 Returns [code]Vector2(-1.0, -1.0)[/code] if the ray doesn't intersect.
 */
 //go:nosplit
-func (self class) IntersectsRay(origin gd.Vector3, direction gd.Vector3) gd.Vector2 { //gd:OpenXRCompositionLayer.intersects_ray
+func (self class) IntersectsRay(origin Vector3.XYZ, direction Vector3.XYZ) Vector2.XY { //gd:OpenXRCompositionLayer.intersects_ray
 	var frame = callframe.New()
 	callframe.Arg(frame, origin)
 	callframe.Arg(frame, direction)
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_intersects_ray, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

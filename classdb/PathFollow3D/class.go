@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,7 +61,7 @@ Correct the [param transform]. [param rotation_mode] implicitly specifies how po
 */
 func CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode gdclass.PathFollow3DRotationMode) Transform3D.BasisOrigin { //gd:PathFollow3D.correct_posture
 	self := Instance{}
-	return Transform3D.BasisOrigin(class(self).CorrectPosture(gd.Transform3D(transform), rotation_mode))
+	return Transform3D.BasisOrigin(class(self).CorrectPosture(Transform3D.BasisOrigin(transform), rotation_mode))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -84,7 +87,7 @@ func (self Instance) Progress() Float.X {
 }
 
 func (self Instance) SetProgress(value Float.X) {
-	class(self).SetProgress(gd.Float(value))
+	class(self).SetProgress(float64(value))
 }
 
 func (self Instance) ProgressRatio() Float.X {
@@ -92,7 +95,7 @@ func (self Instance) ProgressRatio() Float.X {
 }
 
 func (self Instance) SetProgressRatio(value Float.X) {
-	class(self).SetProgressRatio(gd.Float(value))
+	class(self).SetProgressRatio(float64(value))
 }
 
 func (self Instance) HOffset() Float.X {
@@ -100,7 +103,7 @@ func (self Instance) HOffset() Float.X {
 }
 
 func (self Instance) SetHOffset(value Float.X) {
-	class(self).SetHOffset(gd.Float(value))
+	class(self).SetHOffset(float64(value))
 }
 
 func (self Instance) VOffset() Float.X {
@@ -108,7 +111,7 @@ func (self Instance) VOffset() Float.X {
 }
 
 func (self Instance) SetVOffset(value Float.X) {
-	class(self).SetVOffset(gd.Float(value))
+	class(self).SetVOffset(float64(value))
 }
 
 func (self Instance) RotationMode() gdclass.PathFollow3DRotationMode {
@@ -152,7 +155,7 @@ func (self Instance) SetTiltEnabled(value bool) {
 }
 
 //go:nosplit
-func (self class) SetProgress(progress gd.Float) { //gd:PathFollow3D.set_progress
+func (self class) SetProgress(progress float64) { //gd:PathFollow3D.set_progress
 	var frame = callframe.New()
 	callframe.Arg(frame, progress)
 	var r_ret = callframe.Nil
@@ -161,9 +164,9 @@ func (self class) SetProgress(progress gd.Float) { //gd:PathFollow3D.set_progres
 }
 
 //go:nosplit
-func (self class) GetProgress() gd.Float { //gd:PathFollow3D.get_progress
+func (self class) GetProgress() float64 { //gd:PathFollow3D.get_progress
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_get_progress, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -171,7 +174,7 @@ func (self class) GetProgress() gd.Float { //gd:PathFollow3D.get_progress
 }
 
 //go:nosplit
-func (self class) SetHOffset(h_offset gd.Float) { //gd:PathFollow3D.set_h_offset
+func (self class) SetHOffset(h_offset float64) { //gd:PathFollow3D.set_h_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, h_offset)
 	var r_ret = callframe.Nil
@@ -180,9 +183,9 @@ func (self class) SetHOffset(h_offset gd.Float) { //gd:PathFollow3D.set_h_offset
 }
 
 //go:nosplit
-func (self class) GetHOffset() gd.Float { //gd:PathFollow3D.get_h_offset
+func (self class) GetHOffset() float64 { //gd:PathFollow3D.get_h_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_get_h_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -190,7 +193,7 @@ func (self class) GetHOffset() gd.Float { //gd:PathFollow3D.get_h_offset
 }
 
 //go:nosplit
-func (self class) SetVOffset(v_offset gd.Float) { //gd:PathFollow3D.set_v_offset
+func (self class) SetVOffset(v_offset float64) { //gd:PathFollow3D.set_v_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, v_offset)
 	var r_ret = callframe.Nil
@@ -199,9 +202,9 @@ func (self class) SetVOffset(v_offset gd.Float) { //gd:PathFollow3D.set_v_offset
 }
 
 //go:nosplit
-func (self class) GetVOffset() gd.Float { //gd:PathFollow3D.get_v_offset
+func (self class) GetVOffset() float64 { //gd:PathFollow3D.get_v_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_get_v_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -209,7 +212,7 @@ func (self class) GetVOffset() gd.Float { //gd:PathFollow3D.get_v_offset
 }
 
 //go:nosplit
-func (self class) SetProgressRatio(ratio gd.Float) { //gd:PathFollow3D.set_progress_ratio
+func (self class) SetProgressRatio(ratio float64) { //gd:PathFollow3D.set_progress_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -218,9 +221,9 @@ func (self class) SetProgressRatio(ratio gd.Float) { //gd:PathFollow3D.set_progr
 }
 
 //go:nosplit
-func (self class) GetProgressRatio() gd.Float { //gd:PathFollow3D.get_progress_ratio
+func (self class) GetProgressRatio() float64 { //gd:PathFollow3D.get_progress_ratio
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_get_progress_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -326,11 +329,11 @@ func (self class) IsTiltEnabled() bool { //gd:PathFollow3D.is_tilt_enabled
 Correct the [param transform]. [param rotation_mode] implicitly specifies how posture (forward, up and sideway direction) is calculated.
 */
 //go:nosplit
-func (self class) CorrectPosture(transform gd.Transform3D, rotation_mode gdclass.PathFollow3DRotationMode) gd.Transform3D { //gd:PathFollow3D.correct_posture
+func (self class) CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode gdclass.PathFollow3DRotationMode) Transform3D.BasisOrigin { //gd:PathFollow3D.correct_posture
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
 	callframe.Arg(frame, rotation_mode)
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_correct_posture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

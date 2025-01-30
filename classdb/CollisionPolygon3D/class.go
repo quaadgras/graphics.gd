@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -76,7 +79,7 @@ func (self Instance) Depth() Float.X {
 }
 
 func (self Instance) SetDepth(value Float.X) {
-	class(self).SetDepth(gd.Float(value))
+	class(self).SetDepth(float64(value))
 }
 
 func (self Instance) Disabled() bool {
@@ -100,11 +103,11 @@ func (self Instance) Margin() Float.X {
 }
 
 func (self Instance) SetMargin(value Float.X) {
-	class(self).SetMargin(gd.Float(value))
+	class(self).SetMargin(float64(value))
 }
 
 //go:nosplit
-func (self class) SetDepth(depth gd.Float) { //gd:CollisionPolygon3D.set_depth
+func (self class) SetDepth(depth float64) { //gd:CollisionPolygon3D.set_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, depth)
 	var r_ret = callframe.Nil
@@ -113,9 +116,9 @@ func (self class) SetDepth(depth gd.Float) { //gd:CollisionPolygon3D.set_depth
 }
 
 //go:nosplit
-func (self class) GetDepth() gd.Float { //gd:CollisionPolygon3D.get_depth
+func (self class) GetDepth() float64 { //gd:CollisionPolygon3D.get_depth
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon3D.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -161,7 +164,7 @@ func (self class) IsDisabled() bool { //gd:CollisionPolygon3D.is_disabled
 }
 
 //go:nosplit
-func (self class) SetMargin(margin gd.Float) { //gd:CollisionPolygon3D.set_margin
+func (self class) SetMargin(margin float64) { //gd:CollisionPolygon3D.set_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -170,9 +173,9 @@ func (self class) SetMargin(margin gd.Float) { //gd:CollisionPolygon3D.set_margi
 }
 
 //go:nosplit
-func (self class) GetMargin() gd.Float { //gd:CollisionPolygon3D.get_margin
+func (self class) GetMargin() float64 { //gd:CollisionPolygon3D.get_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon3D.Bind_get_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

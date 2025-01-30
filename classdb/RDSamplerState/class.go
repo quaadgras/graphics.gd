@@ -9,16 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -121,7 +124,7 @@ func (self Instance) LodBias() Float.X {
 }
 
 func (self Instance) SetLodBias(value Float.X) {
-	class(self).SetLodBias(gd.Float(value))
+	class(self).SetLodBias(float64(value))
 }
 
 func (self Instance) UseAnisotropy() bool {
@@ -137,7 +140,7 @@ func (self Instance) AnisotropyMax() Float.X {
 }
 
 func (self Instance) SetAnisotropyMax(value Float.X) {
-	class(self).SetAnisotropyMax(gd.Float(value))
+	class(self).SetAnisotropyMax(float64(value))
 }
 
 func (self Instance) EnableCompare() bool {
@@ -161,7 +164,7 @@ func (self Instance) MinLod() Float.X {
 }
 
 func (self Instance) SetMinLod(value Float.X) {
-	class(self).SetMinLod(gd.Float(value))
+	class(self).SetMinLod(float64(value))
 }
 
 func (self Instance) MaxLod() Float.X {
@@ -169,7 +172,7 @@ func (self Instance) MaxLod() Float.X {
 }
 
 func (self Instance) SetMaxLod(value Float.X) {
-	class(self).SetMaxLod(gd.Float(value))
+	class(self).SetMaxLod(float64(value))
 }
 
 func (self Instance) BorderColor() gdclass.RenderingDeviceSamplerBorderColor {
@@ -303,7 +306,7 @@ func (self class) GetRepeatW() gdclass.RenderingDeviceSamplerRepeatMode { //gd:R
 }
 
 //go:nosplit
-func (self class) SetLodBias(p_member gd.Float) { //gd:RDSamplerState.set_lod_bias
+func (self class) SetLodBias(p_member float64) { //gd:RDSamplerState.set_lod_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -312,9 +315,9 @@ func (self class) SetLodBias(p_member gd.Float) { //gd:RDSamplerState.set_lod_bi
 }
 
 //go:nosplit
-func (self class) GetLodBias() gd.Float { //gd:RDSamplerState.get_lod_bias
+func (self class) GetLodBias() float64 { //gd:RDSamplerState.get_lod_bias
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_lod_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -341,7 +344,7 @@ func (self class) GetUseAnisotropy() bool { //gd:RDSamplerState.get_use_anisotro
 }
 
 //go:nosplit
-func (self class) SetAnisotropyMax(p_member gd.Float) { //gd:RDSamplerState.set_anisotropy_max
+func (self class) SetAnisotropyMax(p_member float64) { //gd:RDSamplerState.set_anisotropy_max
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -350,9 +353,9 @@ func (self class) SetAnisotropyMax(p_member gd.Float) { //gd:RDSamplerState.set_
 }
 
 //go:nosplit
-func (self class) GetAnisotropyMax() gd.Float { //gd:RDSamplerState.get_anisotropy_max
+func (self class) GetAnisotropyMax() float64 { //gd:RDSamplerState.get_anisotropy_max
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_anisotropy_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -398,7 +401,7 @@ func (self class) GetCompareOp() gdclass.RenderingDeviceCompareOperator { //gd:R
 }
 
 //go:nosplit
-func (self class) SetMinLod(p_member gd.Float) { //gd:RDSamplerState.set_min_lod
+func (self class) SetMinLod(p_member float64) { //gd:RDSamplerState.set_min_lod
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -407,9 +410,9 @@ func (self class) SetMinLod(p_member gd.Float) { //gd:RDSamplerState.set_min_lod
 }
 
 //go:nosplit
-func (self class) GetMinLod() gd.Float { //gd:RDSamplerState.get_min_lod
+func (self class) GetMinLod() float64 { //gd:RDSamplerState.get_min_lod
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_min_lod, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -417,7 +420,7 @@ func (self class) GetMinLod() gd.Float { //gd:RDSamplerState.get_min_lod
 }
 
 //go:nosplit
-func (self class) SetMaxLod(p_member gd.Float) { //gd:RDSamplerState.set_max_lod
+func (self class) SetMaxLod(p_member float64) { //gd:RDSamplerState.set_max_lod
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -426,9 +429,9 @@ func (self class) SetMaxLod(p_member gd.Float) { //gd:RDSamplerState.set_max_lod
 }
 
 //go:nosplit
-func (self class) GetMaxLod() gd.Float { //gd:RDSamplerState.get_max_lod
+func (self class) GetMaxLod() float64 { //gd:RDSamplerState.get_max_lod
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_max_lod, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

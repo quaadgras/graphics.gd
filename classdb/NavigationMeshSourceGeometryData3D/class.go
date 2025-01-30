@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
-import "graphics.gd/variant/Float"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -77,21 +80,21 @@ func (self Instance) HasData() bool { //gd:NavigationMeshSourceGeometryData3D.ha
 Adds the geometry data of a [Mesh] resource to the navigation mesh baking data. The mesh must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using [param xform].
 */
 func (self Instance) AddMesh(mesh [1]gdclass.Mesh, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh
-	class(self).AddMesh(mesh, gd.Transform3D(xform))
+	class(self).AddMesh(mesh, Transform3D.BasisOrigin(xform))
 }
 
 /*
 Adds an [Array] the size of [constant Mesh.ARRAY_MAX] and with vertices at index [constant Mesh.ARRAY_VERTEX] and indices at index [constant Mesh.ARRAY_INDEX] to the navigation mesh baking data. The array must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using [param xform].
 */
 func (self Instance) AddMeshArray(mesh_array []any, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh_array
-	class(self).AddMeshArray(gd.EngineArrayFromSlice(mesh_array), gd.Transform3D(xform))
+	class(self).AddMeshArray(gd.EngineArrayFromSlice(mesh_array), Transform3D.BasisOrigin(xform))
 }
 
 /*
 Adds an array of vertex positions to the geometry data for navigation mesh baking to form triangulated faces. For each face the array must have three vertex positions in clockwise winding order. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using [param xform].
 */
 func (self Instance) AddFaces(faces []Vector3.XYZ, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_faces
-	class(self).AddFaces(Packed.New(faces...), gd.Transform3D(xform))
+	class(self).AddFaces(Packed.New(faces...), Transform3D.BasisOrigin(xform))
 }
 
 /*
@@ -105,7 +108,7 @@ func (self Instance) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometr
 Adds a projected obstruction shape to the source geometry. The [param vertices] are considered projected on a xz-axes plane, placed at the global y-axis [param elevation] and extruded by [param height]. If [param carve] is [code]true[/code] the carved shape will not be affected by additional offsets (e.g. agent radius) of the navigation mesh baking process.
 */
 func (self Instance) AddProjectedObstruction(vertices []Vector3.XYZ, elevation Float.X, height Float.X, carve bool) { //gd:NavigationMeshSourceGeometryData3D.add_projected_obstruction
-	class(self).AddProjectedObstruction(Packed.New(vertices...), gd.Float(elevation), gd.Float(height), carve)
+	class(self).AddProjectedObstruction(Packed.New(vertices...), float64(elevation), float64(height), carve)
 }
 
 /*
@@ -251,7 +254,7 @@ func (self class) HasData() bool { //gd:NavigationMeshSourceGeometryData3D.has_d
 Adds the geometry data of a [Mesh] resource to the navigation mesh baking data. The mesh must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using [param xform].
 */
 //go:nosplit
-func (self class) AddMesh(mesh [1]gdclass.Mesh, xform gd.Transform3D) { //gd:NavigationMeshSourceGeometryData3D.add_mesh
+func (self class) AddMesh(mesh [1]gdclass.Mesh, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	callframe.Arg(frame, xform)
@@ -264,7 +267,7 @@ func (self class) AddMesh(mesh [1]gdclass.Mesh, xform gd.Transform3D) { //gd:Nav
 Adds an [Array] the size of [constant Mesh.ARRAY_MAX] and with vertices at index [constant Mesh.ARRAY_VERTEX] and indices at index [constant Mesh.ARRAY_INDEX] to the navigation mesh baking data. The array must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using [param xform].
 */
 //go:nosplit
-func (self class) AddMeshArray(mesh_array Array.Any, xform gd.Transform3D) { //gd:NavigationMeshSourceGeometryData3D.add_mesh_array
+func (self class) AddMeshArray(mesh_array Array.Any, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh_array
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(mesh_array)))
 	callframe.Arg(frame, xform)
@@ -277,7 +280,7 @@ func (self class) AddMeshArray(mesh_array Array.Any, xform gd.Transform3D) { //g
 Adds an array of vertex positions to the geometry data for navigation mesh baking to form triangulated faces. For each face the array must have three vertex positions in clockwise winding order. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using [param xform].
 */
 //go:nosplit
-func (self class) AddFaces(faces Packed.Array[Vector3.XYZ], xform gd.Transform3D) { //gd:NavigationMeshSourceGeometryData3D.add_faces
+func (self class) AddFaces(faces Packed.Array[Vector3.XYZ], xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_faces
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](faces)))
 	callframe.Arg(frame, xform)
@@ -302,7 +305,7 @@ func (self class) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryDa
 Adds a projected obstruction shape to the source geometry. The [param vertices] are considered projected on a xz-axes plane, placed at the global y-axis [param elevation] and extruded by [param height]. If [param carve] is [code]true[/code] the carved shape will not be affected by additional offsets (e.g. agent radius) of the navigation mesh baking process.
 */
 //go:nosplit
-func (self class) AddProjectedObstruction(vertices Packed.Array[Vector3.XYZ], elevation gd.Float, height gd.Float, carve bool) { //gd:NavigationMeshSourceGeometryData3D.add_projected_obstruction
+func (self class) AddProjectedObstruction(vertices Packed.Array[Vector3.XYZ], elevation float64, height float64, carve bool) { //gd:NavigationMeshSourceGeometryData3D.add_projected_obstruction
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)))
 	callframe.Arg(frame, elevation)

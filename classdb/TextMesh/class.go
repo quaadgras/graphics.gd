@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Mesh"
+import "graphics.gd/classdb/PrimitiveMesh"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/PrimitiveMesh"
-import "graphics.gd/classdb/Mesh"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -95,7 +98,7 @@ func (self Instance) FontSize() int {
 }
 
 func (self Instance) SetFontSize(value int) {
-	class(self).SetFontSize(gd.Int(value))
+	class(self).SetFontSize(int64(value))
 }
 
 func (self Instance) HorizontalAlignment() HorizontalAlignment {
@@ -127,7 +130,7 @@ func (self Instance) LineSpacing() Float.X {
 }
 
 func (self Instance) SetLineSpacing(value Float.X) {
-	class(self).SetLineSpacing(gd.Float(value))
+	class(self).SetLineSpacing(float64(value))
 }
 
 func (self Instance) AutowrapMode() gdclass.TextServerAutowrapMode {
@@ -151,7 +154,7 @@ func (self Instance) PixelSize() Float.X {
 }
 
 func (self Instance) SetPixelSize(value Float.X) {
-	class(self).SetPixelSize(gd.Float(value))
+	class(self).SetPixelSize(float64(value))
 }
 
 func (self Instance) CurveStep() Float.X {
@@ -159,7 +162,7 @@ func (self Instance) CurveStep() Float.X {
 }
 
 func (self Instance) SetCurveStep(value Float.X) {
-	class(self).SetCurveStep(gd.Float(value))
+	class(self).SetCurveStep(float64(value))
 }
 
 func (self Instance) Depth() Float.X {
@@ -167,7 +170,7 @@ func (self Instance) Depth() Float.X {
 }
 
 func (self Instance) SetDepth(value Float.X) {
-	class(self).SetDepth(gd.Float(value))
+	class(self).SetDepth(float64(value))
 }
 
 func (self Instance) Width() Float.X {
@@ -175,7 +178,7 @@ func (self Instance) Width() Float.X {
 }
 
 func (self Instance) SetWidth(value Float.X) {
-	class(self).SetWidth(gd.Float(value))
+	class(self).SetWidth(float64(value))
 }
 
 func (self Instance) Offset() Vector2.XY {
@@ -183,7 +186,7 @@ func (self Instance) Offset() Vector2.XY {
 }
 
 func (self Instance) SetOffset(value Vector2.XY) {
-	class(self).SetOffset(gd.Vector2(value))
+	class(self).SetOffset(Vector2.XY(value))
 }
 
 func (self Instance) TextDirection() gdclass.TextServerDirection {
@@ -295,7 +298,7 @@ func (self class) GetFont() [1]gdclass.Font { //gd:TextMesh.get_font
 }
 
 //go:nosplit
-func (self class) SetFontSize(font_size gd.Int) { //gd:TextMesh.set_font_size
+func (self class) SetFontSize(font_size int64) { //gd:TextMesh.set_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
 	var r_ret = callframe.Nil
@@ -304,9 +307,9 @@ func (self class) SetFontSize(font_size gd.Int) { //gd:TextMesh.set_font_size
 }
 
 //go:nosplit
-func (self class) GetFontSize() gd.Int { //gd:TextMesh.get_font_size
+func (self class) GetFontSize() int64 { //gd:TextMesh.get_font_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -314,7 +317,7 @@ func (self class) GetFontSize() gd.Int { //gd:TextMesh.get_font_size
 }
 
 //go:nosplit
-func (self class) SetLineSpacing(line_spacing gd.Float) { //gd:TextMesh.set_line_spacing
+func (self class) SetLineSpacing(line_spacing float64) { //gd:TextMesh.set_line_spacing
 	var frame = callframe.New()
 	callframe.Arg(frame, line_spacing)
 	var r_ret = callframe.Nil
@@ -323,9 +326,9 @@ func (self class) SetLineSpacing(line_spacing gd.Float) { //gd:TextMesh.set_line
 }
 
 //go:nosplit
-func (self class) GetLineSpacing() gd.Float { //gd:TextMesh.get_line_spacing
+func (self class) GetLineSpacing() float64 { //gd:TextMesh.get_line_spacing
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_line_spacing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -371,7 +374,7 @@ func (self class) GetJustificationFlags() gdclass.TextServerJustificationFlag { 
 }
 
 //go:nosplit
-func (self class) SetDepth(depth gd.Float) { //gd:TextMesh.set_depth
+func (self class) SetDepth(depth float64) { //gd:TextMesh.set_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, depth)
 	var r_ret = callframe.Nil
@@ -380,9 +383,9 @@ func (self class) SetDepth(depth gd.Float) { //gd:TextMesh.set_depth
 }
 
 //go:nosplit
-func (self class) GetDepth() gd.Float { //gd:TextMesh.get_depth
+func (self class) GetDepth() float64 { //gd:TextMesh.get_depth
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -390,7 +393,7 @@ func (self class) GetDepth() gd.Float { //gd:TextMesh.get_depth
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Float) { //gd:TextMesh.set_width
+func (self class) SetWidth(width float64) { //gd:TextMesh.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -399,9 +402,9 @@ func (self class) SetWidth(width gd.Float) { //gd:TextMesh.set_width
 }
 
 //go:nosplit
-func (self class) GetWidth() gd.Float { //gd:TextMesh.get_width
+func (self class) GetWidth() float64 { //gd:TextMesh.get_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -409,7 +412,7 @@ func (self class) GetWidth() gd.Float { //gd:TextMesh.get_width
 }
 
 //go:nosplit
-func (self class) SetPixelSize(pixel_size gd.Float) { //gd:TextMesh.set_pixel_size
+func (self class) SetPixelSize(pixel_size float64) { //gd:TextMesh.set_pixel_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pixel_size)
 	var r_ret = callframe.Nil
@@ -418,9 +421,9 @@ func (self class) SetPixelSize(pixel_size gd.Float) { //gd:TextMesh.set_pixel_si
 }
 
 //go:nosplit
-func (self class) GetPixelSize() gd.Float { //gd:TextMesh.get_pixel_size
+func (self class) GetPixelSize() float64 { //gd:TextMesh.get_pixel_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_pixel_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -428,7 +431,7 @@ func (self class) GetPixelSize() gd.Float { //gd:TextMesh.get_pixel_size
 }
 
 //go:nosplit
-func (self class) SetOffset(offset gd.Vector2) { //gd:TextMesh.set_offset
+func (self class) SetOffset(offset Vector2.XY) { //gd:TextMesh.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -437,9 +440,9 @@ func (self class) SetOffset(offset gd.Vector2) { //gd:TextMesh.set_offset
 }
 
 //go:nosplit
-func (self class) GetOffset() gd.Vector2 { //gd:TextMesh.get_offset
+func (self class) GetOffset() Vector2.XY { //gd:TextMesh.get_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -447,7 +450,7 @@ func (self class) GetOffset() gd.Vector2 { //gd:TextMesh.get_offset
 }
 
 //go:nosplit
-func (self class) SetCurveStep(curve_step gd.Float) { //gd:TextMesh.set_curve_step
+func (self class) SetCurveStep(curve_step float64) { //gd:TextMesh.set_curve_step
 	var frame = callframe.New()
 	callframe.Arg(frame, curve_step)
 	var r_ret = callframe.Nil
@@ -456,9 +459,9 @@ func (self class) SetCurveStep(curve_step gd.Float) { //gd:TextMesh.set_curve_st
 }
 
 //go:nosplit
-func (self class) GetCurveStep() gd.Float { //gd:TextMesh.get_curve_step
+func (self class) GetCurveStep() float64 { //gd:TextMesh.get_curve_step
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_curve_step, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

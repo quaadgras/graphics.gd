@@ -10,15 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,7 +57,7 @@ Converts the given UID to a [code]uid://[/code] string value.
 */
 func IdToText(id int) string { //gd:ResourceUID.id_to_text
 	once.Do(singleton)
-	return string(class(self).IdToText(gd.Int(id)).String())
+	return string(class(self).IdToText(int64(id)).String())
 }
 
 /*
@@ -78,7 +82,7 @@ Returns whether the given UID value is known to the cache.
 */
 func HasId(id int) bool { //gd:ResourceUID.has_id
 	once.Do(singleton)
-	return bool(class(self).HasId(gd.Int(id)))
+	return bool(class(self).HasId(int64(id)))
 }
 
 /*
@@ -87,7 +91,7 @@ Fails with an error if the UID already exists, so be sure to check [method has_i
 */
 func AddId(id int, path string) { //gd:ResourceUID.add_id
 	once.Do(singleton)
-	class(self).AddId(gd.Int(id), String.New(path))
+	class(self).AddId(int64(id), String.New(path))
 }
 
 /*
@@ -96,7 +100,7 @@ Fails with an error if the UID does not exist, so be sure to check [method has_i
 */
 func SetId(id int, path string) { //gd:ResourceUID.set_id
 	once.Do(singleton)
-	class(self).SetId(gd.Int(id), String.New(path))
+	class(self).SetId(int64(id), String.New(path))
 }
 
 /*
@@ -105,7 +109,7 @@ Fails with an error if the UID does not exist, so be sure to check [method has_i
 */
 func GetIdPath(id int) string { //gd:ResourceUID.get_id_path
 	once.Do(singleton)
-	return string(class(self).GetIdPath(gd.Int(id)).String())
+	return string(class(self).GetIdPath(int64(id)).String())
 }
 
 /*
@@ -114,7 +118,7 @@ Fails with an error if the UID does not exist, so be sure to check [method has_i
 */
 func RemoveId(id int) { //gd:ResourceUID.remove_id
 	once.Do(singleton)
-	class(self).RemoveId(gd.Int(id))
+	class(self).RemoveId(int64(id))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -131,7 +135,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Converts the given UID to a [code]uid://[/code] string value.
 */
 //go:nosplit
-func (self class) IdToText(id gd.Int) String.Readable { //gd:ResourceUID.id_to_text
+func (self class) IdToText(id int64) String.Readable { //gd:ResourceUID.id_to_text
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -145,10 +149,10 @@ func (self class) IdToText(id gd.Int) String.Readable { //gd:ResourceUID.id_to_t
 Extracts the UID value from the given [code]uid://[/code] string.
 */
 //go:nosplit
-func (self class) TextToId(text_id String.Readable) gd.Int { //gd:ResourceUID.text_to_id
+func (self class) TextToId(text_id String.Readable) int64 { //gd:ResourceUID.text_to_id
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text_id)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceUID.Bind_text_to_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -160,9 +164,9 @@ Generates a random resource UID which is guaranteed to be unique within the list
 In order for this UID to be registered, you must call [method add_id] or [method set_id].
 */
 //go:nosplit
-func (self class) CreateId() gd.Int { //gd:ResourceUID.create_id
+func (self class) CreateId() int64 { //gd:ResourceUID.create_id
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceUID.Bind_create_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -173,7 +177,7 @@ func (self class) CreateId() gd.Int { //gd:ResourceUID.create_id
 Returns whether the given UID value is known to the cache.
 */
 //go:nosplit
-func (self class) HasId(id gd.Int) bool { //gd:ResourceUID.has_id
+func (self class) HasId(id int64) bool { //gd:ResourceUID.has_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -188,7 +192,7 @@ Adds a new UID value which is mapped to the given resource path.
 Fails with an error if the UID already exists, so be sure to check [method has_id] beforehand, or use [method set_id] instead.
 */
 //go:nosplit
-func (self class) AddId(id gd.Int, path String.Readable) { //gd:ResourceUID.add_id
+func (self class) AddId(id int64, path String.Readable) { //gd:ResourceUID.add_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
@@ -202,7 +206,7 @@ Updates the resource path of an existing UID.
 Fails with an error if the UID does not exist, so be sure to check [method has_id] beforehand, or use [method add_id] instead.
 */
 //go:nosplit
-func (self class) SetId(id gd.Int, path String.Readable) { //gd:ResourceUID.set_id
+func (self class) SetId(id int64, path String.Readable) { //gd:ResourceUID.set_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
@@ -216,7 +220,7 @@ Returns the path that the given UID value refers to.
 Fails with an error if the UID does not exist, so be sure to check [method has_id] beforehand.
 */
 //go:nosplit
-func (self class) GetIdPath(id gd.Int) String.Readable { //gd:ResourceUID.get_id_path
+func (self class) GetIdPath(id int64) String.Readable { //gd:ResourceUID.get_id_path
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -231,7 +235,7 @@ Removes a loaded UID value from the cache.
 Fails with an error if the UID does not exist, so be sure to check [method has_id] beforehand.
 */
 //go:nosplit
-func (self class) RemoveId(id gd.Int) { //gd:ResourceUID.remove_id
+func (self class) RemoveId(id int64) { //gd:ResourceUID.remove_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil

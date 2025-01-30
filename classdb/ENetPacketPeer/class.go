@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/PacketPeer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/PacketPeer"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,21 +59,21 @@ type Any interface {
 Request a disconnection from a peer. An [constant ENetConnection.EVENT_DISCONNECT] will be generated during [method ENetConnection.service] once the disconnection is complete.
 */
 func (self Instance) PeerDisconnect() { //gd:ENetPacketPeer.peer_disconnect
-	class(self).PeerDisconnect(gd.Int(0))
+	class(self).PeerDisconnect(int64(0))
 }
 
 /*
 Request a disconnection from a peer, but only after all queued outgoing packets are sent. An [constant ENetConnection.EVENT_DISCONNECT] will be generated during [method ENetConnection.service] once the disconnection is complete.
 */
 func (self Instance) PeerDisconnectLater() { //gd:ENetPacketPeer.peer_disconnect_later
-	class(self).PeerDisconnectLater(gd.Int(0))
+	class(self).PeerDisconnectLater(int64(0))
 }
 
 /*
 Force an immediate disconnection from a peer. No [constant ENetConnection.EVENT_DISCONNECT] will be generated. The foreign peer is not guaranteed to receive the disconnect notification, and is reset immediately upon return from this function.
 */
 func (self Instance) PeerDisconnectNow() { //gd:ENetPacketPeer.peer_disconnect_now
-	class(self).PeerDisconnectNow(gd.Int(0))
+	class(self).PeerDisconnectNow(int64(0))
 }
 
 /*
@@ -84,7 +87,7 @@ func (self Instance) Ping() { //gd:ENetPacketPeer.ping
 Sets the [param ping_interval] in milliseconds at which pings will be sent to a peer. Pings are used both to monitor the liveness of the connection and also to dynamically adjust the throttle during periods of low traffic so that the throttle has reasonable responsiveness during traffic spikes. The default ping interval is [code]500[/code] milliseconds.
 */
 func (self Instance) PingInterval(ping_interval int) { //gd:ENetPacketPeer.ping_interval
-	class(self).PingInterval(gd.Int(ping_interval))
+	class(self).PingInterval(int64(ping_interval))
 }
 
 /*
@@ -98,7 +101,7 @@ func (self Instance) Reset() { //gd:ENetPacketPeer.reset
 Queues a [param packet] to be sent over the specified [param channel]. See [code]FLAG_*[/code] constants for available packet flags.
 */
 func (self Instance) Send(channel int, packet []byte, flags int) error { //gd:ENetPacketPeer.send
-	return error(gd.ToError(class(self).Send(gd.Int(channel), Packed.Bytes(Packed.New(packet...)), gd.Int(flags))))
+	return error(gd.ToError(class(self).Send(int64(channel), Packed.Bytes(Packed.New(packet...)), int64(flags))))
 }
 
 /*
@@ -109,7 +112,7 @@ When the throttle has a value of [code]0[/code], all unreliable packets are drop
 Intermediate values for the throttle represent intermediate probabilities between 0% and 100% of unreliable packets being sent. The bandwidth limits of the local and foreign hosts are taken into account to determine a sensible limit for the throttle probability above which it should not raise even in the best of conditions.
 */
 func (self Instance) ThrottleConfigure(interval int, acceleration int, deceleration int) { //gd:ENetPacketPeer.throttle_configure
-	class(self).ThrottleConfigure(gd.Int(interval), gd.Int(acceleration), gd.Int(deceleration))
+	class(self).ThrottleConfigure(int64(interval), int64(acceleration), int64(deceleration))
 }
 
 /*
@@ -117,7 +120,7 @@ Sets the timeout parameters for a peer. The timeout parameters control how and w
 The [param timeout] is a factor that, multiplied by a value based on the average round trip time, will determine the timeout limit for a reliable packet. When that limit is reached, the timeout will be doubled, and the peer will be disconnected if that limit has reached [param timeout_min]. The [param timeout_max] parameter, on the other hand, defines a fixed timeout for which any packet must be acknowledged or the peer will be dropped.
 */
 func (self Instance) SetTimeout(timeout int, timeout_min int, timeout_max int) { //gd:ENetPacketPeer.set_timeout
-	class(self).SetTimeout(gd.Int(timeout), gd.Int(timeout_min), gd.Int(timeout_max))
+	class(self).SetTimeout(int64(timeout), int64(timeout_min), int64(timeout_max))
 }
 
 /*
@@ -185,7 +188,7 @@ func New() Instance {
 Request a disconnection from a peer. An [constant ENetConnection.EVENT_DISCONNECT] will be generated during [method ENetConnection.service] once the disconnection is complete.
 */
 //go:nosplit
-func (self class) PeerDisconnect(data gd.Int) { //gd:ENetPacketPeer.peer_disconnect
+func (self class) PeerDisconnect(data int64) { //gd:ENetPacketPeer.peer_disconnect
 	var frame = callframe.New()
 	callframe.Arg(frame, data)
 	var r_ret = callframe.Nil
@@ -197,7 +200,7 @@ func (self class) PeerDisconnect(data gd.Int) { //gd:ENetPacketPeer.peer_disconn
 Request a disconnection from a peer, but only after all queued outgoing packets are sent. An [constant ENetConnection.EVENT_DISCONNECT] will be generated during [method ENetConnection.service] once the disconnection is complete.
 */
 //go:nosplit
-func (self class) PeerDisconnectLater(data gd.Int) { //gd:ENetPacketPeer.peer_disconnect_later
+func (self class) PeerDisconnectLater(data int64) { //gd:ENetPacketPeer.peer_disconnect_later
 	var frame = callframe.New()
 	callframe.Arg(frame, data)
 	var r_ret = callframe.Nil
@@ -209,7 +212,7 @@ func (self class) PeerDisconnectLater(data gd.Int) { //gd:ENetPacketPeer.peer_di
 Force an immediate disconnection from a peer. No [constant ENetConnection.EVENT_DISCONNECT] will be generated. The foreign peer is not guaranteed to receive the disconnect notification, and is reset immediately upon return from this function.
 */
 //go:nosplit
-func (self class) PeerDisconnectNow(data gd.Int) { //gd:ENetPacketPeer.peer_disconnect_now
+func (self class) PeerDisconnectNow(data int64) { //gd:ENetPacketPeer.peer_disconnect_now
 	var frame = callframe.New()
 	callframe.Arg(frame, data)
 	var r_ret = callframe.Nil
@@ -232,7 +235,7 @@ func (self class) Ping() { //gd:ENetPacketPeer.ping
 Sets the [param ping_interval] in milliseconds at which pings will be sent to a peer. Pings are used both to monitor the liveness of the connection and also to dynamically adjust the throttle during periods of low traffic so that the throttle has reasonable responsiveness during traffic spikes. The default ping interval is [code]500[/code] milliseconds.
 */
 //go:nosplit
-func (self class) PingInterval(ping_interval gd.Int) { //gd:ENetPacketPeer.ping_interval
+func (self class) PingInterval(ping_interval int64) { //gd:ENetPacketPeer.ping_interval
 	var frame = callframe.New()
 	callframe.Arg(frame, ping_interval)
 	var r_ret = callframe.Nil
@@ -255,14 +258,14 @@ func (self class) Reset() { //gd:ENetPacketPeer.reset
 Queues a [param packet] to be sent over the specified [param channel]. See [code]FLAG_*[/code] constants for available packet flags.
 */
 //go:nosplit
-func (self class) Send(channel gd.Int, packet Packed.Bytes, flags gd.Int) gd.Error { //gd:ENetPacketPeer.send
+func (self class) Send(channel int64, packet Packed.Bytes, flags int64) Error.Code { //gd:ENetPacketPeer.send
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet))))
 	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_send, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -275,7 +278,7 @@ When the throttle has a value of [code]0[/code], all unreliable packets are drop
 Intermediate values for the throttle represent intermediate probabilities between 0% and 100% of unreliable packets being sent. The bandwidth limits of the local and foreign hosts are taken into account to determine a sensible limit for the throttle probability above which it should not raise even in the best of conditions.
 */
 //go:nosplit
-func (self class) ThrottleConfigure(interval gd.Int, acceleration gd.Int, deceleration gd.Int) { //gd:ENetPacketPeer.throttle_configure
+func (self class) ThrottleConfigure(interval int64, acceleration int64, deceleration int64) { //gd:ENetPacketPeer.throttle_configure
 	var frame = callframe.New()
 	callframe.Arg(frame, interval)
 	callframe.Arg(frame, acceleration)
@@ -290,7 +293,7 @@ Sets the timeout parameters for a peer. The timeout parameters control how and w
 The [param timeout] is a factor that, multiplied by a value based on the average round trip time, will determine the timeout limit for a reliable packet. When that limit is reached, the timeout will be doubled, and the peer will be disconnected if that limit has reached [param timeout_min]. The [param timeout_max] parameter, on the other hand, defines a fixed timeout for which any packet must be acknowledged or the peer will be dropped.
 */
 //go:nosplit
-func (self class) SetTimeout(timeout gd.Int, timeout_min gd.Int, timeout_max gd.Int) { //gd:ENetPacketPeer.set_timeout
+func (self class) SetTimeout(timeout int64, timeout_min int64, timeout_max int64) { //gd:ENetPacketPeer.set_timeout
 	var frame = callframe.New()
 	callframe.Arg(frame, timeout)
 	callframe.Arg(frame, timeout_min)
@@ -317,9 +320,9 @@ func (self class) GetRemoteAddress() String.Readable { //gd:ENetPacketPeer.get_r
 Returns the remote port of this peer.
 */
 //go:nosplit
-func (self class) GetRemotePort() gd.Int { //gd:ENetPacketPeer.get_remote_port
+func (self class) GetRemotePort() int64 { //gd:ENetPacketPeer.get_remote_port
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_remote_port, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -330,10 +333,10 @@ func (self class) GetRemotePort() gd.Int { //gd:ENetPacketPeer.get_remote_port
 Returns the requested [param statistic] for this peer. See [enum PeerStatistic].
 */
 //go:nosplit
-func (self class) GetStatistic(statistic gdclass.ENetPacketPeerPeerStatistic) gd.Float { //gd:ENetPacketPeer.get_statistic
+func (self class) GetStatistic(statistic gdclass.ENetPacketPeerPeerStatistic) float64 { //gd:ENetPacketPeer.get_statistic
 	var frame = callframe.New()
 	callframe.Arg(frame, statistic)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_statistic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -357,9 +360,9 @@ func (self class) GetState() gdclass.ENetPacketPeerPeerState { //gd:ENetPacketPe
 Returns the number of channels allocated for communication with peer.
 */
 //go:nosplit
-func (self class) GetChannels() gd.Int { //gd:ENetPacketPeer.get_channels
+func (self class) GetChannels() int64 { //gd:ENetPacketPeer.get_channels
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_channels, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -468,120 +471,4 @@ const (
 	PeerPacketThrottleDeceleration PeerStatistic = 12
 	/*The interval over which the lowest mean round trip time should be measured for use by the throttle mechanism (in milliseconds). The default value is [code]5000[/code].*/
 	PeerPacketThrottleInterval PeerStatistic = 13
-)
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
 )

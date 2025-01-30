@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AnimationNode"
+import "graphics.gd/classdb/AnimationRootNode"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AnimationRootNode"
-import "graphics.gd/classdb/AnimationNode"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -100,7 +103,7 @@ func (self Instance) TimelineLength() Float.X {
 }
 
 func (self Instance) SetTimelineLength(value Float.X) {
-	class(self).SetTimelineLength(gd.Float(value))
+	class(self).SetTimelineLength(float64(value))
 }
 
 func (self Instance) StretchTimeScale() bool {
@@ -116,7 +119,7 @@ func (self Instance) StartOffset() Float.X {
 }
 
 func (self Instance) SetStartOffset(value Float.X) {
-	class(self).SetStartOffset(gd.Float(value))
+	class(self).SetStartOffset(float64(value))
 }
 
 func (self Instance) LoopMode() gdclass.AnimationLoopMode {
@@ -185,7 +188,7 @@ func (self class) IsUsingCustomTimeline() bool { //gd:AnimationNodeAnimation.is_
 }
 
 //go:nosplit
-func (self class) SetTimelineLength(timeline_length gd.Float) { //gd:AnimationNodeAnimation.set_timeline_length
+func (self class) SetTimelineLength(timeline_length float64) { //gd:AnimationNodeAnimation.set_timeline_length
 	var frame = callframe.New()
 	callframe.Arg(frame, timeline_length)
 	var r_ret = callframe.Nil
@@ -194,9 +197,9 @@ func (self class) SetTimelineLength(timeline_length gd.Float) { //gd:AnimationNo
 }
 
 //go:nosplit
-func (self class) GetTimelineLength() gd.Float { //gd:AnimationNodeAnimation.get_timeline_length
+func (self class) GetTimelineLength() float64 { //gd:AnimationNodeAnimation.get_timeline_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_get_timeline_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -223,7 +226,7 @@ func (self class) IsStretchingTimeScale() bool { //gd:AnimationNodeAnimation.is_
 }
 
 //go:nosplit
-func (self class) SetStartOffset(start_offset gd.Float) { //gd:AnimationNodeAnimation.set_start_offset
+func (self class) SetStartOffset(start_offset float64) { //gd:AnimationNodeAnimation.set_start_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, start_offset)
 	var r_ret = callframe.Nil
@@ -232,9 +235,9 @@ func (self class) SetStartOffset(start_offset gd.Float) { //gd:AnimationNodeAnim
 }
 
 //go:nosplit
-func (self class) GetStartOffset() gd.Float { //gd:AnimationNodeAnimation.get_start_offset
+func (self class) GetStartOffset() float64 { //gd:AnimationNodeAnimation.get_start_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_get_start_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

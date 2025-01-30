@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,7 +62,7 @@ Checks whether a point is inside any solid shape. Position and other parameters 
 The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 */
 func (self Instance) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters3D) []PhysicsDirectSpaceState3D_Intersection { //gd:PhysicsDirectSpaceState3D.intersect_point
-	return []PhysicsDirectSpaceState3D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState3D_Intersection](gd.InternalArray(class(self).IntersectPoint(parameters, gd.Int(32)))))
+	return []PhysicsDirectSpaceState3D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState3D_Intersection](gd.InternalArray(class(self).IntersectPoint(parameters, int64(32)))))
 }
 
 /*
@@ -87,7 +91,7 @@ The number of intersections can be limited with the [param max_results] paramete
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
 func (self Instance) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D) []PhysicsDirectSpaceState3D_Intersection { //gd:PhysicsDirectSpaceState3D.intersect_shape
-	return []PhysicsDirectSpaceState3D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState3D_Intersection](gd.InternalArray(class(self).IntersectShape(parameters, gd.Int(32)))))
+	return []PhysicsDirectSpaceState3D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState3D_Intersection](gd.InternalArray(class(self).IntersectShape(parameters, int64(32)))))
 }
 
 /*
@@ -105,7 +109,7 @@ Returned points are a list of pairs of contact points. For each pair the first o
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
 func (self Instance) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D) []Vector3.XYZ { //gd:PhysicsDirectSpaceState3D.collide_shape
-	return []Vector3.XYZ(gd.ArrayAs[[]Vector3.XYZ](gd.InternalArray(class(self).CollideShape(parameters, gd.Int(32)))))
+	return []Vector3.XYZ(gd.ArrayAs[[]Vector3.XYZ](gd.InternalArray(class(self).CollideShape(parameters, int64(32)))))
 }
 
 /*
@@ -150,7 +154,7 @@ Checks whether a point is inside any solid shape. Position and other parameters 
 The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 */
 //go:nosplit
-func (self class) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters3D, max_results gd.Int) Array.Contains[Dictionary.Any] { //gd:PhysicsDirectSpaceState3D.intersect_point
+func (self class) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters3D, max_results int64) Array.Contains[Dictionary.Any] { //gd:PhysicsDirectSpaceState3D.intersect_point
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, max_results)
@@ -194,7 +198,7 @@ The number of intersections can be limited with the [param max_results] paramete
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
 //go:nosplit
-func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D, max_results gd.Int) Array.Contains[Dictionary.Any] { //gd:PhysicsDirectSpaceState3D.intersect_shape
+func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D, max_results int64) Array.Contains[Dictionary.Any] { //gd:PhysicsDirectSpaceState3D.intersect_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, max_results)
@@ -227,13 +231,13 @@ Returned points are a list of pairs of contact points. For each pair the first o
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
 //go:nosplit
-func (self class) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D, max_results gd.Int) Array.Contains[gd.Vector3] { //gd:PhysicsDirectSpaceState3D.collide_shape
+func (self class) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D, max_results int64) Array.Contains[Vector3.XYZ] { //gd:PhysicsDirectSpaceState3D.collide_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, max_results)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_collide_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[gd.Vector3]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	var ret = Array.Through(gd.ArrayProxy[Vector3.XYZ]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

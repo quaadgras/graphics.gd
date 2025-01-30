@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/SkeletonModification2D"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -70,7 +73,7 @@ func (self Instance) GetJointOneBone2dNode() string { //gd:SkeletonModification2
 Sets the index of the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
 func (self Instance) SetJointOneBoneIdx(bone_idx int) { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone_idx
-	class(self).SetJointOneBoneIdx(gd.Int(bone_idx))
+	class(self).SetJointOneBoneIdx(int64(bone_idx))
 }
 
 /*
@@ -98,7 +101,7 @@ func (self Instance) GetJointTwoBone2dNode() string { //gd:SkeletonModification2
 Sets the index of the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
 func (self Instance) SetJointTwoBoneIdx(bone_idx int) { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone_idx
-	class(self).SetJointTwoBoneIdx(gd.Int(bone_idx))
+	class(self).SetJointTwoBoneIdx(int64(bone_idx))
 }
 
 /*
@@ -140,7 +143,7 @@ func (self Instance) TargetMinimumDistance() Float.X {
 }
 
 func (self Instance) SetTargetMinimumDistance(value Float.X) {
-	class(self).SetTargetMinimumDistance(gd.Float(value))
+	class(self).SetTargetMinimumDistance(float64(value))
 }
 
 func (self Instance) TargetMaximumDistance() Float.X {
@@ -148,7 +151,7 @@ func (self Instance) TargetMaximumDistance() Float.X {
 }
 
 func (self Instance) SetTargetMaximumDistance(value Float.X) {
-	class(self).SetTargetMaximumDistance(gd.Float(value))
+	class(self).SetTargetMaximumDistance(float64(value))
 }
 
 func (self Instance) FlipBendDirection() bool {
@@ -179,7 +182,7 @@ func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DTwoBo
 }
 
 //go:nosplit
-func (self class) SetTargetMinimumDistance(minimum_distance gd.Float) { //gd:SkeletonModification2DTwoBoneIK.set_target_minimum_distance
+func (self class) SetTargetMinimumDistance(minimum_distance float64) { //gd:SkeletonModification2DTwoBoneIK.set_target_minimum_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, minimum_distance)
 	var r_ret = callframe.Nil
@@ -188,9 +191,9 @@ func (self class) SetTargetMinimumDistance(minimum_distance gd.Float) { //gd:Ske
 }
 
 //go:nosplit
-func (self class) GetTargetMinimumDistance() gd.Float { //gd:SkeletonModification2DTwoBoneIK.get_target_minimum_distance
+func (self class) GetTargetMinimumDistance() float64 { //gd:SkeletonModification2DTwoBoneIK.get_target_minimum_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_target_minimum_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -198,7 +201,7 @@ func (self class) GetTargetMinimumDistance() gd.Float { //gd:SkeletonModificatio
 }
 
 //go:nosplit
-func (self class) SetTargetMaximumDistance(maximum_distance gd.Float) { //gd:SkeletonModification2DTwoBoneIK.set_target_maximum_distance
+func (self class) SetTargetMaximumDistance(maximum_distance float64) { //gd:SkeletonModification2DTwoBoneIK.set_target_maximum_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, maximum_distance)
 	var r_ret = callframe.Nil
@@ -207,9 +210,9 @@ func (self class) SetTargetMaximumDistance(maximum_distance gd.Float) { //gd:Ske
 }
 
 //go:nosplit
-func (self class) GetTargetMaximumDistance() gd.Float { //gd:SkeletonModification2DTwoBoneIK.get_target_maximum_distance
+func (self class) GetTargetMaximumDistance() float64 { //gd:SkeletonModification2DTwoBoneIK.get_target_maximum_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_target_maximum_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -264,7 +267,7 @@ func (self class) GetJointOneBone2dNode() Path.ToNode { //gd:SkeletonModificatio
 Sets the index of the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
 //go:nosplit
-func (self class) SetJointOneBoneIdx(bone_idx gd.Int) { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone_idx
+func (self class) SetJointOneBoneIdx(bone_idx int64) { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone_idx
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Nil
@@ -276,9 +279,9 @@ func (self class) SetJointOneBoneIdx(bone_idx gd.Int) { //gd:SkeletonModificatio
 Returns the index of the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
 //go:nosplit
-func (self class) GetJointOneBoneIdx() gd.Int { //gd:SkeletonModification2DTwoBoneIK.get_joint_one_bone_idx
+func (self class) GetJointOneBoneIdx() int64 { //gd:SkeletonModification2DTwoBoneIK.get_joint_one_bone_idx
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_one_bone_idx, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -314,7 +317,7 @@ func (self class) GetJointTwoBone2dNode() Path.ToNode { //gd:SkeletonModificatio
 Sets the index of the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
 //go:nosplit
-func (self class) SetJointTwoBoneIdx(bone_idx gd.Int) { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone_idx
+func (self class) SetJointTwoBoneIdx(bone_idx int64) { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone_idx
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Nil
@@ -326,9 +329,9 @@ func (self class) SetJointTwoBoneIdx(bone_idx gd.Int) { //gd:SkeletonModificatio
 Returns the index of the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
 //go:nosplit
-func (self class) GetJointTwoBoneIdx() gd.Int { //gd:SkeletonModification2DTwoBoneIK.get_joint_two_bone_idx
+func (self class) GetJointTwoBoneIdx() int64 { //gd:SkeletonModification2DTwoBoneIK.get_joint_two_bone_idx
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_two_bone_idx, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

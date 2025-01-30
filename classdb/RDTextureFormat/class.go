@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -87,7 +91,7 @@ func (self Instance) Width() int {
 }
 
 func (self Instance) SetWidth(value int) {
-	class(self).SetWidth(gd.Int(value))
+	class(self).SetWidth(int64(value))
 }
 
 func (self Instance) Height() int {
@@ -95,7 +99,7 @@ func (self Instance) Height() int {
 }
 
 func (self Instance) SetHeight(value int) {
-	class(self).SetHeight(gd.Int(value))
+	class(self).SetHeight(int64(value))
 }
 
 func (self Instance) Depth() int {
@@ -103,7 +107,7 @@ func (self Instance) Depth() int {
 }
 
 func (self Instance) SetDepth(value int) {
-	class(self).SetDepth(gd.Int(value))
+	class(self).SetDepth(int64(value))
 }
 
 func (self Instance) ArrayLayers() int {
@@ -111,7 +115,7 @@ func (self Instance) ArrayLayers() int {
 }
 
 func (self Instance) SetArrayLayers(value int) {
-	class(self).SetArrayLayers(gd.Int(value))
+	class(self).SetArrayLayers(int64(value))
 }
 
 func (self Instance) Mipmaps() int {
@@ -119,7 +123,7 @@ func (self Instance) Mipmaps() int {
 }
 
 func (self Instance) SetMipmaps(value int) {
-	class(self).SetMipmaps(gd.Int(value))
+	class(self).SetMipmaps(int64(value))
 }
 
 func (self Instance) TextureType() gdclass.RenderingDeviceTextureType {
@@ -166,7 +170,7 @@ func (self class) GetFormat() gdclass.RenderingDeviceDataFormat { //gd:RDTexture
 }
 
 //go:nosplit
-func (self class) SetWidth(p_member gd.Int) { //gd:RDTextureFormat.set_width
+func (self class) SetWidth(p_member int64) { //gd:RDTextureFormat.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -175,9 +179,9 @@ func (self class) SetWidth(p_member gd.Int) { //gd:RDTextureFormat.set_width
 }
 
 //go:nosplit
-func (self class) GetWidth() gd.Int { //gd:RDTextureFormat.get_width
+func (self class) GetWidth() int64 { //gd:RDTextureFormat.get_width
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -185,7 +189,7 @@ func (self class) GetWidth() gd.Int { //gd:RDTextureFormat.get_width
 }
 
 //go:nosplit
-func (self class) SetHeight(p_member gd.Int) { //gd:RDTextureFormat.set_height
+func (self class) SetHeight(p_member int64) { //gd:RDTextureFormat.set_height
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -194,9 +198,9 @@ func (self class) SetHeight(p_member gd.Int) { //gd:RDTextureFormat.set_height
 }
 
 //go:nosplit
-func (self class) GetHeight() gd.Int { //gd:RDTextureFormat.get_height
+func (self class) GetHeight() int64 { //gd:RDTextureFormat.get_height
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -204,7 +208,7 @@ func (self class) GetHeight() gd.Int { //gd:RDTextureFormat.get_height
 }
 
 //go:nosplit
-func (self class) SetDepth(p_member gd.Int) { //gd:RDTextureFormat.set_depth
+func (self class) SetDepth(p_member int64) { //gd:RDTextureFormat.set_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -213,9 +217,9 @@ func (self class) SetDepth(p_member gd.Int) { //gd:RDTextureFormat.set_depth
 }
 
 //go:nosplit
-func (self class) GetDepth() gd.Int { //gd:RDTextureFormat.get_depth
+func (self class) GetDepth() int64 { //gd:RDTextureFormat.get_depth
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -223,7 +227,7 @@ func (self class) GetDepth() gd.Int { //gd:RDTextureFormat.get_depth
 }
 
 //go:nosplit
-func (self class) SetArrayLayers(p_member gd.Int) { //gd:RDTextureFormat.set_array_layers
+func (self class) SetArrayLayers(p_member int64) { //gd:RDTextureFormat.set_array_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -232,9 +236,9 @@ func (self class) SetArrayLayers(p_member gd.Int) { //gd:RDTextureFormat.set_arr
 }
 
 //go:nosplit
-func (self class) GetArrayLayers() gd.Int { //gd:RDTextureFormat.get_array_layers
+func (self class) GetArrayLayers() int64 { //gd:RDTextureFormat.get_array_layers
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_array_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -242,7 +246,7 @@ func (self class) GetArrayLayers() gd.Int { //gd:RDTextureFormat.get_array_layer
 }
 
 //go:nosplit
-func (self class) SetMipmaps(p_member gd.Int) { //gd:RDTextureFormat.set_mipmaps
+func (self class) SetMipmaps(p_member int64) { //gd:RDTextureFormat.set_mipmaps
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -251,9 +255,9 @@ func (self class) SetMipmaps(p_member gd.Int) { //gd:RDTextureFormat.set_mipmaps
 }
 
 //go:nosplit
-func (self class) GetMipmaps() gd.Int { //gd:RDTextureFormat.get_mipmaps
+func (self class) GetMipmaps() int64 { //gd:RDTextureFormat.get_mipmaps
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

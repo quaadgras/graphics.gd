@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Joint3D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Joint3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,19 +57,19 @@ type Any interface {
 }
 
 func (self Instance) SetParamX(param gdclass.Generic6DOFJoint3DParam, value Float.X) { //gd:Generic6DOFJoint3D.set_param_x
-	class(self).SetParamX(param, gd.Float(value))
+	class(self).SetParamX(param, float64(value))
 }
 func (self Instance) GetParamX(param gdclass.Generic6DOFJoint3DParam) Float.X { //gd:Generic6DOFJoint3D.get_param_x
 	return Float.X(Float.X(class(self).GetParamX(param)))
 }
 func (self Instance) SetParamY(param gdclass.Generic6DOFJoint3DParam, value Float.X) { //gd:Generic6DOFJoint3D.set_param_y
-	class(self).SetParamY(param, gd.Float(value))
+	class(self).SetParamY(param, float64(value))
 }
 func (self Instance) GetParamY(param gdclass.Generic6DOFJoint3DParam) Float.X { //gd:Generic6DOFJoint3D.get_param_y
 	return Float.X(Float.X(class(self).GetParamY(param)))
 }
 func (self Instance) SetParamZ(param gdclass.Generic6DOFJoint3DParam, value Float.X) { //gd:Generic6DOFJoint3D.set_param_z
-	class(self).SetParamZ(param, gd.Float(value))
+	class(self).SetParamZ(param, float64(value))
 }
 func (self Instance) GetParamZ(param gdclass.Generic6DOFJoint3DParam) Float.X { //gd:Generic6DOFJoint3D.get_param_z
 	return Float.X(Float.X(class(self).GetParamZ(param)))
@@ -109,7 +112,7 @@ func New() Instance {
 }
 
 //go:nosplit
-func (self class) SetParamX(param gdclass.Generic6DOFJoint3DParam, value gd.Float) { //gd:Generic6DOFJoint3D.set_param_x
+func (self class) SetParamX(param gdclass.Generic6DOFJoint3DParam, value float64) { //gd:Generic6DOFJoint3D.set_param_x
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -119,10 +122,10 @@ func (self class) SetParamX(param gdclass.Generic6DOFJoint3DParam, value gd.Floa
 }
 
 //go:nosplit
-func (self class) GetParamX(param gdclass.Generic6DOFJoint3DParam) gd.Float { //gd:Generic6DOFJoint3D.get_param_x
+func (self class) GetParamX(param gdclass.Generic6DOFJoint3DParam) float64 { //gd:Generic6DOFJoint3D.get_param_x
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_x, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -130,7 +133,7 @@ func (self class) GetParamX(param gdclass.Generic6DOFJoint3DParam) gd.Float { //
 }
 
 //go:nosplit
-func (self class) SetParamY(param gdclass.Generic6DOFJoint3DParam, value gd.Float) { //gd:Generic6DOFJoint3D.set_param_y
+func (self class) SetParamY(param gdclass.Generic6DOFJoint3DParam, value float64) { //gd:Generic6DOFJoint3D.set_param_y
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -140,10 +143,10 @@ func (self class) SetParamY(param gdclass.Generic6DOFJoint3DParam, value gd.Floa
 }
 
 //go:nosplit
-func (self class) GetParamY(param gdclass.Generic6DOFJoint3DParam) gd.Float { //gd:Generic6DOFJoint3D.get_param_y
+func (self class) GetParamY(param gdclass.Generic6DOFJoint3DParam) float64 { //gd:Generic6DOFJoint3D.get_param_y
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_y, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -151,7 +154,7 @@ func (self class) GetParamY(param gdclass.Generic6DOFJoint3DParam) gd.Float { //
 }
 
 //go:nosplit
-func (self class) SetParamZ(param gdclass.Generic6DOFJoint3DParam, value gd.Float) { //gd:Generic6DOFJoint3D.set_param_z
+func (self class) SetParamZ(param gdclass.Generic6DOFJoint3DParam, value float64) { //gd:Generic6DOFJoint3D.set_param_z
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -161,10 +164,10 @@ func (self class) SetParamZ(param gdclass.Generic6DOFJoint3DParam, value gd.Floa
 }
 
 //go:nosplit
-func (self class) GetParamZ(param gdclass.Generic6DOFJoint3DParam) gd.Float { //gd:Generic6DOFJoint3D.get_param_z
+func (self class) GetParamZ(param gdclass.Generic6DOFJoint3DParam) float64 { //gd:Generic6DOFJoint3D.get_param_z
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_z, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

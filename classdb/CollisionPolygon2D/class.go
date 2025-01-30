@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -109,7 +112,7 @@ func (self Instance) OneWayCollisionMargin() Float.X {
 }
 
 func (self Instance) SetOneWayCollisionMargin(value Float.X) {
-	class(self).SetOneWayCollisionMargin(gd.Float(value))
+	class(self).SetOneWayCollisionMargin(float64(value))
 }
 
 //go:nosplit
@@ -189,7 +192,7 @@ func (self class) IsOneWayCollisionEnabled() bool { //gd:CollisionPolygon2D.is_o
 }
 
 //go:nosplit
-func (self class) SetOneWayCollisionMargin(margin gd.Float) { //gd:CollisionPolygon2D.set_one_way_collision_margin
+func (self class) SetOneWayCollisionMargin(margin float64) { //gd:CollisionPolygon2D.set_one_way_collision_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -198,9 +201,9 @@ func (self class) SetOneWayCollisionMargin(margin gd.Float) { //gd:CollisionPoly
 }
 
 //go:nosplit
-func (self class) GetOneWayCollisionMargin() gd.Float { //gd:CollisionPolygon2D.get_one_way_collision_margin
+func (self class) GetOneWayCollisionMargin() float64 { //gd:CollisionPolygon2D.get_one_way_collision_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon2D.Bind_get_one_way_collision_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -83,7 +86,7 @@ func (self Instance) DiffuseFactor() Color.RGBA {
 }
 
 func (self Instance) SetDiffuseFactor(value Color.RGBA) {
-	class(self).SetDiffuseFactor(gd.Color(value))
+	class(self).SetDiffuseFactor(Color.RGBA(value))
 }
 
 func (self Instance) GlossFactor() Float.X {
@@ -91,7 +94,7 @@ func (self Instance) GlossFactor() Float.X {
 }
 
 func (self Instance) SetGlossFactor(value Float.X) {
-	class(self).SetGlossFactor(gd.Float(value))
+	class(self).SetGlossFactor(float64(value))
 }
 
 func (self Instance) SpecularFactor() Color.RGBA {
@@ -99,7 +102,7 @@ func (self Instance) SpecularFactor() Color.RGBA {
 }
 
 func (self Instance) SetSpecularFactor(value Color.RGBA) {
-	class(self).SetSpecularFactor(gd.Color(value))
+	class(self).SetSpecularFactor(Color.RGBA(value))
 }
 
 func (self Instance) SpecGlossImg() [1]gdclass.Image {
@@ -130,9 +133,9 @@ func (self class) SetDiffuseImg(diffuse_img [1]gdclass.Image) { //gd:GLTFSpecGlo
 }
 
 //go:nosplit
-func (self class) GetDiffuseFactor() gd.Color { //gd:GLTFSpecGloss.get_diffuse_factor
+func (self class) GetDiffuseFactor() Color.RGBA { //gd:GLTFSpecGloss.get_diffuse_factor
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSpecGloss.Bind_get_diffuse_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -140,7 +143,7 @@ func (self class) GetDiffuseFactor() gd.Color { //gd:GLTFSpecGloss.get_diffuse_f
 }
 
 //go:nosplit
-func (self class) SetDiffuseFactor(diffuse_factor gd.Color) { //gd:GLTFSpecGloss.set_diffuse_factor
+func (self class) SetDiffuseFactor(diffuse_factor Color.RGBA) { //gd:GLTFSpecGloss.set_diffuse_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, diffuse_factor)
 	var r_ret = callframe.Nil
@@ -149,9 +152,9 @@ func (self class) SetDiffuseFactor(diffuse_factor gd.Color) { //gd:GLTFSpecGloss
 }
 
 //go:nosplit
-func (self class) GetGlossFactor() gd.Float { //gd:GLTFSpecGloss.get_gloss_factor
+func (self class) GetGlossFactor() float64 { //gd:GLTFSpecGloss.get_gloss_factor
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSpecGloss.Bind_get_gloss_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -159,7 +162,7 @@ func (self class) GetGlossFactor() gd.Float { //gd:GLTFSpecGloss.get_gloss_facto
 }
 
 //go:nosplit
-func (self class) SetGlossFactor(gloss_factor gd.Float) { //gd:GLTFSpecGloss.set_gloss_factor
+func (self class) SetGlossFactor(gloss_factor float64) { //gd:GLTFSpecGloss.set_gloss_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, gloss_factor)
 	var r_ret = callframe.Nil
@@ -168,9 +171,9 @@ func (self class) SetGlossFactor(gloss_factor gd.Float) { //gd:GLTFSpecGloss.set
 }
 
 //go:nosplit
-func (self class) GetSpecularFactor() gd.Color { //gd:GLTFSpecGloss.get_specular_factor
+func (self class) GetSpecularFactor() Color.RGBA { //gd:GLTFSpecGloss.get_specular_factor
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Color](frame)
+	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSpecGloss.Bind_get_specular_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -178,7 +181,7 @@ func (self class) GetSpecularFactor() gd.Color { //gd:GLTFSpecGloss.get_specular
 }
 
 //go:nosplit
-func (self class) SetSpecularFactor(specular_factor gd.Color) { //gd:GLTFSpecGloss.set_specular_factor
+func (self class) SetSpecularFactor(specular_factor Color.RGBA) { //gd:GLTFSpecGloss.set_specular_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, specular_factor)
 	var r_ret = callframe.Nil

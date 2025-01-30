@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -64,7 +67,7 @@ Executes all of the [SkeletonModification2D]s in the stack that use the same exe
 [b]Note:[/b] The order of the modifications can matter depending on the modifications. For example, modifications on a spine should operate before modifications on the arms in order to get proper results.
 */
 func (self Instance) Execute(delta Float.X, execution_mode int) { //gd:SkeletonModificationStack2D.execute
-	class(self).Execute(gd.Float(delta), gd.Int(execution_mode))
+	class(self).Execute(float64(delta), int64(execution_mode))
 }
 
 /*
@@ -78,7 +81,7 @@ func (self Instance) EnableAllModifications(enabled bool) { //gd:SkeletonModific
 Returns the [SkeletonModification2D] at the passed-in index, [param mod_idx].
 */
 func (self Instance) GetModification(mod_idx int) [1]gdclass.SkeletonModification2D { //gd:SkeletonModificationStack2D.get_modification
-	return [1]gdclass.SkeletonModification2D(class(self).GetModification(gd.Int(mod_idx)))
+	return [1]gdclass.SkeletonModification2D(class(self).GetModification(int64(mod_idx)))
 }
 
 /*
@@ -92,14 +95,14 @@ func (self Instance) AddModification(modification [1]gdclass.SkeletonModificatio
 Deletes the [SkeletonModification2D] at the index position [param mod_idx], if it exists.
 */
 func (self Instance) DeleteModification(mod_idx int) { //gd:SkeletonModificationStack2D.delete_modification
-	class(self).DeleteModification(gd.Int(mod_idx))
+	class(self).DeleteModification(int64(mod_idx))
 }
 
 /*
 Sets the modification at [param mod_idx] to the passed-in modification, [param modification].
 */
 func (self Instance) SetModification(mod_idx int, modification [1]gdclass.SkeletonModification2D) { //gd:SkeletonModificationStack2D.set_modification
-	class(self).SetModification(gd.Int(mod_idx), modification)
+	class(self).SetModification(int64(mod_idx), modification)
 }
 
 /*
@@ -148,7 +151,7 @@ func (self Instance) Strength() Float.X {
 }
 
 func (self Instance) SetStrength(value Float.X) {
-	class(self).SetStrength(gd.Float(value))
+	class(self).SetStrength(float64(value))
 }
 
 func (self Instance) ModificationCount() int {
@@ -156,7 +159,7 @@ func (self Instance) ModificationCount() int {
 }
 
 func (self Instance) SetModificationCount(value int) {
-	class(self).SetModificationCount(gd.Int(value))
+	class(self).SetModificationCount(int64(value))
 }
 
 /*
@@ -175,7 +178,7 @@ Executes all of the [SkeletonModification2D]s in the stack that use the same exe
 [b]Note:[/b] The order of the modifications can matter depending on the modifications. For example, modifications on a spine should operate before modifications on the arms in order to get proper results.
 */
 //go:nosplit
-func (self class) Execute(delta gd.Float, execution_mode gd.Int) { //gd:SkeletonModificationStack2D.execute
+func (self class) Execute(delta float64, execution_mode int64) { //gd:SkeletonModificationStack2D.execute
 	var frame = callframe.New()
 	callframe.Arg(frame, delta)
 	callframe.Arg(frame, execution_mode)
@@ -200,7 +203,7 @@ func (self class) EnableAllModifications(enabled bool) { //gd:SkeletonModificati
 Returns the [SkeletonModification2D] at the passed-in index, [param mod_idx].
 */
 //go:nosplit
-func (self class) GetModification(mod_idx gd.Int) [1]gdclass.SkeletonModification2D { //gd:SkeletonModificationStack2D.get_modification
+func (self class) GetModification(mod_idx int64) [1]gdclass.SkeletonModification2D { //gd:SkeletonModificationStack2D.get_modification
 	var frame = callframe.New()
 	callframe.Arg(frame, mod_idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -226,7 +229,7 @@ func (self class) AddModification(modification [1]gdclass.SkeletonModification2D
 Deletes the [SkeletonModification2D] at the index position [param mod_idx], if it exists.
 */
 //go:nosplit
-func (self class) DeleteModification(mod_idx gd.Int) { //gd:SkeletonModificationStack2D.delete_modification
+func (self class) DeleteModification(mod_idx int64) { //gd:SkeletonModificationStack2D.delete_modification
 	var frame = callframe.New()
 	callframe.Arg(frame, mod_idx)
 	var r_ret = callframe.Nil
@@ -238,7 +241,7 @@ func (self class) DeleteModification(mod_idx gd.Int) { //gd:SkeletonModification
 Sets the modification at [param mod_idx] to the passed-in modification, [param modification].
 */
 //go:nosplit
-func (self class) SetModification(mod_idx gd.Int, modification [1]gdclass.SkeletonModification2D) { //gd:SkeletonModificationStack2D.set_modification
+func (self class) SetModification(mod_idx int64, modification [1]gdclass.SkeletonModification2D) { //gd:SkeletonModificationStack2D.set_modification
 	var frame = callframe.New()
 	callframe.Arg(frame, mod_idx)
 	callframe.Arg(frame, pointers.Get(modification[0])[0])
@@ -248,7 +251,7 @@ func (self class) SetModification(mod_idx gd.Int, modification [1]gdclass.Skelet
 }
 
 //go:nosplit
-func (self class) SetModificationCount(count gd.Int) { //gd:SkeletonModificationStack2D.set_modification_count
+func (self class) SetModificationCount(count int64) { //gd:SkeletonModificationStack2D.set_modification_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -257,9 +260,9 @@ func (self class) SetModificationCount(count gd.Int) { //gd:SkeletonModification
 }
 
 //go:nosplit
-func (self class) GetModificationCount() gd.Int { //gd:SkeletonModificationStack2D.get_modification_count
+func (self class) GetModificationCount() int64 { //gd:SkeletonModificationStack2D.get_modification_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_modification_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -299,7 +302,7 @@ func (self class) GetEnabled() bool { //gd:SkeletonModificationStack2D.get_enabl
 }
 
 //go:nosplit
-func (self class) SetStrength(strength gd.Float) { //gd:SkeletonModificationStack2D.set_strength
+func (self class) SetStrength(strength float64) { //gd:SkeletonModificationStack2D.set_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil
@@ -308,9 +311,9 @@ func (self class) SetStrength(strength gd.Float) { //gd:SkeletonModificationStac
 }
 
 //go:nosplit
-func (self class) GetStrength() gd.Float { //gd:SkeletonModificationStack2D.get_strength
+func (self class) GetStrength() float64 { //gd:SkeletonModificationStack2D.get_strength
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

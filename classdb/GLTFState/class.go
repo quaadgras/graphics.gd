@@ -9,17 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -69,14 +72,14 @@ func (self Instance) AppendDataToBuffers(data []byte, deduplication bool) int { 
 Returns the number of [AnimationPlayer] nodes in this [GLTFState]. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to GLTF animations.
 */
 func (self Instance) GetAnimationPlayersCount(idx int) int { //gd:GLTFState.get_animation_players_count
-	return int(int(class(self).GetAnimationPlayersCount(gd.Int(idx))))
+	return int(int(class(self).GetAnimationPlayersCount(int64(idx))))
 }
 
 /*
 Returns the [AnimationPlayer] node with the given index. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to GLTF animations.
 */
 func (self Instance) GetAnimationPlayer(idx int) [1]gdclass.AnimationPlayer { //gd:GLTFState.get_animation_player
-	return [1]gdclass.AnimationPlayer(class(self).GetAnimationPlayer(gd.Int(idx)))
+	return [1]gdclass.AnimationPlayer(class(self).GetAnimationPlayer(int64(idx)))
 }
 
 /*
@@ -84,7 +87,7 @@ Returns the Godot scene node that corresponds to the same index as the [GLTFNode
 [b]Note:[/b] Not every [GLTFNode] will have a scene node generated, and not every generated scene node will have a corresponding [GLTFNode]. If there is no scene node for this [GLTFNode] index, [code]null[/code] is returned.
 */
 func (self Instance) GetSceneNode(idx int) [1]gdclass.Node { //gd:GLTFState.get_scene_node
-	return [1]gdclass.Node(class(self).GetSceneNode(gd.Int(idx)))
+	return [1]gdclass.Node(class(self).GetSceneNode(int64(idx)))
 }
 
 /*
@@ -108,7 +111,7 @@ Sets additional arbitrary data in this [GLTFState] instance. This can be used to
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
 */
 func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFState.set_additional_data
-	class(self).SetAdditionalData(String.Name(String.New(extension_name)), gd.NewVariant(additional_data))
+	class(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -143,7 +146,7 @@ func (self Instance) MajorVersion() int {
 }
 
 func (self Instance) SetMajorVersion(value int) {
-	class(self).SetMajorVersion(gd.Int(value))
+	class(self).SetMajorVersion(int64(value))
 }
 
 func (self Instance) MinorVersion() int {
@@ -151,7 +154,7 @@ func (self Instance) MinorVersion() int {
 }
 
 func (self Instance) SetMinorVersion(value int) {
-	class(self).SetMinorVersion(gd.Int(value))
+	class(self).SetMinorVersion(int64(value))
 }
 
 func (self Instance) Copyright() string {
@@ -359,7 +362,7 @@ func (self Instance) HandleBinaryImage() int {
 }
 
 func (self Instance) SetHandleBinaryImage(value int) {
-	class(self).SetHandleBinaryImage(gd.Int(value))
+	class(self).SetHandleBinaryImage(int64(value))
 }
 
 func (self Instance) BakeFps() Float.X {
@@ -367,7 +370,7 @@ func (self Instance) BakeFps() Float.X {
 }
 
 func (self Instance) SetBakeFps(value Float.X) {
-	class(self).SetBakeFps(gd.Float(value))
+	class(self).SetBakeFps(float64(value))
 }
 
 /*
@@ -387,11 +390,11 @@ func (self class) AddUsedExtension(extension_name String.Readable, required bool
 Appends the given byte array data to the buffers and creates a [GLTFBufferView] for it. The index of the destination [GLTFBufferView] is returned. If [param deduplication] is true, the buffers will first be searched for duplicate data, otherwise new bytes will always be appended.
 */
 //go:nosplit
-func (self class) AppendDataToBuffers(data Packed.Bytes, deduplication bool) gd.Int { //gd:GLTFState.append_data_to_buffers
+func (self class) AppendDataToBuffers(data Packed.Bytes, deduplication bool) int64 { //gd:GLTFState.append_data_to_buffers
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	callframe.Arg(frame, deduplication)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_append_data_to_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -418,9 +421,9 @@ func (self class) SetJson(json Dictionary.Any) { //gd:GLTFState.set_json
 }
 
 //go:nosplit
-func (self class) GetMajorVersion() gd.Int { //gd:GLTFState.get_major_version
+func (self class) GetMajorVersion() int64 { //gd:GLTFState.get_major_version
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_major_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -428,7 +431,7 @@ func (self class) GetMajorVersion() gd.Int { //gd:GLTFState.get_major_version
 }
 
 //go:nosplit
-func (self class) SetMajorVersion(major_version gd.Int) { //gd:GLTFState.set_major_version
+func (self class) SetMajorVersion(major_version int64) { //gd:GLTFState.set_major_version
 	var frame = callframe.New()
 	callframe.Arg(frame, major_version)
 	var r_ret = callframe.Nil
@@ -437,9 +440,9 @@ func (self class) SetMajorVersion(major_version gd.Int) { //gd:GLTFState.set_maj
 }
 
 //go:nosplit
-func (self class) GetMinorVersion() gd.Int { //gd:GLTFState.get_minor_version
+func (self class) GetMinorVersion() int64 { //gd:GLTFState.get_minor_version
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_minor_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -447,7 +450,7 @@ func (self class) GetMinorVersion() gd.Int { //gd:GLTFState.get_minor_version
 }
 
 //go:nosplit
-func (self class) SetMinorVersion(minor_version gd.Int) { //gd:GLTFState.set_minor_version
+func (self class) SetMinorVersion(minor_version int64) { //gd:GLTFState.set_minor_version
 	var frame = callframe.New()
 	callframe.Arg(frame, minor_version)
 	var r_ret = callframe.Nil
@@ -623,10 +626,10 @@ func (self class) SetMeshes(meshes Array.Contains[[1]gdclass.GLTFMesh]) { //gd:G
 Returns the number of [AnimationPlayer] nodes in this [GLTFState]. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to GLTF animations.
 */
 //go:nosplit
-func (self class) GetAnimationPlayersCount(idx gd.Int) gd.Int { //gd:GLTFState.get_animation_players_count
+func (self class) GetAnimationPlayersCount(idx int64) int64 { //gd:GLTFState.get_animation_players_count
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_animation_players_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -637,7 +640,7 @@ func (self class) GetAnimationPlayersCount(idx gd.Int) gd.Int { //gd:GLTFState.g
 Returns the [AnimationPlayer] node with the given index. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to GLTF animations.
 */
 //go:nosplit
-func (self class) GetAnimationPlayer(idx gd.Int) [1]gdclass.AnimationPlayer { //gd:GLTFState.get_animation_player
+func (self class) GetAnimationPlayer(idx int64) [1]gdclass.AnimationPlayer { //gd:GLTFState.get_animation_player
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1029,7 +1032,7 @@ Returns the Godot scene node that corresponds to the same index as the [GLTFNode
 [b]Note:[/b] Not every [GLTFNode] will have a scene node generated, and not every generated scene node will have a corresponding [GLTFNode]. If there is no scene node for this [GLTFNode] index, [code]null[/code] is returned.
 */
 //go:nosplit
-func (self class) GetSceneNode(idx gd.Int) [1]gdclass.Node { //gd:GLTFState.get_scene_node
+func (self class) GetSceneNode(idx int64) [1]gdclass.Node { //gd:GLTFState.get_scene_node
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1044,10 +1047,10 @@ Returns the index of the [GLTFNode] corresponding to this Godot scene node. This
 [b]Note:[/b] Not every Godot scene node will have a corresponding [GLTFNode], and not every [GLTFNode] will have a scene node generated. If there is no [GLTFNode] index for this scene node, [code]-1[/code] is returned.
 */
 //go:nosplit
-func (self class) GetNodeIndex(scene_node [1]gdclass.Node) gd.Int { //gd:GLTFState.get_node_index
+func (self class) GetNodeIndex(scene_node [1]gdclass.Node) int64 { //gd:GLTFState.get_node_index
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(scene_node[0])[0])
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_node_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1059,12 +1062,12 @@ Gets additional arbitrary data in this [GLTFState] instance. This can be used to
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
 */
 //go:nosplit
-func (self class) GetAdditionalData(extension_name String.Name) gd.Variant { //gd:GLTFState.get_additional_data
+func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //gd:GLTFState.get_additional_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(extension_name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_additional_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1074,19 +1077,19 @@ Sets additional arbitrary data in this [GLTFState] instance. This can be used to
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
 */
 //go:nosplit
-func (self class) SetAdditionalData(extension_name String.Name, additional_data gd.Variant) { //gd:GLTFState.set_additional_data
+func (self class) SetAdditionalData(extension_name String.Name, additional_data variant.Any) { //gd:GLTFState.set_additional_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(extension_name)))
-	callframe.Arg(frame, pointers.Get(additional_data))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(additional_data)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_additional_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetHandleBinaryImage() gd.Int { //gd:GLTFState.get_handle_binary_image
+func (self class) GetHandleBinaryImage() int64 { //gd:GLTFState.get_handle_binary_image
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_handle_binary_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1094,7 +1097,7 @@ func (self class) GetHandleBinaryImage() gd.Int { //gd:GLTFState.get_handle_bina
 }
 
 //go:nosplit
-func (self class) SetHandleBinaryImage(method gd.Int) { //gd:GLTFState.set_handle_binary_image
+func (self class) SetHandleBinaryImage(method int64) { //gd:GLTFState.set_handle_binary_image
 	var frame = callframe.New()
 	callframe.Arg(frame, method)
 	var r_ret = callframe.Nil
@@ -1103,7 +1106,7 @@ func (self class) SetHandleBinaryImage(method gd.Int) { //gd:GLTFState.set_handl
 }
 
 //go:nosplit
-func (self class) SetBakeFps(value gd.Float) { //gd:GLTFState.set_bake_fps
+func (self class) SetBakeFps(value float64) { //gd:GLTFState.set_bake_fps
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -1112,9 +1115,9 @@ func (self class) SetBakeFps(value gd.Float) { //gd:GLTFState.set_bake_fps
 }
 
 //go:nosplit
-func (self class) GetBakeFps() gd.Float { //gd:GLTFState.get_bake_fps
+func (self class) GetBakeFps() float64 { //gd:GLTFState.get_bake_fps
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_bake_fps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

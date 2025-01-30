@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -232,7 +236,7 @@ func (Instance) _export_begin(impl func(ptr unsafe.Pointer, features []string, i
 
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
-		var flags = gd.UnsafeGet[gd.Int](p_args, 3)
+		var flags = gd.UnsafeGet[int64](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, features.Strings(), is_debug, path.String(), int(flags))
@@ -336,7 +340,7 @@ func (Instance) _get_customization_configuration_hash(impl func(ptr unsafe.Point
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.Int(ret))
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -775,7 +779,7 @@ func (class) _export_file(impl func(ptr unsafe.Pointer, path String.Readable, at
 /*
 Virtual method to be overridden by the user. It is called when the export starts and provides all information about the export. [param features] is the list of features for the export, [param is_debug] is [code]true[/code] for debug builds, [param path] is the target path for the exported project. [param flags] is only used when running a runnable profile, e.g. when using native run on Android.
 */
-func (class) _export_begin(impl func(ptr unsafe.Pointer, features Packed.Strings, is_debug bool, path String.Readable, flags gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _export_begin(impl func(ptr unsafe.Pointer, features Packed.Strings, is_debug bool, path String.Readable, flags int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPackedStrings(features))
@@ -783,7 +787,7 @@ func (class) _export_begin(impl func(ptr unsafe.Pointer, features Packed.Strings
 
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
-		var flags = gd.UnsafeGet[gd.Int](p_args, 3)
+		var flags = gd.UnsafeGet[int64](p_args, 3)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, features, is_debug, path, flags)
@@ -883,7 +887,7 @@ func (class) _customize_scene(impl func(ptr unsafe.Pointer, scene [1]gdclass.Nod
 Return a hash based on the configuration passed (for both scenes and resources). This helps keep separate caches for separate export configurations.
 Implementing this method is required if [method _begin_customize_resources] returns [code]true[/code].
 */
-func (class) _get_customization_configuration_hash(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_customization_configuration_hash(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -1342,12 +1346,12 @@ func (self class) Skip() { //gd:EditorExportPlugin.skip
 Returns the current value of an export option supplied by [method _get_export_options].
 */
 //go:nosplit
-func (self class) GetOption(name String.Name) gd.Variant { //gd:EditorExportPlugin.get_option
+func (self class) GetOption(name String.Name) variant.Any { //gd:EditorExportPlugin.get_option
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_get_option, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

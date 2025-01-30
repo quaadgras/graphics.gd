@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioEffect"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioEffect"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -77,7 +80,7 @@ func (self Instance) BufferLength() Float.X {
 }
 
 func (self Instance) SetBufferLength(value Float.X) {
-	class(self).SetBufferLength(gd.Float(value))
+	class(self).SetBufferLength(float64(value))
 }
 
 func (self Instance) TapBackPos() Float.X {
@@ -85,7 +88,7 @@ func (self Instance) TapBackPos() Float.X {
 }
 
 func (self Instance) SetTapBackPos(value Float.X) {
-	class(self).SetTapBackPos(gd.Float(value))
+	class(self).SetTapBackPos(float64(value))
 }
 
 func (self Instance) FftSize() gdclass.AudioEffectSpectrumAnalyzerFFTSize {
@@ -97,7 +100,7 @@ func (self Instance) SetFftSize(value gdclass.AudioEffectSpectrumAnalyzerFFTSize
 }
 
 //go:nosplit
-func (self class) SetBufferLength(seconds gd.Float) { //gd:AudioEffectSpectrumAnalyzer.set_buffer_length
+func (self class) SetBufferLength(seconds float64) { //gd:AudioEffectSpectrumAnalyzer.set_buffer_length
 	var frame = callframe.New()
 	callframe.Arg(frame, seconds)
 	var r_ret = callframe.Nil
@@ -106,9 +109,9 @@ func (self class) SetBufferLength(seconds gd.Float) { //gd:AudioEffectSpectrumAn
 }
 
 //go:nosplit
-func (self class) GetBufferLength() gd.Float { //gd:AudioEffectSpectrumAnalyzer.get_buffer_length
+func (self class) GetBufferLength() float64 { //gd:AudioEffectSpectrumAnalyzer.get_buffer_length
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_buffer_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -116,7 +119,7 @@ func (self class) GetBufferLength() gd.Float { //gd:AudioEffectSpectrumAnalyzer.
 }
 
 //go:nosplit
-func (self class) SetTapBackPos(seconds gd.Float) { //gd:AudioEffectSpectrumAnalyzer.set_tap_back_pos
+func (self class) SetTapBackPos(seconds float64) { //gd:AudioEffectSpectrumAnalyzer.set_tap_back_pos
 	var frame = callframe.New()
 	callframe.Arg(frame, seconds)
 	var r_ret = callframe.Nil
@@ -125,9 +128,9 @@ func (self class) SetTapBackPos(seconds gd.Float) { //gd:AudioEffectSpectrumAnal
 }
 
 //go:nosplit
-func (self class) GetTapBackPos() gd.Float { //gd:AudioEffectSpectrumAnalyzer.get_tap_back_pos
+func (self class) GetTapBackPos() float64 { //gd:AudioEffectSpectrumAnalyzer.get_tap_back_pos
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_tap_back_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

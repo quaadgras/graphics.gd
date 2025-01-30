@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -235,7 +239,7 @@ func (Instance) _get_diff(impl func(ptr unsafe.Pointer, identifier string, area 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var identifier = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(identifier))
-		var area = gd.UnsafeGet[gd.Int](p_args, 1)
+		var area = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, identifier.String(), int(area))
@@ -280,7 +284,7 @@ Returns an [Array] of [Dictionary] items (see [method create_commit]), each cont
 */
 func (Instance) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits int) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var max_commits = gd.UnsafeGet[gd.Int](p_args, 0)
+		var max_commits = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(max_commits))
@@ -466,14 +470,14 @@ func (Instance) _get_line_diff(impl func(ptr unsafe.Pointer, file_path string, t
 Helper function to create a [Dictionary] for storing a line diff. [param new_line_no] is the line number in the new file (can be [code]-1[/code] if the line is deleted). [param old_line_no] is the line number in the old file (can be [code]-1[/code] if the line is added). [param content] is the diff text. [param status] is a single character string which stores the line origin.
 */
 func (self Instance) CreateDiffLine(new_line_no int, old_line_no int, content string, status string) DiffLine { //gd:EditorVCSInterface.create_diff_line
-	return DiffLine(gd.DictionaryAs[DiffLine](class(self).CreateDiffLine(gd.Int(new_line_no), gd.Int(old_line_no), String.New(content), String.New(status))))
+	return DiffLine(gd.DictionaryAs[DiffLine](class(self).CreateDiffLine(int64(new_line_no), int64(old_line_no), String.New(content), String.New(status))))
 }
 
 /*
 Helper function to create a [Dictionary] for storing diff hunk data. [param old_start] is the starting line number in old file. [param new_start] is the starting line number in new file. [param old_lines] is the number of lines in the old file. [param new_lines] is the number of lines in the new file.
 */
 func (self Instance) CreateDiffHunk(old_start int, new_start int, old_lines int, new_lines int) DiffHunk { //gd:EditorVCSInterface.create_diff_hunk
-	return DiffHunk(gd.DictionaryAs[DiffHunk](class(self).CreateDiffHunk(gd.Int(old_start), gd.Int(new_start), gd.Int(old_lines), gd.Int(new_lines))))
+	return DiffHunk(gd.DictionaryAs[DiffHunk](class(self).CreateDiffHunk(int64(old_start), int64(new_start), int64(old_lines), int64(new_lines))))
 }
 
 /*
@@ -487,7 +491,7 @@ func (self Instance) CreateDiffFile(new_file string, old_file string) DiffFile {
 Helper function to create a commit [Dictionary] item. [param msg] is the commit message of the commit. [param author] is a single human-readable string containing all the author's details, e.g. the email and name configured in the VCS. [param id] is the identifier of the commit, in whichever format your VCS may provide an identifier to commits. [param unix_timestamp] is the UTC Unix timestamp of when the commit was created. [param offset_minutes] is the timezone offset in minutes, recorded from the system timezone where the commit was created.
 */
 func (self Instance) CreateCommit(msg string, author string, id string, unix_timestamp int, offset_minutes int) Commit { //gd:EditorVCSInterface.create_commit
-	return Commit(gd.DictionaryAs[Commit](class(self).CreateCommit(String.New(msg), String.New(author), String.New(id), gd.Int(unix_timestamp), gd.Int(offset_minutes))))
+	return Commit(gd.DictionaryAs[Commit](class(self).CreateCommit(String.New(msg), String.New(author), String.New(id), int64(unix_timestamp), int64(offset_minutes))))
 }
 
 /*
@@ -636,11 +640,11 @@ func (class) _commit(impl func(ptr unsafe.Pointer, msg String.Readable)) (cb gd.
 /*
 Returns an array of [Dictionary] items (see [method create_diff_file], [method create_diff_hunk], [method create_diff_line], [method add_line_diffs_into_diff_hunk] and [method add_diff_hunks_into_diff_file]), each containing information about a diff. If [param identifier] is a file path, returns a file diff, and if it is a commit identifier, then returns a commit diff.
 */
-func (class) _get_diff(impl func(ptr unsafe.Pointer, identifier String.Readable, area gd.Int) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_diff(impl func(ptr unsafe.Pointer, identifier String.Readable, area int64) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var identifier = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(identifier))
-		var area = gd.UnsafeGet[gd.Int](p_args, 1)
+		var area = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, identifier, area)
@@ -683,9 +687,9 @@ func (class) _get_vcs_name(impl func(ptr unsafe.Pointer) String.Readable) (cb gd
 /*
 Returns an [Array] of [Dictionary] items (see [method create_commit]), each containing the data for a past commit.
 */
-func (class) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits gd.Int) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits int64) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var max_commits = gd.UnsafeGet[gd.Int](p_args, 0)
+		var max_commits = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, max_commits)
@@ -871,7 +875,7 @@ func (class) _get_line_diff(impl func(ptr unsafe.Pointer, file_path String.Reada
 Helper function to create a [Dictionary] for storing a line diff. [param new_line_no] is the line number in the new file (can be [code]-1[/code] if the line is deleted). [param old_line_no] is the line number in the old file (can be [code]-1[/code] if the line is added). [param content] is the diff text. [param status] is a single character string which stores the line origin.
 */
 //go:nosplit
-func (self class) CreateDiffLine(new_line_no gd.Int, old_line_no gd.Int, content String.Readable, status String.Readable) Dictionary.Any { //gd:EditorVCSInterface.create_diff_line
+func (self class) CreateDiffLine(new_line_no int64, old_line_no int64, content String.Readable, status String.Readable) Dictionary.Any { //gd:EditorVCSInterface.create_diff_line
 	var frame = callframe.New()
 	callframe.Arg(frame, new_line_no)
 	callframe.Arg(frame, old_line_no)
@@ -888,7 +892,7 @@ func (self class) CreateDiffLine(new_line_no gd.Int, old_line_no gd.Int, content
 Helper function to create a [Dictionary] for storing diff hunk data. [param old_start] is the starting line number in old file. [param new_start] is the starting line number in new file. [param old_lines] is the number of lines in the old file. [param new_lines] is the number of lines in the new file.
 */
 //go:nosplit
-func (self class) CreateDiffHunk(old_start gd.Int, new_start gd.Int, old_lines gd.Int, new_lines gd.Int) Dictionary.Any { //gd:EditorVCSInterface.create_diff_hunk
+func (self class) CreateDiffHunk(old_start int64, new_start int64, old_lines int64, new_lines int64) Dictionary.Any { //gd:EditorVCSInterface.create_diff_hunk
 	var frame = callframe.New()
 	callframe.Arg(frame, old_start)
 	callframe.Arg(frame, new_start)
@@ -920,7 +924,7 @@ func (self class) CreateDiffFile(new_file String.Readable, old_file String.Reada
 Helper function to create a commit [Dictionary] item. [param msg] is the commit message of the commit. [param author] is a single human-readable string containing all the author's details, e.g. the email and name configured in the VCS. [param id] is the identifier of the commit, in whichever format your VCS may provide an identifier to commits. [param unix_timestamp] is the UTC Unix timestamp of when the commit was created. [param offset_minutes] is the timezone offset in minutes, recorded from the system timezone where the commit was created.
 */
 //go:nosplit
-func (self class) CreateCommit(msg String.Readable, author String.Readable, id String.Readable, unix_timestamp gd.Int, offset_minutes gd.Int) Dictionary.Any { //gd:EditorVCSInterface.create_commit
+func (self class) CreateCommit(msg String.Readable, author String.Readable, id String.Readable, unix_timestamp int64, offset_minutes int64) Dictionary.Any { //gd:EditorVCSInterface.create_commit
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(msg)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(author)))
@@ -1133,8 +1137,8 @@ const (
 	TreeAreaUnstaged TreeArea = 2
 )
 
+type StatusFile map[interface{}]interface{}
 type DiffLine map[interface{}]interface{}
 type DiffHunk map[interface{}]interface{}
 type DiffFile map[interface{}]interface{}
 type Commit map[interface{}]interface{}
-type StatusFile map[interface{}]interface{}

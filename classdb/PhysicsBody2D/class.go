@@ -9,21 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/CollisionObject2D"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/CollisionObject2D"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -62,7 +66,7 @@ If [param test_only] is [code]true[/code], the body does not move but the would-
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is used e.g. by [CharacterBody2D] for improving floor detection during floor snapping.
 */
 func (self Instance) MoveAndCollide(motion Vector2.XY) [1]gdclass.KinematicCollision2D { //gd:PhysicsBody2D.move_and_collide
-	return [1]gdclass.KinematicCollision2D(class(self).MoveAndCollide(gd.Vector2(motion), false, gd.Float(0.08), false))
+	return [1]gdclass.KinematicCollision2D(class(self).MoveAndCollide(Vector2.XY(motion), false, float64(0.08), false))
 }
 
 /*
@@ -73,7 +77,7 @@ Virtually sets the node's position, scale and rotation to that of the given [Tra
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is useful for checking whether the body would [i]touch[/i] any other bodies.
 */
 func (self Instance) TestMove(from Transform2D.OriginXY, motion Vector2.XY) bool { //gd:PhysicsBody2D.test_move
-	return bool(class(self).TestMove(gd.Transform2D(from), gd.Vector2(motion), [1][1]gdclass.KinematicCollision2D{}[0], gd.Float(0.08), false))
+	return bool(class(self).TestMove(Transform2D.OriginXY(from), Vector2.XY(motion), [1][1]gdclass.KinematicCollision2D{}[0], float64(0.08), false))
 }
 
 /*
@@ -130,7 +134,7 @@ If [param test_only] is [code]true[/code], the body does not move but the would-
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is used e.g. by [CharacterBody2D] for improving floor detection during floor snapping.
 */
 //go:nosplit
-func (self class) MoveAndCollide(motion gd.Vector2, test_only bool, safe_margin gd.Float, recovery_as_collision bool) [1]gdclass.KinematicCollision2D { //gd:PhysicsBody2D.move_and_collide
+func (self class) MoveAndCollide(motion Vector2.XY, test_only bool, safe_margin float64, recovery_as_collision bool) [1]gdclass.KinematicCollision2D { //gd:PhysicsBody2D.move_and_collide
 	var frame = callframe.New()
 	callframe.Arg(frame, motion)
 	callframe.Arg(frame, test_only)
@@ -151,7 +155,7 @@ Virtually sets the node's position, scale and rotation to that of the given [Tra
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is useful for checking whether the body would [i]touch[/i] any other bodies.
 */
 //go:nosplit
-func (self class) TestMove(from gd.Transform2D, motion gd.Vector2, collision [1]gdclass.KinematicCollision2D, safe_margin gd.Float, recovery_as_collision bool) bool { //gd:PhysicsBody2D.test_move
+func (self class) TestMove(from Transform2D.OriginXY, motion Vector2.XY, collision [1]gdclass.KinematicCollision2D, safe_margin float64, recovery_as_collision bool) bool { //gd:PhysicsBody2D.test_move
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, motion)
@@ -169,9 +173,9 @@ func (self class) TestMove(from gd.Transform2D, motion gd.Vector2, collision [1]
 Returns the gravity vector computed from all sources that can affect the body, including all gravity overrides from [Area2D] nodes and the global world gravity.
 */
 //go:nosplit
-func (self class) GetGravity() gd.Vector2 { //gd:PhysicsBody2D.get_gravity
+func (self class) GetGravity() Vector2.XY { //gd:PhysicsBody2D.get_gravity
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsBody2D.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

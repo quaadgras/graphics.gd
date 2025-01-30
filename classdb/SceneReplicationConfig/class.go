@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 type Instance [1]gdclass.SceneReplicationConfig
@@ -58,7 +62,7 @@ Adds the property identified by the given [param path] to the list of the proper
 [b]Note:[/b] For details on restrictions and limitations on property synchronization, see [MultiplayerSynchronizer].
 */
 func (self Instance) AddProperty(path string) { //gd:SceneReplicationConfig.add_property
-	class(self).AddProperty(Path.ToNode(String.New(path)), gd.Int(-1))
+	class(self).AddProperty(Path.ToNode(String.New(path)), int64(-1))
 }
 
 /*
@@ -175,7 +179,7 @@ Adds the property identified by the given [param path] to the list of the proper
 [b]Note:[/b] For details on restrictions and limitations on property synchronization, see [MultiplayerSynchronizer].
 */
 //go:nosplit
-func (self class) AddProperty(path Path.ToNode, index gd.Int) { //gd:SceneReplicationConfig.add_property
+func (self class) AddProperty(path Path.ToNode, index int64) { //gd:SceneReplicationConfig.add_property
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	callframe.Arg(frame, index)
@@ -214,10 +218,10 @@ func (self class) RemoveProperty(path Path.ToNode) { //gd:SceneReplicationConfig
 Finds the index of the given [param path].
 */
 //go:nosplit
-func (self class) PropertyGetIndex(path Path.ToNode) gd.Int { //gd:SceneReplicationConfig.property_get_index
+func (self class) PropertyGetIndex(path Path.ToNode) int64 { //gd:SceneReplicationConfig.property_get_index
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

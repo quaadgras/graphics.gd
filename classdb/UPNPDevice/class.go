@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -66,14 +70,14 @@ func (self Instance) QueryExternalAddress() string { //gd:UPNPDevice.query_exter
 Adds a port mapping to forward the given external port on this [UPNPDevice] for the given protocol to the local machine. See [method UPNP.add_port_mapping].
 */
 func (self Instance) AddPortMapping(port int) int { //gd:UPNPDevice.add_port_mapping
-	return int(int(class(self).AddPortMapping(gd.Int(port), gd.Int(0), String.New(""), String.New("UDP"), gd.Int(0))))
+	return int(int(class(self).AddPortMapping(int64(port), int64(0), String.New(""), String.New("UDP"), int64(0))))
 }
 
 /*
 Deletes the port mapping identified by the given port and protocol combination on this device. See [method UPNP.delete_port_mapping].
 */
 func (self Instance) DeletePortMapping(port int) int { //gd:UPNPDevice.delete_port_mapping
-	return int(int(class(self).DeletePortMapping(gd.Int(port), String.New("UDP"))))
+	return int(int(class(self).DeletePortMapping(int64(port), String.New("UDP"))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -173,14 +177,14 @@ func (self class) QueryExternalAddress() String.Readable { //gd:UPNPDevice.query
 Adds a port mapping to forward the given external port on this [UPNPDevice] for the given protocol to the local machine. See [method UPNP.add_port_mapping].
 */
 //go:nosplit
-func (self class) AddPortMapping(port gd.Int, port_internal gd.Int, desc String.Readable, proto String.Readable, duration gd.Int) gd.Int { //gd:UPNPDevice.add_port_mapping
+func (self class) AddPortMapping(port int64, port_internal int64, desc String.Readable, proto String.Readable, duration int64) int64 { //gd:UPNPDevice.add_port_mapping
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, port_internal)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(desc)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(proto)))
 	callframe.Arg(frame, duration)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_add_port_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -191,11 +195,11 @@ func (self class) AddPortMapping(port gd.Int, port_internal gd.Int, desc String.
 Deletes the port mapping identified by the given port and protocol combination on this device. See [method UPNP.delete_port_mapping].
 */
 //go:nosplit
-func (self class) DeletePortMapping(port gd.Int, proto String.Readable) gd.Int { //gd:UPNPDevice.delete_port_mapping
+func (self class) DeletePortMapping(port int64, proto String.Readable) int64 { //gd:UPNPDevice.delete_port_mapping
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(proto)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_delete_port_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

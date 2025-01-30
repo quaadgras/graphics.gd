@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasLayer"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/CanvasLayer"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -36,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,7 +79,7 @@ func (self Instance) ScrollOffset() Vector2.XY {
 }
 
 func (self Instance) SetScrollOffset(value Vector2.XY) {
-	class(self).SetScrollOffset(gd.Vector2(value))
+	class(self).SetScrollOffset(Vector2.XY(value))
 }
 
 func (self Instance) ScrollBaseOffset() Vector2.XY {
@@ -83,7 +87,7 @@ func (self Instance) ScrollBaseOffset() Vector2.XY {
 }
 
 func (self Instance) SetScrollBaseOffset(value Vector2.XY) {
-	class(self).SetScrollBaseOffset(gd.Vector2(value))
+	class(self).SetScrollBaseOffset(Vector2.XY(value))
 }
 
 func (self Instance) ScrollBaseScale() Vector2.XY {
@@ -91,7 +95,7 @@ func (self Instance) ScrollBaseScale() Vector2.XY {
 }
 
 func (self Instance) SetScrollBaseScale(value Vector2.XY) {
-	class(self).SetScrollBaseScale(gd.Vector2(value))
+	class(self).SetScrollBaseScale(Vector2.XY(value))
 }
 
 func (self Instance) ScrollLimitBegin() Vector2.XY {
@@ -99,7 +103,7 @@ func (self Instance) ScrollLimitBegin() Vector2.XY {
 }
 
 func (self Instance) SetScrollLimitBegin(value Vector2.XY) {
-	class(self).SetLimitBegin(gd.Vector2(value))
+	class(self).SetLimitBegin(Vector2.XY(value))
 }
 
 func (self Instance) ScrollLimitEnd() Vector2.XY {
@@ -107,7 +111,7 @@ func (self Instance) ScrollLimitEnd() Vector2.XY {
 }
 
 func (self Instance) SetScrollLimitEnd(value Vector2.XY) {
-	class(self).SetLimitEnd(gd.Vector2(value))
+	class(self).SetLimitEnd(Vector2.XY(value))
 }
 
 func (self Instance) ScrollIgnoreCameraZoom() bool {
@@ -119,7 +123,7 @@ func (self Instance) SetScrollIgnoreCameraZoom(value bool) {
 }
 
 //go:nosplit
-func (self class) SetScrollOffset(offset gd.Vector2) { //gd:ParallaxBackground.set_scroll_offset
+func (self class) SetScrollOffset(offset Vector2.XY) { //gd:ParallaxBackground.set_scroll_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -128,9 +132,9 @@ func (self class) SetScrollOffset(offset gd.Vector2) { //gd:ParallaxBackground.s
 }
 
 //go:nosplit
-func (self class) GetScrollOffset() gd.Vector2 { //gd:ParallaxBackground.get_scroll_offset
+func (self class) GetScrollOffset() Vector2.XY { //gd:ParallaxBackground.get_scroll_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_get_scroll_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -138,7 +142,7 @@ func (self class) GetScrollOffset() gd.Vector2 { //gd:ParallaxBackground.get_scr
 }
 
 //go:nosplit
-func (self class) SetScrollBaseOffset(offset gd.Vector2) { //gd:ParallaxBackground.set_scroll_base_offset
+func (self class) SetScrollBaseOffset(offset Vector2.XY) { //gd:ParallaxBackground.set_scroll_base_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -147,9 +151,9 @@ func (self class) SetScrollBaseOffset(offset gd.Vector2) { //gd:ParallaxBackgrou
 }
 
 //go:nosplit
-func (self class) GetScrollBaseOffset() gd.Vector2 { //gd:ParallaxBackground.get_scroll_base_offset
+func (self class) GetScrollBaseOffset() Vector2.XY { //gd:ParallaxBackground.get_scroll_base_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_get_scroll_base_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -157,7 +161,7 @@ func (self class) GetScrollBaseOffset() gd.Vector2 { //gd:ParallaxBackground.get
 }
 
 //go:nosplit
-func (self class) SetScrollBaseScale(scale gd.Vector2) { //gd:ParallaxBackground.set_scroll_base_scale
+func (self class) SetScrollBaseScale(scale Vector2.XY) { //gd:ParallaxBackground.set_scroll_base_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -166,9 +170,9 @@ func (self class) SetScrollBaseScale(scale gd.Vector2) { //gd:ParallaxBackground
 }
 
 //go:nosplit
-func (self class) GetScrollBaseScale() gd.Vector2 { //gd:ParallaxBackground.get_scroll_base_scale
+func (self class) GetScrollBaseScale() Vector2.XY { //gd:ParallaxBackground.get_scroll_base_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_get_scroll_base_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -176,7 +180,7 @@ func (self class) GetScrollBaseScale() gd.Vector2 { //gd:ParallaxBackground.get_
 }
 
 //go:nosplit
-func (self class) SetLimitBegin(offset gd.Vector2) { //gd:ParallaxBackground.set_limit_begin
+func (self class) SetLimitBegin(offset Vector2.XY) { //gd:ParallaxBackground.set_limit_begin
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -185,9 +189,9 @@ func (self class) SetLimitBegin(offset gd.Vector2) { //gd:ParallaxBackground.set
 }
 
 //go:nosplit
-func (self class) GetLimitBegin() gd.Vector2 { //gd:ParallaxBackground.get_limit_begin
+func (self class) GetLimitBegin() Vector2.XY { //gd:ParallaxBackground.get_limit_begin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_get_limit_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -195,7 +199,7 @@ func (self class) GetLimitBegin() gd.Vector2 { //gd:ParallaxBackground.get_limit
 }
 
 //go:nosplit
-func (self class) SetLimitEnd(offset gd.Vector2) { //gd:ParallaxBackground.set_limit_end
+func (self class) SetLimitEnd(offset Vector2.XY) { //gd:ParallaxBackground.set_limit_end
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -204,9 +208,9 @@ func (self class) SetLimitEnd(offset gd.Vector2) { //gd:ParallaxBackground.set_l
 }
 
 //go:nosplit
-func (self class) GetLimitEnd() gd.Vector2 { //gd:ParallaxBackground.get_limit_end
+func (self class) GetLimitEnd() Vector2.XY { //gd:ParallaxBackground.get_limit_end
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_get_limit_end, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

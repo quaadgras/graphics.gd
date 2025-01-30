@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/InputEvent"
+import "graphics.gd/classdb/InputEventFromWindow"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/InputEventFromWindow"
-import "graphics.gd/classdb/InputEvent"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -76,7 +80,7 @@ func (self Instance) Index() int {
 }
 
 func (self Instance) SetIndex(value int) {
-	class(self).SetIndex(gd.Int(value))
+	class(self).SetIndex(int64(value))
 }
 
 func (self Instance) Position() Vector2.XY {
@@ -84,7 +88,7 @@ func (self Instance) Position() Vector2.XY {
 }
 
 func (self Instance) SetPosition(value Vector2.XY) {
-	class(self).SetPosition(gd.Vector2(value))
+	class(self).SetPosition(Vector2.XY(value))
 }
 
 func (self Instance) SetCanceled(value bool) {
@@ -104,7 +108,7 @@ func (self Instance) SetDoubleTap(value bool) {
 }
 
 //go:nosplit
-func (self class) SetIndex(index gd.Int) { //gd:InputEventScreenTouch.set_index
+func (self class) SetIndex(index int64) { //gd:InputEventScreenTouch.set_index
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -113,9 +117,9 @@ func (self class) SetIndex(index gd.Int) { //gd:InputEventScreenTouch.set_index
 }
 
 //go:nosplit
-func (self class) GetIndex() gd.Int { //gd:InputEventScreenTouch.get_index
+func (self class) GetIndex() int64 { //gd:InputEventScreenTouch.get_index
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventScreenTouch.Bind_get_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -123,7 +127,7 @@ func (self class) GetIndex() gd.Int { //gd:InputEventScreenTouch.get_index
 }
 
 //go:nosplit
-func (self class) SetPosition(position gd.Vector2) { //gd:InputEventScreenTouch.set_position
+func (self class) SetPosition(position Vector2.XY) { //gd:InputEventScreenTouch.set_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -132,9 +136,9 @@ func (self class) SetPosition(position gd.Vector2) { //gd:InputEventScreenTouch.
 }
 
 //go:nosplit
-func (self class) GetPosition() gd.Vector2 { //gd:InputEventScreenTouch.get_position
+func (self class) GetPosition() Vector2.XY { //gd:InputEventScreenTouch.get_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventScreenTouch.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

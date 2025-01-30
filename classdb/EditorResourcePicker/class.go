@@ -9,21 +9,23 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/BoxContainer"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Container"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/HBoxContainer"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/HBoxContainer"
-import "graphics.gd/classdb/BoxContainer"
-import "graphics.gd/classdb/Container"
-import "graphics.gd/classdb/Control"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -92,7 +96,7 @@ This virtual method can be implemented to handle context menu items not handled 
 */
 func (Instance) _handle_menu_selected(impl func(ptr unsafe.Pointer, id int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+		var id = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(id))
@@ -180,9 +184,9 @@ func (class) _set_create_options(impl func(ptr unsafe.Pointer, menu_node [1]gd.O
 /*
 This virtual method can be implemented to handle context menu items not handled by default. See [method _set_create_options].
 */
-func (class) _handle_menu_selected(impl func(ptr unsafe.Pointer, id gd.Int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _handle_menu_selected(impl func(ptr unsafe.Pointer, id int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+		var id = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, id)

@@ -10,16 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -115,7 +118,7 @@ Returns the interface registered at the given [param idx] index in the list of i
 */
 func GetInterface(idx int) [1]gdclass.XRInterface { //gd:XRServer.get_interface
 	once.Do(singleton)
-	return [1]gdclass.XRInterface(class(self).GetInterface(gd.Int(idx)))
+	return [1]gdclass.XRInterface(class(self).GetInterface(int64(idx)))
 }
 
 /*
@@ -155,7 +158,7 @@ Returns a dictionary of trackers for [param tracker_types].
 */
 func GetTrackers(tracker_types int) map[interface{}]interface{} { //gd:XRServer.get_trackers
 	once.Do(singleton)
-	return map[interface{}]interface{}(gd.DictionaryAs[map[interface{}]interface{}](class(self).GetTrackers(gd.Int(tracker_types))))
+	return map[interface{}]interface{}(gd.DictionaryAs[map[interface{}]interface{}](class(self).GetTrackers(int64(tracker_types))))
 }
 
 /*
@@ -181,7 +184,7 @@ func WorldScale() Float.X {
 }
 
 func SetWorldScale(value Float.X) {
-	class(self).SetWorldScale(gd.Float(value))
+	class(self).SetWorldScale(float64(value))
 }
 
 func WorldOrigin() Transform3D.BasisOrigin {
@@ -189,7 +192,7 @@ func WorldOrigin() Transform3D.BasisOrigin {
 }
 
 func SetWorldOrigin(value Transform3D.BasisOrigin) {
-	class(self).SetWorldOrigin(gd.Transform3D(value))
+	class(self).SetWorldOrigin(Transform3D.BasisOrigin(value))
 }
 
 func PrimaryInterface() [1]gdclass.XRInterface {
@@ -201,9 +204,9 @@ func SetPrimaryInterface(value [1]gdclass.XRInterface) {
 }
 
 //go:nosplit
-func (self class) GetWorldScale() gd.Float { //gd:XRServer.get_world_scale
+func (self class) GetWorldScale() float64 { //gd:XRServer.get_world_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_world_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -211,7 +214,7 @@ func (self class) GetWorldScale() gd.Float { //gd:XRServer.get_world_scale
 }
 
 //go:nosplit
-func (self class) SetWorldScale(scale gd.Float) { //gd:XRServer.set_world_scale
+func (self class) SetWorldScale(scale float64) { //gd:XRServer.set_world_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -220,9 +223,9 @@ func (self class) SetWorldScale(scale gd.Float) { //gd:XRServer.set_world_scale
 }
 
 //go:nosplit
-func (self class) GetWorldOrigin() gd.Transform3D { //gd:XRServer.get_world_origin
+func (self class) GetWorldOrigin() Transform3D.BasisOrigin { //gd:XRServer.get_world_origin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_world_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -230,7 +233,7 @@ func (self class) GetWorldOrigin() gd.Transform3D { //gd:XRServer.get_world_orig
 }
 
 //go:nosplit
-func (self class) SetWorldOrigin(world_origin gd.Transform3D) { //gd:XRServer.set_world_origin
+func (self class) SetWorldOrigin(world_origin Transform3D.BasisOrigin) { //gd:XRServer.set_world_origin
 	var frame = callframe.New()
 	callframe.Arg(frame, world_origin)
 	var r_ret = callframe.Nil
@@ -242,9 +245,9 @@ func (self class) SetWorldOrigin(world_origin gd.Transform3D) { //gd:XRServer.se
 Returns the reference frame transform. Mostly used internally and exposed for GDExtension build interfaces.
 */
 //go:nosplit
-func (self class) GetReferenceFrame() gd.Transform3D { //gd:XRServer.get_reference_frame
+func (self class) GetReferenceFrame() Transform3D.BasisOrigin { //gd:XRServer.get_reference_frame
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_reference_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -284,9 +287,9 @@ func (self class) CenterOnHmd(rotation_mode gdclass.XRServerRotationMode, keep_h
 Returns the primary interface's transformation.
 */
 //go:nosplit
-func (self class) GetHmdTransform() gd.Transform3D { //gd:XRServer.get_hmd_transform
+func (self class) GetHmdTransform() Transform3D.BasisOrigin { //gd:XRServer.get_hmd_transform
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Transform3D](frame)
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_hmd_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -309,9 +312,9 @@ func (self class) AddInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.add_
 Returns the number of interfaces currently registered with the AR/VR server. If your project supports multiple AR/VR platforms, you can look through the available interface, and either present the user with a selection or simply try to initialize each interface and use the first one that returns [code]true[/code].
 */
 //go:nosplit
-func (self class) GetInterfaceCount() gd.Int { //gd:XRServer.get_interface_count
+func (self class) GetInterfaceCount() int64 { //gd:XRServer.get_interface_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_interface_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -334,7 +337,7 @@ func (self class) RemoveInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.r
 Returns the interface registered at the given [param idx] index in the list of interfaces.
 */
 //go:nosplit
-func (self class) GetInterface(idx gd.Int) [1]gdclass.XRInterface { //gd:XRServer.get_interface
+func (self class) GetInterface(idx int64) [1]gdclass.XRInterface { //gd:XRServer.get_interface
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -399,7 +402,7 @@ func (self class) RemoveTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.re
 Returns a dictionary of trackers for [param tracker_types].
 */
 //go:nosplit
-func (self class) GetTrackers(tracker_types gd.Int) Dictionary.Any { //gd:XRServer.get_trackers
+func (self class) GetTrackers(tracker_types int64) Dictionary.Any { //gd:XRServer.get_trackers
 	var frame = callframe.New()
 	callframe.Arg(frame, tracker_types)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)

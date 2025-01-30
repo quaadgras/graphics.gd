@@ -9,17 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -35,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,7 +58,7 @@ type Any interface {
 Adds an object that is considered baked within this [LightmapGIData].
 */
 func (self Instance) AddUser(path string, uv_scale Rect2.PositionSize, slice_index int, sub_instance int) { //gd:LightmapGIData.add_user
-	class(self).AddUser(Path.ToNode(String.New(path)), gd.Rect2(uv_scale), gd.Int(slice_index), gd.Int(sub_instance))
+	class(self).AddUser(Path.ToNode(String.New(path)), Rect2.PositionSize(uv_scale), int64(slice_index), int64(sub_instance))
 }
 
 /*
@@ -68,7 +72,7 @@ func (self Instance) GetUserCount() int { //gd:LightmapGIData.get_user_count
 Returns the [NodePath] of the baked object at index [param user_idx].
 */
 func (self Instance) GetUserPath(user_idx int) string { //gd:LightmapGIData.get_user_path
-	return string(class(self).GetUserPath(gd.Int(user_idx)).String())
+	return string(class(self).GetUserPath(int64(user_idx)).String())
 }
 
 /*
@@ -170,7 +174,7 @@ func (self class) IsUsingSphericalHarmonics() bool { //gd:LightmapGIData.is_usin
 Adds an object that is considered baked within this [LightmapGIData].
 */
 //go:nosplit
-func (self class) AddUser(path Path.ToNode, uv_scale gd.Rect2, slice_index gd.Int, sub_instance gd.Int) { //gd:LightmapGIData.add_user
+func (self class) AddUser(path Path.ToNode, uv_scale Rect2.PositionSize, slice_index int64, sub_instance int64) { //gd:LightmapGIData.add_user
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	callframe.Arg(frame, uv_scale)
@@ -185,9 +189,9 @@ func (self class) AddUser(path Path.ToNode, uv_scale gd.Rect2, slice_index gd.In
 Returns the number of objects that are considered baked within this [LightmapGIData].
 */
 //go:nosplit
-func (self class) GetUserCount() gd.Int { //gd:LightmapGIData.get_user_count
+func (self class) GetUserCount() int64 { //gd:LightmapGIData.get_user_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGIData.Bind_get_user_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -198,7 +202,7 @@ func (self class) GetUserCount() gd.Int { //gd:LightmapGIData.get_user_count
 Returns the [NodePath] of the baked object at index [param user_idx].
 */
 //go:nosplit
-func (self class) GetUserPath(user_idx gd.Int) Path.ToNode { //gd:LightmapGIData.get_user_path
+func (self class) GetUserPath(user_idx int64) Path.ToNode { //gd:LightmapGIData.get_user_path
 	var frame = callframe.New()
 	callframe.Arg(frame, user_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)

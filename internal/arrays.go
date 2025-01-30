@@ -11,11 +11,11 @@ import (
 	ArrayVariant "graphics.gd/variant/Array"
 )
 
-func (a Array) Index(index Int) Variant {
+func (a Array) Index(index int64) Variant {
 	return Global.Array.Index(a, index)
 }
 
-func (a Array) SetIndex(index Int, value Variant) {
+func (a Array) SetIndex(index int64, value Variant) {
 	Global.Array.SetIndex(a, index, value)
 }
 
@@ -31,9 +31,9 @@ func (a Array) Free() {
 	}
 }
 
-func (a Array) Iter() iter.Seq2[Int, Variant] {
-	return func(yield func(Int, Variant) bool) {
-		for i := Int(0); i < a.Size(); i++ {
+func (a Array) Iter() iter.Seq2[int64, Variant] {
+	return func(yield func(int64, Variant) bool) {
+		for i := int64(0); i < a.Size(); i++ {
 			if !yield(i, a.Index(i)) {
 				break
 			}
@@ -53,7 +53,7 @@ func NewArray() Array {
 func ArrayAs[S []T, T any](array Array) []T {
 	var result = make([]T, array.Size())
 	for i := 0; i < int(array.Size()); i++ {
-		result[i] = VariantAs[T](array.Index(Int(i)))
+		result[i] = VariantAs[T](array.Index(int64(i)))
 	}
 	return result
 }
@@ -94,17 +94,17 @@ func (ArrayProxy[T]) Any(state complex128) ArrayVariant.Any {
 }
 
 func (ArrayProxy[T]) Resize(state complex128, i int) {
-	pointers.Load[Array](state).Resize(Int(i))
+	pointers.Load[Array](state).Resize(int64(i))
 }
 func (ArrayProxy[T]) Index(state complex128, i int) T {
-	value, err := convertVariantToDesiredGoType(pointers.Load[Array](state).Index(Int(i)), reflect.TypeFor[T]())
+	value, err := convertVariantToDesiredGoType(pointers.Load[Array](state).Index(int64(i)), reflect.TypeFor[T]())
 	if err != nil {
 		panic(fmt.Sprintf("could not convert variant to desired go type: %v", err))
 	}
 	return value.Interface().(T)
 }
 func (ArrayProxy[T]) SetIndex(state complex128, i int, val T) {
-	pointers.Load[Array](state).SetIndex(Int(i), NewVariant(val))
+	pointers.Load[Array](state).SetIndex(int64(i), NewVariant(val))
 }
 func (ArrayProxy[T]) Len(state complex128) int {
 	return int(pointers.Load[Array](state).Size())

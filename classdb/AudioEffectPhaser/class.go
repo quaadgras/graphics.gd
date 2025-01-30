@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioEffect"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioEffect"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -75,7 +78,7 @@ func (self Instance) RangeMinHz() Float.X {
 }
 
 func (self Instance) SetRangeMinHz(value Float.X) {
-	class(self).SetRangeMinHz(gd.Float(value))
+	class(self).SetRangeMinHz(float64(value))
 }
 
 func (self Instance) RangeMaxHz() Float.X {
@@ -83,7 +86,7 @@ func (self Instance) RangeMaxHz() Float.X {
 }
 
 func (self Instance) SetRangeMaxHz(value Float.X) {
-	class(self).SetRangeMaxHz(gd.Float(value))
+	class(self).SetRangeMaxHz(float64(value))
 }
 
 func (self Instance) RateHz() Float.X {
@@ -91,7 +94,7 @@ func (self Instance) RateHz() Float.X {
 }
 
 func (self Instance) SetRateHz(value Float.X) {
-	class(self).SetRateHz(gd.Float(value))
+	class(self).SetRateHz(float64(value))
 }
 
 func (self Instance) Feedback() Float.X {
@@ -99,7 +102,7 @@ func (self Instance) Feedback() Float.X {
 }
 
 func (self Instance) SetFeedback(value Float.X) {
-	class(self).SetFeedback(gd.Float(value))
+	class(self).SetFeedback(float64(value))
 }
 
 func (self Instance) Depth() Float.X {
@@ -107,11 +110,11 @@ func (self Instance) Depth() Float.X {
 }
 
 func (self Instance) SetDepth(value Float.X) {
-	class(self).SetDepth(gd.Float(value))
+	class(self).SetDepth(float64(value))
 }
 
 //go:nosplit
-func (self class) SetRangeMinHz(hz gd.Float) { //gd:AudioEffectPhaser.set_range_min_hz
+func (self class) SetRangeMinHz(hz float64) { //gd:AudioEffectPhaser.set_range_min_hz
 	var frame = callframe.New()
 	callframe.Arg(frame, hz)
 	var r_ret = callframe.Nil
@@ -120,9 +123,9 @@ func (self class) SetRangeMinHz(hz gd.Float) { //gd:AudioEffectPhaser.set_range_
 }
 
 //go:nosplit
-func (self class) GetRangeMinHz() gd.Float { //gd:AudioEffectPhaser.get_range_min_hz
+func (self class) GetRangeMinHz() float64 { //gd:AudioEffectPhaser.get_range_min_hz
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_get_range_min_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -130,7 +133,7 @@ func (self class) GetRangeMinHz() gd.Float { //gd:AudioEffectPhaser.get_range_mi
 }
 
 //go:nosplit
-func (self class) SetRangeMaxHz(hz gd.Float) { //gd:AudioEffectPhaser.set_range_max_hz
+func (self class) SetRangeMaxHz(hz float64) { //gd:AudioEffectPhaser.set_range_max_hz
 	var frame = callframe.New()
 	callframe.Arg(frame, hz)
 	var r_ret = callframe.Nil
@@ -139,9 +142,9 @@ func (self class) SetRangeMaxHz(hz gd.Float) { //gd:AudioEffectPhaser.set_range_
 }
 
 //go:nosplit
-func (self class) GetRangeMaxHz() gd.Float { //gd:AudioEffectPhaser.get_range_max_hz
+func (self class) GetRangeMaxHz() float64 { //gd:AudioEffectPhaser.get_range_max_hz
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_get_range_max_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -149,7 +152,7 @@ func (self class) GetRangeMaxHz() gd.Float { //gd:AudioEffectPhaser.get_range_ma
 }
 
 //go:nosplit
-func (self class) SetRateHz(hz gd.Float) { //gd:AudioEffectPhaser.set_rate_hz
+func (self class) SetRateHz(hz float64) { //gd:AudioEffectPhaser.set_rate_hz
 	var frame = callframe.New()
 	callframe.Arg(frame, hz)
 	var r_ret = callframe.Nil
@@ -158,9 +161,9 @@ func (self class) SetRateHz(hz gd.Float) { //gd:AudioEffectPhaser.set_rate_hz
 }
 
 //go:nosplit
-func (self class) GetRateHz() gd.Float { //gd:AudioEffectPhaser.get_rate_hz
+func (self class) GetRateHz() float64 { //gd:AudioEffectPhaser.get_rate_hz
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_get_rate_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -168,7 +171,7 @@ func (self class) GetRateHz() gd.Float { //gd:AudioEffectPhaser.get_rate_hz
 }
 
 //go:nosplit
-func (self class) SetFeedback(fbk gd.Float) { //gd:AudioEffectPhaser.set_feedback
+func (self class) SetFeedback(fbk float64) { //gd:AudioEffectPhaser.set_feedback
 	var frame = callframe.New()
 	callframe.Arg(frame, fbk)
 	var r_ret = callframe.Nil
@@ -177,9 +180,9 @@ func (self class) SetFeedback(fbk gd.Float) { //gd:AudioEffectPhaser.set_feedbac
 }
 
 //go:nosplit
-func (self class) GetFeedback() gd.Float { //gd:AudioEffectPhaser.get_feedback
+func (self class) GetFeedback() float64 { //gd:AudioEffectPhaser.get_feedback
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_get_feedback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -187,7 +190,7 @@ func (self class) GetFeedback() gd.Float { //gd:AudioEffectPhaser.get_feedback
 }
 
 //go:nosplit
-func (self class) SetDepth(depth gd.Float) { //gd:AudioEffectPhaser.set_depth
+func (self class) SetDepth(depth float64) { //gd:AudioEffectPhaser.set_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, depth)
 	var r_ret = callframe.Nil
@@ -196,9 +199,9 @@ func (self class) SetDepth(depth gd.Float) { //gd:AudioEffectPhaser.set_depth
 }
 
 //go:nosplit
-func (self class) GetDepth() gd.Float { //gd:AudioEffectPhaser.get_depth
+func (self class) GetDepth() float64 { //gd:AudioEffectPhaser.get_depth
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

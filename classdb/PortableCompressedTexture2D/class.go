@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Texture2D"
-import "graphics.gd/classdb/Texture"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -62,7 +66,7 @@ Initializes the compressed texture from a base image. The compression mode must 
 If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
 */
 func (self Instance) CreateFromImage(image [1]gdclass.Image, compression_mode gdclass.PortableCompressedTexture2DCompressionMode) { //gd:PortableCompressedTexture2D.create_from_image
-	class(self).CreateFromImage(image, compression_mode, false, gd.Float(0.8))
+	class(self).CreateFromImage(image, compression_mode, false, float64(0.8))
 }
 
 /*
@@ -119,7 +123,7 @@ func (self Instance) SizeOverride() Vector2.XY {
 }
 
 func (self Instance) SetSizeOverride(value Vector2.XY) {
-	class(self).SetSizeOverride(gd.Vector2(value))
+	class(self).SetSizeOverride(Vector2.XY(value))
 }
 
 func (self Instance) KeepCompressedBuffer() bool {
@@ -136,7 +140,7 @@ Initializes the compressed texture from a base image. The compression mode must 
 If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
 */
 //go:nosplit
-func (self class) CreateFromImage(image [1]gdclass.Image, compression_mode gdclass.PortableCompressedTexture2DCompressionMode, normal_map bool, lossy_quality gd.Float) { //gd:PortableCompressedTexture2D.create_from_image
+func (self class) CreateFromImage(image [1]gdclass.Image, compression_mode gdclass.PortableCompressedTexture2DCompressionMode, normal_map bool, lossy_quality float64) { //gd:PortableCompressedTexture2D.create_from_image
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, compression_mode)
@@ -174,7 +178,7 @@ func (self class) GetCompressionMode() gdclass.PortableCompressedTexture2DCompre
 }
 
 //go:nosplit
-func (self class) SetSizeOverride(size gd.Vector2) { //gd:PortableCompressedTexture2D.set_size_override
+func (self class) SetSizeOverride(size Vector2.XY) { //gd:PortableCompressedTexture2D.set_size_override
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -183,9 +187,9 @@ func (self class) SetSizeOverride(size gd.Vector2) { //gd:PortableCompressedText
 }
 
 //go:nosplit
-func (self class) GetSizeOverride() gd.Vector2 { //gd:PortableCompressedTexture2D.get_size_override
+func (self class) GetSizeOverride() Vector2.XY { //gd:PortableCompressedTexture2D.get_size_override
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_get_size_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

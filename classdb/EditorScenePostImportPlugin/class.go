@@ -9,15 +9,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +35,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -97,7 +101,7 @@ Override to add internal import options. These will appear in the 3D scene impor
 */
 func (Instance) _get_internal_import_options(impl func(ptr unsafe.Pointer, category int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+		var category = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(category))
@@ -109,7 +113,7 @@ Return true or false whether a given option should be visible. Return null to ig
 */
 func (Instance) _get_internal_option_visibility(impl func(ptr unsafe.Pointer, category int, for_animation bool, option string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+		var category = gd.UnsafeGet[int64](p_args, 0)
 
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
 
@@ -117,7 +121,7 @@ func (Instance) _get_internal_option_visibility(impl func(ptr unsafe.Pointer, ca
 		defer pointers.End(gd.InternalString(option))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(category), for_animation, option.String())
-		ptr, ok := pointers.End(gd.NewVariant(ret))
+		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
 			return
@@ -131,13 +135,13 @@ Return true whether updating the 3D view of the import dialog needs to be update
 */
 func (Instance) _get_internal_option_update_view_required(impl func(ptr unsafe.Pointer, category int, option string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+		var category = gd.UnsafeGet[int64](p_args, 0)
 
 		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalString(option))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(category), option.String())
-		ptr, ok := pointers.End(gd.NewVariant(ret))
+		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
 			return
@@ -151,7 +155,7 @@ Process a specific node or resource for a given category.
 */
 func (Instance) _internal_process(impl func(ptr unsafe.Pointer, category int, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+		var category = gd.UnsafeGet[int64](p_args, 0)
 
 		var base_node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 
@@ -192,7 +196,7 @@ func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string
 		defer pointers.End(gd.InternalString(option))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), for_animation, option.String())
-		ptr, ok := pointers.End(gd.NewVariant(ret))
+		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
 			return
@@ -238,14 +242,14 @@ func (self Instance) GetOptionValue(name string) any { //gd:EditorScenePostImpor
 Add a specific import option (name and default value only). This function can only be called from [method _get_import_options] and [method _get_internal_import_options].
 */
 func (self Instance) AddImportOption(name string, value any) { //gd:EditorScenePostImportPlugin.add_import_option
-	class(self).AddImportOption(String.New(name), gd.NewVariant(value))
+	class(self).AddImportOption(String.New(name), variant.New(value))
 }
 
 /*
 Add a specific import option. This function can only be called from [method _get_import_options] and [method _get_internal_import_options].
 */
-func (self Instance) AddImportOptionAdvanced(atype gd.VariantType, name string, default_value any) { //gd:EditorScenePostImportPlugin.add_import_option_advanced
-	class(self).AddImportOptionAdvanced(atype, String.New(name), gd.NewVariant(default_value), 0, String.New(""), gd.Int(6))
+func (self Instance) AddImportOptionAdvanced(atype variant.Type, name string, default_value any) { //gd:EditorScenePostImportPlugin.add_import_option_advanced
+	class(self).AddImportOptionAdvanced(atype, String.New(name), variant.New(default_value), 0, String.New(""), int64(6))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -270,9 +274,9 @@ func New() Instance {
 /*
 Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [method add_import_option] and [method add_import_option_advanced].
 */
-func (class) _get_internal_import_options(impl func(ptr unsafe.Pointer, category gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_internal_import_options(impl func(ptr unsafe.Pointer, category int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+		var category = gd.UnsafeGet[int64](p_args, 0)
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, category)
@@ -282,9 +286,9 @@ func (class) _get_internal_import_options(impl func(ptr unsafe.Pointer, category
 /*
 Return true or false whether a given option should be visible. Return null to ignore.
 */
-func (class) _get_internal_option_visibility(impl func(ptr unsafe.Pointer, category gd.Int, for_animation bool, option String.Readable) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_internal_option_visibility(impl func(ptr unsafe.Pointer, category int64, for_animation bool, option String.Readable) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+		var category = gd.UnsafeGet[int64](p_args, 0)
 
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
 
@@ -292,7 +296,7 @@ func (class) _get_internal_option_visibility(impl func(ptr unsafe.Pointer, categ
 		defer pointers.End(gd.InternalString(option))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, category, for_animation, option)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
 		if !ok {
 			return
@@ -304,15 +308,15 @@ func (class) _get_internal_option_visibility(impl func(ptr unsafe.Pointer, categ
 /*
 Return true whether updating the 3D view of the import dialog needs to be updated if an option has changed.
 */
-func (class) _get_internal_option_update_view_required(impl func(ptr unsafe.Pointer, category gd.Int, option String.Readable) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_internal_option_update_view_required(impl func(ptr unsafe.Pointer, category int64, option String.Readable) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+		var category = gd.UnsafeGet[int64](p_args, 0)
 
 		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalString(option))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, category, option)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
 		if !ok {
 			return
@@ -324,9 +328,9 @@ func (class) _get_internal_option_update_view_required(impl func(ptr unsafe.Poin
 /*
 Process a specific node or resource for a given category.
 */
-func (class) _internal_process(impl func(ptr unsafe.Pointer, category gd.Int, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _internal_process(impl func(ptr unsafe.Pointer, category int64, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+		var category = gd.UnsafeGet[int64](p_args, 0)
 
 		var base_node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 
@@ -357,7 +361,7 @@ func (class) _get_import_options(impl func(ptr unsafe.Pointer, path String.Reada
 /*
 Return true or false whether a given option should be visible. Return null to ignore.
 */
-func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path String.Readable, for_animation bool, option String.Readable) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path String.Readable, for_animation bool, option String.Readable) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
@@ -367,7 +371,7 @@ func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path String.Re
 		defer pointers.End(gd.InternalString(option))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, for_animation, option)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
 		if !ok {
 			return
@@ -406,12 +410,12 @@ func (class) _post_process(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node))
 Query the value of an option. This function can only be called from those querying visibility, or processing.
 */
 //go:nosplit
-func (self class) GetOptionValue(name String.Name) gd.Variant { //gd:EditorScenePostImportPlugin.get_option_value
+func (self class) GetOptionValue(name String.Name) variant.Any { //gd:EditorScenePostImportPlugin.get_option_value
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScenePostImportPlugin.Bind_get_option_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Variant](r_ret.Get())
+	var ret = variant.Through(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -420,10 +424,10 @@ func (self class) GetOptionValue(name String.Name) gd.Variant { //gd:EditorScene
 Add a specific import option (name and default value only). This function can only be called from [method _get_import_options] and [method _get_internal_import_options].
 */
 //go:nosplit
-func (self class) AddImportOption(name String.Readable, value gd.Variant) { //gd:EditorScenePostImportPlugin.add_import_option
+func (self class) AddImportOption(name String.Readable, value variant.Any) { //gd:EditorScenePostImportPlugin.add_import_option
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pointers.Get(value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScenePostImportPlugin.Bind_add_import_option, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -433,11 +437,11 @@ func (self class) AddImportOption(name String.Readable, value gd.Variant) { //gd
 Add a specific import option. This function can only be called from [method _get_import_options] and [method _get_internal_import_options].
 */
 //go:nosplit
-func (self class) AddImportOptionAdvanced(atype gd.VariantType, name String.Readable, default_value gd.Variant, hint PropertyHint, hint_string String.Readable, usage_flags gd.Int) { //gd:EditorScenePostImportPlugin.add_import_option_advanced
+func (self class) AddImportOptionAdvanced(atype variant.Type, name String.Readable, default_value variant.Any, hint PropertyHint, hint_string String.Readable, usage_flags int64) { //gd:EditorScenePostImportPlugin.add_import_option_advanced
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pointers.Get(default_value))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(default_value)))
 	callframe.Arg(frame, hint)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(hint_string)))
 	callframe.Arg(frame, usage_flags)

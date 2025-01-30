@@ -9,19 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/VisualInstance3D"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,6 +38,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -61,14 +64,14 @@ type Any interface {
 Based on [param value], enables or disables the specified layer in the [member bake_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetBakeMaskValue(layer_number int, value bool) { //gd:OccluderInstance3D.set_bake_mask_value
-	class(self).SetBakeMaskValue(gd.Int(layer_number), value)
+	class(self).SetBakeMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member bake_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetBakeMaskValue(layer_number int) bool { //gd:OccluderInstance3D.get_bake_mask_value
-	return bool(class(self).GetBakeMaskValue(gd.Int(layer_number)))
+	return bool(class(self).GetBakeMaskValue(int64(layer_number)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -102,7 +105,7 @@ func (self Instance) BakeMask() int {
 }
 
 func (self Instance) SetBakeMask(value int) {
-	class(self).SetBakeMask(gd.Int(value))
+	class(self).SetBakeMask(int64(value))
 }
 
 func (self Instance) BakeSimplificationDistance() Float.X {
@@ -110,11 +113,11 @@ func (self Instance) BakeSimplificationDistance() Float.X {
 }
 
 func (self Instance) SetBakeSimplificationDistance(value Float.X) {
-	class(self).SetBakeSimplificationDistance(gd.Float(value))
+	class(self).SetBakeSimplificationDistance(float64(value))
 }
 
 //go:nosplit
-func (self class) SetBakeMask(mask gd.Int) { //gd:OccluderInstance3D.set_bake_mask
+func (self class) SetBakeMask(mask int64) { //gd:OccluderInstance3D.set_bake_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -123,9 +126,9 @@ func (self class) SetBakeMask(mask gd.Int) { //gd:OccluderInstance3D.set_bake_ma
 }
 
 //go:nosplit
-func (self class) GetBakeMask() gd.Int { //gd:OccluderInstance3D.get_bake_mask
+func (self class) GetBakeMask() int64 { //gd:OccluderInstance3D.get_bake_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_get_bake_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -136,7 +139,7 @@ func (self class) GetBakeMask() gd.Int { //gd:OccluderInstance3D.get_bake_mask
 Based on [param value], enables or disables the specified layer in the [member bake_mask], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetBakeMaskValue(layer_number gd.Int, value bool) { //gd:OccluderInstance3D.set_bake_mask_value
+func (self class) SetBakeMaskValue(layer_number int64, value bool) { //gd:OccluderInstance3D.set_bake_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -149,7 +152,7 @@ func (self class) SetBakeMaskValue(layer_number gd.Int, value bool) { //gd:Occlu
 Returns whether or not the specified layer of the [member bake_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetBakeMaskValue(layer_number gd.Int) bool { //gd:OccluderInstance3D.get_bake_mask_value
+func (self class) GetBakeMaskValue(layer_number int64) bool { //gd:OccluderInstance3D.get_bake_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -160,7 +163,7 @@ func (self class) GetBakeMaskValue(layer_number gd.Int) bool { //gd:OccluderInst
 }
 
 //go:nosplit
-func (self class) SetBakeSimplificationDistance(simplification_distance gd.Float) { //gd:OccluderInstance3D.set_bake_simplification_distance
+func (self class) SetBakeSimplificationDistance(simplification_distance float64) { //gd:OccluderInstance3D.set_bake_simplification_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, simplification_distance)
 	var r_ret = callframe.Nil
@@ -169,9 +172,9 @@ func (self class) SetBakeSimplificationDistance(simplification_distance gd.Float
 }
 
 //go:nosplit
-func (self class) GetBakeSimplificationDistance() gd.Float { //gd:OccluderInstance3D.get_bake_simplification_distance
+func (self class) GetBakeSimplificationDistance() float64 { //gd:OccluderInstance3D.get_bake_simplification_distance
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_get_bake_simplification_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

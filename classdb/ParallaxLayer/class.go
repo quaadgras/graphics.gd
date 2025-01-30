@@ -9,18 +9,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -37,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -77,7 +81,7 @@ func (self Instance) MotionScale() Vector2.XY {
 }
 
 func (self Instance) SetMotionScale(value Vector2.XY) {
-	class(self).SetMotionScale(gd.Vector2(value))
+	class(self).SetMotionScale(Vector2.XY(value))
 }
 
 func (self Instance) MotionOffset() Vector2.XY {
@@ -85,7 +89,7 @@ func (self Instance) MotionOffset() Vector2.XY {
 }
 
 func (self Instance) SetMotionOffset(value Vector2.XY) {
-	class(self).SetMotionOffset(gd.Vector2(value))
+	class(self).SetMotionOffset(Vector2.XY(value))
 }
 
 func (self Instance) MotionMirroring() Vector2.XY {
@@ -93,11 +97,11 @@ func (self Instance) MotionMirroring() Vector2.XY {
 }
 
 func (self Instance) SetMotionMirroring(value Vector2.XY) {
-	class(self).SetMirroring(gd.Vector2(value))
+	class(self).SetMirroring(Vector2.XY(value))
 }
 
 //go:nosplit
-func (self class) SetMotionScale(scale gd.Vector2) { //gd:ParallaxLayer.set_motion_scale
+func (self class) SetMotionScale(scale Vector2.XY) { //gd:ParallaxLayer.set_motion_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -106,9 +110,9 @@ func (self class) SetMotionScale(scale gd.Vector2) { //gd:ParallaxLayer.set_moti
 }
 
 //go:nosplit
-func (self class) GetMotionScale() gd.Vector2 { //gd:ParallaxLayer.get_motion_scale
+func (self class) GetMotionScale() Vector2.XY { //gd:ParallaxLayer.get_motion_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxLayer.Bind_get_motion_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -116,7 +120,7 @@ func (self class) GetMotionScale() gd.Vector2 { //gd:ParallaxLayer.get_motion_sc
 }
 
 //go:nosplit
-func (self class) SetMotionOffset(offset gd.Vector2) { //gd:ParallaxLayer.set_motion_offset
+func (self class) SetMotionOffset(offset Vector2.XY) { //gd:ParallaxLayer.set_motion_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -125,9 +129,9 @@ func (self class) SetMotionOffset(offset gd.Vector2) { //gd:ParallaxLayer.set_mo
 }
 
 //go:nosplit
-func (self class) GetMotionOffset() gd.Vector2 { //gd:ParallaxLayer.get_motion_offset
+func (self class) GetMotionOffset() Vector2.XY { //gd:ParallaxLayer.get_motion_offset
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxLayer.Bind_get_motion_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -135,7 +139,7 @@ func (self class) GetMotionOffset() gd.Vector2 { //gd:ParallaxLayer.get_motion_o
 }
 
 //go:nosplit
-func (self class) SetMirroring(mirror gd.Vector2) { //gd:ParallaxLayer.set_mirroring
+func (self class) SetMirroring(mirror Vector2.XY) { //gd:ParallaxLayer.set_mirroring
 	var frame = callframe.New()
 	callframe.Arg(frame, mirror)
 	var r_ret = callframe.Nil
@@ -144,9 +148,9 @@ func (self class) SetMirroring(mirror gd.Vector2) { //gd:ParallaxLayer.set_mirro
 }
 
 //go:nosplit
-func (self class) GetMirroring() gd.Vector2 { //gd:ParallaxLayer.get_mirroring
+func (self class) GetMirroring() Vector2.XY { //gd:ParallaxLayer.get_mirroring
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxLayer.Bind_get_mirroring, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

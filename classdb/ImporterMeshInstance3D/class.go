@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 type Instance [1]gdclass.ImporterMeshInstance3D
@@ -95,7 +98,7 @@ func (self Instance) LayerMask() int {
 }
 
 func (self Instance) SetLayerMask(value int) {
-	class(self).SetLayerMask(gd.Int(value))
+	class(self).SetLayerMask(int64(value))
 }
 
 func (self Instance) CastShadow() gdclass.GeometryInstance3DShadowCastingSetting {
@@ -111,7 +114,7 @@ func (self Instance) VisibilityRangeBegin() Float.X {
 }
 
 func (self Instance) SetVisibilityRangeBegin(value Float.X) {
-	class(self).SetVisibilityRangeBegin(gd.Float(value))
+	class(self).SetVisibilityRangeBegin(float64(value))
 }
 
 func (self Instance) VisibilityRangeBeginMargin() Float.X {
@@ -119,7 +122,7 @@ func (self Instance) VisibilityRangeBeginMargin() Float.X {
 }
 
 func (self Instance) SetVisibilityRangeBeginMargin(value Float.X) {
-	class(self).SetVisibilityRangeBeginMargin(gd.Float(value))
+	class(self).SetVisibilityRangeBeginMargin(float64(value))
 }
 
 func (self Instance) VisibilityRangeEnd() Float.X {
@@ -127,7 +130,7 @@ func (self Instance) VisibilityRangeEnd() Float.X {
 }
 
 func (self Instance) SetVisibilityRangeEnd(value Float.X) {
-	class(self).SetVisibilityRangeEnd(gd.Float(value))
+	class(self).SetVisibilityRangeEnd(float64(value))
 }
 
 func (self Instance) VisibilityRangeEndMargin() Float.X {
@@ -135,7 +138,7 @@ func (self Instance) VisibilityRangeEndMargin() Float.X {
 }
 
 func (self Instance) SetVisibilityRangeEndMargin(value Float.X) {
-	class(self).SetVisibilityRangeEndMargin(gd.Float(value))
+	class(self).SetVisibilityRangeEndMargin(float64(value))
 }
 
 func (self Instance) VisibilityRangeFadeMode() gdclass.GeometryInstance3DVisibilityRangeFadeMode {
@@ -204,7 +207,7 @@ func (self class) GetSkeletonPath() Path.ToNode { //gd:ImporterMeshInstance3D.ge
 }
 
 //go:nosplit
-func (self class) SetLayerMask(layer_mask gd.Int) { //gd:ImporterMeshInstance3D.set_layer_mask
+func (self class) SetLayerMask(layer_mask int64) { //gd:ImporterMeshInstance3D.set_layer_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_mask)
 	var r_ret = callframe.Nil
@@ -213,9 +216,9 @@ func (self class) SetLayerMask(layer_mask gd.Int) { //gd:ImporterMeshInstance3D.
 }
 
 //go:nosplit
-func (self class) GetLayerMask() gd.Int { //gd:ImporterMeshInstance3D.get_layer_mask
+func (self class) GetLayerMask() int64 { //gd:ImporterMeshInstance3D.get_layer_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_layer_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -242,7 +245,7 @@ func (self class) GetCastShadowsSetting() gdclass.GeometryInstance3DShadowCastin
 }
 
 //go:nosplit
-func (self class) SetVisibilityRangeEndMargin(distance gd.Float) { //gd:ImporterMeshInstance3D.set_visibility_range_end_margin
+func (self class) SetVisibilityRangeEndMargin(distance float64) { //gd:ImporterMeshInstance3D.set_visibility_range_end_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -251,9 +254,9 @@ func (self class) SetVisibilityRangeEndMargin(distance gd.Float) { //gd:Importer
 }
 
 //go:nosplit
-func (self class) GetVisibilityRangeEndMargin() gd.Float { //gd:ImporterMeshInstance3D.get_visibility_range_end_margin
+func (self class) GetVisibilityRangeEndMargin() float64 { //gd:ImporterMeshInstance3D.get_visibility_range_end_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_visibility_range_end_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -261,7 +264,7 @@ func (self class) GetVisibilityRangeEndMargin() gd.Float { //gd:ImporterMeshInst
 }
 
 //go:nosplit
-func (self class) SetVisibilityRangeEnd(distance gd.Float) { //gd:ImporterMeshInstance3D.set_visibility_range_end
+func (self class) SetVisibilityRangeEnd(distance float64) { //gd:ImporterMeshInstance3D.set_visibility_range_end
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -270,9 +273,9 @@ func (self class) SetVisibilityRangeEnd(distance gd.Float) { //gd:ImporterMeshIn
 }
 
 //go:nosplit
-func (self class) GetVisibilityRangeEnd() gd.Float { //gd:ImporterMeshInstance3D.get_visibility_range_end
+func (self class) GetVisibilityRangeEnd() float64 { //gd:ImporterMeshInstance3D.get_visibility_range_end
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_visibility_range_end, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -280,7 +283,7 @@ func (self class) GetVisibilityRangeEnd() gd.Float { //gd:ImporterMeshInstance3D
 }
 
 //go:nosplit
-func (self class) SetVisibilityRangeBeginMargin(distance gd.Float) { //gd:ImporterMeshInstance3D.set_visibility_range_begin_margin
+func (self class) SetVisibilityRangeBeginMargin(distance float64) { //gd:ImporterMeshInstance3D.set_visibility_range_begin_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -289,9 +292,9 @@ func (self class) SetVisibilityRangeBeginMargin(distance gd.Float) { //gd:Import
 }
 
 //go:nosplit
-func (self class) GetVisibilityRangeBeginMargin() gd.Float { //gd:ImporterMeshInstance3D.get_visibility_range_begin_margin
+func (self class) GetVisibilityRangeBeginMargin() float64 { //gd:ImporterMeshInstance3D.get_visibility_range_begin_margin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_visibility_range_begin_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -299,7 +302,7 @@ func (self class) GetVisibilityRangeBeginMargin() gd.Float { //gd:ImporterMeshIn
 }
 
 //go:nosplit
-func (self class) SetVisibilityRangeBegin(distance gd.Float) { //gd:ImporterMeshInstance3D.set_visibility_range_begin
+func (self class) SetVisibilityRangeBegin(distance float64) { //gd:ImporterMeshInstance3D.set_visibility_range_begin
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -308,9 +311,9 @@ func (self class) SetVisibilityRangeBegin(distance gd.Float) { //gd:ImporterMesh
 }
 
 //go:nosplit
-func (self class) GetVisibilityRangeBegin() gd.Float { //gd:ImporterMeshInstance3D.get_visibility_range_begin
+func (self class) GetVisibilityRangeBegin() float64 { //gd:ImporterMeshInstance3D.get_visibility_range_begin
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_visibility_range_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

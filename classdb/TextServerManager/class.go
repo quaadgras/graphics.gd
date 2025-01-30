@@ -10,15 +10,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -77,7 +81,7 @@ Returns the interface registered at a given index.
 */
 func GetInterface(idx int) [1]gdclass.TextServer { //gd:TextServerManager.get_interface
 	once.Do(singleton)
-	return [1]gdclass.TextServer(class(self).GetInterface(gd.Int(idx)))
+	return [1]gdclass.TextServer(class(self).GetInterface(int64(idx)))
 }
 
 /*
@@ -138,9 +142,9 @@ func (self class) AddInterface(intf [1]gdclass.TextServer) { //gd:TextServerMana
 Returns the number of interfaces currently registered.
 */
 //go:nosplit
-func (self class) GetInterfaceCount() gd.Int { //gd:TextServerManager.get_interface_count
+func (self class) GetInterfaceCount() int64 { //gd:TextServerManager.get_interface_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_interface_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -163,7 +167,7 @@ func (self class) RemoveInterface(intf [1]gdclass.TextServer) { //gd:TextServerM
 Returns the interface registered at a given index.
 */
 //go:nosplit
-func (self class) GetInterface(idx gd.Int) [1]gdclass.TextServer { //gd:TextServerManager.get_interface
+func (self class) GetInterface(idx int64) [1]gdclass.TextServer { //gd:TextServerManager.get_interface
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

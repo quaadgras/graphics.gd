@@ -9,20 +9,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/InputEvent"
+import "graphics.gd/classdb/InputEventFromWindow"
+import "graphics.gd/classdb/InputEventGesture"
+import "graphics.gd/classdb/InputEventWithModifiers"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/InputEventGesture"
-import "graphics.gd/classdb/InputEventWithModifiers"
-import "graphics.gd/classdb/InputEventFromWindow"
-import "graphics.gd/classdb/InputEvent"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -39,6 +41,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -79,11 +83,11 @@ func (self Instance) Delta() Vector2.XY {
 }
 
 func (self Instance) SetDelta(value Vector2.XY) {
-	class(self).SetDelta(gd.Vector2(value))
+	class(self).SetDelta(Vector2.XY(value))
 }
 
 //go:nosplit
-func (self class) SetDelta(delta gd.Vector2) { //gd:InputEventPanGesture.set_delta
+func (self class) SetDelta(delta Vector2.XY) { //gd:InputEventPanGesture.set_delta
 	var frame = callframe.New()
 	callframe.Arg(frame, delta)
 	var r_ret = callframe.Nil
@@ -92,9 +96,9 @@ func (self class) SetDelta(delta gd.Vector2) { //gd:InputEventPanGesture.set_del
 }
 
 //go:nosplit
-func (self class) GetDelta() gd.Vector2 { //gd:InputEventPanGesture.get_delta
+func (self class) GetDelta() Vector2.XY { //gd:InputEventPanGesture.get_delta
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector2](frame)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventPanGesture.Bind_get_delta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

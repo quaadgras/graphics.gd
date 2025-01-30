@@ -9,16 +9,18 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -34,6 +36,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -71,7 +75,7 @@ Implement this function with your custom rendering code. [param effect_callback_
 */
 func (Instance) _render_callback(impl func(ptr unsafe.Pointer, effect_callback_type int, render_data [1]gdclass.RenderData)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var effect_callback_type = gd.UnsafeGet[gd.Int](p_args, 0)
+		var effect_callback_type = gd.UnsafeGet[int64](p_args, 0)
 
 		var render_data = [1]gdclass.RenderData{pointers.New[gdclass.RenderData]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 
@@ -159,9 +163,9 @@ func (self Instance) SetNeedsSeparateSpecular(value bool) {
 /*
 Implement this function with your custom rendering code. [param effect_callback_type] should always match the effect callback type you've specified in [member effect_callback_type]. [param render_data] provides access to the rendering state, it is only valid during rendering and should not be stored.
 */
-func (class) _render_callback(impl func(ptr unsafe.Pointer, effect_callback_type gd.Int, render_data [1]gdclass.RenderData)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _render_callback(impl func(ptr unsafe.Pointer, effect_callback_type int64, render_data [1]gdclass.RenderData)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var effect_callback_type = gd.UnsafeGet[gd.Int](p_args, 0)
+		var effect_callback_type = gd.UnsafeGet[int64](p_args, 0)
 
 		var render_data = [1]gdclass.RenderData{pointers.New[gdclass.RenderData]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 

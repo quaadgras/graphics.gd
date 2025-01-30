@@ -9,18 +9,19 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/AudioEffect"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/AudioEffect"
-import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,6 +37,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -80,7 +83,7 @@ func (self Instance) Threshold() Float.X {
 }
 
 func (self Instance) SetThreshold(value Float.X) {
-	class(self).SetThreshold(gd.Float(value))
+	class(self).SetThreshold(float64(value))
 }
 
 func (self Instance) Ratio() Float.X {
@@ -88,7 +91,7 @@ func (self Instance) Ratio() Float.X {
 }
 
 func (self Instance) SetRatio(value Float.X) {
-	class(self).SetRatio(gd.Float(value))
+	class(self).SetRatio(float64(value))
 }
 
 func (self Instance) Gain() Float.X {
@@ -96,7 +99,7 @@ func (self Instance) Gain() Float.X {
 }
 
 func (self Instance) SetGain(value Float.X) {
-	class(self).SetGain(gd.Float(value))
+	class(self).SetGain(float64(value))
 }
 
 func (self Instance) AttackUs() Float.X {
@@ -104,7 +107,7 @@ func (self Instance) AttackUs() Float.X {
 }
 
 func (self Instance) SetAttackUs(value Float.X) {
-	class(self).SetAttackUs(gd.Float(value))
+	class(self).SetAttackUs(float64(value))
 }
 
 func (self Instance) ReleaseMs() Float.X {
@@ -112,7 +115,7 @@ func (self Instance) ReleaseMs() Float.X {
 }
 
 func (self Instance) SetReleaseMs(value Float.X) {
-	class(self).SetReleaseMs(gd.Float(value))
+	class(self).SetReleaseMs(float64(value))
 }
 
 func (self Instance) Mix() Float.X {
@@ -120,7 +123,7 @@ func (self Instance) Mix() Float.X {
 }
 
 func (self Instance) SetMix(value Float.X) {
-	class(self).SetMix(gd.Float(value))
+	class(self).SetMix(float64(value))
 }
 
 func (self Instance) Sidechain() string {
@@ -132,7 +135,7 @@ func (self Instance) SetSidechain(value string) {
 }
 
 //go:nosplit
-func (self class) SetThreshold(threshold gd.Float) { //gd:AudioEffectCompressor.set_threshold
+func (self class) SetThreshold(threshold float64) { //gd:AudioEffectCompressor.set_threshold
 	var frame = callframe.New()
 	callframe.Arg(frame, threshold)
 	var r_ret = callframe.Nil
@@ -141,9 +144,9 @@ func (self class) SetThreshold(threshold gd.Float) { //gd:AudioEffectCompressor.
 }
 
 //go:nosplit
-func (self class) GetThreshold() gd.Float { //gd:AudioEffectCompressor.get_threshold
+func (self class) GetThreshold() float64 { //gd:AudioEffectCompressor.get_threshold
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectCompressor.Bind_get_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -151,7 +154,7 @@ func (self class) GetThreshold() gd.Float { //gd:AudioEffectCompressor.get_thres
 }
 
 //go:nosplit
-func (self class) SetRatio(ratio gd.Float) { //gd:AudioEffectCompressor.set_ratio
+func (self class) SetRatio(ratio float64) { //gd:AudioEffectCompressor.set_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -160,9 +163,9 @@ func (self class) SetRatio(ratio gd.Float) { //gd:AudioEffectCompressor.set_rati
 }
 
 //go:nosplit
-func (self class) GetRatio() gd.Float { //gd:AudioEffectCompressor.get_ratio
+func (self class) GetRatio() float64 { //gd:AudioEffectCompressor.get_ratio
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectCompressor.Bind_get_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -170,7 +173,7 @@ func (self class) GetRatio() gd.Float { //gd:AudioEffectCompressor.get_ratio
 }
 
 //go:nosplit
-func (self class) SetGain(gain gd.Float) { //gd:AudioEffectCompressor.set_gain
+func (self class) SetGain(gain float64) { //gd:AudioEffectCompressor.set_gain
 	var frame = callframe.New()
 	callframe.Arg(frame, gain)
 	var r_ret = callframe.Nil
@@ -179,9 +182,9 @@ func (self class) SetGain(gain gd.Float) { //gd:AudioEffectCompressor.set_gain
 }
 
 //go:nosplit
-func (self class) GetGain() gd.Float { //gd:AudioEffectCompressor.get_gain
+func (self class) GetGain() float64 { //gd:AudioEffectCompressor.get_gain
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectCompressor.Bind_get_gain, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -189,7 +192,7 @@ func (self class) GetGain() gd.Float { //gd:AudioEffectCompressor.get_gain
 }
 
 //go:nosplit
-func (self class) SetAttackUs(attack_us gd.Float) { //gd:AudioEffectCompressor.set_attack_us
+func (self class) SetAttackUs(attack_us float64) { //gd:AudioEffectCompressor.set_attack_us
 	var frame = callframe.New()
 	callframe.Arg(frame, attack_us)
 	var r_ret = callframe.Nil
@@ -198,9 +201,9 @@ func (self class) SetAttackUs(attack_us gd.Float) { //gd:AudioEffectCompressor.s
 }
 
 //go:nosplit
-func (self class) GetAttackUs() gd.Float { //gd:AudioEffectCompressor.get_attack_us
+func (self class) GetAttackUs() float64 { //gd:AudioEffectCompressor.get_attack_us
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectCompressor.Bind_get_attack_us, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -208,7 +211,7 @@ func (self class) GetAttackUs() gd.Float { //gd:AudioEffectCompressor.get_attack
 }
 
 //go:nosplit
-func (self class) SetReleaseMs(release_ms gd.Float) { //gd:AudioEffectCompressor.set_release_ms
+func (self class) SetReleaseMs(release_ms float64) { //gd:AudioEffectCompressor.set_release_ms
 	var frame = callframe.New()
 	callframe.Arg(frame, release_ms)
 	var r_ret = callframe.Nil
@@ -217,9 +220,9 @@ func (self class) SetReleaseMs(release_ms gd.Float) { //gd:AudioEffectCompressor
 }
 
 //go:nosplit
-func (self class) GetReleaseMs() gd.Float { //gd:AudioEffectCompressor.get_release_ms
+func (self class) GetReleaseMs() float64 { //gd:AudioEffectCompressor.get_release_ms
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectCompressor.Bind_get_release_ms, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -227,7 +230,7 @@ func (self class) GetReleaseMs() gd.Float { //gd:AudioEffectCompressor.get_relea
 }
 
 //go:nosplit
-func (self class) SetMix(mix gd.Float) { //gd:AudioEffectCompressor.set_mix
+func (self class) SetMix(mix float64) { //gd:AudioEffectCompressor.set_mix
 	var frame = callframe.New()
 	callframe.Arg(frame, mix)
 	var r_ret = callframe.Nil
@@ -236,9 +239,9 @@ func (self class) SetMix(mix gd.Float) { //gd:AudioEffectCompressor.set_mix
 }
 
 //go:nosplit
-func (self class) GetMix() gd.Float { //gd:AudioEffectCompressor.get_mix
+func (self class) GetMix() float64 { //gd:AudioEffectCompressor.get_mix
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Float](frame)
+	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectCompressor.Bind_get_mix, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

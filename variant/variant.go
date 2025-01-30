@@ -487,7 +487,7 @@ func (a Any) Type() Type { //gd:typeof
 // If the type conversion cannot be done, this method will return the default value for that type, for
 // example converting [Rect2.PositionSize] to [Vector2.XY] will always return [Vector2.Zero]. This method
 // will never show error messages as long as type is a valid Variant type.
-func ConvertTo(to Type, v any) any { //gd:type_convert
+func ConvertTo(to reflect.Type, v any) any { //gd:type_convert
 	panic("implement me")
 }
 
@@ -596,58 +596,31 @@ func Equal(a, b any) bool { //gd:is_same
 type Operator int
 
 const (
-	/*Equality operator ([code]==[/code]).*/
-	OpEqual Operator = 0
-	/*Inequality operator ([code]!=[/code]).*/
-	OpNotEqual Operator = 1
-	/*Less than operator ([code]<[/code]).*/
-	OpLess Operator = 2
-	/*Less than or equal operator ([code]<=[/code]).*/
-	OpLessEqual Operator = 3
-	/*Greater than operator ([code]>[/code]).*/
-	OpGreater Operator = 4
-	/*Greater than or equal operator ([code]>=[/code]).*/
-	OpGreaterEqual Operator = 5
-	/*Addition operator ([code]+[/code]).*/
-	OpAdd Operator = 6
-	/*Subtraction operator ([code]-[/code]).*/
-	OpSubtract Operator = 7
-	/*Multiplication operator ([code]*[/code]).*/
-	OpMultiply Operator = 8
-	/*Division operator ([code]/[/code]).*/
-	OpDivide Operator = 9
-	/*Unary negation operator ([code]-[/code]).*/
-	OpNegate Operator = 10
-	/*Unary plus operator ([code]+[/code]).*/
-	OpPositive Operator = 11
-	/*Remainder/modulo operator ([code]%[/code]).*/
-	OpModule Operator = 12
-	/*Power operator ([code]**[/code]).*/
-	OpPower Operator = 13
-	/*Left shift operator ([code]<<[/code]).*/
-	OpShiftLeft Operator = 14
-	/*Right shift operator ([code]>>[/code]).*/
-	OpShiftRight Operator = 15
-	/*Bitwise AND operator ([code]&[/code]).*/
-	OpBitAnd Operator = 16
-	/*Bitwise OR operator ([code]|[/code]).*/
-	OpBitOr Operator = 17
-	/*Bitwise XOR operator ([code]^[/code]).*/
-	OpBitXor Operator = 18
-	/*Bitwise NOT operator ([code]~[/code]).*/
-	OpBitNegate Operator = 19
-	/*Logical AND operator ([code]and[/code] or [code]&&[/code]).*/
-	OpAnd Operator = 20
-	/*Logical OR operator ([code]or[/code] or [code]||[/code]).*/
-	OpOr Operator = 21
-	/*Logical XOR operator (not implemented in GDScript).*/
-	OpXor Operator = 22
-	/*Logical NOT operator ([code]not[/code] or [code]![/code]).*/
-	OpNot Operator = 23
-	/*Logical IN operator ([code]in[/code]).*/
-	OpIn Operator = 24
-	/*Represents the size of the [enum Variant.Operator] enum.*/
-	OpMax Operator = 25
+	OpEqual        Operator = 0  // ==
+	OpNotEqual     Operator = 1  // !=
+	OpLess         Operator = 2  // <
+	OpLessEqual    Operator = 3  // <=
+	OpGreater      Operator = 4  // >
+	OpGreaterEqual Operator = 5  // >=
+	OpAdd          Operator = 6  // +
+	OpSubtract     Operator = 7  // -
+	OpMultiply     Operator = 8  // *
+	OpDivide       Operator = 9  // /
+	OpNegate       Operator = 10 // -
+	OpPositive     Operator = 11 // +
+	OpModule       Operator = 12 // %
+	OpPower        Operator = 13 // **
+	OpShiftLeft    Operator = 14 // <<
+	OpShiftRight   Operator = 15 // >>
+	OpBitAnd       Operator = 16 // &
+	OpBitOr        Operator = 17 // |
+	OpBitXor       Operator = 18 // ^
+	OpBitNegate    Operator = 19 // ~
+	OpAnd          Operator = 20 // &&
+	OpOr           Operator = 21 // ||
+	OpXor          Operator = 22 // !=
+	OpNot          Operator = 23 // !
+	OpIn           Operator = 24 // []
 )
 
 func Use[T pointers.Generic[T, S], S pointers.Size](ptr T) {

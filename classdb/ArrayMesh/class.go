@@ -9,20 +9,21 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/RefCounted"
+import "graphics.gd/classdb/Mesh"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/classdb/Mesh"
-import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/AABB"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,6 +39,8 @@ var _ RID.Any
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -114,14 +117,14 @@ func (self Instance) GetBlendShapeCount() int { //gd:ArrayMesh.get_blend_shape_c
 Returns the name of the blend shape at this index.
 */
 func (self Instance) GetBlendShapeName(index int) string { //gd:ArrayMesh.get_blend_shape_name
-	return string(class(self).GetBlendShapeName(gd.Int(index)).String())
+	return string(class(self).GetBlendShapeName(int64(index)).String())
 }
 
 /*
 Sets the name of the blend shape at this index.
 */
 func (self Instance) SetBlendShapeName(index int, name string) { //gd:ArrayMesh.set_blend_shape_name
-	class(self).SetBlendShapeName(gd.Int(index), String.Name(String.New(name)))
+	class(self).SetBlendShapeName(int64(index), String.Name(String.New(name)))
 }
 
 /*
@@ -151,41 +154,41 @@ func (self Instance) ClearSurfaces() { //gd:ArrayMesh.clear_surfaces
 	class(self).ClearSurfaces()
 }
 func (self Instance) SurfaceUpdateVertexRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_vertex_region
-	class(self).SurfaceUpdateVertexRegion(gd.Int(surf_idx), gd.Int(offset), Packed.Bytes(Packed.New(data...)))
+	class(self).SurfaceUpdateVertexRegion(int64(surf_idx), int64(offset), Packed.Bytes(Packed.New(data...)))
 }
 func (self Instance) SurfaceUpdateAttributeRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_attribute_region
-	class(self).SurfaceUpdateAttributeRegion(gd.Int(surf_idx), gd.Int(offset), Packed.Bytes(Packed.New(data...)))
+	class(self).SurfaceUpdateAttributeRegion(int64(surf_idx), int64(offset), Packed.Bytes(Packed.New(data...)))
 }
 func (self Instance) SurfaceUpdateSkinRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_skin_region
-	class(self).SurfaceUpdateSkinRegion(gd.Int(surf_idx), gd.Int(offset), Packed.Bytes(Packed.New(data...)))
+	class(self).SurfaceUpdateSkinRegion(int64(surf_idx), int64(offset), Packed.Bytes(Packed.New(data...)))
 }
 
 /*
 Returns the length in vertices of the vertex array in the requested surface (see [method add_surface_from_arrays]).
 */
 func (self Instance) SurfaceGetArrayLen(surf_idx int) int { //gd:ArrayMesh.surface_get_array_len
-	return int(int(class(self).SurfaceGetArrayLen(gd.Int(surf_idx))))
+	return int(int(class(self).SurfaceGetArrayLen(int64(surf_idx))))
 }
 
 /*
 Returns the length in indices of the index array in the requested surface (see [method add_surface_from_arrays]).
 */
 func (self Instance) SurfaceGetArrayIndexLen(surf_idx int) int { //gd:ArrayMesh.surface_get_array_index_len
-	return int(int(class(self).SurfaceGetArrayIndexLen(gd.Int(surf_idx))))
+	return int(int(class(self).SurfaceGetArrayIndexLen(int64(surf_idx))))
 }
 
 /*
 Returns the format mask of the requested surface (see [method add_surface_from_arrays]).
 */
 func (self Instance) SurfaceGetFormat(surf_idx int) gdclass.MeshArrayFormat { //gd:ArrayMesh.surface_get_format
-	return gdclass.MeshArrayFormat(class(self).SurfaceGetFormat(gd.Int(surf_idx)))
+	return gdclass.MeshArrayFormat(class(self).SurfaceGetFormat(int64(surf_idx)))
 }
 
 /*
 Returns the primitive type of the requested surface (see [method add_surface_from_arrays]).
 */
 func (self Instance) SurfaceGetPrimitiveType(surf_idx int) gdclass.MeshPrimitiveType { //gd:ArrayMesh.surface_get_primitive_type
-	return gdclass.MeshPrimitiveType(class(self).SurfaceGetPrimitiveType(gd.Int(surf_idx)))
+	return gdclass.MeshPrimitiveType(class(self).SurfaceGetPrimitiveType(int64(surf_idx)))
 }
 
 /*
@@ -199,14 +202,14 @@ func (self Instance) SurfaceFindByName(name string) int { //gd:ArrayMesh.surface
 Sets a name for a given surface.
 */
 func (self Instance) SurfaceSetName(surf_idx int, name string) { //gd:ArrayMesh.surface_set_name
-	class(self).SurfaceSetName(gd.Int(surf_idx), String.New(name))
+	class(self).SurfaceSetName(int64(surf_idx), String.New(name))
 }
 
 /*
 Gets the name assigned to this surface.
 */
 func (self Instance) SurfaceGetName(surf_idx int) string { //gd:ArrayMesh.surface_get_name
-	return string(class(self).SurfaceGetName(gd.Int(surf_idx)).String())
+	return string(class(self).SurfaceGetName(int64(surf_idx)).String())
 }
 
 /*
@@ -220,7 +223,7 @@ func (self Instance) RegenNormalMaps() { //gd:ArrayMesh.regen_normal_maps
 Performs a UV unwrap on the [ArrayMesh] to prepare the mesh for lightmapping.
 */
 func (self Instance) LightmapUnwrap(transform Transform3D.BasisOrigin, texel_size Float.X) error { //gd:ArrayMesh.lightmap_unwrap
-	return error(gd.ToError(class(self).LightmapUnwrap(gd.Transform3D(transform), gd.Float(texel_size))))
+	return error(gd.ToError(class(self).LightmapUnwrap(Transform3D.BasisOrigin(transform), float64(texel_size))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -255,7 +258,7 @@ func (self Instance) CustomAabb() AABB.PositionSize {
 }
 
 func (self Instance) SetCustomAabb(value AABB.PositionSize) {
-	class(self).SetCustomAabb(gd.AABB(value))
+	class(self).SetCustomAabb(AABB.PositionSize(value))
 }
 
 func (self Instance) ShadowMesh() [1]gdclass.ArrayMesh {
@@ -282,9 +285,9 @@ func (self class) AddBlendShape(name String.Name) { //gd:ArrayMesh.add_blend_sha
 Returns the number of blend shapes that the [ArrayMesh] holds.
 */
 //go:nosplit
-func (self class) GetBlendShapeCount() gd.Int { //gd:ArrayMesh.get_blend_shape_count
+func (self class) GetBlendShapeCount() int64 { //gd:ArrayMesh.get_blend_shape_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_blend_shape_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -295,7 +298,7 @@ func (self class) GetBlendShapeCount() gd.Int { //gd:ArrayMesh.get_blend_shape_c
 Returns the name of the blend shape at this index.
 */
 //go:nosplit
-func (self class) GetBlendShapeName(index gd.Int) String.Name { //gd:ArrayMesh.get_blend_shape_name
+func (self class) GetBlendShapeName(index int64) String.Name { //gd:ArrayMesh.get_blend_shape_name
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -309,7 +312,7 @@ func (self class) GetBlendShapeName(index gd.Int) String.Name { //gd:ArrayMesh.g
 Sets the name of the blend shape at this index.
 */
 //go:nosplit
-func (self class) SetBlendShapeName(index gd.Int, name String.Name) { //gd:ArrayMesh.set_blend_shape_name
+func (self class) SetBlendShapeName(index int64, name String.Name) { //gd:ArrayMesh.set_blend_shape_name
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
@@ -382,7 +385,7 @@ func (self class) ClearSurfaces() { //gd:ArrayMesh.clear_surfaces
 }
 
 //go:nosplit
-func (self class) SurfaceUpdateVertexRegion(surf_idx gd.Int, offset gd.Int, data Packed.Bytes) { //gd:ArrayMesh.surface_update_vertex_region
+func (self class) SurfaceUpdateVertexRegion(surf_idx int64, offset int64, data Packed.Bytes) { //gd:ArrayMesh.surface_update_vertex_region
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, offset)
@@ -393,7 +396,7 @@ func (self class) SurfaceUpdateVertexRegion(surf_idx gd.Int, offset gd.Int, data
 }
 
 //go:nosplit
-func (self class) SurfaceUpdateAttributeRegion(surf_idx gd.Int, offset gd.Int, data Packed.Bytes) { //gd:ArrayMesh.surface_update_attribute_region
+func (self class) SurfaceUpdateAttributeRegion(surf_idx int64, offset int64, data Packed.Bytes) { //gd:ArrayMesh.surface_update_attribute_region
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, offset)
@@ -404,7 +407,7 @@ func (self class) SurfaceUpdateAttributeRegion(surf_idx gd.Int, offset gd.Int, d
 }
 
 //go:nosplit
-func (self class) SurfaceUpdateSkinRegion(surf_idx gd.Int, offset gd.Int, data Packed.Bytes) { //gd:ArrayMesh.surface_update_skin_region
+func (self class) SurfaceUpdateSkinRegion(surf_idx int64, offset int64, data Packed.Bytes) { //gd:ArrayMesh.surface_update_skin_region
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, offset)
@@ -418,10 +421,10 @@ func (self class) SurfaceUpdateSkinRegion(surf_idx gd.Int, offset gd.Int, data P
 Returns the length in vertices of the vertex array in the requested surface (see [method add_surface_from_arrays]).
 */
 //go:nosplit
-func (self class) SurfaceGetArrayLen(surf_idx gd.Int) gd.Int { //gd:ArrayMesh.surface_get_array_len
+func (self class) SurfaceGetArrayLen(surf_idx int64) int64 { //gd:ArrayMesh.surface_get_array_len
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_array_len, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -432,10 +435,10 @@ func (self class) SurfaceGetArrayLen(surf_idx gd.Int) gd.Int { //gd:ArrayMesh.su
 Returns the length in indices of the index array in the requested surface (see [method add_surface_from_arrays]).
 */
 //go:nosplit
-func (self class) SurfaceGetArrayIndexLen(surf_idx gd.Int) gd.Int { //gd:ArrayMesh.surface_get_array_index_len
+func (self class) SurfaceGetArrayIndexLen(surf_idx int64) int64 { //gd:ArrayMesh.surface_get_array_index_len
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_array_index_len, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -446,7 +449,7 @@ func (self class) SurfaceGetArrayIndexLen(surf_idx gd.Int) gd.Int { //gd:ArrayMe
 Returns the format mask of the requested surface (see [method add_surface_from_arrays]).
 */
 //go:nosplit
-func (self class) SurfaceGetFormat(surf_idx gd.Int) gdclass.MeshArrayFormat { //gd:ArrayMesh.surface_get_format
+func (self class) SurfaceGetFormat(surf_idx int64) gdclass.MeshArrayFormat { //gd:ArrayMesh.surface_get_format
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[gdclass.MeshArrayFormat](frame)
@@ -460,7 +463,7 @@ func (self class) SurfaceGetFormat(surf_idx gd.Int) gdclass.MeshArrayFormat { //
 Returns the primitive type of the requested surface (see [method add_surface_from_arrays]).
 */
 //go:nosplit
-func (self class) SurfaceGetPrimitiveType(surf_idx gd.Int) gdclass.MeshPrimitiveType { //gd:ArrayMesh.surface_get_primitive_type
+func (self class) SurfaceGetPrimitiveType(surf_idx int64) gdclass.MeshPrimitiveType { //gd:ArrayMesh.surface_get_primitive_type
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[gdclass.MeshPrimitiveType](frame)
@@ -474,10 +477,10 @@ func (self class) SurfaceGetPrimitiveType(surf_idx gd.Int) gdclass.MeshPrimitive
 Returns the index of the first surface with this name held within this [ArrayMesh]. If none are found, -1 is returned.
 */
 //go:nosplit
-func (self class) SurfaceFindByName(name String.Readable) gd.Int { //gd:ArrayMesh.surface_find_by_name
+func (self class) SurfaceFindByName(name String.Readable) int64 { //gd:ArrayMesh.surface_find_by_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[gd.Int](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_find_by_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -488,7 +491,7 @@ func (self class) SurfaceFindByName(name String.Readable) gd.Int { //gd:ArrayMes
 Sets a name for a given surface.
 */
 //go:nosplit
-func (self class) SurfaceSetName(surf_idx gd.Int, name String.Readable) { //gd:ArrayMesh.surface_set_name
+func (self class) SurfaceSetName(surf_idx int64, name String.Readable) { //gd:ArrayMesh.surface_set_name
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
@@ -501,7 +504,7 @@ func (self class) SurfaceSetName(surf_idx gd.Int, name String.Readable) { //gd:A
 Gets the name assigned to this surface.
 */
 //go:nosplit
-func (self class) SurfaceGetName(surf_idx gd.Int) String.Readable { //gd:ArrayMesh.surface_get_name
+func (self class) SurfaceGetName(surf_idx int64) String.Readable { //gd:ArrayMesh.surface_get_name
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -526,19 +529,19 @@ func (self class) RegenNormalMaps() { //gd:ArrayMesh.regen_normal_maps
 Performs a UV unwrap on the [ArrayMesh] to prepare the mesh for lightmapping.
 */
 //go:nosplit
-func (self class) LightmapUnwrap(transform gd.Transform3D, texel_size gd.Float) gd.Error { //gd:ArrayMesh.lightmap_unwrap
+func (self class) LightmapUnwrap(transform Transform3D.BasisOrigin, texel_size float64) Error.Code { //gd:ArrayMesh.lightmap_unwrap
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
 	callframe.Arg(frame, texel_size)
-	var r_ret = callframe.Ret[gd.Error](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_lightmap_unwrap, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetCustomAabb(aabb gd.AABB) { //gd:ArrayMesh.set_custom_aabb
+func (self class) SetCustomAabb(aabb AABB.PositionSize) { //gd:ArrayMesh.set_custom_aabb
 	var frame = callframe.New()
 	callframe.Arg(frame, aabb)
 	var r_ret = callframe.Nil
@@ -547,9 +550,9 @@ func (self class) SetCustomAabb(aabb gd.AABB) { //gd:ArrayMesh.set_custom_aabb
 }
 
 //go:nosplit
-func (self class) GetCustomAabb() gd.AABB { //gd:ArrayMesh.get_custom_aabb
+func (self class) GetCustomAabb() AABB.PositionSize { //gd:ArrayMesh.get_custom_aabb
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.AABB](frame)
+	var r_ret = callframe.Ret[AABB.PositionSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -607,119 +610,3 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("ArrayMesh", func(ptr gd.Object) any { return [1]gdclass.ArrayMesh{*(*gdclass.ArrayMesh)(unsafe.Pointer(&ptr))} })
 }
-
-type Error = gd.Error //gd:Error
-
-const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
-
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
-	Ok Error = 0
-	/*Generic error.*/
-	Failed Error = 1
-	/*Unavailable error.*/
-	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
-	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
-	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
-	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
-	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
-	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
-	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
-	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
-	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
-	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
-	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
-	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
-	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
-	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
-	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
-	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
-	ErrFileEof Error = 18
-	/*Can't open error.*/
-	ErrCantOpen Error = 19
-	/*Can't create error.*/
-	ErrCantCreate Error = 20
-	/*Query failed error.*/
-	ErrQueryFailed Error = 21
-	/*Already in use error.*/
-	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
-	ErrLocked Error = 23
-	/*Timeout error.*/
-	ErrTimeout Error = 24
-	/*Can't connect error.*/
-	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
-	ErrCantResolve Error = 26
-	/*Connection error.*/
-	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
-	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
-	ErrCantFork Error = 29
-	/*Invalid data error.*/
-	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
-	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
-	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
-	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
-	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
-	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
-	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
-	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
-	ErrLinkFailed Error = 38
-	/*Script failed error.*/
-	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
-	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
-	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
-	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
-	ErrParseError Error = 43
-	/*Busy error.*/
-	ErrBusy Error = 44
-	/*Skip error.*/
-	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
-	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
-	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
-	ErrPrinterOnFire Error = 48
-)
