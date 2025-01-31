@@ -65,7 +65,7 @@ type Program[V, F, M any] interface {
 	Lighting(M) vec4.RGBA
 }
 
-type Global struct {
+type Globals struct {
 	// Global time since the engine has started, in seconds. It repeats after every 3,600 seconds (which can be changed with
 	// the rollover setting). It's not affected by time_scale or pausing. If you need a TIME variable that can be scaled or
 	// paused, add your own global shader uniform and update it each frame.
