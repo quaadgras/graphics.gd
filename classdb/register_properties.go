@@ -98,12 +98,14 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 		field.Set(reflect.Zero(field.Type()))
 		return true
 	}
+	var isExtensionClass bool
 	var converted reflect.Value
 	if value.Type() == gd.TypeObject {
 		obj := gd.LetVariantAsPointerType[gd.Object](value, gd.TypeObject)
 		ext, ok := gd.ExtensionInstances.Load(pointers.Get(obj)[0])
 		if ok {
 			converted = reflect.ValueOf(ext)
+			isExtensionClass = true
 		}
 	}
 	if !converted.IsValid() {
@@ -113,9 +115,12 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 			return false
 		}
 	}
-	if converted.Kind() == reflect.Array {
+	if converted.Kind() == reflect.Array || isExtensionClass {
 		if !field.IsZero() {
-			field.Interface().(interface{ Free() }).Free()
+			freeable, ok := field.Interface().(interface{ Free() })
+			if ok {
+				freeable.Free()
+			}
 		}
 		obj, ok := converted.Interface().(interface {
 			AsObject() [1]gd.Object
@@ -161,6 +166,14 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 		if field.Type().Kind() == reflect.Chan || reflect.PointerTo(field.Type()).Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
 			return gd.Variant{}, false
 		}
+	}
+	if field.Type().Implements(reflect.TypeFor[interface{ superType() reflect.Type }]()) {
+		if field.IsZero() {
+			return gd.Global.Variants.NewNil(), false
+		}
+		obj := field.Interface().(interface{ AsObject() [1]gd.Object }).AsObject()[0]
+		vary := gd.NewVariant(obj)
+		return vary, true
 	}
 	return gd.NewVariant(field.Interface()), true
 }
