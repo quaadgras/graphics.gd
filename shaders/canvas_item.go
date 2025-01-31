@@ -1,6 +1,8 @@
 package shaders
 
 import (
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/ShaderMaterial"
 	"graphics.gd/shaders/bool"
 	"graphics.gd/shaders/float"
 	"graphics.gd/shaders/int"
@@ -11,6 +13,16 @@ import (
 	"graphics.gd/shaders/vec3"
 	"graphics.gd/shaders/vec4"
 )
+
+type Type2D struct {
+	classdb.Extension[goShader, ShaderMaterial.Instance]
+}
+
+func (Type2D) shaderType() string { return "canvas_item" }
+
+func (Type2D) Fragment(vertix Vertex2D) Fragment2D     { return Fragment2D{} }
+func (Type2D) Material(fragment Fragment2D) Material2D { return Material2D{} }
+func (Type2D) Lighting(material Material2D) vec4.RGBA  { return vec4.RGBA{} }
 
 type Vertex2D struct {
 	Globals
