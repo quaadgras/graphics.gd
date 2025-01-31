@@ -102,6 +102,12 @@ func linkup(in any) {
 			linkup(value.Field(i).Addr().Interface())
 		}
 		if tag := rtype.Field(i).Tag.Get("gd"); tag != "" {
+			field := value.Field(i)
+			switch ptr := field.Addr().Interface().(type) {
+			case *vec2.XY:
+				dsl.Set(&ptr.X, dsl.Identifier(tag+".x"))
+				dsl.Set(&ptr.Y, dsl.Identifier(tag+".y"))
+			}
 			dsl.Set(value.Field(i).Addr().Interface().(dsl.Pointer), dsl.Identifier(tag))
 		}
 	}

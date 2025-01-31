@@ -235,13 +235,15 @@ func NewQuadExpression[Q Quad](expr Expression) Q {
 	rtype := reflect.TypeFor[Q]()
 	switch {
 	case rtype.ConvertibleTo(reflect.TypeOf(Vec4{})):
-		return any(NewVec4Expression(expr)).(Q)
+		return reflect.ValueOf(NewVec4Expression(expr)).Convert(rtype).Interface().(Q)
 	case rtype.ConvertibleTo(reflect.TypeOf(Vec4i{})):
-		return any(NewVec4iExpression(expr)).(Q)
+		return reflect.ValueOf(NewVec4iExpression(expr)).Convert(rtype).Interface().(Q)
 	case rtype.ConvertibleTo(reflect.TypeOf(Vec4u{})):
-		return any(NewVec4uExpression(expr)).(Q)
+		return reflect.ValueOf(NewVec4uExpression(expr)).Convert(rtype).Interface().(Q)
+	case rtype.ConvertibleTo(reflect.TypeOf(RGBA{})):
+		return reflect.ValueOf(NewRGBAExpression(expr)).Convert(rtype).Interface().(Q)
 	default:
-		return any(NewRGBAExpression(expr)).(Q)
+		panic("unreachable")
 	}
 }
 

@@ -5,11 +5,14 @@ import (
 	"graphics.gd/shaders/float"
 	"graphics.gd/shaders/int"
 	"graphics.gd/shaders/mat4"
+	"graphics.gd/shaders/texture"
 	"graphics.gd/shaders/vec2"
 	"graphics.gd/shaders/vec4"
 )
 
-type CanvasItemVertexAttributes struct {
+type CanvasItemVertexAttributes = Vertex2D
+
+type Vertex2D struct {
 	Global
 
 	// Local space to world space transform. World space is the coordinates you normally use in the editor.
@@ -38,4 +41,14 @@ type CanvasItemVertexAttributes struct {
 	PointSize float.X   `gd:"POINT_SIZE"` // Point size for point drawing.
 	Custom0   vec4.XYZW `gd:"CUSTOM0"`    // Custom value from vertex primitive.
 	Custom1   vec4.XYZW `gd:"CUSTOM1"`    // Custom value from vertex primitive.
+}
+
+type Fragment2D struct {
+	Position vec2.XY                      `gd:"VERTEX"`  // Vertex, in local space.
+	UV       vec2.XY                      `gd:"UV"`      // Normalized texture coordinates. Range from 0 to 1.
+	Texture  texture.Sampler2D[vec4.RGBA] `gd:"TEXTURE"` // Texture sampler.
+}
+
+type Material2D struct {
+	Color vec4.RGBA `gd:"COLOR"` // Color from vertex primitive.
 }

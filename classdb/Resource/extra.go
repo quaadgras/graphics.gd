@@ -29,7 +29,7 @@ func Load[T Any](path string) T {
 	resource := Instance(ResourceLoader.Load(string(path)))
 	result, ok := as[T](resource)
 	if !ok {
-		panic("Resource is not of the expected type")
+		panic("Resource is " + resource.AsObject()[0].GetClass().String() + " not " + reflect.TypeFor[T]().String())
 	}
 	return result
 }
