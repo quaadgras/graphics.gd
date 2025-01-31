@@ -15,23 +15,31 @@ func propertyOf(field reflect.StructField) (gd.PropertyInfo, bool) {
 	if ok {
 		name = tag
 	}
+	var vtype gd.VariantType
 	var hint PropertyHint
 	var hintString = nameOf(field.Type)
-	vtype, ok := gd.VariantTypeOf(field.Type)
-	if !ok {
-		return gd.PropertyInfo{}, false
-	}
-	if vtype == gd.TypeArray && (field.Type.Kind() == reflect.Array || field.Type.Kind() == reflect.Slice) {
-		elem := field.Type.Elem()
-		etype, ok := gd.VariantTypeOf(elem)
+	switch {
+	case field.Type.Kind() == reflect.Pointer && field.Type.Implements(reflect.TypeOf([0]interface{ Super() ResourceClass.Instance }{}).Elem()):
+		vtype = gd.TypeObject
+		hint |= PropertyHintResourceType
+		hintString = nameOf(field.Type.Elem())
+	default:
+		vtype, ok = gd.VariantTypeOf(field.Type)
 		if !ok {
 			return gd.PropertyInfo{}, false
 		}
-		if elem.Implements(reflect.TypeFor[ResourceClass.Any]()) {
-			hintString = fmt.Sprintf("%d/%d:%s", gd.TypeObject, PropertyHintResourceType, nameOf(elem)) // MAKE_RESOURCE_TYPE_HINT
-		} else {
-			hint |= PropertyHintArrayType
-			hintString = etype.String()
+		if vtype == gd.TypeArray && (field.Type.Kind() == reflect.Array || field.Type.Kind() == reflect.Slice) {
+			elem := field.Type.Elem()
+			etype, ok := gd.VariantTypeOf(elem)
+			if !ok {
+				return gd.PropertyInfo{}, false
+			}
+			if elem.Implements(reflect.TypeFor[ResourceClass.Any]()) {
+				hintString = fmt.Sprintf("%d/%d:%s", gd.TypeObject, PropertyHintResourceType, nameOf(elem)) // MAKE_RESOURCE_TYPE_HINT
+			} else {
+				hint |= PropertyHintArrayType
+				hintString = etype.String()
+			}
 		}
 	}
 	if field.Type.Implements(reflect.TypeOf([0]interface{ AsResource() ResourceClass.Instance }{}).Elem()) {
@@ -90,9 +98,20 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 		field.Set(reflect.Zero(field.Type()))
 		return true
 	}
-	converted, err := gd.ConvertToDesiredGoType(value, field.Type())
-	if err != nil {
-		return false
+	var converted reflect.Value
+	if value.Type() == gd.TypeObject {
+		obj := gd.LetVariantAsPointerType[gd.Object](value, gd.TypeObject)
+		ext, ok := gd.ExtensionInstances.Load(pointers.Get(obj)[0])
+		if ok {
+			converted = reflect.ValueOf(ext)
+		}
+	}
+	if !converted.IsValid() {
+		var err error
+		converted, err = gd.ConvertToDesiredGoType(value, field.Type())
+		if err != nil {
+			return false
+		}
 	}
 	if converted.Kind() == reflect.Array {
 		if !field.IsZero() {
