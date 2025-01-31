@@ -12,3 +12,5 @@ golang.org/x/tools v0.29.1-0.20250128153832-8171d94fe98a h1:DI55EY0mmQVdiufEd/zX
 golang.org/x/tools v0.29.1-0.20250128153832-8171d94fe98a/go.mod h1:KMQVMRsVxU6nHCFXrBPhDB8XncLNLM0lIy/F14RP588=
 runtime.link v0.0.0-20241203235822-266e6dd4f99d h1:HzPoM8kUlHbNziC53/jrA4x0Su2XGDLU0VAw/xs8goc=
 runtime.link v0.0.0-20241203235822-266e6dd4f99d/go.mod h1:bs9lT/R79BfIAGcCHrCWiEdDec5nUNSBBjDmAvAsasU=
+runtime.link v0.0.0-20250131052539-992a5f0be9db h1:pmEAAhIKeeisn2bXh43ZSULNXsrveRC/iDxBLoc0RC8=
+runtime.link v0.0.0-20250131052539-992a5f0be9db/go.mod h1:bs9lT/R79BfIAGcCHrCWiEdDec5nUNSBBjDmAvAsasU=

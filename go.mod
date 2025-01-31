@@ -2,7 +2,7 @@ module graphics.gd
 
 go 1.23.2
 
-require runtime.link v0.0.0-20241203235822-266e6dd4f99d
+require runtime.link v0.0.0-20250131052539-992a5f0be9db
 
 require (
 	github.com/tetratelabs/wazero v1.8.2
