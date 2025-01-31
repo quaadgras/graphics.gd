@@ -1,3 +1,47 @@
+/*
+Package shaders provides a ShaderMaterial.Instance with the shader pipeline written within Go.
+
+Shaders are multi-stage programs executed on the GPU. They can be used to gain precise control
+over rendering calculations, such as lighting, shadows, and post-processing effects.
+
+To create a new 2D shader in Go, define a struct that embeds shaders.Type2D and implements the
+pipeline methods you would like to overide. For example:
+
+	type MyShader struct {
+		shaders.Type2D
+
+		MyUniform vec2.XY `gd:"my_uniform"`
+	}
+
+	// The pipeline functions are named after what they return, not what they accept as
+	// input.
+
+	// Fragment returns a fragment for the given vertex (also known as a vertex shader).
+	func (MyShader) Fragment(vertex shaders.Vertex2D) shaders.Fragment2D {
+		return shaders.Fragment2D{
+			Position: vertex.Position,
+		}
+	}
+
+	// Material returns a material for the given fragment (also known as a fragment shader).
+	func (MyShader) Material(fragment shaders.Fragment2D) shaders.Material2D {
+		return shaders.Material2D{
+			Color: rgba.New(1, 0, 0, 1),
+		}
+	}
+
+	// Lighting calculates the lighting for the given material (also known as a lighting pass).
+	func (MyShader) Lighting(material shaders.Material2D) vec4.RGBA {
+		return material.Color
+	}
+
+Each sub-package provides GPU-specific shader types that can be used within a shader pipeline.
+Keep in mind that the Go code is compiled to run on the GPU, so non-GPU values, function
+calls or branches will only take affect during compilation and not when rendering.
+
+All for loops will be unrolled. The shaders package does not currently support non-constant
+loops.
+*/
 package shaders
 
 import (
