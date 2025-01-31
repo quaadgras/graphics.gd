@@ -63,6 +63,7 @@ func propertyOf(field reflect.StructField) (gd.PropertyInfo, bool) {
 	}, true
 }
 
+// Set needs to reference++ any resources that are sucessfully set.
 func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant) bool {
 	if impl, ok := instance.Value.(interface {
 		Set(string, any) bool
