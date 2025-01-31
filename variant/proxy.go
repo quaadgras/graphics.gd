@@ -10,6 +10,7 @@ import (
 	"graphics.gd/variant/Plane"
 	"graphics.gd/variant/Projection"
 	"graphics.gd/variant/Quaternion"
+	"graphics.gd/variant/RID"
 	"graphics.gd/variant/Rect2"
 	"graphics.gd/variant/Rect2i"
 	"graphics.gd/variant/String"
@@ -70,6 +71,10 @@ func Proxy[T API](current Any, alloc func() (T, complex128)) (T, complex128) {
 		return impl, impl.NewProjection(current.Projection())
 	case TypeColor:
 		return impl, impl.NewColor(current.Color())
+	case TypeRID:
+		return impl, impl.NewRID(current.RID())
+	case TypePackedByteArray:
+		return impl, impl.NewBytes(current.Bytes())
 	default:
 		return impl, impl.New(current.Interface())
 	}
@@ -97,7 +102,9 @@ type API interface {
 	Transform3D(complex128) Transform3D.BasisOrigin
 	Projection(complex128) Projection.XYZW
 	Color(complex128) Color.RGBA
+	RID(complex128) RID.Any
 	Interface(complex128) interface{}
+	Bytes(complex128) []byte
 
 	New(any) complex128
 	NewBool(bool) complex128
@@ -118,7 +125,9 @@ type API interface {
 	NewBasis(Basis.XYZ) complex128
 	NewTransform3D(Transform3D.BasisOrigin) complex128
 	NewProjection(Projection.XYZW) complex128
+	NewRID(RID.Any) complex128
 	NewColor(Color.RGBA) complex128
+	NewBytes([]byte) complex128
 
 	Convert(complex128, reflect.Type) reflect.Value
 	AssignableTo(complex128, reflect.Type) bool

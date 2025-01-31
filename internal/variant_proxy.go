@@ -13,6 +13,7 @@ import (
 	PlaneType "graphics.gd/variant/Plane"
 	ProjectionType "graphics.gd/variant/Projection"
 	QuaternionType "graphics.gd/variant/Quaternion"
+	RIDType "graphics.gd/variant/RID"
 	Rect2Type "graphics.gd/variant/Rect2"
 	Rect2iType "graphics.gd/variant/Rect2i"
 	StringType "graphics.gd/variant/String"
@@ -91,6 +92,13 @@ func (VariantProxy) Color(raw complex128) ColorType.RGBA {
 }
 func (VariantProxy) Interface(raw complex128) interface{} {
 	return pointers.Load[Variant](raw).Interface()
+}
+func (VariantProxy) RID(raw complex128) RIDType.Any {
+	return variantAsValueType[RIDType.Any](pointers.Load[Variant](raw), TypeRID)
+}
+func (VariantProxy) Bytes(raw complex128) []byte {
+	packed := variantAsPointerType[PackedByteArray](pointers.Load[Variant](raw), TypePackedByteArray)
+	return packed.Bytes()
 }
 
 func (VariantProxy) New(val any) complex128 {
@@ -246,6 +254,23 @@ func (VariantProxy) NewColor(val ColorType.RGBA) complex128 {
 	var ret = callframe.Ret[VariantPointers](frame)
 	var arg = callframe.Arg(frame, val)
 	Global.variant.FromType[TypeColor](ret, arg.Addr())
+	return pointers.Pack(pointers.New[Variant](ret.Get()))
+}
+func (VariantProxy) NewRID(val RIDType.Any) complex128 {
+	var frame = callframe.New()
+	defer frame.Free()
+	var ret = callframe.Ret[VariantPointers](frame)
+	var arg = callframe.Arg(frame, val)
+	Global.variant.FromType[TypeRID](ret, arg.Addr())
+	return pointers.Pack(pointers.New[Variant](ret.Get()))
+}
+
+func (VariantProxy) NewBytes(val []byte) complex128 {
+	var frame = callframe.New()
+	defer frame.Free()
+	var ret = callframe.Ret[VariantPointers](frame)
+	var arg = callframe.Arg(frame, NewPackedByteSlice(val))
+	Global.variant.FromType[TypePackedByteArray](ret, arg.Addr())
 	return pointers.Pack(pointers.New[Variant](ret.Get()))
 }
 
