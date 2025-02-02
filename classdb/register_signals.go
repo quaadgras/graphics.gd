@@ -7,6 +7,7 @@ import (
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/String"
 )
 
 // registerSignals registers [Signal.Any], [Signal.Pair], [Signal.Trio] and [Signal.Quad] fields as signals
@@ -15,7 +16,7 @@ import (
 func registerSignals(class gd.StringName, rtype reflect.Type) {
 	for i := 0; i < rtype.NumField(); i++ {
 		field := rtype.Field(i)
-		name := field.Name
+		name := String.ToSnakeCase(field.Name)
 		if !field.IsExported() {
 			continue
 		}

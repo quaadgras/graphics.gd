@@ -248,7 +248,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		if _, ok := field.Type.MethodByName("AsNode"); ok || field.Type.Kind() == reflect.Chan {
 			continue
 		}
-		name := field.Name
+		name := String.ToSnakeCase(field.Name)
 		if field.Tag.Get("gd") != "" {
 			name = field.Tag.Get("gd")
 		}

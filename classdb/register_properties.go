@@ -8,10 +8,11 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Enum"
+	"graphics.gd/variant/String"
 )
 
 func propertyOf(class gd.StringName, field reflect.StructField) (gd.PropertyInfo, bool) {
-	var name = field.Name
+	var name = String.ToSnakeCase(field.Name)
 	tag, ok := field.Tag.Lookup("gd")
 	if ok {
 		name = tag
@@ -94,7 +95,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	}
 	sname := name.String()
 	rvalue := reflect.ValueOf(instance.Value).Elem()
-	field := rvalue.FieldByName(sname)
+	field := rvalue.FieldByName(String.ToPascalCase(sname))
 	if !field.IsValid() {
 		for i := 0; i < rvalue.NumField(); i++ {
 			if rvalue.Type().Field(i).Tag.Get("gd") == sname {
@@ -173,7 +174,7 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 	}
 	sname := name.String()
 	rvalue := reflect.ValueOf(instance.Value).Elem()
-	field := rvalue.FieldByName(sname)
+	field := rvalue.FieldByName(String.ToPascalCase(sname))
 	if !field.IsValid() {
 		for i := 0; i < rvalue.NumField(); i++ {
 			rfield := rvalue.Type().Field(i)

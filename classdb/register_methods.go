@@ -53,9 +53,8 @@ func registerMethods(class gd.StringName, rtype reflect.Type) {
 				returnMetadata = 0
 			}
 		}
-
 		gd.Global.ClassDB.RegisterClassMethod(gd.Global.ExtensionToken, class, gd.Method{
-			Name: gd.NewStringName(method.Name),
+			Name: gd.NewStringName(String.ToSnakeCase(method.Name)),
 			Call: variantCall(method),
 			PointerCall: func(instance any, args gd.Address, ret gd.Address) {
 				extensionInstance := instance.(*instanceImplementation).Value
