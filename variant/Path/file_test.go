@@ -34,3 +34,9 @@ func TestFileExtension(t *testing.T) {
 	gdtests.That(t, g.String(), "")
 	gdtests.That(t, h.String(), "")
 }
+
+func TestFileName(t *testing.T) {
+	var file = Path.ToFile(String.New("/path/to/icon.png")).FileName() // file is "icon.png"
+
+	gdtests.That(t, file, "icon.png")
+}

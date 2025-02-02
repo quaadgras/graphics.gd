@@ -127,7 +127,7 @@ func Bind(fn Function, args ...variant.Any) Function { //gd:Callable.bind Callab
 
 // Call calls the method represented by this Callable. Arguments can be passed and should
 // match the method's signature.
-func (fn Function) Call(args ...variant.Any) variant.Any { //gd:Callable.call Callable.call_deferred Callable.callv Callable.rpc Callable.rpc_id
+func (fn Function) Call(args ...variant.Any) variant.Any { //gd:Callable.call Callable.callv Callable.rpc Callable.rpc_id
 	if fn == Nil {
 		return variant.Nil
 	}

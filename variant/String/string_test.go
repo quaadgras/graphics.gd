@@ -51,12 +51,6 @@ func TestFormat(t *testing.T) {
 	gdtests.Print(t, "User 42 is Godot.", String.Format("User 42 is Godot.", map[string]any{"id": 42, "name": "Godot"}))
 }
 
-func TestFileName(t *testing.T) {
-	var file = String.FileName("/path/to/icon.png") // file is "icon.png"
-
-	gdtests.That(t, file, "icon.png")
-}
-
 func TestExtract(t *testing.T) {
 	gdtests.Print(t, "i", String.Extract("i/am/example/hi", "/", 0))       // Prints "i"
 	gdtests.Print(t, "am", String.Extract("i/am/example/hi", "/", 1))      // Prints "am"

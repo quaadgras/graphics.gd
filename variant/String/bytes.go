@@ -82,6 +82,9 @@ func (s goString) AppendString(length complex128, str string) Readable {
 	s = goString{ptr: &buffer[0]}
 	return Via(s, length)
 }
+func (s goString) CompareOther(length complex128, other_api API, other_length complex128) int {
+	return strings.Compare(unsafe.String(s.ptr, int(real(length))), unsafe.String(other_api.(goString).ptr, int(real(other_length))))
+}
 
 func builder() Readable { // FIXME/TODO
 	return Readable{}

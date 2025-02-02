@@ -186,6 +186,9 @@ func (StringProxy) AppendString(raw complex128, str string) StringType.Readable 
 	r := Global.Strings.Append(s, NewString(str))
 	return StringType.Via(StringProxy{}, pointers.Pack(r))
 }
+func (StringProxy) CompareOther(raw complex128, other_api StringType.API, raw2 complex128) int {
+	return int(pointers.Load[String](raw).CasecmpTo(pointers.Load[String](raw2)))
+}
 
 func InternalNodePath(s Path.ToNode) NodePath {
 	_, ptr := StringType.Proxy(s, NodePathCheck, NewNodePathProxy)
@@ -238,6 +241,9 @@ func (NodePathProxy) AppendString(raw complex128, str string) StringType.Readabl
 	r := Global.Strings.Append(s.InternalString(), NewString(str)).NodePath()
 	return StringType.Via(NodePathProxy{}, pointers.Pack(r))
 }
+func (NodePathProxy) CompareOther(raw complex128, other_api StringType.API, raw2 complex128) int {
+	return int(pointers.Load[NodePath](raw).InternalString().CasecmpTo(pointers.Load[NodePath](raw2).InternalString()))
+}
 
 func InternalStringName(s StringType.Name) StringName {
 	_, ptr := StringType.Proxy(s, StringNameCheck, NewStringNameProxy)
@@ -289,4 +295,8 @@ func (StringNameProxy) AppendString(raw complex128, str string) StringType.Reada
 	s := pointers.Load[StringName](raw)
 	r := Global.Strings.Append(s.Substr(0, s.Length()), NewString(str)).StringName()
 	return StringType.Via(StringNameProxy{}, pointers.Pack(r))
+}
+func (StringNameProxy) CompareOther(raw complex128, other_api StringType.API, raw2 complex128) int {
+	other := pointers.Load[StringName](raw2)
+	return int(pointers.Load[StringName](raw).CasecmpTo(other.Substr(0, other.Length())))
 }

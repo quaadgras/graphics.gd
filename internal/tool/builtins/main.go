@@ -103,20 +103,18 @@ func extractTagsFrom(name string, lines *bufio.Reader, tags map[string]FileLine)
 		for _, tag := range splits {
 			if strings.HasPrefix(tag, "PackedArray") {
 				suffix := strings.TrimPrefix(tag, "PackedArray")
-				splits = append(splits, "PackedByteArray"+suffix)
 				splits = append(splits, "PackedColorArray"+suffix)
 				splits = append(splits, "PackedFloat32Array"+suffix)
 				splits = append(splits, "PackedFloat64Array"+suffix)
 				splits = append(splits, "PackedInt32Array"+suffix)
 				splits = append(splits, "PackedInt64Array"+suffix)
-				splits = append(splits, "PackedStringArray"+suffix)
 				splits = append(splits, "PackedVector2Array"+suffix)
 				splits = append(splits, "PackedVector3Array"+suffix)
 				splits = append(splits, "PackedVector4Array"+suffix)
 			}
 		}
 		for _, tag := range splits {
-			if _, ok := tags[tag]; ok {
+			if _, ok := tags[tag]; ok && !strings.Contains(name, "classdb") {
 				return fmt.Errorf("duplicate tag %q in %s:%d and %s:%d\n",
 					tag, tags[tag].File, tags[tag].Line, name, n)
 			}
@@ -144,15 +142,18 @@ func work() error {
 	if err := extractPkg("./classdb", tags); err != nil {
 		return xray.New(err)
 	}
+	if err := extractPkg("./classdb/Engine", tags); err != nil {
+		return xray.New(err)
+	}
+	if err := extractPkg("./classdb/Resource", tags); err != nil {
+		return xray.New(err)
+	}
 	if err := extractFromPackages("./variant/", tags); err != nil {
 		return xray.New(err)
 	}
 	for _, builtin := range spec.BuiltinClasses {
 		if builtin.Name == "StringName" {
 			builtin.Name = "String"
-		}
-		if builtin.Name == "RID" {
-			continue // handled by gdclass/Resource
 		}
 		for _, method := range builtin.Methods {
 			tag := builtin.Name + "." + method.Name

@@ -118,6 +118,7 @@ type API interface {
 	AppendRune(complex128, Rune) Readable
 	AppendOther(complex128, API, complex128) Readable
 	AppendString(complex128, string) Readable
+	CompareOther(complex128, API, complex128) int
 }
 
 // Proxy can be used to transform the underlying encoding and implementation of a [Readable]
@@ -678,21 +679,6 @@ func Format[S Any](format S, args ...any) S { //gd:String.format
 		}
 	}
 	return As[S](result.String())
-}
-
-// FileExtension returns the file extension without the leading period (.) if the string is a
-// valid file name or path. Otherwise, returns an empty string.
-func FileExtension[S Any](path S) S { //gd:String.get_extension
-	ext := filepath.Ext(As[string](path))
-	if ext != "" {
-		return As[S](Slice(ext, 1, Length(ext)))
-	}
-	return [1]S{}[0]
-}
-
-// FileName returns the file name, including the extension, if the string is a valid file path,
-func FileName[S Any](path S) S { //gd:String.get_file
-	return As[S](filepath.Base(As[string](path)))
 }
 
 // Extract splits the string using a delimiter and returns the substring at index. Returns

@@ -36,6 +36,11 @@ func (s *ToFile) UnmarshalText(text []byte) error {
 	return (*String.Readable)(s).UnmarshalText(text)
 }
 
+// FileName returns the file name, including the extension, if the string is a valid file path,
+func (s ToFile) FileName() string { //gd:String.get_file
+	return filepath.Base(s.String())
+}
+
 // WithoutExtension returns the path before the last period character (.) in the path.
 func (s ToFile) WithoutExtension() ToFile { //gd:String.get_basename
 	return ToFile(String.TrimSuffix(s, path.Ext(s.String())))

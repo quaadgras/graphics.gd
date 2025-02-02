@@ -1,6 +1,11 @@
 package RID
 
+import "unsafe"
+
 type Any uint64
+
+func (rid Any) IsValid() bool { return rid != 0 }                        //gd:RID.is_valid
+func (rid Any) Int64() int64  { return *(*int64)(unsafe.Pointer(&rid)) } //gd:RID.get_id
 
 type Either[A, B ~uint64] Any
 
