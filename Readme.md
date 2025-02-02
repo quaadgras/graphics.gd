@@ -6,10 +6,10 @@ the GDExtension interface of any supported graphics/game engine (ie. Godot 4.3).
 _Why use graphics.gd?_
 
 * Write shaders in Go!
-* Unlike with other languages, RIDs, callables and dictionary arguments are all distinctly typed.
+* Unlike with other options, RIDs, callables and dictionary arguments are all distinctly typed.
 * A good balance of performance and convenience.
 * General-purpose pure-Go 'variant' packages, reuse them in any Go project.
-* Recompile your code quickly, with a build experience similar to working in a scripting language.
+* Recompile your code quickly, with a build experience similar to a scripting language.
 
 We would love you to take part in our [active discussions](https://github.com/grow-graphics/gd/discussions)
 section with any questions, comments or feedback you may have. Show us what you're building!
