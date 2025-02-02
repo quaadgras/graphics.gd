@@ -12,6 +12,7 @@ import (
 	ArrayType "graphics.gd/variant/Array"
 	CallableType "graphics.gd/variant/Callable"
 	DictionaryType "graphics.gd/variant/Dictionary"
+	"graphics.gd/variant/Enum"
 	FloatType "graphics.gd/variant/Float"
 	PackedType "graphics.gd/variant/Packed"
 	"graphics.gd/variant/Path"
@@ -27,6 +28,9 @@ func NewVariant(v any) Variant {
 	}
 	var frame = callframe.New()
 	var ret = callframe.Ret[VariantPointers](frame)
+	if enum, ok := v.(Enum.Any); ok {
+		v = enum.Int()
+	}
 	rtype := reflect.TypeOf(v)
 	value := reflect.ValueOf(v)
 	switch rtype.Kind() {

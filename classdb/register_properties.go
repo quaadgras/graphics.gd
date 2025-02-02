@@ -7,9 +7,10 @@ import (
 	ResourceClass "graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/Enum"
 )
 
-func propertyOf(field reflect.StructField) (gd.PropertyInfo, bool) {
+func propertyOf(class gd.StringName, field reflect.StructField) (gd.PropertyInfo, bool) {
 	var name = field.Name
 	tag, ok := field.Tag.Lookup("gd")
 	if ok {
@@ -18,7 +19,20 @@ func propertyOf(field reflect.StructField) (gd.PropertyInfo, bool) {
 	var vtype gd.VariantType
 	var hint PropertyHint
 	var hintString = nameOf(field.Type)
+	var enum = registerEnumsFor(class, field.Type)
 	switch {
+	case enum != nil:
+		vtype = gd.TypeInt
+		hint |= PropertyHintEnum
+		hintString = ""
+		var first = true
+		for name, value := range enum {
+			if !first {
+				hintString += ","
+			}
+			hintString += fmt.Sprintf("%s:%d", name, value)
+			first = false
+		}
 	case field.Type.Kind() == reflect.Pointer && field.Type.Implements(reflect.TypeOf([0]interface{ Super() ResourceClass.Instance }{}).Elem()):
 		vtype = gd.TypeObject
 		hint |= PropertyHintResourceType
@@ -97,6 +111,13 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	}
 	if value.Type() == gd.TypeNil {
 		field.Set(reflect.Zero(field.Type()))
+		return true
+	}
+	if reflect.PointerTo(field.Type()).Implements(reflect.TypeFor[Enum.Pointer]()) {
+		if value.Type() != gd.TypeInt {
+			return false
+		}
+		field.Addr().Interface().(Enum.Pointer).SetInt(int(value.Int()))
 		return true
 	}
 	var isExtensionClass bool

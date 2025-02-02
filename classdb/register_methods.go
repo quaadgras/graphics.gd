@@ -38,7 +38,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type) {
 		var arguments = make([]gd.PropertyInfo, 0, method.Type.NumIn()-1-offset)
 		var metadatas = make([]gd.ClassMethodArgumentMetadata, 0, method.Type.NumIn()-1-offset)
 		for i := 1 + offset; i < method.Type.NumIn(); i++ {
-			vtype, ok := propertyOf(reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: method.Type.In(i)})
+			vtype, ok := propertyOf(class, reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: method.Type.In(i)})
 			if ok {
 				arguments = append(arguments, vtype)
 				metadatas = append(metadatas, 0)
@@ -47,7 +47,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type) {
 		var returns *gd.PropertyInfo
 		var returnMetadata gd.ClassMethodArgumentMetadata
 		if method.Type.NumOut() > 0 {
-			property, ok := propertyOf(reflect.StructField{Name: "result", Type: method.Type.Out(0)})
+			property, ok := propertyOf(class, reflect.StructField{Name: "result", Type: method.Type.Out(0)})
 			if ok {
 				returns = &property
 				returnMetadata = 0

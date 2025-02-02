@@ -178,7 +178,7 @@ func Register[T Class]() {
 		registered.Store(classType, impl)
 
 		gd.Global.ClassDB.RegisterClass(gd.Global.ExtensionToken, className, superName, impl)
-		registerClassInformation(rename, nameOf(superType), classType)
+		registerClassInformation(className, rename, nameOf(superType), classType)
 		gd.RegisterCleanup(func() {
 			gd.Global.ClassDB.UnregisterClass(gd.Global.ExtensionToken, className)
 			registered.Delete(classType)
@@ -221,9 +221,9 @@ func convertName(fnName string) string {
 	return strings.Join(joins, "")
 }
 
-func registerClassInformation(className string, inherits string, rtype reflect.Type) {
+func registerClassInformation(className gd.StringName, classNameString string, inherits string, rtype reflect.Type) {
 	var class xmlDocumentation
-	class.Name = className
+	class.Name = classNameString
 	class.Inherits = inherits
 	class.Version = "4.0"
 	extractDocTag := func(tag reflect.StructTag) string {
@@ -235,7 +235,7 @@ func registerClassInformation(className string, inherits string, rtype reflect.T
 		docs := extractDocTag(rtype.Field(0).Tag)
 		brief, whole, _ := strings.Cut(docs, "\n\n")
 		if brief != "" {
-			brief = className + " " + brief
+			brief = classNameString + " " + brief
 		}
 		class.BriefDescription = brief
 		class.Description = whole
@@ -260,14 +260,14 @@ func registerClassInformation(className string, inherits string, rtype reflect.T
 			class.Signals = append(class.Signals, signal)
 			continue
 		}
-		ptype, ok := propertyOf(field)
+		ptype, ok := propertyOf(className, field)
 		if ok {
 			var member xmlMember
 			member.Name = name
 			member.Description = extractDocTag(field.Tag)
 			member.Type = ptype.Type.String()
 			class.Members = append(class.Members, member)
-			gd.Global.ClassDB.RegisterClassProperty(gd.Global.ExtensionToken, gd.NewStringName(className), ptype, gd.NewStringName(""), gd.NewStringName(""))
+			gd.Global.ClassDB.RegisterClassProperty(gd.Global.ExtensionToken, className, ptype, gd.NewStringName(""), gd.NewStringName(""))
 		}
 	}
 	Callable.Defer(Callable.New(func() {
