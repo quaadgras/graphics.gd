@@ -80,25 +80,34 @@ func propertyOf(class gd.StringName, field reflect.StructField) (gd.PropertyInfo
 
 // Set needs to reference++ any resources that are sucessfully set.
 func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant) bool {
+	sname := name.String()
 	if impl, ok := instance.Value.(interface {
 		Set(string, any) bool
 	}); ok {
-		ok := bool(impl.Set(name.String(), value.Interface()))
+		ok := bool(impl.Set(sname, value.Interface()))
 		if ok {
 			if impl, ok := instance.Value.(interface {
 				OnSet(string, any)
 			}); ok {
-				impl.OnSet(name.String(), value.Interface())
+				impl.OnSet(sname, value.Interface())
 			}
 		}
 		return ok
 	}
-	sname := name.String()
 	rvalue := reflect.ValueOf(instance.Value).Elem()
-	field := rvalue.FieldByName(String.ToPascalCase(sname))
+	field := rvalue.FieldByName(sname)
 	if !field.IsValid() {
 		for i := 0; i < rvalue.NumField(); i++ {
-			if rvalue.Type().Field(i).Tag.Get("gd") == sname {
+			rfield := rvalue.Type().Field(i)
+			if !rfield.IsExported() {
+				continue
+			}
+			tag, hasTag := rfield.Tag.Lookup("gd")
+			if hasTag && !rfield.Anonymous && tag == sname {
+				field = rvalue.Field(i)
+				break
+			}
+			if !hasTag && String.ToSnakeCase(rfield.Name) == sname {
 				field = rvalue.Field(i)
 				break
 			}
@@ -178,7 +187,15 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 	if !field.IsValid() {
 		for i := 0; i < rvalue.NumField(); i++ {
 			rfield := rvalue.Type().Field(i)
-			if !rfield.Anonymous && rfield.Tag.Get("gd") == sname {
+			if !rfield.IsExported() {
+				continue
+			}
+			tag, hasTag := rfield.Tag.Lookup("gd")
+			if hasTag && !rfield.Anonymous && tag == sname {
+				field = rvalue.Field(i)
+				break
+			}
+			if !hasTag && String.ToSnakeCase(rfield.Name) == sname {
 				field = rvalue.Field(i)
 				break
 			}
