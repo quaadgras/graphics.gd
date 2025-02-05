@@ -287,6 +287,12 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 			pointers.End(val)
 		case gd.RID:
 			gd.UnsafeSet[gd.RID](p_ret, val)
+		case gd.Object:
+			gd.UnsafeSet[gd.EnginePointer](p_ret, gd.EnginePointer(pointers.Get(val)[0]))
+			_, ok := gd.ExtensionInstances.Load(pointers.Get(val)[0])
+			if !ok {
+				pointers.End(val)
+			}
 		case [1]gd.Object:
 			gd.UnsafeSet[gd.EnginePointer](p_ret, gd.EnginePointer(pointers.Get(val[0])[0]))
 			_, ok := gd.ExtensionInstances.Load(pointers.Get(val[0])[0])
