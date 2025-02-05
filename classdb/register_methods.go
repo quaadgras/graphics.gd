@@ -7,6 +7,7 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Array"
+	"graphics.gd/variant/Dictionary"
 	"graphics.gd/variant/Packed"
 	"graphics.gd/variant/String"
 
@@ -235,7 +236,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 		}
 		vvalue := gd.NewVariant(result.Interface())
 		if vvalue.Type() != vtype {
-			panic(fmt.Sprintf("gdextension: expected %v, got %v", vtype, vvalue.Type()))
+			panic(fmt.Sprintf("gdextension: expected %v, got %v (%s)", vtype, vvalue.Type(), result.Type()))
 		}
 		switch val := vvalue.Interface().(type) {
 		case bool:
@@ -333,6 +334,12 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalString(val)))
 		case String.Name:
 			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalStringName(val)))
+		case Dictionary.Any:
+			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalDictionary(val)))
+		case Array.Any:
+			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalArray(val)))
+		case Packed.Bytes:
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](val))))
 		default:
 			panic(fmt.Sprintf("gdextension: unsupported Go -> Godot type %v", reflect.TypeOf(val)))
 		}

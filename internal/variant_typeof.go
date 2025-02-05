@@ -25,6 +25,9 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 	case reflect.Complex64, reflect.Complex128:
 		return TypeVector2, true
 	case reflect.Pointer:
+		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+			return TypeObject, true
+		}
 		return VariantTypeOf(rtype.Elem())
 	case reflect.Func:
 		return TypeCallable, true
