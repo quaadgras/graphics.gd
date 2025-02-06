@@ -2581,5 +2581,9 @@ func method_call(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, co
 //export method_ptrcall
 func method_ptrcall(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, p_ret unsafe.Pointer) {
 	method := cgo.Handle(p_method).Value().(*gd.Method)
-	method.PointerCall(cgo.Handle(p_instance).Value(), gd.Address(p_args), gd.Address(p_ret))
+	var instance any
+	if p_instance != 0 {
+		instance = cgo.Handle(p_instance).Value()
+	}
+	method.PointerCall(instance, gd.Address(p_args), gd.Address(p_ret))
 }

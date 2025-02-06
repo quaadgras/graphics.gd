@@ -3,7 +3,9 @@ package classdb
 import (
 	"encoding/xml"
 	"fmt"
+	"path"
 	"reflect"
+	"runtime"
 	"strings"
 	"sync"
 	"unsafe"
@@ -101,9 +103,10 @@ func (class *Extension[T, S]) AsObject() [1]gd.Object {
 var registered sync.Map
 
 /*
-Register registers a struct available for use inside Godot
-extending the given 'Parent' Godot class. The 'Struct' type must
-be a named struct that embeds a [Extension] field specifying the
+Register registers a struct available for use inside The Engine as
+an object (or class) by extending the given 'Parent' Engine class.
+The 'Struct' type must be a named struct with the first field
+embedding [Extension] referring to itself and specifying the
 parent class to extend.
 
 	type MyClass struct {
@@ -111,26 +114,29 @@ parent class to extend.
 	}
 
 The tag can be adjusted in order to change the name of the class
-within Godot.
+within The Engine.
 
 Use this in a main or init function to register your Go structs
-and they will become available within the Godot engine for use
-in the editor and/or within scripts.
+and they will become available within The Engine for use in the
+editor and/or within scripts.
 
-All exported fields and methods will be exposed to Godot, so
+All exported fields and methods will be exposed to The Engine, so
 take caution when embedding types, as their fields and methods
-will be promoted.
+will be promoted. They will be exported as snake_case by default,
+for fields, the exported name can be adjusted with the 'gd' tag.
 
-If the Struct extends [EditorPluginClass] then it will be added to
-the editor as a plugin.
+This function accepts a variable number of additional arguments,
+they may either be func, map[string]func, or map[string]int, this
+can be used to register static methods, to rename methods, or to
+define constants respectively. As a special case, if a function
+is passed which name begins with 'New', accepts no arguments and
+returns T, then it will be registered as the constructor for the
+class when it is instantiated from within The Engine.
 
-If the Struct extends [MainLoopClass] or [SceneTree] then it will be
-used as the main loop for the application.
-
-If the Struct implements an OnRegister(Lifetime) method, it will
-be called on a temporary instance when the class is registered.
+If the Struct extends [EditorPluginClass] then it will be added
+to the editor as a plugin.
 */
-func Register[T Class]() {
+func Register[T Class](exports ...any) {
 	register := func() {
 		var classType = reflect.TypeFor[T]()
 		var base = classType
@@ -174,6 +180,9 @@ func Register[T Class]() {
 			Type:           classType,
 			Tool:           tool,
 			VirtualMethods: reference.Virtual,
+			Constructor: func() reflect.Value {
+				return reflect.New(classType)
+			},
 		}
 		registered.Store(classType, impl)
 
@@ -185,15 +194,59 @@ func Register[T Class]() {
 			className.Free()
 			superName.Free()
 		})
+		var method_renames = make(map[uintptr]string)
+		for _, export := range exports {
+			switch export := export.(type) {
+			case map[string]int:
+				for name, value := range export {
+					gd.Global.ClassDB.RegisterClassIntegerConstant(gd.Global.ExtensionToken,
+						className, gd.NewStringName(""), gd.NewStringName(name), int64(value), false)
+				}
+			case map[string]any:
+				for name, fn := range export {
+					if reflect.TypeOf(fn).Kind() != reflect.Func {
+						panic(fmt.Sprintf("gdextension.RegisterClass: invalid map elem type %T (expected function)", fn))
+					}
+					rvalue := reflect.ValueOf(fn)
+					pc := rvalue.Pointer()
+					fname := runtime.FuncForPC(pc).Name()
+					if strings.Count(path.Base(fname), ".") > 1 {
+						method_renames[pc] = name
+					} else {
+						registerStaticMethod(className, name, reflect.ValueOf(fn))
+					}
+				}
+			default:
+				rvalue := reflect.ValueOf(export)
+				switch rvalue.Kind() {
+				case reflect.Func:
+					pc := rvalue.Pointer()
+					fname := runtime.FuncForPC(pc).Name()
+					name := fname
+					i := String.FindLast(name, ".")
+					name = name[i+1:]
+					if String.HasPrefix(name, "New") && rvalue.Type().NumIn() == 0 && rvalue.Type().NumOut() == 1 && rvalue.Type().Out(0) == reflect.PointerTo(classType) {
+						impl.Constructor = func() reflect.Value {
+							return rvalue.Call(nil)[0]
+						}
+					} else if strings.Count(path.Base(fname), ".") > 1 {
+						method_renames[pc] = name
+					} else {
+						registerStaticMethod(className, String.ToSnakeCase(name), rvalue)
+					}
+				default:
+					panic(fmt.Sprintf("gdextension.RegisterClass: invalid argument type %T (expected function or map)", export))
+				}
+			}
+		}
 		switch super.(type) {
 		case interface {
 			AsShaderMaterial() ShaderMaterialClass.Instance
 		}:
 		default:
 			registerSignals(className, classType)
-			registerMethods(className, classType)
+			registerMethods(className, classType, method_renames)
 		}
-
 		if registrator, ok := any(reference).(interface{ OnRegister() }); ok {
 			registrator.OnRegister()
 		}
@@ -287,6 +340,7 @@ type classImplementation struct {
 	Type reflect.Type
 
 	VirtualMethods func(string) reflect.Value
+	Constructor    func() reflect.Value
 }
 
 var _ gd.ClassInterface = classImplementation{}
@@ -319,7 +373,7 @@ func (class classImplementation) createInstance(reuse reflect.Value) [1]gd.Objec
 
 func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd.Object) gd.ObjectInterface {
 	if !value.IsValid() {
-		value = reflect.New(class.Type)
+		value = class.Constructor()
 	}
 	extensionClass := value.Interface().(isClass)
 	extensionClass.setObject(super)

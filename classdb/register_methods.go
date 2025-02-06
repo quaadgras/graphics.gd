@@ -7,14 +7,17 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Array"
+	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Dictionary"
 	"graphics.gd/variant/Packed"
+	"graphics.gd/variant/Path"
+	"graphics.gd/variant/RID"
 	"graphics.gd/variant/String"
 
 	EngineClass "graphics.gd/classdb/Engine"
 )
 
-func registerMethods(class gd.StringName, rtype reflect.Type) {
+func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintptr]string) {
 	classTypePtr := reflect.PointerTo(rtype)
 	for i := 0; i < classTypePtr.NumMethod(); i++ {
 		i := i
@@ -34,6 +37,11 @@ func registerMethods(class gd.StringName, rtype reflect.Type) {
 		}
 		if method.Name == "OnRegister" {
 			continue
+		}
+		if name, ok := renames[method.Func.Pointer()]; ok {
+			method.Name = name
+		} else {
+			method.Name = String.ToSnakeCase(method.Name)
 		}
 		var offset = 0
 		var arguments = make([]gd.PropertyInfo, 0, method.Type.NumIn()-1-offset)
@@ -55,7 +63,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type) {
 			}
 		}
 		gd.Global.ClassDB.RegisterClassMethod(gd.Global.ExtensionToken, class, gd.Method{
-			Name: gd.NewStringName(String.ToSnakeCase(method.Name)),
+			Name: gd.NewStringName(method.Name),
 			Call: variantCall(method),
 			PointerCall: func(instance any, args gd.Address, ret gd.Address) {
 				extensionInstance := instance.(*instanceImplementation).Value
@@ -66,6 +74,58 @@ func registerMethods(class gd.StringName, rtype reflect.Type) {
 			ReturnValueInfo:     returns,
 			ReturnValueMetadata: returnMetadata,
 		})
+	}
+}
+
+func registerStaticMethod(class gd.StringName, name string, fn reflect.Value) {
+	ftype := fn.Type()
+	var arguments = make([]gd.PropertyInfo, 0, ftype.NumIn())
+	var metadatas = make([]gd.ClassMethodArgumentMetadata, 0, ftype.NumIn())
+	for i := 0; i < ftype.NumIn(); i++ {
+		vtype, ok := propertyOf(class, reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: ftype.In(i)})
+		if ok {
+			arguments = append(arguments, vtype)
+			metadatas = append(metadatas, 0)
+		}
+	}
+	var returns *gd.PropertyInfo
+	var returnMetadata gd.ClassMethodArgumentMetadata
+	if ftype.NumOut() > 0 {
+		property, ok := propertyOf(class, reflect.StructField{Name: "result", Type: ftype.Out(0)})
+		if ok {
+			returns = &property
+			returnMetadata = 0
+		}
+	}
+	gd.Global.ClassDB.RegisterClassMethod(gd.Global.ExtensionToken, class, gd.Method{
+		Name:        gd.NewStringName(name),
+		Call:        variantCallStatic(fn),
+		MethodFlags: gd.MethodFlags(MethodFlagStatic),
+		PointerCall: func(instance any, args gd.Address, ret gd.Address) {
+			slowCall(false, fn, args, ret)
+		},
+		Arguments:           arguments,
+		ArgumentsMetadata:   metadatas,
+		ReturnValueInfo:     returns,
+		ReturnValueMetadata: returnMetadata,
+	})
+}
+
+func variantCallStatic(fn reflect.Value) func(instance any, v ...gd.Variant) (gd.Variant, error) {
+	return func(instance any, v ...gd.Variant) (result gd.Variant, err error) {
+		var args = make([]reflect.Value, len(v))
+		for i := 0; i < fn.Type().NumIn()-1; i++ {
+			args[i], err = gd.ConvertToDesiredGoType(v[i], fn.Type().In(i+1))
+			if err != nil {
+				EngineClass.Raise(err)
+				return gd.Variant{}, err
+			}
+		}
+		rets := fn.Call(args)
+		if len(rets) > 0 {
+			return gd.NewVariant(rets[0].Interface()), nil
+		}
+		return gd.Variant{}, nil
 	}
 }
 
@@ -286,8 +346,6 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 		case gd.NodePath:
 			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(val))
 			pointers.End(val)
-		case gd.RID:
-			gd.UnsafeSet[gd.RID](p_ret, val)
 		case gd.Object:
 			gd.UnsafeSet[gd.EnginePointer](p_ret, gd.EnginePointer(pointers.Get(val)[0]))
 			_, ok := gd.ExtensionInstances.Load(pointers.Get(val)[0])
@@ -334,12 +392,36 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalString(val)))
 		case String.Name:
 			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalStringName(val)))
+		case Path.ToNode:
+			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalNodePath(val)))
+		case Callable.Function:
+			gd.UnsafeSet[[2]uint64](p_ret, pointers.Get(gd.InternalCallable(val)))
 		case Dictionary.Any:
 			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalDictionary(val)))
 		case Array.Any:
 			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalArray(val)))
 		case Packed.Bytes:
 			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](val))))
+		case RID.Any:
+			gd.UnsafeSet[RID.Any](p_ret, val)
+		case Packed.Array[int32]:
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](val)))
+		case Packed.Array[int64]:
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](val)))
+		case Packed.Array[float32]:
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](val)))
+		case Packed.Array[float64]:
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedFloat64Array, float64](val)))
+		case Packed.Strings:
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPackedStrings(val)))
+		case Packed.Array[gd.Vector2]:
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, gd.Vector2](val)))
+		case Packed.Array[gd.Vector3]:
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, gd.Vector3](val)))
+		case Packed.Array[gd.Color]:
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedColorArray, gd.Color](val)))
+		case Packed.Array[gd.Vector4]:
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedVector4Array, gd.Vector4](val)))
 		default:
 			panic(fmt.Sprintf("gdextension: unsupported Go -> Godot type %v", reflect.TypeOf(val)))
 		}
