@@ -131,7 +131,7 @@ or map[string]int, these arguments can be used to register static
 methods, rename existing methods, or to define constants respectively.
 As a special case, if a function is passed which name begins with 'New'
 and accepts no arguments, returning T, then it will be registered as the
-constructor for then class when it is instantiated from within The Engine.
+constructor for the class when it is instantiated from within The Engine.
 
 If the Struct extends [EditorPluginClass] then it will be added
 to the editor as a plugin.
