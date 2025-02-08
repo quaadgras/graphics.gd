@@ -7,6 +7,7 @@ import (
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/String"
 )
 
@@ -26,7 +27,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 		name = strings.TrimSuffix(name, ")")
 		name, args, _ := strings.Cut(name, "(")
 		argNames := strings.Split(args, ",")
-		if reflect.PointerTo(field.Type).Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
+		if reflect.PointerTo(field.Type).Implements(reflect.TypeFor[Signal.Pointer]()) {
 			var signalName = gd.NewStringName(name)
 			var emit, ok = field.Type.MethodByName("Emit")
 			if !ok {

@@ -20,6 +20,12 @@ type Any struct {
 	proxy API
 }
 
+func (any *Any) SetAny(other Any) { *any = other }
+
+type Pointer interface {
+	SetAny(Any)
+}
+
 // Nil reference value, do not modify.
 var Nil Any
 

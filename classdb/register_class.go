@@ -22,6 +22,7 @@ import (
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Path"
+	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/String"
 
 	gd "graphics.gd/internal"
@@ -305,7 +306,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		if field.Tag.Get("gd") != "" {
 			name = field.Tag.Get("gd")
 		}
-		if reflect.PointerTo(field.Type).Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
+		if reflect.PointerTo(field.Type).Implements(reflect.TypeFor[Signal.Pointer]()) {
 			var signal xmlSignal
 			name, _, _ = strings.Cut(name, "(")
 			signal.Name = name
@@ -399,9 +400,9 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 		}
 		name, _, _ = strings.Cut(name, "(")
 		// Signal fields need to have their values injected into the field, so that they can be used (emitted).
-		if reflect.PointerTo(field.Type).Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
+		if reflect.PointerTo(field.Type).Implements(reflect.TypeFor[Signal.Pointer]()) {
 			signal := pointers.Pin(gd.NewSignalOf(super, gd.NewStringName(name)))
-			gd.SetSignal(rvalue.Interface().(gd.IsSignal), signal)
+			rvalue.Interface().(Signal.Pointer).SetAny(Signal.Via(gd.SignalProxy{}, pointers.Pack(signal)))
 			signals = append(signals, signalChan{
 				signal: signal,
 			})

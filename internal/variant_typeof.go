@@ -187,7 +187,7 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 			switch {
 			case rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()):
 				vtype = TypeObject
-			case rtype.Implements(reflect.TypeOf([0]IsSignal{}).Elem()):
+			case rtype.Implements(reflect.TypeFor[SignalType.Pointer]()):
 				vtype = TypeSignal
 			case rtype.Implements(reflect.TypeFor[ArrayType.Pointer]()):
 				vtype = TypeArray

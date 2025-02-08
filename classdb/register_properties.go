@@ -8,6 +8,7 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Enum"
+	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/String"
 )
 
@@ -203,7 +204,7 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 		if !field.IsValid() {
 			return gd.Variant{}, false
 		}
-		if field.Type().Kind() == reflect.Chan || reflect.PointerTo(field.Type()).Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
+		if field.Type().Kind() == reflect.Chan || reflect.PointerTo(field.Type()).Implements(reflect.TypeFor[Signal.Pointer]()) {
 			return gd.Variant{}, false
 		}
 	}

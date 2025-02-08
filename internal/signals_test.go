@@ -7,12 +7,15 @@ import (
 
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/Node2D"
+	"graphics.gd/variant/Signal"
 )
 
 type CustomSignal struct {
 	classdb.Extension[CustomSignal, Node2D.Instance]
 
 	HealthChanged chan<- func() (old, new int)
+
+	GenericSignal Signal.Solo[int]
 
 	Health int
 }
@@ -35,4 +38,5 @@ func TestSignals(t *testing.T) {
 	custom := new(CustomSignal)
 	custom.HealthChanged = make(chan func() (int, int), 1)
 	custom.TakeDamage(10)
+
 }
