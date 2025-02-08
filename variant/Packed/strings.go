@@ -168,3 +168,24 @@ func (array Strings) BinarySearch(value String.Readable, before bool) int { //gd
 	}
 	return GenericArray.Contains[String.Readable](array).BinarySearchFunc(less, value, before)
 }
+
+// Bytes returns a Bytes array containing zero-byte seperated strings.
+func (array Strings) Bytes() Bytes { //gd:PackedStringArray.to_bytes_array
+	var bytes Bytes
+	var size int
+	for i := 0; i < array.Len(); i++ {
+		size += String.Length(array.Index(i)) + 1
+	}
+	bytes.Resize(size)
+	var write int
+	for i := 0; i < array.Len(); i++ {
+		elem := array.Index(i)
+		for j := 0; j < String.Length(elem); j++ {
+			bytes.SetIndex(write, String.Index(elem, j))
+			write++
+		}
+		bytes.SetIndex(write, 0)
+		write++
+	}
+	return bytes
+}
