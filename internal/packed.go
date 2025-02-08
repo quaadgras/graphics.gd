@@ -5,6 +5,7 @@ import (
 
 	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/pointers"
+	StringType "graphics.gd/variant/String"
 )
 
 func (p *PackedFloat32Array) Pointer() *PackedFloat32Array { return p }
@@ -321,6 +322,16 @@ func NewPackedStringSlice(data []string) PackedStringArray {
 	array.Resize(Int(len(data)))
 	for i, str := range data {
 		array.SetIndex(Int(i), NewString(str))
+	}
+	return array
+}
+
+func NewPackedReadableStringSlice(data []StringType.Readable) PackedStringArray {
+	var array = NewPackedStringArray()
+	array.Resize(Int(len(data)))
+	for i, str := range data {
+		_, raw := StringType.Proxy(str, StringCacheCheck, NewStringProxy)
+		array.SetIndex(Int(i), pointers.Load[String](raw))
 	}
 	return array
 }

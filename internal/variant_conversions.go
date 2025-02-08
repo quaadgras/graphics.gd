@@ -101,6 +101,9 @@ func NewVariant(v any) Variant {
 		case []string:
 			var arg = callframe.Arg(frame, pointers.Get(NewPackedStringSlice(value)))
 			Global.variant.FromType[TypePackedStringArray](ret, arg.Addr())
+		case []StringType.Readable:
+			var arg = callframe.Arg(frame, pointers.Get(NewPackedReadableStringSlice(value)))
+			Global.variant.FromType[TypePackedStringArray](ret, arg.Addr())
 		case []Vector2:
 			var arg = callframe.Arg(frame, pointers.Get(NewPackedVector2Slice(value)))
 			Global.variant.FromType[TypePackedVector2Array](ret, arg.Addr())
