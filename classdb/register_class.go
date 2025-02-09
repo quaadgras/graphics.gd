@@ -19,7 +19,6 @@ import (
 	ScriptClass "graphics.gd/classdb/Script"
 	ScriptLanguageClass "graphics.gd/classdb/ScriptLanguage"
 	ShaderMaterialClass "graphics.gd/classdb/ShaderMaterial"
-	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Path"
 	"graphics.gd/variant/Signal"
@@ -128,11 +127,12 @@ for fields, the exported name can be adjusted with the 'gd' tag.
 
 This function accepts a variable number of additional arguments,
 they may either be func, map[string]any (where each any is a func),
-or map[string]int, these arguments can be used to register static
-methods, rename existing methods, or to define constants respectively.
-As a special case, if a function is passed which name begins with 'New'
-and accepts no arguments, returning T, then it will be registered as the
-constructor for the class when it is instantiated from within The Engine.
+map[string]string or map[string]int, these arguments can be used to
+register static methods, rename existing methods, add symbol documentation
+or to define constants respectively. As a special case, if a function is
+passed which name begins with 'New' and accepts no arguments, returning T,
+then it will be registered as the constructor for the class when it is
+instantiated from within The Engine.
 
 If the Struct extends [EditorPluginClass] then it will be added
 to the editor as a plugin.
@@ -188,16 +188,23 @@ func Register[T Class](exports ...any) {
 		registered.Store(classType, impl)
 
 		gd.Global.ClassDB.RegisterClass(gd.Global.ExtensionToken, className, superName, impl)
-		registerClassInformation(className, rename, nameOf(superType), classType)
+
 		gd.RegisterCleanup(func() {
 			gd.Global.ClassDB.UnregisterClass(gd.Global.ExtensionToken, className)
 			registered.Delete(classType)
 			className.Free()
 			superName.Free()
 		})
+		var (
+			documentation = make(map[string]string)
+		)
 		var method_renames = make(map[uintptr]string)
 		for _, export := range exports {
 			switch export := export.(type) {
+			case map[string]string:
+				for name, value := range export {
+					documentation[name] = value
+				}
 			case map[string]int:
 				for name, value := range export {
 					gd.Global.ClassDB.RegisterClassIntegerConstant(gd.Global.ExtensionToken,
@@ -240,6 +247,7 @@ func Register[T Class](exports ...any) {
 				}
 			}
 		}
+		registerClassInformation(className, rename, nameOf(superType), classType, documentation, method_renames)
 		switch super.(type) {
 		case interface {
 			AsShaderMaterial() ShaderMaterialClass.Instance
@@ -275,13 +283,17 @@ func convertName(fnName string) string {
 	return strings.Join(joins, "")
 }
 
-func registerClassInformation(className gd.StringName, classNameString string, inherits string, rtype reflect.Type) {
+func registerClassInformation(className gd.StringName, classNameString string, inherits string, rtype reflect.Type, docs map[string]string, method_renames map[uintptr]string) {
 	var class xmlDocumentation
 	class.Name = classNameString
 	class.Inherits = inherits
 	class.Version = "4.0"
 	extractDocTag := func(tag reflect.StructTag) string {
 		_, docs, _ := strings.Cut(string(tag), "\n")
+		docs = strings.Replace(docs, "\t", "", -1)
+		return strings.TrimSpace(docs)
+	}
+	extractDoc := func(docs string) string {
 		docs = strings.Replace(docs, "\t", "", -1)
 		return strings.TrimSpace(docs)
 	}
@@ -311,6 +323,9 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			name, _, _ = strings.Cut(name, "(")
 			signal.Name = name
 			signal.Description = extractDocTag(field.Tag)
+			if docs, ok := docs[name]; ok {
+				signal.Description = extractDoc(docs)
+			}
 			class.Signals = append(class.Signals, signal)
 			continue
 		}
@@ -319,17 +334,37 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			var member xmlMember
 			member.Name = name
 			member.Description = extractDocTag(field.Tag)
+			if member.Description != "" {
+				member.Description = member.Name + " " + member.Description
+			}
+			if docs, ok := docs[member.Name]; ok {
+				member.Description = extractDoc(docs)
+			}
 			member.Type = ptype.Type.String()
 			class.Members = append(class.Members, member)
 			gd.Global.ClassDB.RegisterClassProperty(gd.Global.ExtensionToken, className, ptype, gd.NewStringName(""), gd.NewStringName(""))
 		}
 	}
-	Callable.Defer(Callable.New(func() {
+	rtype = reflect.PointerTo(rtype)
+	for i := 0; i < rtype.NumMethod(); i++ {
+		name := String.ToSnakeCase(rtype.Method(i).Name)
+		if rename, ok := method_renames[rtype.Method(i).Func.Pointer()]; ok {
+			name = rename
+		}
+		if _, ok := docs[name]; !ok {
+			continue
+		}
+		var method xmlMethod
+		method.Name = name
+		method.Description = extractDoc(docs[name])
+		class.Methods = append(class.Methods, method)
+	}
+	gd.NewCallable(func() {
 		if EngineClass.IsEditorHint() {
 			docs, _ := xml.Marshal(class)
 			gd.Global.EditorHelp.Load(docs)
 		}
-	}))
+	}).CallDeferred()
 }
 
 type classImplementation struct {
