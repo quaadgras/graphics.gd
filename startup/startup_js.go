@@ -447,6 +447,10 @@ func linkJS(API *gd.API) {
 		}
 		return o
 	}
+	object_destroy := dlsym("object_destroy")
+	API.Object.Destroy = func(o [1]gd.Object) {
+		object_destroy.Invoke(pointers.Get(o[0])[0])
+	}
 	variant_new_nil := dlsym("variant_new_nil")
 	API.Variants.NewNil = func() gd.Variant {
 		variant_new_nil.Invoke()
