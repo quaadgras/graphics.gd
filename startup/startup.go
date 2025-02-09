@@ -3,7 +3,6 @@ package startup
 
 import (
 	"iter"
-	"time"
 
 	"graphics.gd/classdb"
 	EngineClass "graphics.gd/classdb/Engine"
@@ -186,9 +185,8 @@ func Rendering() iter.Seq[Float.X] {
 		}
 	} else {
 		<-frame_ready
-		time.Sleep(5 * time.Second)
 		return func(yield func(Float.X) bool) {
-			frame_ready <- true
+			frame_ready <- false
 			for {
 				<-frame_ready // we pause here until the next frame is ready (next Process callback).
 				if !yield(dt) {
