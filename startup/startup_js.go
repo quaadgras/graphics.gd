@@ -282,6 +282,25 @@ func linkJS(API *gd.API) {
 	API.ClassDB.ConstructObject = func(class gd.StringName) [1]gd.Object {
 		return [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(classdb_construct_object.Invoke(pointers.Get(class)[0]).Int())})}
 	}
+	object_method_bind_call := dlsym("object_bind_method_call")
+	API.Object.MethodBindCall = func(method gd.MethodBind, obj [1]gd.Object, arg ...gd.Variant) (gd.Variant, error) {
+		if obj == ([1]gd.Object{}) {
+			panic("object is nil")
+		}
+		for i, v := range arg {
+			raw := pointers.Get(v)
+			buf := *(*[6]uint32)(unsafe.Pointer(&raw))
+			for j := 0; j < len(buf); j++ {
+				write_params_buffer.Invoke(0, i, j, buf[j])
+			}
+		}
+		object_method_bind_call.Invoke(uint32(method), uint32(pointers.Get(obj[0])[0]), uint32(len(arg)))
+		var raw [6]uint32
+		for i := 0; i < len(raw); i++ {
+			raw[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
+		}
+		return pointers.New[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&raw))), nil
+	}
 	object_method_bind_ptrcall := dlsym("object_method_bind_ptrcall")
 	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj [1]gd.Object, arg callframe.Args, ret callframe.Addr) {
 		if obj == ([1]gd.Object{}) {
