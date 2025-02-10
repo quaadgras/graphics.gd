@@ -284,8 +284,9 @@ func linkJS(API *gd.API) {
 	}
 	object_method_bind_call := dlsym("object_bind_method_call")
 	API.Object.MethodBindCall = func(method gd.MethodBind, obj [1]gd.Object, arg ...gd.Variant) (gd.Variant, error) {
-		if obj == ([1]gd.Object{}) {
-			panic("object is nil")
+		var self uint32
+		if obj != ([1]gd.Object{}) {
+			self = uint32(pointers.Get(obj[0])[0])
 		}
 		for i, v := range arg {
 			raw := pointers.Get(v)
@@ -294,7 +295,7 @@ func linkJS(API *gd.API) {
 				write_params_buffer.Invoke(0, i, j, buf[j])
 			}
 		}
-		object_method_bind_call.Invoke(uint32(method), uint32(pointers.Get(obj[0])[0]), uint32(len(arg)))
+		object_method_bind_call.Invoke(uint32(method), self, uint32(len(arg)))
 		var raw [6]uint32
 		for i := 0; i < len(raw); i++ {
 			raw[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
@@ -303,11 +304,12 @@ func linkJS(API *gd.API) {
 	}
 	object_method_bind_ptrcall := dlsym("object_method_bind_ptrcall")
 	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj [1]gd.Object, arg callframe.Args, ret callframe.Addr) {
-		if obj == ([1]gd.Object{}) {
-			panic("object is nil")
+		var self uint32
+		if obj != ([1]gd.Object{}) {
+			self = uint32(pointers.Get(obj[0])[0])
 		}
 		writeCallFrameArguments(0, arg)
-		object_method_bind_ptrcall.Invoke(uint32(method), uint32(pointers.Get(obj[0])[0]))
+		object_method_bind_ptrcall.Invoke(uint32(method), self)
 		readCallFrameResult(0, ret)
 	}
 	global_get_singleton := dlsym("global_get_singleton")
