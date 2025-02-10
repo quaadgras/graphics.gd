@@ -180,26 +180,32 @@ func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 
 func WorldScale() Float.X {
+	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetWorldScale()))
 }
 
 func SetWorldScale(value Float.X) {
+	once.Do(singleton)
 	class(self).SetWorldScale(float64(value))
 }
 
 func WorldOrigin() Transform3D.BasisOrigin {
+	once.Do(singleton)
 	return Transform3D.BasisOrigin(class(self).GetWorldOrigin())
 }
 
 func SetWorldOrigin(value Transform3D.BasisOrigin) {
+	once.Do(singleton)
 	class(self).SetWorldOrigin(Transform3D.BasisOrigin(value))
 }
 
 func PrimaryInterface() [1]gdclass.XRInterface {
+	once.Do(singleton)
 	return [1]gdclass.XRInterface(class(self).GetPrimaryInterface())
 }
 
 func SetPrimaryInterface(value [1]gdclass.XRInterface) {
+	once.Do(singleton)
 	class(self).SetPrimaryInterface(value)
 }
 

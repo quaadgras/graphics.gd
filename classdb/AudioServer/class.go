@@ -396,34 +396,42 @@ func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 
 func BusCount() int {
+	once.Do(singleton)
 	return int(int(class(self).GetBusCount()))
 }
 
 func SetBusCount(value int) {
+	once.Do(singleton)
 	class(self).SetBusCount(int64(value))
 }
 
 func OutputDevice() string {
+	once.Do(singleton)
 	return string(class(self).GetOutputDevice().String())
 }
 
 func SetOutputDevice(value string) {
+	once.Do(singleton)
 	class(self).SetOutputDevice(String.New(value))
 }
 
 func InputDevice() string {
+	once.Do(singleton)
 	return string(class(self).GetInputDevice().String())
 }
 
 func SetInputDevice(value string) {
+	once.Do(singleton)
 	class(self).SetInputDevice(String.New(value))
 }
 
 func PlaybackSpeedScale() Float.X {
+	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetPlaybackSpeedScale()))
 }
 
 func SetPlaybackSpeedScale(value Float.X) {
+	once.Do(singleton)
 	class(self).SetPlaybackSpeedScale(float64(value))
 }
 

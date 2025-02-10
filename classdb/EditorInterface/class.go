@@ -532,18 +532,22 @@ func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 
 func DistractionFreeMode() bool {
+	once.Do(singleton)
 	return bool(class(self).IsDistractionFreeModeEnabled())
 }
 
 func SetDistractionFreeMode(value bool) {
+	once.Do(singleton)
 	class(self).SetDistractionFreeMode(value)
 }
 
 func MovieMakerEnabled() bool {
+	once.Do(singleton)
 	return bool(class(self).IsMovieMakerEnabled())
 }
 
 func SetMovieMakerEnabled(value bool) {
+	once.Do(singleton)
 	class(self).SetMovieMakerEnabled(value)
 }
 

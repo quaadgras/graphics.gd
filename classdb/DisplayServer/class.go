@@ -5604,13 +5604,13 @@ const (
 	MouseButtonMaskMbXbutton2 MouseButtonMask = 256
 )
 
-type TextToSpeechVoice struct {
-	Name     string `gd:"name"`
-	ID       string `gd:"id"`
-	Language string `gd:"language"`
-}
 type FileDialogOption struct {
 	Name    string   `gd:"name"`
 	Values  []string `gd:"values"`
 	Default int      `gd:"default"`
+}
+type TextToSpeechVoice struct {
+	Name     string `gd:"name"`
+	ID       string `gd:"id"`
+	Language string `gd:"language"`
 }

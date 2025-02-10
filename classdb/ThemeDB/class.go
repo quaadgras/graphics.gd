@@ -80,42 +80,52 @@ func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 
 func FallbackBaseScale() Float.X {
+	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetFallbackBaseScale()))
 }
 
 func SetFallbackBaseScale(value Float.X) {
+	once.Do(singleton)
 	class(self).SetFallbackBaseScale(float64(value))
 }
 
 func FallbackFont() [1]gdclass.Font {
+	once.Do(singleton)
 	return [1]gdclass.Font(class(self).GetFallbackFont())
 }
 
 func SetFallbackFont(value [1]gdclass.Font) {
+	once.Do(singleton)
 	class(self).SetFallbackFont(value)
 }
 
 func FallbackFontSize() int {
+	once.Do(singleton)
 	return int(int(class(self).GetFallbackFontSize()))
 }
 
 func SetFallbackFontSize(value int) {
+	once.Do(singleton)
 	class(self).SetFallbackFontSize(int64(value))
 }
 
 func FallbackIcon() [1]gdclass.Texture2D {
+	once.Do(singleton)
 	return [1]gdclass.Texture2D(class(self).GetFallbackIcon())
 }
 
 func SetFallbackIcon(value [1]gdclass.Texture2D) {
+	once.Do(singleton)
 	class(self).SetFallbackIcon(value)
 }
 
 func FallbackStylebox() [1]gdclass.StyleBox {
+	once.Do(singleton)
 	return [1]gdclass.StyleBox(class(self).GetFallbackStylebox())
 }
 
 func SetFallbackStylebox(value [1]gdclass.StyleBox) {
+	once.Do(singleton)
 	class(self).SetFallbackStylebox(value)
 }
 

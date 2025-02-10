@@ -58,6 +58,7 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 		if foundGetter {
 			if singleton {
 				fmt.Fprintf(file, "\nfunc %s() %s {\n", convertName(prop.Name), ptype)
+				fmt.Fprintf(file, "once.Do(singleton)\n\t")
 			} else {
 				fmt.Fprintf(file, "\nfunc (self Instance) %s() %s {\n", convertName(prop.Name), ptype)
 			}
@@ -98,6 +99,7 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 			}
 			if singleton {
 				fmt.Fprintf(file, "\nfunc Set%s(value %s) {\n", convertName(prop.Name), ptype)
+				fmt.Fprintf(file, "once.Do(singleton)\n\t")
 			} else {
 				fmt.Fprintf(file, "\nfunc (self Instance) Set%s(value %s) {\n", convertName(prop.Name), ptype)
 			}

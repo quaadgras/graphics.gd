@@ -476,7 +476,7 @@ func initialize(_ unsafe.Pointer, level initializationLevel) {
 
 //export deinitialize
 func deinitialize(_ unsafe.Pointer, level initializationLevel) {
-	if level == 0 {
+	if level == 2 {
 		for _, cleanup := range internal.Cleanups() {
 			cleanup()
 		}

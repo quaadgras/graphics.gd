@@ -24,12 +24,49 @@ func Int64(id int64) ID { //gd:rid_from_int64
 	return gd.RidFromInt64(gd.Int(id))
 }
 
-// Load behaves like the builtin "load" function in GDScript.
+var preloaded_resources []gd.RefCounted
+
+var startup []func()
+
+func init() {
+	gd.StartupFunctions = append(gd.StartupFunctions, func() {
+		for _, f := range startup {
+			f()
+		}
+	})
+	gd.RegisterCleanup(func() {
+		for _, resource := range preloaded_resources {
+			if resource.Unreference() {
+				gd.Global.Object.Destroy(resource.AsObject())
+			}
+		}
+	})
+}
+
+// Load behaves like the builtin "load" function in GDScript. It can also be used to preload a resource if called before
+// startup.
 func Load[T Any](path string) T {
+	if !gd.Linked {
+		var placeholder T
+		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
+		preloaded_resources = append(preloaded_resources, *(*gd.RefCounted)(unsafe.Pointer(&placeholder)))
+		startup = append(startup, func() {
+			resource := Instance(ResourceLoader.Load(string(path)))
+			result, ok := as[T](resource)
+			if !ok {
+				panic("Resource \"" + path + "\" is " + resource.AsObject()[0].GetClass().String() + " not " + reflect.TypeFor[T]().String())
+			}
+			raw, ok := pointers.End(result.AsObject()[0])
+			if ok {
+				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+			}
+		})
+		return placeholder
+	}
 	resource := Instance(ResourceLoader.Load(string(path)))
 	result, ok := as[T](resource)
 	if !ok {
-		panic("Resource is " + resource.AsObject()[0].GetClass().String() + " not " + reflect.TypeFor[T]().String())
+		panic("Resource \"" + path + "\" is " + resource.AsObject()[0].GetClass().String() + " not " + reflect.TypeFor[T]().String())
 	}
 	return result
 }

@@ -289,23 +289,6 @@ func init() {
 	})
 }
 
-type PhysicsDirectSpaceState3D_Intersection struct {
-	Collider   Object.Instance `gd:"collider"`
-	ColliderID Object.ID       `gd:"collider_id"`
-	Normal     struct {
-		X float32
-		Y float32
-		Z float32
-	} `gd:"normal"`
-	Position struct {
-		X float32
-		Y float32
-		Z float32
-	} `gd:"position"`
-	FaceIndex int     `gd:"face_index"`
-	RID       RID.Any `gd:"rid"`
-	Shape     int     `gd:"shape"`
-}
 type PhysicsDirectSpaceState3D_RestInfo struct {
 	ColliderID     Object.ID `gd:"collider_id"`
 	LinearVelocity struct {
@@ -325,4 +308,21 @@ type PhysicsDirectSpaceState3D_RestInfo struct {
 	} `gd:"point"`
 	RID   RID.Any `gd:"rid"`
 	Shape int     `gd:"shape"`
+}
+type PhysicsDirectSpaceState3D_Intersection struct {
+	Collider   Object.Instance `gd:"collider"`
+	ColliderID Object.ID       `gd:"collider_id"`
+	Normal     struct {
+		X float32
+		Y float32
+		Z float32
+	} `gd:"normal"`
+	Position struct {
+		X float32
+		Y float32
+		Z float32
+	} `gd:"position"`
+	FaceIndex int     `gd:"face_index"`
+	RID       RID.Any `gd:"rid"`
+	Shape     int     `gd:"shape"`
 }

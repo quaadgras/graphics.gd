@@ -439,50 +439,62 @@ func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 
 func PrintErrorMessages() bool {
+	once.Do(singleton)
 	return bool(class(self).IsPrintingErrorMessages())
 }
 
 func SetPrintErrorMessages(value bool) {
+	once.Do(singleton)
 	class(self).SetPrintErrorMessages(value)
 }
 
 func PhysicsTicksPerSecond() int {
+	once.Do(singleton)
 	return int(int(class(self).GetPhysicsTicksPerSecond()))
 }
 
 func SetPhysicsTicksPerSecond(value int) {
+	once.Do(singleton)
 	class(self).SetPhysicsTicksPerSecond(int64(value))
 }
 
 func MaxPhysicsStepsPerFrame() int {
+	once.Do(singleton)
 	return int(int(class(self).GetMaxPhysicsStepsPerFrame()))
 }
 
 func SetMaxPhysicsStepsPerFrame(value int) {
+	once.Do(singleton)
 	class(self).SetMaxPhysicsStepsPerFrame(int64(value))
 }
 
 func MaxFps() int {
+	once.Do(singleton)
 	return int(int(class(self).GetMaxFps()))
 }
 
 func SetMaxFps(value int) {
+	once.Do(singleton)
 	class(self).SetMaxFps(int64(value))
 }
 
 func TimeScale() Float.X {
+	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetTimeScale()))
 }
 
 func SetTimeScale(value Float.X) {
+	once.Do(singleton)
 	class(self).SetTimeScale(float64(value))
 }
 
 func PhysicsJitterFix() Float.X {
+	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetPhysicsJitterFix()))
 }
 
 func SetPhysicsJitterFix(value Float.X) {
+	once.Do(singleton)
 	class(self).SetPhysicsJitterFix(float64(value))
 }
 
@@ -1079,16 +1091,6 @@ func init() {
 	gdclass.Register("Engine", func(ptr gd.Object) any { return [1]gdclass.Engine{*(*gdclass.Engine)(unsafe.Pointer(&ptr))} })
 }
 
-type DonorInfo struct {
-	PlatinumSponsors []string `gd:"platinum_sponsors"`
-	GoldSponsors     []string `gd:"gold_sponsors"`
-	SilverSponsors   []string `gd:"silver_sponsors"`
-	BronzeSponsors   []string `gd:"bronze_sponsors"`
-	MiniSponsors     []string `gd:"mini_sponsors"`
-	GoldDonors       []string `gd:"gold_donors"`
-	SilverDonors     []string `gd:"silver_donors"`
-	BronzeDonors     []string `gd:"bronze_donors"`
-}
 type VersionInfo struct {
 	Major     int    `gd:"major"`
 	Minor     int    `gd:"minor"`
@@ -1114,4 +1116,14 @@ type Part struct {
 	Files     []string `gd:"files"`
 	Copyright []string `gd:"copyright"`
 	License   string   `gd:"license"`
+}
+type DonorInfo struct {
+	PlatinumSponsors []string `gd:"platinum_sponsors"`
+	GoldSponsors     []string `gd:"gold_sponsors"`
+	SilverSponsors   []string `gd:"silver_sponsors"`
+	BronzeSponsors   []string `gd:"bronze_sponsors"`
+	MiniSponsors     []string `gd:"mini_sponsors"`
+	GoldDonors       []string `gd:"gold_donors"`
+	SilverDonors     []string `gd:"silver_donors"`
+	BronzeDonors     []string `gd:"bronze_donors"`
 }

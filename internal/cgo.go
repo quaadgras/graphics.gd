@@ -144,6 +144,7 @@ type Glyph struct {
 	FontRID  RID
 	FontSize int32
 	Index    int32
+	//SpanIndex int32
 }
 type CaretInfo struct {
 	_ structs.HostLayout

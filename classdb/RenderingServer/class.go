@@ -4072,10 +4072,12 @@ func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 
 func RenderLoopEnabled() bool {
+	once.Do(singleton)
 	return bool(class(self).IsRenderLoopEnabled())
 }
 
 func SetRenderLoopEnabled(value bool) {
+	once.Do(singleton)
 	class(self).SetRenderLoopEnabled(value)
 }
 

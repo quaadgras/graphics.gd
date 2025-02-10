@@ -505,34 +505,42 @@ func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 
 func MouseMode() gdclass.InputMouseMode {
+	once.Do(singleton)
 	return gdclass.InputMouseMode(class(self).GetMouseMode())
 }
 
 func SetMouseMode(value gdclass.InputMouseMode) {
+	once.Do(singleton)
 	class(self).SetMouseMode(value)
 }
 
 func UseAccumulatedInput() bool {
+	once.Do(singleton)
 	return bool(class(self).IsUsingAccumulatedInput())
 }
 
 func SetUseAccumulatedInput(value bool) {
+	once.Do(singleton)
 	class(self).SetUseAccumulatedInput(value)
 }
 
 func EmulateMouseFromTouch() bool {
+	once.Do(singleton)
 	return bool(class(self).IsEmulatingMouseFromTouch())
 }
 
 func SetEmulateMouseFromTouch(value bool) {
+	once.Do(singleton)
 	class(self).SetEmulateMouseFromTouch(value)
 }
 
 func EmulateTouchFromMouse() bool {
+	once.Do(singleton)
 	return bool(class(self).IsEmulatingTouchFromMouse())
 }
 
 func SetEmulateTouchFromMouse(value bool) {
+	once.Do(singleton)
 	class(self).SetEmulateTouchFromMouse(value)
 }
 
