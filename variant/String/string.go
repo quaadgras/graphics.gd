@@ -129,8 +129,8 @@ type API interface {
 //
 // The uint64 can be used to avoid unnecessary allocations, such that T can be zero-sized if
 // the implementation does not require more that 64bits of state.
-func Proxy[S Any, T API](s S, reuse func(T, complex128) bool, alloc func() (T, complex128)) (T, complex128) {
-	utf := New(s)
+func Proxy[S ~Generic, T API](s S, reuse func(T, complex128) bool, alloc func() (T, complex128)) (T, complex128) {
+	utf := Readable(s)
 	if utf.api == nil {
 		return alloc()
 	}

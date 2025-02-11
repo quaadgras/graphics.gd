@@ -170,7 +170,6 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 			case gd.TypeString:
 				ptr := gd.UnsafeGet[[1]gd.EnginePointer](p_args, i-offset)
 				val := pointers.Let[gd.String](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypeVector2:
 				value = gd.UnsafeGet[gd.Vector2](p_args, i-offset)
@@ -389,39 +388,135 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 		case gd.PackedColorArray:
 			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
 		case String.Readable:
-			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalString(val)))
+			in := gd.InternalString(val)
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, raw)
+			} else {
+				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(in))
+			}
 		case String.Name:
-			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalStringName(val)))
+			in := gd.InternalStringName(val)
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, raw)
+			} else {
+				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(in))
+			}
 		case Path.ToNode:
-			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalNodePath(val)))
+			in := gd.InternalNodePath(val)
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, raw)
+			} else {
+				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(in))
+			}
 		case Callable.Function:
-			gd.UnsafeSet[[2]uint64](p_ret, pointers.Get(gd.InternalCallable(val)))
+			in := gd.InternalCallable(val)
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[[2]uint64](p_ret, raw)
+			} else {
+				gd.UnsafeSet[[2]uint64](p_ret, pointers.Get(in))
+			}
 		case Dictionary.Any:
-			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalDictionary(val)))
+			in := gd.InternalDictionary(val)
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, raw)
+			} else {
+				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(in))
+			}
 		case Array.Any:
-			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(gd.InternalArray(val)))
+			in := gd.InternalArray(val)
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, raw)
+			} else {
+				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(in))
+			}
 		case Packed.Bytes:
-			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](val))))
+			in := gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](val))
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, raw)
+			} else {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(in))
+			}
 		case RID.Any:
 			gd.UnsafeSet[RID.Any](p_ret, val)
 		case Packed.Array[int32]:
-			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](val)))
+			in := gd.InternalPacked[gd.PackedInt32Array, int32](Packed.Array[int32](val))
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, raw)
+			} else {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(in))
+			}
 		case Packed.Array[int64]:
-			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](val)))
+			in := gd.InternalPacked[gd.PackedInt64Array, int64](Packed.Array[int64](val))
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, raw)
+			} else {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(in))
+			}
 		case Packed.Array[float32]:
-			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](val)))
+			in := gd.InternalPacked[gd.PackedFloat32Array, float32](Packed.Array[float32](val))
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, raw)
+			} else {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(in))
+			}
 		case Packed.Array[float64]:
-			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedFloat64Array, float64](val)))
+			in := gd.InternalPacked[gd.PackedFloat64Array, float64](Packed.Array[float64](val))
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, raw)
+			} else {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(in))
+			}
 		case Packed.Strings:
-			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPackedStrings(val)))
+			in := gd.InternalPackedStrings(val)
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, raw)
+			} else {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(in))
+			}
 		case Packed.Array[gd.Vector2]:
-			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, gd.Vector2](val)))
+			in := gd.InternalPacked[gd.PackedVector2Array, gd.Vector2](Packed.Array[gd.Vector2](val))
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, raw)
+			} else {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(in))
+			}
 		case Packed.Array[gd.Vector3]:
-			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, gd.Vector3](val)))
+			in := gd.InternalPacked[gd.PackedVector3Array, gd.Vector3](Packed.Array[gd.Vector3](val))
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, raw)
+			} else {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(in))
+			}
 		case Packed.Array[gd.Color]:
-			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedColorArray, gd.Color](val)))
+			in := gd.InternalPacked[gd.PackedColorArray, gd.Color](Packed.Array[gd.Color](val))
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, raw)
+			} else {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(in))
+			}
 		case Packed.Array[gd.Vector4]:
-			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(gd.InternalPacked[gd.PackedVector4Array, gd.Vector4](val)))
+			in := gd.InternalPacked[gd.PackedVector4Array, gd.Vector4](Packed.Array[gd.Vector4](val))
+			raw, ok := pointers.End(in)
+			if ok {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, raw)
+			} else {
+				gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(in))
+			}
 		default:
 			panic(fmt.Sprintf("gdextension: unsupported Go -> Godot type %v", reflect.TypeOf(val)))
 		}

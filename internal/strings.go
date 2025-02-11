@@ -40,10 +40,8 @@ func (s String) Free() {
 	frame.Free()
 }
 
-func (s *String) Append(other String) {
-	modified := Global.Strings.Append(*s, other)
-	pointers.End(*s)
-	*s = modified
+func (s String) Append(other String) {
+	Global.Strings.Append(s, other)
 }
 
 func (s String) Len() int { return int(s.Length()) }
@@ -178,13 +176,13 @@ func (StringProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Read
 func (StringProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Readable {
 	s := pointers.Load[String](raw)
 	s2 := pointers.Load[String](raw2)
-	r := Global.Strings.Append(s, s2)
-	return StringType.Via(StringProxy{}, pointers.Pack(r))
+	Global.Strings.Append(s, s2)
+	return StringType.Via(StringProxy{}, pointers.Pack(s))
 }
 func (StringProxy) AppendString(raw complex128, str string) StringType.Readable {
 	s := pointers.Load[String](raw)
-	r := Global.Strings.Append(s, NewString(str))
-	return StringType.Via(StringProxy{}, pointers.Pack(r))
+	Global.Strings.Append(s, NewString(str))
+	return StringType.Via(StringProxy{}, pointers.Pack(s))
 }
 func (StringProxy) CompareOther(raw complex128, other_api StringType.API, raw2 complex128) int {
 	return int(pointers.Load[String](raw).CasecmpTo(pointers.Load[String](raw2)))
@@ -233,12 +231,14 @@ func (NodePathProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Re
 func (NodePathProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Readable {
 	s := pointers.Load[NodePath](raw).InternalString()
 	s2 := pointers.Load[NodePath](raw2).InternalString()
-	r := Global.Strings.Append(s, s2).NodePath()
+	Global.Strings.Append(s, s2)
+	r := s.NodePath()
 	return StringType.Via(NodePathProxy{}, pointers.Pack(r))
 }
 func (NodePathProxy) AppendString(raw complex128, str string) StringType.Readable {
-	s := pointers.Load[NodePath](raw)
-	r := Global.Strings.Append(s.InternalString(), NewString(str)).NodePath()
+	s := pointers.Load[NodePath](raw).InternalString()
+	Global.Strings.Append(s, NewString(str))
+	r := s.NodePath()
 	return StringType.Via(NodePathProxy{}, pointers.Pack(r))
 }
 func (NodePathProxy) CompareOther(raw complex128, other_api StringType.API, raw2 complex128) int {
@@ -288,12 +288,16 @@ func (StringNameProxy) AppendRune(raw complex128, r StringType.Rune) StringType.
 func (StringNameProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Readable {
 	s := pointers.Load[StringName](raw)
 	s2 := pointers.Load[StringName](raw2)
-	r := Global.Strings.Append(s.Substr(0, s.Length()), s2.Substr(0, s2.Length())).StringName()
+	sub := s.Substr(0, s.Length())
+	Global.Strings.Append(sub, s2.Substr(0, s2.Length()))
+	r := sub.StringName()
 	return StringType.Via(StringNameProxy{}, pointers.Pack(r))
 }
 func (StringNameProxy) AppendString(raw complex128, str string) StringType.Readable {
 	s := pointers.Load[StringName](raw)
-	r := Global.Strings.Append(s.Substr(0, s.Length()), NewString(str)).StringName()
+	sub := s.Substr(0, s.Length())
+	Global.Strings.Append(sub, NewString(str))
+	r := sub.StringName()
 	return StringType.Via(StringNameProxy{}, pointers.Pack(r))
 }
 func (StringNameProxy) CompareOther(raw complex128, other_api StringType.API, raw2 complex128) int {

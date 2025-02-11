@@ -102,9 +102,8 @@ func linkJS(API *gd.API) {
 		return string_get.Invoke(pointers.Get(s)[0], s.Len()).String()
 	}
 	string_operator_plus_eq_string := dlsym("string_operator_plus_eq_string")
-	API.Strings.Append = func(s gd.String, other gd.String) gd.String {
-		raw := string_operator_plus_eq_string.Invoke(pointers.Get(s)[0], pointers.Get(other)[0])
-		return pointers.New[gd.String]([1]gd.EnginePointer{gd.EnginePointer(raw.Int())})
+	API.Strings.Append = func(s gd.String, other gd.String) {
+		string_operator_plus_eq_string.Invoke(pointers.Get(s)[0], pointers.Get(other)[0])
 	}
 	get_godot_version := dlsym("get_godot_version")
 	API.GetGodotVersion = func() gd.Version {

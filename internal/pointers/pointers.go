@@ -37,10 +37,14 @@ package pointers
 
 import (
 	"fmt"
+	"reflect"
+	"runtime"
 	"sync"
 	"sync/atomic"
 	"unsafe"
 )
+
+const debug = false
 
 const pageSize = 3 * 4 * 5 * 20
 const shapesMax = 7
@@ -156,6 +160,10 @@ func Cycle() {
 								checksum [1]uint64
 							}
 							free := *(*func(Solo))(unsafe.Pointer(&jump))
+							if debug {
+								pc := reflect.ValueOf(free).Pointer()
+								fmt.Println(runtime.FuncForPC(pc).FileLine(pc))
+							}
 							free(Solo{
 								sentinal: j*pageSize + i,
 								revision: rev,
@@ -168,6 +176,10 @@ func Cycle() {
 								checksum [2]uint64
 							}
 							free := *(*func(Pair))(unsafe.Pointer(&jump))
+							if debug {
+								pc := reflect.ValueOf(free).Pointer()
+								fmt.Println(runtime.FuncForPC(pc).FileLine(pc))
+							}
 							free(Pair{
 								sentinal: j*pageSize + i,
 								revision: revision(page[i+offsetRevision].Load()),
@@ -183,6 +195,10 @@ func Cycle() {
 								checksum [3]uint64
 							}
 							free := *(*func(Trio))(unsafe.Pointer(&jump))
+							if debug {
+								pc := reflect.ValueOf(free).Pointer()
+								fmt.Println(runtime.FuncForPC(pc).FileLine(pc))
+							}
 							free(Trio{
 								sentinal: j*pageSize + i,
 								revision: revision(page[i+offsetRevision].Load()),

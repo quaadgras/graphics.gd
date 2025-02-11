@@ -668,8 +668,12 @@ func linkCGO(API *gd.API) {
 	}
 	variant_destroy := dlsymGD("variant_destroy")
 	API.Variants.Destroy = func(self gd.Variant) {
+		raw, ok := pointers.End(self)
+		if !ok {
+			return
+		}
 		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(self))
+		var p_self = callframe.Arg(frame, raw)
 		C.variant_destroy(
 			C.uintptr_t(uintptr(variant_destroy)),
 			C.uintptr_t(p_self.Uintptr()),
@@ -1449,7 +1453,7 @@ func linkCGO(API *gd.API) {
 		return rune(*ret)
 	}
 	string_operator_plus_eq_string := dlsymGD("string_operator_plus_eq_string")
-	API.Strings.Append = func(s gd.String, other gd.String) gd.String {
+	API.Strings.Append = func(s gd.String, other gd.String) {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, pointers.Get(s))
 		var p_other = callframe.Arg(frame, pointers.Get(other))
@@ -1458,9 +1462,8 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_self.Uintptr()),
 			C.uintptr_t(p_other.Uintptr()),
 		)
-		var ret = pointers.New[gd.String](p_self.Get())
+		pointers.Set(s, p_self.Get())
 		frame.Free()
-		return ret
 	}
 	string_operator_plus_eq_char := dlsymGD("string_operator_plus_eq_char")
 	API.Strings.AppendRune = func(s gd.String, other rune) {
@@ -1471,6 +1474,7 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_self.Uintptr()),
 			C.rune(other),
 		)
+		pointers.Set(s, p_self.Get())
 		frame.Free()
 	}
 	string_resize := dlsymGD("string_resize")
@@ -1486,6 +1490,7 @@ func linkCGO(API *gd.API) {
 		if size < length {
 			API.Strings.SetIndex(s, size, 0)
 		}
+		pointers.Set(s, p_self.Get())
 		frame.Free()
 	}
 	string_name_new_with_utf8_chars_and_len := dlsymGD("string_name_new_with_utf8_chars_and_len")

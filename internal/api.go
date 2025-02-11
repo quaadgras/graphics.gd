@@ -96,7 +96,7 @@ type API struct {
 		Get        func(String) string
 		SetIndex   func(String, Int, rune)
 		Index      func(String, Int) rune
-		Append     func(String, String) String
+		Append     func(String, String)
 		AppendRune func(String, rune)
 		Resize     func(String, Int)
 	}
