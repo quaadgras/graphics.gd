@@ -63,20 +63,23 @@ func (array Args) Index(i int) Addr {
 }
 
 func (array Args) Uintptr() uintptr {
-	if array.slice == nil {
+	if len(array.slice) == 0 {
 		return 0
 	}
 	return uintptr(unsafe.Pointer(&array.slice[0]))
 }
 
 func (array Args) UnsafePointer() unsafe.Pointer {
+	if len(array.slice) == 0 {
+		return nil
+	}
 	return unsafe.Pointer(&array.slice[0])
 }
 
 // Array returns a pointer to array of arguments offset by i.
 func (frame *Frame) Array(i int) Args {
 	return Args{
-		slice: frame.ptr[i:],
+		slice: frame.ptr[i:frame.arg],
 	}
 }
 
