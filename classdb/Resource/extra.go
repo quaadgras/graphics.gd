@@ -36,14 +36,14 @@ func init() {
 		for _, f := range startup {
 			f()
 		}
-	}))
-	gd.RegisterCleanup(func() {
-		for _, resource := range preloaded_resources {
-			if resource.Unreference() {
-				gd.Global.Object.Destroy(resource.AsObject())
+		gd.RegisterCleanup(func() {
+			for _, resource := range preloaded_resources {
+				if resource.Unreference() {
+					gd.Global.Object.Destroy(resource.AsObject())
+				}
 			}
-		}
-	})
+		})
+	}))
 }
 
 // Load behaves like the builtin "load" function in GDScript. It can also be used to preload a resource if called before
