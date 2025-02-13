@@ -300,6 +300,9 @@ func (a Any) Interface() interface{} {
 	if a == Nil {
 		return nil
 	}
+	if proxy, ok := a.value.(API); ok {
+		return proxy.Interface(a.local)
+	}
 	rtype := reflect.TypeOf(a.value)
 	rvalue := reflect.ValueOf(a.value)
 	switch rtype.Kind() {
