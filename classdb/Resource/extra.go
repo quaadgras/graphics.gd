@@ -8,6 +8,8 @@ import (
 	"graphics.gd/classdb/ResourceLoader"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/Path"
+	"graphics.gd/variant/String"
 )
 
 // ID that uniquely identifies a resource.
@@ -45,16 +47,17 @@ func init() {
 
 // Load behaves like the builtin "load" function in GDScript. It can also be used to preload a resource if called before
 // startup.
-func Load[T Any](path string) T {
+func Load[T Any, P string | Path.ToResource](path_to_resource P) T {
+	path := Path.ToResource(String.New(path_to_resource))
 	if !gd.Linked {
 		var placeholder T
 		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
 		preloaded_resources = append(preloaded_resources, *(*gd.RefCounted)(unsafe.Pointer(&placeholder)))
 		startup = append(startup, func() {
-			resource := Instance(ResourceLoader.Load(string(path)))
+			resource := Instance(ResourceLoader.Load(path.String()))
 			result, ok := as[T](resource)
 			if !ok {
-				panic("Resource \"" + path + "\" is " + resource.AsObject()[0].GetClass().String() + " not " + reflect.TypeFor[T]().String())
+				panic("Resource \"" + path.String() + "\" is " + resource.AsObject()[0].GetClass().String() + " not " + reflect.TypeFor[T]().String())
 			}
 			raw, ok := pointers.End(result.AsObject()[0])
 			if ok {
@@ -63,10 +66,10 @@ func Load[T Any](path string) T {
 		})
 		return placeholder
 	}
-	resource := Instance(ResourceLoader.Load(string(path)))
+	resource := Instance(ResourceLoader.Load(path.String()))
 	result, ok := as[T](resource)
 	if !ok {
-		panic("Resource \"" + path + "\" is " + resource.AsObject()[0].GetClass().String() + " not " + reflect.TypeFor[T]().String())
+		panic("Resource \"" + path.String() + "\" is " + resource.AsObject()[0].GetClass().String() + " not " + reflect.TypeFor[T]().String())
 	}
 	return result
 }
