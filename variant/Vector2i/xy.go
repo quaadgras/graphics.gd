@@ -57,9 +57,9 @@ func Clamp(vec, min, max XY) XY { //gd:Vector2i.clamp
 	}
 }
 
-// Clampi returns a new vector with all components clamped between the components of min
+// ClampX returns a new vector with all components clamped between the components of min
 // and max.
-func Clampi[X Int.Any](vec XY, min, max X) XY { //gd:Vector2i.clampi
+func ClampX[X Int.Any](vec XY, min, max X) XY { //gd:Vector2i.clampi
 	return XY{
 		Int.Clamp(vec.X, int32(min), int32(max)),
 		Int.Clamp(vec.Y, int32(min), int32(max)),
