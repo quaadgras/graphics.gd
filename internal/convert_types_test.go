@@ -50,6 +50,12 @@ type Converter struct {
 	classdb.Extension[Converter, Node.Instance]
 }
 
+type CustomConverterObject struct {
+	classdb.Extension[CustomConverterObject, Object.Instance]
+
+	Value int
+}
+
 func (c Converter) Ready()                { doneConversionsTest <- errors.New("script didn't call Done") }
 func (c Converter) AsNode() Node.Instance { return c.Super() }
 
@@ -143,6 +149,10 @@ func (c Converter) ArrayInt() Array.Contains[int] {
 	return Array.New(1, 2, 3)
 }
 
+func (c Converter) CustomObject() *CustomConverterObject {
+	return &CustomConverterObject{Value: 42}
+}
+
 func (c Converter) ValidInt(i int) bool               { return i == c.Int() }
 func (c Converter) ValidBool(b bool) bool             { return b == c.Bool() }
 func (c Converter) ValidInt8(i int8) bool             { return i == c.Int8() }
@@ -232,6 +242,10 @@ func (c Converter) ValidArrayAny(a Array.Any) bool {
 }
 func (c Converter) ValidArrayInt(a Array.Contains[int]) bool {
 	return a.Index(0) == 1 && a.Index(1) == 2 && a.Index(2) == 3
+}
+
+func (c Converter) ValidCustomObject(a *CustomConverterObject) bool {
+	return a.Value == 42
 }
 
 func TestConversions(t *testing.T) {

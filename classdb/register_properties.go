@@ -212,7 +212,7 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 		if field.IsZero() {
 			return gd.Global.Variants.NewNil(), false
 		}
-		obj := field.Interface().(interface{ AsObject() [1]gd.Object }).AsObject()[0]
+		obj := field.Addr().Interface().(interface{ AsObject() [1]gd.Object }).AsObject()[0]
 		vary := gd.NewVariant(obj)
 		return vary, true
 	}

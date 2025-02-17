@@ -27,6 +27,22 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 	switch rtype.Kind() {
 	case reflect.Bool:
 		return reflect.ValueOf(Global.Variants.Booleanize(value)).Convert(rtype), nil
+	case reflect.Pointer:
+		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+			if value.Type() != TypeObject {
+				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
+			}
+			object := [1]Object{LetVariantAsPointerType[Object](value, TypeObject)}
+			native, ok := ExtensionInstances.Load(pointers.Get(object[0])[0])
+			if ok {
+				return reflect.ValueOf(native), nil
+			}
+		}
+		val, err := ConvertToDesiredGoType(value.Interface(), rtype)
+		if err != nil {
+			return reflect.Value{}, xray.New(err)
+		}
+		return val, nil
 	case reflect.Array:
 		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			if value.Type() != TypeObject {

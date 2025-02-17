@@ -138,6 +138,10 @@ func _init():
     if self.packed_vector_4_array() != PackedVector4Array([Vector4(1.0, 2.0, 3.0, 4.0), Vector4(5.0, 6.0, 7.0, 8.0)]): push_fail("PackedVector4Array()")
     if !valid_packed_vector_4_array(PackedVector4Array([Vector4(1.0, 2.0, 3.0, 4.0), Vector4(5.0, 6.0, 7.0, 8.0)])): push_fail("ValidPackedVector4Array()")
 
+    var custom = self.custom_object()
+    if custom.value != 42: push_fail("CustomObject()")
+    if !valid_custom_object(custom): push_fail("ValidCustomObject()")
+
     done()
 
 func push_fail(name: String):

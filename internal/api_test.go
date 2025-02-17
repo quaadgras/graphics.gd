@@ -15,7 +15,8 @@ import (
 
 func TestMain(m *testing.M) {
 	classdb.Register[Converter]()
-	startup.Loader()
+	classdb.Register[CustomConverterObject]()
+	startup.LoadingScene()
 	os.Exit(m.Run())
 }
 
