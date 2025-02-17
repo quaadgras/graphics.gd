@@ -27,22 +27,6 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 	switch rtype.Kind() {
 	case reflect.Bool:
 		return reflect.ValueOf(Global.Variants.Booleanize(value)).Convert(rtype), nil
-	case reflect.Pointer:
-		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
-			if value.Type() != TypeObject {
-				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
-			}
-			object := [1]Object{LetVariantAsPointerType[Object](value, TypeObject)}
-			native, ok := ExtensionInstances.Load(pointers.Get(object[0])[0])
-			if ok {
-				return reflect.ValueOf(native), nil
-			}
-		}
-		val, err := ConvertToDesiredGoType(value.Interface(), rtype)
-		if err != nil {
-			return reflect.Value{}, xray.New(err)
-		}
-		return val, nil
 	case reflect.Array:
 		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			if value.Type() != TypeObject {
@@ -144,13 +128,25 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 		case nil:
 			return reflect.Zero(rtype), nil
 		default:
-			var elem = reflect.New(rtype.Elem())
-			value, err := ConvertToDesiredGoType(value, rtype.Elem())
-			if err != nil {
-				return reflect.Value{}, xray.New(err)
+			if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+				object, ok := value.(IsClass)
+				if !ok {
+					return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
+				}
+				native, ok := ExtensionInstances.Load(pointers.Get(object.AsObject()[0])[0])
+				if ok {
+					return reflect.ValueOf(native), nil
+				}
+				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
+			} else {
+				var elem = reflect.New(rtype.Elem())
+				value, err := ConvertToDesiredGoType(value, rtype.Elem())
+				if err != nil {
+					return reflect.Value{}, xray.New(err)
+				}
+				elem.Elem().Set(value)
+				return elem, nil
 			}
-			elem.Elem().Set(value)
-			return elem, nil
 		}
 	case reflect.Slice:
 		val, err := convertToGoSliceOf(rtype.Elem(), value)
