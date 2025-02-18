@@ -39,7 +39,13 @@ func bench():
 	obj[0].Set(gd.NewStringName("n"), gd.NewVariant(B.N))
 	bench := gd.NewStringName("bench")
 	array := gd.NewArray()
+	var result gd.Variant
+	B.Cleanup(func() {
+		if result.Interface().(int64) != int64(B.N*len("Hello, World!")) {
+			B.Fail()
+		}
+	})
 	B.ResetTimer()
-	obj[0].Callv(bench, array)
+	result = obj[0].Callv(bench, array)
 	obj[0].Free()
 }
