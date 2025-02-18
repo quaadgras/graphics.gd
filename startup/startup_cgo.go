@@ -3,6 +3,137 @@
 package startup
 
 /*
+
+#cgo nocallback initialization
+#cgo noescape initialization
+#cgo nocallback get_proc_address
+#cgo noescape get_proc_address
+#cgo nocallback get_godot_version
+#cgo noescape get_godot_version
+#cgo nocallback mem_alloc
+#cgo noescape mem_alloc
+#cgo nocallback mem_realloc
+#cgo noescape mem_realloc
+#cgo nocallback mem_free
+#cgo noescape mem_free
+#cgo nocallback print_error
+#cgo noescape print_error
+#cgo nocallback print_error_with_message
+#cgo noescape print_error_with_message
+#cgo nocallback print_warning
+#cgo noescape print_warning
+#cgo nocallback get_native_struct_size
+#cgo noescape get_native_struct_size
+#cgo noescape variant_new_copy
+#cgo noescape variant_new_nil
+#cgo noescape variant_destroy
+#cgo noescape variant_call
+#cgo noescape variant_call_static
+#cgo noescape variant_evaluate
+#cgo noescape variant_set
+#cgo noescape variant_set_named
+#cgo noescape variant_set_keyed
+#cgo noescape variant_set_indexed
+#cgo noescape variant_get
+#cgo noescape variant_get_named
+#cgo noescape variant_get_keyed
+#cgo noescape variant_get_indexed
+#cgo noescape variant_iter_init
+#cgo noescape variant_iter_next
+#cgo noescape variant_iter_get
+#cgo noescape variant_hash
+#cgo noescape variant_recursive_hash
+#cgo noescape variant_hash_compare
+#cgo noescape variant_booleanize
+#cgo noescape variant_duplicate
+#cgo noescape variant_stringify
+#cgo noescape variant_get_type
+#cgo nocallback variant_get_type
+#cgo noescape variant_has_method
+#cgo noescape variant_has_member
+#cgo noescape variant_has_key
+#cgo noescape variant_get_type_name
+#cgo noescape variant_can_convert
+#cgo noescape variant_can_convert_strict
+#cgo noescape get_variant_from_type_constructor
+#cgo noescape call_variant_from_type_constructor
+#cgo noescape get_variant_to_type_constructor
+#cgo noescape call_variant_to_type_constructor
+#cgo noescape variant_get_ptr_operator_evaluator
+#cgo noescape call_variant_ptr_operator_evaluator
+#cgo noescape variant_get_ptr_builtin_method
+#cgo noescape call_variant_ptr_builtin_method
+#cgo noescape variant_get_ptr_constructor
+#cgo noescape call_variant_ptr_constructor
+#cgo noescape variant_get_ptr_destructor
+#cgo noescape call_variant_ptr_destructor
+#cgo noescape variant_construct
+#cgo noescape variant_get_ptr_setter
+#cgo noescape call_variant_ptr_setter
+#cgo noescape variant_get_ptr_getter
+#cgo noescape call_variant_ptr_getter
+#cgo noescape variant_get_ptr_indexed_setter
+#cgo noescape call_variant_ptr_indexed_setter
+#cgo noescape variant_get_ptr_indexed_getter
+#cgo noescape call_variant_ptr_indexed_getter
+#cgo noescape variant_get_ptr_keyed_setter
+#cgo noescape call_variant_ptr_keyed_setter
+#cgo noescape variant_get_ptr_keyed_getter
+#cgo noescape call_variant_ptr_keyed_getter
+#cgo noescape variant_get_ptr_keyed_checker
+#cgo noescape call_variant_ptr_keyed_checker
+#cgo noescape variant_get_constant_value
+#cgo noescape variant_get_ptr_utility_function
+#cgo noescape call_variant_ptr_utility_function
+#cgo noescape string_new_with_utf8_chars_and_len
+#cgo noescape string_to_utf8_chars
+#cgo noescape string_operator_index
+#cgo noescape string_operator_index_const
+#cgo noescape string_operator_plus_eq_string
+#cgo noescape string_operator_plus_eq_char
+#cgo noescape string_resize
+#cgo noescape string_name_new_with_utf8_chars_and_len
+#cgo noescape xml_parser_open_buffer
+#cgo noescape file_access_store_buffer
+#cgo noescape file_access_get_buffer
+#cgo noescape packed_T_operator_index
+#cgo noescape packed_T_operator_index_const
+#cgo noescape array_operator_index
+#cgo noescape array_operator_index_const
+#cgo noescape array_ref
+#cgo noescape array_set_typed
+#cgo noescape dictionary_operator_index
+#cgo noescape object_method_bind_call
+#cgo noescape object_method_bind_ptrcall
+#cgo noescape object_destroy
+#cgo noescape global_get_singleton
+#cgo noescape object_get_instance_binding
+#cgo noescape object_set_instance_binding
+#cgo noescape object_free_instance_binding
+#cgo noescape object_set_instance
+#cgo noescape object_get_class_name
+#cgo noescape object_cast_to
+#cgo noescape object_get_instance_id
+#cgo noescape object_get_instance_from_id
+#cgo noescape ref_get_object
+#cgo noescape ref_set_object
+#cgo noescape classdb_construct_object
+#cgo noescape classdb_get_class_tag
+#cgo noescape classdb_get_method_bind
+#cgo noescape get_library_path
+#cgo noescape callable_custom_create
+#cgo noescape classdb_register_extension_class2
+#cgo noescape classdb_register_extension_class_method
+#cgo noescape classdb_register_extension_class_integer_constant
+#cgo noescape classdb_register_extension_class_property
+#cgo noescape classdb_register_extension_class_property_indexed
+#cgo noescape classdb_register_extension_class_property_group
+#cgo noescape classdb_register_extension_class_property_subgroup
+#cgo noescape classdb_register_extension_class_signal
+#cgo noescape editor_add_plugin
+#cgo noescape editor_remove_plugin
+#cgo noescape classdb_unregister_extension_class
+#cgo noescape editor_help_load_xml_from_utf8_chars_and_len
 #include <stdlib.h>
 #include "gdextension_interface.h"
 
@@ -1681,7 +1812,7 @@ func linkCGO(API *gd.API) {
 		*(*[3]uint64)(ptr) = p_copy.Get()
 		frame.Free()
 	}
-	object_get_instance_from_id := dlsymGD("object_get_instance_from_id")
+	object_get_instance_from_id = dlsymGD("object_get_instance_from_id")
 	API.Object.GetInstanceFromID = func(id gd.ObjectID) [1]gd.Object {
 		var ret = C.object_get_instance_from_id(
 			C.uintptr_t(uintptr(object_get_instance_from_id)),
@@ -1734,39 +1865,8 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 		return ret, nil
 	}
-	object_method_bind_ptrcall := dlsymGD("object_method_bind_ptrcall")
-	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj [1]gd.Object, arg callframe.Args, ret callframe.Addr) {
-		if obj == ([1]gd.Object{}) {
-			C.object_method_bind_ptrcall(
-				C.uintptr_t(uintptr(object_method_bind_ptrcall)),
-				C.uintptr_t(method),
-				C.uintptr_t(0),
-				C.uintptr_t(arg.Uintptr()),
-				C.uintptr_t(ret.Uintptr()),
-			)
-			return
-		}
-		var self = pointers.Get(obj[0])
-		if self[0] == 0 {
-			panic("nil gd.Object dereference")
-		}
-		if self[1] != 0 {
-			var ret = C.object_get_instance_from_id(
-				C.uintptr_t(uintptr(object_get_instance_from_id)),
-				C.uintptr_t(self[1]),
-			)
-			if ret == 0 {
-				panic("use after free")
-			}
-		}
-		C.object_method_bind_ptrcall(
-			C.uintptr_t(uintptr(object_method_bind_ptrcall)),
-			C.uintptr_t(method),
-			C.uintptr_t(self[0]),
-			C.uintptr_t(arg.Uintptr()),
-			C.uintptr_t(ret.Uintptr()),
-		)
-	}
+	object_method_bind_ptrcall = dlsymGD("object_method_bind_ptrcall")
+	API.Object.MethodBindPointerCall = method_bind_ptrcall
 	object_destroy := dlsymGD("object_destroy")
 	API.Object.Destroy = func(o [1]gd.Object) {
 		var self = pointers.Get(o[0])
@@ -2591,4 +2691,41 @@ func method_ptrcall(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer,
 		instance = cgo.Handle(p_instance).Value()
 	}
 	method.PointerCall(instance, gd.Address(p_args), gd.Address(p_ret))
+}
+
+var object_method_bind_ptrcall unsafe.Pointer
+var object_get_instance_from_id unsafe.Pointer
+
+//go:linkname method_bind_ptrcall
+func method_bind_ptrcall(method gd.MethodBind, obj [1]gd.Object, arg callframe.Args, ret callframe.Addr) {
+	if obj == ([1]gd.Object{}) {
+		C.object_method_bind_ptrcall(
+			C.uintptr_t(uintptr(object_method_bind_ptrcall)),
+			C.uintptr_t(method),
+			C.uintptr_t(0),
+			C.uintptr_t(arg.Uintptr()),
+			C.uintptr_t(ret.Uintptr()),
+		)
+		return
+	}
+	var self = pointers.Get(obj[0])
+	if self[0] == 0 {
+		panic("nil gd.Object dereference")
+	}
+	if self[1] != 0 {
+		var ret = C.object_get_instance_from_id(
+			C.uintptr_t(uintptr(object_get_instance_from_id)),
+			C.uintptr_t(self[1]),
+		)
+		if ret == 0 {
+			panic("use after free")
+		}
+	}
+	C.object_method_bind_ptrcall(
+		C.uintptr_t(uintptr(object_method_bind_ptrcall)),
+		C.uintptr_t(method),
+		C.uintptr_t(self[0]),
+		C.uintptr_t(arg.Uintptr()),
+		C.uintptr_t(ret.Uintptr()),
+	)
 }
