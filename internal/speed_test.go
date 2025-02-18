@@ -5,13 +5,41 @@ package gd_test
 import (
 	"testing"
 
+	"graphics.gd/classdb/GDScript"
 	gd "graphics.gd/internal"
+	"graphics.gd/variant/Object"
 )
 
 func BenchmarkMethodBindPointerCall(B *testing.B) {
 	B.ReportAllocs()
 	s := gd.NewString("Hello, World!")
+	var sum int64
 	for i := 0; i < B.N; i++ {
-		_ = s.Length()
+		sum += s.Length()
 	}
+	if sum != int64(B.N)*int64(len("Hello, World!")) {
+		B.Fail()
+	}
+}
+
+func BenchmarkScriptCall(B *testing.B) {
+	B.ReportAllocs()
+	var script = GDScript.New().AsScript()
+	script.SetSourceCode(`extends Object
+var n: int
+func bench():
+	var sum = 0
+	for i in range(n):
+		sum += "Hello, World!".length()
+	return sum
+`)
+	script.Reload()
+	obj := Object.New()
+	obj.SetScript(script)
+	obj[0].Set(gd.NewStringName("n"), gd.NewVariant(B.N))
+	bench := gd.NewStringName("bench")
+	array := gd.NewArray()
+	B.ResetTimer()
+	obj[0].Callv(bench, array)
+	obj[0].Free()
 }
