@@ -142,6 +142,10 @@ func _init():
     if custom.value != 42: push_fail("CustomObject()")
     if !valid_custom_object(custom): push_fail("ValidCustomObject()")
 
+    var en = self.enum()
+    if en != Converter.MyEnum.B: push_fail("Enum()")
+    if !valid_enum(en): push_fail("ValidEnum()")
+
     done()
 
 func push_fail(name: String):

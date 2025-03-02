@@ -11,6 +11,7 @@ import (
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
 	DictionaryType "graphics.gd/variant/Dictionary"
+	"graphics.gd/variant/Enum"
 	PackedType "graphics.gd/variant/Packed"
 	"graphics.gd/variant/Path"
 	StringType "graphics.gd/variant/String"
@@ -226,6 +227,12 @@ func convertToGoMap(rtype reflect.Type, value any) (reflect.Value, error) {
 }
 
 func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
+	i64, isInt64 := value.(Int)
+	if reflect.PointerTo(rtype).Implements(reflect.TypeFor[Enum.Pointer]()) && isInt64 {
+		enum := reflect.New(rtype)
+		enum.Interface().(Enum.Pointer).SetInt(int(i64))
+		return enum.Elem(), nil
+	}
 	switch value := value.(type) {
 	case IsClass:
 		var object = value.(IsClass).AsObject()

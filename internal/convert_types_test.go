@@ -19,6 +19,7 @@ import (
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Dictionary"
+	"graphics.gd/variant/Enum"
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Path"
 	"graphics.gd/variant/Plane"
@@ -56,6 +57,13 @@ type CustomConverterObject struct {
 	Value int
 }
 
+type MyEnum Enum.Int[struct {
+	A,
+	B MyEnum
+}]
+
+var MyEnums = Enum.Values[MyEnum]()
+
 func (c Converter) Ready()                { doneConversionsTest <- errors.New("script didn't call Done") }
 func (c Converter) AsNode() Node.Instance { return c.Super() }
 
@@ -79,6 +87,7 @@ func (c Converter) Float32() float32       { return 2.0 }
 func (c Converter) Float64() float64       { return 2.2 }
 func (c Converter) Complex64() complex64   { return 2 + 2i }
 func (c Converter) Complex128() complex128 { return 2 + 2i }
+func (c Converter) Enum() MyEnum           { return MyEnums.B }
 
 func (c Converter) Float() gd.Float                      { return 2.2 }
 func (c Converter) String() String.Readable              { return String.New("testing") }
@@ -244,6 +253,7 @@ func (c Converter) ValidArrayInt(a Array.Contains[int]) bool {
 	return a.Index(0) == 1 && a.Index(1) == 2 && a.Index(2) == 3
 }
 
+func (c Converter) ValidEnum(e MyEnum) bool { return e == MyEnums.B }
 func (c Converter) ValidCustomObject(a *CustomConverterObject) bool {
 	return a.Value == 42
 }
