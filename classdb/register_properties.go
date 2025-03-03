@@ -7,6 +7,7 @@ import (
 	ResourceClass "graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Enum"
 	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/String"
@@ -52,7 +53,18 @@ func propertyOf(class gd.StringName, field reflect.StructField) (gd.PropertyInfo
 			}
 			if elem.Implements(reflect.TypeFor[ResourceClass.Any]()) {
 				hintString = fmt.Sprintf("%d/%d:%s", gd.TypeObject, PropertyHintResourceType, nameOf(elem)) // MAKE_RESOURCE_TYPE_HINT
-			} else {
+			} else if etype != gd.TypeNil {
+				hint |= PropertyHintArrayType
+				hintString = etype.String()
+			}
+		}
+		if vtype == gd.TypeArray && field.Type.Implements(reflect.TypeFor[Array.Interface]()) {
+			elem := reflect.Zero(field.Type).Interface().(Array.Interface).ElemType()
+			etype, ok := gd.VariantTypeOf(elem)
+			if !ok {
+				return gd.PropertyInfo{}, false
+			}
+			if etype != gd.TypeNil {
 				hint |= PropertyHintArrayType
 				hintString = etype.String()
 			}

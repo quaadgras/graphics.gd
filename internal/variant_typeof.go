@@ -4,7 +4,9 @@ import (
 	"reflect"
 	"unsafe"
 
+	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
+	CallableType "graphics.gd/variant/Callable"
 	DictionaryType "graphics.gd/variant/Dictionary"
 	PackedType "graphics.gd/variant/Packed"
 	"graphics.gd/variant/Path"
@@ -73,6 +75,8 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 		return TypeDictionary, true
 	case reflect.Struct:
 		switch rtype {
+		case reflect.TypeFor[VariantPkg.Any]():
+			return TypeNil, true
 		case reflect.TypeFor[PackedType.Bytes]():
 			return TypePackedByteArray, true
 		case reflect.TypeFor[PackedType.Array[int32]]():
@@ -155,7 +159,7 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 			vtype = TypeRID
 		case reflect.TypeOf([0]Object{}).Elem():
 			vtype = TypeObject
-		case reflect.TypeOf([0]Callable{}).Elem():
+		case reflect.TypeFor[Callable](), reflect.TypeFor[CallableType.Function]():
 			vtype = TypeCallable
 		case reflect.TypeOf([0]Dictionary{}).Elem():
 			vtype = TypeDictionary
@@ -187,11 +191,11 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 			switch {
 			case rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()):
 				vtype = TypeObject
-			case rtype.Implements(reflect.TypeFor[SignalType.Pointer]()):
+			case reflect.PointerTo(rtype).Implements(reflect.TypeFor[SignalType.Pointer]()):
 				vtype = TypeSignal
-			case rtype.Implements(reflect.TypeFor[ArrayType.Pointer]()):
+			case rtype.Implements(reflect.TypeFor[ArrayType.Interface]()):
 				vtype = TypeArray
-			case rtype.Implements(reflect.TypeFor[DictionaryType.Pointer]()):
+			case rtype.Implements(reflect.TypeFor[DictionaryType.Interface]()):
 				vtype = TypeDictionary
 			default:
 				vtype = TypeDictionary

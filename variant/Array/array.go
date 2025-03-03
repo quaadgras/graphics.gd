@@ -26,6 +26,7 @@ type Contains[T any] struct {
 // Interface that is implemented by all [Contains[T]] types.
 type Interface interface {
 	Any() Any
+	ElemType() reflect.Type
 }
 
 // Pointer interface that is implemented by all [Contains[T]] types.
@@ -49,6 +50,8 @@ func New[T any](elements ...T) Contains[T] {
 		},
 	}
 }
+
+func (a Contains[T]) ElemType() reflect.Type { return reflect.TypeFor[T]() }
 
 // Slice returns the array as a slice.
 func (a Contains[T]) Slice() []T {
