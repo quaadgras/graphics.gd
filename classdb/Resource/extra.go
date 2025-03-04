@@ -8,7 +8,6 @@ import (
 	"graphics.gd/classdb/ResourceLoader"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
-	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Path"
 	"graphics.gd/variant/String"
 )
@@ -32,7 +31,7 @@ var preloaded_resources []gd.RefCounted
 var startup []func()
 
 func init() {
-	Callable.Defer(Callable.New(func() {
+	gd.StartupFunctions = append(gd.StartupFunctions, func() {
 		for _, f := range startup {
 			f()
 		}
@@ -43,7 +42,7 @@ func init() {
 				}
 			}
 		})
-	}))
+	})
 }
 
 // Load behaves like the builtin "load" function in GDScript. It can also be used to preload a resource if called before

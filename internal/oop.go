@@ -4,6 +4,7 @@ package gd
 
 import (
 	"reflect"
+	"runtime"
 	"strings"
 	"sync"
 	"unsafe"
@@ -18,6 +19,20 @@ type NotificationType int32
 func PointerWithOwnershipTransferredToGo[T pointers.Generic[T, [3]uint64]](ptr EnginePointer) T {
 	if ptr == 0 {
 		return T{}
+	}
+	if runtime.GOOS == "js" {
+		// See https://github.com/grow-graphics/gd/issues/103
+		// in some cases, objects will crash on free after calling
+		// certain methods if we don't call a known-safe method on
+		// them first. Probably has something to do with complex
+		// cross-language call stacks, ie.
+		//
+		// 	C -> JS -> Go -> JS -> C -> JS -> Go
+		//
+		// Maybe emscripten needs a chance to properly allocate the
+		// object or something? or there could be a serious memory
+		// corruption bug somewhere.
+		pointers.Raw[Object]([3]uint64{uint64(ptr), 0}).IsBlockingSignals()
 	}
 	return pointers.New[T]([3]uint64{uint64(ptr)})
 }

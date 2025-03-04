@@ -85,11 +85,16 @@ func LoadingScene() {
 		<-intialized
 		var loaded = make(chan struct{})
 		gd.NewCallable(func() {
-			close(loaded)
+			if !hasLoaded {
+				close(loaded)
+				hasLoaded = true
+			}
 		}).CallDeferred()
 		<-loaded
 	}
 }
+
+var hasLoaded bool
 
 // There are two main loop implementations, we decide on which one to use based on
 // what startup functions are called in the main function.
