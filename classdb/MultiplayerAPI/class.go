@@ -94,7 +94,7 @@ func (self Instance) Poll() error { //gd:MultiplayerAPI.poll
 
 /*
 Sends an RPC to the target [param peer]. The given [param method] will be called on the remote [param object] with the provided [param arguments]. The RPC may also be called locally depending on the implementation and RPC configuration. See [method Node.rpc] and [method Node.rpc_config].
-[b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
+[b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when extending or replacing the multiplayer capabilities.
 */
 func (self Instance) Rpc(peer int, obj Object.Instance, method string) error { //gd:MultiplayerAPI.rpc
 	return error(gd.ToError(class(self).Rpc(int64(peer), obj, String.Name(String.New(method)), Array.Nil)))
@@ -262,7 +262,7 @@ func (self class) Poll() Error.Code { //gd:MultiplayerAPI.poll
 
 /*
 Sends an RPC to the target [param peer]. The given [param method] will be called on the remote [param object] with the provided [param arguments]. The RPC may also be called locally depending on the implementation and RPC configuration. See [method Node.rpc] and [method Node.rpc_config].
-[b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
+[b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when extending or replacing the multiplayer capabilities.
 */
 //go:nosplit
 func (self class) Rpc(peer int64, obj [1]gd.Object, method String.Name, arguments Array.Any) Error.Code { //gd:MultiplayerAPI.rpc

@@ -42,7 +42,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Shortcuts are commonly used for interacting with a [Control] element from an [InputEvent] (also known as hotkeys).
-One shortcut can contain multiple [InputEvent]'s, allowing the possibility of triggering one action with multiple different inputs.
+One shortcut can contain multiple [InputEvent]s, allowing the possibility of triggering one action with multiple different inputs.
 */
 type Instance [1]gdclass.Shortcut
 
@@ -62,7 +62,7 @@ func (self Instance) HasValidEvent() bool { //gd:Shortcut.has_valid_event
 }
 
 /*
-Returns whether any [InputEvent] in [member events] equals [param event].
+Returns whether any [InputEvent] in [member events] equals [param event]. This uses [method InputEvent.is_match] to compare events.
 */
 func (self Instance) MatchesEvent(event [1]gdclass.InputEvent) bool { //gd:Shortcut.matches_event
 	return bool(class(self).MatchesEvent(event))
@@ -135,7 +135,7 @@ func (self class) HasValidEvent() bool { //gd:Shortcut.has_valid_event
 }
 
 /*
-Returns whether any [InputEvent] in [member events] equals [param event].
+Returns whether any [InputEvent] in [member events] equals [param event]. This uses [method InputEvent.is_match] to compare events.
 */
 //go:nosplit
 func (self class) MatchesEvent(event [1]gdclass.InputEvent) bool { //gd:Shortcut.matches_event

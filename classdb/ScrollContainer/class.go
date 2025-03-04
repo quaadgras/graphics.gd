@@ -111,6 +111,14 @@ func (self Instance) SetFollowFocus(value bool) {
 	class(self).SetFollowFocus(value)
 }
 
+func (self Instance) DrawFocusBorder() bool {
+	return bool(class(self).GetDrawFocusBorder())
+}
+
+func (self Instance) SetDrawFocusBorder(value bool) {
+	class(self).SetDrawFocusBorder(value)
+}
+
 func (self Instance) ScrollHorizontal() int {
 	return int(int(class(self).GetHScroll()))
 }
@@ -364,6 +372,25 @@ func (self class) EnsureControlVisible(control [1]gdclass.Control) { //gd:Scroll
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_ensure_control_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
+
+//go:nosplit
+func (self class) SetDrawFocusBorder(draw bool) { //gd:ScrollContainer.set_draw_focus_border
+	var frame = callframe.New()
+	callframe.Arg(frame, draw)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_set_draw_focus_border, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetDrawFocusBorder() bool { //gd:ScrollContainer.get_draw_focus_border
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_draw_focus_border, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
 func (self Instance) OnScrollStarted(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_started"), gd.NewCallable(cb), 0)
 }
@@ -423,4 +450,6 @@ const (
 	ScrollModeShowAlways ScrollMode = 2
 	/*Scrolling enabled, scrollbar will be hidden.*/
 	ScrollModeShowNever ScrollMode = 3
+	/*Combines [constant SCROLL_MODE_AUTO] and [constant SCROLL_MODE_SHOW_ALWAYS]. The scrollbar is only visible if necessary, but the content size is adjusted as if it was always visible. It's useful for ensuring that content size stays the same regardless if the scrollbar is visible.*/
+	ScrollModeReserve ScrollMode = 4
 )

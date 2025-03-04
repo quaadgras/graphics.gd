@@ -66,7 +66,7 @@ type Any interface {
 /*
 Adds an item to the item list with specified text. Returns the index of an added item.
 Specify an [param icon], or use [code]null[/code] as the [param icon] for a list item with no icon.
-If selectable is [code]true[/code], the list item will be selectable.
+If [param selectable] is [code]true[/code], the list item will be selectable.
 */
 func (self Instance) AddItem(text string) int { //gd:ItemList.add_item
 	return int(int(class(self).AddItem(String.New(text), [1][1]gdclass.Texture2D{}[0], true)))
@@ -133,6 +133,21 @@ Returns item's text language code.
 */
 func (self Instance) GetItemLanguage(idx int) string { //gd:ItemList.get_item_language
 	return string(class(self).GetItemLanguage(int64(idx)).String())
+}
+
+/*
+Sets the auto translate mode of the item associated with the specified index.
+Items use [constant Node.AUTO_TRANSLATE_MODE_INHERIT] by default, which uses the same auto translate mode as the [ItemList] itself.
+*/
+func (self Instance) SetItemAutoTranslateMode(idx int, mode gdclass.NodeAutoTranslateMode) { //gd:ItemList.set_item_auto_translate_mode
+	class(self).SetItemAutoTranslateMode(int64(idx), mode)
+}
+
+/*
+Returns item's auto translate mode.
+*/
+func (self Instance) GetItemAutoTranslateMode(idx int) gdclass.NodeAutoTranslateMode { //gd:ItemList.get_item_auto_translate_mode
+	return gdclass.NodeAutoTranslateMode(class(self).GetItemAutoTranslateMode(int64(idx)))
 }
 
 /*
@@ -380,6 +395,14 @@ func (self Instance) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ItemList.get_v
 }
 
 /*
+Returns the horizontal scrollbar.
+[b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
+*/
+func (self Instance) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ItemList.get_h_scroll_bar
+	return [1]gdclass.HScrollBar(class(self).GetHScrollBar())
+}
+
+/*
 Forces an update to the list size based on its items. This happens automatically whenever size of the items, or other relevant settings like [member auto_height], change. The method can be used to trigger the update ahead of next drawing pass.
 */
 func (self Instance) ForceUpdateListSize() { //gd:ItemList.force_update_list_size
@@ -444,6 +467,14 @@ func (self Instance) SetMaxTextLines(value int) {
 	class(self).SetMaxTextLines(int64(value))
 }
 
+func (self Instance) AutoWidth() bool {
+	return bool(class(self).HasAutoWidth())
+}
+
+func (self Instance) SetAutoWidth(value bool) {
+	class(self).SetAutoWidth(value)
+}
+
 func (self Instance) AutoHeight() bool {
 	return bool(class(self).HasAutoHeight())
 }
@@ -458,6 +489,14 @@ func (self Instance) TextOverrunBehavior() gdclass.TextServerOverrunBehavior {
 
 func (self Instance) SetTextOverrunBehavior(value gdclass.TextServerOverrunBehavior) {
 	class(self).SetTextOverrunBehavior(value)
+}
+
+func (self Instance) WraparoundItems() bool {
+	return bool(class(self).HasWraparoundItems())
+}
+
+func (self Instance) SetWraparoundItems(value bool) {
+	class(self).SetWraparoundItems(value)
 }
 
 func (self Instance) ItemCount() int {
@@ -519,7 +558,7 @@ func (self Instance) SetFixedIconSize(value Vector2i.XY) {
 /*
 Adds an item to the item list with specified text. Returns the index of an added item.
 Specify an [param icon], or use [code]null[/code] as the [param icon] for a list item with no icon.
-If selectable is [code]true[/code], the list item will be selectable.
+If [param selectable] is [code]true[/code], the list item will be selectable.
 */
 //go:nosplit
 func (self class) AddItem(text String.Readable, icon [1]gdclass.Texture2D, selectable bool) int64 { //gd:ItemList.add_item
@@ -653,6 +692,34 @@ func (self class) GetItemLanguage(idx int64) String.Readable { //gd:ItemList.get
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the auto translate mode of the item associated with the specified index.
+Items use [constant Node.AUTO_TRANSLATE_MODE_INHERIT] by default, which uses the same auto translate mode as the [ItemList] itself.
+*/
+//go:nosplit
+func (self class) SetItemAutoTranslateMode(idx int64, mode gdclass.NodeAutoTranslateMode) { //gd:ItemList.set_item_auto_translate_mode
+	var frame = callframe.New()
+	callframe.Arg(frame, idx)
+	callframe.Arg(frame, mode)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_set_item_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns item's auto translate mode.
+*/
+//go:nosplit
+func (self class) GetItemAutoTranslateMode(idx int64) gdclass.NodeAutoTranslateMode { //gd:ItemList.get_item_auto_translate_mode
+	var frame = callframe.New()
+	callframe.Arg(frame, idx)
+	var r_ret = callframe.Ret[gdclass.NodeAutoTranslateMode](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -1284,6 +1351,25 @@ func (self class) GetAllowSearch() bool { //gd:ItemList.get_allow_search
 }
 
 //go:nosplit
+func (self class) SetAutoWidth(enable bool) { //gd:ItemList.set_auto_width
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_set_auto_width, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) HasAutoWidth() bool { //gd:ItemList.has_auto_width
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_has_auto_width, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
 func (self class) SetAutoHeight(enable bool) { //gd:ItemList.set_auto_height
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
@@ -1357,6 +1443,20 @@ func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ItemList.get_v_sc
 	return ret
 }
 
+/*
+Returns the horizontal scrollbar.
+[b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
+*/
+//go:nosplit
+func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ItemList.get_h_scroll_bar
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_h_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.HScrollBar{gd.PointerLifetimeBoundTo[gdclass.HScrollBar](self.AsObject(), r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
 //go:nosplit
 func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOverrunBehavior) { //gd:ItemList.set_text_overrun_behavior
 	var frame = callframe.New()
@@ -1371,6 +1471,25 @@ func (self class) GetTextOverrunBehavior() gdclass.TextServerOverrunBehavior { /
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerOverrunBehavior](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetWraparoundItems(enable bool) { //gd:ItemList.set_wraparound_items
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_set_wraparound_items, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) HasWraparoundItems() bool { //gd:ItemList.has_wraparound_items
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_has_wraparound_items, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1454,4 +1573,6 @@ const (
 	SelectSingle SelectMode = 0
 	/*Allows selecting multiple items by holding [kbd]Ctrl[/kbd] or [kbd]Shift[/kbd].*/
 	SelectMulti SelectMode = 1
+	/*Allows selecting multiple items by toggling them on and off.*/
+	SelectToggle SelectMode = 2
 )

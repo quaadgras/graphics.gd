@@ -45,7 +45,7 @@ A node with the ability to send HTTP requests. Uses [HTTPClient] internally.
 Can be used to make HTTP requests, i.e. download or upload files or web content via HTTP.
 [b]Warning:[/b] See the notes and warnings on [HTTPClient] for limitations, especially regarding TLS security.
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
-[b]Example of contacting a REST API and printing one of its returned fields:[/b]
+[b]Example:[/b] Contact a REST API and print one of its returned fields:
 [codeblocks]
 [gdscript]
 func _ready():
@@ -123,7 +123,7 @@ private void HttpRequestCompleted(long result, long responseCode, string[] heade
 
 [/csharp]
 [/codeblocks]
-[b]Example of loading and displaying an image using HTTPRequest:[/b]
+[b]Example:[/b] Load an image using [HTTPRequest] and display it:
 [codeblocks]
 [gdscript]
 func _ready():
@@ -134,7 +134,7 @@ func _ready():
 	http_request.request_completed.connect(self._http_request_completed)
 
 	# Perform the HTTP request. The URL below returns a PNG image as of writing.
-	var error = http_request.request("https://via.placeholder.com/512")
+	var error = http_request.request("https://placehold.co/512")
 	if error != OK:
 	    push_error("An error occurred in the HTTP request.")
 
@@ -167,7 +167,7 @@ public override void _Ready()
 	    httpRequest.RequestCompleted += HttpRequestCompleted;
 
 	    // Perform the HTTP request. The URL below returns a PNG image as of writing.
-	    Error error = httpRequest.Request("https://via.placeholder.com/512");
+	    Error error = httpRequest.Request("https://placehold.co/512");
 	    if (error != Error.Ok)
 	    {
 	        GD.PushError("An error occurred in the HTTP request.");
@@ -199,7 +199,7 @@ private void HttpRequestCompleted(long result, long responseCode, string[] heade
 
 [/csharp]
 [/codeblocks]
-[b]Gzipped response bodies[/b]: HTTPRequest will automatically handle decompression of response bodies. A [code]Accept-Encoding[/code] header will be automatically added to each of your requests, unless one is already specified. Any response with a [code]Content-Encoding: gzip[/code] header will automatically be decompressed and delivered to you as uncompressed bytes.
+[b]Note:[/b] [HTTPRequest] nodes will automatically handle decompression of response bodies. A [code]Accept-Encoding[/code] header will be automatically added to each of your requests, unless one is already specified. Any response with a [code]Content-Encoding: gzip[/code] header will automatically be decompressed and delivered to you as uncompressed bytes.
 */
 type Instance [1]gdclass.HTTPRequest
 
@@ -646,7 +646,8 @@ type Result = gdclass.HTTPRequestResult //gd:HTTPRequest.Result
 
 const (
 	/*Request successful.*/
-	ResultSuccess                 Result = 0
+	ResultSuccess Result = 0
+	/*Request failed due to a mismatch between the expected and actual chunked body size during transfer. Possible causes include network errors, server misconfiguration, or issues with chunked encoding.*/
 	ResultChunkedBodySizeMismatch Result = 1
 	/*Request failed while connecting.*/
 	ResultCantConnect Result = 2
@@ -660,7 +661,8 @@ const (
 	ResultNoResponse Result = 6
 	/*Request exceeded its maximum size limit, see [member body_size_limit].*/
 	ResultBodySizeLimitExceeded Result = 7
-	ResultBodyDecompressFailed  Result = 8
+	/*Request failed due to an error while decompressing the response body. Possible causes include unsupported or incorrect compression format, corrupted data, or incomplete transfer.*/
+	ResultBodyDecompressFailed Result = 8
 	/*Request failed (currently unused).*/
 	ResultRequestFailed Result = 9
 	/*HTTPRequest couldn't open the download file.*/

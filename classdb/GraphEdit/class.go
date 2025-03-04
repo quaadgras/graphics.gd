@@ -69,8 +69,8 @@ type Interface interface {
 	//Below is a sample code to help get started:
 	//[codeblock]
 	//func _is_in_input_hotzone(in_node, in_port, mouse_position):
-	//    var port_size: Vector2 = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
-	//    var port_pos: Vector2 = in_node.get_position() + in_node.get_input_port_position(in_port) - port_size / 2
+	//    var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
+	//    var port_pos = in_node.get_position() + in_node.get_input_port_position(in_port) - port_size / 2
 	//    var rect = Rect2(port_pos, port_size)
 	//
 	//    return rect.has_point(mouse_position)
@@ -80,8 +80,8 @@ type Interface interface {
 	//Below is a sample code to help get started:
 	//[codeblock]
 	//func _is_in_output_hotzone(in_node, in_port, mouse_position):
-	//    var port_size: Vector2 = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
-	//    var port_pos: Vector2 = in_node.get_position() + in_node.get_output_port_position(in_port) - port_size / 2
+	//    var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
+	//    var port_pos = in_node.get_position() + in_node.get_output_port_position(in_port) - port_size / 2
 	//    var rect = Rect2(port_pos, port_size)
 	//
 	//    return rect.has_point(mouse_position)
@@ -132,8 +132,8 @@ Below is a sample code to help get started:
 [codeblock]
 func _is_in_input_hotzone(in_node, in_port, mouse_position):
 
-	var port_size: Vector2 = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
-	var port_pos: Vector2 = in_node.get_position() + in_node.get_input_port_position(in_port) - port_size / 2
+	var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
+	var port_pos = in_node.get_position() + in_node.get_input_port_position(in_port) - port_size / 2
 	var rect = Rect2(port_pos, port_size)
 
 	return rect.has_point(mouse_position)
@@ -160,8 +160,8 @@ Below is a sample code to help get started:
 [codeblock]
 func _is_in_output_hotzone(in_node, in_port, mouse_position):
 
-	var port_size: Vector2 = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
-	var port_pos: Vector2 = in_node.get_position() + in_node.get_output_port_position(in_port) - port_size / 2
+	var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
+	var port_pos = in_node.get_position() + in_node.get_output_port_position(in_port) - port_size / 2
 	var rect = Rect2(port_pos, port_size)
 
 	return rect.has_point(mouse_position)
@@ -241,9 +241,10 @@ func (Instance) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node str
 
 /*
 Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
+Connections with [param keep_alive] set to [code]false[/code] may be deleted automatically if invalid during a redraw.
 */
 func (self Instance) ConnectNode(from_node string, from_port int, to_node string, to_port int) error { //gd:GraphEdit.connect_node
-	return error(gd.ToError(class(self).ConnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port))))
+	return error(gd.ToError(class(self).ConnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), false)))
 }
 
 /*
@@ -268,15 +269,26 @@ func (self Instance) SetConnectionActivity(from_node string, from_port int, to_n
 }
 
 /*
-Returns an [Array] containing the list of connections. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
+Returns the number of connections from [param from_port] of [param from_node].
 */
-func (self Instance) GetConnectionList() []Connection { //gd:GraphEdit.get_connection_list
-	return []Connection(gd.ArrayAs[[]Connection](gd.InternalArray(class(self).GetConnectionList())))
+func (self Instance) GetConnectionCount(from_node string, from_port int) int { //gd:GraphEdit.get_connection_count
+	return int(int(class(self).GetConnectionCount(String.Name(String.New(from_node)), int64(from_port))))
 }
 
 /*
 Returns the closest connection to the given point in screen space. If no connection is found within [param max_distance] pixels, an empty [Dictionary] is returned.
-A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
+A connection is represented as a [Dictionary] in the form of:
+[codeblock]
+
+	{
+	    from_node: StringName,
+	    from_port: int,
+	    to_node: StringName,
+	    to_port: int,
+	    keep_alive: bool
+	}
+
+[/codeblock]
 For example, getting a connection at a given mouse position can be achieved like this:
 [codeblocks]
 [gdscript]
@@ -289,7 +301,19 @@ func (self Instance) GetClosestConnectionAtPoint(point Vector2.XY) Connection { 
 }
 
 /*
-Returns an [Array] containing the list of connections that intersect with the given [Rect2]. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
+Returns an [Array] containing the list of connections that intersect with the given [Rect2].
+A connection is represented as a [Dictionary] in the form of:
+[codeblock]
+
+	{
+	    from_node: StringName,
+	    from_port: int,
+	    to_node: StringName,
+	    to_port: int,
+	    keep_alive: bool
+	}
+
+[/codeblock]
 */
 func (self Instance) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) []Connection { //gd:GraphEdit.get_connections_intersecting_with_rect
 	return []Connection(gd.ArrayAs[[]Connection](gd.InternalArray(class(self).GetConnectionsIntersectingWithRect(Rect2.PositionSize(rect)))))
@@ -518,6 +542,14 @@ func (self Instance) SetConnectionLinesAntialiased(value bool) {
 	class(self).SetConnectionLinesAntialiased(value)
 }
 
+func (self Instance) Connections() []map[any]any {
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetConnectionList())))
+}
+
+func (self Instance) SetConnections(value []map[any]any) {
+	class(self).SetConnections(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](value))
+}
+
 func (self Instance) Zoom() Float.X {
 	return Float.X(Float.X(class(self).GetZoom()))
 }
@@ -629,8 +661,8 @@ Below is a sample code to help get started:
 [codeblock]
 func _is_in_input_hotzone(in_node, in_port, mouse_position):
 
-	var port_size: Vector2 = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
-	var port_pos: Vector2 = in_node.get_position() + in_node.get_input_port_position(in_port) - port_size / 2
+	var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
+	var port_pos = in_node.get_position() + in_node.get_input_port_position(in_port) - port_size / 2
 	var rect = Rect2(port_pos, port_size)
 
 	return rect.has_point(mouse_position)
@@ -657,8 +689,8 @@ Below is a sample code to help get started:
 [codeblock]
 func _is_in_output_hotzone(in_node, in_port, mouse_position):
 
-	var port_size: Vector2 = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
-	var port_pos: Vector2 = in_node.get_position() + in_node.get_output_port_position(in_port) - port_size / 2
+	var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
+	var port_pos = in_node.get_position() + in_node.get_output_port_position(in_port) - port_size / 2
 	var rect = Rect2(port_pos, port_size)
 
 	return rect.has_point(mouse_position)
@@ -738,14 +770,16 @@ func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node String
 
 /*
 Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
+Connections with [param keep_alive] set to [code]false[/code] may be deleted automatically if invalid during a redraw.
 */
 //go:nosplit
-func (self class) ConnectNode(from_node String.Name, from_port int64, to_node String.Name, to_port int64) Error.Code { //gd:GraphEdit.connect_node
+func (self class) ConnectNode(from_node String.Name, from_port int64, to_node String.Name, to_port int64, keep_alive bool) Error.Code { //gd:GraphEdit.connect_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(from_node)))
 	callframe.Arg(frame, from_port)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(to_node)))
 	callframe.Arg(frame, to_port)
+	callframe.Arg(frame, keep_alive)
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_connect_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
@@ -801,9 +835,15 @@ func (self class) SetConnectionActivity(from_node String.Name, from_port int64, 
 	frame.Free()
 }
 
-/*
-Returns an [Array] containing the list of connections. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
-*/
+//go:nosplit
+func (self class) SetConnections(connections Array.Contains[Dictionary.Any]) { //gd:GraphEdit.set_connections
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(connections)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_set_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
 //go:nosplit
 func (self class) GetConnectionList() Array.Contains[Dictionary.Any] { //gd:GraphEdit.get_connection_list
 	var frame = callframe.New()
@@ -815,8 +855,32 @@ func (self class) GetConnectionList() Array.Contains[Dictionary.Any] { //gd:Grap
 }
 
 /*
+Returns the number of connections from [param from_port] of [param from_node].
+*/
+//go:nosplit
+func (self class) GetConnectionCount(from_node String.Name, from_port int64) int64 { //gd:GraphEdit.get_connection_count
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(from_node)))
+	callframe.Arg(frame, from_port)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connection_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns the closest connection to the given point in screen space. If no connection is found within [param max_distance] pixels, an empty [Dictionary] is returned.
-A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
+A connection is represented as a [Dictionary] in the form of:
+[codeblock]
+{
+    from_node: StringName,
+    from_port: int,
+    to_node: StringName,
+    to_port: int,
+    keep_alive: bool
+}
+[/codeblock]
 For example, getting a connection at a given mouse position can be achieved like this:
 [codeblocks]
 [gdscript]
@@ -837,7 +901,17 @@ func (self class) GetClosestConnectionAtPoint(point Vector2.XY, max_distance flo
 }
 
 /*
-Returns an [Array] containing the list of connections that intersect with the given [Rect2]. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
+Returns an [Array] containing the list of connections that intersect with the given [Rect2].
+A connection is represented as a [Dictionary] in the form of:
+[codeblock]
+{
+    from_node: StringName,
+    from_port: int,
+    to_node: StringName,
+    to_port: int,
+    keep_alive: bool
+}
+[/codeblock]
 */
 //go:nosplit
 func (self class) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) Array.Contains[Dictionary.Any] { //gd:GraphEdit.get_connections_intersecting_with_rect
@@ -1535,6 +1609,10 @@ func (self Instance) OnCopyNodesRequest(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("copy_nodes_request"), gd.NewCallable(cb), 0)
 }
 
+func (self Instance) OnCutNodesRequest(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("cut_nodes_request"), gd.NewCallable(cb), 0)
+}
+
 func (self Instance) OnPasteNodesRequest(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("paste_nodes_request"), gd.NewCallable(cb), 0)
 }
@@ -1555,7 +1633,7 @@ func (self Instance) OnNodeDeselected(cb func(node [1]gdclass.Node)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnFrameRectChanged(cb func(frame_ [1]gdclass.GraphFrame, new_rect Vector2.XY)) {
+func (self Instance) OnFrameRectChanged(cb func(frame_ [1]gdclass.GraphFrame, new_rect Rect2.PositionSize)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("frame_rect_changed"), gd.NewCallable(cb), 0)
 }
 
@@ -1646,8 +1724,9 @@ const (
 )
 
 type Connection struct {
-	FromPort int    `gd:"from_port"`
-	FromNode string `gd:"from_node"`
-	ToPort   int    `gd:"to_port"`
-	ToNode   string `gd:"to_node"`
+	FromNode  string `gd:"from_node"`
+	FromPort  int    `gd:"from_port"`
+	ToNode    string `gd:"to_node"`
+	ToPort    int    `gd:"to_port"`
+	KeepAlive bool   `gd:"keep_alive"`
 }

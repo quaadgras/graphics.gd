@@ -375,6 +375,6 @@ const (
 	AdvanceModeDisabled AdvanceMode = 0
 	/*Only use this transition during [method AnimationNodeStateMachinePlayback.travel].*/
 	AdvanceModeEnabled AdvanceMode = 1
-	/*Automatically use this transition if the [member advance_condition] and [member advance_expression] checks are true (if assigned).*/
+	/*Automatically use this transition if the [member advance_condition] and [member advance_expression] checks are [code]true[/code] (if assigned).*/
 	AdvanceModeAuto AdvanceMode = 2
 )

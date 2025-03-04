@@ -391,13 +391,16 @@ func registerStructables(rtype reflect.Type) {
 }
 
 func generateStructables(file io.Writer) {
+	var sortable = make([]string, 0, len(StructablesInThisPackageGlobalHack))
 	for rtype := range StructablesInThisPackageGlobalHack {
 		switch rtype.Kind() {
 		case reflect.Map:
-			fmt.Fprintf(file, "type %v map[%v]%v\n", rtype.Name(), rtype.Key().String(), rtype.Elem().String())
+			sortable = append(sortable,
+				fmt.Sprintf("type %v map[%v]%v\n", rtype.Name(), rtype.Key().String(), rtype.Elem().String()))
 		case reflect.Struct:
-			fmt.Fprintf(file, "type %v struct {\n", rtype.Name())
-			for i := 0; i < rtype.NumField(); i++ {
+			var w strings.Builder
+			fmt.Fprintf(&w, "type %v struct {\n", rtype.Name())
+			for i := range rtype.NumField() {
 				field := rtype.Field(i)
 				if field.PkgPath != "" {
 					continue
@@ -408,10 +411,15 @@ func generateStructables(file io.Writer) {
 				}
 				ftype = strings.Replace(ftype, "gdjson.", "", -1)
 				gdTag := field.Tag.Get("gd")
-				fmt.Fprintf(file, "%v %v `gd:\"%s\"`\n", field.Name, ftype, gdTag)
+				fmt.Fprintf(&w, "%v %v `gd:\"%s\"`\n", field.Name, ftype, gdTag)
 			}
-			fmt.Fprintf(file, "}\n")
+			fmt.Fprintf(&w, "}\n")
+			sortable = append(sortable, w.String())
 		}
+	}
+	slices.Sort(sortable)
+	for _, s := range sortable {
+		fmt.Fprint(file, s)
 	}
 	clear(StructablesInThisPackageGlobalHack)
 }

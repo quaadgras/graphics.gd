@@ -79,6 +79,7 @@ func (self Instance) Stop() { //gd:AudioStreamPlayer.stop
 /*
 Returns the position in the [AudioStream] of the latest sound, in seconds. Returns [code]0.0[/code] if no sounds are playing.
 [b]Note:[/b] The position is not always accurate, as the [AudioServer] does not mix audio every processed frame. To get more accurate results, add [method AudioServer.get_time_since_last_mix] to the returned position.
+[b]Note:[/b] This method always returns [code]0.0[/code] if the [member stream] is an [AudioStreamInteractive], since it can have multiple clips playing at once.
 */
 func (self Instance) GetPlaybackPosition() Float.X { //gd:AudioStreamPlayer.get_playback_position
 	return Float.X(Float.X(class(self).GetPlaybackPosition()))
@@ -132,6 +133,14 @@ func (self Instance) SetVolumeDb(value Float.X) {
 	class(self).SetVolumeDb(float64(value))
 }
 
+func (self Instance) VolumeLinear() Float.X {
+	return Float.X(Float.X(class(self).GetVolumeLinear()))
+}
+
+func (self Instance) SetVolumeLinear(value Float.X) {
+	class(self).SetVolumeLinear(float64(value))
+}
+
 func (self Instance) PitchScale() Float.X {
 	return Float.X(Float.X(class(self).GetPitchScale()))
 }
@@ -142,6 +151,10 @@ func (self Instance) SetPitchScale(value Float.X) {
 
 func (self Instance) Playing() bool {
 	return bool(class(self).IsPlaying())
+}
+
+func (self Instance) SetPlaying(value bool) {
+	class(self).SetPlaying(value)
 }
 
 func (self Instance) Autoplay() bool {
@@ -231,6 +244,25 @@ func (self class) GetVolumeDb() float64 { //gd:AudioStreamPlayer.get_volume_db
 }
 
 //go:nosplit
+func (self class) SetVolumeLinear(volume_linear float64) { //gd:AudioStreamPlayer.set_volume_linear
+	var frame = callframe.New()
+	callframe.Arg(frame, volume_linear)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_set_volume_linear, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetVolumeLinear() float64 { //gd:AudioStreamPlayer.get_volume_linear
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_volume_linear, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
 func (self class) SetPitchScale(pitch_scale float64) { //gd:AudioStreamPlayer.set_pitch_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, pitch_scale)
@@ -297,6 +329,7 @@ func (self class) IsPlaying() bool { //gd:AudioStreamPlayer.is_playing
 /*
 Returns the position in the [AudioStream] of the latest sound, in seconds. Returns [code]0.0[/code] if no sounds are playing.
 [b]Note:[/b] The position is not always accurate, as the [AudioServer] does not mix audio every processed frame. To get more accurate results, add [method AudioServer.get_time_since_last_mix] to the returned position.
+[b]Note:[/b] This method always returns [code]0.0[/code] if the [member stream] is an [AudioStreamInteractive], since it can have multiple clips playing at once.
 */
 //go:nosplit
 func (self class) GetPlaybackPosition() float64 { //gd:AudioStreamPlayer.get_playback_position
@@ -363,6 +396,15 @@ func (self class) GetMixTarget() gdclass.AudioStreamPlayerMixTarget { //gd:Audio
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
+}
+
+//go:nosplit
+func (self class) SetPlaying(enable bool) { //gd:AudioStreamPlayer.set_playing
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_set_playing, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
 }
 
 //go:nosplit

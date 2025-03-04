@@ -6,6 +6,7 @@ import (
 
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Color"
+	"graphics.gd/variant/Error"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Path"
 	"graphics.gd/variant/RID"
@@ -81,13 +82,6 @@ type Structure map[any]any
 type Atlas struct {
 	Points []Vector2.XY `gd:"points"`
 	Size   Vector2i.XY  `gd:"size"`
-}
-
-type Connection struct {
-	FromPort int    `gd:"from_port"`
-	FromNode string `gd:"from_node"`
-	ToPort   int    `gd:"to_port"`
-	ToNode   string `gd:"to_node"`
 }
 
 type Metrics struct {
@@ -283,7 +277,72 @@ type GlobalClass struct {
 	Path     string `gd:"path"`
 }
 
+type PointData struct {
+	ID          Vector2i.XY `gd:"id"`
+	Position    Vector2.XY  `gd:"position"`
+	Solid       bool        `gd:"solid"`
+	WeightScale Float.X     `gd:"weight_scale"`
+}
+
+type Connection struct {
+	FromNode  string `gd:"from_node"`
+	FromPort  int    `gd:"from_port"`
+	ToNode    string `gd:"to_node"`
+	ToPort    int    `gd:"to_port"`
+	KeepAlive bool   `gd:"keep_alive"`
+}
+
+var WavOptions = Named[struct {
+	CompressionMode int     `gd:"compress/mode"`
+	LoopBegin       int     `gd:"edit/loop_begin"`
+	LoopEnd         int     `gd:"edit/loop_end"`
+	LoopMode        int     `gd:"edit/loop_mode"`
+	Normalize       int     `gd:"edit/normalize"`
+	Trim            bool    `gd:"edit/trim"`
+	ForceMinRate    bool    `gd:"force/8_bit"`
+	ForceMaxRate    bool    `gd:"force/max_rate"`
+	ForceMaxRateHz  Float.X `gd:"force/max_rate_hz"`
+	ForceMono       bool    `gd:"force/mono"`
+}]("Options")
+
+func Named[T any](name string) reflect.Type {
+	return namedType{reflect.TypeFor[T](), name}
+}
+
+type namedType struct {
+	reflect.Type
+	name string
+}
+
+func (nt namedType) Name() string { return nt.name }
+
+type FormatParameters struct {
+	Output string `gd:"output"`
+}
+
+type Template struct {
+	Path  string `gd:"path"`
+	Error string `gd:"error"`
+}
+
+type Report struct {
+	Error         Error.Code `gd:"result"`
+	Files         []File     `gd:"so_files"`
+	EmbeddedStart int        `gd:"embedded_start"`
+	EmbeddedSize  int        `gd:"embedded_size"`
+}
+
+type File struct {
+	Path         string   `gd:"path"`
+	Tags         []string `gd:"tags"`
+	TargetFolder string   `gd:"target_folder"`
+}
+
 var Structables = map[string]reflect.Type{
+	"AStarGrid2D.get_point_data_in_region.":                             reflect.TypeFor[PointData](),
+	"AudioStreamWAV.load_from_buffer.options":                           WavOptions,
+	"AudioStreamWAV.load_from_file.options":                             WavOptions,
+	"CameraFeed.set_format.parameters":                                  reflect.TypeFor[FormatParameters](),
 	"ArrayMesh.add_surface_from_arrays.lods":                            reflect.TypeFor[map[Float.X][]int32](),
 	"CharFXTransform.get_environment.":                                  reflect.TypeFor[map[string]any](),
 	"CharFXTransform.set_environment.environment":                       reflect.TypeFor[map[string]any](),
@@ -291,6 +350,8 @@ var Structables = map[string]reflect.Type{
 	"ClassDB.class_get_signal_list.":                                    reflect.TypeFor[SignalInfo](),
 	"ClassDB.class_get_property_list.":                                  reflect.TypeFor[PropertyInfo](),
 	"ClassDB.class_get_method_list.":                                    reflect.TypeFor[PropertyInfo](),
+	"JavaClass.get_java_method_list.":                                   reflect.TypeFor[PropertyInfo](),
+	"RenderingServer.canvas_item_get_instance_shader_parameter_list.":   reflect.TypeFor[PropertyInfo](),
 	"CodeEdit.set_auto_brace_completion_pairs.pairs":                    reflect.TypeFor[map[string]string](),
 	"CodeEdit.get_auto_brace_completion_pairs.":                         reflect.TypeFor[map[string]string](),
 	"CodeEdit.get_code_completion_option.":                              reflect.TypeFor[CompletionInfo](),
@@ -304,6 +365,13 @@ var Structables = map[string]reflect.Type{
 	"DisplayServer.global_menu_get_system_menu_roots.":                  reflect.TypeFor[map[string]string](),
 	"DisplayServer.tts_get_voices.":                                     reflect.TypeFor[TextToSpeechVoice](),
 	"DisplayServer.file_dialog_with_options_show.options":               reflect.TypeFor[FileDialogOption](),
+	"EditorExportPlatform.find_export_template.":                        reflect.TypeFor[Template](),
+	"EditorExportPlatform.save_pack.":                                   reflect.TypeFor[Report](),
+	"EditorExportPlatform.save_zip.":                                    reflect.TypeFor[Report](),
+	"EditorExportPlatform.save_pack_patch.":                             reflect.TypeFor[Report](),
+	"EditorExportPlatform.save_zip_patch.":                              reflect.TypeFor[Report](),
+	"EditorExportPlatform.get_internal_export_files.":                   reflect.TypeFor[map[string][]byte](),
+	"EditorExportPreset.get_customized_files.":                          reflect.TypeFor[map[string]string](),
 	"EditorFileDialog.get_selected_options.":                            reflect.TypeFor[map[string]int](),
 	"EditorImportPlugin.append_import_external_resource.custom_options": reflect.TypeFor[map[string]any](),
 	"EditorSettings.add_property_info.info":                             reflect.TypeFor[PropertyInfo](),
@@ -356,6 +424,7 @@ var Structables = map[string]reflect.Type{
 	"GraphEdit.get_closest_connection_at_point.":                        reflect.TypeFor[Connection](),
 	"GraphEdit.get_connection_list.":                                    reflect.TypeFor[Connection](),
 	"GraphEdit.get_connections_intersecting_with_rect.":                 reflect.TypeFor[Connection](),
+	"GraphEdit.set_connections.connections":                             reflect.TypeFor[Connection](),
 	"HTTPClient.get_response_headers_as_dictionary.":                    reflect.TypeFor[map[string]string](),
 	"HTTPClient.query_string_from_dict.fields":                          reflect.TypeFor[map[string]string](),
 	"Image.compute_image_metrics.":                                      reflect.TypeFor[Metrics](),

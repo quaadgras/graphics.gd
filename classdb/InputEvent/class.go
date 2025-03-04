@@ -128,6 +128,7 @@ func (self Instance) AsText() string { //gd:InputEvent.as_text
 /*
 Returns [code]true[/code] if the specified [param event] matches this event. Only valid for action events i.e key ([InputEventKey]), button ([InputEventMouseButton] or [InputEventJoypadButton]), axis [InputEventJoypadMotion] or action ([InputEventAction]) events.
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
+[b]Note:[/b] Only considers the event configuration (such as the keyboard key or joypad axis), not state information like [method is_pressed], [method is_released], [method is_echo], or [method is_canceled].
 */
 func (self Instance) IsMatch(event [1]gdclass.InputEvent) bool { //gd:InputEvent.is_match
 	return bool(class(self).IsMatch(event, true))
@@ -337,6 +338,7 @@ func (self class) AsText() String.Readable { //gd:InputEvent.as_text
 /*
 Returns [code]true[/code] if the specified [param event] matches this event. Only valid for action events i.e key ([InputEventKey]), button ([InputEventMouseButton] or [InputEventJoypadButton]), axis [InputEventJoypadMotion] or action ([InputEventAction]) events.
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
+[b]Note:[/b] Only considers the event configuration (such as the keyboard key or joypad axis), not state information like [method is_pressed], [method is_released], [method is_echo], or [method is_canceled].
 */
 //go:nosplit
 func (self class) IsMatch(event [1]gdclass.InputEvent, exact_match bool) bool { //gd:InputEvent.is_match

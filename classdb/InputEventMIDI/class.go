@@ -104,6 +104,7 @@ private void PrintMIDIInfo(InputEventMidi midiEvent)
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] Godot does not support MIDI output, so there is no way to emit MIDI messages from Godot. Only MIDI input is supported.
+[b]Note:[/b] On the Web platform, using MIDI input requires a browser permission to be granted first. This permission request is performed when calling [method OS.open_midi_inputs]. MIDI input will not work until the user accepts the permission request.
 */
 type Instance [1]gdclass.InputEventMIDI
 

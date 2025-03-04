@@ -55,7 +55,7 @@ $NavigationRegion2D.navigation_polygon = new_navigation_mesh
 [/gdscript]
 [csharp]
 var newNavigationMesh = new NavigationPolygon();
-var boundingOutline = new Vector2[] { new Vector2(0, 0), new Vector2(0, 50), new Vector2(50, 50), new Vector2(50, 0) };
+Vector2[] boundingOutline = [new Vector2(0, 0), new Vector2(0, 50), new Vector2(50, 50), new Vector2(50, 0)];
 newNavigationMesh.AddOutline(boundingOutline);
 NavigationServer2D.BakeFromSourceGeometryData(newNavigationMesh, new NavigationMeshSourceGeometryData2D());
 GetNode<NavigationRegion2D>("NavigationRegion2D").NavigationPolygon = newNavigationMesh;
@@ -73,9 +73,9 @@ $NavigationRegion2D.navigation_polygon = new_navigation_mesh
 [/gdscript]
 [csharp]
 var newNavigationMesh = new NavigationPolygon();
-var newVertices = new Vector2[] { new Vector2(0, 0), new Vector2(0, 50), new Vector2(50, 50), new Vector2(50, 0) };
+Vector2[] newVertices = [new Vector2(0, 0), new Vector2(0, 50), new Vector2(50, 50), new Vector2(50, 0)];
 newNavigationMesh.Vertices = newVertices;
-var newPolygonIndices = new int[] { 0, 1, 2, 3 };
+int[] newPolygonIndices = [0, 1, 2, 3];
 newNavigationMesh.AddPolygon(newPolygonIndices);
 GetNode<NavigationRegion2D>("NavigationRegion2D").NavigationPolygon = newNavigationMesh;
 [/csharp]
@@ -228,6 +228,14 @@ func (self Instance) Vertices() []Vector2.XY {
 
 func (self Instance) SetVertices(value []Vector2.XY) {
 	class(self).SetVertices(Packed.New(value...))
+}
+
+func (self Instance) SamplePartitionType() gdclass.NavigationPolygonSamplePartitionType {
+	return gdclass.NavigationPolygonSamplePartitionType(class(self).GetSamplePartitionType())
+}
+
+func (self Instance) SetSamplePartitionType(value gdclass.NavigationPolygonSamplePartitionType) {
+	class(self).SetSamplePartitionType(value)
 }
 
 func (self Instance) ParsedGeometryType() gdclass.NavigationPolygonParsedGeometryType {
@@ -528,6 +536,25 @@ func (self class) GetBorderSize() float64 { //gd:NavigationPolygon.get_border_si
 }
 
 //go:nosplit
+func (self class) SetSamplePartitionType(sample_partition_type gdclass.NavigationPolygonSamplePartitionType) { //gd:NavigationPolygon.set_sample_partition_type
+	var frame = callframe.New()
+	callframe.Arg(frame, sample_partition_type)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_set_sample_partition_type, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetSamplePartitionType() gdclass.NavigationPolygonSamplePartitionType { //gd:NavigationPolygon.get_sample_partition_type
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.NavigationPolygonSamplePartitionType](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_get_sample_partition_type, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
 func (self class) SetParsedGeometryType(geometry_type gdclass.NavigationPolygonParsedGeometryType) { //gd:NavigationPolygon.set_parsed_geometry_type
 	var frame = callframe.New()
 	callframe.Arg(frame, geometry_type)
@@ -730,6 +757,17 @@ func init() {
 		return [1]gdclass.NavigationPolygon{*(*gdclass.NavigationPolygon)(unsafe.Pointer(&ptr))}
 	})
 }
+
+type SamplePartitionType = gdclass.NavigationPolygonSamplePartitionType //gd:NavigationPolygon.SamplePartitionType
+
+const (
+	/*Convex partitioning that yields navigation mesh with convex polygons.*/
+	SamplePartitionConvexPartition SamplePartitionType = 0
+	/*Triangulation partitioning that yields navigation mesh with triangle polygons.*/
+	SamplePartitionTriangulate SamplePartitionType = 1
+	/*Represents the size of the [enum SamplePartitionType] enum.*/
+	SamplePartitionMax SamplePartitionType = 2
+)
 
 type ParsedGeometryType = gdclass.NavigationPolygonParsedGeometryType //gd:NavigationPolygon.ParsedGeometryType
 

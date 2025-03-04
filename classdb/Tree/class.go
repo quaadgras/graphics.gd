@@ -500,6 +500,14 @@ func (self Instance) SetScrollVerticalEnabled(value bool) {
 	class(self).SetVScrollEnabled(value)
 }
 
+func (self Instance) AutoTooltip() bool {
+	return bool(class(self).IsAutoTooltipEnabled())
+}
+
+func (self Instance) SetAutoTooltip(value bool) {
+	class(self).SetAutoTooltip(value)
+}
+
 /*
 Clears the tree. This removes all items.
 */
@@ -1250,6 +1258,25 @@ func (self class) GetAllowSearch() bool { //gd:Tree.get_allow_search
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_allow_search, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAutoTooltip(enable bool) { //gd:Tree.set_auto_tooltip
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_set_auto_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsAutoTooltipEnabled() bool { //gd:Tree.is_auto_tooltip_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_is_auto_tooltip_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

@@ -44,7 +44,7 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-Represents a physics body as an intermediary between the [code]OMI_physics_body[/code] GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
+Represents a physics body as an intermediary between the [code]OMI_physics_body[/code] glTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different glTF physics extensions in the future.
 */
 type Instance [1]gdclass.GLTFPhysicsBody
 
@@ -72,7 +72,7 @@ func (self Instance) ToNode() [1]gdclass.CollisionObject3D { //gd:GLTFPhysicsBod
 }
 
 /*
-Creates a new GLTFPhysicsBody instance by parsing the given [Dictionary] in the [code]OMI_physics_body[/code] GLTF extension format.
+Creates a new GLTFPhysicsBody instance by parsing the given [Dictionary] in the [code]OMI_physics_body[/code] glTF extension format.
 */
 func FromDictionary(dictionary Structure) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_dictionary
 	self := Instance{}
@@ -80,7 +80,7 @@ func FromDictionary(dictionary Structure) [1]gdclass.GLTFPhysicsBody { //gd:GLTF
 }
 
 /*
-Serializes this GLTFPhysicsBody instance into a [Dictionary]. It will be in the format expected by the [code]OMI_physics_body[/code] GLTF extension.
+Serializes this GLTFPhysicsBody instance into a [Dictionary]. It will be in the format expected by the [code]OMI_physics_body[/code] glTF extension.
 */
 func (self Instance) ToDictionary() Structure { //gd:GLTFPhysicsBody.to_dictionary
 	return Structure(gd.DictionaryAs[Structure](class(self).ToDictionary()))
@@ -197,7 +197,7 @@ func (self class) ToNode() [1]gdclass.CollisionObject3D { //gd:GLTFPhysicsBody.t
 }
 
 /*
-Creates a new GLTFPhysicsBody instance by parsing the given [Dictionary] in the [code]OMI_physics_body[/code] GLTF extension format.
+Creates a new GLTFPhysicsBody instance by parsing the given [Dictionary] in the [code]OMI_physics_body[/code] glTF extension format.
 */
 //go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_dictionary
@@ -211,7 +211,7 @@ func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFPhysi
 }
 
 /*
-Serializes this GLTFPhysicsBody instance into a [Dictionary]. It will be in the format expected by the [code]OMI_physics_body[/code] GLTF extension.
+Serializes this GLTFPhysicsBody instance into a [Dictionary]. It will be in the format expected by the [code]OMI_physics_body[/code] glTF extension.
 */
 //go:nosplit
 func (self class) ToDictionary() Dictionary.Any { //gd:GLTFPhysicsBody.to_dictionary

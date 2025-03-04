@@ -44,6 +44,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 A singleton used to load resource files from the filesystem.
 It uses the many [ResourceFormatLoader] classes registered in the engine (either built-in or from a plugin) to load files into memory and convert them to a format that can be used by the engine.
 [b]Note:[/b] You have to import the files into the engine first to load them using [method load]. If you want to load [Image]s at run-time, you may use [method Image.load]. If you want to import audio files, you can use the snippet described in [member AudioStreamMP3.data].
+[b]Note:[/b] Non-resource files such as plain text files cannot be read using [ResourceLoader]. Use [FileAccess] for those files instead, and be aware that non-resource files are not exported by default (see notes in the [FileAccess] class description for instructions on exporting them).
 */
 var self [1]gdclass.ResourceLoader
 var once sync.Once
@@ -64,7 +65,7 @@ func LoadThreadedRequest(path string) error { //gd:ResourceLoader.load_threaded_
 
 /*
 Returns the status of a threaded loading operation started with [method load_threaded_request] for the resource at [param path]. See [enum ThreadLoadStatus] for possible return values.
-An array variable can optionally be passed via [param progress], and will return a one-element array containing the percentage of completion of the threaded loading.
+An array variable can optionally be passed via [param progress], and will return a one-element array containing the ratio of completion of the threaded loading (between [code]0.0[/code] and [code]1.0[/code]).
 [b]Note:[/b] The recommended way of using this method is to call it during different frames (e.g., in [method Node._process], instead of a loop).
 */
 func LoadThreadedGetStatus(path string) gdclass.ResourceLoaderThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
@@ -133,10 +134,10 @@ func SetAbortOnMissingResources(abort bool) { //gd:ResourceLoader.set_abort_on_m
 Returns the dependencies for the resource at the given [param path].
 [b]Note:[/b] The dependencies are returned with slices separated by [code]::[/code]. You can use [method String.get_slice] to get their components.
 [codeblock]
-for dep in ResourceLoader.get_dependencies(path):
+for dependency in ResourceLoader.get_dependencies(path):
 
-	print(dep.get_slice("::", 0)) # Prints UID.
-	print(dep.get_slice("::", 2)) # Prints path.
+	print(dependency.get_slice("::", 0)) # Prints the UID.
+	print(dependency.get_slice("::", 2)) # Prints the path.
 
 [/codeblock]
 */
@@ -155,6 +156,15 @@ func HasCached(path string) bool { //gd:ResourceLoader.has_cached
 }
 
 /*
+Returns the cached resource reference for the given [param path].
+[b]Note:[/b] If the resource is not cached, the returned [Resource] will be invalid.
+*/
+func GetCachedRef(path string) [1]gdclass.Resource { //gd:ResourceLoader.get_cached_ref
+	once.Do(singleton)
+	return [1]gdclass.Resource(class(self).GetCachedRef(String.New(path)))
+}
+
+/*
 Returns whether a recognized resource exists for the given [param path].
 An optional [param type_hint] can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
 [b]Note:[/b] If you use [method Resource.take_over_path], this method will return [code]true[/code] for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
@@ -170,6 +180,14 @@ Returns the ID associated with a given resource path, or [code]-1[/code] when no
 func GetResourceUid(path string) int { //gd:ResourceLoader.get_resource_uid
 	once.Do(singleton)
 	return int(int(class(self).GetResourceUid(String.New(path))))
+}
+
+/*
+Lists a directory (as example: "res://assets/enemies"), returning all resources contained within. The resource files are the original file names as visible in the editor before exporting.
+*/
+func ListDirectory(directory_path string) []string { //gd:ResourceLoader.list_directory
+	once.Do(singleton)
+	return []string(class(self).ListDirectory(String.New(directory_path)).Strings())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -202,7 +220,7 @@ func (self class) LoadThreadedRequest(path String.Readable, type_hint String.Rea
 
 /*
 Returns the status of a threaded loading operation started with [method load_threaded_request] for the resource at [param path]. See [enum ThreadLoadStatus] for possible return values.
-An array variable can optionally be passed via [param progress], and will return a one-element array containing the percentage of completion of the threaded loading.
+An array variable can optionally be passed via [param progress], and will return a one-element array containing the ratio of completion of the threaded loading (between [code]0.0[/code] and [code]1.0[/code]).
 [b]Note:[/b] The recommended way of using this method is to call it during different frames (e.g., in [method Node._process], instead of a loop).
 */
 //go:nosplit
@@ -311,9 +329,9 @@ func (self class) SetAbortOnMissingResources(abort bool) { //gd:ResourceLoader.s
 Returns the dependencies for the resource at the given [param path].
 [b]Note:[/b] The dependencies are returned with slices separated by [code]::[/code]. You can use [method String.get_slice] to get their components.
 [codeblock]
-for dep in ResourceLoader.get_dependencies(path):
-    print(dep.get_slice("::", 0)) # Prints UID.
-    print(dep.get_slice("::", 2)) # Prints path.
+for dependency in ResourceLoader.get_dependencies(path):
+    print(dependency.get_slice("::", 0)) # Prints the UID.
+    print(dependency.get_slice("::", 2)) # Prints the path.
 [/codeblock]
 */
 //go:nosplit
@@ -338,6 +356,21 @@ func (self class) HasCached(path String.Readable) bool { //gd:ResourceLoader.has
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_has_cached, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the cached resource reference for the given [param path].
+[b]Note:[/b] If the resource is not cached, the returned [Resource] will be invalid.
+*/
+//go:nosplit
+func (self class) GetCachedRef(path String.Readable) [1]gdclass.Resource { //gd:ResourceLoader.get_cached_ref
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_get_cached_ref, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -369,6 +402,20 @@ func (self class) GetResourceUid(path String.Readable) int64 { //gd:ResourceLoad
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_get_resource_uid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Lists a directory (as example: "res://assets/enemies"), returning all resources contained within. The resource files are the original file names as visible in the editor before exporting.
+*/
+//go:nosplit
+func (self class) ListDirectory(directory_path String.Readable) Packed.Strings { //gd:ResourceLoader.list_directory
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(directory_path)))
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_list_directory, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

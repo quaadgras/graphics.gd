@@ -42,6 +42,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [PropertyTweener] is used to interpolate a property in an object. See [method Tween.tween_property] for more usage information.
+The tweener will finish automatically if the target object is freed.
 [b]Note:[/b] [method Tween.tween_property] is the only correct way to create [PropertyTweener]. Any [PropertyTweener] created manually will not function correctly.
 */
 type Instance [1]gdclass.PropertyTweener
@@ -56,11 +57,17 @@ type Any interface {
 
 /*
 Sets a custom initial value to the [PropertyTweener].
-[b]Example:[/b]
-[codeblock]
+[b]Example:[/b] Move the node from position [code](100, 100)[/code] to [code](200, 100)[/code].
+[codeblocks]
+[gdscript]
 var tween = get_tree().create_tween()
-tween.tween_property(self, "position", Vector2(200, 100), 1).from(Vector2(100, 100)) #this will move the node from position (100, 100) to (200, 100)
-[/codeblock]
+tween.tween_property(self, "position", Vector2(200, 100), 1).from(Vector2(100, 100))
+[/gdscript]
+[csharp]
+Tween tween = GetTree().CreateTween();
+tween.TweenProperty(this, "position", new Vector2(200.0f, 100.0f), 1.0f).From(new Vector2(100.0f, 100.0f));
+[/csharp]
+[/codeblocks]
 */
 func (self Instance) From(value any) [1]gdclass.PropertyTweener { //gd:PropertyTweener.from
 	return [1]gdclass.PropertyTweener(class(self).From(variant.New(value)))
@@ -68,10 +75,16 @@ func (self Instance) From(value any) [1]gdclass.PropertyTweener { //gd:PropertyT
 
 /*
 Makes the [PropertyTweener] use the current property value (i.e. at the time of creating this [PropertyTweener]) as a starting point. This is equivalent of using [method from] with the current value. These two calls will do the same:
-[codeblock]
+[codeblocks]
+[gdscript]
 tween.tween_property(self, "position", Vector2(200, 100), 1).from(position)
 tween.tween_property(self, "position", Vector2(200, 100), 1).from_current()
-[/codeblock]
+[/gdscript]
+[csharp]
+tween.TweenProperty(this, "position", new Vector2(200.0f, 100.0f), 1.0f).From(Position);
+tween.TweenProperty(this, "position", new Vector2(200.0f, 100.0f), 1.0f).FromCurrent();
+[/csharp]
+[/codeblocks]
 */
 func (self Instance) FromCurrent() [1]gdclass.PropertyTweener { //gd:PropertyTweener.from_current
 	return [1]gdclass.PropertyTweener(class(self).FromCurrent())
@@ -79,11 +92,17 @@ func (self Instance) FromCurrent() [1]gdclass.PropertyTweener { //gd:PropertyTwe
 
 /*
 When called, the final value will be used as a relative value instead.
-[b]Example:[/b]
-[codeblock]
+[b]Example:[/b] Move the node by [code]100[/code] pixels to the right.
+[codeblocks]
+[gdscript]
 var tween = get_tree().create_tween()
-tween.tween_property(self, "position", Vector2.RIGHT * 100, 1).as_relative() #the node will move by 100 pixels to the right
-[/codeblock]
+tween.tween_property(self, "position", Vector2.RIGHT * 100, 1).as_relative()
+[/gdscript]
+[csharp]
+Tween tween = GetTree().CreateTween();
+tween.TweenProperty(this, "position", Vector2.Right * 100.0f, 1.0f).AsRelative();
+[/csharp]
+[/codeblocks]
 */
 func (self Instance) AsRelative() [1]gdclass.PropertyTweener { //gd:PropertyTweener.as_relative
 	return [1]gdclass.PropertyTweener(class(self).AsRelative())
@@ -105,8 +124,8 @@ func (self Instance) SetEase(ease gdclass.TweenEaseType) [1]gdclass.PropertyTwee
 
 /*
 Allows interpolating the value with a custom easing function. The provided [param interpolator_method] will be called with a value ranging from [code]0.0[/code] to [code]1.0[/code] and is expected to return a value within the same range (values outside the range can be used for overshoot). The return value of the method is then used for interpolation between initial and final value. Note that the parameter passed to the method is still subject to the tweener's own easing.
-[b]Example:[/b]
-[codeblock]
+[codeblocks]
+[gdscript]
 @export var curve: Curve
 
 func _ready():
@@ -119,7 +138,28 @@ func tween_curve(v):
 
 	return curve.sample_baked(v)
 
-[/codeblock]
+[/gdscript]
+[csharp]
+[Export]
+public Curve Curve { get; set; }
+
+public override void _Ready()
+
+	{
+	    Tween tween = CreateTween();
+	    // Interpolate the value using a custom curve.
+	    Callable tweenCurveCallable = Callable.From<float, float>(TweenCurve);
+	    tween.TweenProperty(this, "position:x", 300.0f, 1.0f).AsRelative().SetCustomInterpolator(tweenCurveCallable);
+	}
+
+private float TweenCurve(float value)
+
+	{
+	    return Curve.SampleBaked(value);
+	}
+
+[/csharp]
+[/codeblocks]
 */
 func (self Instance) SetCustomInterpolator(interpolator_method func(Float.X) Float.X) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_custom_interpolator
 	return [1]gdclass.PropertyTweener(class(self).SetCustomInterpolator(Callable.New(interpolator_method)))
@@ -153,11 +193,17 @@ func New() Instance {
 
 /*
 Sets a custom initial value to the [PropertyTweener].
-[b]Example:[/b]
-[codeblock]
+[b]Example:[/b] Move the node from position [code](100, 100)[/code] to [code](200, 100)[/code].
+[codeblocks]
+[gdscript]
 var tween = get_tree().create_tween()
-tween.tween_property(self, "position", Vector2(200, 100), 1).from(Vector2(100, 100)) #this will move the node from position (100, 100) to (200, 100)
-[/codeblock]
+tween.tween_property(self, "position", Vector2(200, 100), 1).from(Vector2(100, 100))
+[/gdscript]
+[csharp]
+Tween tween = GetTree().CreateTween();
+tween.TweenProperty(this, "position", new Vector2(200.0f, 100.0f), 1.0f).From(new Vector2(100.0f, 100.0f));
+[/csharp]
+[/codeblocks]
 */
 //go:nosplit
 func (self class) From(value variant.Any) [1]gdclass.PropertyTweener { //gd:PropertyTweener.from
@@ -172,10 +218,16 @@ func (self class) From(value variant.Any) [1]gdclass.PropertyTweener { //gd:Prop
 
 /*
 Makes the [PropertyTweener] use the current property value (i.e. at the time of creating this [PropertyTweener]) as a starting point. This is equivalent of using [method from] with the current value. These two calls will do the same:
-[codeblock]
+[codeblocks]
+[gdscript]
 tween.tween_property(self, "position", Vector2(200, 100), 1).from(position)
 tween.tween_property(self, "position", Vector2(200, 100), 1).from_current()
-[/codeblock]
+[/gdscript]
+[csharp]
+tween.TweenProperty(this, "position", new Vector2(200.0f, 100.0f), 1.0f).From(Position);
+tween.TweenProperty(this, "position", new Vector2(200.0f, 100.0f), 1.0f).FromCurrent();
+[/csharp]
+[/codeblocks]
 */
 //go:nosplit
 func (self class) FromCurrent() [1]gdclass.PropertyTweener { //gd:PropertyTweener.from_current
@@ -189,11 +241,17 @@ func (self class) FromCurrent() [1]gdclass.PropertyTweener { //gd:PropertyTweene
 
 /*
 When called, the final value will be used as a relative value instead.
-[b]Example:[/b]
-[codeblock]
+[b]Example:[/b] Move the node by [code]100[/code] pixels to the right.
+[codeblocks]
+[gdscript]
 var tween = get_tree().create_tween()
-tween.tween_property(self, "position", Vector2.RIGHT * 100, 1).as_relative() #the node will move by 100 pixels to the right
-[/codeblock]
+tween.tween_property(self, "position", Vector2.RIGHT * 100, 1).as_relative()
+[/gdscript]
+[csharp]
+Tween tween = GetTree().CreateTween();
+tween.TweenProperty(this, "position", Vector2.Right * 100.0f, 1.0f).AsRelative();
+[/csharp]
+[/codeblocks]
 */
 //go:nosplit
 func (self class) AsRelative() [1]gdclass.PropertyTweener { //gd:PropertyTweener.as_relative
@@ -235,8 +293,8 @@ func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.PropertyTweener
 
 /*
 Allows interpolating the value with a custom easing function. The provided [param interpolator_method] will be called with a value ranging from [code]0.0[/code] to [code]1.0[/code] and is expected to return a value within the same range (values outside the range can be used for overshoot). The return value of the method is then used for interpolation between initial and final value. Note that the parameter passed to the method is still subject to the tweener's own easing.
-[b]Example:[/b]
-[codeblock]
+[codeblocks]
+[gdscript]
 @export var curve: Curve
 
 func _ready():
@@ -246,7 +304,25 @@ func _ready():
 
 func tween_curve(v):
     return curve.sample_baked(v)
-[/codeblock]
+[/gdscript]
+[csharp]
+[Export]
+public Curve Curve { get; set; }
+
+public override void _Ready()
+{
+    Tween tween = CreateTween();
+    // Interpolate the value using a custom curve.
+    Callable tweenCurveCallable = Callable.From<float, float>(TweenCurve);
+    tween.TweenProperty(this, "position:x", 300.0f, 1.0f).AsRelative().SetCustomInterpolator(tweenCurveCallable);
+}
+
+private float TweenCurve(float value)
+{
+    return Curve.SampleBaked(value);
+}
+[/csharp]
+[/codeblocks]
 */
 //go:nosplit
 func (self class) SetCustomInterpolator(interpolator_method Callable.Function) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_custom_interpolator

@@ -20,6 +20,7 @@ import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -236,6 +237,57 @@ func (self Instance) GetSamplePlayback() [1]gdclass.AudioSamplePlayback { //gd:A
 	return [1]gdclass.AudioSamplePlayback(class(self).GetSamplePlayback())
 }
 
+/*
+Mixes up to [param frames] of audio from the stream from the current position, at a rate of [param rate_scale], advancing the stream.
+Returns a [PackedVector2Array] where each element holds the left and right channel volume levels of each frame.
+[b]Note:[/b] Can return fewer frames than requested, make sure to use the size of the return value.
+*/
+func (self Instance) MixAudio(rate_scale Float.X, frames int) []Vector2.XY { //gd:AudioStreamPlayback.mix_audio
+	return []Vector2.XY(slices.Collect(class(self).MixAudio(float64(rate_scale), int64(frames)).Values()))
+}
+
+/*
+Starts the stream from the given [param from_pos], in seconds.
+*/
+func (self Instance) Start() { //gd:AudioStreamPlayback.start
+	class(self).Start(float64(0.0))
+}
+
+/*
+Seeks the stream at the given [param time], in seconds.
+*/
+func (self Instance) SeekTo() { //gd:AudioStreamPlayback.seek
+	class(self).SeekTo(float64(0.0))
+}
+
+/*
+Stops the stream.
+*/
+func (self Instance) Stop() { //gd:AudioStreamPlayback.stop
+	class(self).Stop()
+}
+
+/*
+Returns the number of times the stream has looped.
+*/
+func (self Instance) GetLoopCount() int { //gd:AudioStreamPlayback.get_loop_count
+	return int(int(class(self).GetLoopCount()))
+}
+
+/*
+Returns the current position in the stream, in seconds.
+*/
+func (self Instance) GetPlaybackPosition() Float.X { //gd:AudioStreamPlayback.get_playback_position
+	return Float.X(Float.X(class(self).GetPlaybackPosition()))
+}
+
+/*
+Returns [code]true[/code] if the stream is playing.
+*/
+func (self Instance) IsPlaying() bool { //gd:AudioStreamPlayback.is_playing
+	return bool(class(self).IsPlaying())
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.AudioStreamPlayback
@@ -403,6 +455,97 @@ func (self class) GetSamplePlayback() [1]gdclass.AudioSamplePlayback { //gd:Audi
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_get_sample_playback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioSamplePlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioSamplePlayback](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Mixes up to [param frames] of audio from the stream from the current position, at a rate of [param rate_scale], advancing the stream.
+Returns a [PackedVector2Array] where each element holds the left and right channel volume levels of each frame.
+[b]Note:[/b] Can return fewer frames than requested, make sure to use the size of the return value.
+*/
+//go:nosplit
+func (self class) MixAudio(rate_scale float64, frames int64) Packed.Array[Vector2.XY] { //gd:AudioStreamPlayback.mix_audio
+	var frame = callframe.New()
+	callframe.Arg(frame, rate_scale)
+	callframe.Arg(frame, frames)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_mix_audio, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Starts the stream from the given [param from_pos], in seconds.
+*/
+//go:nosplit
+func (self class) Start(from_pos float64) { //gd:AudioStreamPlayback.start
+	var frame = callframe.New()
+	callframe.Arg(frame, from_pos)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_start, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Seeks the stream at the given [param time], in seconds.
+*/
+//go:nosplit
+func (self class) SeekTo(time float64) { //gd:AudioStreamPlayback.seek
+	var frame = callframe.New()
+	callframe.Arg(frame, time)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_seek, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Stops the stream.
+*/
+//go:nosplit
+func (self class) Stop() { //gd:AudioStreamPlayback.stop
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the number of times the stream has looped.
+*/
+//go:nosplit
+func (self class) GetLoopCount() int64 { //gd:AudioStreamPlayback.get_loop_count
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_get_loop_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the current position in the stream, in seconds.
+*/
+//go:nosplit
+func (self class) GetPlaybackPosition() float64 { //gd:AudioStreamPlayback.get_playback_position
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_get_playback_position, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the stream is playing.
+*/
+//go:nosplit
+func (self class) IsPlaying() bool { //gd:AudioStreamPlayback.is_playing
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_is_playing, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

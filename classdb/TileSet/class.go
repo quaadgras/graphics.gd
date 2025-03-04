@@ -43,7 +43,7 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-A TileSet is a library of tiles for a [TileMap]. A TileSet handles a list of [TileSetSource], each of them storing a set of tiles.
+A TileSet is a library of tiles for a [TileMapLayer]. A TileSet handles a list of [TileSetSource], each of them storing a set of tiles.
 Tiles can either be from a [TileSetAtlasSource], which renders tiles out of a texture with support for physics, navigation, etc., or from a [TileSetScenesCollectionSource], which exposes scene-based tiles.
 Tiles are referenced by using three IDs: their source ID, their atlas coordinates ID, and their alternative tile ID.
 A TileSet can be configured so that its tiles expose more or fewer properties. To do so, the TileSet resources use property layers, which you can add or remove depending on your needs.
@@ -205,7 +205,7 @@ func (self Instance) RemovePhysicsLayer(layer_index int) { //gd:TileSet.remove_p
 }
 
 /*
-Sets the physics layer (as in the physics server) for bodies in the given TileSet physics layer.
+Sets the collision layer (as in the physics server) for bodies in the given TileSet physics layer.
 */
 func (self Instance) SetPhysicsLayerCollisionLayer(layer_index int, layer int) { //gd:TileSet.set_physics_layer_collision_layer
 	class(self).SetPhysicsLayerCollisionLayer(int64(layer_index), int64(layer))
@@ -219,7 +219,7 @@ func (self Instance) GetPhysicsLayerCollisionLayer(layer_index int) int { //gd:T
 }
 
 /*
-Sets the physics layer (as in the physics server) for bodies in the given TileSet physics layer.
+Sets the collision mask for bodies in the given TileSet physics layer.
 */
 func (self Instance) SetPhysicsLayerCollisionMask(layer_index int, mask int) { //gd:TileSet.set_physics_layer_collision_mask
 	class(self).SetPhysicsLayerCollisionMask(int64(layer_index), int64(mask))
@@ -230,6 +230,20 @@ Returns the collision mask of bodies on the given TileSet's physics layer.
 */
 func (self Instance) GetPhysicsLayerCollisionMask(layer_index int) int { //gd:TileSet.get_physics_layer_collision_mask
 	return int(int(class(self).GetPhysicsLayerCollisionMask(int64(layer_index))))
+}
+
+/*
+Sets the collision priority for bodies in the given TileSet physics layer.
+*/
+func (self Instance) SetPhysicsLayerCollisionPriority(layer_index int, priority Float.X) { //gd:TileSet.set_physics_layer_collision_priority
+	class(self).SetPhysicsLayerCollisionPriority(int64(layer_index), float64(priority))
+}
+
+/*
+Returns the collision priority of bodies on the given TileSet's physics layer.
+*/
+func (self Instance) GetPhysicsLayerCollisionPriority(layer_index int) Float.X { //gd:TileSet.get_physics_layer_collision_priority
+	return Float.X(Float.X(class(self).GetPhysicsLayerCollisionPriority(int64(layer_index))))
 }
 
 /*
@@ -442,6 +456,13 @@ Sets the name of the custom data layer identified by the given index. Names are 
 */
 func (self Instance) SetCustomDataLayerName(layer_index int, layer_name string) { //gd:TileSet.set_custom_data_layer_name
 	class(self).SetCustomDataLayerName(int64(layer_index), String.New(layer_name))
+}
+
+/*
+Returns if there is a custom data layer named [param layer_name].
+*/
+func (self Instance) HasCustomDataLayerByName(layer_name string) bool { //gd:TileSet.has_custom_data_layer_by_name
+	return bool(class(self).HasCustomDataLayerByName(String.New(layer_name)))
 }
 
 /*
@@ -1030,7 +1051,7 @@ func (self class) RemovePhysicsLayer(layer_index int64) { //gd:TileSet.remove_ph
 }
 
 /*
-Sets the physics layer (as in the physics server) for bodies in the given TileSet physics layer.
+Sets the collision layer (as in the physics server) for bodies in the given TileSet physics layer.
 */
 //go:nosplit
 func (self class) SetPhysicsLayerCollisionLayer(layer_index int64, layer int64) { //gd:TileSet.set_physics_layer_collision_layer
@@ -1057,7 +1078,7 @@ func (self class) GetPhysicsLayerCollisionLayer(layer_index int64) int64 { //gd:
 }
 
 /*
-Sets the physics layer (as in the physics server) for bodies in the given TileSet physics layer.
+Sets the collision mask for bodies in the given TileSet physics layer.
 */
 //go:nosplit
 func (self class) SetPhysicsLayerCollisionMask(layer_index int64, mask int64) { //gd:TileSet.set_physics_layer_collision_mask
@@ -1078,6 +1099,33 @@ func (self class) GetPhysicsLayerCollisionMask(layer_index int64) int64 { //gd:T
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_physics_layer_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the collision priority for bodies in the given TileSet physics layer.
+*/
+//go:nosplit
+func (self class) SetPhysicsLayerCollisionPriority(layer_index int64, priority float64) { //gd:TileSet.set_physics_layer_collision_priority
+	var frame = callframe.New()
+	callframe.Arg(frame, layer_index)
+	callframe.Arg(frame, priority)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_physics_layer_collision_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the collision priority of bodies on the given TileSet's physics layer.
+*/
+//go:nosplit
+func (self class) GetPhysicsLayerCollisionPriority(layer_index int64) float64 { //gd:TileSet.get_physics_layer_collision_priority
+	var frame = callframe.New()
+	callframe.Arg(frame, layer_index)
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_physics_layer_collision_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1482,6 +1530,20 @@ func (self class) SetCustomDataLayerName(layer_index int64, layer_name String.Re
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_custom_data_layer_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+}
+
+/*
+Returns if there is a custom data layer named [param layer_name].
+*/
+//go:nosplit
+func (self class) HasCustomDataLayerByName(layer_name String.Readable) bool { //gd:TileSet.has_custom_data_layer_by_name
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(layer_name)))
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_has_custom_data_layer_by_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
 }
 
 /*

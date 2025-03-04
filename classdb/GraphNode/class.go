@@ -240,7 +240,7 @@ func (self Instance) GetSlotCustomIconRight(slot_index int) [1]gdclass.Texture2D
 }
 
 /*
-Returns true if the background [StyleBox] of the slot with the given [param slot_index] is drawn.
+Returns [code]true[/code] if the background [StyleBox] of the slot with the given [param slot_index] is drawn.
 */
 func (self Instance) IsSlotDrawStylebox(slot_index int) bool { //gd:GraphNode.is_slot_draw_stylebox
 	return bool(class(self).IsSlotDrawStylebox(int64(slot_index)))
@@ -671,7 +671,7 @@ func (self class) GetSlotCustomIconRight(slot_index int64) [1]gdclass.Texture2D 
 }
 
 /*
-Returns true if the background [StyleBox] of the slot with the given [param slot_index] is drawn.
+Returns [code]true[/code] if the background [StyleBox] of the slot with the given [param slot_index] is drawn.
 */
 //go:nosplit
 func (self class) IsSlotDrawStylebox(slot_index int64) bool { //gd:GraphNode.is_slot_draw_stylebox

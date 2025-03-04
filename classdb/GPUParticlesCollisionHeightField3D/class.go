@@ -61,6 +61,20 @@ type Any interface {
 	AsGPUParticlesCollisionHeightField3D() Instance
 }
 
+/*
+Based on [param value], enables or disables the specified layer in the [member heightfield_mask], given a [param layer_number] between [code]1[/code] and [code]20[/code], inclusive.
+*/
+func (self Instance) SetHeightfieldMaskValue(layer_number int, value bool) { //gd:GPUParticlesCollisionHeightField3D.set_heightfield_mask_value
+	class(self).SetHeightfieldMaskValue(int64(layer_number), value)
+}
+
+/*
+Returns [code]true[/code] if the specified layer of the [member heightfield_mask] is enabled, given a [param layer_number] between [code]1[/code] and [code]20[/code], inclusive.
+*/
+func (self Instance) GetHeightfieldMaskValue(layer_number int) bool { //gd:GPUParticlesCollisionHeightField3D.get_heightfield_mask_value
+	return bool(class(self).GetHeightfieldMaskValue(int64(layer_number)))
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.GPUParticlesCollisionHeightField3D
@@ -109,6 +123,14 @@ func (self Instance) FollowCameraEnabled() bool {
 
 func (self Instance) SetFollowCameraEnabled(value bool) {
 	class(self).SetFollowCameraEnabled(value)
+}
+
+func (self Instance) HeightfieldMask() int {
+	return int(int(class(self).GetHeightfieldMask()))
+}
+
+func (self Instance) SetHeightfieldMask(value int) {
+	class(self).SetHeightfieldMask(int64(value))
 }
 
 //go:nosplit
@@ -163,6 +185,52 @@ func (self class) GetUpdateMode() gdclass.GPUParticlesCollisionHeightField3DUpda
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.GPUParticlesCollisionHeightField3DUpdateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetHeightfieldMask(heightfield_mask int64) { //gd:GPUParticlesCollisionHeightField3D.set_heightfield_mask
+	var frame = callframe.New()
+	callframe.Arg(frame, heightfield_mask)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_heightfield_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetHeightfieldMask() int64 { //gd:GPUParticlesCollisionHeightField3D.get_heightfield_mask
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_heightfield_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Based on [param value], enables or disables the specified layer in the [member heightfield_mask], given a [param layer_number] between [code]1[/code] and [code]20[/code], inclusive.
+*/
+//go:nosplit
+func (self class) SetHeightfieldMaskValue(layer_number int64, value bool) { //gd:GPUParticlesCollisionHeightField3D.set_heightfield_mask_value
+	var frame = callframe.New()
+	callframe.Arg(frame, layer_number)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_heightfield_mask_value, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns [code]true[/code] if the specified layer of the [member heightfield_mask] is enabled, given a [param layer_number] between [code]1[/code] and [code]20[/code], inclusive.
+*/
+//go:nosplit
+func (self class) GetHeightfieldMaskValue(layer_number int64) bool { //gd:GPUParticlesCollisionHeightField3D.get_heightfield_mask_value
+	var frame = callframe.New()
+	callframe.Arg(frame, layer_number)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_heightfield_mask_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

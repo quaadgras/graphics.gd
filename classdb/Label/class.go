@@ -87,7 +87,7 @@ func (self Instance) GetTotalCharacterCount() int { //gd:Label.get_total_charact
 }
 
 /*
-Returns the bounding rectangle of the character at position [param pos]. If the character is a non-visual character or [param pos] is outside the valid range, an empty [Rect2] is returned. If the character is a part of a composite grapheme, the bounding rectangle of the whole grapheme is returned.
+Returns the bounding rectangle of the character at position [param pos] in the label's local coordinate system. If the character is a non-visual character or [param pos] is outside the valid range, an empty [Rect2] is returned. If the character is a part of a composite grapheme, the bounding rectangle of the whole grapheme is returned.
 */
 func (self Instance) GetCharacterBounds(pos int) Rect2.PositionSize { //gd:Label.get_character_bounds
 	return Rect2.PositionSize(class(self).GetCharacterBounds(int64(pos)))
@@ -157,6 +157,14 @@ func (self Instance) JustificationFlags() gdclass.TextServerJustificationFlag {
 
 func (self Instance) SetJustificationFlags(value gdclass.TextServerJustificationFlag) {
 	class(self).SetJustificationFlags(value)
+}
+
+func (self Instance) ParagraphSeparator() string {
+	return string(class(self).GetParagraphSeparator().String())
+}
+
+func (self Instance) SetParagraphSeparator(value string) {
+	class(self).SetParagraphSeparator(String.New(value))
 }
 
 func (self Instance) ClipText() bool {
@@ -380,6 +388,25 @@ func (self class) GetLanguage() String.Readable { //gd:Label.get_language
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetParagraphSeparator(paragraph_separator String.Readable) { //gd:Label.set_paragraph_separator
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(paragraph_separator)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_set_paragraph_separator, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetParagraphSeparator() String.Readable { //gd:Label.get_paragraph_separator
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_paragraph_separator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
@@ -707,7 +734,7 @@ func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:Label.
 }
 
 /*
-Returns the bounding rectangle of the character at position [param pos]. If the character is a non-visual character or [param pos] is outside the valid range, an empty [Rect2] is returned. If the character is a part of a composite grapheme, the bounding rectangle of the whole grapheme is returned.
+Returns the bounding rectangle of the character at position [param pos] in the label's local coordinate system. If the character is a non-visual character or [param pos] is outside the valid range, an empty [Rect2] is returned. If the character is a part of a composite grapheme, the bounding rectangle of the whole grapheme is returned.
 */
 //go:nosplit
 func (self class) GetCharacterBounds(pos int64) Rect2.PositionSize { //gd:Label.get_character_bounds

@@ -71,7 +71,9 @@ func GetSystemCaCertificates() string { //gd:OS.get_system_ca_certificates
 
 /*
 Returns an array of connected MIDI device names, if they exist. Returns an empty array if the system MIDI driver has not previously been initialized with [method open_midi_inputs]. See also [method close_midi_inputs].
-[b]Note:[/b] This method is implemented on Linux, macOS and Windows.
+[b]Note:[/b] This method is implemented on Linux, macOS, Windows, and Web.
+[b]Note:[/b] On the Web platform, Web MIDI needs to be supported by the browser. [url=https://caniuse.com/midi]For the time being[/url], it is currently supported by all major browsers, except Safari.
+[b]Note:[/b] On the Web platform, using MIDI input requires a browser permission to be granted first. This permission request is performed when calling [method open_midi_inputs]. The browser will refrain from processing MIDI input until the user accepts the permission request.
 */
 func GetConnectedMidiInputs() []string { //gd:OS.get_connected_midi_inputs
 	once.Do(singleton)
@@ -80,7 +82,9 @@ func GetConnectedMidiInputs() []string { //gd:OS.get_connected_midi_inputs
 
 /*
 Initializes the singleton for the system MIDI driver, allowing Godot to receive [InputEventMIDI]. See also [method get_connected_midi_inputs] and [method close_midi_inputs].
-[b]Note:[/b] This method is implemented on Linux, macOS and Windows.
+[b]Note:[/b] This method is implemented on Linux, macOS, Windows, and Web.
+[b]Note:[/b] On the Web platform, Web MIDI needs to be supported by the browser. [url=https://caniuse.com/midi]For the time being[/url], it is currently supported by all major browsers, except Safari.
+[b]Note:[/b] On the Web platform, using MIDI input requires a browser permission to be granted first. This permission request is performed when calling [method open_midi_inputs]. The browser will refrain from processing MIDI input until the user accepts the permission request.
 */
 func OpenMidiInputs() { //gd:OS.open_midi_inputs
 	once.Do(singleton)
@@ -89,7 +93,7 @@ func OpenMidiInputs() { //gd:OS.open_midi_inputs
 
 /*
 Shuts down the system MIDI driver. Godot will no longer receive [InputEventMIDI]. See also [method open_midi_inputs] and [method get_connected_midi_inputs].
-[b]Note:[/b] This method is implemented on Linux, macOS and Windows.
+[b]Note:[/b] This method is implemented on Linux, macOS, Windows, and Web.
 */
 func CloseMidiInputs() { //gd:OS.close_midi_inputs
 	once.Do(singleton)
@@ -172,13 +176,54 @@ func GetExecutablePath() string { //gd:OS.get_executable_path
 }
 
 /*
-Reads a user input string from the standard input (usually the terminal). This operation is [i]blocking[/i], which causes the window to freeze if [method read_string_from_stdin] is called on the main thread. The thread calling [method read_string_from_stdin] will block until the program receives a line break in standard input (usually by the user pressing [kbd]Enter[/kbd]).
-[b]Note:[/b] This method is implemented on Linux, macOS and Windows.
-[b]Note:[/b] On exported Windows builds, run the console wrapper executable to access the terminal. Otherwise, the standard input will not work correctly. If you need a single executable with console support, use a custom build compiled with the [code]windows_subsystem=console[/code] flag.
+Reads a user input as a UTF-8 encoded string from the standard input. This operation can be [i]blocking[/i], which causes the window to freeze if [method read_string_from_stdin] is called on the main thread.
+- If standard input is console, this method will block until the program receives a line break in standard input (usually by the user pressing [kbd]Enter[/kbd]).
+- If standard input is pipe, this method will block until a specific amount of data is read or pipe is closed.
+- If standard input is a file, this method will read a specific amount of data (or less if end-of-file is reached) and return immediately.
+[b]Note:[/b] This method automatically replaces [code]\r\n[/code] line breaks with [code]\n[/code] and removes them from the end of the string. Use [method read_buffer_from_stdin] to read the unprocessed data.
+[b]Note:[/b] This method is implemented on Linux, macOS, and Windows.
+[b]Note:[/b] On exported Windows builds, run the console wrapper executable to access the terminal. If standard input is console, calling this method without console wrapped will freeze permanently. If standard input is pipe or file, it can be used without console wrapper. If you need a single executable with full console support, use a custom build compiled with the [code]windows_subsystem=console[/code] flag.
 */
-func ReadStringFromStdin() string { //gd:OS.read_string_from_stdin
+func ReadStringFromStdin(buffer_size int) string { //gd:OS.read_string_from_stdin
 	once.Do(singleton)
-	return string(class(self).ReadStringFromStdin().String())
+	return string(class(self).ReadStringFromStdin(int64(buffer_size)).String())
+}
+
+/*
+Reads a user input as raw data from the standard input. This operation can be [i]blocking[/i], which causes the window to freeze if [method read_string_from_stdin] is called on the main thread.
+- If standard input is console, this method will block until the program receives a line break in standard input (usually by the user pressing [kbd]Enter[/kbd]).
+- If standard input is pipe, this method will block until a specific amount of data is read or pipe is closed.
+- If standard input is a file, this method will read a specific amount of data (or less if end-of-file is reached) and return immediately.
+[b]Note:[/b] This method is implemented on Linux, macOS, and Windows.
+[b]Note:[/b] On exported Windows builds, run the console wrapper executable to access the terminal. If standard input is console, calling this method without console wrapped will freeze permanently. If standard input is pipe or file, it can be used without console wrapper. If you need a single executable with full console support, use a custom build compiled with the [code]windows_subsystem=console[/code] flag.
+*/
+func ReadBufferFromStdin(buffer_size int) []byte { //gd:OS.read_buffer_from_stdin
+	once.Do(singleton)
+	return []byte(class(self).ReadBufferFromStdin(int64(buffer_size)).Bytes())
+}
+
+/*
+Returns type of the standard input device.
+*/
+func GetStdinType() gdclass.OSStdHandleType { //gd:OS.get_stdin_type
+	once.Do(singleton)
+	return gdclass.OSStdHandleType(class(self).GetStdinType())
+}
+
+/*
+Returns type of the standard output device.
+*/
+func GetStdoutType() gdclass.OSStdHandleType { //gd:OS.get_stdout_type
+	once.Do(singleton)
+	return gdclass.OSStdHandleType(class(self).GetStdoutType())
+}
+
+/*
+Returns type of the standard error device.
+*/
+func GetStderrType() gdclass.OSStdHandleType { //gd:OS.get_stderr_type
+	once.Do(singleton)
+	return gdclass.OSStdHandleType(class(self).GetStderrType())
 }
 
 /*
@@ -194,8 +239,8 @@ var output = []
 var exit_code = OS.execute("ls", ["-l", "/tmp"], output)
 [/gdscript]
 [csharp]
-var output = new Godot.Collections.Array();
-int exitCode = OS.Execute("ls", new string[] {"-l", "/tmp"}, output);
+Godot.Collections.Array output = [];
+int exitCode = OS.Execute("ls", ["-l", "/tmp"], output);
 [/csharp]
 [/codeblocks]
 If you wish to access a shell built-in or execute a composite command, a platform-specific shell can be invoked. For example:
@@ -205,8 +250,8 @@ var output = []
 OS.execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output)
 [/gdscript]
 [csharp]
-var output = new Godot.Collections.Array();
-OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
+Godot.Collections.Array output = [];
+OS.Execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output);
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] This method is implemented on Android, Linux, macOS, and Windows.
@@ -223,6 +268,7 @@ func Execute(path string, arguments []string) int { //gd:OS.execute
 
 /*
 Creates a new process that runs independently of Godot with redirected IO. It will not terminate when Godot terminates. The path specified in [param path] must exist and be an executable file or macOS [code].app[/code] bundle. The path is resolved based on the current platform. The [param arguments] are used in the given order and separated by a space.
+If [param blocking] is [code]false[/code], created pipes work in non-blocking mode, i.e. read and write operations will return immediately. Use [method FileAccess.get_error] to check if the last read/write operation was successful.
 If the process cannot be created, this method returns an empty [Dictionary]. Otherwise, this method returns a [Dictionary] with the following keys:
 - [code]"stdio"[/code] - [FileAccess] to access the process stdin and stdout pipes (read/write).
 - [code]"stderr"[/code] - [FileAccess] to access the process stderr pipe (read only).
@@ -235,20 +281,20 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 */
 func ExecuteWithPipe(path string, arguments []string) Pipe { //gd:OS.execute_with_pipe
 	once.Do(singleton)
-	return Pipe(gd.DictionaryAs[Pipe](class(self).ExecuteWithPipe(String.New(path), Packed.MakeStrings(arguments...))))
+	return Pipe(gd.DictionaryAs[Pipe](class(self).ExecuteWithPipe(String.New(path), Packed.MakeStrings(arguments...), true)))
 }
 
 /*
 Creates a new process that runs independently of Godot. It will not terminate when Godot terminates. The path specified in [param path] must exist and be an executable file or macOS [code].app[/code] bundle. The path is resolved based on the current platform. The [param arguments] are used in the given order and separated by a space.
 On Windows, if [param open_console] is [code]true[/code] and the process is a console app, a new terminal window will be opened.
 If the process is successfully created, this method returns its process ID, which you can use to monitor the process (and potentially terminate it with [method kill]). Otherwise, this method returns [code]-1[/code].
-For example, running another instance of the project:
+[b]Example:[/b] Run another instance of the project:
 [codeblocks]
 [gdscript]
 var pid = OS.create_process(OS.get_executable_path(), [])
 [/gdscript]
 [csharp]
-var pid = OS.CreateProcess(OS.GetExecutablePath(), new string[] {});
+var pid = OS.CreateProcess(OS.GetExecutablePath(), []);
 [/csharp]
 [/codeblocks]
 See [method execute] if you wish to run an external command and retrieve the results.
@@ -283,7 +329,8 @@ func Kill(pid int) error { //gd:OS.kill
 
 /*
 Requests the OS to open a resource identified by [param uri] with the most appropriate program. For example:
-- [code]OS.shell_open("C:\\Users\name\Downloads")[/code] on Windows opens the file explorer at the user's Downloads folder.
+- [code]OS.shell_open("C:\\Users\\name\\Downloads")[/code] on Windows opens the file explorer at the user's Downloads folder.
+- [code]OS.shell_open("C:/Users/name/Downloads")[/code] also works on Windows and opens the file explorer at the user's Downloads folder.
 - [code]OS.shell_open("https://godotengine.org")[/code] opens the default web browser on the official Godot website.
 - [code]OS.shell_open("mailto:example@example.com")[/code] opens the default email client with the "To" field set to [code]example@example.com[/code]. See [url=https://datatracker.ietf.org/doc/html/rfc2368]RFC 2368 - The [code]mailto[/code] URL scheme[/url] for a list of fields that can be added.
 Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or [code]user://[/code] project path into a system path for use with this method.
@@ -462,11 +509,20 @@ func GetVersion() string { //gd:OS.get_version
 }
 
 /*
+Returns the branded version used in marketing, followed by the build number (on Windows) or the version number (on macOS). Examples include [code]11 (build 22000)[/code] and [code]Sequoia (15.0.0)[/code]. This value can then be appended to [method get_name] to get a full, human-readable operating system name and version combination for the operating system. Windows feature updates such as 24H2 are not contained in the resulting string, but Windows Server is recognized as such (e.g. [code]2025 (build 26100)[/code] for Windows Server 2025).
+[b]Note:[/b] This method is only supported on Windows and macOS. On other operating systems, it returns the same value as [method get_version].
+*/
+func GetVersionAlias() string { //gd:OS.get_version_alias
+	once.Do(singleton)
+	return string(class(self).GetVersionAlias().String())
+}
+
+/*
 Returns the command-line arguments passed to the engine.
 Command-line arguments can be written in any form, including both [code]--key value[/code] and [code]--key=value[/code] forms so they can be properly parsed, as long as custom command-line arguments do not conflict with engine arguments.
 You can also incorporate environment variables using the [method get_environment] method.
 You can set [member ProjectSettings.editor/run/main_run_args] to define command-line arguments to be passed by the editor when running the project.
-Here's a minimal example on how to parse command-line arguments into a [Dictionary] using the [code]--key=value[/code] form for arguments:
+[b]Example:[/b] Parse command-line arguments into a [Dictionary] using the [code]--key=value[/code] form for arguments:
 [codeblocks]
 [gdscript]
 var arguments = {}
@@ -607,7 +663,7 @@ func GetLocaleLanguage() string { //gd:OS.get_locale_language
 
 /*
 Returns the model name of the current device.
-[b]Note:[/b] This method is implemented on Android and iOS. Returns [code]"GenericDevice"[/code] on unsupported platforms.
+[b]Note:[/b] This method is implemented on Android, iOS, macOS, and Windows. Returns [code]"GenericDevice"[/code] on unsupported platforms.
 */
 func GetModelName() string { //gd:OS.get_model_name
 	once.Do(singleton)
@@ -747,6 +803,14 @@ func GetCacheDir() string { //gd:OS.get_cache_dir
 }
 
 /*
+Returns the [i]global[/i] temporary data directory according to the operating system's standards.
+*/
+func GetTempDir() string { //gd:OS.get_temp_dir
+	once.Do(singleton)
+	return string(class(self).GetTempDir().String())
+}
+
+/*
 Returns a string that is unique to the device.
 [b]Note:[/b] This string may change without notice if the user reinstalls their operating system, upgrades it, or modifies their hardware. This means it should generally not be used to encrypt persistent data, as the data saved before an unexpected ID change would become inaccessible. The returned string may also be falsified using external programs, so do not rely on the string returned by this method for security purposes.
 [b]Note:[/b] On Web, returns an empty string and generates an error, as this method cannot be implemented for security reasons.
@@ -787,10 +851,10 @@ print(OS.is_keycode_unicode(KEY_TAB))    # Prints false
 print(OS.is_keycode_unicode(KEY_ESCAPE)) # Prints false
 [/gdscript]
 [csharp]
-GD.Print(OS.IsKeycodeUnicode((long)Key.G));      // Prints true
-GD.Print(OS.IsKeycodeUnicode((long)Key.Kp4));    // Prints true
-GD.Print(OS.IsKeycodeUnicode((long)Key.Tab));    // Prints false
-GD.Print(OS.IsKeycodeUnicode((long)Key.Escape)); // Prints false
+GD.Print(OS.IsKeycodeUnicode((long)Key.G));      // Prints True
+GD.Print(OS.IsKeycodeUnicode((long)Key.Kp4));    // Prints True
+GD.Print(OS.IsKeycodeUnicode((long)Key.Tab));    // Prints False
+GD.Print(OS.IsKeycodeUnicode((long)Key.Escape)); // Prints False
 [/csharp]
 [/codeblocks]
 */
@@ -877,8 +941,12 @@ func IsSandboxed() bool { //gd:OS.is_sandboxed
 }
 
 /*
-Requests permission from the OS for the given [param name]. Returns [code]true[/code] if the permission has been successfully granted.
-[b]Note:[/b] This method is currently only implemented on Android, to specifically request permission for [code]"RECORD_AUDIO"[/code] by [code]AudioDriverOpenSL[/code].
+Requests permission from the OS for the given [param name]. Returns [code]true[/code] if the permission has already been granted. See also [signal MainLoop.on_request_permissions_result].
+The [param name] must be the full permission name. For example:
+- [code]OS.request_permission("android.permission.READ_EXTERNAL_STORAGE")[/code]
+- [code]OS.request_permission("android.permission.POST_NOTIFICATIONS")[/code]
+[b]Note:[/b] Permission must be checked during export.
+[b]Note:[/b] This method is only implemented on Android.
 */
 func RequestPermission(name string) bool { //gd:OS.request_permission
 	once.Do(singleton)
@@ -886,7 +954,8 @@ func RequestPermission(name string) bool { //gd:OS.request_permission
 }
 
 /*
-Requests [i]dangerous[/i] permissions from the OS. Returns [code]true[/code] if permissions have been successfully granted.
+Requests [i]dangerous[/i] permissions from the OS. Returns [code]true[/code] if permissions have already been granted. See also [signal MainLoop.on_request_permissions_result].
+[b]Note:[/b] Permissions must be checked during export.
 [b]Note:[/b] This method is only implemented on Android. Normal permissions are automatically granted at install time in Android applications.
 */
 func RequestPermissions() bool { //gd:OS.request_permissions
@@ -981,7 +1050,9 @@ func (self class) GetSystemCaCertificates() String.Readable { //gd:OS.get_system
 
 /*
 Returns an array of connected MIDI device names, if they exist. Returns an empty array if the system MIDI driver has not previously been initialized with [method open_midi_inputs]. See also [method close_midi_inputs].
-[b]Note:[/b] This method is implemented on Linux, macOS and Windows.
+[b]Note:[/b] This method is implemented on Linux, macOS, Windows, and Web.
+[b]Note:[/b] On the Web platform, Web MIDI needs to be supported by the browser. [url=https://caniuse.com/midi]For the time being[/url], it is currently supported by all major browsers, except Safari.
+[b]Note:[/b] On the Web platform, using MIDI input requires a browser permission to be granted first. This permission request is performed when calling [method open_midi_inputs]. The browser will refrain from processing MIDI input until the user accepts the permission request.
 */
 //go:nosplit
 func (self class) GetConnectedMidiInputs() Packed.Strings { //gd:OS.get_connected_midi_inputs
@@ -995,7 +1066,9 @@ func (self class) GetConnectedMidiInputs() Packed.Strings { //gd:OS.get_connecte
 
 /*
 Initializes the singleton for the system MIDI driver, allowing Godot to receive [InputEventMIDI]. See also [method get_connected_midi_inputs] and [method close_midi_inputs].
-[b]Note:[/b] This method is implemented on Linux, macOS and Windows.
+[b]Note:[/b] This method is implemented on Linux, macOS, Windows, and Web.
+[b]Note:[/b] On the Web platform, Web MIDI needs to be supported by the browser. [url=https://caniuse.com/midi]For the time being[/url], it is currently supported by all major browsers, except Safari.
+[b]Note:[/b] On the Web platform, using MIDI input requires a browser permission to be granted first. This permission request is performed when calling [method open_midi_inputs]. The browser will refrain from processing MIDI input until the user accepts the permission request.
 */
 //go:nosplit
 func (self class) OpenMidiInputs() { //gd:OS.open_midi_inputs
@@ -1007,7 +1080,7 @@ func (self class) OpenMidiInputs() { //gd:OS.open_midi_inputs
 
 /*
 Shuts down the system MIDI driver. Godot will no longer receive [InputEventMIDI]. See also [method open_midi_inputs] and [method get_connected_midi_inputs].
-[b]Note:[/b] This method is implemented on Linux, macOS and Windows.
+[b]Note:[/b] This method is implemented on Linux, macOS, Windows, and Web.
 */
 //go:nosplit
 func (self class) CloseMidiInputs() { //gd:OS.close_midi_inputs
@@ -1200,16 +1273,79 @@ func (self class) GetExecutablePath() String.Readable { //gd:OS.get_executable_p
 }
 
 /*
-Reads a user input string from the standard input (usually the terminal). This operation is [i]blocking[/i], which causes the window to freeze if [method read_string_from_stdin] is called on the main thread. The thread calling [method read_string_from_stdin] will block until the program receives a line break in standard input (usually by the user pressing [kbd]Enter[/kbd]).
-[b]Note:[/b] This method is implemented on Linux, macOS and Windows.
-[b]Note:[/b] On exported Windows builds, run the console wrapper executable to access the terminal. Otherwise, the standard input will not work correctly. If you need a single executable with console support, use a custom build compiled with the [code]windows_subsystem=console[/code] flag.
+Reads a user input as a UTF-8 encoded string from the standard input. This operation can be [i]blocking[/i], which causes the window to freeze if [method read_string_from_stdin] is called on the main thread.
+- If standard input is console, this method will block until the program receives a line break in standard input (usually by the user pressing [kbd]Enter[/kbd]).
+- If standard input is pipe, this method will block until a specific amount of data is read or pipe is closed.
+- If standard input is a file, this method will read a specific amount of data (or less if end-of-file is reached) and return immediately.
+[b]Note:[/b] This method automatically replaces [code]\r\n[/code] line breaks with [code]\n[/code] and removes them from the end of the string. Use [method read_buffer_from_stdin] to read the unprocessed data.
+[b]Note:[/b] This method is implemented on Linux, macOS, and Windows.
+[b]Note:[/b] On exported Windows builds, run the console wrapper executable to access the terminal. If standard input is console, calling this method without console wrapped will freeze permanently. If standard input is pipe or file, it can be used without console wrapper. If you need a single executable with full console support, use a custom build compiled with the [code]windows_subsystem=console[/code] flag.
 */
 //go:nosplit
-func (self class) ReadStringFromStdin() String.Readable { //gd:OS.read_string_from_stdin
+func (self class) ReadStringFromStdin(buffer_size int64) String.Readable { //gd:OS.read_string_from_stdin
 	var frame = callframe.New()
+	callframe.Arg(frame, buffer_size)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_read_string_from_stdin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Reads a user input as raw data from the standard input. This operation can be [i]blocking[/i], which causes the window to freeze if [method read_string_from_stdin] is called on the main thread.
+- If standard input is console, this method will block until the program receives a line break in standard input (usually by the user pressing [kbd]Enter[/kbd]).
+- If standard input is pipe, this method will block until a specific amount of data is read or pipe is closed.
+- If standard input is a file, this method will read a specific amount of data (or less if end-of-file is reached) and return immediately.
+[b]Note:[/b] This method is implemented on Linux, macOS, and Windows.
+[b]Note:[/b] On exported Windows builds, run the console wrapper executable to access the terminal. If standard input is console, calling this method without console wrapped will freeze permanently. If standard input is pipe or file, it can be used without console wrapper. If you need a single executable with full console support, use a custom build compiled with the [code]windows_subsystem=console[/code] flag.
+*/
+//go:nosplit
+func (self class) ReadBufferFromStdin(buffer_size int64) Packed.Bytes { //gd:OS.read_buffer_from_stdin
+	var frame = callframe.New()
+	callframe.Arg(frame, buffer_size)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_read_buffer_from_stdin, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns type of the standard input device.
+*/
+//go:nosplit
+func (self class) GetStdinType() gdclass.OSStdHandleType { //gd:OS.get_stdin_type
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.OSStdHandleType](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_stdin_type, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns type of the standard output device.
+*/
+//go:nosplit
+func (self class) GetStdoutType() gdclass.OSStdHandleType { //gd:OS.get_stdout_type
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.OSStdHandleType](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_stdout_type, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns type of the standard error device.
+*/
+//go:nosplit
+func (self class) GetStderrType() gdclass.OSStdHandleType { //gd:OS.get_stderr_type
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.OSStdHandleType](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_stderr_type, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -1227,8 +1363,8 @@ var output = []
 var exit_code = OS.execute("ls", ["-l", "/tmp"], output)
 [/gdscript]
 [csharp]
-var output = new Godot.Collections.Array();
-int exitCode = OS.Execute("ls", new string[] {"-l", "/tmp"}, output);
+Godot.Collections.Array output = [];
+int exitCode = OS.Execute("ls", ["-l", "/tmp"], output);
 [/csharp]
 [/codeblocks]
 If you wish to access a shell built-in or execute a composite command, a platform-specific shell can be invoked. For example:
@@ -1238,8 +1374,8 @@ var output = []
 OS.execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output)
 [/gdscript]
 [csharp]
-var output = new Godot.Collections.Array();
-OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
+Godot.Collections.Array output = [];
+OS.Execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output);
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] This method is implemented on Android, Linux, macOS, and Windows.
@@ -1266,6 +1402,7 @@ func (self class) Execute(path String.Readable, arguments Packed.Strings, output
 
 /*
 Creates a new process that runs independently of Godot with redirected IO. It will not terminate when Godot terminates. The path specified in [param path] must exist and be an executable file or macOS [code].app[/code] bundle. The path is resolved based on the current platform. The [param arguments] are used in the given order and separated by a space.
+If [param blocking] is [code]false[/code], created pipes work in non-blocking mode, i.e. read and write operations will return immediately. Use [method FileAccess.get_error] to check if the last read/write operation was successful.
 If the process cannot be created, this method returns an empty [Dictionary]. Otherwise, this method returns a [Dictionary] with the following keys:
 - [code]"stdio"[/code] - [FileAccess] to access the process stdin and stdout pipes (read/write).
 - [code]"stderr"[/code] - [FileAccess] to access the process stderr pipe (read only).
@@ -1277,10 +1414,11 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
 //go:nosplit
-func (self class) ExecuteWithPipe(path String.Readable, arguments Packed.Strings) Dictionary.Any { //gd:OS.execute_with_pipe
+func (self class) ExecuteWithPipe(path String.Readable, arguments Packed.Strings, blocking bool) Dictionary.Any { //gd:OS.execute_with_pipe
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
+	callframe.Arg(frame, blocking)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_execute_with_pipe, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
@@ -1292,13 +1430,13 @@ func (self class) ExecuteWithPipe(path String.Readable, arguments Packed.Strings
 Creates a new process that runs independently of Godot. It will not terminate when Godot terminates. The path specified in [param path] must exist and be an executable file or macOS [code].app[/code] bundle. The path is resolved based on the current platform. The [param arguments] are used in the given order and separated by a space.
 On Windows, if [param open_console] is [code]true[/code] and the process is a console app, a new terminal window will be opened.
 If the process is successfully created, this method returns its process ID, which you can use to monitor the process (and potentially terminate it with [method kill]). Otherwise, this method returns [code]-1[/code].
-For example, running another instance of the project:
+[b]Example:[/b] Run another instance of the project:
 [codeblocks]
 [gdscript]
 var pid = OS.create_process(OS.get_executable_path(), [])
 [/gdscript]
 [csharp]
-var pid = OS.CreateProcess(OS.GetExecutablePath(), new string[] {});
+var pid = OS.CreateProcess(OS.GetExecutablePath(), []);
 [/csharp]
 [/codeblocks]
 See [method execute] if you wish to run an external command and retrieve the results.
@@ -1353,7 +1491,8 @@ func (self class) Kill(pid int64) Error.Code { //gd:OS.kill
 
 /*
 Requests the OS to open a resource identified by [param uri] with the most appropriate program. For example:
-- [code]OS.shell_open("C:\\Users\name\Downloads")[/code] on Windows opens the file explorer at the user's Downloads folder.
+- [code]OS.shell_open("C:\\Users\\name\\Downloads")[/code] on Windows opens the file explorer at the user's Downloads folder.
+- [code]OS.shell_open("C:/Users/name/Downloads")[/code] also works on Windows and opens the file explorer at the user's Downloads folder.
 - [code]OS.shell_open("https://godotengine.org")[/code] opens the default web browser on the official Godot website.
 - [code]OS.shell_open("mailto:example@example.com")[/code] opens the default email client with the "To" field set to [code]example@example.com[/code]. See [url=https://datatracker.ietf.org/doc/html/rfc2368]RFC 2368 - The [code]mailto[/code] URL scheme[/url] for a list of fields that can be added.
 Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or [code]user://[/code] project path into a system path for use with this method.
@@ -1594,11 +1733,25 @@ func (self class) GetVersion() String.Readable { //gd:OS.get_version
 }
 
 /*
+Returns the branded version used in marketing, followed by the build number (on Windows) or the version number (on macOS). Examples include [code]11 (build 22000)[/code] and [code]Sequoia (15.0.0)[/code]. This value can then be appended to [method get_name] to get a full, human-readable operating system name and version combination for the operating system. Windows feature updates such as 24H2 are not contained in the resulting string, but Windows Server is recognized as such (e.g. [code]2025 (build 26100)[/code] for Windows Server 2025).
+[b]Note:[/b] This method is only supported on Windows and macOS. On other operating systems, it returns the same value as [method get_version].
+*/
+//go:nosplit
+func (self class) GetVersionAlias() String.Readable { //gd:OS.get_version_alias
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_version_alias, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
 Returns the command-line arguments passed to the engine.
 Command-line arguments can be written in any form, including both [code]--key value[/code] and [code]--key=value[/code] forms so they can be properly parsed, as long as custom command-line arguments do not conflict with engine arguments.
 You can also incorporate environment variables using the [method get_environment] method.
 You can set [member ProjectSettings.editor/run/main_run_args] to define command-line arguments to be passed by the editor when running the project.
-Here's a minimal example on how to parse command-line arguments into a [Dictionary] using the [code]--key=value[/code] form for arguments:
+[b]Example:[/b] Parse command-line arguments into a [Dictionary] using the [code]--key=value[/code] form for arguments:
 [codeblocks]
 [gdscript]
 var arguments = {}
@@ -1783,7 +1936,7 @@ func (self class) GetLocaleLanguage() String.Readable { //gd:OS.get_locale_langu
 
 /*
 Returns the model name of the current device.
-[b]Note:[/b] This method is implemented on Android and iOS. Returns [code]"GenericDevice"[/code] on unsupported platforms.
+[b]Note:[/b] This method is implemented on Android, iOS, macOS, and Windows. Returns [code]"GenericDevice"[/code] on unsupported platforms.
 */
 //go:nosplit
 func (self class) GetModelName() String.Readable { //gd:OS.get_model_name
@@ -1991,6 +2144,19 @@ func (self class) GetCacheDir() String.Readable { //gd:OS.get_cache_dir
 }
 
 /*
+Returns the [i]global[/i] temporary data directory according to the operating system's standards.
+*/
+//go:nosplit
+func (self class) GetTempDir() String.Readable { //gd:OS.get_temp_dir
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_temp_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
 Returns a string that is unique to the device.
 [b]Note:[/b] This string may change without notice if the user reinstalls their operating system, upgrades it, or modifies their hardware. This means it should generally not be used to encrypt persistent data, as the data saved before an unexpected ID change would become inaccessible. The returned string may also be falsified using external programs, so do not rely on the string returned by this method for security purposes.
 [b]Note:[/b] On Web, returns an empty string and generates an error, as this method cannot be implemented for security reasons.
@@ -2042,10 +2208,10 @@ print(OS.is_keycode_unicode(KEY_TAB))    # Prints false
 print(OS.is_keycode_unicode(KEY_ESCAPE)) # Prints false
 [/gdscript]
 [csharp]
-GD.Print(OS.IsKeycodeUnicode((long)Key.G));      // Prints true
-GD.Print(OS.IsKeycodeUnicode((long)Key.Kp4));    // Prints true
-GD.Print(OS.IsKeycodeUnicode((long)Key.Tab));    // Prints false
-GD.Print(OS.IsKeycodeUnicode((long)Key.Escape)); // Prints false
+GD.Print(OS.IsKeycodeUnicode((long)Key.G));      // Prints True
+GD.Print(OS.IsKeycodeUnicode((long)Key.Kp4));    // Prints True
+GD.Print(OS.IsKeycodeUnicode((long)Key.Tab));    // Prints False
+GD.Print(OS.IsKeycodeUnicode((long)Key.Escape)); // Prints False
 [/csharp]
 [/codeblocks]
 */
@@ -2175,8 +2341,12 @@ func (self class) IsSandboxed() bool { //gd:OS.is_sandboxed
 }
 
 /*
-Requests permission from the OS for the given [param name]. Returns [code]true[/code] if the permission has been successfully granted.
-[b]Note:[/b] This method is currently only implemented on Android, to specifically request permission for [code]"RECORD_AUDIO"[/code] by [code]AudioDriverOpenSL[/code].
+Requests permission from the OS for the given [param name]. Returns [code]true[/code] if the permission has already been granted. See also [signal MainLoop.on_request_permissions_result].
+The [param name] must be the full permission name. For example:
+- [code]OS.request_permission("android.permission.READ_EXTERNAL_STORAGE")[/code]
+- [code]OS.request_permission("android.permission.POST_NOTIFICATIONS")[/code]
+[b]Note:[/b] Permission must be checked during export.
+[b]Note:[/b] This method is only implemented on Android.
 */
 //go:nosplit
 func (self class) RequestPermission(name String.Readable) bool { //gd:OS.request_permission
@@ -2190,7 +2360,8 @@ func (self class) RequestPermission(name String.Readable) bool { //gd:OS.request
 }
 
 /*
-Requests [i]dangerous[/i] permissions from the OS. Returns [code]true[/code] if permissions have been successfully granted.
+Requests [i]dangerous[/i] permissions from the OS. Returns [code]true[/code] if permissions have already been granted. See also [signal MainLoop.on_request_permissions_result].
+[b]Note:[/b] Permissions must be checked during export.
 [b]Note:[/b] This method is only implemented on Android. Normal permissions are automatically granted at install time in Android applications.
 */
 //go:nosplit
@@ -2246,6 +2417,8 @@ const (
 	RenderingDriverOpengl3 RenderingDriver = 1
 	/*The Direct3D 12 rendering driver.*/
 	RenderingDriverD3d12 RenderingDriver = 2
+	/*The Metal rendering driver.*/
+	RenderingDriverMetal RenderingDriver = 3
 )
 
 type SystemDir = gdclass.OSSystemDir //gd:OS.SystemDir
@@ -2267,6 +2440,21 @@ const (
 	SystemDirPictures SystemDir = 6
 	/*Refers to the Ringtones directory path.*/
 	SystemDirRingtones SystemDir = 7
+)
+
+type StdHandleType = gdclass.OSStdHandleType //gd:OS.StdHandleType
+
+const (
+	/*Standard I/O device is invalid. No data can be received from or sent to these standard I/O devices.*/
+	StdHandleInvalid StdHandleType = 0
+	/*Standard I/O device is a console. This typically occurs when Godot is run from a terminal with no redirection. This is also used for all standard I/O devices when running Godot from the editor, at least on desktop platforms.*/
+	StdHandleConsole StdHandleType = 1
+	/*Standard I/O device is a regular file. This typically occurs with redirection from a terminal, e.g. [code]godot > stdout.txt[/code], [code]godot < stdin.txt[/code] or [code]godot > stdout_stderr.txt 2>&1[/code].*/
+	StdHandleFile StdHandleType = 2
+	/*Standard I/O device is a FIFO/pipe. This typically occurs with pipe usage from a terminal, e.g. [code]echo "Hello" | godot[/code].*/
+	StdHandlePipe StdHandleType = 3
+	/*Standard I/O device type is unknown.*/
+	StdHandleUnknown StdHandleType = 4
 )
 
 type Key int
@@ -2436,13 +2624,13 @@ const (
 	KeyHyper Key = 4194371
 	/*Help key.*/
 	KeyHelp Key = 4194373
-	/*Media back key. Not to be confused with the Back button on an Android device.*/
+	/*Back key.*/
 	KeyBack Key = 4194376
-	/*Media forward key.*/
+	/*Forward key.*/
 	KeyForward Key = 4194377
 	/*Media stop key.*/
 	KeyStop Key = 4194378
-	/*Media refresh key.*/
+	/*Refresh key.*/
 	KeyRefresh Key = 4194379
 	/*Volume down key.*/
 	KeyVolumedown Key = 4194380
@@ -2518,35 +2706,35 @@ const (
 	KeyUnknown Key = 8388607
 	/*Space key.*/
 	KeySpace Key = 32
-	/*! key.*/
+	/*Exclamation mark ([code]![/code]) key.*/
 	KeyExclam Key = 33
-	/*" key.*/
+	/*Double quotation mark ([code]"[/code]) key.*/
 	KeyQuotedbl Key = 34
-	/*# key.*/
+	/*Number sign or [i]hash[/i] ([code]#[/code]) key.*/
 	KeyNumbersign Key = 35
-	/*$ key.*/
+	/*Dollar sign ([code]$[/code]) key.*/
 	KeyDollar Key = 36
-	/*% key.*/
+	/*Percent sign ([code]%[/code]) key.*/
 	KeyPercent Key = 37
-	/*& key.*/
+	/*Ampersand ([code]&[/code]) key.*/
 	KeyAmpersand Key = 38
-	/*' key.*/
+	/*Apostrophe ([code]'[/code]) key.*/
 	KeyApostrophe Key = 39
-	/*( key.*/
+	/*Left parenthesis ([code]([/code]) key.*/
 	KeyParenleft Key = 40
-	/*) key.*/
+	/*Right parenthesis ([code])[/code]) key.*/
 	KeyParenright Key = 41
-	/** key.*/
+	/*Asterisk ([code]*[/code]) key.*/
 	KeyAsterisk Key = 42
-	/*+ key.*/
+	/*Plus ([code]+[/code]) key.*/
 	KeyPlus Key = 43
-	/*, key.*/
+	/*Comma ([code],[/code]) key.*/
 	KeyComma Key = 44
-	/*- key.*/
+	/*Minus ([code]-[/code]) key.*/
 	KeyMinus Key = 45
-	/*. key.*/
+	/*Period ([code].[/code]) key.*/
 	KeyPeriod Key = 46
-	/*/ key.*/
+	/*Slash ([code]/[/code]) key.*/
 	KeySlash Key = 47
 	/*Number 0 key.*/
 	Key0 Key = 48
@@ -2568,19 +2756,19 @@ const (
 	Key8 Key = 56
 	/*Number 9 key.*/
 	Key9 Key = 57
-	/*: key.*/
+	/*Colon ([code]:[/code]) key.*/
 	KeyColon Key = 58
-	/*; key.*/
+	/*Semicolon ([code];[/code]) key.*/
 	KeySemicolon Key = 59
-	/*< key.*/
+	/*Less-than sign ([code]<[/code]) key.*/
 	KeyLess Key = 60
-	/*= key.*/
+	/*Equal sign ([code]=[/code]) key.*/
 	KeyEqual Key = 61
-	/*> key.*/
+	/*Greater-than sign ([code]>[/code]) key.*/
 	KeyGreater Key = 62
-	/*? key.*/
+	/*Question mark ([code]?[/code]) key.*/
 	KeyQuestion Key = 63
-	/*@ key.*/
+	/*At sign ([code]@[/code]) key.*/
 	KeyAt Key = 64
 	/*A key.*/
 	KeyA Key = 65
@@ -2634,40 +2822,40 @@ const (
 	KeyY Key = 89
 	/*Z key.*/
 	KeyZ Key = 90
-	/*[ key.*/
+	/*Left bracket ([code][lb][/code]) key.*/
 	KeyBracketleft Key = 91
-	/*\ key.*/
+	/*Backslash ([code]\[/code]) key.*/
 	KeyBackslash Key = 92
-	/*] key.*/
+	/*Right bracket ([code][rb][/code]) key.*/
 	KeyBracketright Key = 93
-	/*^ key.*/
+	/*Caret ([code]^[/code]) key.*/
 	KeyAsciicircum Key = 94
-	/*_ key.*/
+	/*Underscore ([code]_[/code]) key.*/
 	KeyUnderscore Key = 95
-	/*` key.*/
+	/*Backtick ([code]`[/code]) key.*/
 	KeyQuoteleft Key = 96
-	/*{ key.*/
+	/*Left brace ([code]{[/code]) key.*/
 	KeyBraceleft Key = 123
-	/*| key.*/
+	/*Vertical bar or [i]pipe[/i] ([code]|[/code]) key.*/
 	KeyBar Key = 124
-	/*} key.*/
+	/*Right brace ([code]}[/code]) key.*/
 	KeyBraceright Key = 125
-	/*~ key.*/
+	/*Tilde ([code]~[/code]) key.*/
 	KeyAsciitilde Key = 126
-	/*¥ key.*/
+	/*Yen symbol ([code]¥[/code]) key.*/
 	KeyYen Key = 165
-	/*§ key.*/
+	/*Section sign ([code]§[/code]) key.*/
 	KeySection Key = 167
 )
 
-type Pipe struct {
-	Stdio  [1]gdclass.FileAccess `gd:"stdio"`
-	Stderr [1]gdclass.FileAccess `gd:"stderr"`
-	PID    int                   `gd:"pid"`
-}
 type MemoryInfo struct {
 	Physical  int `gd:"physical"`
 	Free      int `gd:"free"`
 	Available int `gd:"available"`
 	Stack     int `gd:"stack"`
+}
+type Pipe struct {
+	Stdio  [1]gdclass.FileAccess `gd:"stdio"`
+	Stderr [1]gdclass.FileAccess `gd:"stderr"`
+	PID    int                   `gd:"pid"`
 }

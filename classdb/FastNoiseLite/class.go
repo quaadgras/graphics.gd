@@ -689,9 +689,9 @@ const (
 	TypePerlin NoiseType = 3
 	/*Cellular includes both Worley noise and Voronoi diagrams which creates various regions of the same value.*/
 	TypeCellular NoiseType = 2
-	/*As opposed to [constant TYPE_PERLIN], gradients exist in a simplex lattice rather than a grid lattice, avoiding directional artifacts.*/
+	/*As opposed to [constant TYPE_PERLIN], gradients exist in a simplex lattice rather than a grid lattice, avoiding directional artifacts. Internally uses FastNoiseLite's OpenSimplex2 noise type.*/
 	TypeSimplex NoiseType = 0
-	/*Modified, higher quality version of [constant TYPE_SIMPLEX], but slower.*/
+	/*Modified, higher quality version of [constant TYPE_SIMPLEX], but slower. Internally uses FastNoiseLite's OpenSimplex2S noise type.*/
 	TypeSimplexSmooth NoiseType = 1
 )
 
@@ -717,7 +717,7 @@ const (
 	DistanceEuclideanSquared CellularDistanceFunction = 1
 	/*Manhattan distance (taxicab metric) to the nearest point.*/
 	DistanceManhattan CellularDistanceFunction = 2
-	/*Blend of [constant DISTANCE_EUCLIDEAN] and [constant DISTANCE_MANHATTAN] to give curved cell boundaries*/
+	/*Blend of [constant DISTANCE_EUCLIDEAN] and [constant DISTANCE_MANHATTAN] to give curved cell boundaries.*/
 	DistanceHybrid CellularDistanceFunction = 3
 )
 

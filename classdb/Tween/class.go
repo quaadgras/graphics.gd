@@ -133,7 +133,7 @@ public void Animate()
 [/codeblocks]
 Some [Tweener]s use transitions and eases. The first accepts a [enum TransitionType] constant, and refers to the way the timing of the animation is handled (see [url=https://easings.net/]easings.net[/url] for some examples). The second accepts an [enum EaseType] constant, and controls where the [code]trans_type[/code] is applied to the interpolation (in the beginning, the end, or both). If you don't know which transition and easing to pick, you can try different [enum TransitionType] constants with [constant EASE_IN_OUT], and use the one that looks best.
 [url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/tween_cheatsheet.webp]Tween easing and transition types cheatsheet[/url]
-[b]Note:[/b] Tweens are not designed to be re-used and trying to do so results in an undefined behavior. Create a new Tween for each animation and every time you replay an animation from start. Keep in mind that Tweens start immediately, so only create a Tween when you want to start animating.
+[b]Note:[/b] Tweens are not designed to be reused and trying to do so results in an undefined behavior. Create a new Tween for each animation and every time you replay an animation from start. Keep in mind that Tweens start immediately, so only create a Tween when you want to start animating.
 [b]Note:[/b] The tween is processed after all of the nodes in the current frame, i.e. node's [method Node._process] method would be called before the tween (or [method Node._physics_process] depending on the value passed to [method set_process_mode]).
 */
 type Instance [1]gdclass.Tween
@@ -148,7 +148,6 @@ type Any interface {
 
 /*
 Creates and appends a [PropertyTweener]. This method tweens a [param property] of an [param object] between an initial value and [param final_val] in a span of time equal to [param duration], in seconds. The initial value by default is the property's value at the time the tweening of the [PropertyTweener] starts.
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var tween = create_tween()
@@ -304,6 +303,27 @@ func (self Instance) TweenMethod(method func(value any), from any, to any, durat
 }
 
 /*
+Creates and appends a [SubtweenTweener]. This method can be used to nest [param subtween] within this [Tween], allowing for the creation of more complex and composable sequences.
+[codeblock]
+# Subtween will rotate the object.
+var subtween = create_tween()
+subtween.tween_property(self, "rotation_degrees", 45.0, 1.0)
+subtween.tween_property(self, "rotation_degrees", 0.0, 1.0)
+
+# Parent tween will execute the subtween as one of its steps.
+var tween = create_tween()
+tween.tween_property(self, "position:x", 500, 3.0)
+tween.tween_subtween(subtween)
+tween.tween_property(self, "position:x", 300, 2.0)
+[/codeblock]
+[b]Note:[/b] The methods [method pause], [method stop], and [method set_loops] can cause the parent [Tween] to get stuck on the subtween step; see the documentation for those methods for more information.
+[b]Note:[/b] The pause and process modes set by [method set_pause_mode] and [method set_process_mode] on [param subtween] will be overridden by the parent [Tween]'s settings.
+*/
+func (self Instance) TweenSubtween(subtween [1]gdclass.Tween) [1]gdclass.SubtweenTweener { //gd:Tween.tween_subtween
+	return [1]gdclass.SubtweenTweener(class(self).TweenSubtween(subtween))
+}
+
+/*
 Processes the [Tween] by the given [param delta] value, in seconds. This is mostly useful for manual control when the [Tween] is paused. It can also be used to end the [Tween] animation immediately, by setting [param delta] longer than the whole duration of the [Tween] animation.
 Returns [code]true[/code] if the [Tween] still has [Tweener]s that haven't finished.
 */
@@ -313,6 +333,22 @@ func (self Instance) CustomStep(delta Float.X) bool { //gd:Tween.custom_step
 
 /*
 Stops the tweening and resets the [Tween] to its initial state. This will not remove any appended [Tweener]s.
+[b]Note:[/b] This does [i]not[/i] reset targets of [PropertyTweener]s to their values when the [Tween] first started.
+[codeblock]
+var tween = create_tween()
+
+# Will move from 0 to 500 over 1 second.
+position.x = 0.0
+tween.tween_property(self, "position:x", 500, 1.0)
+
+# Will be at (about) 250 when the timer finishes.
+await get_tree().create_timer(0.5).timeout
+
+# Will now move from (about) 250 to 500 over 1 second,
+# thus at half the speed as before.
+tween.stop()
+tween.play()
+[/codeblock]
 [b]Note:[/b] If a Tween is stopped and not bound to any node, it will exist indefinitely until manually started or invalidated. If you lose a reference to such Tween, you can retrieve it using [method SceneTree.get_processed_tweens].
 */
 func (self Instance) Stop() { //gd:Tween.stop
@@ -388,6 +424,13 @@ func (self Instance) SetPauseMode(mode gdclass.TweenTweenPauseMode) [1]gdclass.T
 }
 
 /*
+If [param ignore] is [code]true[/code], the tween will ignore [member Engine.time_scale] and update with the real, elapsed time. This affects all [Tweener]s and their delays. Default value is [code]false[/code].
+*/
+func (self Instance) SetIgnoreTimeScale() [1]gdclass.Tween { //gd:Tween.set_ignore_time_scale
+	return [1]gdclass.Tween(class(self).SetIgnoreTimeScale(true))
+}
+
+/*
 If [param parallel] is [code]true[/code], the [Tweener]s appended after this method will by default run simultaneously, as opposed to sequentially.
 [b]Note:[/b] Just like with [method parallel], the tweener added right before this method will also be part of the parallel step.
 [codeblock]
@@ -424,16 +467,28 @@ func (self Instance) SetSpeedScale(speed Float.X) [1]gdclass.Tween { //gd:Tween.
 }
 
 /*
-Sets the default transition type for [PropertyTweener]s and [MethodTweener]s animated by this [Tween].
-If not specified, the default value is [constant TRANS_LINEAR].
+Sets the default transition type for [PropertyTweener]s and [MethodTweener]s appended after this method.
+Before this method is called, the default transition type is [constant TRANS_LINEAR].
+[codeblock]
+var tween = create_tween()
+tween.tween_property(self, "position", Vector2(300, 0), 0.5) # Uses TRANS_LINEAR.
+tween.set_trans(Tween.TRANS_SINE)
+tween.tween_property(self, "rotation_degrees", 45.0, 0.5) # Uses TRANS_SINE.
+[/codeblock]
 */
 func (self Instance) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.Tween { //gd:Tween.set_trans
 	return [1]gdclass.Tween(class(self).SetTrans(trans))
 }
 
 /*
-Sets the default ease type for [PropertyTweener]s and [MethodTweener]s animated by this [Tween].
-If not specified, the default value is [constant EASE_IN_OUT].
+Sets the default ease type for [PropertyTweener]s and [MethodTweener]s appended after this method.
+Before this method is called, the default ease type is [constant EASE_IN_OUT].
+[codeblock]
+var tween = create_tween()
+tween.tween_property(self, "position", Vector2(300, 0), 0.5) # Uses EASE_IN_OUT.
+tween.set_ease(Tween.EASE_IN)
+tween.tween_property(self, "rotation_degrees", 45.0, 0.5) # Uses EASE_IN.
+[/codeblock]
 */
 func (self Instance) SetEase(ease gdclass.TweenEaseType) [1]gdclass.Tween { //gd:Tween.set_ease
 	return [1]gdclass.Tween(class(self).SetEase(ease))
@@ -441,7 +496,6 @@ func (self Instance) SetEase(ease gdclass.TweenEaseType) [1]gdclass.Tween { //gd
 
 /*
 Makes the next [Tweener] run parallelly to the previous one.
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var tween = create_tween()
@@ -518,7 +572,6 @@ func New() Instance {
 
 /*
 Creates and appends a [PropertyTweener]. This method tweens a [param property] of an [param object] between an initial value and [param final_val] in a span of time equal to [param duration], in seconds. The initial value by default is the property's value at the time the tweening of the [PropertyTweener] starts.
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var tween = create_tween()
@@ -702,6 +755,34 @@ func (self class) TweenMethod(method Callable.Function, from variant.Any, to var
 }
 
 /*
+Creates and appends a [SubtweenTweener]. This method can be used to nest [param subtween] within this [Tween], allowing for the creation of more complex and composable sequences.
+[codeblock]
+# Subtween will rotate the object.
+var subtween = create_tween()
+subtween.tween_property(self, "rotation_degrees", 45.0, 1.0)
+subtween.tween_property(self, "rotation_degrees", 0.0, 1.0)
+
+# Parent tween will execute the subtween as one of its steps.
+var tween = create_tween()
+tween.tween_property(self, "position:x", 500, 3.0)
+tween.tween_subtween(subtween)
+tween.tween_property(self, "position:x", 300, 2.0)
+[/codeblock]
+[b]Note:[/b] The methods [method pause], [method stop], and [method set_loops] can cause the parent [Tween] to get stuck on the subtween step; see the documentation for those methods for more information.
+[b]Note:[/b] The pause and process modes set by [method set_pause_mode] and [method set_process_mode] on [param subtween] will be overridden by the parent [Tween]'s settings.
+*/
+//go:nosplit
+func (self class) TweenSubtween(subtween [1]gdclass.Tween) [1]gdclass.SubtweenTweener { //gd:Tween.tween_subtween
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(subtween[0])[0])
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_tween_subtween, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.SubtweenTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.SubtweenTweener](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
 Processes the [Tween] by the given [param delta] value, in seconds. This is mostly useful for manual control when the [Tween] is paused. It can also be used to end the [Tween] animation immediately, by setting [param delta] longer than the whole duration of the [Tween] animation.
 Returns [code]true[/code] if the [Tween] still has [Tweener]s that haven't finished.
 */
@@ -718,6 +799,22 @@ func (self class) CustomStep(delta float64) bool { //gd:Tween.custom_step
 
 /*
 Stops the tweening and resets the [Tween] to its initial state. This will not remove any appended [Tweener]s.
+[b]Note:[/b] This does [i]not[/i] reset targets of [PropertyTweener]s to their values when the [Tween] first started.
+[codeblock]
+var tween = create_tween()
+
+# Will move from 0 to 500 over 1 second.
+position.x = 0.0
+tween.tween_property(self, "position:x", 500, 1.0)
+
+# Will be at (about) 250 when the timer finishes.
+await get_tree().create_timer(0.5).timeout
+
+# Will now move from (about) 250 to 500 over 1 second,
+# thus at half the speed as before.
+tween.stop()
+tween.play()
+[/codeblock]
 [b]Note:[/b] If a Tween is stopped and not bound to any node, it will exist indefinitely until manually started or invalidated. If you lose a reference to such Tween, you can retrieve it using [method SceneTree.get_processed_tweens].
 */
 //go:nosplit
@@ -848,6 +945,20 @@ func (self class) SetPauseMode(mode gdclass.TweenTweenPauseMode) [1]gdclass.Twee
 }
 
 /*
+If [param ignore] is [code]true[/code], the tween will ignore [member Engine.time_scale] and update with the real, elapsed time. This affects all [Tweener]s and their delays. Default value is [code]false[/code].
+*/
+//go:nosplit
+func (self class) SetIgnoreTimeScale(ignore bool) [1]gdclass.Tween { //gd:Tween.set_ignore_time_scale
+	var frame = callframe.New()
+	callframe.Arg(frame, ignore)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_ignore_time_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
 If [param parallel] is [code]true[/code], the [Tweener]s appended after this method will by default run simultaneously, as opposed to sequentially.
 [b]Note:[/b] Just like with [method parallel], the tweener added right before this method will also be part of the parallel step.
 [codeblock]
@@ -911,8 +1022,14 @@ func (self class) SetSpeedScale(speed float64) [1]gdclass.Tween { //gd:Tween.set
 }
 
 /*
-Sets the default transition type for [PropertyTweener]s and [MethodTweener]s animated by this [Tween].
-If not specified, the default value is [constant TRANS_LINEAR].
+Sets the default transition type for [PropertyTweener]s and [MethodTweener]s appended after this method.
+Before this method is called, the default transition type is [constant TRANS_LINEAR].
+[codeblock]
+var tween = create_tween()
+tween.tween_property(self, "position", Vector2(300, 0), 0.5) # Uses TRANS_LINEAR.
+tween.set_trans(Tween.TRANS_SINE)
+tween.tween_property(self, "rotation_degrees", 45.0, 0.5) # Uses TRANS_SINE.
+[/codeblock]
 */
 //go:nosplit
 func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.Tween { //gd:Tween.set_trans
@@ -926,8 +1043,14 @@ func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.Tween {
 }
 
 /*
-Sets the default ease type for [PropertyTweener]s and [MethodTweener]s animated by this [Tween].
-If not specified, the default value is [constant EASE_IN_OUT].
+Sets the default ease type for [PropertyTweener]s and [MethodTweener]s appended after this method.
+Before this method is called, the default ease type is [constant EASE_IN_OUT].
+[codeblock]
+var tween = create_tween()
+tween.tween_property(self, "position", Vector2(300, 0), 0.5) # Uses EASE_IN_OUT.
+tween.set_ease(Tween.EASE_IN)
+tween.tween_property(self, "rotation_degrees", 45.0, 0.5) # Uses EASE_IN.
+[/codeblock]
 */
 //go:nosplit
 func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.Tween { //gd:Tween.set_ease
@@ -942,7 +1065,6 @@ func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.Tween { //gd:Tw
 
 /*
 Makes the next [Tweener] run parallelly to the previous one.
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var tween = create_tween()

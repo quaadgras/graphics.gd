@@ -82,6 +82,14 @@ func (self Instance) SetLineSpacing(value Float.X) {
 	class(self).SetLineSpacing(float64(value))
 }
 
+func (self Instance) ParagraphSpacing() Float.X {
+	return Float.X(Float.X(class(self).GetParagraphSpacing()))
+}
+
+func (self Instance) SetParagraphSpacing(value Float.X) {
+	class(self).SetParagraphSpacing(float64(value))
+}
+
 func (self Instance) Font() [1]gdclass.Font {
 	return [1]gdclass.Font(class(self).GetFont())
 }
@@ -160,6 +168,25 @@ func (self class) GetLineSpacing() float64 { //gd:LabelSettings.get_line_spacing
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LabelSettings.Bind_get_line_spacing, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetParagraphSpacing(spacing float64) { //gd:LabelSettings.set_paragraph_spacing
+	var frame = callframe.New()
+	callframe.Arg(frame, spacing)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LabelSettings.Bind_set_paragraph_spacing, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetParagraphSpacing() float64 { //gd:LabelSettings.get_paragraph_spacing
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LabelSettings.Bind_get_paragraph_spacing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

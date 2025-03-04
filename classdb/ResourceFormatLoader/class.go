@@ -71,6 +71,7 @@ type Interface interface {
 	GetResourceType(path string) string
 	//Returns the script class name associated with the [Resource] under the given [param path]. If the resource has no script or the script isn't a named class, it should return [code]""[/code].
 	GetResourceScriptClass(path string) string
+	//Should return the unique ID for the resource associated with the given path. If this method is not overridden, a [code].uid[/code] file is generated along with the resource file, containing the unique ID.
 	GetResourceUid(path string) int
 	//If implemented, gets the dependencies of a given resource. If [param add_types] is [code]true[/code], paths should be appended [code]::TypeName[/code], where [code]TypeName[/code] is the class name of the dependency.
 	//[b]Note:[/b] Custom resource types defined by scripts aren't known by the [ClassDB], so you might just return [code]"Resource"[/code] for them.
@@ -186,6 +187,10 @@ func (Instance) _get_resource_script_class(impl func(ptr unsafe.Pointer, path st
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
+
+/*
+Should return the unique ID for the resource associated with the given path. If this method is not overridden, a [code].uid[/code] file is generated along with the resource file, containing the unique ID.
+*/
 func (Instance) _get_resource_uid(impl func(ptr unsafe.Pointer, path string) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
@@ -388,6 +393,9 @@ func (class) _get_resource_script_class(impl func(ptr unsafe.Pointer, path Strin
 	}
 }
 
+/*
+Should return the unique ID for the resource associated with the given path. If this method is not overridden, a [code].uid[/code] file is generated along with the resource file, containing the unique ID.
+*/
 func (class) _get_resource_uid(impl func(ptr unsafe.Pointer, path String.Readable) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))

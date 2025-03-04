@@ -68,6 +68,20 @@ func (self Instance) GetBinding(index int) [1]gdclass.OpenXRIPBinding { //gd:Ope
 	return [1]gdclass.OpenXRIPBinding(class(self).GetBinding(int64(index)))
 }
 
+/*
+Get the number of binding modifiers in this interaction profile.
+*/
+func (self Instance) GetBindingModifierCount() int { //gd:OpenXRInteractionProfile.get_binding_modifier_count
+	return int(int(class(self).GetBindingModifierCount()))
+}
+
+/*
+Get the [OpenXRBindingModifier] at this index.
+*/
+func (self Instance) GetBindingModifier(index int) [1]gdclass.OpenXRIPBindingModifier { //gd:OpenXRInteractionProfile.get_binding_modifier
+	return [1]gdclass.OpenXRIPBindingModifier(class(self).GetBindingModifier(int64(index)))
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.OpenXRInteractionProfile
@@ -101,6 +115,14 @@ func (self Instance) Bindings() []any {
 
 func (self Instance) SetBindings(value []any) {
 	class(self).SetBindings(gd.EngineArrayFromSlice(value))
+}
+
+func (self Instance) BindingModifiers() []any {
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetBindingModifiers())))
+}
+
+func (self Instance) SetBindingModifiers(value []any) {
+	class(self).SetBindingModifiers(gd.EngineArrayFromSlice(value))
 }
 
 //go:nosplit
@@ -163,6 +185,52 @@ func (self class) GetBindings() Array.Any { //gd:OpenXRInteractionProfile.get_bi
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_bindings, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Get the number of binding modifiers in this interaction profile.
+*/
+//go:nosplit
+func (self class) GetBindingModifierCount() int64 { //gd:OpenXRInteractionProfile.get_binding_modifier_count
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_binding_modifier_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Get the [OpenXRBindingModifier] at this index.
+*/
+//go:nosplit
+func (self class) GetBindingModifier(index int64) [1]gdclass.OpenXRIPBindingModifier { //gd:OpenXRInteractionProfile.get_binding_modifier
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_binding_modifier, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.OpenXRIPBindingModifier{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRIPBindingModifier](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetBindingModifiers(binding_modifiers Array.Any) { //gd:OpenXRInteractionProfile.set_binding_modifiers
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(binding_modifiers)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfile.Bind_set_binding_modifiers, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetBindingModifiers() Array.Any { //gd:OpenXRInteractionProfile.get_binding_modifiers
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_binding_modifiers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret

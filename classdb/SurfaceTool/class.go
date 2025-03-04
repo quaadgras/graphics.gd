@@ -81,7 +81,7 @@ type Any interface {
 
 /*
 Set to [constant SKIN_8_WEIGHTS] to indicate that up to 8 bone influences per vertex may be used.
-By default, only 4 bone influences are used ([constant SKIN_4_WEIGHTS])
+By default, only 4 bone influences are used ([constant SKIN_4_WEIGHTS]).
 [b]Note:[/b] This function takes an enum, not the exact number of weights.
 */
 func (self Instance) SetSkinWeightCount(count gdclass.SurfaceToolSkinWeightCount) { //gd:SurfaceTool.set_skin_weight_count
@@ -223,7 +223,7 @@ func (self Instance) Deindex() { //gd:SurfaceTool.deindex
 
 /*
 Generates normals from vertices so you do not have to do it manually. If [param flip] is [code]true[/code], the resulting normals will be inverted. [method generate_normals] should be called [i]after[/i] generating geometry and [i]before[/i] committing the mesh using [method commit] or [method commit_to_arrays]. For correct display of normal-mapped surfaces, you will also have to generate tangents using [method generate_tangents].
-[b]Note:[/b] [method generate_normals] only works if the primitive type to be set to [constant Mesh.PRIMITIVE_TRIANGLES].
+[b]Note:[/b] [method generate_normals] only works if the primitive type is set to [constant Mesh.PRIMITIVE_TRIANGLES].
 [b]Note:[/b] [method generate_normals] takes smooth groups into account. To generate smooth normals, set the smooth group to a value greater than or equal to [code]0[/code] using [method set_smooth_group] or leave the smooth group at the default of [code]0[/code]. To generate flat normals, set the smooth group to [code]-1[/code] using [method set_smooth_group] prior to adding vertices.
 */
 func (self Instance) GenerateNormals() { //gd:SurfaceTool.generate_normals
@@ -231,7 +231,7 @@ func (self Instance) GenerateNormals() { //gd:SurfaceTool.generate_normals
 }
 
 /*
-Generates a tangent vector for each vertex. Requires that each vertex have UVs and normals set already (see [method generate_normals]).
+Generates a tangent vector for each vertex. Requires that each vertex already has UVs and normals set (see [method generate_normals]).
 */
 func (self Instance) GenerateTangents() { //gd:SurfaceTool.generate_tangents
 	class(self).GenerateTangents()
@@ -309,7 +309,7 @@ func (self Instance) AppendFrom(existing [1]gdclass.Mesh, surface int, transform
 
 /*
 Returns a constructed [ArrayMesh] from current information passed in. If an existing [ArrayMesh] is passed in as an argument, will add an extra surface to the existing [ArrayMesh].
-[b]FIXME:[/b] Document possible values for [param flags], it changed in 4.0. Likely some combinations of [enum Mesh.ArrayFormat].
+The [param flags] argument can be the bitwise OR of [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 */
 func (self Instance) Commit() [1]gdclass.ArrayMesh { //gd:SurfaceTool.commit
 	return [1]gdclass.ArrayMesh(class(self).Commit([1][1]gdclass.ArrayMesh{}[0], int64(0)))
@@ -343,7 +343,7 @@ func New() Instance {
 
 /*
 Set to [constant SKIN_8_WEIGHTS] to indicate that up to 8 bone influences per vertex may be used.
-By default, only 4 bone influences are used ([constant SKIN_4_WEIGHTS])
+By default, only 4 bone influences are used ([constant SKIN_4_WEIGHTS]).
 [b]Note:[/b] This function takes an enum, not the exact number of weights.
 */
 //go:nosplit
@@ -588,7 +588,7 @@ func (self class) Deindex() { //gd:SurfaceTool.deindex
 
 /*
 Generates normals from vertices so you do not have to do it manually. If [param flip] is [code]true[/code], the resulting normals will be inverted. [method generate_normals] should be called [i]after[/i] generating geometry and [i]before[/i] committing the mesh using [method commit] or [method commit_to_arrays]. For correct display of normal-mapped surfaces, you will also have to generate tangents using [method generate_tangents].
-[b]Note:[/b] [method generate_normals] only works if the primitive type to be set to [constant Mesh.PRIMITIVE_TRIANGLES].
+[b]Note:[/b] [method generate_normals] only works if the primitive type is set to [constant Mesh.PRIMITIVE_TRIANGLES].
 [b]Note:[/b] [method generate_normals] takes smooth groups into account. To generate smooth normals, set the smooth group to a value greater than or equal to [code]0[/code] using [method set_smooth_group] or leave the smooth group at the default of [code]0[/code]. To generate flat normals, set the smooth group to [code]-1[/code] using [method set_smooth_group] prior to adding vertices.
 */
 //go:nosplit
@@ -601,7 +601,7 @@ func (self class) GenerateNormals(flip bool) { //gd:SurfaceTool.generate_normals
 }
 
 /*
-Generates a tangent vector for each vertex. Requires that each vertex have UVs and normals set already (see [method generate_normals]).
+Generates a tangent vector for each vertex. Requires that each vertex already has UVs and normals set (see [method generate_normals]).
 */
 //go:nosplit
 func (self class) GenerateTangents() { //gd:SurfaceTool.generate_tangents
@@ -742,7 +742,7 @@ func (self class) AppendFrom(existing [1]gdclass.Mesh, surface int64, transform 
 
 /*
 Returns a constructed [ArrayMesh] from current information passed in. If an existing [ArrayMesh] is passed in as an argument, will add an extra surface to the existing [ArrayMesh].
-[b]FIXME:[/b] Document possible values for [param flags], it changed in 4.0. Likely some combinations of [enum Mesh.ArrayFormat].
+The [param flags] argument can be the bitwise OR of [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 */
 //go:nosplit
 func (self class) Commit(existing [1]gdclass.ArrayMesh, flags int64) [1]gdclass.ArrayMesh { //gd:SurfaceTool.commit

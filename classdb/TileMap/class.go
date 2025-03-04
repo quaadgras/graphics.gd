@@ -50,6 +50,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Node for 2D tile-based maps. Tilemaps use a [TileSet] which contain a list of tiles which are used to create grid-based maps. A TileMap may have several layers, layouting tiles on top of each other.
 For performance reasons, all TileMap updates are batched at the end of a frame. Notably, this means that scene tiles from a [TileSetScenesCollectionSource] may be initialized after their parent. This is only queued when inside the scene tree.
 To force an update earlier on, call [method update_internals].
+[b]Note:[/b] For performance and compatibility reasons, the coordinates serialized by [TileMap] are limited to 16-bit signed integers, i.e. the range for X and Y coordinates is from [code]-32768[/code] to [code]32767[/code]. When saving tile data, tiles outside this range are wrapped.
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
 
@@ -372,6 +373,27 @@ func (self Instance) GetCellTileData(layer int, coords Vector2i.XY) [1]gdclass.T
 }
 
 /*
+Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is flipped horizontally. The result is valid only for atlas sources.
+*/
+func (self Instance) IsCellFlippedH(layer int, coords Vector2i.XY) bool { //gd:TileMap.is_cell_flipped_h
+	return bool(class(self).IsCellFlippedH(int64(layer), Vector2i.XY(coords), false))
+}
+
+/*
+Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is flipped vertically. The result is valid only for atlas sources.
+*/
+func (self Instance) IsCellFlippedV(layer int, coords Vector2i.XY) bool { //gd:TileMap.is_cell_flipped_v
+	return bool(class(self).IsCellFlippedV(int64(layer), Vector2i.XY(coords), false))
+}
+
+/*
+Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is transposed. The result is valid only for atlas sources.
+*/
+func (self Instance) IsCellTransposed(layer int, coords Vector2i.XY) bool { //gd:TileMap.is_cell_transposed
+	return bool(class(self).IsCellTransposed(int64(layer), Vector2i.XY(coords), false))
+}
+
+/*
 Returns the coordinates of the tile for given physics body RID. Such RID can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 */
 func (self Instance) GetCoordsForBodyRid(body RID.Body2D) Vector2i.XY { //gd:TileMap.get_coords_for_body_rid
@@ -410,7 +432,7 @@ func (self Instance) SetPattern(layer int, position Vector2i.XY, pattern [1]gdcl
 
 /*
 Update all the cells in the [param cells] coordinates array so that they use the given [param terrain] for the given [param terrain_set]. If an updated cell has the same terrain as one of its neighboring cells, this function tries to join the two. This function might update neighboring tiles if needed to create correct terrain transitions.
-If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
+If [param ignore_empty_terrains] is [code]true[/code], empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
 If [param layer] is negative, the layers are accessed from the last one.
 [b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
@@ -420,7 +442,7 @@ func (self Instance) SetCellsTerrainConnect(layer int, cells []Vector2i.XY, terr
 
 /*
 Update all the cells in the [param path] coordinates array so that they use the given [param terrain] for the given [param terrain_set]. The function will also connect two successive cell in the path with the same terrain. This function might update neighboring tiles if needed to create correct terrain transitions.
-If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
+If [param ignore_empty_terrains] is [code]true[/code], empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
 If [param layer] is negative, the layers are accessed from the last one.
 [b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
@@ -1155,6 +1177,54 @@ func (self class) GetCellTileData(layer int64, coords Vector2i.XY, use_proxies b
 }
 
 /*
+Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is flipped horizontally. The result is valid only for atlas sources.
+*/
+//go:nosplit
+func (self class) IsCellFlippedH(layer int64, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_flipped_h
+	var frame = callframe.New()
+	callframe.Arg(frame, layer)
+	callframe.Arg(frame, coords)
+	callframe.Arg(frame, use_proxies)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_cell_flipped_h, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is flipped vertically. The result is valid only for atlas sources.
+*/
+//go:nosplit
+func (self class) IsCellFlippedV(layer int64, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_flipped_v
+	var frame = callframe.New()
+	callframe.Arg(frame, layer)
+	callframe.Arg(frame, coords)
+	callframe.Arg(frame, use_proxies)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_cell_flipped_v, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is transposed. The result is valid only for atlas sources.
+*/
+//go:nosplit
+func (self class) IsCellTransposed(layer int64, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_transposed
+	var frame = callframe.New()
+	callframe.Arg(frame, layer)
+	callframe.Arg(frame, coords)
+	callframe.Arg(frame, use_proxies)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_cell_transposed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns the coordinates of the tile for given physics body RID. Such RID can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 */
 //go:nosplit
@@ -1231,7 +1301,7 @@ func (self class) SetPattern(layer int64, position Vector2i.XY, pattern [1]gdcla
 
 /*
 Update all the cells in the [param cells] coordinates array so that they use the given [param terrain] for the given [param terrain_set]. If an updated cell has the same terrain as one of its neighboring cells, this function tries to join the two. This function might update neighboring tiles if needed to create correct terrain transitions.
-If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
+If [param ignore_empty_terrains] is [code]true[/code], empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
 If [param layer] is negative, the layers are accessed from the last one.
 [b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
@@ -1250,7 +1320,7 @@ func (self class) SetCellsTerrainConnect(layer int64, cells Array.Contains[Vecto
 
 /*
 Update all the cells in the [param path] coordinates array so that they use the given [param terrain] for the given [param terrain_set]. The function will also connect two successive cell in the path with the same terrain. This function might update neighboring tiles if needed to create correct terrain transitions.
-If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
+If [param ignore_empty_terrains] is [code]true[/code], empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
 If [param layer] is negative, the layers are accessed from the last one.
 [b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */

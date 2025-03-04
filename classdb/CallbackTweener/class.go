@@ -57,10 +57,10 @@ type Any interface {
 
 /*
 Makes the callback call delayed by given time in seconds.
-[b]Example:[/b]
+[b]Example:[/b] Call [method Node.queue_free] after 2 seconds:
 [codeblock]
 var tween = get_tree().create_tween()
-tween.tween_callback(queue_free).set_delay(2) #this will call queue_free() after 2 seconds
+tween.tween_callback(queue_free).set_delay(2)
 [/codeblock]
 */
 func (self Instance) SetDelay(delay Float.X) [1]gdclass.CallbackTweener { //gd:CallbackTweener.set_delay
@@ -88,10 +88,10 @@ func New() Instance {
 
 /*
 Makes the callback call delayed by given time in seconds.
-[b]Example:[/b]
+[b]Example:[/b] Call [method Node.queue_free] after 2 seconds:
 [codeblock]
 var tween = get_tree().create_tween()
-tween.tween_callback(queue_free).set_delay(2) #this will call queue_free() after 2 seconds
+tween.tween_callback(queue_free).set_delay(2)
 [/codeblock]
 */
 //go:nosplit

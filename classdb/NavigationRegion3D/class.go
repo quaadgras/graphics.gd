@@ -11,6 +11,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -114,6 +115,13 @@ Returns [code]true[/code] when the [NavigationMesh] is being baked on a backgrou
 */
 func (self Instance) IsBaking() bool { //gd:NavigationRegion3D.is_baking
 	return bool(class(self).IsBaking())
+}
+
+/*
+Returns the axis-aligned bounding box for the region's transformed navigation mesh.
+*/
+func (self Instance) GetBounds() AABB.PositionSize { //gd:NavigationRegion3D.get_bounds
+	return AABB.PositionSize(class(self).GetBounds())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -394,6 +402,19 @@ func (self class) IsBaking() bool { //gd:NavigationRegion3D.is_baking
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_is_baking, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the axis-aligned bounding box for the region's transformed navigation mesh.
+*/
+//go:nosplit
+func (self class) GetBounds() AABB.PositionSize { //gd:NavigationRegion3D.get_bounds
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[AABB.PositionSize](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_bounds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

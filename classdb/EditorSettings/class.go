@@ -103,7 +103,7 @@ func (self Instance) Erase(property string) { //gd:EditorSettings.erase
 }
 
 /*
-Sets the initial value of the setting specified by [param name] to [param value]. This is used to provide a value for the Revert button in the Editor Settings. If [param update_current] is true, the current value of the setting will be set to [param value] as well.
+Sets the initial value of the setting specified by [param name] to [param value]. This is used to provide a value for the Revert button in the Editor Settings. If [param update_current] is [code]true[/code], the setting is reset to [param value] as well.
 */
 func (self Instance) SetInitialValue(name string, value any, update_current bool) { //gd:EditorSettings.set_initial_value
 	class(self).SetInitialValue(String.Name(String.New(name)), variant.New(value), update_current)
@@ -114,7 +114,6 @@ Adds a custom property info to a property. The dictionary must contain:
 - [code]name[/code]: [String] (the name of the property)
 - [code]type[/code]: [int] (see [enum Variant.Type])
 - optionally [code]hint[/code]: [int] (see [enum PropertyHint]) and [code]hint_string[/code]: [String]
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var settings = EditorInterface.get_editor_settings()
@@ -293,7 +292,7 @@ func (self class) Erase(property String.Readable) { //gd:EditorSettings.erase
 }
 
 /*
-Sets the initial value of the setting specified by [param name] to [param value]. This is used to provide a value for the Revert button in the Editor Settings. If [param update_current] is true, the current value of the setting will be set to [param value] as well.
+Sets the initial value of the setting specified by [param name] to [param value]. This is used to provide a value for the Revert button in the Editor Settings. If [param update_current] is [code]true[/code], the setting is reset to [param value] as well.
 */
 //go:nosplit
 func (self class) SetInitialValue(name String.Name, value variant.Any, update_current bool) { //gd:EditorSettings.set_initial_value
@@ -311,7 +310,6 @@ Adds a custom property info to a property. The dictionary must contain:
 - [code]name[/code]: [String] (the name of the property)
 - [code]type[/code]: [int] (see [enum Variant.Type])
 - optionally [code]hint[/code]: [int] (see [enum PropertyHint]) and [code]hint_string[/code]: [String]
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var settings = EditorInterface.get_editor_settings()

@@ -44,7 +44,7 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-A raycast represents a ray from its origin to its [member target_position] that finds the closest [CollisionObject3D] along its path, if it intersects any.
+A raycast represents a ray from its origin to its [member target_position] that finds the closest object along its path, if it intersects any.
 [RayCast3D] can ignore some objects by adding them to an exception list, by making its detection reporting ignore [Area3D]s ([member collide_with_areas]) or [PhysicsBody3D]s ([member collide_with_bodies]), or by configuring physics layers.
 [RayCast3D] calculates intersection every physics frame, and it holds the result until the next physics frame. For an immediate raycast, or if you want to configure a [RayCast3D] multiple times within the same physics frame, use [method force_raycast_update].
 To sweep over a region of 3D space, you can approximate the region with multiple [RayCast3D]s or use [ShapeCast3D].
@@ -76,6 +76,7 @@ func (self Instance) ForceRaycastUpdate() { //gd:RayCast3D.force_raycast_update
 
 /*
 Returns the first object that the ray intersects, or [code]null[/code] if no object is intersecting the ray (i.e. [method is_colliding] returns [code]false[/code]).
+[b]Note:[/b] This object is not guaranteed to be a [CollisionObject3D]. For example, if the ray intersects a [CSGShape3D] or a [GridMap], the method will return a [CSGShape3D] or [GridMap] instance.
 */
 func (self Instance) GetCollider() Object.Instance { //gd:RayCast3D.get_collider
 	return Object.Instance(class(self).GetCollider())
@@ -345,6 +346,7 @@ func (self class) ForceRaycastUpdate() { //gd:RayCast3D.force_raycast_update
 
 /*
 Returns the first object that the ray intersects, or [code]null[/code] if no object is intersecting the ray (i.e. [method is_colliding] returns [code]false[/code]).
+[b]Note:[/b] This object is not guaranteed to be a [CollisionObject3D]. For example, if the ray intersects a [CSGShape3D] or a [GridMap], the method will return a [CSGShape3D] or [GridMap] instance.
 */
 //go:nosplit
 func (self class) GetCollider() [1]gd.Object { //gd:RayCast3D.get_collider

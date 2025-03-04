@@ -55,10 +55,12 @@ for key in container:
 
 	prints(key, container[key])
 
-# Prints:
-# key value
-# lock (0, 0)
-# another_key 123
+[/codeblock]
+Prints:
+[codeblock lang=text]
+key value
+lock (0, 0)
+another_key 123
 [/codeblock]
 Nested containers will be packed recursively. While iterating, they will be returned as [PackedDataContainerRef].
 */

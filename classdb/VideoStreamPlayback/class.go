@@ -57,9 +57,9 @@ type Any interface {
 	AsVideoStreamPlayback() Instance
 }
 type Interface interface {
-	//Stops playback. May be called multiple times before [method _play], or in response to [method VideoStreamPlayer.stop]. [method _is_playing] should return false once stopped.
+	//Stops playback. May be called multiple times before [method _play], or in response to [method VideoStreamPlayer.stop]. [method _is_playing] should return [code]false[/code] once stopped.
 	Stop()
-	//Called in response to [member VideoStreamPlayer.autoplay] or [method VideoStreamPlayer.play]. Note that manual playback may also invoke [method _stop] multiple times before this method is called. [method _is_playing] should return true once playing.
+	//Called in response to [member VideoStreamPlayer.autoplay] or [method VideoStreamPlayer.play]. Note that manual playback may also invoke [method _stop] multiple times before this method is called. [method _is_playing] should return [code]true[/code] once playing.
 	Play()
 	//Returns the playback state, as determined by calls to [method _play] and [method _stop].
 	IsPlaying() bool
@@ -77,7 +77,7 @@ type Interface interface {
 	SetAudioTrack(idx int)
 	//Allocates a [Texture2D] in which decoded video frames will be drawn.
 	GetTexture() [1]gdclass.Texture2D
-	//Ticks video playback for [param delta] seconds. Called every frame as long as [method _is_paused] and [method _is_playing] return true.
+	//Ticks video playback for [param delta] seconds. Called every frame as long as both [method _is_paused] and [method _is_playing] return [code]true[/code].
 	Update(delta Float.X)
 	//Returns the number of audio channels.
 	GetChannels() int
@@ -105,7 +105,7 @@ func (self implementation) GetChannels() (_ int)                 { return }
 func (self implementation) GetMixRate() (_ int)                  { return }
 
 /*
-Stops playback. May be called multiple times before [method _play], or in response to [method VideoStreamPlayer.stop]. [method _is_playing] should return false once stopped.
+Stops playback. May be called multiple times before [method _play], or in response to [method VideoStreamPlayer.stop]. [method _is_playing] should return [code]false[/code] once stopped.
 */
 func (Instance) _stop(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -115,7 +115,7 @@ func (Instance) _stop(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVi
 }
 
 /*
-Called in response to [member VideoStreamPlayer.autoplay] or [method VideoStreamPlayer.play]. Note that manual playback may also invoke [method _stop] multiple times before this method is called. [method _is_playing] should return true once playing.
+Called in response to [member VideoStreamPlayer.autoplay] or [method VideoStreamPlayer.play]. Note that manual playback may also invoke [method _stop] multiple times before this method is called. [method _is_playing] should return [code]true[/code] once playing.
 */
 func (Instance) _play(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -221,7 +221,7 @@ func (Instance) _get_texture(impl func(ptr unsafe.Pointer) [1]gdclass.Texture2D)
 }
 
 /*
-Ticks video playback for [param delta] seconds. Called every frame as long as [method _is_paused] and [method _is_playing] return true.
+Ticks video playback for [param delta] seconds. Called every frame as long as both [method _is_paused] and [method _is_playing] return [code]true[/code].
 */
 func (Instance) _update(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -281,7 +281,7 @@ func New() Instance {
 }
 
 /*
-Stops playback. May be called multiple times before [method _play], or in response to [method VideoStreamPlayer.stop]. [method _is_playing] should return false once stopped.
+Stops playback. May be called multiple times before [method _play], or in response to [method VideoStreamPlayer.stop]. [method _is_playing] should return [code]false[/code] once stopped.
 */
 func (class) _stop(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -291,7 +291,7 @@ func (class) _stop(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtu
 }
 
 /*
-Called in response to [member VideoStreamPlayer.autoplay] or [method VideoStreamPlayer.play]. Note that manual playback may also invoke [method _stop] multiple times before this method is called. [method _is_playing] should return true once playing.
+Called in response to [member VideoStreamPlayer.autoplay] or [method VideoStreamPlayer.play]. Note that manual playback may also invoke [method _stop] multiple times before this method is called. [method _is_playing] should return [code]true[/code] once playing.
 */
 func (class) _play(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -397,7 +397,7 @@ func (class) _get_texture(impl func(ptr unsafe.Pointer) [1]gdclass.Texture2D) (c
 }
 
 /*
-Ticks video playback for [param delta] seconds. Called every frame as long as [method _is_paused] and [method _is_playing] return true.
+Ticks video playback for [param delta] seconds. Called every frame as long as both [method _is_paused] and [method _is_playing] return [code]true[/code].
 */
 func (class) _update(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {

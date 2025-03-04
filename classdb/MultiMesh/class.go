@@ -124,10 +124,27 @@ func (self Instance) GetInstanceCustomData(instance int) Color.RGBA { //gd:Multi
 }
 
 /*
+When using [i]physics interpolation[/i], this function allows you to prevent interpolation on an instance in the current physics tick.
+This allows you to move instances instantaneously, and should usually be used when initially placing an instance such as a bullet to prevent graphical glitches.
+*/
+func (self Instance) ResetInstancePhysicsInterpolation(instance int) { //gd:MultiMesh.reset_instance_physics_interpolation
+	class(self).ResetInstancePhysicsInterpolation(int64(instance))
+}
+
+/*
 Returns the visibility axis-aligned bounding box in local space.
 */
 func (self Instance) GetAabb() AABB.PositionSize { //gd:MultiMesh.get_aabb
 	return AABB.PositionSize(class(self).GetAabb())
+}
+
+/*
+An alternative to setting the [member buffer] property, which can be used with [i]physics interpolation[/i]. This method takes two arrays, and can set the data for the current and previous tick in one go. The renderer will automatically interpolate the data at each frame.
+This is useful for situations where the order of instances may change from physics tick to tick, such as particle systems.
+When the order of instances is coherent, the simpler alternative of setting [member buffer] can still be used with interpolation.
+*/
+func (self Instance) SetBufferInterpolated(buffer_curr []float32, buffer_prev []float32) { //gd:MultiMesh.set_buffer_interpolated
+	class(self).SetBufferInterpolated(Packed.New(buffer_curr...), Packed.New(buffer_prev...))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -211,6 +228,14 @@ func (self Instance) Buffer() []float32 {
 
 func (self Instance) SetBuffer(value []float32) {
 	class(self).SetBuffer(Packed.New(value...))
+}
+
+func (self Instance) PhysicsInterpolationQuality() gdclass.MultiMeshPhysicsInterpolationQuality {
+	return gdclass.MultiMeshPhysicsInterpolationQuality(class(self).GetPhysicsInterpolationQuality())
+}
+
+func (self Instance) SetPhysicsInterpolationQuality(value gdclass.MultiMeshPhysicsInterpolationQuality) {
+	class(self).SetPhysicsInterpolationQuality(value)
 }
 
 //go:nosplit
@@ -322,6 +347,25 @@ func (self class) GetVisibleInstanceCount() int64 { //gd:MultiMesh.get_visible_i
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_visible_instance_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPhysicsInterpolationQuality(quality gdclass.MultiMeshPhysicsInterpolationQuality) { //gd:MultiMesh.set_physics_interpolation_quality
+	var frame = callframe.New()
+	callframe.Arg(frame, quality)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_set_physics_interpolation_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetPhysicsInterpolationQuality() gdclass.MultiMeshPhysicsInterpolationQuality { //gd:MultiMesh.get_physics_interpolation_quality
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.MultiMeshPhysicsInterpolationQuality](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_physics_interpolation_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -440,6 +484,19 @@ func (self class) GetInstanceCustomData(instance int64) Color.RGBA { //gd:MultiM
 	return ret
 }
 
+/*
+When using [i]physics interpolation[/i], this function allows you to prevent interpolation on an instance in the current physics tick.
+This allows you to move instances instantaneously, and should usually be used when initially placing an instance such as a bullet to prevent graphical glitches.
+*/
+//go:nosplit
+func (self class) ResetInstancePhysicsInterpolation(instance int64) { //gd:MultiMesh.reset_instance_physics_interpolation
+	var frame = callframe.New()
+	callframe.Arg(frame, instance)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_reset_instance_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
 //go:nosplit
 func (self class) SetCustomAabb(aabb AABB.PositionSize) { //gd:MultiMesh.set_custom_aabb
 	var frame = callframe.New()
@@ -490,6 +547,21 @@ func (self class) SetBuffer(buffer Packed.Array[float32]) { //gd:MultiMesh.set_b
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_set_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
+
+/*
+An alternative to setting the [member buffer] property, which can be used with [i]physics interpolation[/i]. This method takes two arrays, and can set the data for the current and previous tick in one go. The renderer will automatically interpolate the data at each frame.
+This is useful for situations where the order of instances may change from physics tick to tick, such as particle systems.
+When the order of instances is coherent, the simpler alternative of setting [member buffer] can still be used with interpolation.
+*/
+//go:nosplit
+func (self class) SetBufferInterpolated(buffer_curr Packed.Array[float32], buffer_prev Packed.Array[float32]) { //gd:MultiMesh.set_buffer_interpolated
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer_curr)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer_prev)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_set_buffer_interpolated, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
 func (self class) AsMultiMesh() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsMultiMesh() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
 func (self class) AsResource() Resource.Advanced {
@@ -529,4 +601,13 @@ const (
 	Transform2d TransformFormat = 0
 	/*Use this when using 3D transforms.*/
 	Transform3d TransformFormat = 1
+)
+
+type PhysicsInterpolationQuality = gdclass.MultiMeshPhysicsInterpolationQuality //gd:MultiMesh.PhysicsInterpolationQuality
+
+const (
+	/*Always interpolate using Basis lerping, which can produce warping artifacts in some situations.*/
+	InterpQualityFast PhysicsInterpolationQuality = 0
+	/*Attempt to interpolate using Basis slerping (spherical linear interpolation) where possible, otherwise fall back to lerping.*/
+	InterpQualityHigh PhysicsInterpolationQuality = 1
 )

@@ -124,6 +124,13 @@ func (self Instance) SetTimeout(timeout int, timeout_min int, timeout_max int) {
 }
 
 /*
+Returns the ENet flags of the next packet in the received queue. See [code]FLAG_*[/code] constants for available packet flags. Note that not all flags are replicated from the sending peer to the receiving peer.
+*/
+func (self Instance) GetPacketFlags() int { //gd:ENetPacketPeer.get_packet_flags
+	return int(int(class(self).GetPacketFlags()))
+}
+
+/*
 Returns the IP address of this peer.
 */
 func (self Instance) GetRemoteAddress() string { //gd:ENetPacketPeer.get_remote_address
@@ -301,6 +308,19 @@ func (self class) SetTimeout(timeout int64, timeout_min int64, timeout_max int64
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_set_timeout, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+}
+
+/*
+Returns the ENet flags of the next packet in the received queue. See [code]FLAG_*[/code] constants for available packet flags. Note that not all flags are replicated from the sending peer to the receiving peer.
+*/
+//go:nosplit
+func (self class) GetPacketFlags() int64 { //gd:ENetPacketPeer.get_packet_flags
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_packet_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
 }
 
 /*

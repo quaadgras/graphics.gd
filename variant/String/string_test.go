@@ -187,3 +187,19 @@ func TestSplit(t *testing.T) {
 	gdtests.Print(t, "One", a[0]) // Prints "One"
 	gdtests.Print(t, "Two", a[1]) // Prints "Two"
 }
+
+func TestIsValidIdentifierASCII(t *testing.T) {
+	gdtests.Print(t, "true", String.IsValidIdentifierASCII("node_2d"))     // Prints true
+	gdtests.Print(t, "true", String.IsValidIdentifierASCII("TYPE_FLOAT"))  // Prints true
+	gdtests.Print(t, "false", String.IsValidIdentifierASCII("1st_method")) // Prints false
+	gdtests.Print(t, "false", String.IsValidIdentifierASCII("MyMethod#2")) // Prints false
+}
+
+func TestIsValidIdentifierUnicode(t *testing.T) {
+	gdtests.Print(t, "true", String.IsValidIdentifierUnicode("node_2d"))      // Prints true
+	gdtests.Print(t, "false", String.IsValidIdentifierUnicode("1st_method"))  // Prints false
+	gdtests.Print(t, "false", String.IsValidIdentifierUnicode("MyMethod#2"))  // Prints false
+	gdtests.Print(t, "true", String.IsValidIdentifierUnicode("állóképesség")) // Prints true
+	gdtests.Print(t, "true", String.IsValidIdentifierUnicode("выносливость")) // Prints true
+	gdtests.Print(t, "true", String.IsValidIdentifierUnicode("体力"))           // Prints true
+}

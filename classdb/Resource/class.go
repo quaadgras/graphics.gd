@@ -60,7 +60,7 @@ type Any interface {
 }
 type Interface interface {
 	//Override this method to customize the newly duplicated resource created from [method PackedScene.instantiate], if the original's [member resource_local_to_scene] is set to [code]true[/code].
-	//[b]Example:[/b] Set a random [code]damage[/code] value to every local resource from an instantiated scene.
+	//[b]Example:[/b] Set a random [code]damage[/code] value to every local resource from an instantiated scene:
 	//[codeblock]
 	//extends Resource
 	//
@@ -70,6 +70,12 @@ type Interface interface {
 	//    damage = randi_range(10, 40)
 	//[/codeblock]
 	SetupLocalToScene()
+	//Override this method to return a custom [RID] when [method get_rid] is called.
+	GetRid() ID
+	//For resources that use a variable number of properties, either via [method Object._validate_property] or [method Object._get_property_list], this method should be implemented to correctly clear the resource's state.
+	ResetState()
+	//Sets the resource's path to [param path] without involving the resource cache.
+	SetPathCache(path string)
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -77,11 +83,14 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) SetupLocalToScene() { return }
+func (self implementation) SetupLocalToScene()       { return }
+func (self implementation) GetRid() (_ ID)           { return }
+func (self implementation) ResetState()              { return }
+func (self implementation) SetPathCache(path string) { return }
 
 /*
 Override this method to customize the newly duplicated resource created from [method PackedScene.instantiate], if the original's [member resource_local_to_scene] is set to [code]true[/code].
-[b]Example:[/b] Set a random [code]damage[/code] value to every local resource from an instantiated scene.
+[b]Example:[/b] Set a random [code]damage[/code] value to every local resource from an instantiated scene:
 [codeblock]
 extends Resource
 
@@ -101,10 +110,50 @@ func (Instance) _setup_local_to_scene(impl func(ptr unsafe.Pointer)) (cb gd.Exte
 }
 
 /*
+Override this method to return a custom [RID] when [method get_rid] is called.
+*/
+func (Instance) _get_rid(impl func(ptr unsafe.Pointer) ID) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, RID.Any(ret))
+	}
+}
+
+/*
+For resources that use a variable number of properties, either via [method Object._validate_property] or [method Object._get_property_list], this method should be implemented to correctly clear the resource's state.
+*/
+func (Instance) _reset_state(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self)
+	}
+}
+
+/*
+Sets the resource's path to [param path] without involving the resource cache.
+*/
+func (Instance) _set_path_cache(impl func(ptr unsafe.Pointer, path string)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, path.String())
+	}
+}
+
+/*
 Sets the [member resource_path] to [param path], potentially overriding an existing cache entry for this path. Further attempts to load an overridden resource by path will instead return this resource.
 */
 func (self Instance) TakeOverPath(path string) { //gd:Resource.take_over_path
 	class(self).TakeOverPath(String.New(path))
+}
+
+/*
+Sets the resource's path to [param path] without involving the resource cache.
+*/
+func (self Instance) SetPathCache(path string) { //gd:Resource.set_path_cache
+	class(self).SetPathCache(String.New(path))
 }
 
 /*
@@ -126,6 +175,36 @@ Calls [method _setup_local_to_scene]. If [member resource_local_to_scene] is set
 */
 func (self Instance) SetupLocalToScene() { //gd:Resource.setup_local_to_scene
 	class(self).SetupLocalToScene()
+}
+
+/*
+For resources that use a variable number of properties, either via [method Object._validate_property] or [method Object._get_property_list], override [method _reset_state] to correctly clear the resource's state.
+*/
+func (self Instance) ResetState() { //gd:Resource.reset_state
+	class(self).ResetState()
+}
+
+/*
+Sets the unique identifier to [param id] for the resource with the given [param path] in the resource cache. If the unique identifier is empty, the cache entry using [param path] is removed if it exists.
+[b]Note:[/b] This method is only implemented when running in an editor context.
+*/
+func (self Instance) SetIdForPath(path string, id string) { //gd:Resource.set_id_for_path
+	class(self).SetIdForPath(String.New(path), String.New(id))
+}
+
+/*
+Returns the unique identifier for the resource with the given [param path] from the resource cache. If the resource is not loaded and cached, an empty string is returned.
+[b]Note:[/b] This method is only implemented when running in an editor context. At runtime, it returns an empty string.
+*/
+func (self Instance) GetIdForPath(path string) string { //gd:Resource.get_id_for_path
+	return string(class(self).GetIdForPath(String.New(path)).String())
+}
+
+/*
+Returns [code]true[/code] if the resource is built-in (from the engine) or [code]false[/code] if it is user-defined.
+*/
+func (self Instance) IsBuiltIn() bool { //gd:Resource.is_built_in
+	return bool(class(self).IsBuiltIn())
 }
 
 /*
@@ -219,7 +298,7 @@ func (self Instance) SetResourceSceneUniqueId(value string) {
 
 /*
 Override this method to customize the newly duplicated resource created from [method PackedScene.instantiate], if the original's [member resource_local_to_scene] is set to [code]true[/code].
-[b]Example:[/b] Set a random [code]damage[/code] value to every local resource from an instantiated scene.
+[b]Example:[/b] Set a random [code]damage[/code] value to every local resource from an instantiated scene:
 [codeblock]
 extends Resource
 
@@ -235,6 +314,39 @@ func (class) _setup_local_to_scene(impl func(ptr unsafe.Pointer)) (cb gd.Extensi
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
+	}
+}
+
+/*
+Override this method to return a custom [RID] when [method get_rid] is called.
+*/
+func (class) _get_rid(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+For resources that use a variable number of properties, either via [method Object._validate_property] or [method Object._get_property_list], this method should be implemented to correctly clear the resource's state.
+*/
+func (class) _reset_state(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self)
+	}
+}
+
+/*
+Sets the resource's path to [param path] without involving the resource cache.
+*/
+func (class) _set_path_cache(impl func(ptr unsafe.Pointer, path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, path)
 	}
 }
 
@@ -267,6 +379,18 @@ func (self class) GetPath() String.Readable { //gd:Resource.get_path
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
+}
+
+/*
+Sets the resource's path to [param path] without involving the resource cache.
+*/
+//go:nosplit
+func (self class) SetPathCache(path String.Readable) { //gd:Resource.set_path_cache
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_set_path_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
 }
 
 //go:nosplit
@@ -342,6 +466,59 @@ func (self class) SetupLocalToScene() { //gd:Resource.setup_local_to_scene
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_setup_local_to_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+}
+
+/*
+For resources that use a variable number of properties, either via [method Object._validate_property] or [method Object._get_property_list], override [method _reset_state] to correctly clear the resource's state.
+*/
+//go:nosplit
+func (self class) ResetState() { //gd:Resource.reset_state
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_reset_state, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Sets the unique identifier to [param id] for the resource with the given [param path] in the resource cache. If the unique identifier is empty, the cache entry using [param path] is removed if it exists.
+[b]Note:[/b] This method is only implemented when running in an editor context.
+*/
+//go:nosplit
+func (self class) SetIdForPath(path String.Readable, id String.Readable) { //gd:Resource.set_id_for_path
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(id)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_set_id_for_path, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the unique identifier for the resource with the given [param path] from the resource cache. If the resource is not loaded and cached, an empty string is returned.
+[b]Note:[/b] This method is only implemented when running in an editor context. At runtime, it returns an empty string.
+*/
+//go:nosplit
+func (self class) GetIdForPath(path String.Readable) String.Readable { //gd:Resource.get_id_for_path
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_id_for_path, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the resource is built-in (from the engine) or [code]false[/code] if it is user-defined.
+*/
+//go:nosplit
+func (self class) IsBuiltIn() bool { //gd:Resource.is_built_in
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_is_built_in, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
 }
 
 /*
@@ -435,6 +612,12 @@ func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_setup_local_to_scene":
 		return reflect.ValueOf(self._setup_local_to_scene)
+	case "_get_rid":
+		return reflect.ValueOf(self._get_rid)
+	case "_reset_state":
+		return reflect.ValueOf(self._reset_state)
+	case "_set_path_cache":
+		return reflect.ValueOf(self._set_path_cache)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -444,6 +627,12 @@ func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_setup_local_to_scene":
 		return reflect.ValueOf(self._setup_local_to_scene)
+	case "_get_rid":
+		return reflect.ValueOf(self._get_rid)
+	case "_reset_state":
+		return reflect.ValueOf(self._reset_state)
+	case "_set_path_cache":
+		return reflect.ValueOf(self._set_path_cache)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

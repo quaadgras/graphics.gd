@@ -63,6 +63,18 @@ func (self Instance) ClampSplitOffset() { //gd:SplitContainer.clamp_split_offset
 	class(self).ClampSplitOffset()
 }
 
+/*
+Returns the drag area [Control]. For example, you can move a pre-configured button into the drag area [Control] so that it rides along with the split bar. Try setting the [Button] anchors to [code]center[/code] prior to the [code]reparent()[/code] call.
+[codeblock]
+$BarnacleButton.reparent($SplitContainer.get_drag_area_control())
+[/codeblock]
+[b]Note:[/b] The drag area [Control] is drawn over the [SplitContainer]'s children, so [CanvasItem] draw objects called from the [Control] and children added to the [Control] will also appear over the [SplitContainer]'s children. Try setting [member Control.mouse_filter] of custom children to [constant Control.MOUSE_FILTER_IGNORE] to prevent blocking the mouse from dragging if desired.
+[b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash.
+*/
+func (self Instance) GetDragAreaControl() [1]gdclass.Control { //gd:SplitContainer.get_drag_area_control
+	return [1]gdclass.Control(class(self).GetDragAreaControl())
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.SplitContainer
@@ -97,6 +109,14 @@ func (self Instance) SetCollapsed(value bool) {
 	class(self).SetCollapsed(value)
 }
 
+func (self Instance) DraggingEnabled() bool {
+	return bool(class(self).IsDraggingEnabled())
+}
+
+func (self Instance) SetDraggingEnabled(value bool) {
+	class(self).SetDraggingEnabled(value)
+}
+
 func (self Instance) DraggerVisibility() gdclass.SplitContainerDraggerVisibility {
 	return gdclass.SplitContainerDraggerVisibility(class(self).GetDraggerVisibility())
 }
@@ -111,6 +131,38 @@ func (self Instance) Vertical() bool {
 
 func (self Instance) SetVertical(value bool) {
 	class(self).SetVertical(value)
+}
+
+func (self Instance) DragAreaMarginBegin() int {
+	return int(int(class(self).GetDragAreaMarginBegin()))
+}
+
+func (self Instance) SetDragAreaMarginBegin(value int) {
+	class(self).SetDragAreaMarginBegin(int64(value))
+}
+
+func (self Instance) DragAreaMarginEnd() int {
+	return int(int(class(self).GetDragAreaMarginEnd()))
+}
+
+func (self Instance) SetDragAreaMarginEnd(value int) {
+	class(self).SetDragAreaMarginEnd(int64(value))
+}
+
+func (self Instance) DragAreaOffset() int {
+	return int(int(class(self).GetDragAreaOffset()))
+}
+
+func (self Instance) SetDragAreaOffset(value int) {
+	class(self).SetDragAreaOffset(int64(value))
+}
+
+func (self Instance) DragAreaHighlightInEditor() bool {
+	return bool(class(self).IsDragAreaHighlightInEditorEnabled())
+}
+
+func (self Instance) SetDragAreaHighlightInEditor(value bool) {
+	class(self).SetDragAreaHighlightInEditor(value)
 }
 
 //go:nosplit
@@ -199,8 +251,129 @@ func (self class) IsVertical() bool { //gd:SplitContainer.is_vertical
 	frame.Free()
 	return ret
 }
+
+//go:nosplit
+func (self class) SetDraggingEnabled(dragging_enabled bool) { //gd:SplitContainer.set_dragging_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, dragging_enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_dragging_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsDraggingEnabled() bool { //gd:SplitContainer.is_dragging_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_is_dragging_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetDragAreaMarginBegin(margin int64) { //gd:SplitContainer.set_drag_area_margin_begin
+	var frame = callframe.New()
+	callframe.Arg(frame, margin)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_drag_area_margin_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetDragAreaMarginBegin() int64 { //gd:SplitContainer.get_drag_area_margin_begin
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_drag_area_margin_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetDragAreaMarginEnd(margin int64) { //gd:SplitContainer.set_drag_area_margin_end
+	var frame = callframe.New()
+	callframe.Arg(frame, margin)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_drag_area_margin_end, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetDragAreaMarginEnd() int64 { //gd:SplitContainer.get_drag_area_margin_end
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_drag_area_margin_end, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetDragAreaOffset(offset int64) { //gd:SplitContainer.set_drag_area_offset
+	var frame = callframe.New()
+	callframe.Arg(frame, offset)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_drag_area_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetDragAreaOffset() int64 { //gd:SplitContainer.get_drag_area_offset
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_drag_area_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetDragAreaHighlightInEditor(drag_area_highlight_in_editor bool) { //gd:SplitContainer.set_drag_area_highlight_in_editor
+	var frame = callframe.New()
+	callframe.Arg(frame, drag_area_highlight_in_editor)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_drag_area_highlight_in_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsDragAreaHighlightInEditorEnabled() bool { //gd:SplitContainer.is_drag_area_highlight_in_editor_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_is_drag_area_highlight_in_editor_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the drag area [Control]. For example, you can move a pre-configured button into the drag area [Control] so that it rides along with the split bar. Try setting the [Button] anchors to [code]center[/code] prior to the [code]reparent()[/code] call.
+[codeblock]
+$BarnacleButton.reparent($SplitContainer.get_drag_area_control())
+[/codeblock]
+[b]Note:[/b] The drag area [Control] is drawn over the [SplitContainer]'s children, so [CanvasItem] draw objects called from the [Control] and children added to the [Control] will also appear over the [SplitContainer]'s children. Try setting [member Control.mouse_filter] of custom children to [constant Control.MOUSE_FILTER_IGNORE] to prevent blocking the mouse from dragging if desired.
+[b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash.
+*/
+//go:nosplit
+func (self class) GetDragAreaControl() [1]gdclass.Control { //gd:SplitContainer.get_drag_area_control
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_drag_area_control, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret.Get())}
+	frame.Free()
+	return ret
+}
 func (self Instance) OnDragged(cb func(offset int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("dragged"), gd.NewCallable(cb), 0)
+}
+
+func (self Instance) OnDragStarted(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("drag_started"), gd.NewCallable(cb), 0)
+}
+
+func (self Instance) OnDragEnded(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("drag_ended"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsSplitContainer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -246,10 +419,13 @@ func init() {
 type DraggerVisibility = gdclass.SplitContainerDraggerVisibility //gd:SplitContainer.DraggerVisibility
 
 const (
-	/*The split dragger is visible when the cursor hovers it.*/
+	/*The split dragger icon is always visible when [theme_item autohide] is [code]false[/code], otherwise visible only when the cursor hovers it.
+	  The size of the grabber icon determines the minimum [theme_item separation].
+	  The dragger icon is automatically hidden if the length of the grabber icon is longer than the split bar.*/
 	DraggerVisible DraggerVisibility = 0
-	/*The split dragger is never visible.*/
+	/*The split dragger icon is never visible regardless of the value of [theme_item autohide].
+	  The size of the grabber icon determines the minimum [theme_item separation].*/
 	DraggerHidden DraggerVisibility = 1
-	/*The split dragger is never visible and its space collapsed.*/
+	/*The split dragger icon is not visible, and the split bar is collapsed to zero thickness.*/
 	DraggerHiddenCollapsed DraggerVisibility = 2
 )

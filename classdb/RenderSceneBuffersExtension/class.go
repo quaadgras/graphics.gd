@@ -63,6 +63,8 @@ type Interface interface {
 	SetFsrSharpness(fsr_sharpness Float.X)
 	//Implement this in GDExtension to change the texture mipmap bias.
 	SetTextureMipmapBias(texture_mipmap_bias Float.X)
+	//Implement this in GDExtension to change the anisotropic filtering level.
+	SetAnisotropicFilteringLevel(anisotropic_filtering_level int)
 	//Implement this in GDExtension to react to the debanding flag changing.
 	SetUseDebanding(use_debanding bool)
 }
@@ -72,10 +74,11 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { return }
-func (self implementation) SetFsrSharpness(fsr_sharpness Float.X)                       { return }
-func (self implementation) SetTextureMipmapBias(texture_mipmap_bias Float.X)            { return }
-func (self implementation) SetUseDebanding(use_debanding bool)                          { return }
+func (self implementation) Configure(config [1]gdclass.RenderSceneBuffersConfiguration)  { return }
+func (self implementation) SetFsrSharpness(fsr_sharpness Float.X)                        { return }
+func (self implementation) SetTextureMipmapBias(texture_mipmap_bias Float.X)             { return }
+func (self implementation) SetAnisotropicFilteringLevel(anisotropic_filtering_level int) { return }
+func (self implementation) SetUseDebanding(use_debanding bool)                           { return }
 
 /*
 Implement this in GDExtension to handle the (re)sizing of a viewport.
@@ -111,6 +114,18 @@ func (Instance) _set_texture_mipmap_bias(impl func(ptr unsafe.Pointer, texture_m
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(texture_mipmap_bias))
+	}
+}
+
+/*
+Implement this in GDExtension to change the anisotropic filtering level.
+*/
+func (Instance) _set_anisotropic_filtering_level(impl func(ptr unsafe.Pointer, anisotropic_filtering_level int)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var anisotropic_filtering_level = gd.UnsafeGet[int64](p_args, 0)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, int(anisotropic_filtering_level))
 	}
 }
 
@@ -183,6 +198,18 @@ func (class) _set_texture_mipmap_bias(impl func(ptr unsafe.Pointer, texture_mipm
 }
 
 /*
+Implement this in GDExtension to change the anisotropic filtering level.
+*/
+func (class) _set_anisotropic_filtering_level(impl func(ptr unsafe.Pointer, anisotropic_filtering_level int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var anisotropic_filtering_level = gd.UnsafeGet[int64](p_args, 0)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, anisotropic_filtering_level)
+	}
+}
+
+/*
 Implement this in GDExtension to react to the debanding flag changing.
 */
 func (class) _set_use_debanding(impl func(ptr unsafe.Pointer, use_debanding bool)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -221,6 +248,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._set_fsr_sharpness)
 	case "_set_texture_mipmap_bias":
 		return reflect.ValueOf(self._set_texture_mipmap_bias)
+	case "_set_anisotropic_filtering_level":
+		return reflect.ValueOf(self._set_anisotropic_filtering_level)
 	case "_set_use_debanding":
 		return reflect.ValueOf(self._set_use_debanding)
 	default:
@@ -236,6 +265,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._set_fsr_sharpness)
 	case "_set_texture_mipmap_bias":
 		return reflect.ValueOf(self._set_texture_mipmap_bias)
+	case "_set_anisotropic_filtering_level":
+		return reflect.ValueOf(self._set_anisotropic_filtering_level)
 	case "_set_use_debanding":
 		return reflect.ValueOf(self._set_use_debanding)
 	default:

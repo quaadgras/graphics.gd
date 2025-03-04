@@ -323,8 +323,7 @@ func (self Instance) GetEdgeMeta(idx int) any { //gd:MeshDataTool.get_edge_meta
 
 /*
 Returns the specified vertex index of the given face.
-Vertex argument must be either 0, 1, or 2 because faces contain three vertices.
-[b]Example:[/b]
+[param vertex] must be either [code]0[/code], [code]1[/code], or [code]2[/code] because faces contain three vertices.
 [codeblocks]
 [gdscript]
 var index = mesh_data_tool.get_face_vertex(0, 1) # Gets the index of the second vertex of the first face.
@@ -828,8 +827,7 @@ func (self class) GetEdgeMeta(idx int64) variant.Any { //gd:MeshDataTool.get_edg
 
 /*
 Returns the specified vertex index of the given face.
-Vertex argument must be either 0, 1, or 2 because faces contain three vertices.
-[b]Example:[/b]
+[param vertex] must be either [code]0[/code], [code]1[/code], or [code]2[/code] because faces contain three vertices.
 [codeblocks]
 [gdscript]
 var index = mesh_data_tool.get_face_vertex(0, 1) # Gets the index of the second vertex of the first face.

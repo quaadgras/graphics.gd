@@ -64,7 +64,7 @@ type Any interface {
 type Interface interface {
 	//Override this method to define which Node3D nodes have a gizmo from this plugin. Whenever a [Node3D] node is added to a scene this method is called, if it returns [code]true[/code] the node gets a generic [EditorNode3DGizmo] assigned and is added to this plugin's list of active gizmos.
 	HasGizmo(for_node_3d [1]gdclass.Node3D) bool
-	//Override this method to return a custom [EditorNode3DGizmo] for the spatial nodes of your choice, return [code]null[/code] for the rest of nodes. See also [method _has_gizmo].
+	//Override this method to return a custom [EditorNode3DGizmo] for the 3D nodes of your choice, return [code]null[/code] for the rest of nodes. See also [method _has_gizmo].
 	CreateGizmo(for_node_3d [1]gdclass.Node3D) [1]gdclass.EditorNode3DGizmo
 	//Override this method to provide the name that will appear in the gizmo visibility menu.
 	GetGizmoName() string
@@ -171,7 +171,7 @@ func (Instance) _has_gizmo(impl func(ptr unsafe.Pointer, for_node_3d [1]gdclass.
 }
 
 /*
-Override this method to return a custom [EditorNode3DGizmo] for the spatial nodes of your choice, return [code]null[/code] for the rest of nodes. See also [method _has_gizmo].
+Override this method to return a custom [EditorNode3DGizmo] for the 3D nodes of your choice, return [code]null[/code] for the rest of nodes. See also [method _has_gizmo].
 */
 func (Instance) _create_gizmo(impl func(ptr unsafe.Pointer, for_node_3d [1]gdclass.Node3D) [1]gdclass.EditorNode3DGizmo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -545,7 +545,7 @@ func (class) _has_gizmo(impl func(ptr unsafe.Pointer, for_node_3d [1]gdclass.Nod
 }
 
 /*
-Override this method to return a custom [EditorNode3DGizmo] for the spatial nodes of your choice, return [code]null[/code] for the rest of nodes. See also [method _has_gizmo].
+Override this method to return a custom [EditorNode3DGizmo] for the 3D nodes of your choice, return [code]null[/code] for the rest of nodes. See also [method _has_gizmo].
 */
 func (class) _create_gizmo(impl func(ptr unsafe.Pointer, for_node_3d [1]gdclass.Node3D) [1]gdclass.EditorNode3DGizmo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {

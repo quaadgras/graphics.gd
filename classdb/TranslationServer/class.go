@@ -41,7 +41,8 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-The server that manages all language translations. Translations can be added to or removed from it.
+The translation server is the API backend that manages all language translations.
+Translations are stored in [TranslationDomain]s, which can be accessed by name. The most commonly used translation domain is the main translation domain. It always exists and can be accessed using an empty [StringName]. The translation server provides wrapper methods for accessing the main translation domain directly, without having to fetch the translation domain first. Custom translation domains are mainly for advanced usages like editor plugins. Names starting with [code]godot.[/code] are reserved for engine internals.
 */
 var self [1]gdclass.TranslationServer
 var once sync.Once
@@ -87,11 +88,11 @@ func CompareLocales(locale_a string, locale_b string) int { //gd:TranslationServ
 }
 
 /*
-Returns a [param locale] string standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]).
+Returns a [param locale] string standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]). If [param add_defaults] is [code]true[/code], the locale may have a default script or country added.
 */
 func StandardizeLocale(locale string) string { //gd:TranslationServer.standardize_locale
 	once.Do(singleton)
-	return string(class(self).StandardizeLocale(String.New(locale)).String())
+	return string(class(self).StandardizeLocale(String.New(locale), false).String())
 }
 
 /*
@@ -151,7 +152,8 @@ func GetLocaleName(locale string) string { //gd:TranslationServer.get_locale_nam
 }
 
 /*
-Returns the current locale's translation for the given message (key) and context.
+Returns the current locale's translation for the given message and context.
+[b]Note:[/b] This method always uses the main translation domain.
 */
 func Translate(message string) string { //gd:TranslationServer.translate
 	once.Do(singleton)
@@ -159,8 +161,9 @@ func Translate(message string) string { //gd:TranslationServer.translate
 }
 
 /*
-Returns the current locale's translation for the given message (key), plural message and context.
+Returns the current locale's translation for the given message, plural message and context.
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
+[b]Note:[/b] This method always uses the main translation domain.
 */
 func TranslatePlural(message string, plural_message string, n int) string { //gd:TranslationServer.translate_plural
 	once.Do(singleton)
@@ -168,7 +171,7 @@ func TranslatePlural(message string, plural_message string, n int) string { //gd
 }
 
 /*
-Adds a [Translation] resource.
+Adds a translation to the main translation domain.
 */
 func AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.add_translation
 	once.Do(singleton)
@@ -176,7 +179,7 @@ func AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer
 }
 
 /*
-Removes the given translation from the server.
+Removes the given translation from the main translation domain.
 */
 func RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.remove_translation
 	once.Do(singleton)
@@ -184,8 +187,7 @@ func RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationSer
 }
 
 /*
-Returns the [Translation] instance based on the [param locale] passed in.
-It will return [code]null[/code] if there is no [Translation] instance that matches the [param locale].
+Returns the [Translation] instance that best matches [param locale] in the main translation domain. Returns [code]null[/code] if there are no matches.
 */
 func GetTranslationObject(locale string) [1]gdclass.Translation { //gd:TranslationServer.get_translation_object
 	once.Do(singleton)
@@ -193,7 +195,32 @@ func GetTranslationObject(locale string) [1]gdclass.Translation { //gd:Translati
 }
 
 /*
-Clears the server from all translations.
+Returns [code]true[/code] if a translation domain with the specified name exists.
+*/
+func HasDomain(domain string) bool { //gd:TranslationServer.has_domain
+	once.Do(singleton)
+	return bool(class(self).HasDomain(String.Name(String.New(domain))))
+}
+
+/*
+Returns the translation domain with the specified name. An empty translation domain will be created and added if it does not exist.
+*/
+func GetOrAddDomain(domain string) [1]gdclass.TranslationDomain { //gd:TranslationServer.get_or_add_domain
+	once.Do(singleton)
+	return [1]gdclass.TranslationDomain(class(self).GetOrAddDomain(String.Name(String.New(domain))))
+}
+
+/*
+Removes the translation domain with the specified name.
+[b]Note:[/b] Trying to remove the main translation domain is an error.
+*/
+func RemoveDomain(domain string) { //gd:TranslationServer.remove_domain
+	once.Do(singleton)
+	class(self).RemoveDomain(String.Name(String.New(domain)))
+}
+
+/*
+Removes all translations from the main translation domain.
 */
 func Clear() { //gd:TranslationServer.clear
 	once.Do(singleton)
@@ -209,7 +236,7 @@ func GetLoadedLocales() []string { //gd:TranslationServer.get_loaded_locales
 }
 
 /*
-Reparses the pseudolocalization options and reloads the translation.
+Reparses the pseudolocalization options and reloads the translation for the main translation domain.
 */
 func ReloadPseudolocalization() { //gd:TranslationServer.reload_pseudolocalization
 	once.Do(singleton)
@@ -218,6 +245,7 @@ func ReloadPseudolocalization() { //gd:TranslationServer.reload_pseudolocalizati
 
 /*
 Returns the pseudolocalized string based on the [param message] passed in.
+[b]Note:[/b] This method always uses the main translation domain.
 */
 func Pseudolocalize(message string) string { //gd:TranslationServer.pseudolocalize
 	once.Do(singleton)
@@ -301,12 +329,13 @@ func (self class) CompareLocales(locale_a String.Readable, locale_b String.Reada
 }
 
 /*
-Returns a [param locale] string standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]).
+Returns a [param locale] string standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]). If [param add_defaults] is [code]true[/code], the locale may have a default script or country added.
 */
 //go:nosplit
-func (self class) StandardizeLocale(locale String.Readable) String.Readable { //gd:TranslationServer.standardize_locale
+func (self class) StandardizeLocale(locale String.Readable, add_defaults bool) String.Readable { //gd:TranslationServer.standardize_locale
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(locale)))
+	callframe.Arg(frame, add_defaults)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_standardize_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
@@ -410,7 +439,8 @@ func (self class) GetLocaleName(locale String.Readable) String.Readable { //gd:T
 }
 
 /*
-Returns the current locale's translation for the given message (key) and context.
+Returns the current locale's translation for the given message and context.
+[b]Note:[/b] This method always uses the main translation domain.
 */
 //go:nosplit
 func (self class) Translate(message String.Name, context String.Name) String.Name { //gd:TranslationServer.translate
@@ -425,8 +455,9 @@ func (self class) Translate(message String.Name, context String.Name) String.Nam
 }
 
 /*
-Returns the current locale's translation for the given message (key), plural message and context.
+Returns the current locale's translation for the given message, plural message and context.
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
+[b]Note:[/b] This method always uses the main translation domain.
 */
 //go:nosplit
 func (self class) TranslatePlural(message String.Name, plural_message String.Name, n int64, context String.Name) String.Name { //gd:TranslationServer.translate_plural
@@ -443,7 +474,7 @@ func (self class) TranslatePlural(message String.Name, plural_message String.Nam
 }
 
 /*
-Adds a [Translation] resource.
+Adds a translation to the main translation domain.
 */
 //go:nosplit
 func (self class) AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.add_translation
@@ -455,7 +486,7 @@ func (self class) AddTranslation(translation [1]gdclass.Translation) { //gd:Tran
 }
 
 /*
-Removes the given translation from the server.
+Removes the given translation from the main translation domain.
 */
 //go:nosplit
 func (self class) RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.remove_translation
@@ -467,8 +498,7 @@ func (self class) RemoveTranslation(translation [1]gdclass.Translation) { //gd:T
 }
 
 /*
-Returns the [Translation] instance based on the [param locale] passed in.
-It will return [code]null[/code] if there is no [Translation] instance that matches the [param locale].
+Returns the [Translation] instance that best matches [param locale] in the main translation domain. Returns [code]null[/code] if there are no matches.
 */
 //go:nosplit
 func (self class) GetTranslationObject(locale String.Readable) [1]gdclass.Translation { //gd:TranslationServer.get_translation_object
@@ -482,7 +512,48 @@ func (self class) GetTranslationObject(locale String.Readable) [1]gdclass.Transl
 }
 
 /*
-Clears the server from all translations.
+Returns [code]true[/code] if a translation domain with the specified name exists.
+*/
+//go:nosplit
+func (self class) HasDomain(domain String.Name) bool { //gd:TranslationServer.has_domain
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(domain)))
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_has_domain, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the translation domain with the specified name. An empty translation domain will be created and added if it does not exist.
+*/
+//go:nosplit
+func (self class) GetOrAddDomain(domain String.Name) [1]gdclass.TranslationDomain { //gd:TranslationServer.get_or_add_domain
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(domain)))
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_or_add_domain, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.TranslationDomain{gd.PointerWithOwnershipTransferredToGo[gdclass.TranslationDomain](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Removes the translation domain with the specified name.
+[b]Note:[/b] Trying to remove the main translation domain is an error.
+*/
+//go:nosplit
+func (self class) RemoveDomain(domain String.Name) { //gd:TranslationServer.remove_domain
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(domain)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_remove_domain, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Removes all translations from the main translation domain.
 */
 //go:nosplit
 func (self class) Clear() { //gd:TranslationServer.clear
@@ -525,7 +596,7 @@ func (self class) SetPseudolocalizationEnabled(enabled bool) { //gd:TranslationS
 }
 
 /*
-Reparses the pseudolocalization options and reloads the translation.
+Reparses the pseudolocalization options and reloads the translation for the main translation domain.
 */
 //go:nosplit
 func (self class) ReloadPseudolocalization() { //gd:TranslationServer.reload_pseudolocalization
@@ -537,6 +608,7 @@ func (self class) ReloadPseudolocalization() { //gd:TranslationServer.reload_pse
 
 /*
 Returns the pseudolocalized string based on the [param message] passed in.
+[b]Note:[/b] This method always uses the main translation domain.
 */
 //go:nosplit
 func (self class) Pseudolocalize(message String.Name) String.Name { //gd:TranslationServer.pseudolocalize

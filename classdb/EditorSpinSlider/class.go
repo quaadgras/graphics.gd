@@ -115,6 +115,14 @@ func (self Instance) SetHideSlider(value bool) {
 	class(self).SetHideSlider(value)
 }
 
+func (self Instance) EditingInteger() bool {
+	return bool(class(self).IsEditingInteger())
+}
+
+func (self Instance) SetEditingInteger(value bool) {
+	class(self).SetEditingInteger(value)
+}
+
 //go:nosplit
 func (self class) SetLabel(label String.Readable) { //gd:EditorSpinSlider.set_label
 	var frame = callframe.New()
@@ -209,12 +217,35 @@ func (self class) IsHidingSlider() bool { //gd:EditorSpinSlider.is_hiding_slider
 	frame.Free()
 	return ret
 }
+
+//go:nosplit
+func (self class) SetEditingInteger(editing_integer bool) { //gd:EditorSpinSlider.set_editing_integer
+	var frame = callframe.New()
+	callframe.Arg(frame, editing_integer)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_set_editing_integer, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsEditingInteger() bool { //gd:EditorSpinSlider.is_editing_integer
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_is_editing_integer, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
 func (self Instance) OnGrabbed(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("grabbed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnUngrabbed(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("ungrabbed"), gd.NewCallable(cb), 0)
+}
+
+func (self Instance) OnUpdownPressed(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("updown_pressed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnValueFocusEntered(cb func()) {

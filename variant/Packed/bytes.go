@@ -28,7 +28,7 @@ const (
 type Bytes Array[byte]
 
 // Index returns the element at the given index.
-func (array Bytes) Index(idx int) byte { return (GenericArray.Contains[byte])(array).Index(idx) }
+func (array Bytes) Index(idx int) byte { return (GenericArray.Contains[byte])(array).Index(idx) } //gd:PackedByteArray.get
 
 // Iter returns an iterator for the array.
 func (array Bytes) Iter() iter.Seq2[int, byte] {

@@ -1442,3 +1442,38 @@ func isSeparator(r rune) bool {
 	// Otherwise, all we can do for now is treat spaces as separators.
 	return unicode.IsSpace(r)
 }
+
+// IsValidIdentifierASCII returns true if this string is a valid ASCII identifier. A valid ASCII identifier may
+// contain only letters, digits, and underscores (_), and the first character may not be a digit.
+//
+// See also [IsValidIdentifierUnicode].
+func IsValidIdentifierASCII[S Any](s S) bool { //gd:String.is_valid_ascii_identifier
+	for i, r := range Runes(s) {
+		if i == 0 {
+			if !strings.ContainsRune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_", rune(r)) {
+				return false
+			}
+		}
+		if !strings.ContainsRune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_", rune(r)) {
+			return false
+		}
+	}
+	return true
+}
+
+// IsValidIdentifierUnicode returns true if this string is a valid Unicode identifier.
+//
+// A valid Unicode identifier must begin with a Unicode character of class XID_Start or "_", and may contain Unicode
+// characters of class XID_Continue in the other positions.
+func IsValidIdentifierUnicode[S Any](s S) bool { //gd:String.is_valid_unicode_identifier
+	for i, r := range Runes(s) {
+		if i == 0 {
+			if !unicode.IsLetter(rune(r)) && r != '_' && !unicode.Is(unicode.Other_ID_Start, rune(r)) {
+				return false
+			}
+		} else if !unicode.IsLetter(rune(r)) && !unicode.IsDigit(rune(r)) && r != '_' && !unicode.Is(unicode.Other_ID_Continue, rune(r)) {
+			return false
+		}
+	}
+	return true
+}

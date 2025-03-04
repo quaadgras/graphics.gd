@@ -220,6 +220,14 @@ func (self Instance) SetEmissionRingInnerRadius(value Float.X) {
 	class(self).SetEmissionRingInnerRadius(float64(value))
 }
 
+func (self Instance) EmissionRingConeAngle() Float.X {
+	return Float.X(Float.X(class(self).GetEmissionRingConeAngle()))
+}
+
+func (self Instance) SetEmissionRingConeAngle(value Float.X) {
+	class(self).SetEmissionRingConeAngle(float64(value))
+}
+
 func (self Instance) Angle() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(7))
 }
@@ -956,6 +964,14 @@ func (self Instance) SetSubEmitterAmountAtCollision(value int) {
 	class(self).SetSubEmitterAmountAtCollision(int64(value))
 }
 
+func (self Instance) SubEmitterAmountAtStart() int {
+	return int(int(class(self).GetSubEmitterAmountAtStart()))
+}
+
+func (self Instance) SetSubEmitterAmountAtStart(value int) {
+	class(self).SetSubEmitterAmountAtStart(int64(value))
+}
+
 func (self Instance) SubEmitterKeepVelocity() bool {
 	return bool(class(self).GetSubEmitterKeepVelocity())
 }
@@ -1520,6 +1536,25 @@ func (self class) GetEmissionRingInnerRadius() float64 { //gd:ParticleProcessMat
 }
 
 //go:nosplit
+func (self class) SetEmissionRingConeAngle(cone_angle float64) { //gd:ParticleProcessMaterial.set_emission_ring_cone_angle
+	var frame = callframe.New()
+	callframe.Arg(frame, cone_angle)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_set_emission_ring_cone_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetEmissionRingConeAngle() float64 { //gd:ParticleProcessMaterial.get_emission_ring_cone_angle
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_ring_cone_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
 func (self class) SetEmissionShapeOffset(emission_shape_offset Vector3.XYZ) { //gd:ParticleProcessMaterial.set_emission_shape_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, emission_shape_offset)
@@ -1767,6 +1802,25 @@ func (self class) SetSubEmitterAmountAtCollision(amount int64) { //gd:ParticlePr
 }
 
 //go:nosplit
+func (self class) GetSubEmitterAmountAtStart() int64 { //gd:ParticleProcessMaterial.get_sub_emitter_amount_at_start
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_sub_emitter_amount_at_start, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSubEmitterAmountAtStart(amount int64) { //gd:ParticleProcessMaterial.set_sub_emitter_amount_at_start
+	var frame = callframe.New()
+	callframe.Arg(frame, amount)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_set_sub_emitter_amount_at_start, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
 func (self class) GetSubEmitterKeepVelocity() bool { //gd:ParticleProcessMaterial.get_sub_emitter_keep_velocity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
@@ -1879,6 +1933,10 @@ func (self class) GetCollisionBounce() float64 { //gd:ParticleProcessMaterial.ge
 	frame.Free()
 	return ret
 }
+func (self Instance) OnEmissionShapeChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("emission_shape_changed"), gd.NewCallable(cb), 0)
+}
+
 func (self class) AsParticleProcessMaterial() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsParticleProcessMaterial() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
@@ -2006,8 +2064,9 @@ const (
 	SubEmitterConstant    SubEmitterMode = 1
 	SubEmitterAtEnd       SubEmitterMode = 2
 	SubEmitterAtCollision SubEmitterMode = 3
+	SubEmitterAtStart     SubEmitterMode = 4
 	/*Represents the size of the [enum SubEmitterMode] enum.*/
-	SubEmitterMax SubEmitterMode = 4
+	SubEmitterMax SubEmitterMode = 5
 )
 
 type CollisionMode = gdclass.ParticleProcessMaterialCollisionMode //gd:ParticleProcessMaterial.CollisionMode

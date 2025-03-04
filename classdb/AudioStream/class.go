@@ -57,7 +57,7 @@ type Any interface {
 	AsAudioStream() Instance
 }
 type Interface interface {
-	//Override this method to customize the returned value of [method instantiate_playback]. Should returned a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer])..
+	//Override this method to customize the returned value of [method instantiate_playback]. Should return a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer]).
 	InstantiatePlayback() [1]gdclass.AudioStreamPlayback
 	//Override this method to customize the name assigned to this audio stream. Unused by the engine.
 	GetStreamName() string
@@ -73,6 +73,10 @@ type Interface interface {
 	GetBeatCount() int
 	//Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [method Object.get_property_list]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
 	GetParameterList() []map[any]any
+	//Override this method to return [code]true[/code] if this stream has a loop.
+	HasLoop() bool
+	//Override this method to return the bar beats of this stream.
+	GetBarBeats() int
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -87,9 +91,11 @@ func (self implementation) IsMonophonic() (_ bool)                              
 func (self implementation) GetBpm() (_ Float.X)                                     { return }
 func (self implementation) GetBeatCount() (_ int)                                   { return }
 func (self implementation) GetParameterList() (_ []map[any]any)                     { return }
+func (self implementation) HasLoop() (_ bool)                                       { return }
+func (self implementation) GetBarBeats() (_ int)                                    { return }
 
 /*
-Override this method to customize the returned value of [method instantiate_playback]. Should returned a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer])..
+Override this method to customize the returned value of [method instantiate_playback]. Should return a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer]).
 */
 func (Instance) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.AudioStreamPlayback) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -183,6 +189,28 @@ func (Instance) _get_parameter_list(impl func(ptr unsafe.Pointer) []map[any]any)
 }
 
 /*
+Override this method to return [code]true[/code] if this stream has a loop.
+*/
+func (Instance) _has_loop(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+Override this method to return the bar beats of this stream.
+*/
+func (Instance) _get_bar_beats(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, int64(ret))
+	}
+}
+
+/*
 Returns the length of the audio stream in seconds.
 */
 func (self Instance) GetLength() Float.X { //gd:AudioStream.get_length
@@ -244,7 +272,7 @@ func New() Instance {
 }
 
 /*
-Override this method to customize the returned value of [method instantiate_playback]. Should returned a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer])..
+Override this method to customize the returned value of [method instantiate_playback]. Should return a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer]).
 */
 func (class) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.AudioStreamPlayback) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -334,6 +362,28 @@ func (class) _get_parameter_list(impl func(ptr unsafe.Pointer) Array.Contains[Di
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Override this method to return [code]true[/code] if this stream has a loop.
+*/
+func (class) _has_loop(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+Override this method to return the bar beats of this stream.
+*/
+func (class) _get_bar_beats(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 
@@ -449,6 +499,10 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_beat_count)
 	case "_get_parameter_list":
 		return reflect.ValueOf(self._get_parameter_list)
+	case "_has_loop":
+		return reflect.ValueOf(self._has_loop)
+	case "_get_bar_beats":
+		return reflect.ValueOf(self._get_bar_beats)
 	default:
 		return gd.VirtualByName(Resource.Advanced(self.AsResource()), name)
 	}
@@ -470,6 +524,10 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_beat_count)
 	case "_get_parameter_list":
 		return reflect.ValueOf(self._get_parameter_list)
+	case "_has_loop":
+		return reflect.ValueOf(self._has_loop)
+	case "_get_bar_beats":
+		return reflect.ValueOf(self._get_bar_beats)
 	default:
 		return gd.VirtualByName(Resource.Instance(self.AsResource()), name)
 	}

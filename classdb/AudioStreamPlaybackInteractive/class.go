@@ -67,6 +67,19 @@ func (self Instance) SwitchToClip(clip_index int) { //gd:AudioStreamPlaybackInte
 	class(self).SwitchToClip(int64(clip_index))
 }
 
+/*
+Return the index of the currently playing clip. You can use this to get the name of the currently playing clip with [method AudioStreamInteractive.get_clip_name].
+[b]Example:[/b] Get the currently playing clip name from inside an [AudioStreamPlayer] node.
+[codeblocks]
+[gdscript]
+var playing_clip_name = stream.get_clip_name(get_stream_playback().get_current_clip_index())
+[/gdscript]
+[/codeblocks]
+*/
+func (self Instance) GetCurrentClipIndex() int { //gd:AudioStreamPlaybackInteractive.get_current_clip_index
+	return int(int(class(self).GetCurrentClipIndex()))
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.AudioStreamPlaybackInteractive
@@ -108,6 +121,25 @@ func (self class) SwitchToClip(clip_index int64) { //gd:AudioStreamPlaybackInter
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaybackInteractive.Bind_switch_to_clip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+}
+
+/*
+Return the index of the currently playing clip. You can use this to get the name of the currently playing clip with [method AudioStreamInteractive.get_clip_name].
+[b]Example:[/b] Get the currently playing clip name from inside an [AudioStreamPlayer] node.
+[codeblocks]
+[gdscript]
+var playing_clip_name = stream.get_clip_name(get_stream_playback().get_current_clip_index())
+[/gdscript]
+[/codeblocks]
+*/
+//go:nosplit
+func (self class) GetCurrentClipIndex() int64 { //gd:AudioStreamPlaybackInteractive.get_current_clip_index
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaybackInteractive.Bind_get_current_clip_index, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
 }
 func (self class) AsAudioStreamPlaybackInteractive() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

@@ -1,0 +1,177 @@
+// Package ExternalTexture provides methods for working with ExternalTexture object instances.
+package ExternalTexture
+
+import "unsafe"
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture"
+import "graphics.gd/classdb/Texture2D"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
+
+var _ Object.ID
+var _ RefCounted.Instance
+var _ unsafe.Pointer
+var _ reflect.Type
+var _ callframe.Frame
+var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
+var _ Callable.Function
+var _ Dictionary.Any
+var _ RID.Any
+var _ String.Readable
+var _ Path.ToNode
+var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
+var _ = slices.Delete[[]struct{}, struct{}]
+
+/*
+Displays the content of an external buffer provided by the platform.
+Requires the [url=https://registry.khronos.org/OpenGL/extensions/OES/OES_EGL_image_external.txt]OES_EGL_image_external[/url] extension (OpenGL) or [url=https://registry.khronos.org/vulkan/specs/1.1-extensions/html/vkspec.html#VK_ANDROID_external_memory_android_hardware_buffer]VK_ANDROID_external_memory_android_hardware_buffer[/url] extension (Vulkan).
+[b]Note:[/b] This is currently only supported in Android builds.
+*/
+type Instance [1]gdclass.ExternalTexture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
+type Any interface {
+	gd.IsClass
+	AsExternalTexture() Instance
+}
+
+/*
+Returns the external texture ID.
+Depending on your use case, you may need to pass this to platform APIs, for example, when creating an [code]android.graphics.SurfaceTexture[/code] on Android.
+*/
+func (self Instance) GetExternalTextureId() int { //gd:ExternalTexture.get_external_texture_id
+	return int(int(class(self).GetExternalTextureId()))
+}
+
+/*
+Sets the external buffer ID.
+Depending on your use case, you may need to call this with data received from a platform API, for example, [code]SurfaceTexture.getHardwareBuffer()[/code] on Android.
+*/
+func (self Instance) SetExternalBufferId(external_buffer_id int) { //gd:ExternalTexture.set_external_buffer_id
+	class(self).SetExternalBufferId(int64(external_buffer_id))
+}
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
+type class [1]gdclass.ExternalTexture
+
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func New() Instance {
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ExternalTexture"))
+	casted := Instance{*(*gdclass.ExternalTexture)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
+}
+
+func (self Instance) SetSize(value Vector2.XY) {
+	class(self).SetSize(Vector2.XY(value))
+}
+
+//go:nosplit
+func (self class) SetSize(size Vector2.XY) { //gd:ExternalTexture.set_size
+	var frame = callframe.New()
+	callframe.Arg(frame, size)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ExternalTexture.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the external texture ID.
+Depending on your use case, you may need to pass this to platform APIs, for example, when creating an [code]android.graphics.SurfaceTexture[/code] on Android.
+*/
+//go:nosplit
+func (self class) GetExternalTextureId() int64 { //gd:ExternalTexture.get_external_texture_id
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ExternalTexture.Bind_get_external_texture_id, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the external buffer ID.
+Depending on your use case, you may need to call this with data received from a platform API, for example, [code]SurfaceTexture.getHardwareBuffer()[/code] on Android.
+*/
+//go:nosplit
+func (self class) SetExternalBufferId(external_buffer_id int64) { //gd:ExternalTexture.set_external_buffer_id
+	var frame = callframe.New()
+	callframe.Arg(frame, external_buffer_id)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ExternalTexture.Bind_set_external_buffer_id, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+func (self class) AsExternalTexture() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsExternalTexture() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsTexture2D() Texture2D.Advanced {
+	return *((*Texture2D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsTexture2D() Texture2D.Instance {
+	return *((*Texture2D.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsTexture() Texture.Advanced { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTexture() Texture.Instance {
+	return *((*Texture.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsResource() Resource.Advanced {
+	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsResource() Resource.Instance {
+	return *((*Resource.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+
+func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(Texture2D.Advanced(self.AsTexture2D()), name)
+	}
+}
+
+func (self Instance) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(Texture2D.Instance(self.AsTexture2D()), name)
+	}
+}
+func init() {
+	gdclass.Register("ExternalTexture", func(ptr gd.Object) any {
+		return [1]gdclass.ExternalTexture{*(*gdclass.ExternalTexture)(unsafe.Pointer(&ptr))}
+	})
+}

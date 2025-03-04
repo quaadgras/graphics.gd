@@ -81,6 +81,14 @@ func (self Instance) SetVolumeDb(value Float.X) {
 	class(self).SetVolumeDb(float64(value))
 }
 
+func (self Instance) VolumeLinear() Float.X {
+	return Float.X(Float.X(class(self).GetVolumeLinear()))
+}
+
+func (self Instance) SetVolumeLinear(value Float.X) {
+	class(self).SetVolumeLinear(float64(value))
+}
+
 //go:nosplit
 func (self class) SetVolumeDb(volume float64) { //gd:AudioEffectAmplify.set_volume_db
 	var frame = callframe.New()
@@ -95,6 +103,25 @@ func (self class) GetVolumeDb() float64 { //gd:AudioEffectAmplify.get_volume_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectAmplify.Bind_get_volume_db, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetVolumeLinear(volume float64) { //gd:AudioEffectAmplify.set_volume_linear
+	var frame = callframe.New()
+	callframe.Arg(frame, volume)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectAmplify.Bind_set_volume_linear, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetVolumeLinear() float64 { //gd:AudioEffectAmplify.get_volume_linear
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectAmplify.Bind_get_volume_linear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

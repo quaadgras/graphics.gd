@@ -42,8 +42,8 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-This resource describes a mathematical curve by defining a set of points and tangents at each point. By default, it ranges between [code]0[/code] and [code]1[/code] on the Y axis and positions points relative to the [code]0.5[/code] Y position.
-See also [Gradient] which is designed for color interpolation. See also [Curve2D] and [Curve3D].
+This resource describes a mathematical curve by defining a set of points and tangents at each point. By default, it ranges between [code]0[/code] and [code]1[/code] on the X and Y axes, but these ranges can be changed.
+Please note that many resources and nodes assume they are given [i]unit curves[/i]. A unit curve is a curve whose domain (the X axis) is between [code]0[/code] and [code]1[/code]. Some examples of unit curve usage are [member CPUParticles2D.angle_curve] and [member Line2D.width_curve].
 */
 type Instance [1]gdclass.Curve
 
@@ -168,6 +168,20 @@ func (self Instance) SetPointRightMode(index int, mode gdclass.CurveTangentMode)
 }
 
 /*
+Returns the difference between [member min_value] and [member max_value].
+*/
+func (self Instance) GetValueRange() Float.X { //gd:Curve.get_value_range
+	return Float.X(Float.X(class(self).GetValueRange()))
+}
+
+/*
+Returns the difference between [member min_domain] and [member max_domain].
+*/
+func (self Instance) GetDomainRange() Float.X { //gd:Curve.get_domain_range
+	return Float.X(Float.X(class(self).GetDomainRange()))
+}
+
+/*
 Removes duplicate points, i.e. points that are less than 0.00001 units (engine epsilon value) away from their neighbor on the curve.
 */
 func (self Instance) CleanDupes() { //gd:Curve.clean_dupes
@@ -198,6 +212,22 @@ func New() Instance {
 	casted := Instance{*(*gdclass.Curve)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	return casted
+}
+
+func (self Instance) MinDomain() Float.X {
+	return Float.X(Float.X(class(self).GetMinDomain()))
+}
+
+func (self Instance) SetMinDomain(value Float.X) {
+	class(self).SetMinDomain(float64(value))
+}
+
+func (self Instance) MaxDomain() Float.X {
+	return Float.X(Float.X(class(self).GetMaxDomain()))
+}
+
+func (self Instance) SetMaxDomain(value Float.X) {
+	class(self).SetMaxDomain(float64(value))
 }
 
 func (self Instance) MinValue() Float.X {
@@ -509,6 +539,70 @@ func (self class) SetMaxValue(max float64) { //gd:Curve.set_max_value
 }
 
 /*
+Returns the difference between [member min_value] and [member max_value].
+*/
+//go:nosplit
+func (self class) GetValueRange() float64 { //gd:Curve.get_value_range
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_value_range, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) GetMinDomain() float64 { //gd:Curve.get_min_domain
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_min_domain, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetMinDomain(min float64) { //gd:Curve.set_min_domain
+	var frame = callframe.New()
+	callframe.Arg(frame, min)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_min_domain, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetMaxDomain() float64 { //gd:Curve.get_max_domain
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_max_domain, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetMaxDomain(max float64) { //gd:Curve.set_max_domain
+	var frame = callframe.New()
+	callframe.Arg(frame, max)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_max_domain, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the difference between [member min_domain] and [member max_domain].
+*/
+//go:nosplit
+func (self class) GetDomainRange() float64 { //gd:Curve.get_domain_range
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_domain_range, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Removes duplicate points, i.e. points that are less than 0.00001 units (engine epsilon value) away from their neighbor on the curve.
 */
 //go:nosplit
@@ -550,6 +644,10 @@ func (self class) SetBakeResolution(resolution int64) { //gd:Curve.set_bake_reso
 }
 func (self Instance) OnRangeChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("range_changed"), gd.NewCallable(cb), 0)
+}
+
+func (self Instance) OnDomainChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("domain_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsCurve() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

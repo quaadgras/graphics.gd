@@ -62,6 +62,14 @@ type Any interface {
 }
 
 /*
+Requests the particles to process for extra process time during a single frame.
+Useful for particle playback, if used in combination with [member use_fixed_seed] or by calling [method restart] with parameter [code]keep_seed[/code] set to [code]true[/code].
+*/
+func (self Instance) RequestParticlesProcess(process_time Float.X) { //gd:GPUParticles2D.request_particles_process
+	class(self).RequestParticlesProcess(float64(process_time))
+}
+
+/*
 Returns a rectangle containing the positions of all existing particles.
 [b]Note:[/b] When using threaded rendering this method synchronizes the rendering thread. Calling it often may have a negative impact on performance.
 */
@@ -72,14 +80,16 @@ func (self Instance) CaptureRect() Rect2.PositionSize { //gd:GPUParticles2D.capt
 /*
 Restarts the particle emission cycle, clearing existing particles. To avoid particles vanishing from the viewport, wait for the [signal finished] signal before calling.
 [b]Note:[/b] The [signal finished] signal is only emitted by [member one_shot] emitters.
+If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
 */
 func (self Instance) Restart() { //gd:GPUParticles2D.restart
-	class(self).Restart()
+	class(self).Restart(false)
 }
 
 /*
 Emits a single particle. Whether [param xform], [param velocity], [param color] and [param custom] are applied depends on the value of [param flags]. See [enum EmitFlags].
 The default ParticleProcessMaterial will overwrite [param color] and use the contents of [param custom] as [code](rotation, age, animation, lifetime)[/code].
+[b]Note:[/b] [method emit_particle] is only supported on the Forward+ and Mobile rendering methods, not Compatibility.
 */
 func (self Instance) EmitParticle(xform Transform2D.OriginXY, velocity Vector2.XY, color Color.RGBA, custom Color.RGBA, flags int) { //gd:GPUParticles2D.emit_particle
 	class(self).EmitParticle(Transform2D.OriginXY(xform), Vector2.XY(velocity), Color.RGBA(color), Color.RGBA(custom), int64(flags))
@@ -142,14 +152,6 @@ func (self Instance) SetSubEmitter(value string) {
 	class(self).SetSubEmitter(Path.ToNode(String.New(value)))
 }
 
-func (self Instance) ProcessMaterial() [1]gdclass.Material {
-	return [1]gdclass.Material(class(self).GetProcessMaterial())
-}
-
-func (self Instance) SetProcessMaterial(value [1]gdclass.Material) {
-	class(self).SetProcessMaterial(value)
-}
-
 func (self Instance) Texture() [1]gdclass.Texture2D {
 	return [1]gdclass.Texture2D(class(self).GetTexture())
 }
@@ -164,6 +166,14 @@ func (self Instance) Lifetime() Float.X {
 
 func (self Instance) SetLifetime(value Float.X) {
 	class(self).SetLifetime(float64(value))
+}
+
+func (self Instance) InterpToEnd() Float.X {
+	return Float.X(Float.X(class(self).GetInterpToEnd()))
+}
+
+func (self Instance) SetInterpToEnd(value Float.X) {
+	class(self).SetInterpToEnd(float64(value))
 }
 
 func (self Instance) OneShot() bool {
@@ -206,6 +216,22 @@ func (self Instance) SetRandomness(value Float.X) {
 	class(self).SetRandomnessRatio(float64(value))
 }
 
+func (self Instance) UseFixedSeed() bool {
+	return bool(class(self).GetUseFixedSeed())
+}
+
+func (self Instance) SetUseFixedSeed(value bool) {
+	class(self).SetUseFixedSeed(value)
+}
+
+func (self Instance) Seed() int {
+	return int(int(class(self).GetSeed()))
+}
+
+func (self Instance) SetSeed(value int) {
+	class(self).SetSeed(int64(value))
+}
+
 func (self Instance) FixedFps() int {
 	return int(int(class(self).GetFixedFps()))
 }
@@ -228,14 +254,6 @@ func (self Instance) FractDelta() bool {
 
 func (self Instance) SetFractDelta(value bool) {
 	class(self).SetFractionalDelta(value)
-}
-
-func (self Instance) InterpToEnd() Float.X {
-	return Float.X(Float.X(class(self).GetInterpToEnd()))
-}
-
-func (self Instance) SetInterpToEnd(value Float.X) {
-	class(self).SetInterpToEnd(float64(value))
 }
 
 func (self Instance) CollisionBaseSize() Float.X {
@@ -300,6 +318,14 @@ func (self Instance) TrailSectionSubdivisions() int {
 
 func (self Instance) SetTrailSectionSubdivisions(value int) {
 	class(self).SetTrailSectionSubdivisions(int64(value))
+}
+
+func (self Instance) ProcessMaterial() [1]gdclass.Material {
+	return [1]gdclass.Material(class(self).GetProcessMaterial())
+}
+
+func (self Instance) SetProcessMaterial(value [1]gdclass.Material) {
+	class(self).SetProcessMaterial(value)
 }
 
 //go:nosplit
@@ -443,6 +469,19 @@ func (self class) SetInterpToEnd(interp float64) { //gd:GPUParticles2D.set_inter
 	callframe.Arg(frame, interp)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_set_interp_to_end, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Requests the particles to process for extra process time during a single frame.
+Useful for particle playback, if used in combination with [member use_fixed_seed] or by calling [method restart] with parameter [code]keep_seed[/code] set to [code]true[/code].
+*/
+//go:nosplit
+func (self class) RequestParticlesProcess(process_time float64) { //gd:GPUParticles2D.request_particles_process
+	var frame = callframe.New()
+	callframe.Arg(frame, process_time)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_request_particles_process, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -661,10 +700,12 @@ func (self class) CaptureRect() Rect2.PositionSize { //gd:GPUParticles2D.capture
 /*
 Restarts the particle emission cycle, clearing existing particles. To avoid particles vanishing from the viewport, wait for the [signal finished] signal before calling.
 [b]Note:[/b] The [signal finished] signal is only emitted by [member one_shot] emitters.
+If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
 */
 //go:nosplit
-func (self class) Restart() { //gd:GPUParticles2D.restart
+func (self class) Restart(keep_seed bool) { //gd:GPUParticles2D.restart
 	var frame = callframe.New()
+	callframe.Arg(frame, keep_seed)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_restart, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -692,6 +733,7 @@ func (self class) GetSubEmitter() Path.ToNode { //gd:GPUParticles2D.get_sub_emit
 /*
 Emits a single particle. Whether [param xform], [param velocity], [param color] and [param custom] are applied depends on the value of [param flags]. See [enum EmitFlags].
 The default ParticleProcessMaterial will overwrite [param color] and use the contents of [param custom] as [code](rotation, age, animation, lifetime)[/code].
+[b]Note:[/b] [method emit_particle] is only supported on the Forward+ and Mobile rendering methods, not Compatibility.
 */
 //go:nosplit
 func (self class) EmitParticle(xform Transform2D.OriginXY, velocity Vector2.XY, color Color.RGBA, custom Color.RGBA, flags int64) { //gd:GPUParticles2D.emit_particle
@@ -808,6 +850,44 @@ func (self class) GetAmountRatio() float64 { //gd:GPUParticles2D.get_amount_rati
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_amount_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetUseFixedSeed(use_fixed_seed bool) { //gd:GPUParticles2D.set_use_fixed_seed
+	var frame = callframe.New()
+	callframe.Arg(frame, use_fixed_seed)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_set_use_fixed_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetUseFixedSeed() bool { //gd:GPUParticles2D.get_use_fixed_seed
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_use_fixed_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSeed(seed int64) { //gd:GPUParticles2D.set_seed
+	var frame = callframe.New()
+	callframe.Arg(frame, seed)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_set_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetSeed() int64 { //gd:GPUParticles2D.get_seed
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles2D.Bind_get_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

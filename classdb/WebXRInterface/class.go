@@ -567,7 +567,7 @@ func init() {
 type TargetRayMode = gdclass.WebXRInterfaceTargetRayMode //gd:WebXRInterface.TargetRayMode
 
 const (
-	/*We don't know the the target ray mode.*/
+	/*We don't know the target ray mode.*/
 	TargetRayModeUnknown TargetRayMode = 0
 	/*Target ray originates at the viewer's eyes and points in the direction they are looking.*/
 	TargetRayModeGaze TargetRayMode = 1

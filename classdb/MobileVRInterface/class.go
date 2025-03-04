@@ -52,6 +52,7 @@ if interface and interface.initialize():
 	get_viewport().use_xr = true
 
 [/codeblock]
+[b]Note:[/b] For Android, [member ProjectSettings.input_devices/sensors/enable_accelerometer], [member ProjectSettings.input_devices/sensors/enable_gravity], [member ProjectSettings.input_devices/sensors/enable_gyroscope] and [member ProjectSettings.input_devices/sensors/enable_magnetometer] must be enabled.
 */
 type Instance [1]gdclass.MobileVRInterface
 

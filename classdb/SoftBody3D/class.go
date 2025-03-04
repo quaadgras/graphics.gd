@@ -127,7 +127,7 @@ func (self Instance) GetPointTransform(point_index int) Vector3.XYZ { //gd:SoftB
 Sets the pinned state of a surface vertex. When set to [code]true[/code], the optional [param attachment_path] can define a [Node3D] the pinned vertex will be attached to.
 */
 func (self Instance) SetPointPinned(point_index int, pinned bool) { //gd:SoftBody3D.set_point_pinned
-	class(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.New("")))
+	class(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.New("")), int64(-1))
 }
 
 /*
@@ -555,11 +555,12 @@ func (self class) GetPointTransform(point_index int64) Vector3.XYZ { //gd:SoftBo
 Sets the pinned state of a surface vertex. When set to [code]true[/code], the optional [param attachment_path] can define a [Node3D] the pinned vertex will be attached to.
 */
 //go:nosplit
-func (self class) SetPointPinned(point_index int64, pinned bool, attachment_path Path.ToNode) { //gd:SoftBody3D.set_point_pinned
+func (self class) SetPointPinned(point_index int64, pinned bool, attachment_path Path.ToNode, insert_at int64) { //gd:SoftBody3D.set_point_pinned
 	var frame = callframe.New()
 	callframe.Arg(frame, point_index)
 	callframe.Arg(frame, pinned)
 	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(attachment_path)))
+	callframe.Arg(frame, insert_at)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_set_point_pinned, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

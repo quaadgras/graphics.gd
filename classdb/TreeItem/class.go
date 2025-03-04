@@ -71,6 +71,21 @@ func (self Instance) GetCellMode(column int) gdclass.TreeItemTreeCellMode { //gd
 }
 
 /*
+Sets the given column's auto translate mode to [param mode].
+All columns use [constant Node.AUTO_TRANSLATE_MODE_INHERIT] by default, which uses the same auto translate mode as the [Tree] itself.
+*/
+func (self Instance) SetAutoTranslateMode(column int, mode gdclass.NodeAutoTranslateMode) { //gd:TreeItem.set_auto_translate_mode
+	class(self).SetAutoTranslateMode(int64(column), mode)
+}
+
+/*
+Returns the column's auto translate mode.
+*/
+func (self Instance) GetAutoTranslateMode(column int) gdclass.NodeAutoTranslateMode { //gd:TreeItem.get_auto_translate_mode
+	return gdclass.NodeAutoTranslateMode(class(self).GetAutoTranslateMode(int64(column)))
+}
+
+/*
 If [param multiline] is [code]true[/code], the given [param column] is multiline editable.
 [b]Note:[/b] This option only affects the type of control ([LineEdit] or [TextEdit]) that appears when editing the column. You can set multiline values with [method set_text] even if the column is not multiline editable.
 */
@@ -234,7 +249,7 @@ func (self Instance) GetSuffix(column int) string { //gd:TreeItem.get_suffix
 }
 
 /*
-Sets the given cell's icon [Texture2D]. The cell has to be in [constant CELL_MODE_ICON] mode.
+Sets the given cell's icon [Texture2D]. If the cell is in [constant CELL_MODE_ICON] mode, the icon is displayed in the center of the cell. Otherwise, the icon is displayed before the cell's text. [constant CELL_MODE_RANGE] does not display an icon.
 */
 func (self Instance) SetIcon(column int, texture [1]gdclass.Texture2D) { //gd:TreeItem.set_icon
 	class(self).SetIcon(int64(column), texture)
@@ -245,6 +260,20 @@ Returns the given column's icon [Texture2D]. Error if no icon is set.
 */
 func (self Instance) GetIcon(column int) [1]gdclass.Texture2D { //gd:TreeItem.get_icon
 	return [1]gdclass.Texture2D(class(self).GetIcon(int64(column)))
+}
+
+/*
+Sets the given cell's icon overlay [Texture2D]. The cell has to be in [constant CELL_MODE_ICON] mode, and icon has to be set. Overlay is drawn on top of icon, in the bottom left corner.
+*/
+func (self Instance) SetIconOverlay(column int, texture [1]gdclass.Texture2D) { //gd:TreeItem.set_icon_overlay
+	class(self).SetIconOverlay(int64(column), texture)
+}
+
+/*
+Returns the given column's icon overlay [Texture2D].
+*/
+func (self Instance) GetIconOverlay(column int) [1]gdclass.Texture2D { //gd:TreeItem.get_icon_overlay
+	return [1]gdclass.Texture2D(class(self).GetIconOverlay(int64(column)))
 }
 
 /*
@@ -518,7 +547,14 @@ func (self Instance) IsCustomSetAsButton(column int) bool { //gd:TreeItem.is_cus
 }
 
 /*
-Adds a button with [Texture2D] [param button] at column [param column]. The [param id] is used to identify the button in the according [signal Tree.button_clicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [method get_button_count] immediately before this method. Optionally, the button can be [param disabled] and have a [param tooltip_text].
+Removes all buttons from all columns of this item.
+*/
+func (self Instance) ClearButtons() { //gd:TreeItem.clear_buttons
+	class(self).ClearButtons()
+}
+
+/*
+Adds a button with [Texture2D] [param button] to the end of the cell at column [param column]. The [param id] is used to identify the button in the according [signal Tree.button_clicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [method get_button_count] immediately before this method. Optionally, the button can be [param disabled] and have a [param tooltip_text].
 */
 func (self Instance) AddButton(column int, button [1]gdclass.Texture2D) { //gd:TreeItem.add_button
 	class(self).AddButton(int64(column), button, int64(-1), false, String.New(""))
@@ -681,21 +717,21 @@ func (self Instance) GetTree() [1]gdclass.Tree { //gd:TreeItem.get_tree
 }
 
 /*
-Returns the next sibling TreeItem in the tree or a null object if there is none.
+Returns the next sibling TreeItem in the tree or a [code]null[/code] object if there is none.
 */
 func (self Instance) GetNext() [1]gdclass.TreeItem { //gd:TreeItem.get_next
 	return [1]gdclass.TreeItem(class(self).GetNext())
 }
 
 /*
-Returns the previous sibling TreeItem in the tree or a null object if there is none.
+Returns the previous sibling TreeItem in the tree or a [code]null[/code] object if there is none.
 */
 func (self Instance) GetPrev() [1]gdclass.TreeItem { //gd:TreeItem.get_prev
 	return [1]gdclass.TreeItem(class(self).GetPrev())
 }
 
 /*
-Returns the parent TreeItem or a null object if there is none.
+Returns the parent TreeItem or a [code]null[/code] object if there is none.
 */
 func (self Instance) GetParent() [1]gdclass.TreeItem { //gd:TreeItem.get_parent
 	return [1]gdclass.TreeItem(class(self).GetParent())
@@ -857,6 +893,34 @@ func (self class) GetCellMode(column int64) gdclass.TreeItemTreeCellMode { //gd:
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gdclass.TreeItemTreeCellMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_cell_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the given column's auto translate mode to [param mode].
+All columns use [constant Node.AUTO_TRANSLATE_MODE_INHERIT] by default, which uses the same auto translate mode as the [Tree] itself.
+*/
+//go:nosplit
+func (self class) SetAutoTranslateMode(column int64, mode gdclass.NodeAutoTranslateMode) { //gd:TreeItem.set_auto_translate_mode
+	var frame = callframe.New()
+	callframe.Arg(frame, column)
+	callframe.Arg(frame, mode)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the column's auto translate mode.
+*/
+//go:nosplit
+func (self class) GetAutoTranslateMode(column int64) gdclass.NodeAutoTranslateMode { //gd:TreeItem.get_auto_translate_mode
+	var frame = callframe.New()
+	callframe.Arg(frame, column)
+	var r_ret = callframe.Ret[gdclass.NodeAutoTranslateMode](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1175,7 +1239,7 @@ func (self class) GetSuffix(column int64) String.Readable { //gd:TreeItem.get_su
 }
 
 /*
-Sets the given cell's icon [Texture2D]. The cell has to be in [constant CELL_MODE_ICON] mode.
+Sets the given cell's icon [Texture2D]. If the cell is in [constant CELL_MODE_ICON] mode, the icon is displayed in the center of the cell. Otherwise, the icon is displayed before the cell's text. [constant CELL_MODE_RANGE] does not display an icon.
 */
 //go:nosplit
 func (self class) SetIcon(column int64, texture [1]gdclass.Texture2D) { //gd:TreeItem.set_icon
@@ -1196,6 +1260,33 @@ func (self class) GetIcon(column int64) [1]gdclass.Texture2D { //gd:TreeItem.get
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the given cell's icon overlay [Texture2D]. The cell has to be in [constant CELL_MODE_ICON] mode, and icon has to be set. Overlay is drawn on top of icon, in the bottom left corner.
+*/
+//go:nosplit
+func (self class) SetIconOverlay(column int64, texture [1]gdclass.Texture2D) { //gd:TreeItem.set_icon_overlay
+	var frame = callframe.New()
+	callframe.Arg(frame, column)
+	callframe.Arg(frame, pointers.Get(texture[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_icon_overlay, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the given column's icon overlay [Texture2D].
+*/
+//go:nosplit
+func (self class) GetIconOverlay(column int64) [1]gdclass.Texture2D { //gd:TreeItem.get_icon_overlay
+	var frame = callframe.New()
+	callframe.Arg(frame, column)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon_overlay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1771,7 +1862,18 @@ func (self class) IsCustomSetAsButton(column int64) bool { //gd:TreeItem.is_cust
 }
 
 /*
-Adds a button with [Texture2D] [param button] at column [param column]. The [param id] is used to identify the button in the according [signal Tree.button_clicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [method get_button_count] immediately before this method. Optionally, the button can be [param disabled] and have a [param tooltip_text].
+Removes all buttons from all columns of this item.
+*/
+//go:nosplit
+func (self class) ClearButtons() { //gd:TreeItem.clear_buttons
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_clear_buttons, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Adds a button with [Texture2D] [param button] to the end of the cell at column [param column]. The [param id] is used to identify the button in the according [signal Tree.button_clicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [method get_button_count] immediately before this method. Optionally, the button can be [param disabled] and have a [param tooltip_text].
 */
 //go:nosplit
 func (self class) AddButton(column int64, button [1]gdclass.Texture2D, id int64, disabled bool, tooltip_text String.Readable) { //gd:TreeItem.add_button
@@ -2113,7 +2215,7 @@ func (self class) GetTree() [1]gdclass.Tree { //gd:TreeItem.get_tree
 }
 
 /*
-Returns the next sibling TreeItem in the tree or a null object if there is none.
+Returns the next sibling TreeItem in the tree or a [code]null[/code] object if there is none.
 */
 //go:nosplit
 func (self class) GetNext() [1]gdclass.TreeItem { //gd:TreeItem.get_next
@@ -2126,7 +2228,7 @@ func (self class) GetNext() [1]gdclass.TreeItem { //gd:TreeItem.get_next
 }
 
 /*
-Returns the previous sibling TreeItem in the tree or a null object if there is none.
+Returns the previous sibling TreeItem in the tree or a [code]null[/code] object if there is none.
 */
 //go:nosplit
 func (self class) GetPrev() [1]gdclass.TreeItem { //gd:TreeItem.get_prev
@@ -2139,7 +2241,7 @@ func (self class) GetPrev() [1]gdclass.TreeItem { //gd:TreeItem.get_prev
 }
 
 /*
-Returns the parent TreeItem or a null object if there is none.
+Returns the parent TreeItem or a [code]null[/code] object if there is none.
 */
 //go:nosplit
 func (self class) GetParent() [1]gdclass.TreeItem { //gd:TreeItem.get_parent
@@ -2326,14 +2428,14 @@ func init() {
 type TreeCellMode = gdclass.TreeItemTreeCellMode //gd:TreeItem.TreeCellMode
 
 const (
-	/*Cell shows a string label. When editable, the text can be edited using a [LineEdit], or a [TextEdit] popup if [method set_edit_multiline] is used.*/
+	/*Cell shows a string label, optionally with an icon. When editable, the text can be edited using a [LineEdit], or a [TextEdit] popup if [method set_edit_multiline] is used.*/
 	CellModeString TreeCellMode = 0
-	/*Cell shows a checkbox, optionally with text. The checkbox can be pressed, released, or indeterminate (via [method set_indeterminate]). The checkbox can't be clicked unless the cell is editable.*/
+	/*Cell shows a checkbox, optionally with text and an icon. The checkbox can be pressed, released, or indeterminate (via [method set_indeterminate]). The checkbox can't be clicked unless the cell is editable.*/
 	CellModeCheck TreeCellMode = 1
 	/*Cell shows a numeric range. When editable, it can be edited using a range slider. Use [method set_range] to set the value and [method set_range_config] to configure the range.
 	  This cell can also be used in a text dropdown mode when you assign a text with [method set_text]. Separate options with a comma, e.g. [code]"Option1,Option2,Option3"[/code].*/
 	CellModeRange TreeCellMode = 2
-	/*Cell shows an icon. It can't be edited nor display text.*/
+	/*Cell shows an icon. It can't be edited nor display text. The icon is always centered within the cell.*/
 	CellModeIcon TreeCellMode = 3
 	/*Cell shows as a clickable button. It will display an arrow similar to [OptionButton], but doesn't feature a dropdown (for that you can use [constant CELL_MODE_RANGE]). Clicking the button emits the [signal Tree.item_edited] signal. The button is flat by default, you can use [method set_custom_as_button] to display it with a [StyleBox].
 	  This mode also supports custom drawing using [method set_custom_draw_callback].*/

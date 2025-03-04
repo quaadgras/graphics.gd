@@ -223,8 +223,12 @@ func init() {
 type FilterDB = gdclass.AudioEffectFilterFilterDB //gd:AudioEffectFilter.FilterDB
 
 const (
-	Filter6db  FilterDB = 0
+	/*Cutting off at 6dB per octave.*/
+	Filter6db FilterDB = 0
+	/*Cutting off at 12dB per octave.*/
 	Filter12db FilterDB = 1
+	/*Cutting off at 18dB per octave.*/
 	Filter18db FilterDB = 2
+	/*Cutting off at 24dB per octave.*/
 	Filter24db FilterDB = 3
 )

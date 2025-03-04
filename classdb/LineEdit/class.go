@@ -43,7 +43,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-[LineEdit] provides an input field for editing a single line of text. It features many built-in shortcuts that are always available ([kbd]Ctrl[/kbd] here maps to [kbd]Cmd[/kbd] on macOS):
+[LineEdit] provides an input field for editing a single line of text.
+- When the [LineEdit] control is focused using the keyboard arrow keys, it will only gain focus and not enter edit mode.
+- To enter edit mode, click on the control with the mouse, see also [member keep_editing_on_text_submit].
+- To exit edit mode, press [code]ui_text_submit[/code] or [code]ui_cancel[/code] (by default [kbd]Escape[/kbd]) actions.
+- Check [method edit], [method unedit], [method is_editing], and [signal editing_toggled] for more information.
+[b]Important:[/b]
+- Focusing the [LineEdit] with [code]ui_focus_next[/code] (by default [kbd]Tab[/kbd]) or [code]ui_focus_prev[/code] (by default [kbd]Shift + Tab[/kbd]) or [method Control.grab_focus] still enters edit mode (for compatibility).
+[LineEdit] features many built-in shortcuts that are always available ([kbd]Ctrl[/kbd] here maps to [kbd]Cmd[/kbd] on macOS):
 - [kbd]Ctrl + C[/kbd]: Copy
 - [kbd]Ctrl + X[/kbd]: Cut
 - [kbd]Ctrl + V[/kbd] or [kbd]Ctrl + Y[/kbd]: Paste/"yank"
@@ -65,6 +72,7 @@ On macOS, some extra keyboard shortcuts are available:
 - [kbd]Cmd + E[/kbd]: Same as [kbd]End[/kbd], move the caret to the end of the line
 - [kbd]Cmd + Left Arrow[/kbd]: Same as [kbd]Home[/kbd], move the caret to the beginning of the line
 - [kbd]Cmd + Right Arrow[/kbd]: Same as [kbd]End[/kbd], move the caret to the end of the line
+[b]Note:[/b] Caret movement shortcuts listed above are not affected by [member shortcut_keys_enabled].
 */
 type Instance [1]gdclass.LineEdit
 
@@ -74,6 +82,49 @@ var Nil Instance
 type Any interface {
 	gd.IsClass
 	AsLineEdit() Instance
+}
+
+/*
+Returns [code]true[/code] if the user has text in the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] (IME).
+*/
+func (self Instance) HasImeText() bool { //gd:LineEdit.has_ime_text
+	return bool(class(self).HasImeText())
+}
+
+/*
+Closes the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] (IME) if it is open. Any text in the IME will be lost.
+*/
+func (self Instance) CancelIme() { //gd:LineEdit.cancel_ime
+	class(self).CancelIme()
+}
+
+/*
+Applies text from the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] (IME) and closes the IME if it is open.
+*/
+func (self Instance) ApplyIme() { //gd:LineEdit.apply_ime
+	class(self).ApplyIme()
+}
+
+/*
+Allows entering edit mode whether the [LineEdit] is focused or not.
+See also [member keep_editing_on_text_submit].
+*/
+func (self Instance) Edit() { //gd:LineEdit.edit
+	class(self).Edit()
+}
+
+/*
+Allows exiting edit mode while preserving focus.
+*/
+func (self Instance) Unedit() { //gd:LineEdit.unedit
+	class(self).Unedit()
+}
+
+/*
+Returns whether the [LineEdit] is being edited.
+*/
+func (self Instance) IsEditing() bool { //gd:LineEdit.is_editing
+	return bool(class(self).IsEditing())
 }
 
 /*
@@ -116,6 +167,20 @@ Clears the current selection.
 */
 func (self Instance) Deselect() { //gd:LineEdit.deselect
 	class(self).Deselect()
+}
+
+/*
+Returns [code]true[/code] if an "undo" action is available.
+*/
+func (self Instance) HasUndo() bool { //gd:LineEdit.has_undo
+	return bool(class(self).HasUndo())
+}
+
+/*
+Returns [code]true[/code] if a "redo" action is available.
+*/
+func (self Instance) HasRedo() bool { //gd:LineEdit.has_redo
+	return bool(class(self).HasRedo())
 }
 
 /*
@@ -299,6 +364,14 @@ func (self Instance) SetEditable(value bool) {
 	class(self).SetEditable(value)
 }
 
+func (self Instance) KeepEditingOnTextSubmit() bool {
+	return bool(class(self).IsEditingKeptOnTextSubmit())
+}
+
+func (self Instance) SetKeepEditingOnTextSubmit(value bool) {
+	class(self).SetKeepEditingOnTextSubmit(value)
+}
+
 func (self Instance) ExpandToTextLength() bool {
 	return bool(class(self).IsExpandToTextLengthEnabled())
 }
@@ -313,6 +386,14 @@ func (self Instance) ContextMenuEnabled() bool {
 
 func (self Instance) SetContextMenuEnabled(value bool) {
 	class(self).SetContextMenuEnabled(value)
+}
+
+func (self Instance) EmojiMenuEnabled() bool {
+	return bool(class(self).IsEmojiMenuEnabled())
+}
+
+func (self Instance) SetEmojiMenuEnabled(value bool) {
+	class(self).SetEmojiMenuEnabled(value)
 }
 
 func (self Instance) VirtualKeyboardEnabled() bool {
@@ -499,6 +580,41 @@ func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 }
 
+/*
+Returns [code]true[/code] if the user has text in the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] (IME).
+*/
+//go:nosplit
+func (self class) HasImeText() bool { //gd:LineEdit.has_ime_text
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_has_ime_text, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Closes the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] (IME) if it is open. Any text in the IME will be lost.
+*/
+//go:nosplit
+func (self class) CancelIme() { //gd:LineEdit.cancel_ime
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_cancel_ime, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Applies text from the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] (IME) and closes the IME if it is open.
+*/
+//go:nosplit
+func (self class) ApplyIme() { //gd:LineEdit.apply_ime
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_apply_ime, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
 //go:nosplit
 func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:LineEdit.set_horizontal_alignment
 	var frame = callframe.New()
@@ -513,6 +629,61 @@ func (self class) GetHorizontalAlignment() HorizontalAlignment { //gd:LineEdit.g
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Allows entering edit mode whether the [LineEdit] is focused or not.
+See also [member keep_editing_on_text_submit].
+*/
+//go:nosplit
+func (self class) Edit() { //gd:LineEdit.edit
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_edit, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Allows exiting edit mode while preserving focus.
+*/
+//go:nosplit
+func (self class) Unedit() { //gd:LineEdit.unedit
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_unedit, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns whether the [LineEdit] is being edited.
+*/
+//go:nosplit
+func (self class) IsEditing() bool { //gd:LineEdit.is_editing
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_editing, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetKeepEditingOnTextSubmit(enable bool) { //gd:LineEdit.set_keep_editing_on_text_submit
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_keep_editing_on_text_submit, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsEditingKeptOnTextSubmit() bool { //gd:LineEdit.is_editing_kept_on_text_submit
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_editing_kept_on_text_submit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -576,6 +747,32 @@ func (self class) Deselect() { //gd:LineEdit.deselect
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_deselect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+}
+
+/*
+Returns [code]true[/code] if an "undo" action is available.
+*/
+//go:nosplit
+func (self class) HasUndo() bool { //gd:LineEdit.has_undo
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_has_undo, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if a "redo" action is available.
+*/
+//go:nosplit
+func (self class) HasRedo() bool { //gd:LineEdit.has_redo
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_has_redo, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
 }
 
 /*
@@ -1100,6 +1297,25 @@ func (self class) IsContextMenuEnabled() bool { //gd:LineEdit.is_context_menu_en
 }
 
 //go:nosplit
+func (self class) SetEmojiMenuEnabled(enable bool) { //gd:LineEdit.set_emoji_menu_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_emoji_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsEmojiMenuEnabled() bool { //gd:LineEdit.is_emoji_menu_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_emoji_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
 func (self class) SetVirtualKeyboardEnabled(enable bool) { //gd:LineEdit.set_virtual_keyboard_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
@@ -1319,6 +1535,10 @@ func (self Instance) OnTextSubmitted(cb func(new_text string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("text_submitted"), gd.NewCallable(cb), 0)
 }
 
+func (self Instance) OnEditingToggled(cb func(toggled_on bool)) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("editing_toggled"), gd.NewCallable(cb), 0)
+}
+
 func (self class) AsLineEdit() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsLineEdit() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
 func (self class) AsControl() Control.Advanced { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
@@ -1415,8 +1635,10 @@ const (
 	MenuInsertWj MenuItems = 28
 	/*Inserts soft hyphen (SHY) character.*/
 	MenuInsertShy MenuItems = 29
+	/*Opens system emoji and symbol picker.*/
+	MenuEmojiAndSymbol MenuItems = 30
 	/*Represents the size of the [enum MenuItems] enum.*/
-	MenuMax MenuItems = 30
+	MenuMax MenuItems = 31
 )
 
 type VirtualKeyboardType = gdclass.LineEditVirtualKeyboardType //gd:LineEdit.VirtualKeyboardType

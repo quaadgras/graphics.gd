@@ -1,0 +1,126 @@
+// Package SubtweenTweener provides methods for working with SubtweenTweener object instances.
+package SubtweenTweener
+
+import "unsafe"
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/classdb/Tweener"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+
+var _ Object.ID
+var _ RefCounted.Instance
+var _ unsafe.Pointer
+var _ reflect.Type
+var _ callframe.Frame
+var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
+var _ Callable.Function
+var _ Dictionary.Any
+var _ RID.Any
+var _ String.Readable
+var _ Path.ToNode
+var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
+var _ = slices.Delete[[]struct{}, struct{}]
+
+/*
+[SubtweenTweener] is used to execute a [Tween] as one step in a sequence defined by another [Tween]. See [method Tween.tween_subtween] for more usage information.
+[b]Note:[/b] [method Tween.tween_subtween] is the only correct way to create [SubtweenTweener]. Any [SubtweenTweener] created manually will not function correctly.
+*/
+type Instance [1]gdclass.SubtweenTweener
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
+type Any interface {
+	gd.IsClass
+	AsSubtweenTweener() Instance
+}
+
+/*
+Sets the time in seconds after which the [SubtweenTweener] will start running the subtween. By default there's no delay.
+*/
+func (self Instance) SetDelay(delay Float.X) [1]gdclass.SubtweenTweener { //gd:SubtweenTweener.set_delay
+	return [1]gdclass.SubtweenTweener(class(self).SetDelay(float64(delay)))
+}
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
+type class [1]gdclass.SubtweenTweener
+
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func New() Instance {
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SubtweenTweener"))
+	casted := Instance{*(*gdclass.SubtweenTweener)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
+}
+
+/*
+Sets the time in seconds after which the [SubtweenTweener] will start running the subtween. By default there's no delay.
+*/
+//go:nosplit
+func (self class) SetDelay(delay float64) [1]gdclass.SubtweenTweener { //gd:SubtweenTweener.set_delay
+	var frame = callframe.New()
+	callframe.Arg(frame, delay)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubtweenTweener.Bind_set_delay, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.SubtweenTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.SubtweenTweener](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+func (self class) AsSubtweenTweener() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsSubtweenTweener() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsTweener() Tweener.Advanced    { return *((*Tweener.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTweener() Tweener.Instance {
+	return *((*Tweener.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+
+func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(Tweener.Advanced(self.AsTweener()), name)
+	}
+}
+
+func (self Instance) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(Tweener.Instance(self.AsTweener()), name)
+	}
+}
+func init() {
+	gdclass.Register("SubtweenTweener", func(ptr gd.Object) any {
+		return [1]gdclass.SubtweenTweener{*(*gdclass.SubtweenTweener)(unsafe.Pointer(&ptr))}
+	})
+}

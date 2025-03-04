@@ -23,6 +23,7 @@ import "graphics.gd/variant/RID"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -58,7 +59,15 @@ type Any interface {
 }
 
 /*
-Returns true if the OpenXR runtime natively supports this composition layer type.
+Returns a [JavaObject] representing an [code]android.view.Surface[/code] if [member use_android_surface] is enabled and OpenXR has created the surface. Otherwise, this will return [code]null[/code].
+[b]Note:[/b] The surface can only be created during an active OpenXR session. So, if [member use_android_surface] is enabled outside of an OpenXR session, it won't be created until a new session fully starts.
+*/
+func (self Instance) GetAndroidSurface() [1]gdclass.JavaObject { //gd:OpenXRCompositionLayer.get_android_surface
+	return [1]gdclass.JavaObject(class(self).GetAndroidSurface())
+}
+
+/*
+Returns [code]true[/code] if the OpenXR runtime natively supports this composition layer type.
 [b]Note:[/b] This will only return an accurate result after the OpenXR session has started.
 */
 func (self Instance) IsNativelySupported() bool { //gd:OpenXRCompositionLayer.is_natively_supported
@@ -97,6 +106,22 @@ func (self Instance) LayerViewport() [1]gdclass.SubViewport {
 
 func (self Instance) SetLayerViewport(value [1]gdclass.SubViewport) {
 	class(self).SetLayerViewport(value)
+}
+
+func (self Instance) UseAndroidSurface() bool {
+	return bool(class(self).GetUseAndroidSurface())
+}
+
+func (self Instance) SetUseAndroidSurface(value bool) {
+	class(self).SetUseAndroidSurface(value)
+}
+
+func (self Instance) AndroidSurfaceSize() Vector2i.XY {
+	return Vector2i.XY(class(self).GetAndroidSurfaceSize())
+}
+
+func (self Instance) SetAndroidSurfaceSize(value Vector2i.XY) {
+	class(self).SetAndroidSurfaceSize(Vector2i.XY(value))
 }
 
 func (self Instance) SortOrder() int {
@@ -138,6 +163,44 @@ func (self class) GetLayerViewport() [1]gdclass.SubViewport { //gd:OpenXRComposi
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_layer_viewport, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.SubViewport{gd.PointerMustAssertInstanceID[gdclass.SubViewport](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetUseAndroidSurface(enable bool) { //gd:OpenXRCompositionLayer.set_use_android_surface
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_set_use_android_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetUseAndroidSurface() bool { //gd:OpenXRCompositionLayer.get_use_android_surface
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_use_android_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAndroidSurfaceSize(size Vector2i.XY) { //gd:OpenXRCompositionLayer.set_android_surface_size
+	var frame = callframe.New()
+	callframe.Arg(frame, size)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_set_android_surface_size, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetAndroidSurfaceSize() Vector2i.XY { //gd:OpenXRCompositionLayer.get_android_surface_size
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_android_surface_size, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -200,7 +263,21 @@ func (self class) GetAlphaBlend() bool { //gd:OpenXRCompositionLayer.get_alpha_b
 }
 
 /*
-Returns true if the OpenXR runtime natively supports this composition layer type.
+Returns a [JavaObject] representing an [code]android.view.Surface[/code] if [member use_android_surface] is enabled and OpenXR has created the surface. Otherwise, this will return [code]null[/code].
+[b]Note:[/b] The surface can only be created during an active OpenXR session. So, if [member use_android_surface] is enabled outside of an OpenXR session, it won't be created until a new session fully starts.
+*/
+//go:nosplit
+func (self class) GetAndroidSurface() [1]gdclass.JavaObject { //gd:OpenXRCompositionLayer.get_android_surface
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_android_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.JavaObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaObject](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the OpenXR runtime natively supports this composition layer type.
 [b]Note:[/b] This will only return an accurate result after the OpenXR session has started.
 */
 //go:nosplit

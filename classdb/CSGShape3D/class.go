@@ -45,7 +45,11 @@ var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This is the CSG base class that provides CSG operation support to the various CSG nodes in Godot.
-[b]Note:[/b] CSG nodes are intended to be used for level prototyping. Creating CSG nodes has a significant CPU cost compared to creating a [MeshInstance3D] with a [PrimitiveMesh]. Moving a CSG node within another CSG node also has a significant CPU cost, so it should be avoided during gameplay.
+[b]Performance:[/b] CSG nodes are only intended for prototyping as they have a significant CPU performance cost.
+Consider baking final CSG operation results into static geometry that replaces the CSG nodes.
+Individual CSG root node results can be baked to nodes with static resources with the editor menu that appears when a CSG root node is selected.
+Individual CSG root nodes can also be baked to static resources with scripts by calling [method bake_static_mesh] for the visual mesh or [method bake_collision_shape] for the physics collision.
+Entire scenes of CSG nodes can be baked to static geometry and exported with the editor gltf scene exporter.
 */
 type Instance [1]gdclass.CSGShape3D
 
@@ -97,6 +101,21 @@ Returns an [Array] with two elements, the first is the [Transform3D] of this nod
 */
 func (self Instance) GetMeshes() []any { //gd:CSGShape3D.get_meshes
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetMeshes())))
+}
+
+/*
+Returns a baked static [ArrayMesh] of this node's CSG operation result. Materials from involved CSG nodes are added as extra mesh surfaces. Returns an empty mesh if the node is not a CSG root node or has no valid geometry.
+*/
+func (self Instance) BakeStaticMesh() [1]gdclass.ArrayMesh { //gd:CSGShape3D.bake_static_mesh
+	return [1]gdclass.ArrayMesh(class(self).BakeStaticMesh())
+}
+
+/*
+Returns a baked physics [ConcavePolygonShape3D] of this node's CSG operation result. Returns an empty shape if the node is not a CSG root node or has no valid geometry.
+[b]Performance:[/b] If the CSG operation results in a very detailed geometry with many faces physics performance will be very slow. Concave shapes should in general only be used for static level geometry and not with dynamic objects that are moving.
+*/
+func (self Instance) BakeCollisionShape() [1]gdclass.ConcavePolygonShape3D { //gd:CSGShape3D.bake_collision_shape
+	return [1]gdclass.ConcavePolygonShape3D(class(self).BakeCollisionShape())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -382,6 +401,33 @@ func (self class) GetMeshes() Array.Any { //gd:CSGShape3D.get_meshes
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_get_meshes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns a baked static [ArrayMesh] of this node's CSG operation result. Materials from involved CSG nodes are added as extra mesh surfaces. Returns an empty mesh if the node is not a CSG root node or has no valid geometry.
+*/
+//go:nosplit
+func (self class) BakeStaticMesh() [1]gdclass.ArrayMesh { //gd:CSGShape3D.bake_static_mesh
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_bake_static_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Returns a baked physics [ConcavePolygonShape3D] of this node's CSG operation result. Returns an empty shape if the node is not a CSG root node or has no valid geometry.
+[b]Performance:[/b] If the CSG operation results in a very detailed geometry with many faces physics performance will be very slow. Concave shapes should in general only be used for static level geometry and not with dynamic objects that are moving.
+*/
+//go:nosplit
+func (self class) BakeCollisionShape() [1]gdclass.ConcavePolygonShape3D { //gd:CSGShape3D.bake_collision_shape
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_bake_collision_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.ConcavePolygonShape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.ConcavePolygonShape3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }

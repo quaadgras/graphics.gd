@@ -144,6 +144,14 @@ func (self Instance) SetTextureMipmapBias(value Float.X) {
 	class(self).SetTextureMipmapBias(float64(value))
 }
 
+func (self Instance) AnisotropicFilteringLevel() gdclass.RenderingServerViewportAnisotropicFiltering {
+	return gdclass.RenderingServerViewportAnisotropicFiltering(class(self).GetAnisotropicFilteringLevel())
+}
+
+func (self Instance) SetAnisotropicFilteringLevel(value gdclass.RenderingServerViewportAnisotropicFiltering) {
+	class(self).SetAnisotropicFilteringLevel(value)
+}
+
 //go:nosplit
 func (self class) GetRenderTarget() RID.Any { //gd:RenderSceneBuffersConfiguration.get_render_target
 	var frame = callframe.New()
@@ -312,6 +320,25 @@ func (self class) SetTextureMipmapBias(texture_mipmap_bias float64) { //gd:Rende
 	callframe.Arg(frame, texture_mipmap_bias)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_set_texture_mipmap_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetAnisotropicFilteringLevel() gdclass.RenderingServerViewportAnisotropicFiltering { //gd:RenderSceneBuffersConfiguration.get_anisotropic_filtering_level
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.RenderingServerViewportAnisotropicFiltering](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_anisotropic_filtering_level, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAnisotropicFilteringLevel(anisotropic_filtering_level gdclass.RenderingServerViewportAnisotropicFiltering) { //gd:RenderSceneBuffersConfiguration.set_anisotropic_filtering_level
+	var frame = callframe.New()
+	callframe.Arg(frame, anisotropic_filtering_level)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_set_anisotropic_filtering_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsRenderSceneBuffersConfiguration() Advanced {

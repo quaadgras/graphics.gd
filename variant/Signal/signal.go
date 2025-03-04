@@ -65,6 +65,14 @@ func (signal *Any) Remove(consumer Callable.Function) { //gd:Signal.disconnect
 	}
 }
 
+// HasConnections returns true if any Callable is connected to this signal.
+func (signal Any) HasConnections() bool { //gd:Signal.has_connections
+	for range signal.Consumers() {
+		return true
+	}
+	return false
+}
+
 // Emit emits this signal. All consumers to this signal will be notified.
 func (signal Any) Emit(values ...variant.Any) { //gd:Signal.emit
 	if signal.proxy != nil {

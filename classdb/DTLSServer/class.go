@@ -47,8 +47,8 @@ Below a small example of how to use it:
 # server_node.gd
 extends Node
 
-var dtls := DTLSServer.new()
-var server := UDPServer.new()
+var dtls = DTLSServer.new()
+var server = UDPServer.new()
 var peers = []
 
 func _ready():
@@ -56,13 +56,13 @@ func _ready():
 	server.listen(4242)
 	var key = load("key.key") # Your private key.
 	var cert = load("cert.crt") # Your X509 certificate.
-	dtls.setup(key, cert)
+	dtls.setup(TlsOptions.server(key, cert))
 
 func _process(delta):
 
 	while server.is_connection_available():
-	    var peer: PacketPeerUDP = server.take_connection()
-	    var dtls_peer: PacketPeerDTLS = dtls.take_connection(peer)
+	    var peer = server.take_connection()
+	    var dtls_peer = dtls.take_connection(peer)
 	    if dtls_peer.get_status() != PacketPeerDTLS.STATUS_HANDSHAKING:
 	        continue # It is normal that 50% of the connections fails due to cookie exchange.
 	    print("Peer connected!")
@@ -85,19 +85,19 @@ public partial class ServerNode : Node
 	{
 	    private DtlsServer _dtls = new DtlsServer();
 	    private UdpServer _server = new UdpServer();
-	    private Godot.Collections.Array<PacketPeerDtls> _peers = new Godot.Collections.Array<PacketPeerDtls>();
+	    private Godot.Collections.Array<PacketPeerDtls> _peers = [];
 
 	    public override void _Ready()
 	    {
 	        _server.Listen(4242);
 	        var key = GD.Load<CryptoKey>("key.key"); // Your private key.
 	        var cert = GD.Load<X509Certificate>("cert.crt"); // Your X509 certificate.
-	        _dtls.Setup(key, cert);
+	        _dtls.Setup(TlsOptions.Server(key, cert));
 	    }
 
 	    public override void _Process(double delta)
 	    {
-	        while (Server.IsConnectionAvailable())
+	        while (_server.IsConnectionAvailable())
 	        {
 	            PacketPeerUdp peer = _server.TakeConnection();
 	            PacketPeerDtls dtlsPeer = _dtls.TakeConnection(peer);
@@ -131,8 +131,8 @@ public partial class ServerNode : Node
 # client_node.gd
 extends Node
 
-var dtls := PacketPeerDTLS.new()
-var udp := PacketPeerUDP.new()
+var dtls = PacketPeerDTLS.new()
+var udp = PacketPeerUDP.new()
 var connected = false
 
 func _ready():

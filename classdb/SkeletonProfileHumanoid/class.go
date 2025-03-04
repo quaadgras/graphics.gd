@@ -70,6 +70,7 @@ Root
 	            │        └─ LeftHand
 	            │           ├─ LeftThumbMetacarpal
 	            │           │  └─ LeftThumbProximal
+	            │           │    └─ LeftThumbDistal
 	            │           ├─ LeftIndexProximal
 	            │           │  └─ LeftIndexIntermediate
 	            │           │    └─ LeftIndexDistal
@@ -88,6 +89,7 @@ Root
 	                     └─ RightHand
 	                        ├─ RightThumbMetacarpal
 	                        │  └─ RightThumbProximal
+	                        │     └─ RightThumbDistal
 	                        ├─ RightIndexProximal
 	                        │  └─ RightIndexIntermediate
 	                        │     └─ RightIndexDistal

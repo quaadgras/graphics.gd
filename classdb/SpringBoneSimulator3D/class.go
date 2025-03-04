@@ -1,0 +1,1726 @@
+// Package SpringBoneSimulator3D provides methods for working with SpringBoneSimulator3D object instances.
+package SpringBoneSimulator3D
+
+import "unsafe"
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/SkeletonModifier3D"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector3"
+
+var _ Object.ID
+var _ RefCounted.Instance
+var _ unsafe.Pointer
+var _ reflect.Type
+var _ callframe.Frame
+var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
+var _ Callable.Function
+var _ Dictionary.Any
+var _ RID.Any
+var _ String.Readable
+var _ Path.ToNode
+var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
+var _ = slices.Delete[[]struct{}, struct{}]
+
+/*
+This [SkeletonModifier3D] can be used to wiggle hair, cloth, and tails. This modifier behaves differently from [PhysicalBoneSimulator3D] as it attempts to return the original pose after modification.
+If you setup [method set_root_bone] and [method set_end_bone], it is treated as one bone chain. Note that it does not support a branched chain like Y-shaped chains.
+When a bone chain is created, an array is generated from the bones that exist in between and listed in the joint list.
+Several properties can be applied to each joint, such as [method set_joint_stiffness], [method set_joint_drag], and [method set_joint_gravity].
+For simplicity, you can set values to all joints at the same time by using a [Curve]. If you want to specify detailed values individually, set [method set_individual_config] to [code]true[/code].
+For physical simulation, [SpringBoneSimulator3D] can have children as self-standing collisions that are not related to [PhysicsServer3D], see also [SpringBoneCollision3D].
+[b]Warning:[/b] A scaled [SpringBoneSimulator3D] will likely not behave as expected. Make sure that the parent [Skeleton3D] and its bones are not scaled.
+*/
+type Instance [1]gdclass.SpringBoneSimulator3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
+type Any interface {
+	gd.IsClass
+	AsSpringBoneSimulator3D() Instance
+}
+
+/*
+Sets the root bone name of the bone chain.
+*/
+func (self Instance) SetRootBoneName(index int, bone_name string) { //gd:SpringBoneSimulator3D.set_root_bone_name
+	class(self).SetRootBoneName(int64(index), String.New(bone_name))
+}
+
+/*
+Returns the root bone name of the bone chain.
+*/
+func (self Instance) GetRootBoneName(index int) string { //gd:SpringBoneSimulator3D.get_root_bone_name
+	return string(class(self).GetRootBoneName(int64(index)).String())
+}
+
+/*
+Sets the root bone index of the bone chain.
+*/
+func (self Instance) SetRootBone(index int, bone int) { //gd:SpringBoneSimulator3D.set_root_bone
+	class(self).SetRootBone(int64(index), int64(bone))
+}
+
+/*
+Returns the root bone index of the bone chain.
+*/
+func (self Instance) GetRootBone(index int) int { //gd:SpringBoneSimulator3D.get_root_bone
+	return int(int(class(self).GetRootBone(int64(index))))
+}
+
+/*
+Sets the end bone name of the bone chain.
+[b]Note:[/b] End bone must be the root bone or a child of the root bone. If they are the same, the tail must be extended by [method set_extend_end_bone] to jiggle the bone.
+*/
+func (self Instance) SetEndBoneName(index int, bone_name string) { //gd:SpringBoneSimulator3D.set_end_bone_name
+	class(self).SetEndBoneName(int64(index), String.New(bone_name))
+}
+
+/*
+Returns the end bone name of the bone chain.
+*/
+func (self Instance) GetEndBoneName(index int) string { //gd:SpringBoneSimulator3D.get_end_bone_name
+	return string(class(self).GetEndBoneName(int64(index)).String())
+}
+
+/*
+Sets the end bone index of the bone chain.
+*/
+func (self Instance) SetEndBone(index int, bone int) { //gd:SpringBoneSimulator3D.set_end_bone
+	class(self).SetEndBone(int64(index), int64(bone))
+}
+
+/*
+Returns the end bone index of the bone chain.
+*/
+func (self Instance) GetEndBone(index int) int { //gd:SpringBoneSimulator3D.get_end_bone
+	return int(int(class(self).GetEndBone(int64(index))))
+}
+
+/*
+If [param enabled] is [code]true[/code], the end bone is extended to have the tail.
+The extended tail config is allocated to the last element in the joint list.
+In other words, if you set [param enabled] is [code]false[/code], the config of last element in the joint list has no effect in the simulated result.
+*/
+func (self Instance) SetExtendEndBone(index int, enabled bool) { //gd:SpringBoneSimulator3D.set_extend_end_bone
+	class(self).SetExtendEndBone(int64(index), enabled)
+}
+
+/*
+Returns [code]true[/code] if the end bone is extended to have the tail.
+*/
+func (self Instance) IsEndBoneExtended(index int) bool { //gd:SpringBoneSimulator3D.is_end_bone_extended
+	return bool(class(self).IsEndBoneExtended(int64(index)))
+}
+
+/*
+Sets the end bone tail direction of the bone chain when [method is_end_bone_extended] is [code]true[/code].
+*/
+func (self Instance) SetEndBoneDirection(index int, bone_direction gdclass.SpringBoneSimulator3DBoneDirection) { //gd:SpringBoneSimulator3D.set_end_bone_direction
+	class(self).SetEndBoneDirection(int64(index), bone_direction)
+}
+
+/*
+Returns the end bone's tail direction of the bone chain when [method is_end_bone_extended] is [code]true[/code].
+*/
+func (self Instance) GetEndBoneDirection(index int) gdclass.SpringBoneSimulator3DBoneDirection { //gd:SpringBoneSimulator3D.get_end_bone_direction
+	return gdclass.SpringBoneSimulator3DBoneDirection(class(self).GetEndBoneDirection(int64(index)))
+}
+
+/*
+Sets the end bone tail length of the bone chain when [method is_end_bone_extended] is [code]true[/code].
+*/
+func (self Instance) SetEndBoneLength(index int, length Float.X) { //gd:SpringBoneSimulator3D.set_end_bone_length
+	class(self).SetEndBoneLength(int64(index), float64(length))
+}
+
+/*
+Returns the end bone's tail length of the bone chain when [method is_end_bone_extended] is [code]true[/code].
+*/
+func (self Instance) GetEndBoneLength(index int) Float.X { //gd:SpringBoneSimulator3D.get_end_bone_length
+	return Float.X(Float.X(class(self).GetEndBoneLength(int64(index))))
+}
+
+/*
+Sets what the center originates from in the bone chain.
+Bone movement is calculated based on the difference in relative distance between center and bone in the previous and next frames.
+For example, if the parent [Skeleton3D] is used as the center, the bones are considered to have not moved if the [Skeleton3D] moves in the world.
+In this case, only a change in the bone pose is considered to be a bone movement.
+*/
+func (self Instance) SetCenterFrom(index int, center_from gdclass.SpringBoneSimulator3DCenterFrom) { //gd:SpringBoneSimulator3D.set_center_from
+	class(self).SetCenterFrom(int64(index), center_from)
+}
+
+/*
+Returns what the center originates from in the bone chain.
+*/
+func (self Instance) GetCenterFrom(index int) gdclass.SpringBoneSimulator3DCenterFrom { //gd:SpringBoneSimulator3D.get_center_from
+	return gdclass.SpringBoneSimulator3DCenterFrom(class(self).GetCenterFrom(int64(index)))
+}
+
+/*
+Sets the center node path of the bone chain.
+*/
+func (self Instance) SetCenterNode(index int, node_path string) { //gd:SpringBoneSimulator3D.set_center_node
+	class(self).SetCenterNode(int64(index), Path.ToNode(String.New(node_path)))
+}
+
+/*
+Returns the center node path of the bone chain.
+*/
+func (self Instance) GetCenterNode(index int) string { //gd:SpringBoneSimulator3D.get_center_node
+	return string(class(self).GetCenterNode(int64(index)).String())
+}
+
+/*
+Sets the center bone name of the bone chain.
+*/
+func (self Instance) SetCenterBoneName(index int, bone_name string) { //gd:SpringBoneSimulator3D.set_center_bone_name
+	class(self).SetCenterBoneName(int64(index), String.New(bone_name))
+}
+
+/*
+Returns the center bone name of the bone chain.
+*/
+func (self Instance) GetCenterBoneName(index int) string { //gd:SpringBoneSimulator3D.get_center_bone_name
+	return string(class(self).GetCenterBoneName(int64(index)).String())
+}
+
+/*
+Sets the center bone index of the bone chain.
+*/
+func (self Instance) SetCenterBone(index int, bone int) { //gd:SpringBoneSimulator3D.set_center_bone
+	class(self).SetCenterBone(int64(index), int64(bone))
+}
+
+/*
+Returns the center bone index of the bone chain.
+*/
+func (self Instance) GetCenterBone(index int) int { //gd:SpringBoneSimulator3D.get_center_bone
+	return int(int(class(self).GetCenterBone(int64(index))))
+}
+
+/*
+Sets the joint radius of the bone chain. It is used to move and slide with the [SpringBoneCollision3D] in the collision list.
+The value is scaled by [method set_radius_damping_curve] and cached in each joint setting in the joint list.
+*/
+func (self Instance) SetRadius(index int, radius Float.X) { //gd:SpringBoneSimulator3D.set_radius
+	class(self).SetRadius(int64(index), float64(radius))
+}
+
+/*
+Returns the joint radius of the bone chain.
+*/
+func (self Instance) GetRadius(index int) Float.X { //gd:SpringBoneSimulator3D.get_radius
+	return Float.X(Float.X(class(self).GetRadius(int64(index))))
+}
+
+/*
+Sets the rotation axis of the bone chain. If sets a specific axis, it acts like a hinge joint.
+The value is cached in each joint setting in the joint list.
+[b]Note:[/b] The rotation axis and the forward vector shouldn't be colinear to avoid unintended rotation since [SpringBoneSimulator3D] does not factor in twisting forces.
+*/
+func (self Instance) SetRotationAxis(index int, axis gdclass.SpringBoneSimulator3DRotationAxis) { //gd:SpringBoneSimulator3D.set_rotation_axis
+	class(self).SetRotationAxis(int64(index), axis)
+}
+
+/*
+Returns the rotation axis of the bone chain.
+*/
+func (self Instance) GetRotationAxis(index int) gdclass.SpringBoneSimulator3DRotationAxis { //gd:SpringBoneSimulator3D.get_rotation_axis
+	return gdclass.SpringBoneSimulator3DRotationAxis(class(self).GetRotationAxis(int64(index)))
+}
+
+/*
+Sets the joint radius damping curve of the bone chain.
+*/
+func (self Instance) SetRadiusDampingCurve(index int, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_radius_damping_curve
+	class(self).SetRadiusDampingCurve(int64(index), curve)
+}
+
+/*
+Returns the joint radius damping curve of the bone chain.
+*/
+func (self Instance) GetRadiusDampingCurve(index int) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_radius_damping_curve
+	return [1]gdclass.Curve(class(self).GetRadiusDampingCurve(int64(index)))
+}
+
+/*
+Sets the stiffness force of the bone chain. The greater the value, the faster it recovers to its initial pose.
+If [param stiffness] is [code]0[/code], the modified pose will not return to the original pose.
+The value is scaled by [method set_stiffness_damping_curve] and cached in each joint setting in the joint list.
+*/
+func (self Instance) SetStiffness(index int, stiffness Float.X) { //gd:SpringBoneSimulator3D.set_stiffness
+	class(self).SetStiffness(int64(index), float64(stiffness))
+}
+
+/*
+Returns the stiffness force of the bone chain.
+*/
+func (self Instance) GetStiffness(index int) Float.X { //gd:SpringBoneSimulator3D.get_stiffness
+	return Float.X(Float.X(class(self).GetStiffness(int64(index))))
+}
+
+/*
+Sets the stiffness force damping curve of the bone chain.
+*/
+func (self Instance) SetStiffnessDampingCurve(index int, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_stiffness_damping_curve
+	class(self).SetStiffnessDampingCurve(int64(index), curve)
+}
+
+/*
+Returns the stiffness force damping curve of the bone chain.
+*/
+func (self Instance) GetStiffnessDampingCurve(index int) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_stiffness_damping_curve
+	return [1]gdclass.Curve(class(self).GetStiffnessDampingCurve(int64(index)))
+}
+
+/*
+Sets the drag force of the bone chain. The greater the value, the more suppressed the wiggling.
+The value is scaled by [method set_drag_damping_curve] and cached in each joint setting in the joint list.
+*/
+func (self Instance) SetDrag(index int, drag Float.X) { //gd:SpringBoneSimulator3D.set_drag
+	class(self).SetDrag(int64(index), float64(drag))
+}
+
+/*
+Returns the drag force damping curve of the bone chain.
+*/
+func (self Instance) GetDrag(index int) Float.X { //gd:SpringBoneSimulator3D.get_drag
+	return Float.X(Float.X(class(self).GetDrag(int64(index))))
+}
+
+/*
+Sets the drag force damping curve of the bone chain.
+*/
+func (self Instance) SetDragDampingCurve(index int, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_drag_damping_curve
+	class(self).SetDragDampingCurve(int64(index), curve)
+}
+
+/*
+Returns the drag force damping curve of the bone chain.
+*/
+func (self Instance) GetDragDampingCurve(index int) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_drag_damping_curve
+	return [1]gdclass.Curve(class(self).GetDragDampingCurve(int64(index)))
+}
+
+/*
+Sets the gravity amount of the bone chain. This value is not an acceleration, but a constant velocity of movement in [method set_gravity_direction].
+If [param gravity] is not [code]0[/code], the modified pose will not return to the original pose since it is always affected by gravity.
+The value is scaled by [method set_gravity_damping_curve] and cached in each joint setting in the joint list.
+*/
+func (self Instance) SetGravity(index int, gravity Float.X) { //gd:SpringBoneSimulator3D.set_gravity
+	class(self).SetGravity(int64(index), float64(gravity))
+}
+
+/*
+Returns the gravity amount of the bone chain.
+*/
+func (self Instance) GetGravity(index int) Float.X { //gd:SpringBoneSimulator3D.get_gravity
+	return Float.X(Float.X(class(self).GetGravity(int64(index))))
+}
+
+/*
+Sets the gravity amount damping curve of the bone chain.
+*/
+func (self Instance) SetGravityDampingCurve(index int, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_gravity_damping_curve
+	class(self).SetGravityDampingCurve(int64(index), curve)
+}
+
+/*
+Returns the gravity amount damping curve of the bone chain.
+*/
+func (self Instance) GetGravityDampingCurve(index int) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_gravity_damping_curve
+	return [1]gdclass.Curve(class(self).GetGravityDampingCurve(int64(index)))
+}
+
+/*
+Sets the gravity direction of the bone chain. This value is internally normalized and then multiplied by [method set_gravity].
+The value is cached in each joint setting in the joint list.
+*/
+func (self Instance) SetGravityDirection(index int, gravity_direction Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_gravity_direction
+	class(self).SetGravityDirection(int64(index), Vector3.XYZ(gravity_direction))
+}
+
+/*
+Returns the gravity direction of the bone chain.
+*/
+func (self Instance) GetGravityDirection(index int) Vector3.XYZ { //gd:SpringBoneSimulator3D.get_gravity_direction
+	return Vector3.XYZ(class(self).GetGravityDirection(int64(index)))
+}
+
+/*
+Clears all settings.
+*/
+func (self Instance) ClearSettings() { //gd:SpringBoneSimulator3D.clear_settings
+	class(self).ClearSettings()
+}
+
+/*
+If [param enabled] is [code]true[/code], the config can be edited individually for each joint.
+*/
+func (self Instance) SetIndividualConfig(index int, enabled bool) { //gd:SpringBoneSimulator3D.set_individual_config
+	class(self).SetIndividualConfig(int64(index), enabled)
+}
+
+/*
+Returns [code]true[/code] if the config can be edited individually for each joint.
+*/
+func (self Instance) IsConfigIndividual(index int) bool { //gd:SpringBoneSimulator3D.is_config_individual
+	return bool(class(self).IsConfigIndividual(int64(index)))
+}
+
+/*
+Returns the bone name at [param joint] in the bone chain's joint list.
+*/
+func (self Instance) GetJointBoneName(index int, joint int) string { //gd:SpringBoneSimulator3D.get_joint_bone_name
+	return string(class(self).GetJointBoneName(int64(index), int64(joint)).String())
+}
+
+/*
+Returns the bone index at [param joint] in the bone chain's joint list.
+*/
+func (self Instance) GetJointBone(index int, joint int) int { //gd:SpringBoneSimulator3D.get_joint_bone
+	return int(int(class(self).GetJointBone(int64(index), int64(joint))))
+}
+
+/*
+Sets the rotation axis at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
+*/
+func (self Instance) SetJointRotationAxis(index int, joint int, axis gdclass.SpringBoneSimulator3DRotationAxis) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
+	class(self).SetJointRotationAxis(int64(index), int64(joint), axis)
+}
+
+/*
+Returns the rotation axis at [param joint] in the bone chain's joint list.
+*/
+func (self Instance) GetJointRotationAxis(index int, joint int) gdclass.SpringBoneSimulator3DRotationAxis { //gd:SpringBoneSimulator3D.get_joint_rotation_axis
+	return gdclass.SpringBoneSimulator3DRotationAxis(class(self).GetJointRotationAxis(int64(index), int64(joint)))
+}
+
+/*
+Sets the joint radius at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
+*/
+func (self Instance) SetJointRadius(index int, joint int, radius Float.X) { //gd:SpringBoneSimulator3D.set_joint_radius
+	class(self).SetJointRadius(int64(index), int64(joint), float64(radius))
+}
+
+/*
+Returns the radius at [param joint] in the bone chain's joint list.
+*/
+func (self Instance) GetJointRadius(index int, joint int) Float.X { //gd:SpringBoneSimulator3D.get_joint_radius
+	return Float.X(Float.X(class(self).GetJointRadius(int64(index), int64(joint))))
+}
+
+/*
+Sets the stiffness force at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
+*/
+func (self Instance) SetJointStiffness(index int, joint int, stiffness Float.X) { //gd:SpringBoneSimulator3D.set_joint_stiffness
+	class(self).SetJointStiffness(int64(index), int64(joint), float64(stiffness))
+}
+
+/*
+Returns the stiffness force at [param joint] in the bone chain's joint list.
+*/
+func (self Instance) GetJointStiffness(index int, joint int) Float.X { //gd:SpringBoneSimulator3D.get_joint_stiffness
+	return Float.X(Float.X(class(self).GetJointStiffness(int64(index), int64(joint))))
+}
+
+/*
+Sets the drag force at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
+*/
+func (self Instance) SetJointDrag(index int, joint int, drag Float.X) { //gd:SpringBoneSimulator3D.set_joint_drag
+	class(self).SetJointDrag(int64(index), int64(joint), float64(drag))
+}
+
+/*
+Returns the drag force at [param joint] in the bone chain's joint list.
+*/
+func (self Instance) GetJointDrag(index int, joint int) Float.X { //gd:SpringBoneSimulator3D.get_joint_drag
+	return Float.X(Float.X(class(self).GetJointDrag(int64(index), int64(joint))))
+}
+
+/*
+Sets the gravity amount at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
+*/
+func (self Instance) SetJointGravity(index int, joint int, gravity Float.X) { //gd:SpringBoneSimulator3D.set_joint_gravity
+	class(self).SetJointGravity(int64(index), int64(joint), float64(gravity))
+}
+
+/*
+Returns the gravity amount at [param joint] in the bone chain's joint list.
+*/
+func (self Instance) GetJointGravity(index int, joint int) Float.X { //gd:SpringBoneSimulator3D.get_joint_gravity
+	return Float.X(Float.X(class(self).GetJointGravity(int64(index), int64(joint))))
+}
+
+/*
+Sets the gravity direction at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
+*/
+func (self Instance) SetJointGravityDirection(index int, joint int, gravity_direction Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_joint_gravity_direction
+	class(self).SetJointGravityDirection(int64(index), int64(joint), Vector3.XYZ(gravity_direction))
+}
+
+/*
+Returns the gravity direction at [param joint] in the bone chain's joint list.
+*/
+func (self Instance) GetJointGravityDirection(index int, joint int) Vector3.XYZ { //gd:SpringBoneSimulator3D.get_joint_gravity_direction
+	return Vector3.XYZ(class(self).GetJointGravityDirection(int64(index), int64(joint)))
+}
+
+/*
+Returns the joint count of the bone chain's joint list.
+*/
+func (self Instance) GetJointCount(index int) int { //gd:SpringBoneSimulator3D.get_joint_count
+	return int(int(class(self).GetJointCount(int64(index))))
+}
+
+/*
+If sets [param enabled] to [code]true[/code], the all child [SpringBoneCollision3D]s are collided and [method set_exclude_collision_path] is enabled as an exclusion list at [param index] in the settings.
+If sets [param enabled] to [code]false[/code], you need to manually register all valid collisions with [method set_collision_path].
+*/
+func (self Instance) SetEnableAllChildCollisions(index int, enabled bool) { //gd:SpringBoneSimulator3D.set_enable_all_child_collisions
+	class(self).SetEnableAllChildCollisions(int64(index), enabled)
+}
+
+/*
+Returns [code]true[/code] if the all child [SpringBoneCollision3D]s are contained in the collision list at [param index] in the settings.
+*/
+func (self Instance) AreAllChildCollisionsEnabled(index int) bool { //gd:SpringBoneSimulator3D.are_all_child_collisions_enabled
+	return bool(class(self).AreAllChildCollisionsEnabled(int64(index)))
+}
+
+/*
+Sets the node path of the [SpringBoneCollision3D] at [param collision] in the bone chain's exclude collision list when [method are_all_child_collisions_enabled] is [code]true[/code].
+*/
+func (self Instance) SetExcludeCollisionPath(index int, collision int, node_path string) { //gd:SpringBoneSimulator3D.set_exclude_collision_path
+	class(self).SetExcludeCollisionPath(int64(index), int64(collision), Path.ToNode(String.New(node_path)))
+}
+
+/*
+Returns the node path of the [SpringBoneCollision3D] at [param collision] in the bone chain's exclude collision list when [method are_all_child_collisions_enabled] is [code]true[/code].
+*/
+func (self Instance) GetExcludeCollisionPath(index int, collision int) string { //gd:SpringBoneSimulator3D.get_exclude_collision_path
+	return string(class(self).GetExcludeCollisionPath(int64(index), int64(collision)).String())
+}
+
+/*
+Sets the number of exclude collisions in the exclude collision list at [param index] in the settings when [method are_all_child_collisions_enabled] is [code]true[/code].
+*/
+func (self Instance) SetExcludeCollisionCount(index int, count int) { //gd:SpringBoneSimulator3D.set_exclude_collision_count
+	class(self).SetExcludeCollisionCount(int64(index), int64(count))
+}
+
+/*
+Returns the exclude collision count of the bone chain's exclude collision list when [method are_all_child_collisions_enabled] is [code]true[/code].
+*/
+func (self Instance) GetExcludeCollisionCount(index int) int { //gd:SpringBoneSimulator3D.get_exclude_collision_count
+	return int(int(class(self).GetExcludeCollisionCount(int64(index))))
+}
+
+/*
+Clears all exclude collisions from the collision list at [param index] in the settings when [method are_all_child_collisions_enabled] is [code]true[/code].
+*/
+func (self Instance) ClearExcludeCollisions(index int) { //gd:SpringBoneSimulator3D.clear_exclude_collisions
+	class(self).ClearExcludeCollisions(int64(index))
+}
+
+/*
+Sets the node path of the [SpringBoneCollision3D] at [param collision] in the bone chain's collision list when [method are_all_child_collisions_enabled] is [code]false[/code].
+*/
+func (self Instance) SetCollisionPath(index int, collision int, node_path string) { //gd:SpringBoneSimulator3D.set_collision_path
+	class(self).SetCollisionPath(int64(index), int64(collision), Path.ToNode(String.New(node_path)))
+}
+
+/*
+Returns the node path of the [SpringBoneCollision3D] at [param collision] in the bone chain's collision list when [method are_all_child_collisions_enabled] is [code]false[/code].
+*/
+func (self Instance) GetCollisionPath(index int, collision int) string { //gd:SpringBoneSimulator3D.get_collision_path
+	return string(class(self).GetCollisionPath(int64(index), int64(collision)).String())
+}
+
+/*
+Sets the number of collisions in the collision list at [param index] in the settings when [method are_all_child_collisions_enabled] is [code]false[/code].
+*/
+func (self Instance) SetCollisionCount(index int, count int) { //gd:SpringBoneSimulator3D.set_collision_count
+	class(self).SetCollisionCount(int64(index), int64(count))
+}
+
+/*
+Returns the collision count of the bone chain's collision list when [method are_all_child_collisions_enabled] is [code]false[/code].
+*/
+func (self Instance) GetCollisionCount(index int) int { //gd:SpringBoneSimulator3D.get_collision_count
+	return int(int(class(self).GetCollisionCount(int64(index))))
+}
+
+/*
+Clears all collisions from the collision list at [param index] in the settings when [method are_all_child_collisions_enabled] is [code]false[/code].
+*/
+func (self Instance) ClearCollisions(index int) { //gd:SpringBoneSimulator3D.clear_collisions
+	class(self).ClearCollisions(int64(index))
+}
+
+/*
+Resets a simulating state with respect to the current bone pose.
+It is useful to prevent the simulation result getting violent. For example, calling this immediately after a call to [method AnimationPlayer.play] without a fading, or within the previous [signal SkeletonModifier3D.modification_processed] signal if it's condition changes significantly.
+*/
+func (self Instance) Reset() { //gd:SpringBoneSimulator3D.reset
+	class(self).Reset()
+}
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
+type class [1]gdclass.SpringBoneSimulator3D
+
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func New() Instance {
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SpringBoneSimulator3D"))
+	casted := Instance{*(*gdclass.SpringBoneSimulator3D)(unsafe.Pointer(&object))}
+	return casted
+}
+
+func (self Instance) SettingCount() int {
+	return int(int(class(self).GetSettingCount()))
+}
+
+func (self Instance) SetSettingCount(value int) {
+	class(self).SetSettingCount(int64(value))
+}
+
+/*
+Sets the root bone name of the bone chain.
+*/
+//go:nosplit
+func (self class) SetRootBoneName(index int64, bone_name String.Readable) { //gd:SpringBoneSimulator3D.set_root_bone_name
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bone_name)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_root_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the root bone name of the bone chain.
+*/
+//go:nosplit
+func (self class) GetRootBoneName(index int64) String.Readable { //gd:SpringBoneSimulator3D.get_root_bone_name
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_root_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the root bone index of the bone chain.
+*/
+//go:nosplit
+func (self class) SetRootBone(index int64, bone int64) { //gd:SpringBoneSimulator3D.set_root_bone
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, bone)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_root_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the root bone index of the bone chain.
+*/
+//go:nosplit
+func (self class) GetRootBone(index int64) int64 { //gd:SpringBoneSimulator3D.get_root_bone
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_root_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the end bone name of the bone chain.
+[b]Note:[/b] End bone must be the root bone or a child of the root bone. If they are the same, the tail must be extended by [method set_extend_end_bone] to jiggle the bone.
+*/
+//go:nosplit
+func (self class) SetEndBoneName(index int64, bone_name String.Readable) { //gd:SpringBoneSimulator3D.set_end_bone_name
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bone_name)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_end_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the end bone name of the bone chain.
+*/
+//go:nosplit
+func (self class) GetEndBoneName(index int64) String.Readable { //gd:SpringBoneSimulator3D.get_end_bone_name
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_end_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the end bone index of the bone chain.
+*/
+//go:nosplit
+func (self class) SetEndBone(index int64, bone int64) { //gd:SpringBoneSimulator3D.set_end_bone
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, bone)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_end_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the end bone index of the bone chain.
+*/
+//go:nosplit
+func (self class) GetEndBone(index int64) int64 { //gd:SpringBoneSimulator3D.get_end_bone
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_end_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+If [param enabled] is [code]true[/code], the end bone is extended to have the tail.
+The extended tail config is allocated to the last element in the joint list.
+In other words, if you set [param enabled] is [code]false[/code], the config of last element in the joint list has no effect in the simulated result.
+*/
+//go:nosplit
+func (self class) SetExtendEndBone(index int64, enabled bool) { //gd:SpringBoneSimulator3D.set_extend_end_bone
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_extend_end_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns [code]true[/code] if the end bone is extended to have the tail.
+*/
+//go:nosplit
+func (self class) IsEndBoneExtended(index int64) bool { //gd:SpringBoneSimulator3D.is_end_bone_extended
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_is_end_bone_extended, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the end bone tail direction of the bone chain when [method is_end_bone_extended] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) SetEndBoneDirection(index int64, bone_direction gdclass.SpringBoneSimulator3DBoneDirection) { //gd:SpringBoneSimulator3D.set_end_bone_direction
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, bone_direction)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_end_bone_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the end bone's tail direction of the bone chain when [method is_end_bone_extended] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) GetEndBoneDirection(index int64) gdclass.SpringBoneSimulator3DBoneDirection { //gd:SpringBoneSimulator3D.get_end_bone_direction
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[gdclass.SpringBoneSimulator3DBoneDirection](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_end_bone_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the end bone tail length of the bone chain when [method is_end_bone_extended] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) SetEndBoneLength(index int64, length float64) { //gd:SpringBoneSimulator3D.set_end_bone_length
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, length)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_end_bone_length, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the end bone's tail length of the bone chain when [method is_end_bone_extended] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) GetEndBoneLength(index int64) float64 { //gd:SpringBoneSimulator3D.get_end_bone_length
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_end_bone_length, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets what the center originates from in the bone chain.
+Bone movement is calculated based on the difference in relative distance between center and bone in the previous and next frames.
+For example, if the parent [Skeleton3D] is used as the center, the bones are considered to have not moved if the [Skeleton3D] moves in the world.
+In this case, only a change in the bone pose is considered to be a bone movement.
+*/
+//go:nosplit
+func (self class) SetCenterFrom(index int64, center_from gdclass.SpringBoneSimulator3DCenterFrom) { //gd:SpringBoneSimulator3D.set_center_from
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, center_from)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_center_from, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns what the center originates from in the bone chain.
+*/
+//go:nosplit
+func (self class) GetCenterFrom(index int64) gdclass.SpringBoneSimulator3DCenterFrom { //gd:SpringBoneSimulator3D.get_center_from
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[gdclass.SpringBoneSimulator3DCenterFrom](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_center_from, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the center node path of the bone chain.
+*/
+//go:nosplit
+func (self class) SetCenterNode(index int64, node_path Path.ToNode) { //gd:SpringBoneSimulator3D.set_center_node
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(node_path)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_center_node, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the center node path of the bone chain.
+*/
+//go:nosplit
+func (self class) GetCenterNode(index int64) Path.ToNode { //gd:SpringBoneSimulator3D.get_center_node
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_center_node, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the center bone name of the bone chain.
+*/
+//go:nosplit
+func (self class) SetCenterBoneName(index int64, bone_name String.Readable) { //gd:SpringBoneSimulator3D.set_center_bone_name
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bone_name)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_center_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the center bone name of the bone chain.
+*/
+//go:nosplit
+func (self class) GetCenterBoneName(index int64) String.Readable { //gd:SpringBoneSimulator3D.get_center_bone_name
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_center_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the center bone index of the bone chain.
+*/
+//go:nosplit
+func (self class) SetCenterBone(index int64, bone int64) { //gd:SpringBoneSimulator3D.set_center_bone
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, bone)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_center_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the center bone index of the bone chain.
+*/
+//go:nosplit
+func (self class) GetCenterBone(index int64) int64 { //gd:SpringBoneSimulator3D.get_center_bone
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_center_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the joint radius of the bone chain. It is used to move and slide with the [SpringBoneCollision3D] in the collision list.
+The value is scaled by [method set_radius_damping_curve] and cached in each joint setting in the joint list.
+*/
+//go:nosplit
+func (self class) SetRadius(index int64, radius float64) { //gd:SpringBoneSimulator3D.set_radius
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, radius)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the joint radius of the bone chain.
+*/
+//go:nosplit
+func (self class) GetRadius(index int64) float64 { //gd:SpringBoneSimulator3D.get_radius
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the rotation axis of the bone chain. If sets a specific axis, it acts like a hinge joint.
+The value is cached in each joint setting in the joint list.
+[b]Note:[/b] The rotation axis and the forward vector shouldn't be colinear to avoid unintended rotation since [SpringBoneSimulator3D] does not factor in twisting forces.
+*/
+//go:nosplit
+func (self class) SetRotationAxis(index int64, axis gdclass.SpringBoneSimulator3DRotationAxis) { //gd:SpringBoneSimulator3D.set_rotation_axis
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, axis)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_rotation_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the rotation axis of the bone chain.
+*/
+//go:nosplit
+func (self class) GetRotationAxis(index int64) gdclass.SpringBoneSimulator3DRotationAxis { //gd:SpringBoneSimulator3D.get_rotation_axis
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[gdclass.SpringBoneSimulator3DRotationAxis](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_rotation_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the joint radius damping curve of the bone chain.
+*/
+//go:nosplit
+func (self class) SetRadiusDampingCurve(index int64, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_radius_damping_curve
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, pointers.Get(curve[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_radius_damping_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the joint radius damping curve of the bone chain.
+*/
+//go:nosplit
+func (self class) GetRadiusDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_radius_damping_curve
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_radius_damping_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the stiffness force of the bone chain. The greater the value, the faster it recovers to its initial pose.
+If [param stiffness] is [code]0[/code], the modified pose will not return to the original pose.
+The value is scaled by [method set_stiffness_damping_curve] and cached in each joint setting in the joint list.
+*/
+//go:nosplit
+func (self class) SetStiffness(index int64, stiffness float64) { //gd:SpringBoneSimulator3D.set_stiffness
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, stiffness)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_stiffness, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the stiffness force of the bone chain.
+*/
+//go:nosplit
+func (self class) GetStiffness(index int64) float64 { //gd:SpringBoneSimulator3D.get_stiffness
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_stiffness, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the stiffness force damping curve of the bone chain.
+*/
+//go:nosplit
+func (self class) SetStiffnessDampingCurve(index int64, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_stiffness_damping_curve
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, pointers.Get(curve[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_stiffness_damping_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the stiffness force damping curve of the bone chain.
+*/
+//go:nosplit
+func (self class) GetStiffnessDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_stiffness_damping_curve
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_stiffness_damping_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the drag force of the bone chain. The greater the value, the more suppressed the wiggling.
+The value is scaled by [method set_drag_damping_curve] and cached in each joint setting in the joint list.
+*/
+//go:nosplit
+func (self class) SetDrag(index int64, drag float64) { //gd:SpringBoneSimulator3D.set_drag
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, drag)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_drag, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the drag force damping curve of the bone chain.
+*/
+//go:nosplit
+func (self class) GetDrag(index int64) float64 { //gd:SpringBoneSimulator3D.get_drag
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_drag, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the drag force damping curve of the bone chain.
+*/
+//go:nosplit
+func (self class) SetDragDampingCurve(index int64, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_drag_damping_curve
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, pointers.Get(curve[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_drag_damping_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the drag force damping curve of the bone chain.
+*/
+//go:nosplit
+func (self class) GetDragDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_drag_damping_curve
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_drag_damping_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the gravity amount of the bone chain. This value is not an acceleration, but a constant velocity of movement in [method set_gravity_direction].
+If [param gravity] is not [code]0[/code], the modified pose will not return to the original pose since it is always affected by gravity.
+The value is scaled by [method set_gravity_damping_curve] and cached in each joint setting in the joint list.
+*/
+//go:nosplit
+func (self class) SetGravity(index int64, gravity float64) { //gd:SpringBoneSimulator3D.set_gravity
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, gravity)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the gravity amount of the bone chain.
+*/
+//go:nosplit
+func (self class) GetGravity(index int64) float64 { //gd:SpringBoneSimulator3D.get_gravity
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the gravity amount damping curve of the bone chain.
+*/
+//go:nosplit
+func (self class) SetGravityDampingCurve(index int64, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_gravity_damping_curve
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, pointers.Get(curve[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_gravity_damping_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the gravity amount damping curve of the bone chain.
+*/
+//go:nosplit
+func (self class) GetGravityDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_gravity_damping_curve
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_gravity_damping_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the gravity direction of the bone chain. This value is internally normalized and then multiplied by [method set_gravity].
+The value is cached in each joint setting in the joint list.
+*/
+//go:nosplit
+func (self class) SetGravityDirection(index int64, gravity_direction Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_gravity_direction
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, gravity_direction)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_gravity_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the gravity direction of the bone chain.
+*/
+//go:nosplit
+func (self class) GetGravityDirection(index int64) Vector3.XYZ { //gd:SpringBoneSimulator3D.get_gravity_direction
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_gravity_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSettingCount(count int64) { //gd:SpringBoneSimulator3D.set_setting_count
+	var frame = callframe.New()
+	callframe.Arg(frame, count)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_setting_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetSettingCount() int64 { //gd:SpringBoneSimulator3D.get_setting_count
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_setting_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Clears all settings.
+*/
+//go:nosplit
+func (self class) ClearSettings() { //gd:SpringBoneSimulator3D.clear_settings
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_clear_settings, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+If [param enabled] is [code]true[/code], the config can be edited individually for each joint.
+*/
+//go:nosplit
+func (self class) SetIndividualConfig(index int64, enabled bool) { //gd:SpringBoneSimulator3D.set_individual_config
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_individual_config, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns [code]true[/code] if the config can be edited individually for each joint.
+*/
+//go:nosplit
+func (self class) IsConfigIndividual(index int64) bool { //gd:SpringBoneSimulator3D.is_config_individual
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_is_config_individual, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the bone name at [param joint] in the bone chain's joint list.
+*/
+//go:nosplit
+func (self class) GetJointBoneName(index int64, joint int64) String.Readable { //gd:SpringBoneSimulator3D.get_joint_bone_name
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, joint)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the bone index at [param joint] in the bone chain's joint list.
+*/
+//go:nosplit
+func (self class) GetJointBone(index int64, joint int64) int64 { //gd:SpringBoneSimulator3D.get_joint_bone
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, joint)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the rotation axis at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) SetJointRotationAxis(index int64, joint int64, axis gdclass.SpringBoneSimulator3DRotationAxis) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, joint)
+	callframe.Arg(frame, axis)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_rotation_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the rotation axis at [param joint] in the bone chain's joint list.
+*/
+//go:nosplit
+func (self class) GetJointRotationAxis(index int64, joint int64) gdclass.SpringBoneSimulator3DRotationAxis { //gd:SpringBoneSimulator3D.get_joint_rotation_axis
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, joint)
+	var r_ret = callframe.Ret[gdclass.SpringBoneSimulator3DRotationAxis](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_rotation_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the joint radius at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) SetJointRadius(index int64, joint int64, radius float64) { //gd:SpringBoneSimulator3D.set_joint_radius
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, joint)
+	callframe.Arg(frame, radius)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the radius at [param joint] in the bone chain's joint list.
+*/
+//go:nosplit
+func (self class) GetJointRadius(index int64, joint int64) float64 { //gd:SpringBoneSimulator3D.get_joint_radius
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, joint)
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the stiffness force at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) SetJointStiffness(index int64, joint int64, stiffness float64) { //gd:SpringBoneSimulator3D.set_joint_stiffness
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, joint)
+	callframe.Arg(frame, stiffness)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_stiffness, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the stiffness force at [param joint] in the bone chain's joint list.
+*/
+//go:nosplit
+func (self class) GetJointStiffness(index int64, joint int64) float64 { //gd:SpringBoneSimulator3D.get_joint_stiffness
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, joint)
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_stiffness, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the drag force at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) SetJointDrag(index int64, joint int64, drag float64) { //gd:SpringBoneSimulator3D.set_joint_drag
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, joint)
+	callframe.Arg(frame, drag)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_drag, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the drag force at [param joint] in the bone chain's joint list.
+*/
+//go:nosplit
+func (self class) GetJointDrag(index int64, joint int64) float64 { //gd:SpringBoneSimulator3D.get_joint_drag
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, joint)
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_drag, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the gravity amount at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) SetJointGravity(index int64, joint int64, gravity float64) { //gd:SpringBoneSimulator3D.set_joint_gravity
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, joint)
+	callframe.Arg(frame, gravity)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the gravity amount at [param joint] in the bone chain's joint list.
+*/
+//go:nosplit
+func (self class) GetJointGravity(index int64, joint int64) float64 { //gd:SpringBoneSimulator3D.get_joint_gravity
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, joint)
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the gravity direction at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) SetJointGravityDirection(index int64, joint int64, gravity_direction Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_joint_gravity_direction
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, joint)
+	callframe.Arg(frame, gravity_direction)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_gravity_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the gravity direction at [param joint] in the bone chain's joint list.
+*/
+//go:nosplit
+func (self class) GetJointGravityDirection(index int64, joint int64) Vector3.XYZ { //gd:SpringBoneSimulator3D.get_joint_gravity_direction
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, joint)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_gravity_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the joint count of the bone chain's joint list.
+*/
+//go:nosplit
+func (self class) GetJointCount(index int64) int64 { //gd:SpringBoneSimulator3D.get_joint_count
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+If sets [param enabled] to [code]true[/code], the all child [SpringBoneCollision3D]s are collided and [method set_exclude_collision_path] is enabled as an exclusion list at [param index] in the settings.
+If sets [param enabled] to [code]false[/code], you need to manually register all valid collisions with [method set_collision_path].
+*/
+//go:nosplit
+func (self class) SetEnableAllChildCollisions(index int64, enabled bool) { //gd:SpringBoneSimulator3D.set_enable_all_child_collisions
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_enable_all_child_collisions, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns [code]true[/code] if the all child [SpringBoneCollision3D]s are contained in the collision list at [param index] in the settings.
+*/
+//go:nosplit
+func (self class) AreAllChildCollisionsEnabled(index int64) bool { //gd:SpringBoneSimulator3D.are_all_child_collisions_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_are_all_child_collisions_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the node path of the [SpringBoneCollision3D] at [param collision] in the bone chain's exclude collision list when [method are_all_child_collisions_enabled] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) SetExcludeCollisionPath(index int64, collision int64, node_path Path.ToNode) { //gd:SpringBoneSimulator3D.set_exclude_collision_path
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, collision)
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(node_path)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_exclude_collision_path, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the node path of the [SpringBoneCollision3D] at [param collision] in the bone chain's exclude collision list when [method are_all_child_collisions_enabled] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) GetExcludeCollisionPath(index int64, collision int64) Path.ToNode { //gd:SpringBoneSimulator3D.get_exclude_collision_path
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, collision)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_exclude_collision_path, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the number of exclude collisions in the exclude collision list at [param index] in the settings when [method are_all_child_collisions_enabled] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) SetExcludeCollisionCount(index int64, count int64) { //gd:SpringBoneSimulator3D.set_exclude_collision_count
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, count)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_exclude_collision_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the exclude collision count of the bone chain's exclude collision list when [method are_all_child_collisions_enabled] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) GetExcludeCollisionCount(index int64) int64 { //gd:SpringBoneSimulator3D.get_exclude_collision_count
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_exclude_collision_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Clears all exclude collisions from the collision list at [param index] in the settings when [method are_all_child_collisions_enabled] is [code]true[/code].
+*/
+//go:nosplit
+func (self class) ClearExcludeCollisions(index int64) { //gd:SpringBoneSimulator3D.clear_exclude_collisions
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_clear_exclude_collisions, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Sets the node path of the [SpringBoneCollision3D] at [param collision] in the bone chain's collision list when [method are_all_child_collisions_enabled] is [code]false[/code].
+*/
+//go:nosplit
+func (self class) SetCollisionPath(index int64, collision int64, node_path Path.ToNode) { //gd:SpringBoneSimulator3D.set_collision_path
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, collision)
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(node_path)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_collision_path, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the node path of the [SpringBoneCollision3D] at [param collision] in the bone chain's collision list when [method are_all_child_collisions_enabled] is [code]false[/code].
+*/
+//go:nosplit
+func (self class) GetCollisionPath(index int64, collision int64) Path.ToNode { //gd:SpringBoneSimulator3D.get_collision_path
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, collision)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_collision_path, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the number of collisions in the collision list at [param index] in the settings when [method are_all_child_collisions_enabled] is [code]false[/code].
+*/
+//go:nosplit
+func (self class) SetCollisionCount(index int64, count int64) { //gd:SpringBoneSimulator3D.set_collision_count
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, count)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_collision_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the collision count of the bone chain's collision list when [method are_all_child_collisions_enabled] is [code]false[/code].
+*/
+//go:nosplit
+func (self class) GetCollisionCount(index int64) int64 { //gd:SpringBoneSimulator3D.get_collision_count
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_collision_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Clears all collisions from the collision list at [param index] in the settings when [method are_all_child_collisions_enabled] is [code]false[/code].
+*/
+//go:nosplit
+func (self class) ClearCollisions(index int64) { //gd:SpringBoneSimulator3D.clear_collisions
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_clear_collisions, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Resets a simulating state with respect to the current bone pose.
+It is useful to prevent the simulation result getting violent. For example, calling this immediately after a call to [method AnimationPlayer.play] without a fading, or within the previous [signal SkeletonModifier3D.modification_processed] signal if it's condition changes significantly.
+*/
+//go:nosplit
+func (self class) Reset() { //gd:SpringBoneSimulator3D.reset
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_reset, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+func (self class) AsSpringBoneSimulator3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsSpringBoneSimulator3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsSkeletonModifier3D() SkeletonModifier3D.Advanced {
+	return *((*SkeletonModifier3D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
+	return *((*SkeletonModifier3D.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+
+func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(SkeletonModifier3D.Advanced(self.AsSkeletonModifier3D()), name)
+	}
+}
+
+func (self Instance) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(SkeletonModifier3D.Instance(self.AsSkeletonModifier3D()), name)
+	}
+}
+func init() {
+	gdclass.Register("SpringBoneSimulator3D", func(ptr gd.Object) any {
+		return [1]gdclass.SpringBoneSimulator3D{*(*gdclass.SpringBoneSimulator3D)(unsafe.Pointer(&ptr))}
+	})
+}
+
+type BoneDirection = gdclass.SpringBoneSimulator3DBoneDirection //gd:SpringBoneSimulator3D.BoneDirection
+
+const (
+	/*Enumerated value for the +X axis.*/
+	BoneDirectionPlusX BoneDirection = 0
+	/*Enumerated value for the -X axis.*/
+	BoneDirectionMinusX BoneDirection = 1
+	/*Enumerated value for the +Y axis.*/
+	BoneDirectionPlusY BoneDirection = 2
+	/*Enumerated value for the -Y axis.*/
+	BoneDirectionMinusY BoneDirection = 3
+	/*Enumerated value for the +Z axis.*/
+	BoneDirectionPlusZ BoneDirection = 4
+	/*Enumerated value for the -Z axis.*/
+	BoneDirectionMinusZ BoneDirection = 5
+	/*Enumerated value for the axis from a parent bone to the child bone.*/
+	BoneDirectionFromParent BoneDirection = 6
+)
+
+type CenterFrom = gdclass.SpringBoneSimulator3DCenterFrom //gd:SpringBoneSimulator3D.CenterFrom
+
+const (
+	/*The world origin is defined as center.*/
+	CenterFromWorldOrigin CenterFrom = 0
+	/*The [Node3D] specified by [method set_center_node] is defined as center.
+	  If [Node3D] is not found, the parent [Skeleton3D] is treated as center.*/
+	CenterFromNode CenterFrom = 1
+	/*The bone pose origin of the parent [Skeleton3D] specified by [method set_center_bone] is defined as center.
+	  If [Node3D] is not found, the parent [Skeleton3D] is treated as center.*/
+	CenterFromBone CenterFrom = 2
+)
+
+type RotationAxis = gdclass.SpringBoneSimulator3DRotationAxis //gd:SpringBoneSimulator3D.RotationAxis
+
+const (
+	/*Enumerated value for the rotation of the X axis.*/
+	RotationAxisX RotationAxis = 0
+	/*Enumerated value for the rotation of the Y axis.*/
+	RotationAxisY RotationAxis = 1
+	/*Enumerated value for the rotation of the Z axis.*/
+	RotationAxisZ RotationAxis = 2
+	/*Enumerated value for the unconstrained rotation.*/
+	RotationAxisAll RotationAxis = 3
+)

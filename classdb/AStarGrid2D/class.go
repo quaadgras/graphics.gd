@@ -51,16 +51,16 @@ var astar_grid = AStarGrid2D.new()
 astar_grid.region = Rect2i(0, 0, 32, 32)
 astar_grid.cell_size = Vector2(16, 16)
 astar_grid.update()
-print(astar_grid.get_id_path(Vector2i(0, 0), Vector2i(3, 4))) # prints (0, 0), (1, 1), (2, 2), (3, 3), (3, 4)
-print(astar_grid.get_point_path(Vector2i(0, 0), Vector2i(3, 4))) # prints (0, 0), (16, 16), (32, 32), (48, 48), (48, 64)
+print(astar_grid.get_id_path(Vector2i(0, 0), Vector2i(3, 4))) # Prints [(0, 0), (1, 1), (2, 2), (3, 3), (3, 4)]
+print(astar_grid.get_point_path(Vector2i(0, 0), Vector2i(3, 4))) # Prints [(0, 0), (16, 16), (32, 32), (48, 48), (48, 64)]
 [/gdscript]
 [csharp]
 AStarGrid2D astarGrid = new AStarGrid2D();
 astarGrid.Region = new Rect2I(0, 0, 32, 32);
 astarGrid.CellSize = new Vector2I(16, 16);
 astarGrid.Update();
-GD.Print(astarGrid.GetIdPath(Vector2I.Zero, new Vector2I(3, 4))); // prints (0, 0), (1, 1), (2, 2), (3, 3), (3, 4)
-GD.Print(astarGrid.GetPointPath(Vector2I.Zero, new Vector2I(3, 4))); // prints (0, 0), (16, 16), (32, 32), (48, 48), (48, 64)
+GD.Print(astarGrid.GetIdPath(Vector2I.Zero, new Vector2I(3, 4))); // Prints [(0, 0), (1, 1), (2, 2), (3, 3), (3, 4)]
+GD.Print(astarGrid.GetPointPath(Vector2I.Zero, new Vector2I(3, 4))); // Prints [(0, 0), (16, 16), (32, 32), (48, 48), (48, 64)]
 [/csharp]
 [/codeblocks]
 To remove a point from the pathfinding grid, it must be set as "solid" with [method set_point_solid].
@@ -81,7 +81,7 @@ type Any interface {
 type Interface interface {
 	//Called when estimating the cost between a point and the path's ending point.
 	//Note that this function is hidden in the default [AStarGrid2D] class.
-	EstimateCost(from_id Vector2i.XY, to_id Vector2i.XY) Float.X
+	EstimateCost(from_id Vector2i.XY, end_id Vector2i.XY) Float.X
 	//Called when computing the cost between two connected points.
 	//Note that this function is hidden in the default [AStarGrid2D] class.
 	ComputeCost(from_id Vector2i.XY, to_id Vector2i.XY) Float.X
@@ -92,21 +92,21 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) EstimateCost(from_id Vector2i.XY, to_id Vector2i.XY) (_ Float.X) { return }
-func (self implementation) ComputeCost(from_id Vector2i.XY, to_id Vector2i.XY) (_ Float.X)  { return }
+func (self implementation) EstimateCost(from_id Vector2i.XY, end_id Vector2i.XY) (_ Float.X) { return }
+func (self implementation) ComputeCost(from_id Vector2i.XY, to_id Vector2i.XY) (_ Float.X)   { return }
 
 /*
 Called when estimating the cost between a point and the path's ending point.
 Note that this function is hidden in the default [AStarGrid2D] class.
 */
-func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id Vector2i.XY, to_id Vector2i.XY) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id Vector2i.XY, end_id Vector2i.XY) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 
-		var to_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
+		var end_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, from_id, to_id)
+		ret := impl(self, from_id, end_id)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -217,9 +217,17 @@ func (self Instance) GetPointPosition(id Vector2i.XY) Vector2.XY { //gd:AStarGri
 }
 
 /*
+Returns an array of dictionaries with point data ([code]id[/code]: [Vector2i], [code]position[/code]: [Vector2], [code]solid[/code]: [bool], [code]weight_scale[/code]: [float]) within a [param region].
+*/
+func (self Instance) GetPointDataInRegion(region Rect2i.PositionSize) []PointData { //gd:AStarGrid2D.get_point_data_in_region
+	return []PointData(gd.ArrayAs[[]PointData](gd.InternalArray(class(self).GetPointDataInRegion(Rect2i.PositionSize(region)))))
+}
+
+/*
 Returns an array with the points that are in the path found by [AStarGrid2D] between the given points. The array is ordered from the starting point to the ending point of the path.
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
+Additionally, when [param allow_partial_path] is [code]true[/code] and [param to_id] is solid the search may take an unusually long time to finish.
 */
 func (self Instance) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vector2.XY { //gd:AStarGrid2D.get_point_path
 	return []Vector2.XY(slices.Collect(class(self).GetPointPath(Vector2i.XY(from_id), Vector2i.XY(to_id), false).Values()))
@@ -228,6 +236,7 @@ func (self Instance) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vect
 /*
 Returns an array with the IDs of the points that form the path found by AStar2D between the given points. The array is ordered from the starting point to the ending point of the path.
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
+[b]Note:[/b] When [param allow_partial_path] is [code]true[/code] and [param to_id] is solid the search may take an unusually long time to finish.
 */
 func (self Instance) GetIdPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vector2i.XY { //gd:AStarGrid2D.get_id_path
 	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetIdPath(Vector2i.XY(from_id), Vector2i.XY(to_id), false))))
@@ -328,14 +337,14 @@ func (self Instance) SetDiagonalMode(value gdclass.AStarGrid2DDiagonalMode) {
 Called when estimating the cost between a point and the path's ending point.
 Note that this function is hidden in the default [AStarGrid2D] class.
 */
-func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id Vector2i.XY, to_id Vector2i.XY) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id Vector2i.XY, end_id Vector2i.XY) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 
-		var to_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
+		var end_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, from_id, to_id)
+		ret := impl(self, from_id, end_id)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -691,9 +700,24 @@ func (self class) GetPointPosition(id Vector2i.XY) Vector2.XY { //gd:AStarGrid2D
 }
 
 /*
+Returns an array of dictionaries with point data ([code]id[/code]: [Vector2i], [code]position[/code]: [Vector2], [code]solid[/code]: [bool], [code]weight_scale[/code]: [float]) within a [param region].
+*/
+//go:nosplit
+func (self class) GetPointDataInRegion(region Rect2i.PositionSize) Array.Contains[Dictionary.Any] { //gd:AStarGrid2D.get_point_data_in_region
+	var frame = callframe.New()
+	callframe.Arg(frame, region)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_point_data_in_region, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
 Returns an array with the points that are in the path found by [AStarGrid2D] between the given points. The array is ordered from the starting point to the ending point of the path.
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
+Additionally, when [param allow_partial_path] is [code]true[/code] and [param to_id] is solid the search may take an unusually long time to finish.
 */
 //go:nosplit
 func (self class) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY, allow_partial_path bool) Packed.Array[Vector2.XY] { //gd:AStarGrid2D.get_point_path
@@ -711,6 +735,7 @@ func (self class) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY, allow_par
 /*
 Returns an array with the IDs of the points that form the path found by AStar2D between the given points. The array is ordered from the starting point to the ending point of the path.
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
+[b]Note:[/b] When [param allow_partial_path] is [code]true[/code] and [param to_id] is solid the search may take an unusually long time to finish.
 */
 //go:nosplit
 func (self class) GetIdPath(from_id Vector2i.XY, to_id Vector2i.XY, allow_partial_path bool) Array.Contains[Vector2i.XY] { //gd:AStarGrid2D.get_id_path
@@ -823,3 +848,16 @@ const (
 	/*Represents the size of the [enum CellShape] enum.*/
 	CellShapeMax CellShape = 3
 )
+
+type PointData struct {
+	ID struct {
+		X int32
+		Y int32
+	} `gd:"id"`
+	Position struct {
+		X float32
+		Y float32
+	} `gd:"position"`
+	Solid       bool    `gd:"solid"`
+	WeightScale float32 `gd:"weight_scale"`
+}

@@ -287,7 +287,7 @@ func (self Instance) SaveExrToBuffer() []byte { //gd:Image.save_exr_to_buffer
 }
 
 /*
-Saves the image as a WebP (Web Picture) file to the file at [param path]. By default it will save lossless. If [param lossy] is true, the image will be saved lossy, using the [param quality] setting between 0.0 and 1.0 (inclusive). Lossless WebP offers more efficient compression than PNG.
+Saves the image as a WebP (Web Picture) file to the file at [param path]. By default it will save lossless. If [param lossy] is [code]true[/code], the image will be saved lossy, using the [param quality] setting between [code]0.0[/code] and [code]1.0[/code] (inclusive). Lossless WebP offers more efficient compression than PNG.
 [b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 func (self Instance) SaveWebp(path string) error { //gd:Image.save_webp
@@ -295,7 +295,7 @@ func (self Instance) SaveWebp(path string) error { //gd:Image.save_webp
 }
 
 /*
-Saves the image as a WebP (Web Picture) file to a byte array. By default it will save lossless. If [param lossy] is true, the image will be saved lossy, using the [param quality] setting between 0.0 and 1.0 (inclusive). Lossless WebP offers more efficient compression than PNG.
+Saves the image as a WebP (Web Picture) file to a byte array. By default it will save lossless. If [param lossy] is [code]true[/code], the image will be saved lossy, using the [param quality] setting between [code]0.0[/code] and [code]1.0[/code] (inclusive). Lossless WebP offers more efficient compression than PNG.
 [b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 func (self Instance) SaveWebpToBuffer() []byte { //gd:Image.save_webp_to_buffer
@@ -385,10 +385,17 @@ func (self Instance) PremultiplyAlpha() { //gd:Image.premultiply_alpha
 }
 
 /*
-Converts the raw data from the sRGB colorspace to a linear scale.
+Converts the raw data from the sRGB colorspace to a linear scale. Only works on images with [constant FORMAT_RGB8] or [constant FORMAT_RGBA8] formats.
 */
 func (self Instance) SrgbToLinear() { //gd:Image.srgb_to_linear
 	class(self).SrgbToLinear()
+}
+
+/*
+Converts the entire image from the linear colorspace to the sRGB colorspace. Only works on images with [constant FORMAT_RGB8] or [constant FORMAT_RGBA8] formats.
+*/
+func (self Instance) LinearToSrgb() { //gd:Image.linear_to_srgb
+	class(self).LinearToSrgb()
 }
 
 /*
@@ -422,6 +429,7 @@ func (self Instance) ComputeImageMetrics(compared_image [1]gdclass.Image, use_lu
 
 /*
 Copies [param src_rect] from [param src] image to this image at coordinates [param dst], clipped accordingly to both image bounds. This image and [param src] image [b]must[/b] have the same format. [param src_rect] with non-positive size is treated as empty.
+[b]Note:[/b] The alpha channel data in [param src] will overwrite the corresponding data in this image at the target position. To blend alpha channels, use [method blend_rect] instead.
 */
 func (self Instance) BlitRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blit_rect
 	class(self).BlitRect(src, Rect2i.PositionSize(src_rect), Vector2i.XY(dst))
@@ -501,7 +509,6 @@ func (self Instance) GetPixel(x int, y int) Color.RGBA { //gd:Image.get_pixel
 
 /*
 Sets the [Color] of the pixel at [param point] to [param color].
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var img_width = 10
@@ -526,7 +533,6 @@ func (self Instance) SetPixelv(point Vector2i.XY, color Color.RGBA) { //gd:Image
 
 /*
 Sets the [Color] of the pixel at [code](x, y)[/code] to [param color].
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var img_width = 10
@@ -1069,7 +1075,7 @@ func (self class) SaveExrToBuffer(grayscale bool) Packed.Bytes { //gd:Image.save
 }
 
 /*
-Saves the image as a WebP (Web Picture) file to the file at [param path]. By default it will save lossless. If [param lossy] is true, the image will be saved lossy, using the [param quality] setting between 0.0 and 1.0 (inclusive). Lossless WebP offers more efficient compression than PNG.
+Saves the image as a WebP (Web Picture) file to the file at [param path]. By default it will save lossless. If [param lossy] is [code]true[/code], the image will be saved lossy, using the [param quality] setting between [code]0.0[/code] and [code]1.0[/code] (inclusive). Lossless WebP offers more efficient compression than PNG.
 [b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 //go:nosplit
@@ -1086,7 +1092,7 @@ func (self class) SaveWebp(path String.Readable, lossy bool, quality float64) Er
 }
 
 /*
-Saves the image as a WebP (Web Picture) file to a byte array. By default it will save lossless. If [param lossy] is true, the image will be saved lossy, using the [param quality] setting between 0.0 and 1.0 (inclusive). Lossless WebP offers more efficient compression than PNG.
+Saves the image as a WebP (Web Picture) file to a byte array. By default it will save lossless. If [param lossy] is [code]true[/code], the image will be saved lossy, using the [param quality] setting between [code]0.0[/code] and [code]1.0[/code] (inclusive). Lossless WebP offers more efficient compression than PNG.
 [b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 //go:nosplit
@@ -1250,13 +1256,24 @@ func (self class) PremultiplyAlpha() { //gd:Image.premultiply_alpha
 }
 
 /*
-Converts the raw data from the sRGB colorspace to a linear scale.
+Converts the raw data from the sRGB colorspace to a linear scale. Only works on images with [constant FORMAT_RGB8] or [constant FORMAT_RGBA8] formats.
 */
 //go:nosplit
 func (self class) SrgbToLinear() { //gd:Image.srgb_to_linear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_srgb_to_linear, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Converts the entire image from the linear colorspace to the sRGB colorspace. Only works on images with [constant FORMAT_RGB8] or [constant FORMAT_RGBA8] formats.
+*/
+//go:nosplit
+func (self class) LinearToSrgb() { //gd:Image.linear_to_srgb
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_linear_to_srgb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1314,6 +1331,7 @@ func (self class) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma 
 
 /*
 Copies [param src_rect] from [param src] image to this image at coordinates [param dst], clipped accordingly to both image bounds. This image and [param src] image [b]must[/b] have the same format. [param src_rect] with non-positive size is treated as empty.
+[b]Note:[/b] The alpha channel data in [param src] will overwrite the corresponding data in this image at the target position. To blend alpha channels, use [method blend_rect] instead.
 */
 //go:nosplit
 func (self class) BlitRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blit_rect
@@ -1467,7 +1485,6 @@ func (self class) GetPixel(x int64, y int64) Color.RGBA { //gd:Image.get_pixel
 
 /*
 Sets the [Color] of the pixel at [param point] to [param color].
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var img_width = 10
@@ -1498,7 +1515,6 @@ func (self class) SetPixelv(point Vector2i.XY, color Color.RGBA) { //gd:Image.se
 
 /*
 Sets the [Color] of the pixel at [code](x, y)[/code] to [param color].
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var img_width = 10

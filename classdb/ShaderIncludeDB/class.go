@@ -1,0 +1,157 @@
+// Package ShaderIncludeDB provides methods for working with ShaderIncludeDB object instances.
+package ShaderIncludeDB
+
+import "unsafe"
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+
+var _ Object.ID
+var _ RefCounted.Instance
+var _ unsafe.Pointer
+var _ reflect.Type
+var _ callframe.Frame
+var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
+var _ Callable.Function
+var _ Dictionary.Any
+var _ RID.Any
+var _ String.Readable
+var _ Path.ToNode
+var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
+var _ = slices.Delete[[]struct{}, struct{}]
+
+/*
+This object contains shader fragments from Godot's internal shaders. These can be used when access to internal uniform buffers and/or internal functions is required for instance when composing compositor effects or compute shaders. Only fragments for the current rendering device are loaded.
+*/
+type Instance [1]gdclass.ShaderIncludeDB
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
+type Any interface {
+	gd.IsClass
+	AsShaderIncludeDB() Instance
+}
+
+/*
+Returns a list of built-in include files that are currently registered.
+*/
+func ListBuiltInIncludeFiles() []string { //gd:ShaderIncludeDB.list_built_in_include_files
+	self := Instance{}
+	return []string(class(self).ListBuiltInIncludeFiles().Strings())
+}
+
+/*
+Returns [code]true[/code] if an include file with this name exists.
+*/
+func HasBuiltInIncludeFile(filename string) bool { //gd:ShaderIncludeDB.has_built_in_include_file
+	self := Instance{}
+	return bool(class(self).HasBuiltInIncludeFile(String.New(filename)))
+}
+
+/*
+Returns the code for the built-in shader fragment. You can also access this in your shader code through [code]#include "filename"[/code].
+*/
+func GetBuiltInIncludeFile(filename string) string { //gd:ShaderIncludeDB.get_built_in_include_file
+	self := Instance{}
+	return string(class(self).GetBuiltInIncludeFile(String.New(filename)).String())
+}
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
+type class [1]gdclass.ShaderIncludeDB
+
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func New() Instance {
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ShaderIncludeDB"))
+	casted := Instance{*(*gdclass.ShaderIncludeDB)(unsafe.Pointer(&object))}
+	return casted
+}
+
+/*
+Returns a list of built-in include files that are currently registered.
+*/
+//go:nosplit
+func (self class) ListBuiltInIncludeFiles() Packed.Strings { //gd:ShaderIncludeDB.list_built_in_include_files
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderIncludeDB.Bind_list_built_in_include_files, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if an include file with this name exists.
+*/
+//go:nosplit
+func (self class) HasBuiltInIncludeFile(filename String.Readable) bool { //gd:ShaderIncludeDB.has_built_in_include_file
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderIncludeDB.Bind_has_built_in_include_file, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the code for the built-in shader fragment. You can also access this in your shader code through [code]#include "filename"[/code].
+*/
+//go:nosplit
+func (self class) GetBuiltInIncludeFile(filename String.Readable) String.Readable { //gd:ShaderIncludeDB.get_built_in_include_file
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderIncludeDB.Bind_get_built_in_include_file, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+func (self class) AsShaderIncludeDB() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsShaderIncludeDB() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+
+func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
+	}
+}
+
+func (self Instance) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(Object.Instance(self.AsObject()), name)
+	}
+}
+func init() {
+	gdclass.Register("ShaderIncludeDB", func(ptr gd.Object) any {
+		return [1]gdclass.ShaderIncludeDB{*(*gdclass.ShaderIncludeDB)(unsafe.Pointer(&ptr))}
+	})
+}

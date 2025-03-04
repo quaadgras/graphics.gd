@@ -43,32 +43,46 @@ var _ = slices.Delete[[]struct{}, struct{}]
 /*
 A* (A star) is a computer algorithm used in pathfinding and graph traversal, the process of plotting short paths among vertices (points), passing through a given set of edges (segments). It enjoys widespread use due to its performance and accuracy. Godot's A* implementation uses points in 3D space and Euclidean distances by default.
 You must add points manually with [method add_point] and create segments manually with [method connect_points]. Once done, you can test if there is a path between two points with the [method are_points_connected] function, get a path containing indices by [method get_id_path], or one containing actual coordinates with [method get_point_path].
-It is also possible to use non-Euclidean distances. To do so, create a class that extends [AStar3D] and override methods [method _compute_cost] and [method _estimate_cost]. Both take two indices and return a length, as is shown in the following example.
+It is also possible to use non-Euclidean distances. To do so, create a script that extends [AStar3D] and override the methods [method _compute_cost] and [method _estimate_cost]. Both should take two point IDs and return the distance between the corresponding points.
+[b]Example:[/b] Use Manhattan distance instead of Euclidean distance:
 [codeblocks]
 [gdscript]
-class MyAStar:
+class_name MyAStar3D
+extends AStar3D
 
-	extends AStar3D
+func _compute_cost(u, v):
 
-	func _compute_cost(u, v):
-	    return abs(u - v)
+	var u_pos = get_point_position(u)
+	var v_pos = get_point_position(v)
+	return abs(u_pos.x - v_pos.x) + abs(u_pos.y - v_pos.y) + abs(u_pos.z - v_pos.z)
 
-	func _estimate_cost(u, v):
-	    return min(0, abs(u - v) - 1)
+func _estimate_cost(u, v):
+
+	var u_pos = get_point_position(u)
+	var v_pos = get_point_position(v)
+	return abs(u_pos.x - v_pos.x) + abs(u_pos.y - v_pos.y) + abs(u_pos.z - v_pos.z)
 
 [/gdscript]
 [csharp]
-public partial class MyAStar : AStar3D
+using Godot;
+
+[GlobalClass]
+public partial class MyAStar3D : AStar3D
 
 	{
 	    public override float _ComputeCost(long fromId, long toId)
 	    {
-	        return Mathf.Abs((int)(fromId - toId));
+	        Vector3 fromPoint = GetPointPosition(fromId);
+	        Vector3 toPoint = GetPointPosition(toId);
+
+	        return Mathf.Abs(fromPoint.X - toPoint.X) + Mathf.Abs(fromPoint.Y - toPoint.Y) + Mathf.Abs(fromPoint.Z - toPoint.Z);
 	    }
 
 	    public override float _EstimateCost(long fromId, long toId)
 	    {
-	        return Mathf.Min(0, Mathf.Abs((int)(fromId - toId)) - 1);
+	        Vector3 fromPoint = GetPointPosition(fromId);
+	        Vector3 toPoint = GetPointPosition(toId);
+	        return Mathf.Abs(fromPoint.X - toPoint.X) + Mathf.Abs(fromPoint.Y - toPoint.Y) + Mathf.Abs(fromPoint.Z - toPoint.Z);
 	    }
 	}
 
@@ -93,7 +107,7 @@ type Any interface {
 type Interface interface {
 	//Called when estimating the cost between a point and the path's ending point.
 	//Note that this function is hidden in the default [AStar3D] class.
-	EstimateCost(from_id int, to_id int) Float.X
+	EstimateCost(from_id int, end_id int) Float.X
 	//Called when computing the cost between two connected points.
 	//Note that this function is hidden in the default [AStar3D] class.
 	ComputeCost(from_id int, to_id int) Float.X
@@ -104,21 +118,21 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) EstimateCost(from_id int, to_id int) (_ Float.X) { return }
-func (self implementation) ComputeCost(from_id int, to_id int) (_ Float.X)  { return }
+func (self implementation) EstimateCost(from_id int, end_id int) (_ Float.X) { return }
+func (self implementation) ComputeCost(from_id int, to_id int) (_ Float.X)   { return }
 
 /*
 Called when estimating the cost between a point and the path's ending point.
 Note that this function is hidden in the default [AStar3D] class.
 */
-func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int, end_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
 
-		var to_id = gd.UnsafeGet[int64](p_args, 1)
+		var end_id = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, int(from_id), int(to_id))
+		ret := impl(self, int(from_id), int(end_id))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -231,7 +245,7 @@ astar.AddPoint(4, new Vector3(2, 0, 0));
 astar.ConnectPoints(1, 2, true);
 astar.ConnectPoints(1, 3, true);
 
-int[] neighbors = astar.GetPointConnections(1); // Returns [2, 3]
+long[] neighbors = astar.GetPointConnections(1); // Returns [2, 3]
 [/csharp]
 [/codeblocks]
 */
@@ -359,6 +373,7 @@ func (self Instance) GetClosestPositionInSegment(to_position Vector3.XYZ) Vector
 Returns an array with the points that are in the path found by AStar3D between the given points. The array is ordered from the starting point to the ending point of the path.
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
+Additionally, when [param allow_partial_path] is [code]true[/code] and [param to_id] is disabled the search may take an unusually long time to finish.
 */
 func (self Instance) GetPointPath(from_id int, to_id int) []Vector3.XYZ { //gd:AStar3D.get_point_path
 	return []Vector3.XYZ(slices.Collect(class(self).GetPointPath(int64(from_id), int64(to_id), false).Values()))
@@ -367,6 +382,7 @@ func (self Instance) GetPointPath(from_id int, to_id int) []Vector3.XYZ { //gd:A
 /*
 Returns an array with the IDs of the points that form the path found by AStar3D between the given points. The array is ordered from the starting point to the ending point of the path.
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
+[b]Note:[/b] When [param allow_partial_path] is [code]true[/code] and [param to_id] is disabled the search may take an unusually long time to finish.
 [codeblocks]
 [gdscript]
 var astar = AStar3D.new()
@@ -392,7 +408,7 @@ astar.ConnectPoints(1, 2, false);
 astar.ConnectPoints(2, 3, false);
 astar.ConnectPoints(4, 3, false);
 astar.ConnectPoints(1, 4, false);
-int[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
+long[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
 [/csharp]
 [/codeblocks]
 If you change the 2nd point's weight to 3, then the result will be [code][1, 4, 3][/code] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
@@ -424,14 +440,14 @@ func New() Instance {
 Called when estimating the cost between a point and the path's ending point.
 Note that this function is hidden in the default [AStar3D] class.
 */
-func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int64, to_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int64, end_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
 
-		var to_id = gd.UnsafeGet[int64](p_args, 1)
+		var end_id = gd.UnsafeGet[int64](p_args, 1)
 
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, from_id, to_id)
+		ret := impl(self, from_id, end_id)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -595,7 +611,7 @@ astar.AddPoint(4, new Vector3(2, 0, 0));
 astar.ConnectPoints(1, 2, true);
 astar.ConnectPoints(1, 3, true);
 
-int[] neighbors = astar.GetPointConnections(1); // Returns [2, 3]
+long[] neighbors = astar.GetPointConnections(1); // Returns [2, 3]
 [/csharp]
 [/codeblocks]
 */
@@ -808,6 +824,7 @@ func (self class) GetClosestPositionInSegment(to_position Vector3.XYZ) Vector3.X
 Returns an array with the points that are in the path found by AStar3D between the given points. The array is ordered from the starting point to the ending point of the path.
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
+Additionally, when [param allow_partial_path] is [code]true[/code] and [param to_id] is disabled the search may take an unusually long time to finish.
 */
 //go:nosplit
 func (self class) GetPointPath(from_id int64, to_id int64, allow_partial_path bool) Packed.Array[Vector3.XYZ] { //gd:AStar3D.get_point_path
@@ -825,6 +842,7 @@ func (self class) GetPointPath(from_id int64, to_id int64, allow_partial_path bo
 /*
 Returns an array with the IDs of the points that form the path found by AStar3D between the given points. The array is ordered from the starting point to the ending point of the path.
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
+[b]Note:[/b] When [param allow_partial_path] is [code]true[/code] and [param to_id] is disabled the search may take an unusually long time to finish.
 [codeblocks]
 [gdscript]
 var astar = AStar3D.new()
@@ -850,7 +868,7 @@ astar.ConnectPoints(1, 2, false);
 astar.ConnectPoints(2, 3, false);
 astar.ConnectPoints(4, 3, false);
 astar.ConnectPoints(1, 4, false);
-int[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
+long[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
 [/csharp]
 [/codeblocks]
 If you change the 2nd point's weight to 3, then the result will be [code][1, 4, 3][/code] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.

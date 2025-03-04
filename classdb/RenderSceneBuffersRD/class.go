@@ -67,8 +67,8 @@ func (self Instance) HasTexture(context string, name string) bool { //gd:RenderS
 /*
 Create a new texture with the given definition and cache this under the given name. Will return the existing texture if it already exists.
 */
-func (self Instance) CreateTexture(context string, name string, data_format gdclass.RenderingDeviceDataFormat, usage_bits int, texture_samples gdclass.RenderingDeviceTextureSamples, size Vector2i.XY, layers int, mipmaps int, unique bool) RID.Texture { //gd:RenderSceneBuffersRD.create_texture
-	return RID.Texture(class(self).CreateTexture(String.Name(String.New(context)), String.Name(String.New(name)), data_format, int64(usage_bits), texture_samples, Vector2i.XY(size), int64(layers), int64(mipmaps), unique))
+func (self Instance) CreateTexture(context string, name string, data_format gdclass.RenderingDeviceDataFormat, usage_bits int, texture_samples gdclass.RenderingDeviceTextureSamples, size Vector2i.XY, layers int, mipmaps int, unique bool, discardable bool) RID.Texture { //gd:RenderSceneBuffersRD.create_texture
+	return RID.Texture(class(self).CreateTexture(String.Name(String.New(context)), String.Name(String.New(name)), data_format, int64(usage_bits), texture_samples, Vector2i.XY(size), int64(layers), int64(mipmaps), unique, discardable))
 }
 
 /*
@@ -79,7 +79,7 @@ func (self Instance) CreateTextureFromFormat(context string, name string, format
 }
 
 /*
-Create a new texture view for an existing texture and cache this under the given view_name. Will return the existing teture view if it already exists. Will error if the source texture doesn't exist.
+Create a new texture view for an existing texture and cache this under the given [param view_name]. Will return the existing texture view if it already exists. Will error if the source texture doesn't exist.
 */
 func (self Instance) CreateTextureView(context string, name string, view_name string, view [1]gdclass.RDTextureView) RID.Texture { //gd:RenderSceneBuffersRD.create_texture_view
 	return RID.Texture(class(self).CreateTextureView(String.Name(String.New(context)), String.Name(String.New(name)), String.Name(String.New(view_name)), view))
@@ -129,7 +129,7 @@ func (self Instance) ClearContext(context string) { //gd:RenderSceneBuffersRD.cl
 
 /*
 Returns the color texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
-If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
+If [param msaa] is [code]true[/code] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Instance) GetColorTexture() RID.Texture { //gd:RenderSceneBuffersRD.get_color_texture
 	return RID.Texture(class(self).GetColorTexture(false))
@@ -137,7 +137,7 @@ func (self Instance) GetColorTexture() RID.Texture { //gd:RenderSceneBuffersRD.g
 
 /*
 Returns the specified layer from the color texture we are rendering 3D content to.
-If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
+If [param msaa] is [code]true[/code] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Instance) GetColorLayer(layer int) RID.Texture { //gd:RenderSceneBuffersRD.get_color_layer
 	return RID.Texture(class(self).GetColorLayer(int64(layer), false))
@@ -145,7 +145,7 @@ func (self Instance) GetColorLayer(layer int) RID.Texture { //gd:RenderSceneBuff
 
 /*
 Returns the depth texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
-If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
+If [param msaa] is [code]true[/code] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Instance) GetDepthTexture() RID.Texture { //gd:RenderSceneBuffersRD.get_depth_texture
 	return RID.Texture(class(self).GetDepthTexture(false))
@@ -153,7 +153,7 @@ func (self Instance) GetDepthTexture() RID.Texture { //gd:RenderSceneBuffersRD.g
 
 /*
 Returns the specified layer from the depth texture we are rendering 3D content to.
-If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
+If [param msaa] is [code]true[/code] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Instance) GetDepthLayer(layer int) RID.Texture { //gd:RenderSceneBuffersRD.get_depth_layer
 	return RID.Texture(class(self).GetDepthLayer(int64(layer), false))
@@ -289,7 +289,7 @@ func (self class) HasTexture(context String.Name, name String.Name) bool { //gd:
 Create a new texture with the given definition and cache this under the given name. Will return the existing texture if it already exists.
 */
 //go:nosplit
-func (self class) CreateTexture(context String.Name, name String.Name, data_format gdclass.RenderingDeviceDataFormat, usage_bits int64, texture_samples gdclass.RenderingDeviceTextureSamples, size Vector2i.XY, layers int64, mipmaps int64, unique bool) RID.Any { //gd:RenderSceneBuffersRD.create_texture
+func (self class) CreateTexture(context String.Name, name String.Name, data_format gdclass.RenderingDeviceDataFormat, usage_bits int64, texture_samples gdclass.RenderingDeviceTextureSamples, size Vector2i.XY, layers int64, mipmaps int64, unique bool, discardable bool) RID.Any { //gd:RenderSceneBuffersRD.create_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
@@ -300,6 +300,7 @@ func (self class) CreateTexture(context String.Name, name String.Name, data_form
 	callframe.Arg(frame, layers)
 	callframe.Arg(frame, mipmaps)
 	callframe.Arg(frame, unique)
+	callframe.Arg(frame, discardable)
 	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersRD.Bind_create_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -326,7 +327,7 @@ func (self class) CreateTextureFromFormat(context String.Name, name String.Name,
 }
 
 /*
-Create a new texture view for an existing texture and cache this under the given view_name. Will return the existing teture view if it already exists. Will error if the source texture doesn't exist.
+Create a new texture view for an existing texture and cache this under the given [param view_name]. Will return the existing texture view if it already exists. Will error if the source texture doesn't exist.
 */
 //go:nosplit
 func (self class) CreateTextureView(context String.Name, name String.Name, view_name String.Name, view [1]gdclass.RDTextureView) RID.Any { //gd:RenderSceneBuffersRD.create_texture_view
@@ -441,7 +442,7 @@ func (self class) ClearContext(context String.Name) { //gd:RenderSceneBuffersRD.
 
 /*
 Returns the color texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
-If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
+If [param msaa] is [code]true[/code] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 //go:nosplit
 func (self class) GetColorTexture(msaa bool) RID.Any { //gd:RenderSceneBuffersRD.get_color_texture
@@ -456,7 +457,7 @@ func (self class) GetColorTexture(msaa bool) RID.Any { //gd:RenderSceneBuffersRD
 
 /*
 Returns the specified layer from the color texture we are rendering 3D content to.
-If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
+If [param msaa] is [code]true[/code] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 //go:nosplit
 func (self class) GetColorLayer(layer int64, msaa bool) RID.Any { //gd:RenderSceneBuffersRD.get_color_layer
@@ -472,7 +473,7 @@ func (self class) GetColorLayer(layer int64, msaa bool) RID.Any { //gd:RenderSce
 
 /*
 Returns the depth texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
-If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
+If [param msaa] is [code]true[/code] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 //go:nosplit
 func (self class) GetDepthTexture(msaa bool) RID.Any { //gd:RenderSceneBuffersRD.get_depth_texture
@@ -487,7 +488,7 @@ func (self class) GetDepthTexture(msaa bool) RID.Any { //gd:RenderSceneBuffersRD
 
 /*
 Returns the specified layer from the depth texture we are rendering 3D content to.
-If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
+If [param msaa] is [code]true[/code] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 //go:nosplit
 func (self class) GetDepthLayer(layer int64, msaa bool) RID.Any { //gd:RenderSceneBuffersRD.get_depth_layer

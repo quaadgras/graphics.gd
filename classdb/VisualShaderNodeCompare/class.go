@@ -240,9 +240,9 @@ const (
 type Condition = gdclass.VisualShaderNodeCompareCondition //gd:VisualShaderNodeCompare.Condition
 
 const (
-	/*The result will be true if all of component in vector satisfy the comparison condition.*/
+	/*The result will be [code]true[/code] if all components in the vector satisfy the comparison condition.*/
 	CondAll Condition = 0
-	/*The result will be true if any of component in vector satisfy the comparison condition.*/
+	/*The result will be [code]true[/code] if any component in the vector satisfies the comparison condition.*/
 	CondAny Condition = 1
 	/*Represents the size of the [enum Condition] enum.*/
 	CondMax Condition = 2

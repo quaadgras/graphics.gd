@@ -1137,8 +1137,8 @@ const (
 	TreeAreaUnstaged TreeArea = 2
 )
 
-type DiffLine map[interface{}]interface{}
-type DiffHunk map[interface{}]interface{}
-type DiffFile map[interface{}]interface{}
 type Commit map[interface{}]interface{}
+type DiffFile map[interface{}]interface{}
+type DiffHunk map[interface{}]interface{}
+type DiffLine map[interface{}]interface{}
 type StatusFile map[interface{}]interface{}

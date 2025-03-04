@@ -1,0 +1,265 @@
+// Package GridMapEditorPlugin provides methods for working with GridMapEditorPlugin object instances.
+package GridMapEditorPlugin
+
+import "unsafe"
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/classdb/EditorPlugin"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/variant/AABB"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector3i"
+
+var _ Object.ID
+var _ RefCounted.Instance
+var _ unsafe.Pointer
+var _ reflect.Type
+var _ callframe.Frame
+var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
+var _ Callable.Function
+var _ Dictionary.Any
+var _ RID.Any
+var _ String.Readable
+var _ Path.ToNode
+var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
+var _ = slices.Delete[[]struct{}, struct{}]
+
+/*
+GridMapEditorPlugin provides access to the [GridMap] editor functionality.
+*/
+type Instance [1]gdclass.GridMapEditorPlugin
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
+type Any interface {
+	gd.IsClass
+	AsGridMapEditorPlugin() Instance
+}
+
+/*
+Returns the [GridMap] node currently edited by the grid map editor.
+*/
+func (self Instance) GetCurrentGridMap() [1]gdclass.GridMap { //gd:GridMapEditorPlugin.get_current_grid_map
+	return [1]gdclass.GridMap(class(self).GetCurrentGridMap())
+}
+
+/*
+Selects the cells inside the given bounds from [param begin] to [param end].
+*/
+func (self Instance) SetSelection(begin Vector3i.XYZ, end Vector3i.XYZ) { //gd:GridMapEditorPlugin.set_selection
+	class(self).SetSelection(Vector3i.XYZ(begin), Vector3i.XYZ(end))
+}
+
+/*
+Deselects any currently selected cells.
+*/
+func (self Instance) ClearSelection() { //gd:GridMapEditorPlugin.clear_selection
+	class(self).ClearSelection()
+}
+
+/*
+Returns the cell coordinate bounds of the current selection. Use [method has_selection] to check if there is an active selection.
+*/
+func (self Instance) GetSelection() AABB.PositionSize { //gd:GridMapEditorPlugin.get_selection
+	return AABB.PositionSize(class(self).GetSelection())
+}
+
+/*
+Returns [code]true[/code] if there are selected cells.
+*/
+func (self Instance) HasSelection() bool { //gd:GridMapEditorPlugin.has_selection
+	return bool(class(self).HasSelection())
+}
+
+/*
+Returns an array of [Vector3i]s with the selected cells' coordinates.
+*/
+func (self Instance) GetSelectedCells() []any { //gd:GridMapEditorPlugin.get_selected_cells
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetSelectedCells())))
+}
+
+/*
+Selects the [MeshLibrary] item with the given index in the grid map editor's palette. If a negative index is given, no item will be selected. If a value greater than the last index is given, the last item will be selected.
+[b]Note:[/b] The indices might not be in the same order as they appear in the editor's interface.
+*/
+func (self Instance) SetSelectedPaletteItem(item int) { //gd:GridMapEditorPlugin.set_selected_palette_item
+	class(self).SetSelectedPaletteItem(int64(item))
+}
+
+/*
+Returns the index of the selected [MeshLibrary] item in the grid map editor's palette or [code]-1[/code] if no item is selected.
+[b]Note:[/b] The indices might not be in the same order as they appear in the editor's interface.
+*/
+func (self Instance) GetSelectedPaletteItem() int { //gd:GridMapEditorPlugin.get_selected_palette_item
+	return int(int(class(self).GetSelectedPaletteItem()))
+}
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
+type class [1]gdclass.GridMapEditorPlugin
+
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func New() Instance {
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GridMapEditorPlugin"))
+	casted := Instance{*(*gdclass.GridMapEditorPlugin)(unsafe.Pointer(&object))}
+	return casted
+}
+
+/*
+Returns the [GridMap] node currently edited by the grid map editor.
+*/
+//go:nosplit
+func (self class) GetCurrentGridMap() [1]gdclass.GridMap { //gd:GridMapEditorPlugin.get_current_grid_map
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMapEditorPlugin.Bind_get_current_grid_map, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.GridMap{gd.PointerMustAssertInstanceID[gdclass.GridMap](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Selects the cells inside the given bounds from [param begin] to [param end].
+*/
+//go:nosplit
+func (self class) SetSelection(begin Vector3i.XYZ, end Vector3i.XYZ) { //gd:GridMapEditorPlugin.set_selection
+	var frame = callframe.New()
+	callframe.Arg(frame, begin)
+	callframe.Arg(frame, end)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMapEditorPlugin.Bind_set_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Deselects any currently selected cells.
+*/
+//go:nosplit
+func (self class) ClearSelection() { //gd:GridMapEditorPlugin.clear_selection
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMapEditorPlugin.Bind_clear_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the cell coordinate bounds of the current selection. Use [method has_selection] to check if there is an active selection.
+*/
+//go:nosplit
+func (self class) GetSelection() AABB.PositionSize { //gd:GridMapEditorPlugin.get_selection
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[AABB.PositionSize](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMapEditorPlugin.Bind_get_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if there are selected cells.
+*/
+//go:nosplit
+func (self class) HasSelection() bool { //gd:GridMapEditorPlugin.has_selection
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMapEditorPlugin.Bind_has_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns an array of [Vector3i]s with the selected cells' coordinates.
+*/
+//go:nosplit
+func (self class) GetSelectedCells() Array.Any { //gd:GridMapEditorPlugin.get_selected_cells
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMapEditorPlugin.Bind_get_selected_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Selects the [MeshLibrary] item with the given index in the grid map editor's palette. If a negative index is given, no item will be selected. If a value greater than the last index is given, the last item will be selected.
+[b]Note:[/b] The indices might not be in the same order as they appear in the editor's interface.
+*/
+//go:nosplit
+func (self class) SetSelectedPaletteItem(item int64) { //gd:GridMapEditorPlugin.set_selected_palette_item
+	var frame = callframe.New()
+	callframe.Arg(frame, item)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMapEditorPlugin.Bind_set_selected_palette_item, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the index of the selected [MeshLibrary] item in the grid map editor's palette or [code]-1[/code] if no item is selected.
+[b]Note:[/b] The indices might not be in the same order as they appear in the editor's interface.
+*/
+//go:nosplit
+func (self class) GetSelectedPaletteItem() int64 { //gd:GridMapEditorPlugin.get_selected_palette_item
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMapEditorPlugin.Bind_get_selected_palette_item, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+func (self class) AsGridMapEditorPlugin() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsGridMapEditorPlugin() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsEditorPlugin() EditorPlugin.Advanced {
+	return *((*EditorPlugin.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsEditorPlugin() EditorPlugin.Instance {
+	return *((*EditorPlugin.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+
+func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(EditorPlugin.Advanced(self.AsEditorPlugin()), name)
+	}
+}
+
+func (self Instance) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(EditorPlugin.Instance(self.AsEditorPlugin()), name)
+	}
+}
+func init() {
+	gdclass.Register("GridMapEditorPlugin", func(ptr gd.Object) any {
+		return [1]gdclass.GridMapEditorPlugin{*(*gdclass.GridMapEditorPlugin)(unsafe.Pointer(&ptr))}
+	})
+}

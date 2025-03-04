@@ -42,7 +42,7 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-Represents a physics shape as defined by the [code]OMI_physics_shape[/code] or [code]OMI_collider[/code] GLTF extensions. This class is an intermediary between the GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
+Represents a physics shape as defined by the [code]OMI_physics_shape[/code] or [code]OMI_collider[/code] glTF extensions. This class is an intermediary between the glTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different glTF physics extensions in the future.
 */
 type Instance [1]gdclass.GLTFPhysicsShape
 

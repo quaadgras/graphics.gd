@@ -490,7 +490,7 @@ const (
 	  hintString = $"{Variant.Type.Array:D}:{Variant.Type.Array:D}:{elemType:D}/{elemHint:D}:{elemHintString}";
 	  [/csharp]
 	  [/codeblocks]
-	  Examples:
+	  [b]Examples:[/b]
 	  [codeblocks]
 	  [gdscript]
 	  hint_string = "%d:" % [TYPE_INT] # Array of integers.
@@ -534,6 +534,8 @@ const (
 	PropertyHintIntIsPointer PropertyHint = 30
 	/*Hints that a property is an [Array] with the stored type specified in the hint string.*/
 	PropertyHintArrayType PropertyHint = 31
+	/*Hints that a property is a [Dictionary] with the stored types specified in the hint string.*/
+	PropertyHintDictionaryType PropertyHint = 38
 	/*Hints that a string property is a locale code. Editing it will show a locale dialog for picking language and country.*/
 	PropertyHintLocaleId PropertyHint = 32
 	/*Hints that a dictionary property is string translation map. Dictionary keys are locale codes and, values are translated strings.*/
@@ -544,8 +546,17 @@ const (
 	PropertyHintHideQuaternionEdit PropertyHint = 35
 	/*Hints that a string property is a password, and every character is replaced with the secret character.*/
 	PropertyHintPassword PropertyHint = 36
+	/*Hints that a [Callable] property should be displayed as a clickable button. When the button is pressed, the callable is called. The hint string specifies the button text and optionally an icon from the [code]"EditorIcons"[/code] theme type.
+	  [codeblock lang=text]
+	  "Click me!" - A button with the text "Click me!" and the default "Callable" icon.
+	  "Click me!,ColorRect" - A button with the text "Click me!" and the "ColorRect" icon.
+	  [/codeblock]
+	  [b]Note:[/b] A [Callable] cannot be properly serialized and stored in a file, so it is recommended to use [constant PROPERTY_USAGE_EDITOR] instead of [constant PROPERTY_USAGE_DEFAULT].*/
+	PropertyHintToolButton PropertyHint = 39
+	/*Hints that a property will be changed on its own after setting, such as [member AudioStreamPlayer.playing] or [member GPUParticles3D.emitting].*/
+	PropertyHintOneshot PropertyHint = 40
 	/*Represents the size of the [enum PropertyHint] enum.*/
-	PropertyHintMax PropertyHint = 38
+	PropertyHintMax PropertyHint = 42
 )
 
 type PropertyUsageFlags int
@@ -575,14 +586,14 @@ const (
 	PropertyUsageNoInstanceState PropertyUsageFlags = 1024
 	/*Editing the property prompts the user for restarting the editor.*/
 	PropertyUsageRestartIfChanged PropertyUsageFlags = 2048
-	/*The property is a script variable which should be serialized and saved in the scene file.*/
+	/*The property is a script variable. [constant PROPERTY_USAGE_SCRIPT_VARIABLE] can be used to distinguish between exported script variables from built-in variables (which don't have this usage flag). By default, [constant PROPERTY_USAGE_SCRIPT_VARIABLE] is [b]not[/b] applied to variables that are created by overriding [method Object._get_property_list] in a script.*/
 	PropertyUsageScriptVariable PropertyUsageFlags = 4096
 	/*The property value of type [Object] will be stored even if its value is [code]null[/code].*/
 	PropertyUsageStoreIfNull PropertyUsageFlags = 8192
 	/*If this property is modified, all inspector fields will be refreshed.*/
 	PropertyUsageUpdateAllIfModified PropertyUsageFlags = 16384
 	PropertyUsageScriptDefaultValue  PropertyUsageFlags = 32768
-	/*The property is an enum, i.e. it only takes named integer constants from its associated enumeration.*/
+	/*The property is a variable of enum type, i.e. it only takes named integer constants from its associated enumeration.*/
 	PropertyUsageClassIsEnum PropertyUsageFlags = 65536
 	/*If property has [code]nil[/code] as default value, its type will be [Variant].*/
 	PropertyUsageNilIsVariant PropertyUsageFlags = 131072

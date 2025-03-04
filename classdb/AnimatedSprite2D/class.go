@@ -95,12 +95,10 @@ func (self Instance) Stop() { //gd:AnimatedSprite2D.stop
 }
 
 /*
-The setter of [member frame] resets the [member frame_progress] to [code]0.0[/code] implicitly, but this method avoids that.
-This is useful when you want to carry over the current [member frame_progress] to another [member frame].
-[b]Example:[/b]
+Sets [member frame] the [member frame_progress] to the given values. Unlike setting [member frame], this method does not reset the [member frame_progress] to [code]0.0[/code] implicitly.
+[b]Example:[/b] Change the animation while keeping the same [member frame] and [member frame_progress]:
 [codeblocks]
 [gdscript]
-# Change the animation with keeping the frame index and progress.
 var current_frame = animated_sprite.get_frame()
 var current_progress = animated_sprite.get_frame_progress()
 animated_sprite.play("walk_another_skin")
@@ -454,12 +452,10 @@ func (self class) GetFrameProgress() float64 { //gd:AnimatedSprite2D.get_frame_p
 }
 
 /*
-The setter of [member frame] resets the [member frame_progress] to [code]0.0[/code] implicitly, but this method avoids that.
-This is useful when you want to carry over the current [member frame_progress] to another [member frame].
-[b]Example:[/b]
+Sets [member frame] the [member frame_progress] to the given values. Unlike setting [member frame], this method does not reset the [member frame_progress] to [code]0.0[/code] implicitly.
+[b]Example:[/b] Change the animation while keeping the same [member frame] and [member frame_progress]:
 [codeblocks]
 [gdscript]
-# Change the animation with keeping the frame index and progress.
 var current_frame = animated_sprite.get_frame()
 var current_progress = animated_sprite.get_frame_progress()
 animated_sprite.play("walk_another_skin")

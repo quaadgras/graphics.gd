@@ -58,8 +58,7 @@ type Any interface {
 	AsEditorPlugin() Instance
 }
 type Interface interface {
-	//Called when there is a root node in the current edited scene, [method _handles] is implemented and an [InputEvent] happens in the 2D viewport. Intercepts the [InputEvent], if [code]return true[/code] [EditorPlugin] consumes the [param event], otherwise forwards [param event] to other Editor classes.
-	//[b]Example:[/b]
+	//Called when there is a root node in the current edited scene, [method _handles] is implemented, and an [InputEvent] happens in the 2D viewport. If this method returns [code]true[/code], [param event] is intercepted by this [EditorPlugin], otherwise [param event] is forwarded to other Editor classes.
 	//[codeblocks]
 	//[gdscript]
 	//# Prevents the InputEvent from reaching other Editor classes.
@@ -74,8 +73,7 @@ type Interface interface {
 	//}
 	//[/csharp]
 	//[/codeblocks]
-	//Must [code]return false[/code] in order to forward the [InputEvent] to other Editor classes.
-	//[b]Example:[/b]
+	//This method must return [code]false[/code] in order to forward the [InputEvent] to other Editor classes.
 	//[codeblocks]
 	//[gdscript]
 	//# Consumes InputEventMouseMotion and forwards other InputEvent types.
@@ -135,7 +133,6 @@ type Interface interface {
 	//You need to enable calling of this method by using [method set_force_draw_over_forwarding_enabled].
 	ForwardCanvasForceDrawOverViewport(viewport_control [1]gdclass.Control)
 	//Called when there is a root node in the current edited scene, [method _handles] is implemented, and an [InputEvent] happens in the 3D viewport. The return value decides whether the [InputEvent] is consumed or forwarded to other [EditorPlugin]s. See [enum AfterGUIInput] for options.
-	//[b]Example:[/b]
 	//[codeblocks]
 	//[gdscript]
 	//# Prevents the InputEvent from reaching other Editor classes.
@@ -150,8 +147,7 @@ type Interface interface {
 	//}
 	//[/csharp]
 	//[/codeblocks]
-	//Must [code]return EditorPlugin.AFTER_GUI_INPUT_PASS[/code] in order to forward the [InputEvent] to other Editor classes.
-	//[b]Example:[/b]
+	//This method must return [constant AFTER_GUI_INPUT_PASS] in order to forward the [InputEvent] to other Editor classes.
 	//[codeblocks]
 	//[gdscript]
 	//# Consumes InputEventMouseMotion and forwards other InputEvent types.
@@ -373,8 +369,7 @@ func (self implementation) EnablePlugin()                                       
 func (self implementation) DisablePlugin()                                      { return }
 
 /*
-Called when there is a root node in the current edited scene, [method _handles] is implemented and an [InputEvent] happens in the 2D viewport. Intercepts the [InputEvent], if [code]return true[/code] [EditorPlugin] consumes the [param event], otherwise forwards [param event] to other Editor classes.
-[b]Example:[/b]
+Called when there is a root node in the current edited scene, [method _handles] is implemented, and an [InputEvent] happens in the 2D viewport. If this method returns [code]true[/code], [param event] is intercepted by this [EditorPlugin], otherwise [param event] is forwarded to other Editor classes.
 [codeblocks]
 [gdscript]
 # Prevents the InputEvent from reaching other Editor classes.
@@ -393,8 +388,7 @@ public override bool ForwardCanvasGuiInput(InputEvent @event)
 
 [/csharp]
 [/codeblocks]
-Must [code]return false[/code] in order to forward the [InputEvent] to other Editor classes.
-[b]Example:[/b]
+This method must return [code]false[/code] in order to forward the [InputEvent] to other Editor classes.
 [codeblocks]
 [gdscript]
 # Consumes InputEventMouseMotion and forwards other InputEvent types.
@@ -498,7 +492,6 @@ func (Instance) _forward_canvas_force_draw_over_viewport(impl func(ptr unsafe.Po
 
 /*
 Called when there is a root node in the current edited scene, [method _handles] is implemented, and an [InputEvent] happens in the 3D viewport. The return value decides whether the [InputEvent] is consumed or forwarded to other [EditorPlugin]s. See [enum AfterGUIInput] for options.
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 # Prevents the InputEvent from reaching other Editor classes.
@@ -517,8 +510,7 @@ public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D camera, I
 
 [/csharp]
 [/codeblocks]
-Must [code]return EditorPlugin.AFTER_GUI_INPUT_PASS[/code] in order to forward the [InputEvent] to other Editor classes.
-[b]Example:[/b]
+This method must return [constant AFTER_GUI_INPUT_PASS] in order to forward the [InputEvent] to other Editor classes.
 [codeblocks]
 [gdscript]
 # Consumes InputEventMouseMotion and forwards other InputEvent types.
@@ -973,7 +965,7 @@ func (self Instance) AddControlToContainer(container gdclass.EditorPluginCustomC
 }
 
 /*
-Adds a control to the bottom panel (together with Output, Debug, Animation, etc). Returns a reference to the button added. It's up to you to hide/show the button when needed. When your plugin is deactivated, make sure to remove your custom control with [method remove_control_from_bottom_panel] and free it with [method Node.queue_free].
+Adds a control to the bottom panel (together with Output, Debug, Animation, etc.). Returns a reference to the button added. It's up to you to hide/show the button when needed. When your plugin is deactivated, make sure to remove your custom control with [method remove_control_from_bottom_panel] and free it with [method Node.queue_free].
 Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the bottom panel's visibility. See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
 */
 func (self Instance) AddControlToBottomPanel(control [1]gdclass.Control, title string) [1]gdclass.Button { //gd:EditorPlugin.add_control_to_bottom_panel
@@ -1206,6 +1198,20 @@ func (self Instance) RemoveExportPlugin(plugin [1]gdclass.EditorExportPlugin) { 
 }
 
 /*
+Registers a new [EditorExportPlatform]. Export platforms provides functionality of exporting to the specific platform.
+*/
+func (self Instance) AddExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.add_export_platform
+	class(self).AddExportPlatform(platform)
+}
+
+/*
+Removes an export platform registered by [method add_export_platform].
+*/
+func (self Instance) RemoveExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.remove_export_platform
+	class(self).RemoveExportPlatform(platform)
+}
+
+/*
 Registers a new [EditorNode3DGizmoPlugin]. Gizmo plugins are used to add custom gizmos to the 3D preview viewport for a [Node3D].
 See [method add_inspector_plugin] for an example of how to register a plugin.
 */
@@ -1244,7 +1250,7 @@ func (self Instance) AddInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin)
 }
 
 /*
-Removes an inspector plugin registered by [method add_import_plugin]
+Removes an inspector plugin registered by [method add_inspector_plugin].
 */
 func (self Instance) RemoveInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.remove_inspector_plugin
 	class(self).RemoveInspectorPlugin(plugin)
@@ -1277,6 +1283,21 @@ Enables calling of [method _forward_canvas_force_draw_over_viewport] for the 2D 
 */
 func (self Instance) SetForceDrawOverForwardingEnabled() { //gd:EditorPlugin.set_force_draw_over_forwarding_enabled
 	class(self).SetForceDrawOverForwardingEnabled()
+}
+
+/*
+Adds a plugin to the context menu. [param slot] is the context menu where the plugin will be added.
+See [enum EditorContextMenuPlugin.ContextMenuSlot] for available context menus. A plugin instance can belong only to a single context menu slot.
+*/
+func (self Instance) AddContextMenuPlugin(slot gdclass.EditorContextMenuPluginContextMenuSlot, plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.add_context_menu_plugin
+	class(self).AddContextMenuPlugin(slot, plugin)
+}
+
+/*
+Removes the specified context menu plugin.
+*/
+func (self Instance) RemoveContextMenuPlugin(plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.remove_context_menu_plugin
+	class(self).RemoveContextMenuPlugin(plugin)
 }
 
 /*
@@ -1335,8 +1356,7 @@ func New() Instance {
 }
 
 /*
-Called when there is a root node in the current edited scene, [method _handles] is implemented and an [InputEvent] happens in the 2D viewport. Intercepts the [InputEvent], if [code]return true[/code] [EditorPlugin] consumes the [param event], otherwise forwards [param event] to other Editor classes.
-[b]Example:[/b]
+Called when there is a root node in the current edited scene, [method _handles] is implemented, and an [InputEvent] happens in the 2D viewport. If this method returns [code]true[/code], [param event] is intercepted by this [EditorPlugin], otherwise [param event] is forwarded to other Editor classes.
 [codeblocks]
 [gdscript]
 # Prevents the InputEvent from reaching other Editor classes.
@@ -1355,8 +1375,7 @@ public override bool ForwardCanvasGuiInput(InputEvent @event)
 
 [/csharp]
 [/codeblocks]
-Must [code]return false[/code] in order to forward the [InputEvent] to other Editor classes.
-[b]Example:[/b]
+This method must return [code]false[/code] in order to forward the [InputEvent] to other Editor classes.
 [codeblocks]
 [gdscript]
 # Consumes InputEventMouseMotion and forwards other InputEvent types.
@@ -1460,7 +1479,6 @@ func (class) _forward_canvas_force_draw_over_viewport(impl func(ptr unsafe.Point
 
 /*
 Called when there is a root node in the current edited scene, [method _handles] is implemented, and an [InputEvent] happens in the 3D viewport. The return value decides whether the [InputEvent] is consumed or forwarded to other [EditorPlugin]s. See [enum AfterGUIInput] for options.
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 # Prevents the InputEvent from reaching other Editor classes.
@@ -1479,8 +1497,7 @@ public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D camera, I
 
 [/csharp]
 [/codeblocks]
-Must [code]return EditorPlugin.AFTER_GUI_INPUT_PASS[/code] in order to forward the [InputEvent] to other Editor classes.
-[b]Example:[/b]
+This method must return [constant AFTER_GUI_INPUT_PASS] in order to forward the [InputEvent] to other Editor classes.
 [codeblocks]
 [gdscript]
 # Consumes InputEventMouseMotion and forwards other InputEvent types.
@@ -1941,7 +1958,7 @@ func (self class) AddControlToContainer(container gdclass.EditorPluginCustomCont
 }
 
 /*
-Adds a control to the bottom panel (together with Output, Debug, Animation, etc). Returns a reference to the button added. It's up to you to hide/show the button when needed. When your plugin is deactivated, make sure to remove your custom control with [method remove_control_from_bottom_panel] and free it with [method Node.queue_free].
+Adds a control to the bottom panel (together with Output, Debug, Animation, etc.). Returns a reference to the button added. It's up to you to hide/show the button when needed. When your plugin is deactivated, make sure to remove your custom control with [method remove_control_from_bottom_panel] and free it with [method Node.queue_free].
 Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the bottom panel's visibility. See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
 */
 //go:nosplit
@@ -2347,6 +2364,30 @@ func (self class) RemoveExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //g
 }
 
 /*
+Registers a new [EditorExportPlatform]. Export platforms provides functionality of exporting to the specific platform.
+*/
+//go:nosplit
+func (self class) AddExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.add_export_platform
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(platform[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_export_platform, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Removes an export platform registered by [method add_export_platform].
+*/
+//go:nosplit
+func (self class) RemoveExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.remove_export_platform
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(platform[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_export_platform, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Registers a new [EditorNode3DGizmoPlugin]. Gizmo plugins are used to add custom gizmos to the 3D preview viewport for a [Node3D].
 See [method add_inspector_plugin] for an example of how to register a plugin.
 */
@@ -2397,7 +2438,7 @@ func (self class) AddInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { 
 }
 
 /*
-Removes an inspector plugin registered by [method add_import_plugin]
+Removes an inspector plugin registered by [method add_inspector_plugin].
 */
 //go:nosplit
 func (self class) RemoveInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.remove_inspector_plugin
@@ -2452,6 +2493,32 @@ func (self class) SetForceDrawOverForwardingEnabled() { //gd:EditorPlugin.set_fo
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_set_force_draw_over_forwarding_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Adds a plugin to the context menu. [param slot] is the context menu where the plugin will be added.
+See [enum EditorContextMenuPlugin.ContextMenuSlot] for available context menus. A plugin instance can belong only to a single context menu slot.
+*/
+//go:nosplit
+func (self class) AddContextMenuPlugin(slot gdclass.EditorContextMenuPluginContextMenuSlot, plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.add_context_menu_plugin
+	var frame = callframe.New()
+	callframe.Arg(frame, slot)
+	callframe.Arg(frame, pointers.Get(plugin[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_context_menu_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Removes the specified context menu plugin.
+*/
+//go:nosplit
+func (self class) RemoveContextMenuPlugin(plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.remove_context_menu_plugin
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(plugin[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_context_menu_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 

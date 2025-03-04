@@ -49,6 +49,7 @@ Here's a sample on how to use it to generate a sine wave:
 var playback # Will hold the AudioStreamGeneratorPlayback.
 @onready var sample_hz = $AudioStreamPlayer.stream.mix_rate
 var pulse_hz = 440.0 # The frequency of the sound wave.
+var phase = 0.0
 
 func _ready():
 
@@ -58,7 +59,6 @@ func _ready():
 
 func fill_buffer():
 
-	var phase = 0.0
 	var increment = pulse_hz / sample_hz
 	var frames_available = playback.get_frames_available()
 
@@ -73,6 +73,7 @@ func fill_buffer():
 private AudioStreamGeneratorPlayback _playback; // Will hold the AudioStreamGeneratorPlayback.
 private float _sampleHz;
 private float _pulseHz = 440.0f; // The frequency of the sound wave.
+private double phase = 0.0;
 
 public override void _Ready()
 
@@ -89,7 +90,6 @@ public override void _Ready()
 public void FillBuffer()
 
 	{
-	    double phase = 0.0;
 	    float increment = _pulseHz / _sampleHz;
 	    int framesAvailable = _playback.GetFramesAvailable();
 
@@ -135,6 +135,14 @@ func New() Instance {
 	return casted
 }
 
+func (self Instance) MixRateMode() gdclass.AudioStreamGeneratorAudioStreamGeneratorMixRate {
+	return gdclass.AudioStreamGeneratorAudioStreamGeneratorMixRate(class(self).GetMixRateMode())
+}
+
+func (self Instance) SetMixRateMode(value gdclass.AudioStreamGeneratorAudioStreamGeneratorMixRate) {
+	class(self).SetMixRateMode(value)
+}
+
 func (self Instance) MixRate() Float.X {
 	return Float.X(Float.X(class(self).GetMixRate()))
 }
@@ -165,6 +173,25 @@ func (self class) GetMixRate() float64 { //gd:AudioStreamGenerator.get_mix_rate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGenerator.Bind_get_mix_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetMixRateMode(mode gdclass.AudioStreamGeneratorAudioStreamGeneratorMixRate) { //gd:AudioStreamGenerator.set_mix_rate_mode
+	var frame = callframe.New()
+	callframe.Arg(frame, mode)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGenerator.Bind_set_mix_rate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetMixRateMode() gdclass.AudioStreamGeneratorAudioStreamGeneratorMixRate { //gd:AudioStreamGenerator.get_mix_rate_mode
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.AudioStreamGeneratorAudioStreamGeneratorMixRate](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGenerator.Bind_get_mix_rate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -227,3 +254,16 @@ func init() {
 		return [1]gdclass.AudioStreamGenerator{*(*gdclass.AudioStreamGenerator)(unsafe.Pointer(&ptr))}
 	})
 }
+
+type AudioStreamGeneratorMixRate = gdclass.AudioStreamGeneratorAudioStreamGeneratorMixRate //gd:AudioStreamGenerator.AudioStreamGeneratorMixRate
+
+const (
+	/*Current [AudioServer] output mixing rate.*/
+	MixRateOutput AudioStreamGeneratorMixRate = 0
+	/*Current [AudioServer] input mixing rate.*/
+	MixRateInput AudioStreamGeneratorMixRate = 1
+	/*Custom mixing rate, specified by [member mix_rate].*/
+	MixRateCustom AudioStreamGeneratorMixRate = 2
+	/*Maximum value for the mixing rate mode enum.*/
+	MixRateMax AudioStreamGeneratorMixRate = 3
+)

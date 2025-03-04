@@ -186,7 +186,8 @@ func AddJoyMapping(mapping string) { //gd:Input.add_joy_mapping
 }
 
 /*
-Removes all mappings from the internal database that match the given GUID.
+Removes all mappings from the internal database that match the given GUID. All currently connected joypads that use this GUID will become unmapped.
+On Android, Godot will map to an internal fallback mapping.
 */
 func RemoveJoyMapping(guid string) { //gd:Input.remove_joy_mapping
 	once.Do(singleton)
@@ -218,7 +219,8 @@ func GetJoyName(device int) string { //gd:Input.get_joy_name
 }
 
 /*
-Returns an SDL2-compatible device GUID on platforms that use gamepad remapping, e.g. [code]030000004c050000c405000000010000[/code]. Returns [code]"Default Gamepad"[/code] otherwise. Godot uses the [url=https://github.com/gabomdq/SDL_GameControllerDB]SDL2 game controller database[/url] to determine gamepad names and mappings based on this GUID.
+Returns an SDL2-compatible device GUID on platforms that use gamepad remapping, e.g. [code]030000004c050000c405000000010000[/code]. Returns an empty string if it cannot be found. Godot uses the [url=https://github.com/gabomdq/SDL_GameControllerDB]SDL2 game controller database[/url] to determine gamepad names and mappings based on this GUID.
+On Windows, all XInput joypad GUIDs will be overridden by Godot to [code]__XINPUT_DEVICE__[/code], because their mappings are the same.
 */
 func GetJoyGuid(device int) string { //gd:Input.get_joy_guid
 	once.Do(singleton)
@@ -227,13 +229,16 @@ func GetJoyGuid(device int) string { //gd:Input.get_joy_guid
 
 /*
 Returns a dictionary with extra platform-specific information about the device, e.g. the raw gamepad name from the OS or the Steam Input index.
-On Windows the dictionary contains the following fields:
-[code]xinput_index[/code]: The index of the controller in the XInput system.
+On Windows, the dictionary contains the following fields:
+[code]xinput_index[/code]: The index of the controller in the XInput system. Undefined for DirectInput devices.
+[code]vendor_id[/code]: The USB vendor ID of the device.
+[code]product_id[/code]: The USB product ID of the device.
 On Linux:
 [code]raw_name[/code]: The name of the controller as it came from the OS, before getting renamed by the godot controller database.
 [code]vendor_id[/code]: The USB vendor ID of the device.
 [code]product_id[/code]: The USB product ID of the device.
 [code]steam_input_index[/code]: The Steam Input gamepad index, if the device is not a Steam Input device this key won't be present.
+[b]Note:[/b] The returned dictionary is always empty on Web, iOS, Android, and macOS.
 */
 func GetJoyInfo(device int) JoyInfo { //gd:Input.get_joy_info
 	once.Do(singleton)
@@ -308,6 +313,7 @@ func VibrateHandheld() { //gd:Input.vibrate_handheld
 /*
 Returns the gravity in m/s² of the device's accelerometer sensor, if the device has one. Otherwise, the method returns [constant Vector3.ZERO].
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
+[b]Note:[/b] For Android, [member ProjectSettings.input_devices/sensors/enable_gravity] must be enabled.
 */
 func GetGravity() Vector3.XYZ { //gd:Input.get_gravity
 	once.Do(singleton)
@@ -318,6 +324,7 @@ func GetGravity() Vector3.XYZ { //gd:Input.get_gravity
 Returns the acceleration in m/s² of the device's accelerometer sensor, if the device has one. Otherwise, the method returns [constant Vector3.ZERO].
 Note this method returns an empty [Vector3] when running from the editor even when your device has an accelerometer. You must export your project to a supported device to read values from the accelerometer.
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
+[b]Note:[/b] For Android, [member ProjectSettings.input_devices/sensors/enable_accelerometer] must be enabled.
 */
 func GetAccelerometer() Vector3.XYZ { //gd:Input.get_accelerometer
 	once.Do(singleton)
@@ -327,6 +334,7 @@ func GetAccelerometer() Vector3.XYZ { //gd:Input.get_accelerometer
 /*
 Returns the magnetic field strength in micro-Tesla for all axes of the device's magnetometer sensor, if the device has one. Otherwise, the method returns [constant Vector3.ZERO].
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
+[b]Note:[/b] For Android, [member ProjectSettings.input_devices/sensors/enable_magnetometer] must be enabled.
 */
 func GetMagnetometer() Vector3.XYZ { //gd:Input.get_magnetometer
 	once.Do(singleton)
@@ -336,6 +344,7 @@ func GetMagnetometer() Vector3.XYZ { //gd:Input.get_magnetometer
 /*
 Returns the rotation rate in rad/s around a device's X, Y, and Z axes of the gyroscope sensor, if the device has one. Otherwise, the method returns [constant Vector3.ZERO].
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
+[b]Note:[/b] For Android, [member ProjectSettings.input_devices/sensors/enable_gyroscope] must be enabled.
 */
 func GetGyroscope() Vector3.XYZ { //gd:Input.get_gyroscope
 	once.Do(singleton)
@@ -463,7 +472,6 @@ func SetCustomMouseCursor(image [1]gdclass.Resource) { //gd:Input.set_custom_mou
 
 /*
 Feeds an [InputEvent] to the game. Can be used to artificially trigger input events from code. Also generates [method Node._input] calls.
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var cancel_event = InputEventAction.new()
@@ -769,7 +777,8 @@ func (self class) AddJoyMapping(mapping String.Readable, update_existing bool) {
 }
 
 /*
-Removes all mappings from the internal database that match the given GUID.
+Removes all mappings from the internal database that match the given GUID. All currently connected joypads that use this GUID will become unmapped.
+On Android, Godot will map to an internal fallback mapping.
 */
 //go:nosplit
 func (self class) RemoveJoyMapping(guid String.Readable) { //gd:Input.remove_joy_mapping
@@ -824,7 +833,8 @@ func (self class) GetJoyName(device int64) String.Readable { //gd:Input.get_joy_
 }
 
 /*
-Returns an SDL2-compatible device GUID on platforms that use gamepad remapping, e.g. [code]030000004c050000c405000000010000[/code]. Returns [code]"Default Gamepad"[/code] otherwise. Godot uses the [url=https://github.com/gabomdq/SDL_GameControllerDB]SDL2 game controller database[/url] to determine gamepad names and mappings based on this GUID.
+Returns an SDL2-compatible device GUID on platforms that use gamepad remapping, e.g. [code]030000004c050000c405000000010000[/code]. Returns an empty string if it cannot be found. Godot uses the [url=https://github.com/gabomdq/SDL_GameControllerDB]SDL2 game controller database[/url] to determine gamepad names and mappings based on this GUID.
+On Windows, all XInput joypad GUIDs will be overridden by Godot to [code]__XINPUT_DEVICE__[/code], because their mappings are the same.
 */
 //go:nosplit
 func (self class) GetJoyGuid(device int64) String.Readable { //gd:Input.get_joy_guid
@@ -839,13 +849,16 @@ func (self class) GetJoyGuid(device int64) String.Readable { //gd:Input.get_joy_
 
 /*
 Returns a dictionary with extra platform-specific information about the device, e.g. the raw gamepad name from the OS or the Steam Input index.
-On Windows the dictionary contains the following fields:
-[code]xinput_index[/code]: The index of the controller in the XInput system.
+On Windows, the dictionary contains the following fields:
+[code]xinput_index[/code]: The index of the controller in the XInput system. Undefined for DirectInput devices.
+[code]vendor_id[/code]: The USB vendor ID of the device.
+[code]product_id[/code]: The USB product ID of the device.
 On Linux:
 [code]raw_name[/code]: The name of the controller as it came from the OS, before getting renamed by the godot controller database.
 [code]vendor_id[/code]: The USB vendor ID of the device.
 [code]product_id[/code]: The USB product ID of the device.
 [code]steam_input_index[/code]: The Steam Input gamepad index, if the device is not a Steam Input device this key won't be present.
+[b]Note:[/b] The returned dictionary is always empty on Web, iOS, Android, and macOS.
 */
 //go:nosplit
 func (self class) GetJoyInfo(device int64) Dictionary.Any { //gd:Input.get_joy_info
@@ -966,6 +979,7 @@ func (self class) VibrateHandheld(duration_ms int64, amplitude float64) { //gd:I
 /*
 Returns the gravity in m/s² of the device's accelerometer sensor, if the device has one. Otherwise, the method returns [constant Vector3.ZERO].
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
+[b]Note:[/b] For Android, [member ProjectSettings.input_devices/sensors/enable_gravity] must be enabled.
 */
 //go:nosplit
 func (self class) GetGravity() Vector3.XYZ { //gd:Input.get_gravity
@@ -981,6 +995,7 @@ func (self class) GetGravity() Vector3.XYZ { //gd:Input.get_gravity
 Returns the acceleration in m/s² of the device's accelerometer sensor, if the device has one. Otherwise, the method returns [constant Vector3.ZERO].
 Note this method returns an empty [Vector3] when running from the editor even when your device has an accelerometer. You must export your project to a supported device to read values from the accelerometer.
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
+[b]Note:[/b] For Android, [member ProjectSettings.input_devices/sensors/enable_accelerometer] must be enabled.
 */
 //go:nosplit
 func (self class) GetAccelerometer() Vector3.XYZ { //gd:Input.get_accelerometer
@@ -995,6 +1010,7 @@ func (self class) GetAccelerometer() Vector3.XYZ { //gd:Input.get_accelerometer
 /*
 Returns the magnetic field strength in micro-Tesla for all axes of the device's magnetometer sensor, if the device has one. Otherwise, the method returns [constant Vector3.ZERO].
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
+[b]Note:[/b] For Android, [member ProjectSettings.input_devices/sensors/enable_magnetometer] must be enabled.
 */
 //go:nosplit
 func (self class) GetMagnetometer() Vector3.XYZ { //gd:Input.get_magnetometer
@@ -1009,6 +1025,7 @@ func (self class) GetMagnetometer() Vector3.XYZ { //gd:Input.get_magnetometer
 /*
 Returns the rotation rate in rad/s around a device's X, Y, and Z axes of the gyroscope sensor, if the device has one. Otherwise, the method returns [constant Vector3.ZERO].
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
+[b]Note:[/b] For Android, [member ProjectSettings.input_devices/sensors/enable_gyroscope] must be enabled.
 */
 //go:nosplit
 func (self class) GetGyroscope() Vector3.XYZ { //gd:Input.get_gyroscope
@@ -1219,7 +1236,6 @@ func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape gdclass.
 
 /*
 Feeds an [InputEvent] to the game. Can be used to artificially trigger input events from code. Also generates [method Node._input] calls.
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var cancel_event = InputEventAction.new()
@@ -1341,6 +1357,8 @@ const (
 	MouseModeConfined MouseModeValue = 3
 	/*Confines the mouse cursor to the game window, and make it hidden.*/
 	MouseModeConfinedHidden MouseModeValue = 4
+	/*Max value of the [enum MouseMode].*/
+	MouseModeMax MouseModeValue = 5
 )
 
 type CursorShape = gdclass.InputCursorShape //gd:Input.CursorShape
@@ -1629,13 +1647,13 @@ const (
 	KeyHyper Key = 4194371
 	/*Help key.*/
 	KeyHelp Key = 4194373
-	/*Media back key. Not to be confused with the Back button on an Android device.*/
+	/*Back key.*/
 	KeyBack Key = 4194376
-	/*Media forward key.*/
+	/*Forward key.*/
 	KeyForward Key = 4194377
 	/*Media stop key.*/
 	KeyStop Key = 4194378
-	/*Media refresh key.*/
+	/*Refresh key.*/
 	KeyRefresh Key = 4194379
 	/*Volume down key.*/
 	KeyVolumedown Key = 4194380
@@ -1711,35 +1729,35 @@ const (
 	KeyUnknown Key = 8388607
 	/*Space key.*/
 	KeySpace Key = 32
-	/*! key.*/
+	/*Exclamation mark ([code]![/code]) key.*/
 	KeyExclam Key = 33
-	/*" key.*/
+	/*Double quotation mark ([code]"[/code]) key.*/
 	KeyQuotedbl Key = 34
-	/*# key.*/
+	/*Number sign or [i]hash[/i] ([code]#[/code]) key.*/
 	KeyNumbersign Key = 35
-	/*$ key.*/
+	/*Dollar sign ([code]$[/code]) key.*/
 	KeyDollar Key = 36
-	/*% key.*/
+	/*Percent sign ([code]%[/code]) key.*/
 	KeyPercent Key = 37
-	/*& key.*/
+	/*Ampersand ([code]&[/code]) key.*/
 	KeyAmpersand Key = 38
-	/*' key.*/
+	/*Apostrophe ([code]'[/code]) key.*/
 	KeyApostrophe Key = 39
-	/*( key.*/
+	/*Left parenthesis ([code]([/code]) key.*/
 	KeyParenleft Key = 40
-	/*) key.*/
+	/*Right parenthesis ([code])[/code]) key.*/
 	KeyParenright Key = 41
-	/** key.*/
+	/*Asterisk ([code]*[/code]) key.*/
 	KeyAsterisk Key = 42
-	/*+ key.*/
+	/*Plus ([code]+[/code]) key.*/
 	KeyPlus Key = 43
-	/*, key.*/
+	/*Comma ([code],[/code]) key.*/
 	KeyComma Key = 44
-	/*- key.*/
+	/*Minus ([code]-[/code]) key.*/
 	KeyMinus Key = 45
-	/*. key.*/
+	/*Period ([code].[/code]) key.*/
 	KeyPeriod Key = 46
-	/*/ key.*/
+	/*Slash ([code]/[/code]) key.*/
 	KeySlash Key = 47
 	/*Number 0 key.*/
 	Key0 Key = 48
@@ -1761,19 +1779,19 @@ const (
 	Key8 Key = 56
 	/*Number 9 key.*/
 	Key9 Key = 57
-	/*: key.*/
+	/*Colon ([code]:[/code]) key.*/
 	KeyColon Key = 58
-	/*; key.*/
+	/*Semicolon ([code];[/code]) key.*/
 	KeySemicolon Key = 59
-	/*< key.*/
+	/*Less-than sign ([code]<[/code]) key.*/
 	KeyLess Key = 60
-	/*= key.*/
+	/*Equal sign ([code]=[/code]) key.*/
 	KeyEqual Key = 61
-	/*> key.*/
+	/*Greater-than sign ([code]>[/code]) key.*/
 	KeyGreater Key = 62
-	/*? key.*/
+	/*Question mark ([code]?[/code]) key.*/
 	KeyQuestion Key = 63
-	/*@ key.*/
+	/*At sign ([code]@[/code]) key.*/
 	KeyAt Key = 64
 	/*A key.*/
 	KeyA Key = 65
@@ -1827,29 +1845,29 @@ const (
 	KeyY Key = 89
 	/*Z key.*/
 	KeyZ Key = 90
-	/*[ key.*/
+	/*Left bracket ([code][lb][/code]) key.*/
 	KeyBracketleft Key = 91
-	/*\ key.*/
+	/*Backslash ([code]\[/code]) key.*/
 	KeyBackslash Key = 92
-	/*] key.*/
+	/*Right bracket ([code][rb][/code]) key.*/
 	KeyBracketright Key = 93
-	/*^ key.*/
+	/*Caret ([code]^[/code]) key.*/
 	KeyAsciicircum Key = 94
-	/*_ key.*/
+	/*Underscore ([code]_[/code]) key.*/
 	KeyUnderscore Key = 95
-	/*` key.*/
+	/*Backtick ([code]`[/code]) key.*/
 	KeyQuoteleft Key = 96
-	/*{ key.*/
+	/*Left brace ([code]{[/code]) key.*/
 	KeyBraceleft Key = 123
-	/*| key.*/
+	/*Vertical bar or [i]pipe[/i] ([code]|[/code]) key.*/
 	KeyBar Key = 124
-	/*} key.*/
+	/*Right brace ([code]}[/code]) key.*/
 	KeyBraceright Key = 125
-	/*~ key.*/
+	/*Tilde ([code]~[/code]) key.*/
 	KeyAsciitilde Key = 126
-	/*¥ key.*/
+	/*Yen symbol ([code]¥[/code]) key.*/
 	KeyYen Key = 165
-	/*§ key.*/
+	/*Section sign ([code]§[/code]) key.*/
 	KeySection Key = 167
 )
 

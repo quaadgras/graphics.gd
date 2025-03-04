@@ -86,7 +86,7 @@ func (a Contains[T]) Len() int { //gd:Array.size
 
 // Index returns the value at the given index. If the index is negative,
 // it counts from the end of the array.
-func (a Contains[T]) Index(i int) T { //gd:Array[]
+func (a Contains[T]) Index(i int) T { //gd:Array.get
 	if a.proxy == nil {
 		panic("index out of range")
 	}
@@ -95,7 +95,7 @@ func (a Contains[T]) Index(i int) T { //gd:Array[]
 
 // SetIndex sets the value at the given index. If the index is negative,
 // it counts from the end of the array.
-func (a *Contains[T]) SetIndex(i int, value T) { //gd:Array[]=
+func (a *Contains[T]) SetIndex(i int, value T) { //gd:Array.set
 	if a.proxy == nil {
 		panic("index out of range")
 	}
@@ -282,6 +282,17 @@ func Filter[T any](fn func(T) bool, array Contains[T]) Contains[T] { //gd:Array.
 func Find[T comparable](array Contains[T], what T) int { //gd:Array.find
 	for i := range array.Len() {
 		if array.Index(i) == what {
+			return i
+		}
+	}
+	return -1
+}
+
+// FindFunc returns the index of the first element in the array that causes method to return true, or -1 if
+// there are none. The search's start can be specified with from, continuing to the end of the array.
+func FindFunc[T any](array Contains[T], fn func(T) bool) int { //gd:Array.find_custom
+	for i := range array.Len() {
+		if fn(array.Index(i)) {
 			return i
 		}
 	}
@@ -484,6 +495,18 @@ func Reverse[T any](array Contains[T]) { //gd:Array.reverse
 func FindLast[T comparable](array Contains[T], what T) int { //gd:Array.rfind
 	for i := array.Len() - 1; i >= 0; i-- {
 		if array.Index(i) == what {
+			return i
+		}
+	}
+	return -1
+}
+
+// FindLastFunc returns the index of the last element of the array that causes method to return true, or
+// -1 if there are none. The search's start can be specified with from, continuing to the beginning of the array.
+// This method is the reverse of [FindFunc].
+func FindLastFunc[T comparable](array Contains[T], fn func(T) bool) int { //gd:Array.rfind_custom
+	for i := array.Len() - 1; i >= 0; i-- {
+		if fn(array.Index(i)) {
 			return i
 		}
 	}

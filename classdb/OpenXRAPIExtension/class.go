@@ -18,9 +18,11 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2i"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -120,6 +122,34 @@ func (self Instance) GetSwapchainFormatName(swapchain_format int) string { //gd:
 }
 
 /*
+Set the object name of an OpenXR object, used for debug output. [param object_type] must be a valid OpenXR [code]XrObjectType[/code] enum and [param object_handle] must be a valid OpenXR object handle.
+*/
+func (self Instance) SetObjectName(object_type int, object_handle int, object_name string) { //gd:OpenXRAPIExtension.set_object_name
+	class(self).SetObjectName(int64(object_type), int64(object_handle), String.New(object_name))
+}
+
+/*
+Begins a new debug label region, this label will be reported in debug messages for any calls following this until [method end_debug_label_region] is called. Debug labels can be stacked.
+*/
+func (self Instance) BeginDebugLabelRegion(label_name string) { //gd:OpenXRAPIExtension.begin_debug_label_region
+	class(self).BeginDebugLabelRegion(String.New(label_name))
+}
+
+/*
+Marks the end of a debug label region. Removes the latest debug label region added by calling [method begin_debug_label_region].
+*/
+func (self Instance) EndDebugLabelRegion() { //gd:OpenXRAPIExtension.end_debug_label_region
+	class(self).EndDebugLabelRegion()
+}
+
+/*
+Inserts a debug label, this label is reported in any debug message resulting from the OpenXR calls that follows, until any of [method begin_debug_label_region], [method end_debug_label_region], or [method insert_debug_label] is called.
+*/
+func (self Instance) InsertDebugLabel(label_name string) { //gd:OpenXRAPIExtension.insert_debug_label
+	class(self).InsertDebugLabel(String.New(label_name))
+}
+
+/*
 Returns [code]true[/code] if OpenXR is initialized.
 */
 func (self Instance) IsInitialized() bool { //gd:OpenXRAPIExtension.is_initialized
@@ -162,6 +192,20 @@ func (self Instance) CanRender() bool { //gd:OpenXRAPIExtension.can_render
 }
 
 /*
+Returns the [RID] corresponding to an [code]Action[/code] of a matching name, optionally limited to a specified action set.
+*/
+func (self Instance) FindAction(name string, action_set RID.ActionSet) RID.Action { //gd:OpenXRAPIExtension.find_action
+	return RID.Action(class(self).FindAction(String.New(name), RID.Any(action_set)))
+}
+
+/*
+Returns the corresponding [code]XrAction[/code] OpenXR handle for the given action RID.
+*/
+func (self Instance) ActionGetHandle(action RID.Action) int { //gd:OpenXRAPIExtension.action_get_handle
+	return int(int(class(self).ActionGetHandle(RID.Any(action))))
+}
+
+/*
 Returns the corresponding [code]XRHandTrackerEXT[/code] handle for the given hand index value.
 */
 func (self Instance) GetHandTracker(hand_index int) int { //gd:OpenXRAPIExtension.get_hand_tracker
@@ -180,6 +224,121 @@ Unregisters the given extension as a composition layer provider.
 */
 func (self Instance) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
 	class(self).UnregisterCompositionLayerProvider(extension)
+}
+
+/*
+Registers the given extension as a provider of additional data structures to projections views.
+*/
+func (self Instance) RegisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.register_projection_views_extension
+	class(self).RegisterProjectionViewsExtension(extension)
+}
+
+/*
+Unregisters the given extension as a provider of additional data structures to projections views.
+*/
+func (self Instance) UnregisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
+	class(self).UnregisterProjectionViewsExtension(extension)
+}
+
+/*
+Returns the near boundary value of the camera frustum.
+[b]Note:[/b] This is only accessible in the render thread.
+*/
+func (self Instance) GetRenderStateZNear() Float.X { //gd:OpenXRAPIExtension.get_render_state_z_near
+	return Float.X(Float.X(class(self).GetRenderStateZNear()))
+}
+
+/*
+Returns the far boundary value of the camera frustum.
+[b]Note:[/b] This is only accessible in the render thread.
+*/
+func (self Instance) GetRenderStateZFar() Float.X { //gd:OpenXRAPIExtension.get_render_state_z_far
+	return Float.X(Float.X(class(self).GetRenderStateZFar()))
+}
+
+/*
+Sets the render target of the velocity texture.
+*/
+func (self Instance) SetVelocityTexture(render_target RID.Framebuffer) { //gd:OpenXRAPIExtension.set_velocity_texture
+	class(self).SetVelocityTexture(RID.Any(render_target))
+}
+
+/*
+Sets the render target of the velocity depth texture.
+*/
+func (self Instance) SetVelocityDepthTexture(render_target RID.Framebuffer) { //gd:OpenXRAPIExtension.set_velocity_depth_texture
+	class(self).SetVelocityDepthTexture(RID.Any(render_target))
+}
+
+/*
+Sets the target size of the velocity and velocity depth textures.
+*/
+func (self Instance) SetVelocityTargetSize(target_size Vector2i.XY) { //gd:OpenXRAPIExtension.set_velocity_target_size
+	class(self).SetVelocityTargetSize(Vector2i.XY(target_size))
+}
+
+/*
+Returns an array of supported swapchain formats.
+*/
+func (self Instance) GetSupportedSwapchainFormats() []int64 { //gd:OpenXRAPIExtension.get_supported_swapchain_formats
+	return []int64(slices.Collect(class(self).GetSupportedSwapchainFormats().Values()))
+}
+
+/*
+Returns a pointer to a new swapchain created using the provided parameters.
+*/
+func (self Instance) OpenxrSwapchainCreate(create_flags int, usage_flags int, swapchain_format int, width int, height int, sample_count int, array_size int) int { //gd:OpenXRAPIExtension.openxr_swapchain_create
+	return int(int(class(self).OpenxrSwapchainCreate(int64(create_flags), int64(usage_flags), int64(swapchain_format), int64(width), int64(height), int64(sample_count), int64(array_size))))
+}
+
+/*
+Destroys the provided swapchain and frees it from memory.
+*/
+func (self Instance) OpenxrSwapchainFree(swapchain int) { //gd:OpenXRAPIExtension.openxr_swapchain_free
+	class(self).OpenxrSwapchainFree(int64(swapchain))
+}
+
+/*
+Returns the [code]XrSwapchain[/code] handle of the provided swapchain.
+*/
+func (self Instance) OpenxrSwapchainGetSwapchain(swapchain int) int { //gd:OpenXRAPIExtension.openxr_swapchain_get_swapchain
+	return int(int(class(self).OpenxrSwapchainGetSwapchain(int64(swapchain))))
+}
+
+/*
+Acquires the image of the provided swapchain.
+*/
+func (self Instance) OpenxrSwapchainAcquire(swapchain int) { //gd:OpenXRAPIExtension.openxr_swapchain_acquire
+	class(self).OpenxrSwapchainAcquire(int64(swapchain))
+}
+
+/*
+Returns the RID of the provided swapchain's image.
+*/
+func (self Instance) OpenxrSwapchainGetImage(swapchain int) RID.Texture { //gd:OpenXRAPIExtension.openxr_swapchain_get_image
+	return RID.Texture(class(self).OpenxrSwapchainGetImage(int64(swapchain)))
+}
+
+/*
+Releases the image of the provided swapchain.
+*/
+func (self Instance) OpenxrSwapchainRelease(swapchain int) { //gd:OpenXRAPIExtension.openxr_swapchain_release
+	class(self).OpenxrSwapchainRelease(int64(swapchain))
+}
+
+/*
+Returns a pointer to the render state's [code]XrCompositionLayerProjection[/code] struct.
+[b]Note:[/b] This method should only be called from the rendering thread.
+*/
+func (self Instance) GetProjectionLayer() int { //gd:OpenXRAPIExtension.get_projection_layer
+	return int(int(class(self).GetProjectionLayer()))
+}
+
+/*
+Sets the render region to [param render_region], overriding the normal render target's rect.
+*/
+func (self Instance) SetRenderRegion(render_region Rect2i.PositionSize) { //gd:OpenXRAPIExtension.set_render_region
+	class(self).SetRenderRegion(Rect2i.PositionSize(render_region))
 }
 
 /*
@@ -342,6 +501,55 @@ func (self class) GetSwapchainFormatName(swapchain_format int64) String.Readable
 }
 
 /*
+Set the object name of an OpenXR object, used for debug output. [param object_type] must be a valid OpenXR [code]XrObjectType[/code] enum and [param object_handle] must be a valid OpenXR object handle.
+*/
+//go:nosplit
+func (self class) SetObjectName(object_type int64, object_handle int64, object_name String.Readable) { //gd:OpenXRAPIExtension.set_object_name
+	var frame = callframe.New()
+	callframe.Arg(frame, object_type)
+	callframe.Arg(frame, object_handle)
+	callframe.Arg(frame, pointers.Get(gd.InternalString(object_name)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_set_object_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Begins a new debug label region, this label will be reported in debug messages for any calls following this until [method end_debug_label_region] is called. Debug labels can be stacked.
+*/
+//go:nosplit
+func (self class) BeginDebugLabelRegion(label_name String.Readable) { //gd:OpenXRAPIExtension.begin_debug_label_region
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label_name)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_begin_debug_label_region, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Marks the end of a debug label region. Removes the latest debug label region added by calling [method begin_debug_label_region].
+*/
+//go:nosplit
+func (self class) EndDebugLabelRegion() { //gd:OpenXRAPIExtension.end_debug_label_region
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_end_debug_label_region, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Inserts a debug label, this label is reported in any debug message resulting from the OpenXR calls that follows, until any of [method begin_debug_label_region], [method end_debug_label_region], or [method insert_debug_label] is called.
+*/
+//go:nosplit
+func (self class) InsertDebugLabel(label_name String.Readable) { //gd:OpenXRAPIExtension.insert_debug_label
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(label_name)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_insert_debug_label, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Returns [code]true[/code] if OpenXR is initialized.
 */
 //go:nosplit
@@ -420,6 +628,35 @@ func (self class) CanRender() bool { //gd:OpenXRAPIExtension.can_render
 }
 
 /*
+Returns the [RID] corresponding to an [code]Action[/code] of a matching name, optionally limited to a specified action set.
+*/
+//go:nosplit
+func (self class) FindAction(name String.Readable, action_set RID.Any) RID.Any { //gd:OpenXRAPIExtension.find_action
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
+	callframe.Arg(frame, action_set)
+	var r_ret = callframe.Ret[RID.Any](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_find_action, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the corresponding [code]XrAction[/code] OpenXR handle for the given action RID.
+*/
+//go:nosplit
+func (self class) ActionGetHandle(action RID.Any) int64 { //gd:OpenXRAPIExtension.action_get_handle
+	var frame = callframe.New()
+	callframe.Arg(frame, action)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_action_get_handle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns the corresponding [code]XRHandTrackerEXT[/code] handle for the given hand index value.
 */
 //go:nosplit
@@ -454,6 +691,217 @@ func (self class) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXR
 	callframe.Arg(frame, pointers.Get(extension[0])[0])
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_unregister_composition_layer_provider, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Registers the given extension as a provider of additional data structures to projections views.
+*/
+//go:nosplit
+func (self class) RegisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.register_projection_views_extension
+	var frame = callframe.New()
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(extension[0].AsObject()[0]))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_register_projection_views_extension, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Unregisters the given extension as a provider of additional data structures to projections views.
+*/
+//go:nosplit
+func (self class) UnregisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(extension[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_unregister_projection_views_extension, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the near boundary value of the camera frustum.
+[b]Note:[/b] This is only accessible in the render thread.
+*/
+//go:nosplit
+func (self class) GetRenderStateZNear() float64 { //gd:OpenXRAPIExtension.get_render_state_z_near
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_render_state_z_near, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the far boundary value of the camera frustum.
+[b]Note:[/b] This is only accessible in the render thread.
+*/
+//go:nosplit
+func (self class) GetRenderStateZFar() float64 { //gd:OpenXRAPIExtension.get_render_state_z_far
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_render_state_z_far, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the render target of the velocity texture.
+*/
+//go:nosplit
+func (self class) SetVelocityTexture(render_target RID.Any) { //gd:OpenXRAPIExtension.set_velocity_texture
+	var frame = callframe.New()
+	callframe.Arg(frame, render_target)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_set_velocity_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Sets the render target of the velocity depth texture.
+*/
+//go:nosplit
+func (self class) SetVelocityDepthTexture(render_target RID.Any) { //gd:OpenXRAPIExtension.set_velocity_depth_texture
+	var frame = callframe.New()
+	callframe.Arg(frame, render_target)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_set_velocity_depth_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Sets the target size of the velocity and velocity depth textures.
+*/
+//go:nosplit
+func (self class) SetVelocityTargetSize(target_size Vector2i.XY) { //gd:OpenXRAPIExtension.set_velocity_target_size
+	var frame = callframe.New()
+	callframe.Arg(frame, target_size)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_set_velocity_target_size, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns an array of supported swapchain formats.
+*/
+//go:nosplit
+func (self class) GetSupportedSwapchainFormats() Packed.Array[int64] { //gd:OpenXRAPIExtension.get_supported_swapchain_formats
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_supported_swapchain_formats, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns a pointer to a new swapchain created using the provided parameters.
+*/
+//go:nosplit
+func (self class) OpenxrSwapchainCreate(create_flags int64, usage_flags int64, swapchain_format int64, width int64, height int64, sample_count int64, array_size int64) int64 { //gd:OpenXRAPIExtension.openxr_swapchain_create
+	var frame = callframe.New()
+	callframe.Arg(frame, create_flags)
+	callframe.Arg(frame, usage_flags)
+	callframe.Arg(frame, swapchain_format)
+	callframe.Arg(frame, width)
+	callframe.Arg(frame, height)
+	callframe.Arg(frame, sample_count)
+	callframe.Arg(frame, array_size)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_create, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Destroys the provided swapchain and frees it from memory.
+*/
+//go:nosplit
+func (self class) OpenxrSwapchainFree(swapchain int64) { //gd:OpenXRAPIExtension.openxr_swapchain_free
+	var frame = callframe.New()
+	callframe.Arg(frame, swapchain)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_free, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the [code]XrSwapchain[/code] handle of the provided swapchain.
+*/
+//go:nosplit
+func (self class) OpenxrSwapchainGetSwapchain(swapchain int64) int64 { //gd:OpenXRAPIExtension.openxr_swapchain_get_swapchain
+	var frame = callframe.New()
+	callframe.Arg(frame, swapchain)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_get_swapchain, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Acquires the image of the provided swapchain.
+*/
+//go:nosplit
+func (self class) OpenxrSwapchainAcquire(swapchain int64) { //gd:OpenXRAPIExtension.openxr_swapchain_acquire
+	var frame = callframe.New()
+	callframe.Arg(frame, swapchain)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_acquire, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the RID of the provided swapchain's image.
+*/
+//go:nosplit
+func (self class) OpenxrSwapchainGetImage(swapchain int64) RID.Any { //gd:OpenXRAPIExtension.openxr_swapchain_get_image
+	var frame = callframe.New()
+	callframe.Arg(frame, swapchain)
+	var r_ret = callframe.Ret[RID.Any](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_get_image, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Releases the image of the provided swapchain.
+*/
+//go:nosplit
+func (self class) OpenxrSwapchainRelease(swapchain int64) { //gd:OpenXRAPIExtension.openxr_swapchain_release
+	var frame = callframe.New()
+	callframe.Arg(frame, swapchain)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_release, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns a pointer to the render state's [code]XrCompositionLayerProjection[/code] struct.
+[b]Note:[/b] This method should only be called from the rendering thread.
+*/
+//go:nosplit
+func (self class) GetProjectionLayer() int64 { //gd:OpenXRAPIExtension.get_projection_layer
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_projection_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the render region to [param render_region], overriding the normal render target's rect.
+*/
+//go:nosplit
+func (self class) SetRenderRegion(render_region Rect2i.PositionSize) { //gd:OpenXRAPIExtension.set_render_region
+	var frame = callframe.New()
+	callframe.Arg(frame, render_region)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_set_render_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 

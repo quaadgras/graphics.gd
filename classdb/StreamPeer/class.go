@@ -145,6 +145,13 @@ func (self Instance) PutU64(value int) { //gd:StreamPeer.put_u64
 }
 
 /*
+Puts a half-precision float into the stream.
+*/
+func (self Instance) PutHalf(value Float.X) { //gd:StreamPeer.put_half
+	class(self).PutHalf(float64(value))
+}
+
+/*
 Puts a single-precision float into the stream.
 */
 func (self Instance) PutFloat(value Float.X) { //gd:StreamPeer.put_float
@@ -252,6 +259,13 @@ Gets an unsigned 64-bit value from the stream.
 */
 func (self Instance) GetU64() int { //gd:StreamPeer.get_u64
 	return int(int(class(self).GetU64()))
+}
+
+/*
+Gets a half-precision float from the stream.
+*/
+func (self Instance) GetHalf() Float.X { //gd:StreamPeer.get_half
+	return Float.X(Float.X(class(self).GetHalf()))
 }
 
 /*
@@ -503,6 +517,18 @@ func (self class) PutU64(value int64) { //gd:StreamPeer.put_u64
 }
 
 /*
+Puts a half-precision float into the stream.
+*/
+//go:nosplit
+func (self class) PutHalf(value float64) { //gd:StreamPeer.put_half
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_put_half, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Puts a single-precision float into the stream.
 */
 //go:nosplit
@@ -681,6 +707,19 @@ func (self class) GetU64() int64 { //gd:StreamPeer.get_u64
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_u64, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Gets a half-precision float from the stream.
+*/
+//go:nosplit
+func (self class) GetHalf() float64 { //gd:StreamPeer.get_half
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_half, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

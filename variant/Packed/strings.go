@@ -26,7 +26,7 @@ func (array Strings) Iter() iter.Seq2[int, String.Readable] {
 }
 
 // Index returns the element at the given index.
-func (array Strings) Index(idx int) String.Readable {
+func (array Strings) Index(idx int) String.Readable { //gd:PackedStringArray.get
 	return (GenericArray.Contains[String.Readable])(array).Index(idx)
 }
 
@@ -170,7 +170,7 @@ func (array Strings) BinarySearch(value String.Readable, before bool) int { //gd
 }
 
 // Bytes returns a Bytes array containing zero-byte seperated strings.
-func (array Strings) Bytes() Bytes { //gd:PackedStringArray.to_bytes_array
+func (array Strings) Bytes() Bytes { //gd:PackedStringArray.to_byte_array
 	var bytes Bytes
 	var size int
 	for i := 0; i < array.Len(); i++ {

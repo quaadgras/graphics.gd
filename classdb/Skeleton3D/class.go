@@ -89,6 +89,34 @@ func (self Instance) SetBoneName(bone_idx int, name string) { //gd:Skeleton3D.se
 }
 
 /*
+Returns bone metadata for [param bone_idx] with [param key].
+*/
+func (self Instance) GetBoneMeta(bone_idx int, key string) any { //gd:Skeleton3D.get_bone_meta
+	return any(class(self).GetBoneMeta(int64(bone_idx), String.Name(String.New(key))).Interface())
+}
+
+/*
+Returns a list of all metadata keys for [param bone_idx].
+*/
+func (self Instance) GetBoneMetaList(bone_idx int) []string { //gd:Skeleton3D.get_bone_meta_list
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetBoneMetaList(int64(bone_idx)))))
+}
+
+/*
+Returns whether there exists any bone metadata for [param bone_idx] with key [param key].
+*/
+func (self Instance) HasBoneMeta(bone_idx int, key string) bool { //gd:Skeleton3D.has_bone_meta
+	return bool(class(self).HasBoneMeta(int64(bone_idx), String.Name(String.New(key))))
+}
+
+/*
+Sets bone metadata for [param bone_idx], will set the [param key] meta to [param value].
+*/
+func (self Instance) SetBoneMeta(bone_idx int, key string, value any) { //gd:Skeleton3D.set_bone_meta
+	class(self).SetBoneMeta(int64(bone_idx), String.Name(String.New(key)), variant.New(value))
+}
+
+/*
 Returns all bone names concatenated with commas ([code],[/code]) as a single [StringName].
 It is useful to set it as a hint for the enum property.
 */
@@ -473,6 +501,64 @@ func (self class) SetBoneName(bone_idx int64, name String.Readable) { //gd:Skele
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns bone metadata for [param bone_idx] with [param key].
+*/
+//go:nosplit
+func (self class) GetBoneMeta(bone_idx int64, key String.Name) variant.Any { //gd:Skeleton3D.get_bone_meta
+	var frame = callframe.New()
+	callframe.Arg(frame, bone_idx)
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(key)))
+	var r_ret = callframe.Ret[[3]uint64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns a list of all metadata keys for [param bone_idx].
+*/
+//go:nosplit
+func (self class) GetBoneMetaList(bone_idx int64) Array.Contains[String.Name] { //gd:Skeleton3D.get_bone_meta_list
+	var frame = callframe.New()
+	callframe.Arg(frame, bone_idx)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_meta_list, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns whether there exists any bone metadata for [param bone_idx] with key [param key].
+*/
+//go:nosplit
+func (self class) HasBoneMeta(bone_idx int64, key String.Name) bool { //gd:Skeleton3D.has_bone_meta
+	var frame = callframe.New()
+	callframe.Arg(frame, bone_idx)
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(key)))
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_has_bone_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets bone metadata for [param bone_idx], will set the [param key] meta to [param value].
+*/
+//go:nosplit
+func (self class) SetBoneMeta(bone_idx int64, key String.Name, value variant.Any) { //gd:Skeleton3D.set_bone_meta
+	var frame = callframe.New()
+	callframe.Arg(frame, bone_idx)
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(key)))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1065,6 +1151,10 @@ func (self class) PhysicalBonesRemoveCollisionException(exception RID.Any) { //g
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_physical_bones_remove_collision_exception, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
+func (self Instance) OnRestUpdated(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("rest_updated"), gd.NewCallable(cb), 0)
+}
+
 func (self Instance) OnPoseUpdated(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("pose_updated"), gd.NewCallable(cb), 0)
 }

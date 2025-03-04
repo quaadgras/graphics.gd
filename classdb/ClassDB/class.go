@@ -108,6 +108,14 @@ func Instantiate(class_ string) any { //gd:ClassDB.instantiate
 }
 
 /*
+Returns the API type of [param class]. See [enum APIType].
+*/
+func ClassGetApiType(class_ string) gdclass.ClassDBAPIType { //gd:ClassDB.class_get_api_type
+	once.Do(singleton)
+	return gdclass.ClassDBAPIType(class(self).ClassGetApiType(String.Name(String.New(class_))))
+}
+
+/*
 Returns whether [param class] or its ancestry has a signal called [param signal] or not.
 */
 func ClassHasSignal(class_ string, signal string) bool { //gd:ClassDB.class_has_signal
@@ -137,6 +145,22 @@ Returns an array with all the properties of [param class] or its ancestry if [pa
 func ClassGetPropertyList(class_ string) []PropertyInfo { //gd:ClassDB.class_get_property_list
 	once.Do(singleton)
 	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(class(self).ClassGetPropertyList(String.Name(String.New(class_)), false))))
+}
+
+/*
+Returns the getter method name of [param property] of [param class].
+*/
+func ClassGetPropertyGetter(class_ string, property string) string { //gd:ClassDB.class_get_property_getter
+	once.Do(singleton)
+	return string(class(self).ClassGetPropertyGetter(String.Name(String.New(class_)), String.Name(String.New(property))).String())
+}
+
+/*
+Returns the setter method name of [param property] of [param class].
+*/
+func ClassGetPropertySetter(class_ string, property string) string { //gd:ClassDB.class_get_property_setter
+	once.Do(singleton)
+	return string(class(self).ClassGetPropertySetter(String.Name(String.New(class_)), String.Name(String.New(property))).String())
 }
 
 /*
@@ -369,6 +393,20 @@ func (self class) Instantiate(class_ String.Name) variant.Any { //gd:ClassDB.ins
 }
 
 /*
+Returns the API type of [param class]. See [enum APIType].
+*/
+//go:nosplit
+func (self class) ClassGetApiType(class_ String.Name) gdclass.ClassDBAPIType { //gd:ClassDB.class_get_api_type
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_)))
+	var r_ret = callframe.Ret[gdclass.ClassDBAPIType](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_api_type, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns whether [param class] or its ancestry has a signal called [param signal] or not.
 */
 //go:nosplit
@@ -424,6 +462,36 @@ func (self class) ClassGetPropertyList(class_ String.Name, no_inheritance bool) 
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the getter method name of [param property] of [param class].
+*/
+//go:nosplit
+func (self class) ClassGetPropertyGetter(class_ String.Name, property String.Name) String.Name { //gd:ClassDB.class_get_property_getter
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property_getter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the setter method name of [param property] of [param class].
+*/
+//go:nosplit
+func (self class) ClassGetPropertySetter(class_ String.Name, property String.Name) String.Name { //gd:ClassDB.class_get_property_setter
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property_setter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -669,13 +737,21 @@ func init() {
 	gdclass.Register("ClassDB", func(ptr gd.Object) any { return [1]gdclass.ClassDB{*(*gdclass.ClassDB)(unsafe.Pointer(&ptr))} })
 }
 
-type SignalInfo struct {
-	Name        string         `gd:"name"`
-	Flags       int            `gd:"flags"`
-	ID          int            `gd:"id"`
-	DefaultArgs []interface{}  `gd:"default_args"`
-	Args        []PropertyInfo `gd:"args"`
-}
+type APIType = gdclass.ClassDBAPIType //gd:ClassDB.APIType
+
+const (
+	/*Native Core class type.*/
+	ApiCore APIType = 0
+	/*Native Editor class type.*/
+	ApiEditor APIType = 1
+	/*GDExtension class type.*/
+	ApiExtension APIType = 2
+	/*GDExtension Editor class type.*/
+	ApiEditorExtension APIType = 3
+	/*Unknown class type.*/
+	ApiNone APIType = 4
+)
+
 type PropertyInfo struct {
 	ClassName  string       `gd:"class_name"`
 	Name       string       `gd:"name"`
@@ -683,4 +759,11 @@ type PropertyInfo struct {
 	HintString string       `gd:"hint_string"`
 	Type       reflect.Type `gd:"type"`
 	Usage      int          `gd:"usage"`
+}
+type SignalInfo struct {
+	Name        string         `gd:"name"`
+	Flags       int            `gd:"flags"`
+	ID          int            `gd:"id"`
+	DefaultArgs []interface{}  `gd:"default_args"`
+	Args        []PropertyInfo `gd:"args"`
 }

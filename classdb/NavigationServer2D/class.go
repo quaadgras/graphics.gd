@@ -19,6 +19,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
@@ -85,7 +86,7 @@ func MapSetActive(mapping RID.NavigationMap2D, active bool) { //gd:NavigationSer
 }
 
 /*
-Returns true if the map is active.
+Returns [code]true[/code] if the map is active.
 */
 func MapIsActive(mapping RID.NavigationMap2D) bool { //gd:NavigationServer2D.map_is_active
 	once.Do(singleton)
@@ -165,7 +166,7 @@ func MapGetPath(mapping RID.NavigationMap2D, origin Vector2.XY, destination Vect
 }
 
 /*
-Returns the point closest to the provided [param to_point] on the navigation mesh surface.
+Returns the navigation mesh surface point closest to the provided [param to_point] on the navigation [param map].
 */
 func MapGetClosestPoint(mapping RID.NavigationMap2D, to_point Vector2.XY) Vector2.XY { //gd:NavigationServer2D.map_get_closest_point
 	once.Do(singleton)
@@ -173,7 +174,7 @@ func MapGetClosestPoint(mapping RID.NavigationMap2D, to_point Vector2.XY) Vector
 }
 
 /*
-Returns the owner region RID for the point returned by [method map_get_closest_point].
+Returns the owner region RID for the navigation mesh surface point closest to the provided [param to_point] on the navigation [param map].
 */
 func MapGetClosestPointOwner(mapping RID.NavigationMap2D, to_point Vector2.XY) RID.NavigationRegion2D { //gd:NavigationServer2D.map_get_closest_point_owner
 	once.Do(singleton)
@@ -233,6 +234,22 @@ func MapGetIterationId(mapping RID.NavigationMap2D) int { //gd:NavigationServer2
 }
 
 /*
+If [param enabled] is [code]true[/code] the [param map] synchronization uses an async process that runs on a background thread.
+*/
+func MapSetUseAsyncIterations(mapping RID.NavigationMap2D, enabled bool) { //gd:NavigationServer2D.map_set_use_async_iterations
+	once.Do(singleton)
+	class(self).MapSetUseAsyncIterations(RID.Any(mapping), enabled)
+}
+
+/*
+Returns [code]true[/code] if the [param map] synchronization uses an async process that runs on a background thread.
+*/
+func MapGetUseAsyncIterations(mapping RID.NavigationMap2D) bool { //gd:NavigationServer2D.map_get_use_async_iterations
+	once.Do(singleton)
+	return bool(class(self).MapGetUseAsyncIterations(RID.Any(mapping)))
+}
+
+/*
 Returns a random position picked from all map region polygons with matching [param navigation_layers].
 If [param uniformly] is [code]true[/code], all map regions, polygons, and faces are weighted by their surface area (slower).
 If [param uniformly] is [code]false[/code], just a random region and a random polygon are picked (faster).
@@ -243,11 +260,11 @@ func MapGetRandomPoint(mapping RID.NavigationMap2D, navigation_layers int, unifo
 }
 
 /*
-Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query.
+Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
 */
 func QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2D, result [1]gdclass.NavigationPathQueryResult2D) { //gd:NavigationServer2D.query_path
 	once.Do(singleton)
-	class(self).QueryPath(parameters, result)
+	class(self).QueryPath(parameters, result, Callable.New(Callable.Nil))
 }
 
 /*
@@ -429,6 +446,14 @@ func RegionGetConnectionPathwayEnd(region RID.NavigationRegion2D, connection int
 }
 
 /*
+Returns the navigation mesh surface point closest to the provided [param to_point] on the navigation [param region].
+*/
+func RegionGetClosestPoint(region RID.NavigationRegion2D, to_point Vector2.XY) Vector2.XY { //gd:NavigationServer2D.region_get_closest_point
+	once.Do(singleton)
+	return Vector2.XY(class(self).RegionGetClosestPoint(RID.Any(region), Vector2.XY(to_point)))
+}
+
+/*
 Returns a random position picked from all region polygons with matching [param navigation_layers].
 If [param uniformly] is [code]true[/code], all region polygons and faces are weighted by their surface area (slower).
 If [param uniformly] is [code]false[/code], just a random polygon and face is picked (faster).
@@ -436,6 +461,14 @@ If [param uniformly] is [code]false[/code], just a random polygon and face is pi
 func RegionGetRandomPoint(region RID.NavigationRegion2D, navigation_layers int, uniformly bool) Vector2.XY { //gd:NavigationServer2D.region_get_random_point
 	once.Do(singleton)
 	return Vector2.XY(class(self).RegionGetRandomPoint(RID.Any(region), int64(navigation_layers), uniformly))
+}
+
+/*
+Returns the axis-aligned rectangle for the [param region]'s transformed navigation mesh.
+*/
+func RegionGetBounds(region RID.NavigationRegion2D) Rect2.PositionSize { //gd:NavigationServer2D.region_get_bounds
+	once.Do(singleton)
+	return Rect2.PositionSize(class(self).RegionGetBounds(RID.Any(region)))
 }
 
 /*
@@ -631,7 +664,7 @@ func AgentGetMap(agent RID.NavigationAgent2D) RID.NavigationMap2D { //gd:Navigat
 }
 
 /*
-If [param paused] is true the specified [param agent] will not be processed, e.g. calculate avoidance velocities or receive avoidance callbacks.
+If [param paused] is [code]true[/code] the specified [param agent] will not be processed, e.g. calculate avoidance velocities or receive avoidance callbacks.
 */
 func AgentSetPaused(agent RID.NavigationAgent2D, paused bool) { //gd:NavigationServer2D.agent_set_paused
 	once.Do(singleton)
@@ -783,7 +816,7 @@ func AgentGetPosition(agent RID.NavigationAgent2D) Vector2.XY { //gd:NavigationS
 }
 
 /*
-Returns true if the map got changed the previous frame.
+Returns [code]true[/code] if the map got changed the previous frame.
 */
 func AgentIsMapChanged(agent RID.NavigationAgent2D) bool { //gd:NavigationServer2D.agent_is_map_changed
 	once.Do(singleton)
@@ -897,7 +930,7 @@ func ObstacleGetMap(obstacle RID.NavigationObstacle2D) RID.NavigationMap2D { //g
 }
 
 /*
-If [param paused] is true the specified [param obstacle] will not be processed, e.g. affect avoidance velocities.
+If [param paused] is [code]true[/code] the specified [param obstacle] will not be processed, e.g. affect avoidance velocities.
 */
 func ObstacleSetPaused(obstacle RID.NavigationObstacle2D, paused bool) { //gd:NavigationServer2D.obstacle_set_paused
 	once.Do(singleton)
@@ -1128,7 +1161,7 @@ func (self class) MapSetActive(mapping RID.Any, active bool) { //gd:NavigationSe
 }
 
 /*
-Returns true if the map is active.
+Returns [code]true[/code] if the map is active.
 */
 //go:nosplit
 func (self class) MapIsActive(mapping RID.Any) bool { //gd:NavigationServer2D.map_is_active
@@ -1268,7 +1301,7 @@ func (self class) MapGetPath(mapping RID.Any, origin Vector2.XY, destination Vec
 }
 
 /*
-Returns the point closest to the provided [param to_point] on the navigation mesh surface.
+Returns the navigation mesh surface point closest to the provided [param to_point] on the navigation [param map].
 */
 //go:nosplit
 func (self class) MapGetClosestPoint(mapping RID.Any, to_point Vector2.XY) Vector2.XY { //gd:NavigationServer2D.map_get_closest_point
@@ -1283,7 +1316,7 @@ func (self class) MapGetClosestPoint(mapping RID.Any, to_point Vector2.XY) Vecto
 }
 
 /*
-Returns the owner region RID for the point returned by [method map_get_closest_point].
+Returns the owner region RID for the navigation mesh surface point closest to the provided [param to_point] on the navigation [param map].
 */
 //go:nosplit
 func (self class) MapGetClosestPointOwner(mapping RID.Any, to_point Vector2.XY) RID.Any { //gd:NavigationServer2D.map_get_closest_point_owner
@@ -1384,6 +1417,33 @@ func (self class) MapGetIterationId(mapping RID.Any) int64 { //gd:NavigationServ
 }
 
 /*
+If [param enabled] is [code]true[/code] the [param map] synchronization uses an async process that runs on a background thread.
+*/
+//go:nosplit
+func (self class) MapSetUseAsyncIterations(mapping RID.Any, enabled bool) { //gd:NavigationServer2D.map_set_use_async_iterations
+	var frame = callframe.New()
+	callframe.Arg(frame, mapping)
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_map_set_use_async_iterations, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns [code]true[/code] if the [param map] synchronization uses an async process that runs on a background thread.
+*/
+//go:nosplit
+func (self class) MapGetUseAsyncIterations(mapping RID.Any) bool { //gd:NavigationServer2D.map_get_use_async_iterations
+	var frame = callframe.New()
+	callframe.Arg(frame, mapping)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_map_get_use_async_iterations, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns a random position picked from all map region polygons with matching [param navigation_layers].
 If [param uniformly] is [code]true[/code], all map regions, polygons, and faces are weighted by their surface area (slower).
 If [param uniformly] is [code]false[/code], just a random region and a random polygon are picked (faster).
@@ -1402,13 +1462,14 @@ func (self class) MapGetRandomPoint(mapping RID.Any, navigation_layers int64, un
 }
 
 /*
-Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query.
+Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
 */
 //go:nosplit
-func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2D, result [1]gdclass.NavigationPathQueryResult2D) { //gd:NavigationServer2D.query_path
+func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2D, result [1]gdclass.NavigationPathQueryResult2D, callback Callable.Function) { //gd:NavigationServer2D.query_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, pointers.Get(result[0])[0])
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_query_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1718,6 +1779,21 @@ func (self class) RegionGetConnectionPathwayEnd(region RID.Any, connection int64
 }
 
 /*
+Returns the navigation mesh surface point closest to the provided [param to_point] on the navigation [param region].
+*/
+//go:nosplit
+func (self class) RegionGetClosestPoint(region RID.Any, to_point Vector2.XY) Vector2.XY { //gd:NavigationServer2D.region_get_closest_point
+	var frame = callframe.New()
+	callframe.Arg(frame, region)
+	callframe.Arg(frame, to_point)
+	var r_ret = callframe.Ret[Vector2.XY](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_region_get_closest_point, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns a random position picked from all region polygons with matching [param navigation_layers].
 If [param uniformly] is [code]true[/code], all region polygons and faces are weighted by their surface area (slower).
 If [param uniformly] is [code]false[/code], just a random polygon and face is picked (faster).
@@ -1730,6 +1806,20 @@ func (self class) RegionGetRandomPoint(region RID.Any, navigation_layers int64, 
 	callframe.Arg(frame, uniformly)
 	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_region_get_random_point, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the axis-aligned rectangle for the [param region]'s transformed navigation mesh.
+*/
+//go:nosplit
+func (self class) RegionGetBounds(region RID.Any) Rect2.PositionSize { //gd:NavigationServer2D.region_get_bounds
+	var frame = callframe.New()
+	callframe.Arg(frame, region)
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_region_get_bounds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2059,7 +2149,7 @@ func (self class) AgentGetMap(agent RID.Any) RID.Any { //gd:NavigationServer2D.a
 }
 
 /*
-If [param paused] is true the specified [param agent] will not be processed, e.g. calculate avoidance velocities or receive avoidance callbacks.
+If [param paused] is [code]true[/code] the specified [param agent] will not be processed, e.g. calculate avoidance velocities or receive avoidance callbacks.
 */
 //go:nosplit
 func (self class) AgentSetPaused(agent RID.Any, paused bool) { //gd:NavigationServer2D.agent_set_paused
@@ -2315,7 +2405,7 @@ func (self class) AgentGetPosition(agent RID.Any) Vector2.XY { //gd:NavigationSe
 }
 
 /*
-Returns true if the map got changed the previous frame.
+Returns [code]true[/code] if the map got changed the previous frame.
 */
 //go:nosplit
 func (self class) AgentIsMapChanged(agent RID.Any) bool { //gd:NavigationServer2D.agent_is_map_changed
@@ -2506,7 +2596,7 @@ func (self class) ObstacleGetMap(obstacle RID.Any) RID.Any { //gd:NavigationServ
 }
 
 /*
-If [param paused] is true the specified [param obstacle] will not be processed, e.g. affect avoidance velocities.
+If [param paused] is [code]true[/code] the specified [param obstacle] will not be processed, e.g. affect avoidance velocities.
 */
 //go:nosplit
 func (self class) ObstacleSetPaused(obstacle RID.Any, paused bool) { //gd:NavigationServer2D.obstacle_set_paused

@@ -60,7 +60,7 @@ type Any interface {
 Set the value of a shader uniform for this instance only ([url=$DOCS_URL/tutorials/shaders/shader_reference/shading_language.html#per-instance-uniforms]per-instance uniform[/url]). See also [method ShaderMaterial.set_shader_parameter] to assign a uniform on all instances using the same [ShaderMaterial].
 [b]Note:[/b] For a shader uniform to be assignable on a per-instance basis, it [i]must[/i] be defined with [code]instance uniform ...[/code] rather than [code]uniform ...[/code] in the shader code.
 [b]Note:[/b] [param name] is case-sensitive and must match the name of the uniform in the code exactly (not the capitalized name in the inspector).
-[b]Note:[/b] Per-instance shader uniforms are currently only available in 3D, so there is no 2D equivalent of this method.
+[b]Note:[/b] Per-instance shader uniforms are only available in Spatial and CanvasItem shaders, but not for Fog, Sky, or Particles shaders.
 */
 func (self Instance) SetInstanceShaderParameter(name string, value any) { //gd:GeometryInstance3D.set_instance_shader_parameter
 	class(self).SetInstanceShaderParameter(String.Name(String.New(name)), variant.New(value))
@@ -161,6 +161,14 @@ func (self Instance) GiMode() gdclass.GeometryInstance3DGIMode {
 
 func (self Instance) SetGiMode(value gdclass.GeometryInstance3DGIMode) {
 	class(self).SetGiMode(value)
+}
+
+func (self Instance) GiLightmapTexelScale() Float.X {
+	return Float.X(Float.X(class(self).GetLightmapTexelScale()))
+}
+
+func (self Instance) SetGiLightmapTexelScale(value Float.X) {
+	class(self).SetLightmapTexelScale(float64(value))
 }
 
 func (self Instance) GiLightmapScale() gdclass.GeometryInstance3DLightmapScale {
@@ -405,7 +413,7 @@ func (self class) GetVisibilityRangeFadeMode() gdclass.GeometryInstance3DVisibil
 Set the value of a shader uniform for this instance only ([url=$DOCS_URL/tutorials/shaders/shader_reference/shading_language.html#per-instance-uniforms]per-instance uniform[/url]). See also [method ShaderMaterial.set_shader_parameter] to assign a uniform on all instances using the same [ShaderMaterial].
 [b]Note:[/b] For a shader uniform to be assignable on a per-instance basis, it [i]must[/i] be defined with [code]instance uniform ...[/code] rather than [code]uniform ...[/code] in the shader code.
 [b]Note:[/b] [param name] is case-sensitive and must match the name of the uniform in the code exactly (not the capitalized name in the inspector).
-[b]Note:[/b] Per-instance shader uniforms are currently only available in 3D, so there is no 2D equivalent of this method.
+[b]Note:[/b] Per-instance shader uniforms are only available in Spatial and CanvasItem shaders, but not for Fog, Sky, or Particles shaders.
 */
 //go:nosplit
 func (self class) SetInstanceShaderParameter(name String.Name, value variant.Any) { //gd:GeometryInstance3D.set_instance_shader_parameter
@@ -445,6 +453,25 @@ func (self class) GetExtraCullMargin() float64 { //gd:GeometryInstance3D.get_ext
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_extra_cull_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetLightmapTexelScale(scale float64) { //gd:GeometryInstance3D.set_lightmap_texel_scale
+	var frame = callframe.New()
+	callframe.Arg(frame, scale)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_set_lightmap_texel_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetLightmapTexelScale() float64 { //gd:GeometryInstance3D.get_lightmap_texel_scale
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_lightmap_texel_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

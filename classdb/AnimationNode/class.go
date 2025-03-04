@@ -280,10 +280,25 @@ func (self Instance) SetFilterPath(path string, enable bool) { //gd:AnimationNod
 }
 
 /*
-Returns whether the given path is filtered.
+Returns [code]true[/code] if the given path is filtered.
 */
 func (self Instance) IsPathFiltered(path string) bool { //gd:AnimationNode.is_path_filtered
 	return bool(class(self).IsPathFiltered(Path.ToNode(String.New(path))))
+}
+
+/*
+Returns the object id of the [AnimationTree] that owns this node.
+[b]Note:[/b] This method should only be called from within the [method AnimationNodeExtension._process_animation_node] method, and will return an invalid id otherwise.
+*/
+func (self Instance) GetProcessingAnimationTreeInstanceId() int { //gd:AnimationNode.get_processing_animation_tree_instance_id
+	return int(int(class(self).GetProcessingAnimationTreeInstanceId()))
+}
+
+/*
+Returns [code]true[/code] if this animation node is being processed in test-only mode.
+*/
+func (self Instance) IsProcessTesting() bool { //gd:AnimationNode.is_process_testing
+	return bool(class(self).IsProcessTesting())
 }
 
 /*
@@ -574,7 +589,7 @@ func (self class) SetFilterPath(path Path.ToNode, enable bool) { //gd:AnimationN
 }
 
 /*
-Returns whether the given path is filtered.
+Returns [code]true[/code] if the given path is filtered.
 */
 //go:nosplit
 func (self class) IsPathFiltered(path Path.ToNode) bool { //gd:AnimationNode.is_path_filtered
@@ -601,6 +616,33 @@ func (self class) IsFilterEnabled() bool { //gd:AnimationNode.is_filter_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_is_filter_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the object id of the [AnimationTree] that owns this node.
+[b]Note:[/b] This method should only be called from within the [method AnimationNodeExtension._process_animation_node] method, and will return an invalid id otherwise.
+*/
+//go:nosplit
+func (self class) GetProcessingAnimationTreeInstanceId() int64 { //gd:AnimationNode.get_processing_animation_tree_instance_id
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_get_processing_animation_tree_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if this animation node is being processed in test-only mode.
+*/
+//go:nosplit
+func (self class) IsProcessTesting() bool { //gd:AnimationNode.is_process_testing
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_is_process_testing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

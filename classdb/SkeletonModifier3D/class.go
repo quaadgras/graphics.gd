@@ -218,3 +218,20 @@ func init() {
 		return [1]gdclass.SkeletonModifier3D{*(*gdclass.SkeletonModifier3D)(unsafe.Pointer(&ptr))}
 	})
 }
+
+type BoneAxis = gdclass.SkeletonModifier3DBoneAxis //gd:SkeletonModifier3D.BoneAxis
+
+const (
+	/*Enumerated value for the +X axis.*/
+	BoneAxisPlusX BoneAxis = 0
+	/*Enumerated value for the -X axis.*/
+	BoneAxisMinusX BoneAxis = 1
+	/*Enumerated value for the +Y axis.*/
+	BoneAxisPlusY BoneAxis = 2
+	/*Enumerated value for the -Y axis.*/
+	BoneAxisMinusY BoneAxis = 3
+	/*Enumerated value for the +Z axis.*/
+	BoneAxisPlusZ BoneAxis = 4
+	/*Enumerated value for the -Z axis.*/
+	BoneAxisMinusZ BoneAxis = 5
+)

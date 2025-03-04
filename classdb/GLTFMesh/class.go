@@ -41,7 +41,7 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-GLTFMesh handles 3D mesh data imported from GLTF files. It includes properties for blend channels, blend weights, instance materials, and the mesh itself.
+GLTFMesh handles 3D mesh data imported from glTF files. It includes properties for blend channels, blend weights, instance materials, and the mesh itself.
 */
 type Instance [1]gdclass.GLTFMesh
 
@@ -55,7 +55,7 @@ type Any interface {
 
 /*
 Gets additional arbitrary data in this [GLTFMesh] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
-The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
+The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the return value can be anything you set. If nothing was set, the return value is [code]null[/code].
 */
 func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFMesh.get_additional_data
 	return any(class(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
@@ -63,7 +63,7 @@ func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFMes
 
 /*
 Sets additional arbitrary data in this [GLTFMesh] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
-The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
+The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
 */
 func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFMesh.set_additional_data
 	class(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
@@ -198,7 +198,7 @@ func (self class) SetInstanceMaterials(instance_materials Array.Contains[[1]gdcl
 
 /*
 Gets additional arbitrary data in this [GLTFMesh] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
-The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
+The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the return value can be anything you set. If nothing was set, the return value is [code]null[/code].
 */
 //go:nosplit
 func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //gd:GLTFMesh.get_additional_data
@@ -213,7 +213,7 @@ func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //
 
 /*
 Sets additional arbitrary data in this [GLTFMesh] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
-The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
+The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
 */
 //go:nosplit
 func (self class) SetAdditionalData(extension_name String.Name, additional_data variant.Any) { //gd:GLTFMesh.set_additional_data

@@ -98,6 +98,7 @@ func (self Instance) GetCanvasItem() RID.CanvasItem { //gd:CanvasItem.get_canvas
 /*
 Returns [code]true[/code] if the node is present in the [SceneTree], its [member visible] property is [code]true[/code] and all its ancestors are also visible. If any ancestor is hidden, this node will not be visible in the scene tree, and is therefore not drawn (see [method _draw]).
 Visibility is checked only in parent nodes that inherit from [CanvasItem], [CanvasLayer], and [Window]. If the parent is of any other type (such as [Node], [AnimationPlayer], or [Node3D]), it is assumed to be visible.
+[b]Note:[/b] This method does not take [member visibility_layer] into account, so even if this method returns [code]true[/code], the node might end up not being rendered.
 */
 func (self Instance) IsVisibleInTree() bool { //gd:CanvasItem.is_visible_in_tree
 	return bool(class(self).IsVisibleInTree())
@@ -133,7 +134,7 @@ func (self Instance) MoveToFront() { //gd:CanvasItem.move_to_front
 }
 
 /*
-Draws a line from a 2D point to another, with a given color and width. It can be optionally antialiased. See also [method draw_multiline] and [method draw_polyline].
+Draws a line from a 2D point to another, with a given color and width. It can be optionally antialiased. See also [method draw_dashed_line], [method draw_multiline], and [method draw_polyline].
 If [param width] is negative, then a two-point primitive will be drawn instead of a four-point one. This means that when the CanvasItem is scaled, the line will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
 func (self Instance) DrawLine(from Vector2.XY, to Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_line
@@ -141,8 +142,9 @@ func (self Instance) DrawLine(from Vector2.XY, to Vector2.XY, color Color.RGBA) 
 }
 
 /*
-Draws a dashed line from a 2D point to another, with a given color and width. See also [method draw_multiline] and [method draw_polyline].
+Draws a dashed line from a 2D point to another, with a given color and width. See also [method draw_line], [method draw_multiline], and [method draw_polyline].
 If [param width] is negative, then a two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the line parts will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
+[param dash] is the length of each dash in pixels, with the gap between each dash being the same length. If [param aligned] is [code]true[/code], the length of the first and last dashes may be shortened or lengthened to allow the line to begin and end at the precise points defined by [param from] and [param to]. Both ends are always symmetrical when [param aligned] is [code]true[/code]. If [param aligned] is [code]false[/code], all dashes will have the same length, but the line may appear incomplete at the end due to the dash length not dividing evenly into the line length. Only full dashes are drawn when [param aligned] is [code]false[/code].
 If [param antialiased] is [code]true[/code], half transparent "feathers" will be attached to the boundary, making outlines smooth.
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
@@ -275,6 +277,7 @@ func (self Instance) DrawPrimitive(points []Vector2.XY, colors []Color.RGBA, uvs
 
 /*
 Draws a solid polygon of any number of points, convex or concave. Unlike [method draw_colored_polygon], each point's color can be changed individually. See also [method draw_polyline] and [method draw_polyline_colors]. If you need more flexibility (such as being able to use bones), use [method RenderingServer.canvas_item_add_triangle_array] instead.
+[b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method draw_mesh], [method draw_multimesh], or [method RenderingServer.canvas_item_add_triangle_array].
 */
 func (self Instance) DrawPolygon(points []Vector2.XY, colors []Color.RGBA) { //gd:CanvasItem.draw_polygon
 	class(self).DrawPolygon(Packed.New(points...), Packed.New(colors...), Packed.New[Vector2.XY](), [1][1]gdclass.Texture2D{}[0])
@@ -282,6 +285,7 @@ func (self Instance) DrawPolygon(points []Vector2.XY, colors []Color.RGBA) { //g
 
 /*
 Draws a colored polygon of any number of points, convex or concave. Unlike [method draw_polygon], a single color must be specified for the whole polygon.
+[b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method draw_mesh], [method draw_multimesh], or [method RenderingServer.canvas_item_add_triangle_array].
 */
 func (self Instance) DrawColoredPolygon(points []Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_colored_polygon
 	class(self).DrawColoredPolygon(Packed.New(points...), Color.RGBA(color), Packed.New[Vector2.XY](), [1][1]gdclass.Texture2D{}[0])
@@ -289,7 +293,7 @@ func (self Instance) DrawColoredPolygon(points []Vector2.XY, color Color.RGBA) {
 
 /*
 Draws [param text] using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
-[b]Example using the default project font:[/b]
+[b]Example:[/b] Draw "Hello world", using the project's default font:
 [codeblocks]
 [gdscript]
 # If using this method in a script that redraws constantly, move the
@@ -479,6 +483,22 @@ func (self Instance) GetWorld2d() [1]gdclass.World2D { //gd:CanvasItem.get_world
 }
 
 /*
+Set the value of a shader uniform for this instance only ([url=$DOCS_URL/tutorials/shaders/shader_reference/shading_language.html#per-instance-uniforms]per-instance uniform[/url]). See also [method ShaderMaterial.set_shader_parameter] to assign a uniform on all instances using the same [ShaderMaterial].
+[b]Note:[/b] For a shader uniform to be assignable on a per-instance basis, it [i]must[/i] be defined with [code]instance uniform ...[/code] rather than [code]uniform ...[/code] in the shader code.
+[b]Note:[/b] [param name] is case-sensitive and must match the name of the uniform in the code exactly (not the capitalized name in the inspector).
+*/
+func (self Instance) SetInstanceShaderParameter(name string, value any) { //gd:CanvasItem.set_instance_shader_parameter
+	class(self).SetInstanceShaderParameter(String.Name(String.New(name)), variant.New(value))
+}
+
+/*
+Get the value of a shader parameter as set on this instance.
+*/
+func (self Instance) GetInstanceShaderParameter(name string) any { //gd:CanvasItem.get_instance_shader_parameter
+	return any(class(self).GetInstanceShaderParameter(String.Name(String.New(name))).Interface())
+}
+
+/*
 If [param enable] is [code]true[/code], this node will receive [constant NOTIFICATION_LOCAL_TRANSFORM_CHANGED] when its local transform changes.
 */
 func (self Instance) SetNotifyLocalTransform(enable bool) { //gd:CanvasItem.set_notify_local_transform
@@ -514,10 +534,14 @@ func (self Instance) ForceUpdateTransform() { //gd:CanvasItem.force_update_trans
 }
 
 /*
-Assigns [param screen_point] as this node's new local transform.
+Transforms [param viewport_point] from the viewport's coordinates to this node's local coordinates.
+For the opposite operation, use [method get_global_transform_with_canvas].
+[codeblock]
+var viewport_point = get_global_transform_with_canvas() * local_point
+[/codeblock]
 */
-func (self Instance) MakeCanvasPositionLocal(screen_point Vector2.XY) Vector2.XY { //gd:CanvasItem.make_canvas_position_local
-	return Vector2.XY(class(self).MakeCanvasPositionLocal(Vector2.XY(screen_point)))
+func (self Instance) MakeCanvasPositionLocal(viewport_point Vector2.XY) Vector2.XY { //gd:CanvasItem.make_canvas_position_local
+	return Vector2.XY(class(self).MakeCanvasPositionLocal(Vector2.XY(viewport_point)))
 }
 
 /*
@@ -725,6 +749,7 @@ func (self class) IsVisible() bool { //gd:CanvasItem.is_visible
 /*
 Returns [code]true[/code] if the node is present in the [SceneTree], its [member visible] property is [code]true[/code] and all its ancestors are also visible. If any ancestor is hidden, this node will not be visible in the scene tree, and is therefore not drawn (see [method _draw]).
 Visibility is checked only in parent nodes that inherit from [CanvasItem], [CanvasLayer], and [Window]. If the parent is of any other type (such as [Node], [AnimationPlayer], or [Node3D]), it is assumed to be visible.
+[b]Note:[/b] This method does not take [member visibility_layer] into account, so even if this method returns [code]true[/code], the node might end up not being rendered.
 */
 //go:nosplit
 func (self class) IsVisibleInTree() bool { //gd:CanvasItem.is_visible_in_tree
@@ -934,7 +959,7 @@ func (self class) IsDrawBehindParentEnabled() bool { //gd:CanvasItem.is_draw_beh
 }
 
 /*
-Draws a line from a 2D point to another, with a given color and width. It can be optionally antialiased. See also [method draw_multiline] and [method draw_polyline].
+Draws a line from a 2D point to another, with a given color and width. It can be optionally antialiased. See also [method draw_dashed_line], [method draw_multiline], and [method draw_polyline].
 If [param width] is negative, then a two-point primitive will be drawn instead of a four-point one. This means that when the CanvasItem is scaled, the line will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
 //go:nosplit
@@ -951,8 +976,9 @@ func (self class) DrawLine(from Vector2.XY, to Vector2.XY, color Color.RGBA, wid
 }
 
 /*
-Draws a dashed line from a 2D point to another, with a given color and width. See also [method draw_multiline] and [method draw_polyline].
+Draws a dashed line from a 2D point to another, with a given color and width. See also [method draw_line], [method draw_multiline], and [method draw_polyline].
 If [param width] is negative, then a two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the line parts will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
+[param dash] is the length of each dash in pixels, with the gap between each dash being the same length. If [param aligned] is [code]true[/code], the length of the first and last dashes may be shortened or lengthened to allow the line to begin and end at the precise points defined by [param from] and [param to]. Both ends are always symmetrical when [param aligned] is [code]true[/code]. If [param aligned] is [code]false[/code], all dashes will have the same length, but the line may appear incomplete at the end due to the dash length not dividing evenly into the line length. Only full dashes are drawn when [param aligned] is [code]false[/code].
 If [param antialiased] is [code]true[/code], half transparent "feathers" will be attached to the boundary, making outlines smooth.
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
@@ -1218,6 +1244,7 @@ func (self class) DrawPrimitive(points Packed.Array[Vector2.XY], colors Packed.A
 
 /*
 Draws a solid polygon of any number of points, convex or concave. Unlike [method draw_colored_polygon], each point's color can be changed individually. See also [method draw_polyline] and [method draw_polyline_colors]. If you need more flexibility (such as being able to use bones), use [method RenderingServer.canvas_item_add_triangle_array] instead.
+[b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method draw_mesh], [method draw_multimesh], or [method RenderingServer.canvas_item_add_triangle_array].
 */
 //go:nosplit
 func (self class) DrawPolygon(points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_polygon
@@ -1233,6 +1260,7 @@ func (self class) DrawPolygon(points Packed.Array[Vector2.XY], colors Packed.Arr
 
 /*
 Draws a colored polygon of any number of points, convex or concave. Unlike [method draw_polygon], a single color must be specified for the whole polygon.
+[b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method draw_mesh], [method draw_multimesh], or [method RenderingServer.canvas_item_add_triangle_array].
 */
 //go:nosplit
 func (self class) DrawColoredPolygon(points Packed.Array[Vector2.XY], color Color.RGBA, uvs Packed.Array[Vector2.XY], texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_colored_polygon
@@ -1248,7 +1276,7 @@ func (self class) DrawColoredPolygon(points Packed.Array[Vector2.XY], color Colo
 
 /*
 Draws [param text] using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
-[b]Example using the default project font:[/b]
+[b]Example:[/b] Draw "Hello world", using the project's default font:
 [codeblocks]
 [gdscript]
 # If using this method in a script that redraws constantly, move the
@@ -1647,6 +1675,35 @@ func (self class) GetMaterial() [1]gdclass.Material { //gd:CanvasItem.get_materi
 	return ret
 }
 
+/*
+Set the value of a shader uniform for this instance only ([url=$DOCS_URL/tutorials/shaders/shader_reference/shading_language.html#per-instance-uniforms]per-instance uniform[/url]). See also [method ShaderMaterial.set_shader_parameter] to assign a uniform on all instances using the same [ShaderMaterial].
+[b]Note:[/b] For a shader uniform to be assignable on a per-instance basis, it [i]must[/i] be defined with [code]instance uniform ...[/code] rather than [code]uniform ...[/code] in the shader code.
+[b]Note:[/b] [param name] is case-sensitive and must match the name of the uniform in the code exactly (not the capitalized name in the inspector).
+*/
+//go:nosplit
+func (self class) SetInstanceShaderParameter(name String.Name, value variant.Any) { //gd:CanvasItem.set_instance_shader_parameter
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Get the value of a shader parameter as set on this instance.
+*/
+//go:nosplit
+func (self class) GetInstanceShaderParameter(name String.Name) variant.Any { //gd:CanvasItem.get_instance_shader_parameter
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	var r_ret = callframe.Ret[[3]uint64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
 //go:nosplit
 func (self class) SetUseParentMaterial(enable bool) { //gd:CanvasItem.set_use_parent_material
 	var frame = callframe.New()
@@ -1728,12 +1785,16 @@ func (self class) ForceUpdateTransform() { //gd:CanvasItem.force_update_transfor
 }
 
 /*
-Assigns [param screen_point] as this node's new local transform.
+Transforms [param viewport_point] from the viewport's coordinates to this node's local coordinates.
+For the opposite operation, use [method get_global_transform_with_canvas].
+[codeblock]
+var viewport_point = get_global_transform_with_canvas() * local_point
+[/codeblock]
 */
 //go:nosplit
-func (self class) MakeCanvasPositionLocal(screen_point Vector2.XY) Vector2.XY { //gd:CanvasItem.make_canvas_position_local
+func (self class) MakeCanvasPositionLocal(viewport_point Vector2.XY) Vector2.XY { //gd:CanvasItem.make_canvas_position_local
 	var frame = callframe.New()
-	callframe.Arg(frame, screen_point)
+	callframe.Arg(frame, viewport_point)
 	var r_ret = callframe.Ret[Vector2.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_make_canvas_position_local, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

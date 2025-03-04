@@ -360,6 +360,8 @@ const (
 	PathPostprocessingCorridorfunnel PathPostProcessing = 0
 	/*Centers every path position in the middle of the traveled navigation mesh polygon edge. This creates better paths for tile- or gridbased layouts that restrict the movement to the cells center.*/
 	PathPostprocessingEdgecentered PathPostProcessing = 1
+	/*Applies no postprocessing and returns the raw path corridor as found by the pathfinding algorithm.*/
+	PathPostprocessingNone PathPostProcessing = 2
 )
 
 type PathMetadataFlags = gdclass.NavigationPathQueryParameters3DPathMetadataFlags //gd:NavigationPathQueryParameters3D.PathMetadataFlags

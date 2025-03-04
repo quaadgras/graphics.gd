@@ -52,9 +52,16 @@ type Any interface {
 	AsRDTextureFormat() Instance
 }
 
+/*
+Adds [param format] as a valid format for the corresponding [RDTextureView]'s [member RDTextureView.format_override] property. If any format is added as shareable, then the main [member format] must also be added.
+*/
 func (self Instance) AddShareableFormat(format gdclass.RenderingDeviceDataFormat) { //gd:RDTextureFormat.add_shareable_format
 	class(self).AddShareableFormat(format)
 }
+
+/*
+Removes [param format] from the list of valid formats that the corresponding [RDTextureView]'s [member RDTextureView.format_override] property can be set to.
+*/
 func (self Instance) RemoveShareableFormat(format gdclass.RenderingDeviceDataFormat) { //gd:RDTextureFormat.remove_shareable_format
 	class(self).RemoveShareableFormat(format)
 }
@@ -148,6 +155,22 @@ func (self Instance) UsageBits() gdclass.RenderingDeviceTextureUsageBits {
 
 func (self Instance) SetUsageBits(value gdclass.RenderingDeviceTextureUsageBits) {
 	class(self).SetUsageBits(value)
+}
+
+func (self Instance) IsResolveBuffer() bool {
+	return bool(class(self).GetIsResolveBuffer())
+}
+
+func (self Instance) SetIsResolveBuffer(value bool) {
+	class(self).SetIsResolveBuffer(value)
+}
+
+func (self Instance) IsDiscardable() bool {
+	return bool(class(self).GetIsDiscardable())
+}
+
+func (self Instance) SetIsDiscardable(value bool) {
+	class(self).SetIsDiscardable(value)
 }
 
 //go:nosplit
@@ -322,6 +345,47 @@ func (self class) GetUsageBits() gdclass.RenderingDeviceTextureUsageBits { //gd:
 }
 
 //go:nosplit
+func (self class) SetIsResolveBuffer(p_member bool) { //gd:RDTextureFormat.set_is_resolve_buffer
+	var frame = callframe.New()
+	callframe.Arg(frame, p_member)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_is_resolve_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetIsResolveBuffer() bool { //gd:RDTextureFormat.get_is_resolve_buffer
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_is_resolve_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetIsDiscardable(p_member bool) { //gd:RDTextureFormat.set_is_discardable
+	var frame = callframe.New()
+	callframe.Arg(frame, p_member)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_is_discardable, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetIsDiscardable() bool { //gd:RDTextureFormat.get_is_discardable
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_is_discardable, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Adds [param format] as a valid format for the corresponding [RDTextureView]'s [member RDTextureView.format_override] property. If any format is added as shareable, then the main [member format] must also be added.
+*/
+//go:nosplit
 func (self class) AddShareableFormat(format gdclass.RenderingDeviceDataFormat) { //gd:RDTextureFormat.add_shareable_format
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
@@ -330,6 +394,9 @@ func (self class) AddShareableFormat(format gdclass.RenderingDeviceDataFormat) {
 	frame.Free()
 }
 
+/*
+Removes [param format] from the list of valid formats that the corresponding [RDTextureView]'s [member RDTextureView.format_override] property can be set to.
+*/
 //go:nosplit
 func (self class) RemoveShareableFormat(format gdclass.RenderingDeviceDataFormat) { //gd:RDTextureFormat.remove_shareable_format
 	var frame = callframe.New()

@@ -22,6 +22,7 @@ import "graphics.gd/variant/RID"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -77,8 +78,34 @@ func SegmentIntersectsSegment(from_a Vector2.XY, to_a Vector2.XY, from_b Vector2
 }
 
 /*
-Checks if the two lines ([param from_a], [param dir_a]) and ([param from_b], [param dir_b]) intersect. If yes, return the point of intersection as [Vector2]. If no intersection takes place, returns [code]null[/code].
-[b]Note:[/b] The lines are specified using direction vectors, not end points.
+Returns the point of intersection between the two lines ([param from_a], [param dir_a]) and ([param from_b], [param dir_b]). Returns a [Vector2], or [code]null[/code] if the lines are parallel.
+[code]from[/code] and [code]dir[/code] are [i]not[/i] endpoints of a line segment or ray but the slope ([code]dir[/code]) and a known point ([code]from[/code]) on that line.
+[codeblocks]
+[gdscript]
+var from_a = Vector2.ZERO
+var dir_a = Vector2.RIGHT
+var from_b = Vector2.DOWN
+
+# Returns Vector2(1, 0)
+Geometry2D.line_intersects_line(from_a, dir_a, from_b, Vector2(1, -1))
+# Returns Vector2(-1, 0)
+Geometry2D.line_intersects_line(from_a, dir_a, from_b, Vector2(-1, -1))
+# Returns null
+Geometry2D.line_intersects_line(from_a, dir_a, from_b, Vector2.RIGHT)
+[/gdscript]
+[csharp]
+var fromA = Vector2.Zero;
+var dirA = Vector2.Right;
+var fromB = Vector2.Down;
+
+// Returns new Vector2(1, 0)
+Geometry2D.LineIntersectsLine(fromA, dirA, fromB, new Vector2(1, -1));
+// Returns new Vector2(-1, 0)
+Geometry2D.LineIntersectsLine(fromA, dirA, fromB, new Vector2(-1, -1));
+// Returns null
+Geometry2D.LineIntersectsLine(fromA, dirA, fromB, Vector2.Right);
+[/csharp]
+[/codeblocks]
 */
 func LineIntersectsLine(from_a Vector2.XY, dir_a Vector2.XY, from_b Vector2.XY, dir_b Vector2.XY) any { //gd:Geometry2D.line_intersects_line
 	once.Do(singleton)
@@ -228,13 +255,13 @@ The operation may result in an outer polygon (boundary) and inner polygon (hole)
 var polygon = PackedVector2Array([Vector2(0, 0), Vector2(100, 0), Vector2(100, 100), Vector2(0, 100)])
 var offset = Vector2(50, 50)
 polygon = Transform2D(0, offset) * polygon
-print(polygon) # prints [(50, 50), (150, 50), (150, 150), (50, 150)]
+print(polygon) # Prints [(50.0, 50.0), (150.0, 50.0), (150.0, 150.0), (50.0, 150.0)]
 [/gdscript]
 [csharp]
-var polygon = new Vector2[] { new Vector2(0, 0), new Vector2(100, 0), new Vector2(100, 100), new Vector2(0, 100) };
+Vector2[] polygon = [new Vector2(0, 0), new Vector2(100, 0), new Vector2(100, 100), new Vector2(0, 100)];
 var offset = new Vector2(50, 50);
 polygon = new Transform2D(0, offset) * polygon;
-GD.Print((Variant)polygon); // prints [(50, 50), (150, 50), (150, 150), (50, 150)]
+GD.Print((Variant)polygon); // Prints [(50, 50), (150, 50), (150, 150), (50, 150)]
 [/csharp]
 [/codeblocks]
 */
@@ -260,6 +287,22 @@ Given an array of [Vector2]s representing tiles, builds an atlas. The returned d
 func MakeAtlas(sizes []Vector2.XY) Atlas { //gd:Geometry2D.make_atlas
 	once.Do(singleton)
 	return Atlas(gd.DictionaryAs[Atlas](class(self).MakeAtlas(Packed.New(sizes...))))
+}
+
+/*
+Returns the [url=https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm]Bresenham line[/url] between the [param from] and [param to] points. A Bresenham line is a series of pixels that draws a line and is always 1-pixel thick on every row and column of the drawing (never more, never less).
+Example code to draw a line between two [Marker2D] nodes using a series of [method CanvasItem.draw_rect] calls:
+[codeblock]
+func _draw():
+
+	for pixel in Geometry2D.bresenham_line($MarkerA.position, $MarkerB.position):
+	    draw_rect(Rect2(pixel, Vector2.ONE), Color.WHITE)
+
+[/codeblock]
+*/
+func BresenhamLine(from Vector2i.XY, to Vector2i.XY) []Vector2i.XY { //gd:Geometry2D.bresenham_line
+	once.Do(singleton)
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).BresenhamLine(Vector2i.XY(from), Vector2i.XY(to)))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -323,8 +366,34 @@ func (self class) SegmentIntersectsSegment(from_a Vector2.XY, to_a Vector2.XY, f
 }
 
 /*
-Checks if the two lines ([param from_a], [param dir_a]) and ([param from_b], [param dir_b]) intersect. If yes, return the point of intersection as [Vector2]. If no intersection takes place, returns [code]null[/code].
-[b]Note:[/b] The lines are specified using direction vectors, not end points.
+Returns the point of intersection between the two lines ([param from_a], [param dir_a]) and ([param from_b], [param dir_b]). Returns a [Vector2], or [code]null[/code] if the lines are parallel.
+[code]from[/code] and [code]dir[/code] are [i]not[/i] endpoints of a line segment or ray but the slope ([code]dir[/code]) and a known point ([code]from[/code]) on that line.
+[codeblocks]
+[gdscript]
+var from_a = Vector2.ZERO
+var dir_a = Vector2.RIGHT
+var from_b = Vector2.DOWN
+
+# Returns Vector2(1, 0)
+Geometry2D.line_intersects_line(from_a, dir_a, from_b, Vector2(1, -1))
+# Returns Vector2(-1, 0)
+Geometry2D.line_intersects_line(from_a, dir_a, from_b, Vector2(-1, -1))
+# Returns null
+Geometry2D.line_intersects_line(from_a, dir_a, from_b, Vector2.RIGHT)
+[/gdscript]
+[csharp]
+var fromA = Vector2.Zero;
+var dirA = Vector2.Right;
+var fromB = Vector2.Down;
+
+// Returns new Vector2(1, 0)
+Geometry2D.LineIntersectsLine(fromA, dirA, fromB, new Vector2(1, -1));
+// Returns new Vector2(-1, 0)
+Geometry2D.LineIntersectsLine(fromA, dirA, fromB, new Vector2(-1, -1));
+// Returns null
+Geometry2D.LineIntersectsLine(fromA, dirA, fromB, Vector2.Right);
+[/csharp]
+[/codeblocks]
 */
 //go:nosplit
 func (self class) LineIntersectsLine(from_a Vector2.XY, dir_a Vector2.XY, from_b Vector2.XY, dir_b Vector2.XY) variant.Any { //gd:Geometry2D.line_intersects_line
@@ -596,13 +665,13 @@ The operation may result in an outer polygon (boundary) and inner polygon (hole)
 var polygon = PackedVector2Array([Vector2(0, 0), Vector2(100, 0), Vector2(100, 100), Vector2(0, 100)])
 var offset = Vector2(50, 50)
 polygon = Transform2D(0, offset) * polygon
-print(polygon) # prints [(50, 50), (150, 50), (150, 150), (50, 150)]
+print(polygon) # Prints [(50.0, 50.0), (150.0, 50.0), (150.0, 150.0), (50.0, 150.0)]
 [/gdscript]
 [csharp]
-var polygon = new Vector2[] { new Vector2(0, 0), new Vector2(100, 0), new Vector2(100, 100), new Vector2(0, 100) };
+Vector2[] polygon = [new Vector2(0, 0), new Vector2(100, 0), new Vector2(100, 100), new Vector2(0, 100)];
 var offset = new Vector2(50, 50);
 polygon = new Transform2D(0, offset) * polygon;
-GD.Print((Variant)polygon); // prints [(50, 50), (150, 50), (150, 150), (50, 150)]
+GD.Print((Variant)polygon); // Prints [(50, 50), (150, 50), (150, 150), (50, 150)]
 [/csharp]
 [/codeblocks]
 */
@@ -649,6 +718,27 @@ func (self class) MakeAtlas(sizes Packed.Array[Vector2.XY]) Dictionary.Any { //g
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_make_atlas, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the [url=https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm]Bresenham line[/url] between the [param from] and [param to] points. A Bresenham line is a series of pixels that draws a line and is always 1-pixel thick on every row and column of the drawing (never more, never less).
+Example code to draw a line between two [Marker2D] nodes using a series of [method CanvasItem.draw_rect] calls:
+[codeblock]
+func _draw():
+    for pixel in Geometry2D.bresenham_line($MarkerA.position, $MarkerB.position):
+        draw_rect(Rect2(pixel, Vector2.ONE), Color.WHITE)
+[/codeblock]
+*/
+//go:nosplit
+func (self class) BresenhamLine(from Vector2i.XY, to Vector2i.XY) Array.Contains[Vector2i.XY] { //gd:Geometry2D.bresenham_line
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_bresenham_line, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

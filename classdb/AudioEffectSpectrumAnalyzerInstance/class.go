@@ -43,7 +43,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 The runtime part of an [AudioEffectSpectrumAnalyzer], which can be used to query the magnitude of a frequency range on its host bus.
-An instance of this class can be acquired with [method AudioServer.get_bus_effect_instance].
+An instance of this class can be obtained with [method AudioServer.get_bus_effect_instance].
 */
 type Instance [1]gdclass.AudioEffectSpectrumAnalyzerInstance
 

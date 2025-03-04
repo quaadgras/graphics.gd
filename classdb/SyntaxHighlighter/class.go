@@ -116,12 +116,12 @@ func (Instance) _update_cache(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionCla
 }
 
 /*
-Returns syntax highlighting data for a single line. If the line is not cached, calls [method _get_line_syntax_highlighting] to calculate the data.
-The return [Dictionary] is column number to [Dictionary]. The column number notes the start of a region, the region will end if another region is found, or at the end of the line. The nested [Dictionary] contains the data for that region, currently only the key "color" is supported.
-[b]Example return:[/b]
+Returns the syntax highlighting data for the line at index [param line]. If the line is not cached, calls [method _get_line_syntax_highlighting] first to calculate the data.
+Each entry is a column number containing a nested [Dictionary]. The column number denotes the start of a region, the region will end if another region is found, or at the end of the line. The nested [Dictionary] contains the data for that region. Currently only the key [code]"color"[/code] is supported.
+[b]Example:[/b] Possible return value. This means columns [code]0[/code] to [code]4[/code] should be red, and columns [code]5[/code] to the end of the line should be green:
 [codeblock]
 
-	var color_map = {
+	{
 	    0: {
 	        "color": Color(1, 0, 0)
 	    },
@@ -131,7 +131,6 @@ The return [Dictionary] is column number to [Dictionary]. The column number note
 	}
 
 [/codeblock]
-This will color columns 0-4 red, and columns 5-eol in green.
 */
 func (self Instance) GetLineSyntaxHighlighting(line int) map[int]Entry { //gd:SyntaxHighlighter.get_line_syntax_highlighting
 	return map[int]Entry(gd.DictionaryAs[map[int]Entry](class(self).GetLineSyntaxHighlighting(int64(line))))
@@ -219,11 +218,11 @@ func (class) _update_cache(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassC
 }
 
 /*
-Returns syntax highlighting data for a single line. If the line is not cached, calls [method _get_line_syntax_highlighting] to calculate the data.
-The return [Dictionary] is column number to [Dictionary]. The column number notes the start of a region, the region will end if another region is found, or at the end of the line. The nested [Dictionary] contains the data for that region, currently only the key "color" is supported.
-[b]Example return:[/b]
+Returns the syntax highlighting data for the line at index [param line]. If the line is not cached, calls [method _get_line_syntax_highlighting] first to calculate the data.
+Each entry is a column number containing a nested [Dictionary]. The column number denotes the start of a region, the region will end if another region is found, or at the end of the line. The nested [Dictionary] contains the data for that region. Currently only the key [code]"color"[/code] is supported.
+[b]Example:[/b] Possible return value. This means columns [code]0[/code] to [code]4[/code] should be red, and columns [code]5[/code] to the end of the line should be green:
 [codeblock]
-var color_map = {
+{
     0: {
         "color": Color(1, 0, 0)
     },
@@ -232,7 +231,6 @@ var color_map = {
     }
 }
 [/codeblock]
-This will color columns 0-4 red, and columns 5-eol in green.
 */
 //go:nosplit
 func (self class) GetLineSyntaxHighlighting(line int64) Dictionary.Any { //gd:SyntaxHighlighter.get_line_syntax_highlighting

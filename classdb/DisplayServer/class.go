@@ -767,7 +767,7 @@ func IsDarkMode() bool { //gd:DisplayServer.is_dark_mode
 
 /*
 Returns OS theme accent color. Returns [code]Color(0, 0, 0, 0)[/code], if accent color is unknown.
-[b]Note:[/b] This method is implemented on macOS and Windows.
+[b]Note:[/b] This method is implemented on macOS, Windows, and Android.
 */
 func GetAccentColor() Color.RGBA { //gd:DisplayServer.get_accent_color
 	once.Do(singleton)
@@ -776,7 +776,7 @@ func GetAccentColor() Color.RGBA { //gd:DisplayServer.get_accent_color
 
 /*
 Returns the OS theme base color (default control background). Returns [code]Color(0, 0, 0, 0)[/code] if the base color is unknown.
-[b]Note:[/b] This method is implemented on macOS and Windows.
+[b]Note:[/b] This method is implemented on macOS, Windows, and Android.
 */
 func GetBaseColor() Color.RGBA { //gd:DisplayServer.get_base_color
 	once.Do(singleton)
@@ -903,6 +903,7 @@ func GetDisplayCutouts() []Rect2.PositionSize { //gd:DisplayServer.get_display_c
 
 /*
 Returns the unobscured area of the display where interactive controls should be rendered. See also [method get_display_cutouts].
+[b]Note:[/b] Currently only implemented on Android and iOS. On other platforms, [code]screen_get_usable_rect(SCREEN_OF_MAIN_WINDOW)[/code] will be returned as a fallback. See also [method screen_get_usable_rect].
 */
 func GetDisplaySafeArea() Rect2i.PositionSize { //gd:DisplayServer.get_display_safe_area
 	once.Do(singleton)
@@ -934,7 +935,7 @@ func GetKeyboardFocusScreen() int { //gd:DisplayServer.get_keyboard_focus_screen
 }
 
 /*
-Returns index of the screen which contains specified rectangle.
+Returns the index of the screen that overlaps the most with the given rectangle. Returns [code]-1[/code] if the rectangle doesn't overlap with any screen or has no area.
 */
 func GetScreenFromRect(rect Rect2.PositionSize) int { //gd:DisplayServer.get_screen_from_rect
 	once.Do(singleton)
@@ -1001,7 +1002,7 @@ func ScreenGetDpi() int { //gd:DisplayServer.screen_get_dpi
 Returns the scale factor of the specified screen by index.
 [b]Note:[/b] On macOS, the returned value is [code]2.0[/code] for hiDPI (Retina) screens, and [code]1.0[/code] for all other cases.
 [b]Note:[/b] On Linux (Wayland), the returned value is accurate only when [param screen] is [constant SCREEN_OF_MAIN_WINDOW]. Due to API limitations, passing a direct index will return a rounded-up integer, if the screen has a fractional scale (e.g. [code]1.25[/code] would get rounded up to [code]2.0[/code]).
-[b]Note:[/b] This method is implemented only on macOS and Linux (Wayland).
+[b]Note:[/b] This method is implemented on Android, iOS, Web, macOS, and Linux (Wayland).
 */
 func ScreenGetScale() Float.X { //gd:DisplayServer.screen_get_scale
 	once.Do(singleton)
@@ -1061,6 +1062,16 @@ Returns screenshot of the [param screen].
 func ScreenGetImage() [1]gdclass.Image { //gd:DisplayServer.screen_get_image
 	once.Do(singleton)
 	return [1]gdclass.Image(class(self).ScreenGetImage(int64(-1)))
+}
+
+/*
+Returns screenshot of the screen [param rect].
+[b]Note:[/b] This method is implemented on macOS and Windows.
+[b]Note:[/b] On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
+*/
+func ScreenGetImageRect(rect Rect2i.PositionSize) [1]gdclass.Image { //gd:DisplayServer.screen_get_image_rect
+	once.Do(singleton)
+	return [1]gdclass.Image(class(self).ScreenGetImageRect(Rect2i.PositionSize(rect)))
 }
 
 /*
@@ -1197,7 +1208,7 @@ DisplayServer.WindowSetMousePassthrough(GetNode<Path2D>("Path2D").Curve.GetBaked
 DisplayServer.WindowSetMousePassthrough(GetNode<Polygon2D>("Polygon2D").Polygon);
 
 // Reset region to default.
-DisplayServer.WindowSetMousePassthrough(new Vector2[] {});
+DisplayServer.WindowSetMousePassthrough([]);
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] On Windows, the portion of a window that lies outside the region is not drawn, while on Linux (X11) and macOS it is.
@@ -1386,6 +1397,7 @@ func WindowGetMode() gdclass.DisplayServerWindowMode { //gd:DisplayServer.window
 
 /*
 Sets window mode for the given window to [param mode]. See [enum WindowMode] for possible values and how each mode behaves.
+[b]Note:[/b] On Android, setting it to [constant WINDOW_MODE_FULLSCREEN] or [constant WINDOW_MODE_EXCLUSIVE_FULLSCREEN] will enable immersive mode.
 [b]Note:[/b] Setting the window to full screen forcibly sets the borderless flag to [code]true[/code], so make sure to set it back to [code]false[/code] when not wanted.
 */
 func WindowSetMode(mode gdclass.DisplayServerWindowMode) { //gd:DisplayServer.window_set_mode
@@ -1459,7 +1471,7 @@ func WindowCanDraw() bool { //gd:DisplayServer.window_can_draw
 }
 
 /*
-Sets window transient parent. Transient window is will be destroyed with its transient parent and will return focus to their parent when closed. The transient window is displayed on top of a non-exclusive full-screen parent window. Transient windows can't enter full-screen mode.
+Sets window transient parent. Transient window will be destroyed with its transient parent and will return focus to their parent when closed. The transient window is displayed on top of a non-exclusive full-screen parent window. Transient windows can't enter full-screen mode.
 [b]Note:[/b] It's recommended to change this value using [member Window.transient] instead.
 [b]Note:[/b] The behavior might be different depending on the platform.
 */
@@ -1540,6 +1552,24 @@ func WindowMinimizeOnTitleDblClick() bool { //gd:DisplayServer.window_minimize_o
 }
 
 /*
+Starts an interactive drag operation on the window with the given [param window_id], using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's title bar. Using this method allows the window to participate in space switching, tiling, and other system features.
+[b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS, and Windows.
+*/
+func WindowStartDrag() { //gd:DisplayServer.window_start_drag
+	once.Do(singleton)
+	class(self).WindowStartDrag(int64(0))
+}
+
+/*
+Starts an interactive resize operation on the window with the given [param window_id], using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's edge.
+[b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS, and Windows.
+*/
+func WindowStartResize(edge gdclass.DisplayServerWindowResizeEdge) { //gd:DisplayServer.window_start_resize
+	once.Do(singleton)
+	class(self).WindowStartResize(edge, int64(0))
+}
+
+/*
 Returns the text selection in the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] composition string, with the [Vector2i]'s [code]x[/code] component being the caret position and [code]y[/code] being the length of the selection.
 [b]Note:[/b] This method is implemented only on macOS.
 */
@@ -1589,6 +1619,15 @@ func VirtualKeyboardGetHeight() int { //gd:DisplayServer.virtual_keyboard_get_he
 }
 
 /*
+Returns [code]true[/code] if hardware keyboard is connected.
+[b]Note:[/b] This method is implemented on Android and iOS, on other platforms this method always returns [code]true[/code].
+*/
+func HasHardwareKeyboard() bool { //gd:DisplayServer.has_hardware_keyboard
+	once.Do(singleton)
+	return bool(class(self).HasHardwareKeyboard())
+}
+
+/*
 Sets the default mouse cursor shape. The cursor's appearance will vary depending on the user's operating system and mouse cursor theme. See also [method cursor_get_shape] and [method cursor_set_custom_image].
 */
 func CursorSetShape(shape gdclass.DisplayServerCursorShape) { //gd:DisplayServer.cursor_set_shape
@@ -1633,7 +1672,7 @@ func EnableForStealingFocus(process_id int) { //gd:DisplayServer.enable_for_stea
 
 /*
 Shows a text dialog which uses the operating system's native look-and-feel. [param callback] should accept a single [int] parameter which corresponds to the index of the pressed button.
-[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG] feature. Supported platforms include macOS and Windows.
+[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG] feature. Supported platforms include macOS, Windows, and Android.
 */
 func DialogShow(title string, description string, buttons []string, callback func(button int)) error { //gd:DisplayServer.dialog_show
 	once.Do(singleton)
@@ -1642,7 +1681,7 @@ func DialogShow(title string, description string, buttons []string, callback fun
 
 /*
 Shows a text input dialog which uses the operating system's native look-and-feel. [param callback] should accept a single [String] parameter which contains the text field's contents.
-[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_INPUT] feature. Supported platforms include macOS and Windows.
+[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_INPUT] feature. Supported platforms include macOS, Windows, and Android.
 */
 func DialogInputText(title string, description string, existing_text string, callback func(text string)) error { //gd:DisplayServer.dialog_input_text
 	once.Do(singleton)
@@ -1651,12 +1690,13 @@ func DialogInputText(title string, description string, existing_text string, cal
 
 /*
 Displays OS native dialog for selecting files or directories in the file system.
-Each filter string in the [param filters] array should be formatted like this: [code]*.txt,*.doc;Text Files[/code]. The description text of the filter is optional and can be omitted. See also [member FileDialog.filters].
-Callbacks have the following arguments: [code]status: bool, selected_paths: PackedStringArray, selected_filter_index: int[/code].
-[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_FILE] feature. Supported platforms include Linux (X11/Wayland), Windows, and macOS.
+Each filter string in the [param filters] array should be formatted like this: [code]*.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg[/code]. The description text of the filter is optional and can be omitted. It is recommended to set both file extension and MIME type. See also [member FileDialog.filters].
+Callbacks have the following arguments: [code]status: bool, selected_paths: PackedStringArray, selected_filter_index: int[/code]. [b]On Android,[/b] callback argument [code]selected_filter_index[/code] is always zero.
+[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_FILE] feature. Supported platforms include Linux (X11/Wayland), Windows, macOS, and Android.
 [b]Note:[/b] [param current_directory] might be ignored.
-[b]Note:[/b] On Linux, [param show_hidden] is ignored.
-[b]Note:[/b] On macOS, native file dialogs have no title.
+[b]Note:[/b] Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
+[b]Note:[/b] On Android and Linux, [param show_hidden] is ignored.
+[b]Note:[/b] On Android and macOS, native file dialogs have no title.
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 func FileDialogShow(title string, current_directory string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int)) error { //gd:DisplayServer.file_dialog_show
@@ -1666,14 +1706,15 @@ func FileDialogShow(title string, current_directory string, filename string, sho
 
 /*
 Displays OS native dialog for selecting files or directories in the file system with additional user selectable options.
-Each filter string in the [param filters] array should be formatted like this: [code]*.txt,*.doc;Text Files[/code]. The description text of the filter is optional and can be omitted. See also [member FileDialog.filters].
+Each filter string in the [param filters] array should be formatted like this: [code]*.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg[/code]. The description text of the filter is optional and can be omitted. It is recommended to set both file extension and MIME type. See also [member FileDialog.filters].
 [param options] is array of [Dictionary]s with the following keys:
 - [code]"name"[/code] - option's name [String].
 - [code]"values"[/code] - [PackedStringArray] of values. If empty, boolean option (check box) is used.
 - [code]"default"[/code] - default selected option index ([int]) or default boolean value ([bool]).
 Callbacks have the following arguments: [code]status: bool, selected_paths: PackedStringArray, selected_filter_index: int, selected_option: Dictionary[/code].
-[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_FILE] feature. Supported platforms include Linux (X11/Wayland), Windows, and macOS.
+[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_FILE_EXTRA] feature. Supported platforms include Linux (X11/Wayland), Windows, and macOS.
 [b]Note:[/b] [param current_directory] might be ignored.
+[b]Note:[/b] Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
 [b]Note:[/b] On Linux (X11), [param show_hidden] is ignored.
 [b]Note:[/b] On macOS, native file dialogs have no title.
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
@@ -1681,6 +1722,15 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, options []FileDialogOption, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any)) error { //gd:DisplayServer.file_dialog_with_options_show
 	once.Do(singleton)
 	return error(gd.ToError(class(self).FileDialogWithOptionsShow(String.New(title), String.New(current_directory), String.New(root), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback))))
+}
+
+/*
+Plays the beep sound from the operative system, if possible. Because it comes from the OS, the beep sound will be audible even if the application is muted. It may also be disabled for the entire OS by the user.
+[b]Note:[/b] This method is implemented on macOS, Linux (X11/Wayland), and Windows.
+*/
+func Beep() { //gd:DisplayServer.beep
+	once.Do(singleton)
+	class(self).Beep()
 }
 
 /*
@@ -1744,6 +1794,15 @@ Converts a physical (US QWERTY) [param keycode] to localized label printed on th
 func KeyboardGetLabelFromPhysical(keycode Key) Key { //gd:DisplayServer.keyboard_get_label_from_physical
 	once.Do(singleton)
 	return Key(class(self).KeyboardGetLabelFromPhysical(keycode))
+}
+
+/*
+Opens system emoji and symbol picker.
+[b]Note:[/b] This method is implemented on macOS and Windows.
+*/
+func ShowEmojiAndSymbolPicker() { //gd:DisplayServer.show_emoji_and_symbol_picker
+	once.Do(singleton)
+	class(self).ShowEmojiAndSymbolPicker()
 }
 
 /*
@@ -3067,7 +3126,7 @@ func (self class) IsDarkMode() bool { //gd:DisplayServer.is_dark_mode
 
 /*
 Returns OS theme accent color. Returns [code]Color(0, 0, 0, 0)[/code], if accent color is unknown.
-[b]Note:[/b] This method is implemented on macOS and Windows.
+[b]Note:[/b] This method is implemented on macOS, Windows, and Android.
 */
 //go:nosplit
 func (self class) GetAccentColor() Color.RGBA { //gd:DisplayServer.get_accent_color
@@ -3081,7 +3140,7 @@ func (self class) GetAccentColor() Color.RGBA { //gd:DisplayServer.get_accent_co
 
 /*
 Returns the OS theme base color (default control background). Returns [code]Color(0, 0, 0, 0)[/code] if the base color is unknown.
-[b]Note:[/b] This method is implemented on macOS and Windows.
+[b]Note:[/b] This method is implemented on macOS, Windows, and Android.
 */
 //go:nosplit
 func (self class) GetBaseColor() Color.RGBA { //gd:DisplayServer.get_base_color
@@ -3278,6 +3337,7 @@ func (self class) GetDisplayCutouts() Array.Contains[Rect2.PositionSize] { //gd:
 
 /*
 Returns the unobscured area of the display where interactive controls should be rendered. See also [method get_display_cutouts].
+[b]Note:[/b] Currently only implemented on Android and iOS. On other platforms, [code]screen_get_usable_rect(SCREEN_OF_MAIN_WINDOW)[/code] will be returned as a fallback. See also [method screen_get_usable_rect].
 */
 //go:nosplit
 func (self class) GetDisplaySafeArea() Rect2i.PositionSize { //gd:DisplayServer.get_display_safe_area
@@ -3329,7 +3389,7 @@ func (self class) GetKeyboardFocusScreen() int64 { //gd:DisplayServer.get_keyboa
 }
 
 /*
-Returns index of the screen which contains specified rectangle.
+Returns the index of the screen that overlaps the most with the given rectangle. Returns [code]-1[/code] if the rectangle doesn't overlap with any screen or has no area.
 */
 //go:nosplit
 func (self class) GetScreenFromRect(rect Rect2.PositionSize) int64 { //gd:DisplayServer.get_screen_from_rect
@@ -3423,7 +3483,7 @@ func (self class) ScreenGetDpi(screen int64) int64 { //gd:DisplayServer.screen_g
 Returns the scale factor of the specified screen by index.
 [b]Note:[/b] On macOS, the returned value is [code]2.0[/code] for hiDPI (Retina) screens, and [code]1.0[/code] for all other cases.
 [b]Note:[/b] On Linux (Wayland), the returned value is accurate only when [param screen] is [constant SCREEN_OF_MAIN_WINDOW]. Due to API limitations, passing a direct index will return a rounded-up integer, if the screen has a fractional scale (e.g. [code]1.25[/code] would get rounded up to [code]2.0[/code]).
-[b]Note:[/b] This method is implemented only on macOS and Linux (Wayland).
+[b]Note:[/b] This method is implemented on Android, iOS, Web, macOS, and Linux (Wayland).
 */
 //go:nosplit
 func (self class) ScreenGetScale(screen int64) float64 { //gd:DisplayServer.screen_get_scale
@@ -3512,6 +3572,22 @@ func (self class) ScreenGetImage(screen int64) [1]gdclass.Image { //gd:DisplaySe
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_image, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Returns screenshot of the screen [param rect].
+[b]Note:[/b] This method is implemented on macOS and Windows.
+[b]Note:[/b] On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
+*/
+//go:nosplit
+func (self class) ScreenGetImageRect(rect Rect2i.PositionSize) [1]gdclass.Image { //gd:DisplayServer.screen_get_image_rect
+	var frame = callframe.New()
+	callframe.Arg(frame, rect)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_image_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -3716,7 +3792,7 @@ DisplayServer.WindowSetMousePassthrough(GetNode<Path2D>("Path2D").Curve.GetBaked
 DisplayServer.WindowSetMousePassthrough(GetNode<Polygon2D>("Polygon2D").Polygon);
 
 // Reset region to default.
-DisplayServer.WindowSetMousePassthrough(new Vector2[] {});
+DisplayServer.WindowSetMousePassthrough([]);
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] On Windows, the portion of a window that lies outside the region is not drawn, while on Linux (X11) and macOS it is.
@@ -4013,6 +4089,7 @@ func (self class) WindowGetMode(window_id int64) gdclass.DisplayServerWindowMode
 
 /*
 Sets window mode for the given window to [param mode]. See [enum WindowMode] for possible values and how each mode behaves.
+[b]Note:[/b] On Android, setting it to [constant WINDOW_MODE_FULLSCREEN] or [constant WINDOW_MODE_EXCLUSIVE_FULLSCREEN] will enable immersive mode.
 [b]Note:[/b] Setting the window to full screen forcibly sets the borderless flag to [code]true[/code], so make sure to set it back to [code]false[/code] when not wanted.
 */
 //go:nosplit
@@ -4135,7 +4212,7 @@ func (self class) WindowCanDraw(window_id int64) bool { //gd:DisplayServer.windo
 }
 
 /*
-Sets window transient parent. Transient window is will be destroyed with its transient parent and will return focus to their parent when closed. The transient window is displayed on top of a non-exclusive full-screen parent window. Transient windows can't enter full-screen mode.
+Sets window transient parent. Transient window will be destroyed with its transient parent and will return focus to their parent when closed. The transient window is displayed on top of a non-exclusive full-screen parent window. Transient windows can't enter full-screen mode.
 [b]Note:[/b] It's recommended to change this value using [member Window.transient] instead.
 [b]Note:[/b] The behavior might be different depending on the platform.
 */
@@ -4263,6 +4340,33 @@ func (self class) WindowMinimizeOnTitleDblClick() bool { //gd:DisplayServer.wind
 }
 
 /*
+Starts an interactive drag operation on the window with the given [param window_id], using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's title bar. Using this method allows the window to participate in space switching, tiling, and other system features.
+[b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS, and Windows.
+*/
+//go:nosplit
+func (self class) WindowStartDrag(window_id int64) { //gd:DisplayServer.window_start_drag
+	var frame = callframe.New()
+	callframe.Arg(frame, window_id)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_start_drag, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Starts an interactive resize operation on the window with the given [param window_id], using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's edge.
+[b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS, and Windows.
+*/
+//go:nosplit
+func (self class) WindowStartResize(edge gdclass.DisplayServerWindowResizeEdge, window_id int64) { //gd:DisplayServer.window_start_resize
+	var frame = callframe.New()
+	callframe.Arg(frame, edge)
+	callframe.Arg(frame, window_id)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_start_resize, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Returns the text selection in the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] composition string, with the [Vector2i]'s [code]x[/code] component being the caret position and [code]y[/code] being the length of the selection.
 [b]Note:[/b] This method is implemented only on macOS.
 */
@@ -4339,6 +4443,20 @@ func (self class) VirtualKeyboardGetHeight() int64 { //gd:DisplayServer.virtual_
 }
 
 /*
+Returns [code]true[/code] if hardware keyboard is connected.
+[b]Note:[/b] This method is implemented on Android and iOS, on other platforms this method always returns [code]true[/code].
+*/
+//go:nosplit
+func (self class) HasHardwareKeyboard() bool { //gd:DisplayServer.has_hardware_keyboard
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_has_hardware_keyboard, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Sets the default mouse cursor shape. The cursor's appearance will vary depending on the user's operating system and mouse cursor theme. See also [method cursor_get_shape] and [method cursor_set_custom_image].
 */
 //go:nosplit
@@ -4407,7 +4525,7 @@ func (self class) EnableForStealingFocus(process_id int64) { //gd:DisplayServer.
 
 /*
 Shows a text dialog which uses the operating system's native look-and-feel. [param callback] should accept a single [int] parameter which corresponds to the index of the pressed button.
-[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG] feature. Supported platforms include macOS and Windows.
+[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG] feature. Supported platforms include macOS, Windows, and Android.
 */
 //go:nosplit
 func (self class) DialogShow(title String.Readable, description String.Readable, buttons Packed.Strings, callback Callable.Function) Error.Code { //gd:DisplayServer.dialog_show
@@ -4425,7 +4543,7 @@ func (self class) DialogShow(title String.Readable, description String.Readable,
 
 /*
 Shows a text input dialog which uses the operating system's native look-and-feel. [param callback] should accept a single [String] parameter which contains the text field's contents.
-[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_INPUT] feature. Supported platforms include macOS and Windows.
+[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_INPUT] feature. Supported platforms include macOS, Windows, and Android.
 */
 //go:nosplit
 func (self class) DialogInputText(title String.Readable, description String.Readable, existing_text String.Readable, callback Callable.Function) Error.Code { //gd:DisplayServer.dialog_input_text
@@ -4443,12 +4561,13 @@ func (self class) DialogInputText(title String.Readable, description String.Read
 
 /*
 Displays OS native dialog for selecting files or directories in the file system.
-Each filter string in the [param filters] array should be formatted like this: [code]*.txt,*.doc;Text Files[/code]. The description text of the filter is optional and can be omitted. See also [member FileDialog.filters].
-Callbacks have the following arguments: [code]status: bool, selected_paths: PackedStringArray, selected_filter_index: int[/code].
-[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_FILE] feature. Supported platforms include Linux (X11/Wayland), Windows, and macOS.
+Each filter string in the [param filters] array should be formatted like this: [code]*.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg[/code]. The description text of the filter is optional and can be omitted. It is recommended to set both file extension and MIME type. See also [member FileDialog.filters].
+Callbacks have the following arguments: [code]status: bool, selected_paths: PackedStringArray, selected_filter_index: int[/code]. [b]On Android,[/b] callback argument [code]selected_filter_index[/code] is always zero.
+[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_FILE] feature. Supported platforms include Linux (X11/Wayland), Windows, macOS, and Android.
 [b]Note:[/b] [param current_directory] might be ignored.
-[b]Note:[/b] On Linux, [param show_hidden] is ignored.
-[b]Note:[/b] On macOS, native file dialogs have no title.
+[b]Note:[/b] Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
+[b]Note:[/b] On Android and Linux, [param show_hidden] is ignored.
+[b]Note:[/b] On Android and macOS, native file dialogs have no title.
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 //go:nosplit
@@ -4470,14 +4589,15 @@ func (self class) FileDialogShow(title String.Readable, current_directory String
 
 /*
 Displays OS native dialog for selecting files or directories in the file system with additional user selectable options.
-Each filter string in the [param filters] array should be formatted like this: [code]*.txt,*.doc;Text Files[/code]. The description text of the filter is optional and can be omitted. See also [member FileDialog.filters].
+Each filter string in the [param filters] array should be formatted like this: [code]*.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg[/code]. The description text of the filter is optional and can be omitted. It is recommended to set both file extension and MIME type. See also [member FileDialog.filters].
 [param options] is array of [Dictionary]s with the following keys:
 - [code]"name"[/code] - option's name [String].
 - [code]"values"[/code] - [PackedStringArray] of values. If empty, boolean option (check box) is used.
 - [code]"default"[/code] - default selected option index ([int]) or default boolean value ([bool]).
 Callbacks have the following arguments: [code]status: bool, selected_paths: PackedStringArray, selected_filter_index: int, selected_option: Dictionary[/code].
-[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_FILE] feature. Supported platforms include Linux (X11/Wayland), Windows, and macOS.
+[b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_FILE_EXTRA] feature. Supported platforms include Linux (X11/Wayland), Windows, and macOS.
 [b]Note:[/b] [param current_directory] might be ignored.
+[b]Note:[/b] Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
 [b]Note:[/b] On Linux (X11), [param show_hidden] is ignored.
 [b]Note:[/b] On macOS, native file dialogs have no title.
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
@@ -4499,6 +4619,18 @@ func (self class) FileDialogWithOptionsShow(title String.Readable, current_direc
 	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
+}
+
+/*
+Plays the beep sound from the operative system, if possible. Because it comes from the OS, the beep sound will be audible even if the application is muted. It may also be disabled for the entire OS by the user.
+[b]Note:[/b] This method is implemented on macOS, Linux (X11/Wayland), and Windows.
+*/
+//go:nosplit
+func (self class) Beep() { //gd:DisplayServer.beep
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_beep, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
 }
 
 /*
@@ -4600,6 +4732,18 @@ func (self class) KeyboardGetLabelFromPhysical(keycode Key) Key { //gd:DisplaySe
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
+}
+
+/*
+Opens system emoji and symbol picker.
+[b]Note:[/b] This method is implemented on macOS and Windows.
+*/
+//go:nosplit
+func (self class) ShowEmojiAndSymbolPicker() { //gd:DisplayServer.show_emoji_and_symbol_picker
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_show_emoji_and_symbol_picker, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
 }
 
 /*
@@ -4926,8 +5070,20 @@ const (
 	FeatureNativeHelp Feature = 23
 	/*Display server supports spawning text input dialogs using the operating system's native look-and-feel. See [method dialog_input_text]. [b]Windows, macOS[/b]*/
 	FeatureNativeDialogInput Feature = 24
-	/*Display server supports spawning dialogs for selecting files or directories using the operating system's native look-and-feel. See [method file_dialog_show] and [method file_dialog_with_options_show]. [b]Windows, macOS, Linux (X11/Wayland)[/b]*/
+	/*Display server supports spawning dialogs for selecting files or directories using the operating system's native look-and-feel. See [method file_dialog_show]. [b]Windows, macOS, Linux (X11/Wayland), Android[/b]*/
 	FeatureNativeDialogFile Feature = 25
+	/*The display server supports all features of [constant FEATURE_NATIVE_DIALOG_FILE], with the added functionality of Options and native dialog file access to [code]res://[/code] and [code]user://[/code] paths. See [method file_dialog_show] and [method file_dialog_with_options_show]. [b]Windows, macOS, Linux (X11/Wayland)[/b]*/
+	FeatureNativeDialogFileExtra Feature = 26
+	/*The display server supports initiating window drag and resize operations on demand. See [method window_start_drag] and [method window_start_resize].*/
+	FeatureWindowDrag Feature = 27
+	/*Display server supports [constant WINDOW_FLAG_EXCLUDE_FROM_CAPTURE] window flag.*/
+	FeatureScreenExcludeFromCapture Feature = 28
+	/*Display server supports embedding a window from another process. [b]Windows, Linux (X11)[/b]*/
+	FeatureWindowEmbedding Feature = 29
+	/*Native file selection dialog supports MIME types as filters.*/
+	FeatureNativeDialogFileMime Feature = 30
+	/*Display server supports system emoji and symbol picker. [b]Windows, macOS[/b]*/
+	FeatureEmojiAndSymbolPicker Feature = 31
 )
 
 type MouseModeValue = gdclass.DisplayServerMouseMode //gd:DisplayServer.MouseMode
@@ -4944,6 +5100,8 @@ const (
 	MouseModeConfined MouseModeValue = 3
 	/*Confines the mouse cursor to the game window, and make it hidden.*/
 	MouseModeConfinedHidden MouseModeValue = 4
+	/*Max value of the [enum MouseMode].*/
+	MouseModeMax MouseModeValue = 5
 )
 
 type ScreenOrientation = gdclass.DisplayServerScreenOrientation //gd:DisplayServer.ScreenOrientation
@@ -5054,15 +5212,18 @@ const (
 	WindowModeMaximized WindowMode = 2
 	/*Full screen mode with full multi-window support.
 	  Full screen window covers the entire display area of a screen and has no decorations. The display's video mode is not changed.
+	  [b]On Android:[/b] This enables immersive mode.
 	  [b]On Windows:[/b] Multi-window full-screen mode has a 1px border of the [member ProjectSettings.rendering/environment/defaults/default_clear_color] color.
 	  [b]On macOS:[/b] A new desktop is used to display the running project.
 	  [b]Note:[/b] Regardless of the platform, enabling full screen will change the window size to match the monitor's size. Therefore, make sure your project supports [url=$DOCS_URL/tutorials/rendering/multiple_resolutions.html]multiple resolutions[/url] when enabling full screen mode.*/
 	WindowModeFullscreen WindowMode = 3
 	/*A single window full screen mode. This mode has less overhead, but only one window can be open on a given screen at a time (opening a child window or application switching will trigger a full screen transition).
 	  Full screen window covers the entire display area of a screen and has no border or decorations. The display's video mode is not changed.
+	  [b]On Android:[/b] This enables immersive mode.
 	  [b]On Windows:[/b] Depending on video driver, full screen transition might cause screens to go black for a moment.
 	  [b]On macOS:[/b] A new desktop is used to display the running project. Exclusive full screen mode prevents Dock and Menu from showing up when the mouse pointer is hovering the edge of the screen.
 	  [b]On Linux (X11):[/b] Exclusive full screen mode bypasses compositor.
+	  [b]On Linux (Wayland):[/b] Equivalent to [constant WINDOW_MODE_FULLSCREEN].
 	  [b]Note:[/b] Regardless of the platform, enabling full screen will change the window size to match the monitor's size. Therefore, make sure your project supports [url=$DOCS_URL/tutorials/rendering/multiple_resolutions.html]multiple resolutions[/url] when enabling full screen mode.*/
 	WindowModeExclusiveFullscreen WindowMode = 4
 )
@@ -5091,8 +5252,15 @@ const (
 	WindowFlagExtendToTitle WindowFlags = 6
 	/*All mouse events are passed to the underlying window of the same application.*/
 	WindowFlagMousePassthrough WindowFlags = 7
+	/*Window style is overridden, forcing sharp corners.
+	  [b]Note:[/b] This flag is implemented only on Windows (11).*/
+	WindowFlagSharpCorners WindowFlags = 8
+	/*Windows is excluded from screenshots taken by [method screen_get_image], [method screen_get_image_rect], and [method screen_get_pixel].
+	  [b]Note:[/b] This flag is implemented on macOS and Windows.
+	  [b]Note:[/b] Setting this flag will [b]NOT[/b] prevent other apps from capturing an image, it should not be used as a security measure.*/
+	WindowFlagExcludeFromCapture WindowFlags = 9
 	/*Max value of the [enum WindowFlags].*/
-	WindowFlagMax WindowFlags = 8
+	WindowFlagMax WindowFlags = 10
 )
 
 type WindowEvent = gdclass.DisplayServerWindowEvent //gd:DisplayServer.WindowEvent
@@ -5119,6 +5287,29 @@ const (
 	WindowEventTitlebarChange WindowEvent = 7
 )
 
+type WindowResizeEdge = gdclass.DisplayServerWindowResizeEdge //gd:DisplayServer.WindowResizeEdge
+
+const (
+	/*Top-left edge of a window.*/
+	WindowEdgeTopLeft WindowResizeEdge = 0
+	/*Top edge of a window.*/
+	WindowEdgeTop WindowResizeEdge = 1
+	/*Top-right edge of a window.*/
+	WindowEdgeTopRight WindowResizeEdge = 2
+	/*Left edge of a window.*/
+	WindowEdgeLeft WindowResizeEdge = 3
+	/*Right edge of a window.*/
+	WindowEdgeRight WindowResizeEdge = 4
+	/*Bottom-left edge of a window.*/
+	WindowEdgeBottomLeft WindowResizeEdge = 5
+	/*Bottom edge of a window.*/
+	WindowEdgeBottom WindowResizeEdge = 6
+	/*Bottom-right edge of a window.*/
+	WindowEdgeBottomRight WindowResizeEdge = 7
+	/*Represents the size of the [enum WindowResizeEdge] enum.*/
+	WindowEdgeMax WindowResizeEdge = 8
+)
+
 type VSyncMode = gdclass.DisplayServerVSyncMode //gd:DisplayServer.VSyncMode
 
 const (
@@ -5138,26 +5329,37 @@ type HandleType = gdclass.DisplayServerHandleType //gd:DisplayServer.HandleType
 const (
 	/*Display handle:
 	  - Linux (X11): [code]X11::Display*[/code] for the display.
+	  - Linux (Wayland): [code]wl_display[/code] for the display.
 	  - Android: [code]EGLDisplay[/code] for the display.*/
 	DisplayHandle HandleType = 0
 	/*Window handle:
 	  - Windows: [code]HWND[/code] for the window.
 	  - Linux (X11): [code]X11::Window*[/code] for the window.
+	  - Linux (Wayland): [code]wl_surface[/code] for the window.
 	  - macOS: [code]NSWindow*[/code] for the window.
 	  - iOS: [code]UIViewController*[/code] for the view controller.
 	  - Android: [code]jObject[/code] for the activity.*/
 	WindowHandle HandleType = 1
 	/*Window view:
-	  - Windows: [code]HDC[/code] for the window (only with the GL Compatibility renderer).
+	  - Windows: [code]HDC[/code] for the window (only with the Compatibility renderer).
 	  - macOS: [code]NSView*[/code] for the window main view.
 	  - iOS: [code]UIView*[/code] for the window main view.*/
 	WindowView HandleType = 2
-	/*OpenGL context (only with the GL Compatibility renderer):
+	/*OpenGL context (only with the Compatibility renderer):
 	  - Windows: [code]HGLRC[/code] for the window (native GL), or [code]EGLContext[/code] for the window (ANGLE).
 	  - Linux (X11): [code]GLXContext*[/code] for the window.
+	  - Linux (Wayland): [code]EGLContext[/code] for the window.
 	  - macOS: [code]NSOpenGLContext*[/code] for the window (native GL), or [code]EGLContext[/code] for the window (ANGLE).
 	  - Android: [code]EGLContext[/code] for the window.*/
 	OpenglContext HandleType = 3
+	/*- Windows: [code]EGLDisplay[/code] for the window (ANGLE).
+	  - macOS: [code]EGLDisplay[/code] for the window (ANGLE).
+	  - Linux (Wayland): [code]EGLDisplay[/code] for the window.*/
+	EglDisplay HandleType = 4
+	/*- Windows: [code]EGLConfig[/code] for the window (ANGLE).
+	  - macOS: [code]EGLConfig[/code] for the window (ANGLE).
+	  - Linux (Wayland): [code]EGLConfig[/code] for the window.*/
+	EglConfig HandleType = 5
 )
 
 type TTSUtteranceEvent = gdclass.DisplayServerTTSUtteranceEvent //gd:DisplayServer.TTSUtteranceEvent
@@ -5340,13 +5542,13 @@ const (
 	KeyHyper Key = 4194371
 	/*Help key.*/
 	KeyHelp Key = 4194373
-	/*Media back key. Not to be confused with the Back button on an Android device.*/
+	/*Back key.*/
 	KeyBack Key = 4194376
-	/*Media forward key.*/
+	/*Forward key.*/
 	KeyForward Key = 4194377
 	/*Media stop key.*/
 	KeyStop Key = 4194378
-	/*Media refresh key.*/
+	/*Refresh key.*/
 	KeyRefresh Key = 4194379
 	/*Volume down key.*/
 	KeyVolumedown Key = 4194380
@@ -5422,35 +5624,35 @@ const (
 	KeyUnknown Key = 8388607
 	/*Space key.*/
 	KeySpace Key = 32
-	/*! key.*/
+	/*Exclamation mark ([code]![/code]) key.*/
 	KeyExclam Key = 33
-	/*" key.*/
+	/*Double quotation mark ([code]"[/code]) key.*/
 	KeyQuotedbl Key = 34
-	/*# key.*/
+	/*Number sign or [i]hash[/i] ([code]#[/code]) key.*/
 	KeyNumbersign Key = 35
-	/*$ key.*/
+	/*Dollar sign ([code]$[/code]) key.*/
 	KeyDollar Key = 36
-	/*% key.*/
+	/*Percent sign ([code]%[/code]) key.*/
 	KeyPercent Key = 37
-	/*& key.*/
+	/*Ampersand ([code]&[/code]) key.*/
 	KeyAmpersand Key = 38
-	/*' key.*/
+	/*Apostrophe ([code]'[/code]) key.*/
 	KeyApostrophe Key = 39
-	/*( key.*/
+	/*Left parenthesis ([code]([/code]) key.*/
 	KeyParenleft Key = 40
-	/*) key.*/
+	/*Right parenthesis ([code])[/code]) key.*/
 	KeyParenright Key = 41
-	/** key.*/
+	/*Asterisk ([code]*[/code]) key.*/
 	KeyAsterisk Key = 42
-	/*+ key.*/
+	/*Plus ([code]+[/code]) key.*/
 	KeyPlus Key = 43
-	/*, key.*/
+	/*Comma ([code],[/code]) key.*/
 	KeyComma Key = 44
-	/*- key.*/
+	/*Minus ([code]-[/code]) key.*/
 	KeyMinus Key = 45
-	/*. key.*/
+	/*Period ([code].[/code]) key.*/
 	KeyPeriod Key = 46
-	/*/ key.*/
+	/*Slash ([code]/[/code]) key.*/
 	KeySlash Key = 47
 	/*Number 0 key.*/
 	Key0 Key = 48
@@ -5472,19 +5674,19 @@ const (
 	Key8 Key = 56
 	/*Number 9 key.*/
 	Key9 Key = 57
-	/*: key.*/
+	/*Colon ([code]:[/code]) key.*/
 	KeyColon Key = 58
-	/*; key.*/
+	/*Semicolon ([code];[/code]) key.*/
 	KeySemicolon Key = 59
-	/*< key.*/
+	/*Less-than sign ([code]<[/code]) key.*/
 	KeyLess Key = 60
-	/*= key.*/
+	/*Equal sign ([code]=[/code]) key.*/
 	KeyEqual Key = 61
-	/*> key.*/
+	/*Greater-than sign ([code]>[/code]) key.*/
 	KeyGreater Key = 62
-	/*? key.*/
+	/*Question mark ([code]?[/code]) key.*/
 	KeyQuestion Key = 63
-	/*@ key.*/
+	/*At sign ([code]@[/code]) key.*/
 	KeyAt Key = 64
 	/*A key.*/
 	KeyA Key = 65
@@ -5538,29 +5740,29 @@ const (
 	KeyY Key = 89
 	/*Z key.*/
 	KeyZ Key = 90
-	/*[ key.*/
+	/*Left bracket ([code][lb][/code]) key.*/
 	KeyBracketleft Key = 91
-	/*\ key.*/
+	/*Backslash ([code]\[/code]) key.*/
 	KeyBackslash Key = 92
-	/*] key.*/
+	/*Right bracket ([code][rb][/code]) key.*/
 	KeyBracketright Key = 93
-	/*^ key.*/
+	/*Caret ([code]^[/code]) key.*/
 	KeyAsciicircum Key = 94
-	/*_ key.*/
+	/*Underscore ([code]_[/code]) key.*/
 	KeyUnderscore Key = 95
-	/*` key.*/
+	/*Backtick ([code]`[/code]) key.*/
 	KeyQuoteleft Key = 96
-	/*{ key.*/
+	/*Left brace ([code]{[/code]) key.*/
 	KeyBraceleft Key = 123
-	/*| key.*/
+	/*Vertical bar or [i]pipe[/i] ([code]|[/code]) key.*/
 	KeyBar Key = 124
-	/*} key.*/
+	/*Right brace ([code]}[/code]) key.*/
 	KeyBraceright Key = 125
-	/*~ key.*/
+	/*Tilde ([code]~[/code]) key.*/
 	KeyAsciitilde Key = 126
-	/*¥ key.*/
+	/*Yen symbol ([code]¥[/code]) key.*/
 	KeyYen Key = 165
-	/*§ key.*/
+	/*Section sign ([code]§[/code]) key.*/
 	KeySection Key = 167
 )
 

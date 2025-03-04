@@ -41,7 +41,7 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-Custom code to generate previews. Please check [code]file_dialog/thumbnail_size[/code] in [EditorSettings] to find out the right size to do previews at.
+Custom code to generate previews. Check [member EditorSettings.filesystem/file_dialog/thumbnail_size] to find a proper size to generate previews at.
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
 
@@ -60,12 +60,12 @@ type Interface interface {
 	//Returns [code]true[/code] if your generator supports the resource of type [param type].
 	Handles(atype string) bool
 	//Generate a preview from a given resource with the specified size. This must always be implemented.
-	//Returning an empty texture is an OK way to fail and let another generator take care.
+	//Returning [code]null[/code] is an OK way to fail and let another generator take care.
 	//Care must be taken because this function is always called from a thread (not the main thread).
 	//[param metadata] dictionary can be modified to store file-specific metadata that can be used in [method EditorResourceTooltipPlugin._make_tooltip_for_path] (like image size, sample length etc.).
 	Generate(resource [1]gdclass.Resource, size Vector2i.XY, metadata map[any]any) [1]gdclass.Texture2D
 	//Generate a preview directly from a path with the specified size. Implementing this is optional, as default code will load and call [method _generate].
-	//Returning an empty texture is an OK way to fail and let another generator take care.
+	//Returning [code]null[/code] is an OK way to fail and let another generator take care.
 	//Care must be taken because this function is always called from a thread (not the main thread).
 	//[param metadata] dictionary can be modified to store file-specific metadata that can be used in [method EditorResourceTooltipPlugin._make_tooltip_for_path] (like image size, sample length etc.).
 	GenerateFromPath(path string, size Vector2i.XY, metadata map[any]any) [1]gdclass.Texture2D
@@ -107,7 +107,7 @@ func (Instance) _handles(impl func(ptr unsafe.Pointer, atype string) bool) (cb g
 
 /*
 Generate a preview from a given resource with the specified size. This must always be implemented.
-Returning an empty texture is an OK way to fail and let another generator take care.
+Returning [code]null[/code] is an OK way to fail and let another generator take care.
 Care must be taken because this function is always called from a thread (not the main thread).
 [param metadata] dictionary can be modified to store file-specific metadata that can be used in [method EditorResourceTooltipPlugin._make_tooltip_for_path] (like image size, sample length etc.).
 */
@@ -133,7 +133,7 @@ func (Instance) _generate(impl func(ptr unsafe.Pointer, resource [1]gdclass.Reso
 
 /*
 Generate a preview directly from a path with the specified size. Implementing this is optional, as default code will load and call [method _generate].
-Returning an empty texture is an OK way to fail and let another generator take care.
+Returning [code]null[/code] is an OK way to fail and let another generator take care.
 Care must be taken because this function is always called from a thread (not the main thread).
 [param metadata] dictionary can be modified to store file-specific metadata that can be used in [method EditorResourceTooltipPlugin._make_tooltip_for_path] (like image size, sample length etc.).
 */
@@ -214,7 +214,7 @@ func (class) _handles(impl func(ptr unsafe.Pointer, atype String.Readable) bool)
 
 /*
 Generate a preview from a given resource with the specified size. This must always be implemented.
-Returning an empty texture is an OK way to fail and let another generator take care.
+Returning [code]null[/code] is an OK way to fail and let another generator take care.
 Care must be taken because this function is always called from a thread (not the main thread).
 [param metadata] dictionary can be modified to store file-specific metadata that can be used in [method EditorResourceTooltipPlugin._make_tooltip_for_path] (like image size, sample length etc.).
 */
@@ -240,7 +240,7 @@ func (class) _generate(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resourc
 
 /*
 Generate a preview directly from a path with the specified size. Implementing this is optional, as default code will load and call [method _generate].
-Returning an empty texture is an OK way to fail and let another generator take care.
+Returning [code]null[/code] is an OK way to fail and let another generator take care.
 Care must be taken because this function is always called from a thread (not the main thread).
 [param metadata] dictionary can be modified to store file-specific metadata that can be used in [method EditorResourceTooltipPlugin._make_tooltip_for_path] (like image size, sample length etc.).
 */

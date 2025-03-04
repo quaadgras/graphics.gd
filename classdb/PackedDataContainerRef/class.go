@@ -43,7 +43,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 When packing nested containers using [PackedDataContainer], they are recursively packed into [PackedDataContainerRef] (only applies to [Array] and [Dictionary]). Their data can be retrieved the same way as from [PackedDataContainer].
 [codeblock]
 var packed = PackedDataContainer.new()
-packed.pack([1, 2, 3, ["abc", "def"], 4, 5, 6])
+packed.pack([1, 2, 3, ["nested1", "nested2"], 4, 5, 6])
 
 for element in packed:
 
@@ -53,15 +53,17 @@ for element in packed:
 	else:
 	    print(element)
 
-# Prints:
-# 1
-# 2
-# 3
-# ::abc
-# ::def
-# 4
-# 5
-# 6
+[/codeblock]
+Prints:
+[codeblock lang=text]
+1
+2
+3
+::nested1
+::nested2
+4
+5
+6
 [/codeblock]
 */
 type Instance [1]gdclass.PackedDataContainerRef

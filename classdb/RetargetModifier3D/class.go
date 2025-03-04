@@ -1,0 +1,318 @@
+// Package RetargetModifier3D provides methods for working with RetargetModifier3D object instances.
+package RetargetModifier3D
+
+import "unsafe"
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/SkeletonModifier3D"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+
+var _ Object.ID
+var _ RefCounted.Instance
+var _ unsafe.Pointer
+var _ reflect.Type
+var _ callframe.Frame
+var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
+var _ Callable.Function
+var _ Dictionary.Any
+var _ RID.Any
+var _ String.Readable
+var _ Path.ToNode
+var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
+var _ = slices.Delete[[]struct{}, struct{}]
+
+/*
+Retrieves the pose (or global pose) relative to the parent Skeleton's rest in model space and transfers it to the child Skeleton.
+This modifier rewrites the pose of the child skeleton directly in the parent skeleton's update process. This means that it overwrites the mapped bone pose set in the normal process on the target skeleton. If you want to set the target skeleton bone pose after retargeting, you will need to add a [SkeletonModifier3D] child to the target skeleton and thereby modify the pose.
+[b]Note:[/b] When the [member use_global_pose] is enabled, even if it is an unmapped bone, it can cause visual problems because the global pose is applied ignoring the parent bone's pose [b]if it has mapped bone children[/b]. See also [member use_global_pose].
+*/
+type Instance [1]gdclass.RetargetModifier3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
+type Any interface {
+	gd.IsClass
+	AsRetargetModifier3D() Instance
+}
+
+/*
+Sets [constant TRANSFORM_FLAG_POSITION] into [member enable].
+*/
+func (self Instance) SetPositionEnabled(enabled bool) { //gd:RetargetModifier3D.set_position_enabled
+	class(self).SetPositionEnabled(enabled)
+}
+
+/*
+Returns [code]true[/code] if [member enable] has [constant TRANSFORM_FLAG_POSITION].
+*/
+func (self Instance) IsPositionEnabled() bool { //gd:RetargetModifier3D.is_position_enabled
+	return bool(class(self).IsPositionEnabled())
+}
+
+/*
+Sets [constant TRANSFORM_FLAG_ROTATION] into [member enable].
+*/
+func (self Instance) SetRotationEnabled(enabled bool) { //gd:RetargetModifier3D.set_rotation_enabled
+	class(self).SetRotationEnabled(enabled)
+}
+
+/*
+Returns [code]true[/code] if [member enable] has [constant TRANSFORM_FLAG_ROTATION].
+*/
+func (self Instance) IsRotationEnabled() bool { //gd:RetargetModifier3D.is_rotation_enabled
+	return bool(class(self).IsRotationEnabled())
+}
+
+/*
+Sets [constant TRANSFORM_FLAG_SCALE] into [member enable].
+*/
+func (self Instance) SetScaleEnabled(enabled bool) { //gd:RetargetModifier3D.set_scale_enabled
+	class(self).SetScaleEnabled(enabled)
+}
+
+/*
+Returns [code]true[/code] if [member enable] has [constant TRANSFORM_FLAG_SCALE].
+*/
+func (self Instance) IsScaleEnabled() bool { //gd:RetargetModifier3D.is_scale_enabled
+	return bool(class(self).IsScaleEnabled())
+}
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
+type class [1]gdclass.RetargetModifier3D
+
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func New() Instance {
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RetargetModifier3D"))
+	casted := Instance{*(*gdclass.RetargetModifier3D)(unsafe.Pointer(&object))}
+	return casted
+}
+
+func (self Instance) Profile() [1]gdclass.SkeletonProfile {
+	return [1]gdclass.SkeletonProfile(class(self).GetProfile())
+}
+
+func (self Instance) SetProfile(value [1]gdclass.SkeletonProfile) {
+	class(self).SetProfile(value)
+}
+
+func (self Instance) UseGlobalPose() bool {
+	return bool(class(self).IsUsingGlobalPose())
+}
+
+func (self Instance) SetUseGlobalPose(value bool) {
+	class(self).SetUseGlobalPose(value)
+}
+
+func (self Instance) Enable() gdclass.RetargetModifier3DTransformFlag {
+	return gdclass.RetargetModifier3DTransformFlag(class(self).GetEnableFlags())
+}
+
+func (self Instance) SetEnable(value gdclass.RetargetModifier3DTransformFlag) {
+	class(self).SetEnableFlags(value)
+}
+
+//go:nosplit
+func (self class) SetProfile(profile [1]gdclass.SkeletonProfile) { //gd:RetargetModifier3D.set_profile
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(profile[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RetargetModifier3D.Bind_set_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetProfile() [1]gdclass.SkeletonProfile { //gd:RetargetModifier3D.get_profile
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RetargetModifier3D.Bind_get_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.SkeletonProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonProfile](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetUseGlobalPose(use_global_pose bool) { //gd:RetargetModifier3D.set_use_global_pose
+	var frame = callframe.New()
+	callframe.Arg(frame, use_global_pose)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RetargetModifier3D.Bind_set_use_global_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsUsingGlobalPose() bool { //gd:RetargetModifier3D.is_using_global_pose
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RetargetModifier3D.Bind_is_using_global_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetEnableFlags(enable_flags gdclass.RetargetModifier3DTransformFlag) { //gd:RetargetModifier3D.set_enable_flags
+	var frame = callframe.New()
+	callframe.Arg(frame, enable_flags)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RetargetModifier3D.Bind_set_enable_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetEnableFlags() gdclass.RetargetModifier3DTransformFlag { //gd:RetargetModifier3D.get_enable_flags
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.RetargetModifier3DTransformFlag](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RetargetModifier3D.Bind_get_enable_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets [constant TRANSFORM_FLAG_POSITION] into [member enable].
+*/
+//go:nosplit
+func (self class) SetPositionEnabled(enabled bool) { //gd:RetargetModifier3D.set_position_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RetargetModifier3D.Bind_set_position_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns [code]true[/code] if [member enable] has [constant TRANSFORM_FLAG_POSITION].
+*/
+//go:nosplit
+func (self class) IsPositionEnabled() bool { //gd:RetargetModifier3D.is_position_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RetargetModifier3D.Bind_is_position_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets [constant TRANSFORM_FLAG_ROTATION] into [member enable].
+*/
+//go:nosplit
+func (self class) SetRotationEnabled(enabled bool) { //gd:RetargetModifier3D.set_rotation_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RetargetModifier3D.Bind_set_rotation_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns [code]true[/code] if [member enable] has [constant TRANSFORM_FLAG_ROTATION].
+*/
+//go:nosplit
+func (self class) IsRotationEnabled() bool { //gd:RetargetModifier3D.is_rotation_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RetargetModifier3D.Bind_is_rotation_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets [constant TRANSFORM_FLAG_SCALE] into [member enable].
+*/
+//go:nosplit
+func (self class) SetScaleEnabled(enabled bool) { //gd:RetargetModifier3D.set_scale_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RetargetModifier3D.Bind_set_scale_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns [code]true[/code] if [member enable] has [constant TRANSFORM_FLAG_SCALE].
+*/
+//go:nosplit
+func (self class) IsScaleEnabled() bool { //gd:RetargetModifier3D.is_scale_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RetargetModifier3D.Bind_is_scale_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+func (self class) AsRetargetModifier3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRetargetModifier3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsSkeletonModifier3D() SkeletonModifier3D.Advanced {
+	return *((*SkeletonModifier3D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
+	return *((*SkeletonModifier3D.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+
+func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(SkeletonModifier3D.Advanced(self.AsSkeletonModifier3D()), name)
+	}
+}
+
+func (self Instance) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(SkeletonModifier3D.Instance(self.AsSkeletonModifier3D()), name)
+	}
+}
+func init() {
+	gdclass.Register("RetargetModifier3D", func(ptr gd.Object) any {
+		return [1]gdclass.RetargetModifier3D{*(*gdclass.RetargetModifier3D)(unsafe.Pointer(&ptr))}
+	})
+}
+
+type TransformFlag = gdclass.RetargetModifier3DTransformFlag //gd:RetargetModifier3D.TransformFlag
+
+const (
+	/*If set, allows to retarget the position.*/
+	TransformFlagPosition TransformFlag = 1
+	/*If set, allows to retarget the rotation.*/
+	TransformFlagRotation TransformFlag = 2
+	/*If set, allows to retarget the scale.*/
+	TransformFlagScale TransformFlag = 4
+	/*If set, allows to retarget the position/rotation/scale.*/
+	TransformFlagAll TransformFlag = 7
+)

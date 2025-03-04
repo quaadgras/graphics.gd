@@ -2,6 +2,7 @@
 package Dictionary
 
 import (
+	"cmp"
 	"iter"
 	"reflect"
 
@@ -37,6 +38,17 @@ func (m Map[K, V]) Any() Any {
 	return m.proxy.Any(m.state)
 }
 
+// Assign assigns elements of another dictionary into the dictionary. Resizes the dictionary to match dictionary.
+// Performs type conversions if the dictionary is typed.
+func (m *Map[K, V]) Assign(other Map[K, V]) { //gd:Dictionary.assign
+	if m.proxy == nil {
+		*m = New[K, V]()
+	}
+	for key, value := range other.Iter() {
+		m.SetIndex(key, value)
+	}
+}
+
 // Index returns the value at the given index in the dictionary.
 func (m Map[K, V]) Index(index K) V { //gd:Dictionary.get Dictionary[]
 	if m.proxy == nil {
@@ -46,7 +58,7 @@ func (m Map[K, V]) Index(index K) V { //gd:Dictionary.get Dictionary[]
 }
 
 // SetIndex sets the value at the given index in the dictionary.
-func (m *Map[K, V]) SetIndex(index K, value V) {
+func (m *Map[K, V]) SetIndex(index K, value V) { //gd:Dictionary.set
 	if m.proxy == nil {
 		*m = New[K, V]()
 	}
@@ -59,6 +71,17 @@ func Clear[K comparable, V any](m Map[K, V]) { //gd:Dictionary.clear
 		return
 	}
 	m.proxy.Clear(m.state)
+}
+
+// Sort sorts the dictionary in-place by key. This can be used to ensure dictionaries with the same contents
+// produce equivalent results when getting the keys, getting the values, and converting to a string. This is
+// also useful when wanting a JSON representation consistent with what is in memory, and useful for storing
+// on a database that requires dictionaries to be sorted.
+func Sort[K cmp.Ordered, V any](m Map[K, V]) { //gd:Dictionary.sort
+	if m.proxy == nil {
+		return
+	}
+	m.proxy.Sort(m.state, cmp.Less[K])
 }
 
 // Duplicate creates and returns a new shallow copy of the dictionary.
@@ -244,4 +267,9 @@ func (m *Map[K, V]) Iter() iter.Seq2[K, V] {
 		return func(yield func(K, V) bool) {}
 	}
 	return m.proxy.Iter(m.state)
+}
+
+// Type returns the key and value types of the dictionary.
+func Type[K comparable, V any](m Map[K, V]) (key, val reflect.Type) { //gd:Dictionary.is_typed Dictionary.is_typed_key Dictionary.is_typed_value Dictionary.is_same_typed Dictionary.is_same_typed_key Dictionary.is_same_typed_value Dictionary.get_typed_key_builtin Dictionary.get_typed_value_builtin Dictionary.get_typed_key_class_name Dictionary.get_typed_value_class_name Dictionary.get_typed_key_script Dictionary.get_typed_value_script
+	return reflect.TypeFor[K](), reflect.TypeFor[V]()
 }

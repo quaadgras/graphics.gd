@@ -59,10 +59,19 @@ type Any interface {
 }
 
 /*
+Requests the particles to process for extra process time during a single frame.
+Useful for particle playback, if used in combination with [member use_fixed_seed] or by calling [method restart] with parameter [code]keep_seed[/code] set to [code]true[/code].
+*/
+func (self Instance) RequestParticlesProcess(process_time Float.X) { //gd:CPUParticles2D.request_particles_process
+	class(self).RequestParticlesProcess(float64(process_time))
+}
+
+/*
 Restarts the particle emitter.
+If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
 */
 func (self Instance) Restart() { //gd:CPUParticles2D.restart
-	class(self).Restart()
+	class(self).Restart(false)
 }
 
 /*
@@ -104,6 +113,14 @@ func (self Instance) Amount() int {
 
 func (self Instance) SetAmount(value int) {
 	class(self).SetAmount(int64(value))
+}
+
+func (self Instance) Texture() [1]gdclass.Texture2D {
+	return [1]gdclass.Texture2D(class(self).GetTexture())
+}
+
+func (self Instance) SetTexture(value [1]gdclass.Texture2D) {
+	class(self).SetTexture(value)
 }
 
 func (self Instance) Lifetime() Float.X {
@@ -154,6 +171,22 @@ func (self Instance) SetRandomness(value Float.X) {
 	class(self).SetRandomnessRatio(float64(value))
 }
 
+func (self Instance) UseFixedSeed() bool {
+	return bool(class(self).GetUseFixedSeed())
+}
+
+func (self Instance) SetUseFixedSeed(value bool) {
+	class(self).SetUseFixedSeed(value)
+}
+
+func (self Instance) Seed() int {
+	return int(int(class(self).GetSeed()))
+}
+
+func (self Instance) SetSeed(value int) {
+	class(self).SetSeed(int64(value))
+}
+
 func (self Instance) LifetimeRandomness() Float.X {
 	return Float.X(Float.X(class(self).GetLifetimeRandomness()))
 }
@@ -192,14 +225,6 @@ func (self Instance) DrawOrder() gdclass.CPUParticles2DDrawOrder {
 
 func (self Instance) SetDrawOrder(value gdclass.CPUParticles2DDrawOrder) {
 	class(self).SetDrawOrder(value)
-}
-
-func (self Instance) Texture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture())
-}
-
-func (self Instance) SetTexture(value [1]gdclass.Texture2D) {
-	class(self).SetTexture(value)
 }
 
 func (self Instance) EmissionShape() gdclass.CPUParticles2DEmissionShape {
@@ -718,6 +743,19 @@ func (self class) SetSpeedScale(scale float64) { //gd:CPUParticles2D.set_speed_s
 	frame.Free()
 }
 
+/*
+Requests the particles to process for extra process time during a single frame.
+Useful for particle playback, if used in combination with [member use_fixed_seed] or by calling [method restart] with parameter [code]keep_seed[/code] set to [code]true[/code].
+*/
+//go:nosplit
+func (self class) RequestParticlesProcess(process_time float64) { //gd:CPUParticles2D.request_particles_process
+	var frame = callframe.New()
+	callframe.Arg(frame, process_time)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_request_particles_process, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
 //go:nosplit
 func (self class) IsEmitting() bool { //gd:CPUParticles2D.is_emitting
 	var frame = callframe.New()
@@ -839,6 +877,44 @@ func (self class) GetSpeedScale() float64 { //gd:CPUParticles2D.get_speed_scale
 }
 
 //go:nosplit
+func (self class) SetUseFixedSeed(use_fixed_seed bool) { //gd:CPUParticles2D.set_use_fixed_seed
+	var frame = callframe.New()
+	callframe.Arg(frame, use_fixed_seed)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_set_use_fixed_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetUseFixedSeed() bool { //gd:CPUParticles2D.get_use_fixed_seed
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_use_fixed_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSeed(seed int64) { //gd:CPUParticles2D.set_seed
+	var frame = callframe.New()
+	callframe.Arg(frame, seed)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_set_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetSeed() int64 { //gd:CPUParticles2D.get_seed
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
 func (self class) SetDrawOrder(order gdclass.CPUParticles2DDrawOrder) { //gd:CPUParticles2D.set_draw_order
 	var frame = callframe.New()
 	callframe.Arg(frame, order)
@@ -878,10 +954,12 @@ func (self class) GetTexture() [1]gdclass.Texture2D { //gd:CPUParticles2D.get_te
 
 /*
 Restarts the particle emitter.
+If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
 */
 //go:nosplit
-func (self class) Restart() { //gd:CPUParticles2D.restart
+func (self class) Restart(keep_seed bool) { //gd:CPUParticles2D.restart
 	var frame = callframe.New()
+	callframe.Arg(frame, keep_seed)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_restart, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -980,7 +1058,7 @@ func (self class) GetParamMax(param gdclass.CPUParticles2DParameter) float64 { /
 }
 
 /*
-Sets the [Curve] of the parameter specified by [enum Parameter].
+Sets the [Curve] of the parameter specified by [enum Parameter]. Should be a unit [Curve].
 */
 //go:nosplit
 func (self class) SetParamCurve(param gdclass.CPUParticles2DParameter, curve [1]gdclass.Curve) { //gd:CPUParticles2D.set_param_curve
@@ -1077,7 +1155,7 @@ func (self class) SetParticleFlag(particle_flag gdclass.CPUParticles2DParticleFl
 }
 
 /*
-Returns the enabled state of the given flag (see [enum ParticleFlags] for options).
+Returns the enabled state of the given particle flag (see [enum ParticleFlags] for options).
 */
 //go:nosplit
 func (self class) GetParticleFlag(particle_flag gdclass.CPUParticles2DParticleFlags) bool { //gd:CPUParticles2D.get_particle_flag

@@ -127,7 +127,7 @@ func (self Instance) GenerateUniqueId() int { //gd:MultiplayerPeer.generate_uniq
 }
 
 /*
-Returns true if the server can act as a relay in the current configuration (i.e. if the higher level [MultiplayerAPI] should notify connected clients of other peers, and implement a relay protocol to allow communication between them).
+Returns [code]true[/code] if the server can act as a relay in the current configuration. That is, if the higher level [MultiplayerAPI] should notify connected clients of other peers, and implement a relay protocol to allow communication between them.
 */
 func (self Instance) IsServerRelaySupported() bool { //gd:MultiplayerPeer.is_server_relay_supported
 	return bool(class(self).IsServerRelaySupported())
@@ -360,7 +360,7 @@ func (self class) IsRefusingNewConnections() bool { //gd:MultiplayerPeer.is_refu
 }
 
 /*
-Returns true if the server can act as a relay in the current configuration (i.e. if the higher level [MultiplayerAPI] should notify connected clients of other peers, and implement a relay protocol to allow communication between them).
+Returns [code]true[/code] if the server can act as a relay in the current configuration. That is, if the higher level [MultiplayerAPI] should notify connected clients of other peers, and implement a relay protocol to allow communication between them.
 */
 //go:nosplit
 func (self class) IsServerRelaySupported() bool { //gd:MultiplayerPeer.is_server_relay_supported

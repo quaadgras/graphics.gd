@@ -73,6 +73,13 @@ func (self Instance) GetOpenScriptEditors() [][1]gdclass.ScriptEditorBase { //gd
 }
 
 /*
+Returns array of breakpoints.
+*/
+func (self Instance) GetBreakpoints() []string { //gd:ScriptEditor.get_breakpoints
+	return []string(class(self).GetBreakpoints().Strings())
+}
+
+/*
 Registers the [EditorSyntaxHighlighter] to the editor, the [EditorSyntaxHighlighter] will be available on all open scripts.
 [b]Note:[/b] Does not apply to scripts that are already opened.
 */
@@ -119,7 +126,6 @@ func (self Instance) OpenScriptCreateDialog(base_name string, base_path string) 
 /*
 Opens help for the given topic. The [param topic] is an encoded string that controls which class, method, constant, signal, annotation, property, or theme item should be focused.
 The supported [param topic] formats include [code]class_name:class[/code], [code]class_method:class:method[/code], [code]class_constant:class:constant[/code], [code]class_signal:class:signal[/code], [code]class_annotation:class:@annotation[/code], [code]class_property:class:property[/code], and [code]class_theme_item:class:item[/code], where [code]class[/code] is the class name, [code]method[/code] is the method name, [code]constant[/code] is the constant name, [code]signal[/code] is the signal name, [code]annotation[/code] is the annotation name, [code]property[/code] is the property name, and [code]item[/code] is the theme item.
-[b]Examples:[/b]
 [codeblock]
 # Shows help for the Node class.
 class_name:Node
@@ -143,6 +149,14 @@ class_theme_item:GraphNode:panel_selected
 */
 func (self Instance) GotoHelp(topic string) { //gd:ScriptEditor.goto_help
 	class(self).GotoHelp(String.New(topic))
+}
+
+/*
+Updates the documentation for the given [param script] if the script's documentation is currently open.
+[b]Note:[/b] This should be called whenever the script is changed to keep the open documentation state up to date.
+*/
+func (self Instance) UpdateDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.update_docs_from_script
+	class(self).UpdateDocsFromScript(script)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -185,6 +199,19 @@ func (self class) GetOpenScriptEditors() Array.Contains[[1]gdclass.ScriptEditorB
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_open_script_editors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.ScriptEditorBase]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns array of breakpoints.
+*/
+//go:nosplit
+func (self class) GetBreakpoints() Packed.Strings { //gd:ScriptEditor.get_breakpoints
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_breakpoints, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -269,7 +296,6 @@ func (self class) OpenScriptCreateDialog(base_name String.Readable, base_path St
 /*
 Opens help for the given topic. The [param topic] is an encoded string that controls which class, method, constant, signal, annotation, property, or theme item should be focused.
 The supported [param topic] formats include [code]class_name:class[/code], [code]class_method:class:method[/code], [code]class_constant:class:constant[/code], [code]class_signal:class:signal[/code], [code]class_annotation:class:@annotation[/code], [code]class_property:class:property[/code], and [code]class_theme_item:class:item[/code], where [code]class[/code] is the class name, [code]method[/code] is the method name, [code]constant[/code] is the constant name, [code]signal[/code] is the signal name, [code]annotation[/code] is the annotation name, [code]property[/code] is the property name, and [code]item[/code] is the theme item.
-[b]Examples:[/b]
 [codeblock]
 # Shows help for the Node class.
 class_name:Node
@@ -297,6 +323,19 @@ func (self class) GotoHelp(topic String.Readable) { //gd:ScriptEditor.goto_help
 	callframe.Arg(frame, pointers.Get(gd.InternalString(topic)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_goto_help, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Updates the documentation for the given [param script] if the script's documentation is currently open.
+[b]Note:[/b] This should be called whenever the script is changed to keep the open documentation state up to date.
+*/
+//go:nosplit
+func (self class) UpdateDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.update_docs_from_script
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(script[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_update_docs_from_script, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnEditorScriptChanged(cb func(script [1]gdclass.Script)) {

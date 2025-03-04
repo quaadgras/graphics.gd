@@ -78,7 +78,7 @@ func (self Instance) SetStreamPitchScale(stream int, pitch_scale Float.X) { //gd
 }
 
 /*
-Return true whether the stream associated with an integer ID is still playing. Check [method play_stream] for information on when this ID becomes invalid.
+Returns [code]true[/code] if the stream associated with the given integer ID is still playing. Check [method play_stream] for information on when this ID becomes invalid.
 */
 func (self Instance) IsStreamPlaying(stream int) bool { //gd:AudioStreamPlaybackPolyphonic.is_stream_playing
 	return bool(class(self).IsStreamPlaying(int64(stream)))
@@ -159,7 +159,7 @@ func (self class) SetStreamPitchScale(stream int64, pitch_scale float64) { //gd:
 }
 
 /*
-Return true whether the stream associated with an integer ID is still playing. Check [method play_stream] for information on when this ID becomes invalid.
+Returns [code]true[/code] if the stream associated with the given integer ID is still playing. Check [method play_stream] for information on when this ID becomes invalid.
 */
 //go:nosplit
 func (self class) IsStreamPlaying(stream int64) bool { //gd:AudioStreamPlaybackPolyphonic.is_stream_playing

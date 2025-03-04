@@ -1376,7 +1376,6 @@ func (self String) Substr(from int64, len int64) String {
 /*
 Splits the string using a [param delimiter] and returns the substring at index [param slice]. Returns the original string if [param delimiter] does not occur in the string. Returns an empty string if the [param slice] does not exist.
 This is faster than [method split], if you only need one substring.
-[b]Example:[/b]
 [codeblock]
 print("i/am/example/hi".get_slice("/", 2)) # Prints "example"
 [/codeblock]
@@ -1657,7 +1656,7 @@ func (self String) Bigrams() PackedStringArray {
 }
 
 /*
-Returns the similarity index ([url=https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient]Sorensen-Dice coefficient[/url]) of this string compared to another. A result of [code]1.0[/code] means totally similar, while [code]0.0[/code] means totally dissimilar.
+Returns the similarity index ([url=https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient]Sørensen-Dice coefficient[/url]) of this string compared to another. A result of [code]1.0[/code] means totally similar, while [code]0.0[/code] means totally dissimilar.
 [codeblock]
 print("ABC123".similarity("ABC123")) # Prints 1.0
 print("ABC123".similarity("XYZ456")) # Prints 0.0
@@ -1679,7 +1678,7 @@ func (self String) Similarity(text String) float64 {
 
 /*
 Formats the string by replacing all occurrences of [param placeholder] with the elements of [param values].
-[param values] can be a [Dictionary] or an [Array]. Any underscores in [param placeholder] will be replaced with the corresponding keys in advance. Array elements use their index as keys.
+[param values] can be a [Dictionary], an [Array], or an [Object]. Any underscores in [param placeholder] will be replaced with the corresponding keys in advance. Array elements use their index as keys.
 [codeblock]
 # Prints "Waiting for Godot is a play by Samuel Beckett, and Godot Engine is named after it."
 var use_array_values = "Waiting for {0} is a play by {1}, and {0} Engine is named after it."
@@ -1694,13 +1693,19 @@ Some additional handling is performed when [param values] is an [Array]. If [par
 print("User {} is {}.".format([42, "Godot"], "{}"))
 print("User {id} is {name}.".format([["id", 42], ["name", "Godot"]]))
 [/codeblock]
-See also the [url=$DOCS_URL/tutorials/scripting/gdscript/gdscript_format_string.html]GDScript format string[/url] tutorial.
-[b]Note:[/b] The replacement of placeholders is not done all at once, instead each placeholder is replaced in the order they are passed, this means that if one of the replacement strings contains a key it will also be replaced. This can be very powerful, but can also cause unexpected results if you are not careful. If you do not need to perform replacement in the replacement strings, make sure your replacements do not contain placeholders to ensure reliable results.
+When passing an [Object], the property names from [method Object.get_property_list] are used as keys.
 [codeblock]
-print("{0} {1}".format(["{1}", "x"]))                       # Prints "x x".
-print("{0} {1}".format(["x", "{0}"]))                       # Prints "x {0}".
-print("{foo} {bar}".format({"foo": "{bar}", "bar": "baz"})) # Prints "baz baz".
-print("{foo} {bar}".format({"bar": "baz", "foo": "{bar}"})) # Prints "{bar} baz".
+# Prints "Visible true, position (0, 0)"
+var node = Node2D.new()
+print("Visible {visible}, position {position}".format(node))
+[/codeblock]
+See also the [url=$DOCS_URL/tutorials/scripting/gdscript/gdscript_format_string.html]GDScript format string[/url] tutorial.
+[b]Note:[/b] Each replacement is done sequentially for each element of [param values], [b]not[/b] all at once. This means that if any element is inserted and it contains another placeholder, it may be changed by the next replacement. While this can be very useful, it often causes unexpected results. If not necessary, make sure [param values]'s elements do not contain placeholders.
+[codeblock]
+print("{0} {1}".format(["{1}", "x"]))           # Prints "x x"
+print("{0} {1}".format(["x", "{0}"]))           # Prints "x {0}"
+print("{a} {b}".format({"a": "{b}", "b": "c"})) # Prints "c c"
+print("{a} {b}".format({"b": "c", "a": "{b}"})) # Prints "{b} c"
 [/codeblock]
 [b]Note:[/b] In C#, it's recommended to [url=https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated]interpolate strings with "$"[/url], instead.
 */
@@ -1895,7 +1900,6 @@ func (self String) ToSnakeCase() String {
 Splits the string using a [param delimiter] and returns an array of the substrings. If [param delimiter] is an empty string, each substring will be a single character. This method is the opposite of [method join].
 If [param allow_empty] is [code]false[/code], empty strings between adjacent delimiters are excluded from the array.
 If [param maxsplit] is greater than [code]0[/code], the number of splits may not exceed [param maxsplit]. By default, the entire string is split.
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var some_array = "One,Two,Three,Four".split(",", true, 2)
@@ -1934,7 +1938,6 @@ func (self String) Split(delimiter String, allow_empty bool, maxsplit int64) Pac
 Splits the string using a [param delimiter] and returns an array of the substrings, starting from the end of the string. The splits in the returned array appear in the same order as the original string. If [param delimiter] is an empty string, each substring will be a single character.
 If [param allow_empty] is [code]false[/code], empty strings between adjacent delimiters are excluded from the array.
 If [param maxsplit] is greater than [code]0[/code], the number of splits may not exceed [param maxsplit]. By default, the entire string is split, which is mostly identical to [method split].
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var some_string = "One,Two,Three,Four"
@@ -1987,7 +1990,6 @@ func (self String) SplitFloats(delimiter String, allow_empty bool) PackedFloat64
 
 /*
 Returns the concatenation of [param parts]' elements, with each element separated by the string calling this method. This method is the opposite of [method split].
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var fruits = ["Apple", "Orange", "Pear", "Kiwi"]
@@ -1996,7 +1998,7 @@ print(", ".join(fruits))  # Prints "Apple, Orange, Pear, Kiwi"
 print("---".join(fruits)) # Prints "Apple---Orange---Pear---Kiwi"
 [/gdscript]
 [csharp]
-var fruits = new string[] {"Apple", "Orange", "Pear", "Kiwi"};
+string[] fruits = ["Apple", "Orange", "Pear", "Kiwi"];
 
 // In C#, this method is static.
 GD.Print(string.Join(", ", fruits));  // Prints "Apple, Orange, Pear, Kiwi"
@@ -2370,8 +2372,8 @@ print("team".contains("I"))  # Prints false
 print("I" in "team")         # Prints false
 [/gdscript]
 [csharp]
-GD.Print("Node".Contains("de")); // Prints true
-GD.Print("team".Contains("I"));  // Prints false
+GD.Print("Node".Contains("de")); // Prints True
+GD.Print("team".Contains("I"));  // Prints False
 [/csharp]
 [/codeblocks]
 If you need to know where [param what] is within the string, use [method find]. See also [method containsn].
@@ -2633,6 +2635,52 @@ func (self String) ValidateFilename() String {
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.validate_filename(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if this string is a valid ASCII identifier. A valid ASCII identifier may contain only letters, digits, and underscores ([code]_[/code]), and the first character may not be a digit.
+[codeblock]
+print("node_2d".is_valid_ascii_identifier())    # Prints true
+print("TYPE_FLOAT".is_valid_ascii_identifier()) # Prints true
+print("1st_method".is_valid_ascii_identifier()) # Prints false
+print("MyMethod#2".is_valid_ascii_identifier()) # Prints false
+[/codeblock]
+See also [method is_valid_unicode_identifier].
+*/
+//go:nosplit
+func (self String) IsValidAsciiIdentifier() bool {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.String.is_valid_ascii_identifier(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if this string is a valid Unicode identifier.
+A valid Unicode identifier must begin with a Unicode character of class [code]XID_Start[/code] or [code]"_"[/code], and may contain Unicode characters of class [code]XID_Continue[/code] in the other positions.
+[codeblock]
+print("node_2d".is_valid_unicode_identifier())      # Prints true
+print("1st_method".is_valid_unicode_identifier())   # Prints false
+print("MyMethod#2".is_valid_unicode_identifier())   # Prints false
+print("állóképesség".is_valid_unicode_identifier()) # Prints true
+print("выносливость".is_valid_unicode_identifier()) # Prints true
+print("体力".is_valid_unicode_identifier())         # Prints true
+[/codeblock]
+See also [method is_valid_ascii_identifier].
+[b]Note:[/b] This method checks identifiers the same way as GDScript. See [method TextServer.is_valid_identifier] for more advanced checks.
+*/
+//go:nosplit
+func (self String) IsValidUnicodeIdentifier() bool {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.String.is_valid_unicode_identifier(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -3075,7 +3123,6 @@ func (self String) NumScientific(number float64) String {
 Converts a [float] to a string representation of a decimal number, with the number of decimal places specified in [param decimals].
 If [param decimals] is [code]-1[/code] as by default, the string representation may only have up to 14 significant digits, with digits before the decimal point having priority over digits after.
 Trailing zeros are not included in the string. The last digit is rounded, not truncated.
-[b]Example:[/b]
 [codeblock]
 String.num(3.141593)     # Returns "3.141593"
 String.num(3.141593, 3)  # Returns "3.142"
@@ -3304,9 +3351,8 @@ func (self StringName) Substr(from int64, len int64) String {
 }
 
 /*
-Splits the string using a [param delimiter] and returns the substring at index [param slice]. Returns an empty string if the [param slice] does not exist.
+Splits the string using a [param delimiter] and returns the substring at index [param slice]. Returns the original string if [param delimiter] does not occur in the string. Returns an empty string if the [param slice] does not exist.
 This is faster than [method split], if you only need one substring.
-[b]Example:[/b]
 [codeblock]
 print("i/am/example/hi".get_slice("/", 2)) # Prints "example"
 [/codeblock]
@@ -3587,7 +3633,7 @@ func (self StringName) Bigrams() PackedStringArray {
 }
 
 /*
-Returns the similarity index ([url=https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient]Sorensen-Dice coefficient[/url]) of this string compared to another. A result of [code]1.0[/code] means totally similar, while [code]0.0[/code] means totally dissimilar.
+Returns the similarity index ([url=https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient]Sørensen-Dice coefficient[/url]) of this string compared to another. A result of [code]1.0[/code] means totally similar, while [code]0.0[/code] means totally dissimilar.
 [codeblock]
 print("ABC123".similarity("ABC123")) # Prints 1.0
 print("ABC123".similarity("XYZ456")) # Prints 0.0
@@ -3609,7 +3655,7 @@ func (self StringName) Similarity(text String) float64 {
 
 /*
 Formats the string by replacing all occurrences of [param placeholder] with the elements of [param values].
-[param values] can be a [Dictionary] or an [Array]. Any underscores in [param placeholder] will be replaced with the corresponding keys in advance. Array elements use their index as keys.
+[param values] can be a [Dictionary], an [Array], or an [Object]. Any underscores in [param placeholder] will be replaced with the corresponding keys in advance. Array elements use their index as keys.
 [codeblock]
 # Prints "Waiting for Godot is a play by Samuel Beckett, and Godot Engine is named after it."
 var use_array_values = "Waiting for {0} is a play by {1}, and {0} Engine is named after it."
@@ -3624,7 +3670,20 @@ Some additional handling is performed when [param values] is an [Array]. If [par
 print("User {} is {}.".format([42, "Godot"], "{}"))
 print("User {id} is {name}.".format([["id", 42], ["name", "Godot"]]))
 [/codeblock]
+When passing an [Object], the property names from [method Object.get_property_list] are used as keys.
+[codeblock]
+# Prints "Visible true, position (0, 0)"
+var node = Node2D.new()
+print("Visible {visible}, position {position}".format(node))
+[/codeblock]
 See also the [url=$DOCS_URL/tutorials/scripting/gdscript/gdscript_format_string.html]GDScript format string[/url] tutorial.
+[b]Note:[/b] Each replacement is done sequentially for each element of [param values], [b]not[/b] all at once. This means that if any element is inserted and it contains another placeholder, it may be changed by the next replacement. While this can be very useful, it often causes unexpected results. If not necessary, make sure [param values]'s elements do not contain placeholders.
+[codeblock]
+print("{0} {1}".format(["{1}", "x"]))           # Prints "x x"
+print("{0} {1}".format(["x", "{0}"]))           # Prints "x {0}"
+print("{a} {b}".format({"a": "{b}", "b": "c"})) # Prints "c c"
+print("{a} {b}".format({"b": "c", "a": "{b}"})) # Prints "{b} c"
+[/codeblock]
 [b]Note:[/b] In C#, it's recommended to [url=https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated]interpolate strings with "$"[/url], instead.
 */
 //go:nosplit
@@ -3818,7 +3877,6 @@ func (self StringName) ToSnakeCase() String {
 Splits the string using a [param delimiter] and returns an array of the substrings. If [param delimiter] is an empty string, each substring will be a single character. This method is the opposite of [method join].
 If [param allow_empty] is [code]false[/code], empty strings between adjacent delimiters are excluded from the array.
 If [param maxsplit] is greater than [code]0[/code], the number of splits may not exceed [param maxsplit]. By default, the entire string is split.
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var some_array = "One,Two,Three,Four".split(",", true, 2)
@@ -3857,7 +3915,6 @@ func (self StringName) Split(delimiter String, allow_empty bool, maxsplit int64)
 Splits the string using a [param delimiter] and returns an array of the substrings, starting from the end of the string. The splits in the returned array appear in the same order as the original string. If [param delimiter] is an empty string, each substring will be a single character.
 If [param allow_empty] is [code]false[/code], empty strings between adjacent delimiters are excluded from the array.
 If [param maxsplit] is greater than [code]0[/code], the number of splits may not exceed [param maxsplit]. By default, the entire string is split, which is mostly identical to [method split].
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var some_string = "One,Two,Three,Four"
@@ -3910,7 +3967,6 @@ func (self StringName) SplitFloats(delimiter String, allow_empty bool) PackedFlo
 
 /*
 Returns the concatenation of [param parts]' elements, with each element separated by the string calling this method. This method is the opposite of [method split].
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var fruits = ["Apple", "Orange", "Pear", "Kiwi"]
@@ -3919,7 +3975,7 @@ print(", ".join(fruits))  # Prints "Apple, Orange, Pear, Kiwi"
 print("---".join(fruits)) # Prints "Apple---Orange---Pear---Kiwi"
 [/gdscript]
 [csharp]
-var fruits = new string[] {"Apple", "Orange", "Pear", "Kiwi"};
+string[] fruits = ["Apple", "Orange", "Pear", "Kiwi"];
 
 // In C#, this method is static.
 GD.Print(string.Join(", ", fruits));  // Prints "Apple, Orange, Pear, Kiwi"
@@ -4278,8 +4334,8 @@ print("team".contains("I"))  # Prints false
 print("I" in "team")         # Prints false
 [/gdscript]
 [csharp]
-GD.Print("Node".Contains("de")); // Prints true
-GD.Print("team".Contains("I"));  // Prints false
+GD.Print("Node".Contains("de")); // Prints True
+GD.Print("team".Contains("I"));  // Prints False
 [/csharp]
 [/codeblocks]
 If you need to know where [param what] is within the string, use [method find]. See also [method containsn].
@@ -4423,7 +4479,7 @@ func (self StringName) XmlUnescape() String {
 }
 
 /*
-Encodes the string to URL-friendly format. This method is meant to properly encode the parameters in a URL when sending an HTTP request.
+Encodes the string to URL-friendly format. This method is meant to properly encode the parameters in a URL when sending an HTTP request. See also [method uri_decode].
 [codeblocks]
 [gdscript]
 var prefix = "$DOCS_URL/?highlight="
@@ -4451,7 +4507,7 @@ func (self StringName) UriEncode() String {
 }
 
 /*
-Decodes the string from its URL-encoded format. This method is meant to properly decode the parameters in a URL when receiving an HTTP request.
+Decodes the string from its URL-encoded format. This method is meant to properly decode the parameters in a URL when receiving an HTTP request. See also [method uri_encode].
 [codeblocks]
 [gdscript]
 var url = "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
@@ -4541,6 +4597,52 @@ func (self StringName) ValidateFilename() String {
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.validate_filename(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if this string is a valid ASCII identifier. A valid ASCII identifier may contain only letters, digits, and underscores ([code]_[/code]), and the first character may not be a digit.
+[codeblock]
+print("node_2d".is_valid_ascii_identifier())    # Prints true
+print("TYPE_FLOAT".is_valid_ascii_identifier()) # Prints true
+print("1st_method".is_valid_ascii_identifier()) # Prints false
+print("MyMethod#2".is_valid_ascii_identifier()) # Prints false
+[/codeblock]
+See also [method is_valid_unicode_identifier].
+*/
+//go:nosplit
+func (self StringName) IsValidAsciiIdentifier() bool {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.StringName.is_valid_ascii_identifier(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if this string is a valid Unicode identifier.
+A valid Unicode identifier must begin with a Unicode character of class [code]XID_Start[/code] or [code]"_"[/code], and may contain Unicode characters of class [code]XID_Continue[/code] in the other positions.
+[codeblock]
+print("node_2d".is_valid_unicode_identifier())      # Prints true
+print("1st_method".is_valid_unicode_identifier())   # Prints false
+print("MyMethod#2".is_valid_unicode_identifier())   # Prints false
+print("állóképesség".is_valid_unicode_identifier()) # Prints true
+print("выносливость".is_valid_unicode_identifier()) # Prints true
+print("体力".is_valid_unicode_identifier())         # Prints true
+[/codeblock]
+See also [method is_valid_ascii_identifier].
+[b]Note:[/b] This method checks identifiers the same way as GDScript. See [method TextServer.is_valid_identifier] for more advanced checks.
+*/
+//go:nosplit
+func (self StringName) IsValidUnicodeIdentifier() bool {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.StringName.is_valid_unicode_identifier(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -4694,11 +4796,11 @@ func (self StringName) ToInt() int64 {
 /*
 Converts the string representing a decimal number into a [float]. This method stops on the first non-number character, except the first decimal point ([code].[/code]) and the exponent letter ([code]e[/code]). See also [method is_valid_float].
 [codeblock]
-var a = "12.35".to_float() # a is 12.35
-var b = "1.2.3".to_float() # b is 1.2
-var c = "12xy3".to_float() # c is 12.0
-var d = "1e3".to_float()   # d is 1000.0
-var e = "Hello!".to_int()  # e is 0.0
+var a = "12.35".to_float()  # a is 12.35
+var b = "1.2.3".to_float()  # b is 1.2
+var c = "12xy3".to_float()  # c is 12.0
+var d = "1e3".to_float()    # d is 1000.0
+var e = "Hello!".to_float() # e is 0.0
 [/codeblock]
 */
 //go:nosplit
@@ -4855,7 +4957,7 @@ func (self StringName) TrimSuffix(suffix String) String {
 }
 
 /*
-Converts the string to an [url=https://en.wikipedia.org/wiki/ASCII]ASCII[/url]/Latin-1 encoded [PackedByteArray]. This method is slightly faster than [method to_utf8_buffer], but replaces all unsupported characters with spaces.
+Converts the string to an [url=https://en.wikipedia.org/wiki/ASCII]ASCII[/url]/Latin-1 encoded [PackedByteArray]. This method is slightly faster than [method to_utf8_buffer], but replaces all unsupported characters with spaces. This is the inverse of [method PackedByteArray.get_string_from_ascii].
 */
 //go:nosplit
 func (self StringName) ToAsciiBuffer() PackedByteArray {
@@ -4869,7 +4971,7 @@ func (self StringName) ToAsciiBuffer() PackedByteArray {
 }
 
 /*
-Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-8]UTF-8[/url] encoded [PackedByteArray]. This method is slightly slower than [method to_ascii_buffer], but supports all UTF-8 characters. For most cases, prefer using this method.
+Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-8]UTF-8[/url] encoded [PackedByteArray]. This method is slightly slower than [method to_ascii_buffer], but supports all UTF-8 characters. For most cases, prefer using this method. This is the inverse of [method PackedByteArray.get_string_from_utf8].
 */
 //go:nosplit
 func (self StringName) ToUtf8Buffer() PackedByteArray {
@@ -4883,7 +4985,7 @@ func (self StringName) ToUtf8Buffer() PackedByteArray {
 }
 
 /*
-Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-16]UTF-16[/url] encoded [PackedByteArray].
+Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-16]UTF-16[/url] encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_utf16].
 */
 //go:nosplit
 func (self StringName) ToUtf16Buffer() PackedByteArray {
@@ -4897,7 +4999,7 @@ func (self StringName) ToUtf16Buffer() PackedByteArray {
 }
 
 /*
-Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-32]UTF-32[/url] encoded [PackedByteArray].
+Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-32]UTF-32[/url] encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_utf32].
 */
 //go:nosplit
 func (self StringName) ToUtf32Buffer() PackedByteArray {
@@ -4937,7 +5039,7 @@ func (self StringName) HexDecode() PackedByteArray {
 }
 
 /*
-Converts the string to a [url=https://en.wikipedia.org/wiki/Wide_character]wide character[/url] ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded [PackedByteArray].
+Converts the string to a [url=https://en.wikipedia.org/wiki/Wide_character]wide character[/url] ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_wchar].
 */
 //go:nosplit
 func (self StringName) ToWcharBuffer() PackedByteArray {
@@ -4999,15 +5101,15 @@ Returns the node name indicated by [param idx], starting from 0. If [param idx] 
 [codeblocks]
 [gdscript]
 var sprite_path = NodePath("../RigidBody2D/Sprite2D")
-print(sprite_path.get_name(0)) # Prints "..".
-print(sprite_path.get_name(1)) # Prints "RigidBody2D".
-print(sprite_path.get_name(2)) # Prints "Sprite".
+print(sprite_path.get_name(0)) # Prints ".."
+print(sprite_path.get_name(1)) # Prints "RigidBody2D"
+print(sprite_path.get_name(2)) # Prints "Sprite"
 [/gdscript]
 [csharp]
 var spritePath = new NodePath("../RigidBody2D/Sprite2D");
-GD.Print(spritePath.GetName(0)); // Prints "..".
-GD.Print(spritePath.GetName(1)); // Prints "PathFollow2D".
-GD.Print(spritePath.GetName(2)); // Prints "Sprite".
+GD.Print(spritePath.GetName(0)); // Prints ".."
+GD.Print(spritePath.GetName(1)); // Prints "PathFollow2D"
+GD.Print(spritePath.GetName(2)); // Prints "Sprite"
 [/csharp]
 [/codeblocks]
 */
@@ -5058,13 +5160,13 @@ Returns the property name indicated by [param idx], starting from 0. If [param i
 [codeblocks]
 [gdscript]
 var path_to_name = NodePath("Sprite2D:texture:resource_name")
-print(path_to_name.get_subname(0)) # Prints "texture".
-print(path_to_name.get_subname(1)) # Prints "resource_name".
+print(path_to_name.get_subname(0)) # Prints "texture"
+print(path_to_name.get_subname(1)) # Prints "resource_name"
 [/gdscript]
 [csharp]
 var pathToName = new NodePath("Sprite2D:texture:resource_name");
-GD.Print(pathToName.GetSubname(0)); // Prints "texture".
-GD.Print(pathToName.GetSubname(1)); // Prints "resource_name".
+GD.Print(pathToName.GetSubname(0)); // Prints "texture"
+GD.Print(pathToName.GetSubname(1)); // Prints "resource_name"
 [/csharp]
 [/codeblocks]
 */
@@ -5099,11 +5201,11 @@ Returns all property subnames concatenated with a colon character ([code]:[/code
 [codeblocks]
 [gdscript]
 var node_path = ^"Sprite2D:texture:resource_name"
-print(node_path.get_concatenated_subnames()) # Prints "texture:resource_name".
+print(node_path.get_concatenated_subnames()) # Prints "texture:resource_name"
 [/gdscript]
 [csharp]
 var nodePath = new NodePath("Sprite2D:texture:resource_name");
-GD.Print(nodePath.GetConcatenatedSubnames()); // Prints "texture:resource_name".
+GD.Print(nodePath.GetConcatenatedSubnames()); // Prints "texture:resource_name"
 [/csharp]
 [/codeblocks]
 */
@@ -5153,7 +5255,7 @@ var nodePath = new NodePath("position:x");
 
 // propertyPath points to the "position" in the "x" axis of this node.
 NodePath propertyPath = nodePath.GetAsPropertyPath();
-GD.Print(propertyPath); // Prints ":position:x".
+GD.Print(propertyPath); // Prints ":position:x"
 [/csharp]
 [/codeblocks]
 */
@@ -5214,7 +5316,8 @@ func (self Callable) Callv(arguments Array) Variant {
 }
 
 /*
-Returns [code]true[/code] if this [Callable] has no target to call the method on.
+Returns [code]true[/code] if this [Callable] has no target to call the method on. Equivalent to [code]callable == Callable()[/code].
+[b]Note:[/b] This is [i]not[/i] the same as [code]not is_valid()[/code] and using [code]not is_null()[/code] will [i]not[/i] guarantee that this callable can be called. Use [method is_valid] instead.
 */
 //go:nosplit
 func (self Callable) IsNull() bool {
@@ -5330,7 +5433,8 @@ func (self Callable) GetArgumentCount() int64 {
 }
 
 /*
-Returns the total amount of arguments bound (or unbound) via successive [method bind] or [method unbind] calls. If the amount of arguments unbound is greater than the ones bound, this function returns a value less than zero.
+Returns the total amount of arguments bound via successive [method bind] or [method unbind] calls. This is the same as the size of the array returned by [method get_bound_arguments]. See [method get_bound_arguments] for details.
+[b]Note:[/b] The [method get_bound_arguments_count] and [method get_unbound_arguments_count] methods can both return positive values.
 */
 //go:nosplit
 func (self Callable) GetBoundArgumentsCount() int64 {
@@ -5344,7 +5448,14 @@ func (self Callable) GetBoundArgumentsCount() int64 {
 }
 
 /*
-Return the bound arguments (as long as [method get_bound_arguments_count] is greater than zero), or empty (if [method get_bound_arguments_count] is less than or equal to zero).
+Returns the array of arguments bound via successive [method bind] or [method unbind] calls. These arguments will be added [i]after[/i] the arguments passed to the call, from which [method get_unbound_arguments_count] arguments on the right have been previously excluded.
+[codeblock]
+func get_effective_arguments(callable, call_args):
+    assert(call_args.size() - callable.get_unbound_arguments_count() >= 0)
+    var result = call_args.slice(0, call_args.size() - callable.get_unbound_arguments_count())
+    result.append_array(callable.get_bound_arguments())
+    return result
+[/codeblock]
 */
 //go:nosplit
 func (self Callable) GetBoundArguments() Array {
@@ -5353,6 +5464,21 @@ func (self Callable) GetBoundArguments() Array {
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.get_bound_arguments(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Array](r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the total amount of arguments unbound via successive [method bind] or [method unbind] calls. See [method get_bound_arguments] for details.
+[b]Note:[/b] The [method get_bound_arguments_count] and [method get_unbound_arguments_count] methods can both return positive values.
+*/
+//go:nosplit
+func (self Callable) GetUnboundArgumentsCount() int64 {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Callable.get_unbound_arguments_count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -5505,7 +5631,7 @@ func (self Callable) Bind(args ...Variant) Callable {
 }
 
 /*
-Returns [code]true[/code] if the signal's name does not exist in its object, or the object is not valid.
+Returns [code]true[/code] if this [Signal] has no object and the signal name is empty. Equivalent to [code]signal == Signal()[/code].
 */
 //go:nosplit
 func (self Signal) IsNull() bool {
@@ -5630,6 +5756,20 @@ func (self Signal) GetConnections() Array {
 }
 
 /*
+Returns [code]true[/code] if any [Callable] is connected to this signal.
+*/
+//go:nosplit
+func (self Signal) HasConnections() bool {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Signal.has_connections(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Emits this signal. All [Callable]s connected to this signal will be triggered. This method supports a variable number of arguments, so parameters can be passed as a comma separated list.
 */
 //go:nosplit
@@ -5681,6 +5821,31 @@ func (self Dictionary) Clear() {
 	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	frame.Free()
+}
+
+/*
+Assigns elements of another [param dictionary] into the dictionary. Resizes the dictionary to match [param dictionary]. Performs type conversions if the dictionary is typed.
+*/
+//go:nosplit
+func (self Dictionary) Assign(dictionary Dictionary) {
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(dictionary))
+	var r_ret = callframe.Nil
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.assign(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	frame.Free()
+}
+
+/*
+Sorts the dictionary in-place by key. This can be used to ensure dictionaries with the same contents produce equivalent results when getting the [method keys], getting the [method values], and converting to a string. This is also useful when wanting a JSON representation consistent with what is in memory, and useful for storing on a database that requires dictionaries to be sorted.
+*/
+//go:nosplit
+func (self Dictionary) Sort() {
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	frame.Free()
 }
 
@@ -5779,9 +5944,9 @@ var myDict = new Godot.Collections.Dictionary
     { 210, default },
 };
 
-GD.Print(myDict.ContainsKey("Godot")); // Prints true
-GD.Print(myDict.ContainsKey(210));     // Prints true
-GD.Print(myDict.ContainsKey(4));       // Prints false
+GD.Print(myDict.ContainsKey("Godot")); // Prints True
+GD.Print(myDict.ContainsKey(210));     // Prints True
+GD.Print(myDict.ContainsKey(4));       // Prints False
 [/csharp]
 [/codeblocks]
 In GDScript, this is equivalent to the [code]in[/code] operator:
@@ -5868,7 +6033,7 @@ var dict1 = new Godot.Collections.Dictionary{{"A", 10}, {"B", 2}};
 var dict2 = new Godot.Collections.Dictionary{{"A", 10}, {"B", 2}};
 
 // Godot.Collections.Dictionary has no Hash() method. Use GD.Hash() instead.
-GD.Print(GD.Hash(dict1) == GD.Hash(dict2)); // Prints true
+GD.Print(GD.Hash(dict1) == GD.Hash(dict2)); // Prints True
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] Dictionaries with the same entries but in a different order will not have the same hash.
@@ -5955,6 +6120,193 @@ func (self Dictionary) GetOrAdd(key Variant, def Variant) Variant {
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.get_or_add(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	var ret = pointers.New[Variant](r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the value of the element at the given [param key] to the given [param value]. This is the same as using the [code][][/code] operator ([code]array[index] = value[/code]).
+*/
+//go:nosplit
+func (self Dictionary) Set(key Variant, value Variant) bool {
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(key))
+	callframe.Arg(frame, pointers.Get(value))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the dictionary is typed. Typed dictionaries can only store keys/values of their associated type and provide type safety for the [code][][/code] operator. Methods of typed dictionary still return [Variant].
+*/
+//go:nosplit
+func (self Dictionary) IsTyped() bool {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.is_typed(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the dictionary's keys are typed.
+*/
+//go:nosplit
+func (self Dictionary) IsTypedKey() bool {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.is_typed_key(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the dictionary's values are typed.
+*/
+//go:nosplit
+func (self Dictionary) IsTypedValue() bool {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.is_typed_value(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the dictionary is typed the same as [param dictionary].
+*/
+//go:nosplit
+func (self Dictionary) IsSameTyped(dictionary Dictionary) bool {
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(dictionary))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.is_same_typed(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the dictionary's keys are typed the same as [param dictionary]'s keys.
+*/
+//go:nosplit
+func (self Dictionary) IsSameTypedKey(dictionary Dictionary) bool {
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(dictionary))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.is_same_typed_key(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the dictionary's values are typed the same as [param dictionary]'s values.
+*/
+//go:nosplit
+func (self Dictionary) IsSameTypedValue(dictionary Dictionary) bool {
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(dictionary))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.is_same_typed_value(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the built-in [Variant] type of the typed dictionary's keys as a [enum Variant.Type] constant. If the keys are not typed, returns [constant TYPE_NIL]. See also [method is_typed_key].
+*/
+//go:nosplit
+func (self Dictionary) GetTypedKeyBuiltin() int64 {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.get_typed_key_builtin(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the built-in [Variant] type of the typed dictionary's values as a [enum Variant.Type] constant. If the values are not typed, returns [constant TYPE_NIL]. See also [method is_typed_value].
+*/
+//go:nosplit
+func (self Dictionary) GetTypedValueBuiltin() int64 {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.get_typed_value_builtin(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the [b]built-in[/b] class name of the typed dictionary's keys, if the built-in [Variant] type is [constant TYPE_OBJECT]. Otherwise, returns an empty [StringName]. See also [method is_typed_key] and [method Object.get_class].
+*/
+//go:nosplit
+func (self Dictionary) GetTypedKeyClassName() StringName {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.get_typed_key_class_name(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	var ret = pointers.New[StringName](r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the [b]built-in[/b] class name of the typed dictionary's values, if the built-in [Variant] type is [constant TYPE_OBJECT]. Otherwise, returns an empty [StringName]. See also [method is_typed_value] and [method Object.get_class].
+*/
+//go:nosplit
+func (self Dictionary) GetTypedValueClassName() StringName {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.get_typed_value_class_name(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	var ret = pointers.New[StringName](r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the [Script] instance associated with this typed dictionary's keys, or [code]null[/code] if it does not exist. See also [method is_typed_key].
+*/
+//go:nosplit
+func (self Dictionary) GetTypedKeyScript() Variant {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[3]uint64](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.get_typed_key_script(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
+	var ret = pointers.New[Variant](r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the [Script] instance associated with this typed dictionary's values, or [code]null[/code] if it does not exist. See also [method is_typed_value].
+*/
+//go:nosplit
+func (self Dictionary) GetTypedValueScript() Variant {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[3]uint64](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Dictionary.get_typed_value_script(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6071,6 +6423,35 @@ func (self Array) Assign(array Array) {
 }
 
 /*
+Returns the element at the given [param index] in the array. This is the same as using the [code][][/code] operator ([code]array[index][/code]).
+*/
+//go:nosplit
+func (self Array) Get(index int64) Variant {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[[3]uint64](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Array.get(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	var ret = pointers.New[Variant](r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the value of the element at the given [param index] to the given [param value]. This will not change the size of the array, it only changes the value at an index already in the array. This is the same as using the [code][][/code] operator ([code]array[index] = value[/code]).
+*/
+//go:nosplit
+func (self Array) Set(index int64, value Variant) {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, pointers.Get(value))
+	var r_ret = callframe.Nil
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	frame.Free()
+}
+
+/*
 Appends an element at the end of the array. See also [method push_front].
 */
 //go:nosplit
@@ -6116,7 +6497,7 @@ Appends another [param array] at the end of this array.
 var numbers = [1, 2, 3]
 var extra = [4, 5, 6]
 numbers.append_array(extra)
-print(nums) # Prints [1, 2, 3, 4, 5, 6]
+print(numbers) # Prints [1, 2, 3, 4, 5, 6]
 [/codeblock]
 */
 //go:nosplit
@@ -6191,7 +6572,7 @@ array.fill(2)
 print(array) # Prints [2, 2, 2, 2, 2]
 [/gdscript]
 [csharp]
-var array = new Godot.Collections.Array();
+Godot.Collections.Array array = [];
 array.Resize(5);
 array.Fill(2);
 GD.Print(array); // Prints [2, 2, 2, 2, 2]
@@ -6262,7 +6643,7 @@ Returns a random element from the array. Generates an error and returns [code]nu
 print([1, 2, 3.25, "Hi"].pick_random())
 [/gdscript]
 [csharp]
-var array = new Godot.Collections.Array { 1, 2, 3.25f, "Hi" };
+Godot.Collections.Array array = [1, 2, 3.25f, "Hi"];
 GD.Print(array.PickRandom()); // May print 1, 2, 3.25, or "Hi".
 [/csharp]
 [/codeblocks]
@@ -6298,6 +6679,33 @@ func (self Array) Find(what Variant, from int64) int64 {
 }
 
 /*
+Returns the index of the [b]first[/b] element in the array that causes [param method] to return [code]true[/code], or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the end of the array.
+[param method] is a callable that takes an element of the array, and returns a [bool].
+[b]Note:[/b] If you just want to know whether the array contains [i]anything[/i] that satisfies [param method], use [method any].
+[codeblocks]
+[gdscript]
+func is_even(number):
+    return number % 2 == 0
+
+func _ready():
+    print([1, 3, 4, 7].find_custom(is_even.bind())) # Prints 2
+[/gdscript]
+[/codeblocks]
+*/
+//go:nosplit
+func (self Array) FindCustom(method Callable, from int64) int64 {
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(method))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[int64](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Array.find_custom(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns the index of the [b]last[/b] occurrence of [param what] in this array, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the beginning of the array. This method is the reverse of [method find].
 */
 //go:nosplit
@@ -6314,7 +6722,24 @@ func (self Array) Rfind(what Variant, from int64) int64 {
 }
 
 /*
+Returns the index of the [b]last[/b] element of the array that causes [param method] to return [code]true[/code], or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the beginning of the array. This method is the reverse of [method find_custom].
+*/
+//go:nosplit
+func (self Array) RfindCustom(method Callable, from int64) int64 {
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(method))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[int64](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.Array.rfind_custom(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns the number of times an element is in the array.
+To count how many elements in an array satisfy a condition, see [method reduce].
 */
 //go:nosplit
 func (self Array) Count(value Variant) int64 {
@@ -6338,12 +6763,12 @@ print(["inside", 7].has(7))         # Prints true
 print(["inside", 7].has("7"))       # Prints false
 [/gdscript]
 [csharp]
-var arr = new Godot.Collections.Array { "inside", 7 };
+Godot.Collections.Array arr = ["inside", 7];
 // By C# convention, this method is renamed to `Contains`.
-GD.Print(arr.Contains("inside"));  // Prints true
-GD.Print(arr.Contains("outside")); // Prints false
-GD.Print(arr.Contains(7));         // Prints true
-GD.Print(arr.Contains("7"));       // Prints false
+GD.Print(arr.Contains("inside"));  // Prints True
+GD.Print(arr.Contains("outside")); // Prints False
+GD.Print(arr.Contains(7));         // Prints True
+GD.Print(arr.Contains("7"));       // Prints False
 [/csharp]
 [/codeblocks]
 In GDScript, this is equivalent to the [code]in[/code] operator:
@@ -6419,7 +6844,7 @@ numbers.sort()
 print(numbers) # Prints [2.5, 5, 8, 10]
 [/gdscript]
 [csharp]
-var numbers = new Godot.Collections.Array { 10, 5, 2.5, 8 };
+Godot.Collections.Array numbers = [10, 5, 2.5, 8];
 numbers.Sort();
 GD.Print(numbers); // Prints [2.5, 5, 8, 10]
 [/csharp]
@@ -6437,7 +6862,7 @@ func (self Array) Sort() {
 
 /*
 Sorts the array using a custom [Callable].
-[param func] is called as many times as necessary, receiving two array elements as arguments. The function should return [code]true[/code] if the first element should be moved [i]behind[/i] the second one, otherwise it should return [code]false[/code].
+[param func] is called as many times as necessary, receiving two array elements as arguments. The function should return [code]true[/code] if the first element should be moved [i]before[/i] the second one, otherwise it should return [code]false[/code].
 [codeblock]
 func sort_ascending(a, b):
     if a[1] < b[1]:
@@ -6450,7 +6875,7 @@ func _ready():
     print(my_items) # Prints [["Rice", 4], ["Tomato", 5], ["Apple", 9]]
 
     # Sort descending, using a lambda function.
-    my_items.sort_custom(func(a, b): return a[0] > b[0])
+    my_items.sort_custom(func(a, b): return a[1] > b[1])
     print(my_items) # Prints [["Apple", 9], ["Tomato", 5], ["Rice", 4]]
 [/codeblock]
 It may also be necessary to use this method to sort strings by natural order, with [method String.naturalnocasecmp_to], as in the following example:
@@ -6685,15 +7110,26 @@ func _ready():
 If [method max] is not desirable, this method may also be used to implement a custom comparator:
 [codeblock]
 func _ready():
-    var arr = [Vector2(5, 0), Vector2(3, 4), Vector2(1, 2)]
+    var arr = [Vector2i(5, 0), Vector2i(3, 4), Vector2i(1, 2)]
 
     var longest_vec = arr.reduce(func(max, vec): return vec if is_length_greater(vec, max) else max)
-    print(longest_vec) # Prints Vector2(3, 4).
+    print(longest_vec) # Prints (3, 4)
 
 func is_length_greater(a, b):
     return a.length() > b.length()
 [/codeblock]
-See also [method map], [method filter], [method any] and [method all].
+This method can also be used to count how many elements in an array satisfy a certain condition, similar to [method count]:
+[codeblock]
+func is_even(number):
+    return number % 2 == 0
+
+func _ready():
+    var arr = [1, 2, 3, 4, 5]
+    # If the current element is even, increment count, otherwise leave count the same.
+    var even_count = arr.reduce(func(count, next): return count + 1 if is_even(next) else count, 0)
+    print(even_count) # Prints 2
+[/codeblock]
+See also [method map], [method filter], [method any], and [method all].
 */
 //go:nosplit
 func (self Array) Reduce(method Callable, accum Variant) Variant {
@@ -6765,17 +7201,17 @@ private static bool GreaterThan5(int number)
 
 public override void _Ready()
 {
-    // Prints true (3/3 elements evaluate to true).
+    // Prints True (3/3 elements evaluate to true).
     GD.Print(new Godot.Collections.Array>int< { 6, 10, 6 }.All(GreaterThan5));
-    // Prints false (1/3 elements evaluate to true).
+    // Prints False (1/3 elements evaluate to true).
     GD.Print(new Godot.Collections.Array>int< { 4, 10, 4 }.All(GreaterThan5));
-    // Prints false (0/3 elements evaluate to true).
+    // Prints False (0/3 elements evaluate to true).
     GD.Print(new Godot.Collections.Array>int< { 4, 4, 4 }.All(GreaterThan5));
-    // Prints true (0/0 elements evaluate to true).
+    // Prints True (0/0 elements evaluate to true).
     GD.Print(new Godot.Collections.Array>int< { }.All(GreaterThan5));
 
     // Same as the first line above, but using a lambda function.
-    GD.Print(new Godot.Collections.Array>int< { 6, 10, 6 }.All(element => element > 5)); // Prints true
+    GD.Print(new Godot.Collections.Array>int< { 6, 10, 6 }.All(element => element > 5)); // Prints True
 }
 [/csharp]
 [/codeblocks]
@@ -6929,6 +7365,37 @@ func (self Array) IsReadOnly() bool {
 }
 
 /*
+Returns the byte at the given [param index] in the array. This is the same as using the [code][][/code] operator ([code]array[index][/code]).
+*/
+//go:nosplit
+func (self PackedByteArray) Get(index int64) int64 {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[int64](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedByteArray.get(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	pointers.Set(self, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Changes the byte at the given index.
+*/
+//go:nosplit
+func (self PackedByteArray) Set(index int64, value int64) {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Nil
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedByteArray.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	pointers.Set(self, p_self.Get())
+	frame.Free()
+}
+
+/*
 Returns the number of elements in the array.
 */
 //go:nosplit
@@ -6956,21 +7423,6 @@ func (self PackedByteArray) IsEmpty() bool {
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
-}
-
-/*
-Changes the byte at the given index.
-*/
-//go:nosplit
-func (self PackedByteArray) Set(index int64, value int64) {
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(self, p_self.Get())
-	frame.Free()
 }
 
 /*
@@ -7317,11 +7769,11 @@ Returns a hexadecimal representation of this array as a [String].
 [codeblocks]
 [gdscript]
 var array = PackedByteArray([11, 46, 255])
-print(array.hex_encode()) # Prints: 0b2eff
+print(array.hex_encode()) # Prints "0b2eff"
 [/gdscript]
 [csharp]
-var array = new byte[] {11, 46, 255};
-GD.Print(array.HexEncode()); // Prints: 0b2eff
+byte[] array = [11, 46, 255];
+GD.Print(array.HexEncode()); // Prints "0b2eff"
 [/csharp]
 [/codeblocks]
 */
@@ -7870,6 +8322,37 @@ func (self PackedByteArray) EncodeVar(byte_offset int64, value Variant, allow_ob
 }
 
 /*
+Returns the 32-bit integer at the given [param index] in the array. This is the same as using the [code][][/code] operator ([code]array[index][/code]).
+*/
+//go:nosplit
+func (self PackedInt32Array) Get(index int64) int64 {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[int64](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedInt32Array.get(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	pointers.Set(self, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Changes the integer at the given index.
+*/
+//go:nosplit
+func (self PackedInt32Array) Set(index int64, value int64) {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Nil
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedInt32Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	pointers.Set(self, p_self.Get())
+	frame.Free()
+}
+
+/*
 Returns the number of elements in the array.
 */
 //go:nosplit
@@ -7897,21 +8380,6 @@ func (self PackedInt32Array) IsEmpty() bool {
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
-}
-
-/*
-Changes the integer at the given index.
-*/
-//go:nosplit
-func (self PackedInt32Array) Set(index int64, value int64) {
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(self, p_self.Get())
-	frame.Free()
 }
 
 /*
@@ -8083,7 +8551,7 @@ func (self PackedInt32Array) Slice(begin int64, end int64) PackedInt32Array {
 }
 
 /*
-Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 4 bytes.
+Returns a copy of the data converted to a [PackedByteArray], where each element has been encoded as 4 bytes.
 The size of the new array will be [code]int32_array.size() * 4[/code].
 */
 //go:nosplit
@@ -8195,6 +8663,37 @@ func (self PackedInt32Array) Count(value int64) int64 {
 }
 
 /*
+Returns the 64-bit integer at the given [param index] in the array. This is the same as using the [code][][/code] operator ([code]array[index][/code]).
+*/
+//go:nosplit
+func (self PackedInt64Array) Get(index int64) int64 {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[int64](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedInt64Array.get(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	pointers.Set(self, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Changes the integer at the given index.
+*/
+//go:nosplit
+func (self PackedInt64Array) Set(index int64, value int64) {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Nil
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedInt64Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	pointers.Set(self, p_self.Get())
+	frame.Free()
+}
+
+/*
 Returns the number of elements in the array.
 */
 //go:nosplit
@@ -8222,21 +8721,6 @@ func (self PackedInt64Array) IsEmpty() bool {
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
-}
-
-/*
-Changes the integer at the given index.
-*/
-//go:nosplit
-func (self PackedInt64Array) Set(index int64, value int64) {
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(self, p_self.Get())
-	frame.Free()
 }
 
 /*
@@ -8408,7 +8892,7 @@ func (self PackedInt64Array) Slice(begin int64, end int64) PackedInt64Array {
 }
 
 /*
-Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 8 bytes.
+Returns a copy of the data converted to a [PackedByteArray], where each element has been encoded as 8 bytes.
 The size of the new array will be [code]int64_array.size() * 8[/code].
 */
 //go:nosplit
@@ -8520,6 +9004,37 @@ func (self PackedInt64Array) Count(value int64) int64 {
 }
 
 /*
+Returns the 32-bit float at the given [param index] in the array. This is the same as using the [code][][/code] operator ([code]array[index][/code]).
+*/
+//go:nosplit
+func (self PackedFloat32Array) Get(index int64) float64 {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[float64](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedFloat32Array.get(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	pointers.Set(self, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Changes the float at the given index.
+*/
+//go:nosplit
+func (self PackedFloat32Array) Set(index int64, value float64) {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Nil
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedFloat32Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	pointers.Set(self, p_self.Get())
+	frame.Free()
+}
+
+/*
 Returns the number of elements in the array.
 */
 //go:nosplit
@@ -8547,21 +9062,6 @@ func (self PackedFloat32Array) IsEmpty() bool {
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
-}
-
-/*
-Changes the float at the given index.
-*/
-//go:nosplit
-func (self PackedFloat32Array) Set(index int64, value float64) {
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(self, p_self.Get())
-	frame.Free()
 }
 
 /*
@@ -8734,7 +9234,7 @@ func (self PackedFloat32Array) Slice(begin int64, end int64) PackedFloat32Array 
 }
 
 /*
-Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 4 bytes.
+Returns a copy of the data converted to a [PackedByteArray], where each element has been encoded as 4 bytes.
 The size of the new array will be [code]float32_array.size() * 4[/code].
 */
 //go:nosplit
@@ -8851,6 +9351,37 @@ func (self PackedFloat32Array) Count(value float64) int64 {
 }
 
 /*
+Returns the 64-bit float at the given [param index] in the array. This is the same as using the [code][][/code] operator ([code]array[index][/code]).
+*/
+//go:nosplit
+func (self PackedFloat64Array) Get(index int64) float64 {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[float64](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedFloat64Array.get(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	pointers.Set(self, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Changes the float at the given index.
+*/
+//go:nosplit
+func (self PackedFloat64Array) Set(index int64, value float64) {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Nil
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedFloat64Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	pointers.Set(self, p_self.Get())
+	frame.Free()
+}
+
+/*
 Returns the number of elements in the array.
 */
 //go:nosplit
@@ -8878,21 +9409,6 @@ func (self PackedFloat64Array) IsEmpty() bool {
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
-}
-
-/*
-Changes the float at the given index.
-*/
-//go:nosplit
-func (self PackedFloat64Array) Set(index int64, value float64) {
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(self, p_self.Get())
-	frame.Free()
 }
 
 /*
@@ -9065,7 +9581,7 @@ func (self PackedFloat64Array) Slice(begin int64, end int64) PackedFloat64Array 
 }
 
 /*
-Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 8 bytes.
+Returns a copy of the data converted to a [PackedByteArray], where each element has been encoded as 8 bytes.
 The size of the new array will be [code]float64_array.size() * 8[/code].
 */
 //go:nosplit
@@ -9182,6 +9698,37 @@ func (self PackedFloat64Array) Count(value float64) int64 {
 }
 
 /*
+Returns the [String] at the given [param index] in the array. This is the same as using the [code][][/code] operator ([code]array[index][/code]).
+*/
+//go:nosplit
+func (self PackedStringArray) Get(index int64) String {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedStringArray.get(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	pointers.Set(self, p_self.Get())
+	var ret = pointers.New[String](r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Changes the [String] at the given index.
+*/
+//go:nosplit
+func (self PackedStringArray) Set(index int64, value String) {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, pointers.Get(value))
+	var r_ret = callframe.Nil
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedStringArray.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	pointers.Set(self, p_self.Get())
+	frame.Free()
+}
+
+/*
 Returns the number of elements in the array.
 */
 //go:nosplit
@@ -9209,21 +9756,6 @@ func (self PackedStringArray) IsEmpty() bool {
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
-}
-
-/*
-Changes the [String] at the given index.
-*/
-//go:nosplit
-func (self PackedStringArray) Set(index int64, value String) {
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Nil
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(self, p_self.Get())
-	frame.Free()
 }
 
 /*
@@ -9395,7 +9927,7 @@ func (self PackedStringArray) Slice(begin int64, end int64) PackedStringArray {
 }
 
 /*
-Returns a [PackedByteArray] with each string encoded as bytes.
+Returns a [PackedByteArray] with each string encoded as UTF-8. Strings are [code]null[/code] terminated.
 */
 //go:nosplit
 func (self PackedStringArray) ToByteArray() PackedByteArray {
@@ -9506,6 +10038,37 @@ func (self PackedStringArray) Count(value String) int64 {
 }
 
 /*
+Returns the [Vector2] at the given [param index] in the array. This is the same as using the [code][][/code] operator ([code]array[index][/code]).
+*/
+//go:nosplit
+func (self PackedVector2Array) Get(index int64) Vector2 {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[Vector2](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedVector2Array.get(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	pointers.Set(self, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Changes the [Vector2] at the given index.
+*/
+//go:nosplit
+func (self PackedVector2Array) Set(index int64, value Vector2) {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Nil
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedVector2Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	pointers.Set(self, p_self.Get())
+	frame.Free()
+}
+
+/*
 Returns the number of elements in the array.
 */
 //go:nosplit
@@ -9533,21 +10096,6 @@ func (self PackedVector2Array) IsEmpty() bool {
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
-}
-
-/*
-Changes the [Vector2] at the given index.
-*/
-//go:nosplit
-func (self PackedVector2Array) Set(index int64, value Vector2) {
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(self, p_self.Get())
-	frame.Free()
 }
 
 /*
@@ -9836,6 +10384,37 @@ func (self PackedVector2Array) Count(value Vector2) int64 {
 }
 
 /*
+Returns the [Vector3] at the given [param index] in the array. This is the same as using the [code][][/code] operator ([code]array[index][/code]).
+*/
+//go:nosplit
+func (self PackedVector3Array) Get(index int64) Vector3 {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[Vector3](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedVector3Array.get(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	pointers.Set(self, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Changes the [Vector3] at the given index.
+*/
+//go:nosplit
+func (self PackedVector3Array) Set(index int64, value Vector3) {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Nil
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedVector3Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	pointers.Set(self, p_self.Get())
+	frame.Free()
+}
+
+/*
 Returns the number of elements in the array.
 */
 //go:nosplit
@@ -9863,21 +10442,6 @@ func (self PackedVector3Array) IsEmpty() bool {
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
-}
-
-/*
-Changes the [Vector3] at the given index.
-*/
-//go:nosplit
-func (self PackedVector3Array) Set(index int64, value Vector3) {
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(self, p_self.Get())
-	frame.Free()
 }
 
 /*
@@ -10166,6 +10730,37 @@ func (self PackedVector3Array) Count(value Vector3) int64 {
 }
 
 /*
+Returns the [Color] at the given [param index] in the array. This is the same as using the [code][][/code] operator ([code]array[index][/code]).
+*/
+//go:nosplit
+func (self PackedColorArray) Get(index int64) Color {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[Color](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedColorArray.get(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	pointers.Set(self, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Changes the [Color] at the given index.
+*/
+//go:nosplit
+func (self PackedColorArray) Set(index int64, value Color) {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Nil
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedColorArray.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	pointers.Set(self, p_self.Get())
+	frame.Free()
+}
+
+/*
 Returns the number of elements in the array.
 */
 //go:nosplit
@@ -10193,21 +10788,6 @@ func (self PackedColorArray) IsEmpty() bool {
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
-}
-
-/*
-Changes the [Color] at the given index.
-*/
-//go:nosplit
-func (self PackedColorArray) Set(index int64, value Color) {
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(self, p_self.Get())
-	frame.Free()
 }
 
 /*
@@ -10490,6 +11070,37 @@ func (self PackedColorArray) Count(value Color) int64 {
 }
 
 /*
+Returns the [Vector4] at the given [param index] in the array. This is the same as using the [code][][/code] operator ([code]array[index][/code]).
+*/
+//go:nosplit
+func (self PackedVector4Array) Get(index int64) Vector4 {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[Vector4](frame)
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedVector4Array.get(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
+	pointers.Set(self, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Changes the [Vector4] at the given index.
+*/
+//go:nosplit
+func (self PackedVector4Array) Set(index int64, value Vector4) {
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Nil
+	var p_self = callframe.Arg(frame, pointers.Get(self))
+	Global.builtin.PackedVector4Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
+	pointers.Set(self, p_self.Get())
+	frame.Free()
+}
+
+/*
 Returns the number of elements in the array.
 */
 //go:nosplit
@@ -10517,21 +11128,6 @@ func (self PackedVector4Array) IsEmpty() bool {
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
-}
-
-/*
-Changes the [Vector4] at the given index.
-*/
-//go:nosplit
-func (self PackedVector4Array) Set(index int64, value Vector4) {
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	pointers.Set(self, p_self.Get())
-	frame.Free()
 }
 
 /*
@@ -10870,12 +11466,12 @@ Assigns [param value] to the given [param property]. If the property does not ex
 [gdscript]
 var node = Node2D.new()
 node.set("global_scale", Vector2(8, 2.5))
-print(node.global_scale) # Prints (8, 2.5)
+print(node.global_scale) # Prints (8.0, 2.5)
 [/gdscript]
 [csharp]
 var node = new Node2D();
-node.Set(Node2D.PropertyName.GlobalScale, new Vector2(8, 2.5));
-GD.Print(node.GlobalScale); // Prints Vector2(8, 2.5)
+node.Set(Node2D.PropertyName.GlobalScale, new Vector2(8, 2.5f));
+GD.Print(node.GlobalScale); // Prints (8, 2.5)
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
@@ -10924,7 +11520,7 @@ Assigns a new [param value] to the property identified by the [param property_pa
 var node = Node2D.new()
 node.set_indexed("position", Vector2(42, 0))
 node.set_indexed("position:y", -10)
-print(node.position) # Prints (42, -10)
+print(node.position) # Prints (42.0, -10.0)
 [/gdscript]
 [csharp]
 var node = new Node2D();
@@ -11199,7 +11795,7 @@ func (self Object) HasMeta(name StringName) bool {
 }
 
 /*
-Returns the object's metadata entry names as a [PackedStringArray].
+Returns the object's metadata entry names as an [Array] of [StringName]s.
 */
 //go:nosplit
 func (self Object) GetMetaList() Array {
@@ -11212,7 +11808,7 @@ func (self Object) GetMetaList() Array {
 }
 
 /*
-Adds a user-defined [param signal]. Optional arguments for the signal can be added as an [Array] of dictionaries, each defining a [code]name[/code] [String] and a [code]type[/code] [int] (see [enum Variant.Type]). See also [method has_user_signal] and [method remove_user_signal].
+Adds a user-defined signal named [param signal]. Optional arguments for the signal can be added as an [Array] of dictionaries, each defining a [code]name[/code] [String] and a [code]type[/code] [int] (see [enum Variant.Type]). See also [method has_user_signal] and [method remove_user_signal].
 [codeblocks]
 [gdscript]
 add_user_signal("hurt", [
@@ -11221,19 +11817,19 @@ add_user_signal("hurt", [
 ])
 [/gdscript]
 [csharp]
-AddUserSignal("Hurt", new Godot.Collections.Array()
-{
+AddUserSignal("Hurt",
+[
     new Godot.Collections.Dictionary()
     {
         { "name", "damage" },
-        { "type", (int)Variant.Type.Int }
+        { "type", (int)Variant.Type.Int },
     },
     new Godot.Collections.Dictionary()
     {
         { "name", "source" },
-        { "type", (int)Variant.Type.Object }
-    }
-});
+        { "type", (int)Variant.Type.Object },
+    },
+]);
 [/csharp]
 [/codeblocks]
 */
@@ -11318,7 +11914,7 @@ node.callv("rotate", [Vector3(1.0, 0.0, 0.0), 1.571])
 [/gdscript]
 [csharp]
 var node = new Node3D();
-node.Callv(Node3D.MethodName.Rotate, new Godot.Collections.Array { new Vector3(1f, 0f, 0f), 1.571f });
+node.Callv(Node3D.MethodName.Rotate, [new Vector3(1f, 0f, 0f), 1.571f]);
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
@@ -11367,7 +11963,7 @@ func (self Object) GetMethodArgumentCount(method StringName) int64 {
 
 /*
 Returns [code]true[/code] if the given [param signal] name exists in the object.
-[b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
+[b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot signals. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
 func (self Object) HasSignal(signal StringName) bool {
@@ -11583,7 +12179,7 @@ func (self Object) Disconnect(signal StringName, callable Callable) {
 
 /*
 Returns [code]true[/code] if a connection exists between the given [param signal] name and [param callable].
-[b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
+[b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot signals. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
 func (self Object) IsConnected(signal StringName, callable Callable) bool {
@@ -11592,6 +12188,21 @@ func (self Object) IsConnected(signal StringName, callable Callable) bool {
 	callframe.Arg(frame, pointers.Get(callable))
 	var r_ret = callframe.Ret[bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_connected, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if any connection exists on the given [param signal] name.
+[b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
+*/
+//go:nosplit
+func (self Object) HasConnections(signal StringName) bool {
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(signal))
+	var r_ret = callframe.Ret[bool](frame)
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11696,6 +12307,31 @@ func (self Object) TrN(message StringName, plural_message StringName, n int64, c
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
+}
+
+/*
+Returns the name of the translation domain used by [method tr] and [method tr_n]. See also [TranslationServer].
+*/
+//go:nosplit
+func (self Object) GetTranslationDomain() StringName {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_translation_domain, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = pointers.New[StringName](r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the name of the translation domain used by [method tr] and [method tr_n]. See also [TranslationServer].
+*/
+//go:nosplit
+func (self Object) SetTranslationDomain(domain StringName) {
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(domain))
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set_translation_domain, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
 }
 
 /*

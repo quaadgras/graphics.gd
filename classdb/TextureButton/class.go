@@ -45,8 +45,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [TextureButton] has the same functionality as [Button], except it uses sprites instead of Godot's [Theme] resource. It is faster to create, but it doesn't support localization like more complex [Control]s.
-The "normal" state must contain a texture ([member texture_normal]); other textures are optional.
 See also [BaseButton] which contains common properties and methods associated with this node.
+[b]Note:[/b] Setting a texture for the "normal" state ([member texture_normal]) is recommended. If [member texture_normal] is not set, the [TextureButton] will still receive input events and be clickable, but the user will not be able to see it unless they activate another one of its states with a texture assigned (e.g., hover over it to show [member texture_hover]).
 */
 type Instance [1]gdclass.TextureButton
 

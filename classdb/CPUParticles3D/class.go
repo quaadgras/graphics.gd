@@ -62,9 +62,25 @@ type Any interface {
 
 /*
 Restarts the particle emitter.
+If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
 */
 func (self Instance) Restart() { //gd:CPUParticles3D.restart
-	class(self).Restart()
+	class(self).Restart(false)
+}
+
+/*
+Requests the particles to process for extra process time during a single frame.
+Useful for particle playback, if used in combination with [member use_fixed_seed] or by calling [method restart] with parameter [code]keep_seed[/code] set to [code]true[/code].
+*/
+func (self Instance) RequestParticlesProcess(process_time Float.X) { //gd:CPUParticles3D.request_particles_process
+	class(self).RequestParticlesProcess(float64(process_time))
+}
+
+/*
+Returns the axis-aligned bounding box that contains all the particles that are active in the current frame.
+*/
+func (self Instance) CaptureAabb() AABB.PositionSize { //gd:CPUParticles3D.capture_aabb
+	return AABB.PositionSize(class(self).CaptureAabb())
 }
 
 /*
@@ -154,6 +170,22 @@ func (self Instance) Randomness() Float.X {
 
 func (self Instance) SetRandomness(value Float.X) {
 	class(self).SetRandomnessRatio(float64(value))
+}
+
+func (self Instance) UseFixedSeed() bool {
+	return bool(class(self).GetUseFixedSeed())
+}
+
+func (self Instance) SetUseFixedSeed(value bool) {
+	class(self).SetUseFixedSeed(value)
+}
+
+func (self Instance) Seed() int {
+	return int(int(class(self).GetSeed()))
+}
+
+func (self Instance) SetSeed(value int) {
+	class(self).SetSeed(int64(value))
 }
 
 func (self Instance) LifetimeRandomness() Float.X {
@@ -290,6 +322,14 @@ func (self Instance) EmissionRingInnerRadius() Float.X {
 
 func (self Instance) SetEmissionRingInnerRadius(value Float.X) {
 	class(self).SetEmissionRingInnerRadius(float64(value))
+}
+
+func (self Instance) EmissionRingConeAngle() Float.X {
+	return Float.X(Float.X(class(self).GetEmissionRingConeAngle()))
+}
+
+func (self Instance) SetEmissionRingConeAngle(value Float.X) {
+	class(self).SetEmissionRingConeAngle(float64(value))
 }
 
 func (self Instance) ParticleFlagAlignY() bool {
@@ -969,15 +1009,81 @@ func (self class) GetMesh() [1]gdclass.Mesh { //gd:CPUParticles3D.get_mesh
 	return ret
 }
 
+//go:nosplit
+func (self class) SetUseFixedSeed(use_fixed_seed bool) { //gd:CPUParticles3D.set_use_fixed_seed
+	var frame = callframe.New()
+	callframe.Arg(frame, use_fixed_seed)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_set_use_fixed_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetUseFixedSeed() bool { //gd:CPUParticles3D.get_use_fixed_seed
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_get_use_fixed_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSeed(seed int64) { //gd:CPUParticles3D.set_seed
+	var frame = callframe.New()
+	callframe.Arg(frame, seed)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_set_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetSeed() int64 { //gd:CPUParticles3D.get_seed
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_get_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
 /*
 Restarts the particle emitter.
+If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
 */
 //go:nosplit
-func (self class) Restart() { //gd:CPUParticles3D.restart
+func (self class) Restart(keep_seed bool) { //gd:CPUParticles3D.restart
 	var frame = callframe.New()
+	callframe.Arg(frame, keep_seed)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_restart, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+}
+
+/*
+Requests the particles to process for extra process time during a single frame.
+Useful for particle playback, if used in combination with [member use_fixed_seed] or by calling [method restart] with parameter [code]keep_seed[/code] set to [code]true[/code].
+*/
+//go:nosplit
+func (self class) RequestParticlesProcess(process_time float64) { //gd:CPUParticles3D.request_particles_process
+	var frame = callframe.New()
+	callframe.Arg(frame, process_time)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_request_particles_process, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the axis-aligned bounding box that contains all the particles that are active in the current frame.
+*/
+//go:nosplit
+func (self class) CaptureAabb() AABB.PositionSize { //gd:CPUParticles3D.capture_aabb
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[AABB.PositionSize](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_capture_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
 }
 
 //go:nosplit
@@ -1092,7 +1198,7 @@ func (self class) GetParamMax(param gdclass.CPUParticles3DParameter) float64 { /
 }
 
 /*
-Sets the [Curve] of the parameter specified by [enum Parameter].
+Sets the [Curve] of the parameter specified by [enum Parameter]. Should be a unit [Curve].
 */
 //go:nosplit
 func (self class) SetParamCurve(param gdclass.CPUParticles3DParameter, curve [1]gdclass.Curve) { //gd:CPUParticles3D.set_param_curve
@@ -1387,6 +1493,25 @@ func (self class) GetEmissionRingInnerRadius() float64 { //gd:CPUParticles3D.get
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_get_emission_ring_inner_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetEmissionRingConeAngle(cone_angle float64) { //gd:CPUParticles3D.set_emission_ring_cone_angle
+	var frame = callframe.New()
+	callframe.Arg(frame, cone_angle)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_set_emission_ring_cone_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetEmissionRingConeAngle() float64 { //gd:CPUParticles3D.get_emission_ring_cone_angle
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_get_emission_ring_cone_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

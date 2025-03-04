@@ -94,6 +94,32 @@ func New() Instance {
 	return casted
 }
 
+func (self Instance) ExplicitElapse() bool {
+	return bool(class(self).IsExplicitElapse())
+}
+
+func (self Instance) SetExplicitElapse(value bool) {
+	class(self).SetExplicitElapse(value)
+}
+
+//go:nosplit
+func (self class) SetExplicitElapse(enable bool) { //gd:AnimationNodeTimeSeek.set_explicit_elapse
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTimeSeek.Bind_set_explicit_elapse, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsExplicitElapse() bool { //gd:AnimationNodeTimeSeek.is_explicit_elapse
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTimeSeek.Bind_is_explicit_elapse, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
 func (self class) AsAnimationNodeTimeSeek() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsAnimationNodeTimeSeek() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
 func (self class) AsAnimationNode() AnimationNode.Advanced {

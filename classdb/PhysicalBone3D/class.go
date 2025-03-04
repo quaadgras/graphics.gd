@@ -86,18 +86,42 @@ func (Instance) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass
 		impl(self, state)
 	}
 }
+
+/*
+Applies a directional impulse without affecting rotation.
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_integrate_forces" functions otherwise).
+This is equivalent to using [method apply_impulse] at the body's center of mass.
+*/
 func (self Instance) ApplyCentralImpulse(impulse Vector3.XYZ) { //gd:PhysicalBone3D.apply_central_impulse
 	class(self).ApplyCentralImpulse(Vector3.XYZ(impulse))
 }
+
+/*
+Applies a positioned impulse to the PhysicsBone3D.
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_integrate_forces" functions otherwise).
+[param position] is the offset from the PhysicsBone3D origin in global coordinates.
+*/
 func (self Instance) ApplyImpulse(impulse Vector3.XYZ) { //gd:PhysicalBone3D.apply_impulse
 	class(self).ApplyImpulse(Vector3.XYZ(impulse), Vector3.XYZ(gd.Vector3{0, 0, 0}))
 }
+
+/*
+Returns [code]true[/code] if the PhysicsBone3D is allowed to simulate physics.
+*/
 func (self Instance) GetSimulatePhysics() bool { //gd:PhysicalBone3D.get_simulate_physics
 	return bool(class(self).GetSimulatePhysics())
 }
+
+/*
+Returns [code]true[/code] if the PhysicsBone3D is currently simulating physics.
+*/
 func (self Instance) IsSimulatingPhysics() bool { //gd:PhysicalBone3D.is_simulating_physics
 	return bool(class(self).IsSimulatingPhysics())
 }
+
+/*
+Returns the unique identifier of the PhysicsBone3D.
+*/
 func (self Instance) GetBoneId() int { //gd:PhysicalBone3D.get_bone_id
 	return int(int(class(self).GetBoneId()))
 }
@@ -261,6 +285,11 @@ func (class) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass.Ph
 	}
 }
 
+/*
+Applies a directional impulse without affecting rotation.
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_integrate_forces" functions otherwise).
+This is equivalent to using [method apply_impulse] at the body's center of mass.
+*/
 //go:nosplit
 func (self class) ApplyCentralImpulse(impulse Vector3.XYZ) { //gd:PhysicalBone3D.apply_central_impulse
 	var frame = callframe.New()
@@ -270,6 +299,11 @@ func (self class) ApplyCentralImpulse(impulse Vector3.XYZ) { //gd:PhysicalBone3D
 	frame.Free()
 }
 
+/*
+Applies a positioned impulse to the PhysicsBone3D.
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_integrate_forces" functions otherwise).
+[param position] is the offset from the PhysicsBone3D origin in global coordinates.
+*/
 //go:nosplit
 func (self class) ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicalBone3D.apply_impulse
 	var frame = callframe.New()
@@ -356,6 +390,9 @@ func (self class) GetBodyOffset() Transform3D.BasisOrigin { //gd:PhysicalBone3D.
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the PhysicsBone3D is allowed to simulate physics.
+*/
 //go:nosplit
 func (self class) GetSimulatePhysics() bool { //gd:PhysicalBone3D.get_simulate_physics
 	var frame = callframe.New()
@@ -366,6 +403,9 @@ func (self class) GetSimulatePhysics() bool { //gd:PhysicalBone3D.get_simulate_p
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the PhysicsBone3D is currently simulating physics.
+*/
 //go:nosplit
 func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBone3D.is_simulating_physics
 	var frame = callframe.New()
@@ -376,6 +416,9 @@ func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBone3D.is_simulating
 	return ret
 }
 
+/*
+Returns the unique identifier of the PhysicsBone3D.
+*/
 //go:nosplit
 func (self class) GetBoneId() int64 { //gd:PhysicalBone3D.get_bone_id
 	var frame = callframe.New()
@@ -667,10 +710,16 @@ const (
 type JointType = gdclass.PhysicalBone3DJointType //gd:PhysicalBone3D.JointType
 
 const (
-	JointTypeNone   JointType = 0
-	JointTypePin    JointType = 1
-	JointTypeCone   JointType = 2
-	JointTypeHinge  JointType = 3
+	/*No joint is applied to the PhysicsBone3D.*/
+	JointTypeNone JointType = 0
+	/*A pin joint is applied to the PhysicsBone3D.*/
+	JointTypePin JointType = 1
+	/*A cone joint is applied to the PhysicsBone3D.*/
+	JointTypeCone JointType = 2
+	/*A hinge joint is applied to the PhysicsBone3D.*/
+	JointTypeHinge JointType = 3
+	/*A slider joint is applied to the PhysicsBone3D.*/
 	JointTypeSlider JointType = 4
-	JointType6dof   JointType = 5
+	/*A 6 degrees of freedom joint is applied to the PhysicsBone3D.*/
+	JointType6dof JointType = 5
 )

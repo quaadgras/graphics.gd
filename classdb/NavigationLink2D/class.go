@@ -64,6 +64,20 @@ func (self Instance) GetRid() RID.NavigationLink2D { //gd:NavigationLink2D.get_r
 }
 
 /*
+Sets the [RID] of the navigation map this link should use. By default the link will automatically join the [World2D] default navigation map so this function is only required to override the default map.
+*/
+func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap2D) { //gd:NavigationLink2D.set_navigation_map
+	class(self).SetNavigationMap(RID.Any(navigation_map))
+}
+
+/*
+Returns the current navigation map [RID] used by this link.
+*/
+func (self Instance) GetNavigationMap() RID.NavigationMap2D { //gd:NavigationLink2D.get_navigation_map
+	return RID.NavigationMap2D(class(self).GetNavigationMap())
+}
+
+/*
 Based on [param value], enables or disables the specified layer in the [member navigation_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetNavigationLayerValue(layer_number int, value bool) { //gd:NavigationLink2D.set_navigation_layer_value
@@ -206,6 +220,31 @@ func (self class) IsEnabled() bool { //gd:NavigationLink2D.is_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the [RID] of the navigation map this link should use. By default the link will automatically join the [World2D] default navigation map so this function is only required to override the default map.
+*/
+//go:nosplit
+func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:NavigationLink2D.set_navigation_map
+	var frame = callframe.New()
+	callframe.Arg(frame, navigation_map)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_set_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the current navigation map [RID] used by this link.
+*/
+//go:nosplit
+func (self class) GetNavigationMap() RID.Any { //gd:NavigationLink2D.get_navigation_map
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[RID.Any](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

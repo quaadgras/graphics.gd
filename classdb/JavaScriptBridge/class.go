@@ -71,10 +71,27 @@ func GetInterface(intf string) [1]gdclass.JavaScriptObject { //gd:JavaScriptBrid
 
 /*
 Creates a reference to a [Callable] that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
+[b]Note:[/b] The callback function must take exactly one [Array] argument, which is going to be the JavaScript [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments]arguments object[/url] converted to an array.
 */
 func CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.create_callback
 	once.Do(singleton)
 	return [1]gdclass.JavaScriptObject(class(self).CreateCallback(Callable.New(callable)))
+}
+
+/*
+Returns [code]true[/code] if the given [param javascript_object] is of type [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer][code]ArrayBuffer[/code][/url], [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView][code]DataView[/code][/url], or one of the many [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray]typed array objects[/url].
+*/
+func IsJsBuffer(javascript_object [1]gdclass.JavaScriptObject) bool { //gd:JavaScriptBridge.is_js_buffer
+	once.Do(singleton)
+	return bool(class(self).IsJsBuffer(javascript_object))
+}
+
+/*
+Returns a copy of [param javascript_buffer]'s contents as a [PackedByteArray]. See also [method is_js_buffer].
+*/
+func JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScriptObject) []byte { //gd:JavaScriptBridge.js_buffer_to_packed_byte_array
+	once.Do(singleton)
+	return []byte(class(self).JsBufferToPackedByteArray(javascript_buffer).Bytes())
 }
 
 /*
@@ -158,6 +175,7 @@ func (self class) GetInterface(intf String.Readable) [1]gdclass.JavaScriptObject
 
 /*
 Creates a reference to a [Callable] that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
+[b]Note:[/b] The callback function must take exactly one [Array] argument, which is going to be the JavaScript [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments]arguments object[/url] converted to an array.
 */
 //go:nosplit
 func (self class) CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.create_callback
@@ -166,6 +184,34 @@ func (self class) CreateCallback(callable Callable.Function) [1]gdclass.JavaScri
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_create_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.JavaScriptObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaScriptObject](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the given [param javascript_object] is of type [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer][code]ArrayBuffer[/code][/url], [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView][code]DataView[/code][/url], or one of the many [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray]typed array objects[/url].
+*/
+//go:nosplit
+func (self class) IsJsBuffer(javascript_object [1]gdclass.JavaScriptObject) bool { //gd:JavaScriptBridge.is_js_buffer
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(javascript_object[0])[0])
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_is_js_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns a copy of [param javascript_buffer]'s contents as a [PackedByteArray]. See also [method is_js_buffer].
+*/
+//go:nosplit
+func (self class) JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScriptObject) Packed.Bytes { //gd:JavaScriptBridge.js_buffer_to_packed_byte_array
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(javascript_buffer[0])[0])
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_js_buffer_to_packed_byte_array, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

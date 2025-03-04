@@ -41,8 +41,8 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-Contains all nodes and resources of a GLTF file. This is used by [GLTFDocument] as data storage, which allows [GLTFDocument] and all [GLTFDocumentExtension] classes to remain stateless.
-GLTFState can be populated by [GLTFDocument] reading a file or by converting a Godot scene. Then the data can either be used to create a Godot scene or save to a GLTF file. The code that converts to/from a Godot scene can be intercepted at arbitrary points by [GLTFDocumentExtension] classes. This allows for custom data to be stored in the GLTF file or for custom data to be converted to/from Godot nodes.
+Contains all nodes and resources of a glTF file. This is used by [GLTFDocument] as data storage, which allows [GLTFDocument] and all [GLTFDocumentExtension] classes to remain stateless.
+GLTFState can be populated by [GLTFDocument] reading a file or by converting a Godot scene. Then the data can either be used to create a Godot scene or save to a glTF file. The code that converts to/from a Godot scene can be intercepted at arbitrary points by [GLTFDocumentExtension] classes. This allows for custom data to be stored in the glTF file or for custom data to be converted to/from Godot nodes.
 */
 type Instance [1]gdclass.GLTFState
 
@@ -55,28 +55,37 @@ type Any interface {
 }
 
 /*
-Appends an extension to the list of extensions used by this GLTF file during serialization. If [param required] is true, the extension will also be added to the list of required extensions. Do not run this in [method GLTFDocumentExtension._export_post], as that stage is too late to add extensions. The final list is sorted alphabetically.
+Appends an extension to the list of extensions used by this glTF file during serialization. If [param required] is [code]true[/code], the extension will also be added to the list of required extensions. Do not run this in [method GLTFDocumentExtension._export_post], as that stage is too late to add extensions. The final list is sorted alphabetically.
 */
 func (self Instance) AddUsedExtension(extension_name string, required bool) { //gd:GLTFState.add_used_extension
 	class(self).AddUsedExtension(String.New(extension_name), required)
 }
 
 /*
-Appends the given byte array data to the buffers and creates a [GLTFBufferView] for it. The index of the destination [GLTFBufferView] is returned. If [param deduplication] is true, the buffers will first be searched for duplicate data, otherwise new bytes will always be appended.
+Appends the given byte array data to the buffers and creates a [GLTFBufferView] for it. The index of the destination [GLTFBufferView] is returned. If [param deduplication] is [code]true[/code], the buffers will first be searched for duplicate data, otherwise new bytes will always be appended.
 */
 func (self Instance) AppendDataToBuffers(data []byte, deduplication bool) int { //gd:GLTFState.append_data_to_buffers
 	return int(int(class(self).AppendDataToBuffers(Packed.Bytes(Packed.New(data...)), deduplication)))
 }
 
 /*
-Returns the number of [AnimationPlayer] nodes in this [GLTFState]. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to GLTF animations.
+Append the given [GLTFNode] to the state, and return its new index. This can be used to export one Godot node as multiple glTF nodes, or inject new glTF nodes at import time. On import, this must be called before [method GLTFDocumentExtension._generate_scene_node] finishes for the parent node. On export, this must be called before [method GLTFDocumentExtension._export_node] runs for the parent node.
+The [param godot_scene_node] parameter is the Godot scene node that corresponds to this glTF node. This is highly recommended to be set to a valid node, but may be [code]null[/code] if there is no corresponding Godot scene node. One Godot scene node may be used for multiple glTF nodes, so if exporting multiple glTF nodes for one Godot scene node, use the same Godot scene node for each.
+The [param parent_node_index] parameter is the index of the parent [GLTFNode] in the state. If [code]-1[/code], the node will be a root node, otherwise the new node will be added to the parent's list of children. The index will also be written to the [member GLTFNode.parent] property of the new node.
+*/
+func (self Instance) AppendGltfNode(gltf_node [1]gdclass.GLTFNode, godot_scene_node [1]gdclass.Node, parent_node_index int) int { //gd:GLTFState.append_gltf_node
+	return int(int(class(self).AppendGltfNode(gltf_node, godot_scene_node, int64(parent_node_index))))
+}
+
+/*
+Returns the number of [AnimationPlayer] nodes in this [GLTFState]. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to glTF animations.
 */
 func (self Instance) GetAnimationPlayersCount(idx int) int { //gd:GLTFState.get_animation_players_count
 	return int(int(class(self).GetAnimationPlayersCount(int64(idx))))
 }
 
 /*
-Returns the [AnimationPlayer] node with the given index. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to GLTF animations.
+Returns the [AnimationPlayer] node with the given index. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to glTF animations.
 */
 func (self Instance) GetAnimationPlayer(idx int) [1]gdclass.AnimationPlayer { //gd:GLTFState.get_animation_player
 	return [1]gdclass.AnimationPlayer(class(self).GetAnimationPlayer(int64(idx)))
@@ -100,7 +109,7 @@ func (self Instance) GetNodeIndex(scene_node [1]gdclass.Node) int { //gd:GLTFSta
 
 /*
 Gets additional arbitrary data in this [GLTFState] instance. This can be used to keep per-file state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
-The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
+The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the return value can be anything you set. If nothing was set, the return value is [code]null[/code].
 */
 func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFState.get_additional_data
 	return any(class(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
@@ -108,7 +117,7 @@ func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFSta
 
 /*
 Sets additional arbitrary data in this [GLTFState] instance. This can be used to keep per-file state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
-The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
+The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
 */
 func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFState.set_additional_data
 	class(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
@@ -374,7 +383,7 @@ func (self Instance) SetBakeFps(value Float.X) {
 }
 
 /*
-Appends an extension to the list of extensions used by this GLTF file during serialization. If [param required] is true, the extension will also be added to the list of required extensions. Do not run this in [method GLTFDocumentExtension._export_post], as that stage is too late to add extensions. The final list is sorted alphabetically.
+Appends an extension to the list of extensions used by this glTF file during serialization. If [param required] is [code]true[/code], the extension will also be added to the list of required extensions. Do not run this in [method GLTFDocumentExtension._export_post], as that stage is too late to add extensions. The final list is sorted alphabetically.
 */
 //go:nosplit
 func (self class) AddUsedExtension(extension_name String.Readable, required bool) { //gd:GLTFState.add_used_extension
@@ -387,7 +396,7 @@ func (self class) AddUsedExtension(extension_name String.Readable, required bool
 }
 
 /*
-Appends the given byte array data to the buffers and creates a [GLTFBufferView] for it. The index of the destination [GLTFBufferView] is returned. If [param deduplication] is true, the buffers will first be searched for duplicate data, otherwise new bytes will always be appended.
+Appends the given byte array data to the buffers and creates a [GLTFBufferView] for it. The index of the destination [GLTFBufferView] is returned. If [param deduplication] is [code]true[/code], the buffers will first be searched for duplicate data, otherwise new bytes will always be appended.
 */
 //go:nosplit
 func (self class) AppendDataToBuffers(data Packed.Bytes, deduplication bool) int64 { //gd:GLTFState.append_data_to_buffers
@@ -396,6 +405,24 @@ func (self class) AppendDataToBuffers(data Packed.Bytes, deduplication bool) int
 	callframe.Arg(frame, deduplication)
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_append_data_to_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Append the given [GLTFNode] to the state, and return its new index. This can be used to export one Godot node as multiple glTF nodes, or inject new glTF nodes at import time. On import, this must be called before [method GLTFDocumentExtension._generate_scene_node] finishes for the parent node. On export, this must be called before [method GLTFDocumentExtension._export_node] runs for the parent node.
+The [param godot_scene_node] parameter is the Godot scene node that corresponds to this glTF node. This is highly recommended to be set to a valid node, but may be [code]null[/code] if there is no corresponding Godot scene node. One Godot scene node may be used for multiple glTF nodes, so if exporting multiple glTF nodes for one Godot scene node, use the same Godot scene node for each.
+The [param parent_node_index] parameter is the index of the parent [GLTFNode] in the state. If [code]-1[/code], the node will be a root node, otherwise the new node will be added to the parent's list of children. The index will also be written to the [member GLTFNode.parent] property of the new node.
+*/
+//go:nosplit
+func (self class) AppendGltfNode(gltf_node [1]gdclass.GLTFNode, godot_scene_node [1]gdclass.Node, parent_node_index int64) int64 { //gd:GLTFState.append_gltf_node
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gltf_node[0])[0])
+	callframe.Arg(frame, pointers.Get(godot_scene_node[0])[0])
+	callframe.Arg(frame, parent_node_index)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_append_gltf_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -516,7 +543,7 @@ func (self class) SetUseNamedSkinBinds(use_named_skin_binds bool) { //gd:GLTFSta
 }
 
 /*
-Returns an array of all [GLTFNode]s in the GLTF file. These are the nodes that [member GLTFNode.children] and [member root_nodes] refer to. This includes nodes that may not be generated in the Godot scene, or nodes that may generate multiple Godot scene nodes.
+Returns an array of all [GLTFNode]s in the glTF file. These are the nodes that [member GLTFNode.children] and [member root_nodes] refer to. This includes nodes that may not be generated in the Godot scene, or nodes that may generate multiple Godot scene nodes.
 */
 //go:nosplit
 func (self class) GetNodes() Array.Contains[[1]gdclass.GLTFNode] { //gd:GLTFState.get_nodes
@@ -598,7 +625,7 @@ func (self class) SetAccessors(accessors Array.Contains[[1]gdclass.GLTFAccessor]
 }
 
 /*
-Returns an array of all [GLTFMesh]es in the GLTF file. These are the meshes that the [member GLTFNode.mesh] index refers to.
+Returns an array of all [GLTFMesh]es in the glTF file. These are the meshes that the [member GLTFNode.mesh] index refers to.
 */
 //go:nosplit
 func (self class) GetMeshes() Array.Contains[[1]gdclass.GLTFMesh] { //gd:GLTFState.get_meshes
@@ -623,7 +650,7 @@ func (self class) SetMeshes(meshes Array.Contains[[1]gdclass.GLTFMesh]) { //gd:G
 }
 
 /*
-Returns the number of [AnimationPlayer] nodes in this [GLTFState]. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to GLTF animations.
+Returns the number of [AnimationPlayer] nodes in this [GLTFState]. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to glTF animations.
 */
 //go:nosplit
 func (self class) GetAnimationPlayersCount(idx int64) int64 { //gd:GLTFState.get_animation_players_count
@@ -637,7 +664,7 @@ func (self class) GetAnimationPlayersCount(idx int64) int64 { //gd:GLTFState.get
 }
 
 /*
-Returns the [AnimationPlayer] node with the given index. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to GLTF animations.
+Returns the [AnimationPlayer] node with the given index. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to glTF animations.
 */
 //go:nosplit
 func (self class) GetAnimationPlayer(idx int64) [1]gdclass.AnimationPlayer { //gd:GLTFState.get_animation_player
@@ -765,7 +792,7 @@ func (self class) SetTextures(textures Array.Contains[[1]gdclass.GLTFTexture]) {
 }
 
 /*
-Retrieves the array of texture samplers that are used by the textures contained in the GLTF.
+Retrieves the array of texture samplers that are used by the textures contained in the glTF.
 */
 //go:nosplit
 func (self class) GetTextureSamplers() Array.Contains[[1]gdclass.GLTFTextureSampler] { //gd:GLTFState.get_texture_samplers
@@ -778,7 +805,7 @@ func (self class) GetTextureSamplers() Array.Contains[[1]gdclass.GLTFTextureSamp
 }
 
 /*
-Sets the array of texture samplers that are used by the textures contained in the GLTF.
+Sets the array of texture samplers that are used by the textures contained in the glTF.
 */
 //go:nosplit
 func (self class) SetTextureSamplers(texture_samplers Array.Contains[[1]gdclass.GLTFTextureSampler]) { //gd:GLTFState.set_texture_samplers
@@ -790,7 +817,7 @@ func (self class) SetTextureSamplers(texture_samplers Array.Contains[[1]gdclass.
 }
 
 /*
-Gets the images of the GLTF file as an array of [Texture2D]s. These are the images that the [member GLTFTexture.src_image] index refers to.
+Gets the images of the glTF file as an array of [Texture2D]s. These are the images that the [member GLTFTexture.src_image] index refers to.
 */
 //go:nosplit
 func (self class) GetImages() Array.Contains[[1]gdclass.Texture2D] { //gd:GLTFState.get_images
@@ -815,7 +842,7 @@ func (self class) SetImages(images Array.Contains[[1]gdclass.Texture2D]) { //gd:
 }
 
 /*
-Returns an array of all [GLTFSkin]s in the GLTF file. These are the skins that the [member GLTFNode.skin] index refers to.
+Returns an array of all [GLTFSkin]s in the glTF file. These are the skins that the [member GLTFNode.skin] index refers to.
 */
 //go:nosplit
 func (self class) GetSkins() Array.Contains[[1]gdclass.GLTFSkin] { //gd:GLTFState.get_skins
@@ -840,7 +867,7 @@ func (self class) SetSkins(skins Array.Contains[[1]gdclass.GLTFSkin]) { //gd:GLT
 }
 
 /*
-Returns an array of all [GLTFCamera]s in the GLTF file. These are the cameras that the [member GLTFNode.camera] index refers to.
+Returns an array of all [GLTFCamera]s in the glTF file. These are the cameras that the [member GLTFNode.camera] index refers to.
 */
 //go:nosplit
 func (self class) GetCameras() Array.Contains[[1]gdclass.GLTFCamera] { //gd:GLTFState.get_cameras
@@ -865,7 +892,7 @@ func (self class) SetCameras(cameras Array.Contains[[1]gdclass.GLTFCamera]) { //
 }
 
 /*
-Returns an array of all [GLTFLight]s in the GLTF file. These are the lights that the [member GLTFNode.light] index refers to.
+Returns an array of all [GLTFLight]s in the glTF file. These are the lights that the [member GLTFNode.light] index refers to.
 */
 //go:nosplit
 func (self class) GetLights() Array.Contains[[1]gdclass.GLTFLight] { //gd:GLTFState.get_lights
@@ -940,7 +967,7 @@ func (self class) SetUniqueAnimationNames(unique_animation_names Array.Contains[
 }
 
 /*
-Returns an array of all [GLTFSkeleton]s in the GLTF file. These are the skeletons that the [member GLTFNode.skeleton] index refers to.
+Returns an array of all [GLTFSkeleton]s in the glTF file. These are the skeletons that the [member GLTFNode.skeleton] index refers to.
 */
 //go:nosplit
 func (self class) GetSkeletons() Array.Contains[[1]gdclass.GLTFSkeleton] { //gd:GLTFState.get_skeletons
@@ -1003,7 +1030,7 @@ func (self class) SetImportAsSkeletonBones(import_as_skeleton_bones bool) { //gd
 }
 
 /*
-Returns an array of all [GLTFAnimation]s in the GLTF file. When importing, these will be generated as animations in an [AnimationPlayer] node. When exporting, these will be generated from Godot [AnimationPlayer] nodes.
+Returns an array of all [GLTFAnimation]s in the glTF file. When importing, these will be generated as animations in an [AnimationPlayer] node. When exporting, these will be generated from Godot [AnimationPlayer] nodes.
 */
 //go:nosplit
 func (self class) GetAnimations() Array.Contains[[1]gdclass.GLTFAnimation] { //gd:GLTFState.get_animations
@@ -1059,7 +1086,7 @@ func (self class) GetNodeIndex(scene_node [1]gdclass.Node) int64 { //gd:GLTFStat
 
 /*
 Gets additional arbitrary data in this [GLTFState] instance. This can be used to keep per-file state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
-The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
+The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the return value can be anything you set. If nothing was set, the return value is [code]null[/code].
 */
 //go:nosplit
 func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //gd:GLTFState.get_additional_data
@@ -1074,7 +1101,7 @@ func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //
 
 /*
 Sets additional arbitrary data in this [GLTFState] instance. This can be used to keep per-file state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
-The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
+The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
 */
 //go:nosplit
 func (self class) SetAdditionalData(extension_name String.Name, additional_data variant.Any) { //gd:GLTFState.set_additional_data

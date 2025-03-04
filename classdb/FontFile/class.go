@@ -124,7 +124,7 @@ func (self Instance) GetSizeCacheList(cache_index int) []Vector2i.XY { //gd:Font
 }
 
 /*
-Removes all font sizes from the cache entry
+Removes all font sizes from the cache entry.
 */
 func (self Instance) ClearSizeCache(cache_index int) { //gd:FontFile.clear_size_cache
 	class(self).ClearSizeCache(int64(cache_index))
@@ -635,6 +635,14 @@ func (self Instance) SetSubpixelPositioning(value gdclass.TextServerSubpixelPosi
 	class(self).SetSubpixelPositioning(value)
 }
 
+func (self Instance) KeepRoundingRemainders() bool {
+	return bool(class(self).GetKeepRoundingRemainders())
+}
+
+func (self Instance) SetKeepRoundingRemainders(value bool) {
+	class(self).SetKeepRoundingRemainders(value)
+}
+
 func (self Instance) MultichannelSignedDistanceField() bool {
 	return bool(class(self).IsMultichannelSignedDistanceField())
 }
@@ -1038,6 +1046,25 @@ func (self class) GetSubpixelPositioning() gdclass.TextServerSubpixelPositioning
 }
 
 //go:nosplit
+func (self class) SetKeepRoundingRemainders(keep_rounding_remainders bool) { //gd:FontFile.set_keep_rounding_remainders
+	var frame = callframe.New()
+	callframe.Arg(frame, keep_rounding_remainders)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_keep_rounding_remainders, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetKeepRoundingRemainders() bool { //gd:FontFile.get_keep_rounding_remainders
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_keep_rounding_remainders, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
 func (self class) SetOversampling(oversampling float64) { //gd:FontFile.set_oversampling
 	var frame = callframe.New()
 	callframe.Arg(frame, oversampling)
@@ -1107,7 +1134,7 @@ func (self class) GetSizeCacheList(cache_index int64) Array.Contains[Vector2i.XY
 }
 
 /*
-Removes all font sizes from the cache entry
+Removes all font sizes from the cache entry.
 */
 //go:nosplit
 func (self class) ClearSizeCache(cache_index int64) { //gd:FontFile.clear_size_cache

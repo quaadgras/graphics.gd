@@ -120,6 +120,13 @@ func (self Instance) SaveSupportData(filename string) bool { //gd:TextServer.sav
 }
 
 /*
+Returns default TextServer database (e.g. ICU break iterators and dictionaries).
+*/
+func (self Instance) GetSupportData() []byte { //gd:TextServer.get_support_data
+	return []byte(class(self).GetSupportData().Bytes())
+}
+
+/*
 Returns [code]true[/code] if locale is right-to-left.
 */
 func (self Instance) IsLocaleRightToLeft(locale string) bool { //gd:TextServer.is_locale_right_to_left
@@ -443,6 +450,20 @@ Returns font subpixel glyph positioning mode.
 */
 func (self Instance) FontGetSubpixelPositioning(font_rid RID.Font) gdclass.TextServerSubpixelPositioning { //gd:TextServer.font_get_subpixel_positioning
 	return gdclass.TextServerSubpixelPositioning(class(self).FontGetSubpixelPositioning(RID.Any(font_rid)))
+}
+
+/*
+Sets glyph position rounding behavior. If set to [code]true[/code], when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
+*/
+func (self Instance) FontSetKeepRoundingRemainders(font_rid RID.Font, keep_rounding_remainders bool) { //gd:TextServer.font_set_keep_rounding_remainders
+	class(self).FontSetKeepRoundingRemainders(RID.Any(font_rid), keep_rounding_remainders)
+}
+
+/*
+Returns glyph position rounding behavior. If set to [code]true[/code], when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
+*/
+func (self Instance) FontGetKeepRoundingRemainders(font_rid RID.Font) bool { //gd:TextServer.font_get_keep_rounding_remainders
+	return bool(class(self).FontGetKeepRoundingRemainders(RID.Any(font_rid)))
 }
 
 /*
@@ -788,6 +809,11 @@ Returns outline contours of the glyph as a [Dictionary] with the following conte
 [code]points[/code]         - [PackedVector3Array], containing outline points. [code]x[/code] and [code]y[/code] are point coordinates. [code]z[/code] is the type of the point, using the [enum ContourPointTag] values.
 [code]contours[/code]       - [PackedInt32Array], containing indices the end points of each contour.
 [code]orientation[/code]    - [bool], contour orientation. If [code]true[/code], clockwise contours must be filled.
+- Two successive [constant CONTOUR_CURVE_TAG_ON] points indicate a line segment.
+- One [constant CONTOUR_CURVE_TAG_OFF_CONIC] point between two [constant CONTOUR_CURVE_TAG_ON] points indicates a single conic (quadratic) Bézier arc.
+- Two [constant CONTOUR_CURVE_TAG_OFF_CUBIC] points between two [constant CONTOUR_CURVE_TAG_ON] points indicate a single cubic Bézier arc.
+- Two successive [constant CONTOUR_CURVE_TAG_OFF_CONIC] points indicate two successive conic (quadratic) Bézier arcs with a virtual [constant CONTOUR_CURVE_TAG_ON] point at their middle.
+- Each contour is closed. The last point of a contour uses the first point of a contour as its next point, and vice versa. The first point can be [constant CONTOUR_CURVE_TAG_OFF_CONIC] point.
 */
 func (self Instance) FontGetGlyphContours(font RID.Font, size int, index int) map[string]interface{} { //gd:TextServer.font_get_glyph_contours
 	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).FontGetGlyphContours(RID.Any(font), int64(size), int64(index))))
@@ -854,6 +880,13 @@ Returns a string containing all the characters available in the font.
 */
 func (self Instance) FontGetSupportedChars(font_rid RID.Font) string { //gd:TextServer.font_get_supported_chars
 	return string(class(self).FontGetSupportedChars(RID.Any(font_rid)).String())
+}
+
+/*
+Returns an array containing all glyph indices in the font.
+*/
+func (self Instance) FontGetSupportedGlyphs(font_rid RID.Font) []int32 { //gd:TextServer.font_get_supported_glyphs
+	return []int32(slices.Collect(class(self).FontGetSupportedGlyphs(RID.Any(font_rid)).Values()))
 }
 
 /*
@@ -1180,6 +1213,13 @@ Returns text span metadata.
 */
 func (self Instance) ShapedGetSpanMeta(shaped RID.TextBuffer, index int) any { //gd:TextServer.shaped_get_span_meta
 	return any(class(self).ShapedGetSpanMeta(RID.Any(shaped), int64(index)).Interface())
+}
+
+/*
+Returns text embedded object key.
+*/
+func (self Instance) ShapedGetSpanEmbeddedObject(shaped RID.TextBuffer, index int) any { //gd:TextServer.shaped_get_span_embedded_object
+	return any(class(self).ShapedGetSpanEmbeddedObject(RID.Any(shaped), int64(index)).Interface())
 }
 
 /*
@@ -1547,9 +1587,12 @@ Returns an array of the word break boundaries. Elements in the returned array ar
 When [param chars_per_line] is greater than zero, line break boundaries are returned instead.
 [codeblock]
 var ts = TextServerManager.get_primary_interface()
-print(ts.string_get_word_breaks("The Godot Engine, 4")) # Prints [0, 3, 4, 9, 10, 16, 18, 19], which corresponds to the following substrings: "The", "Godot", "Engine", "4"
-print(ts.string_get_word_breaks("The Godot Engine, 4", "en", 5)) # Prints [0, 3, 4, 9, 10, 15, 15, 19], which corresponds to the following substrings: "The", "Godot", "Engin", "e, 4"
-print(ts.string_get_word_breaks("The Godot Engine, 4", "en", 10)) # Prints [0, 9, 10, 19], which corresponds to the following substrings: "The Godot", "Engine, 4"
+# Corresponds to the substrings "The", "Godot", "Engine", and "4".
+print(ts.string_get_word_breaks("The Godot Engine, 4")) # Prints [0, 3, 4, 9, 10, 16, 18, 19]
+# Corresponds to the substrings "The", "Godot", "Engin", and "e, 4".
+print(ts.string_get_word_breaks("The Godot Engine, 4", "en", 5)) # Prints [0, 3, 4, 9, 10, 15, 15, 19]
+# Corresponds to the substrings "The Godot" and "Engine, 4".
+print(ts.string_get_word_breaks("The Godot Engine, 4", "en", 10)) # Prints [0, 9, 10, 19]
 [/codeblock]
 */
 func (self Instance) StringGetWordBreaks(s string) []int32 { //gd:TextServer.string_get_word_breaks
@@ -1560,7 +1603,7 @@ func (self Instance) StringGetWordBreaks(s string) []int32 { //gd:TextServer.str
 Returns array of the composite character boundaries.
 [codeblock]
 var ts = TextServerManager.get_primary_interface()
-print(ts.string_get_word_breaks("Test ❤️‍🔥 Test")) # Prints [1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14]
+print(ts.string_get_character_breaks("Test ❤️‍🔥 Test")) # Prints [1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14]
 [/codeblock]
 */
 func (self Instance) StringGetCharacterBreaks(s string) []int32 { //gd:TextServer.string_get_character_breaks
@@ -1759,6 +1802,19 @@ func (self class) SaveSupportData(filename String.Readable) bool { //gd:TextServ
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_save_support_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns default TextServer database (e.g. ICU break iterators and dictionaries).
+*/
+//go:nosplit
+func (self class) GetSupportData() Packed.Bytes { //gd:TextServer.get_support_data
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_get_support_data, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -2384,6 +2440,33 @@ func (self class) FontGetSubpixelPositioning(font_rid RID.Any) gdclass.TextServe
 	callframe.Arg(frame, font_rid)
 	var r_ret = callframe.Ret[gdclass.TextServerSubpixelPositioning](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_subpixel_positioning, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets glyph position rounding behavior. If set to [code]true[/code], when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
+*/
+//go:nosplit
+func (self class) FontSetKeepRoundingRemainders(font_rid RID.Any, keep_rounding_remainders bool) { //gd:TextServer.font_set_keep_rounding_remainders
+	var frame = callframe.New()
+	callframe.Arg(frame, font_rid)
+	callframe.Arg(frame, keep_rounding_remainders)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_set_keep_rounding_remainders, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns glyph position rounding behavior. If set to [code]true[/code], when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
+*/
+//go:nosplit
+func (self class) FontGetKeepRoundingRemainders(font_rid RID.Any) bool { //gd:TextServer.font_get_keep_rounding_remainders
+	var frame = callframe.New()
+	callframe.Arg(frame, font_rid)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_keep_rounding_remainders, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3084,6 +3167,11 @@ Returns outline contours of the glyph as a [Dictionary] with the following conte
 [code]points[/code]         - [PackedVector3Array], containing outline points. [code]x[/code] and [code]y[/code] are point coordinates. [code]z[/code] is the type of the point, using the [enum ContourPointTag] values.
 [code]contours[/code]       - [PackedInt32Array], containing indices the end points of each contour.
 [code]orientation[/code]    - [bool], contour orientation. If [code]true[/code], clockwise contours must be filled.
+- Two successive [constant CONTOUR_CURVE_TAG_ON] points indicate a line segment.
+- One [constant CONTOUR_CURVE_TAG_OFF_CONIC] point between two [constant CONTOUR_CURVE_TAG_ON] points indicates a single conic (quadratic) Bézier arc.
+- Two [constant CONTOUR_CURVE_TAG_OFF_CUBIC] points between two [constant CONTOUR_CURVE_TAG_ON] points indicate a single cubic Bézier arc.
+- Two successive [constant CONTOUR_CURVE_TAG_OFF_CONIC] points indicate two successive conic (quadratic) Bézier arcs with a virtual [constant CONTOUR_CURVE_TAG_ON] point at their middle.
+- Each contour is closed. The last point of a contour uses the first point of a contour as its next point, and vice versa. The first point can be [constant CONTOUR_CURVE_TAG_OFF_CONIC] point.
 */
 //go:nosplit
 func (self class) FontGetGlyphContours(font RID.Any, size int64, index int64) Dictionary.Any { //gd:TextServer.font_get_glyph_contours
@@ -3229,6 +3317,20 @@ func (self class) FontGetSupportedChars(font_rid RID.Any) String.Readable { //gd
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_supported_chars, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns an array containing all glyph indices in the font.
+*/
+//go:nosplit
+func (self class) FontGetSupportedGlyphs(font_rid RID.Any) Packed.Array[int32] { //gd:TextServer.font_get_supported_glyphs
+	var frame = callframe.New()
+	callframe.Arg(frame, font_rid)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_supported_glyphs, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -3887,6 +3989,21 @@ func (self class) ShapedGetSpanMeta(shaped RID.Any, index int64) variant.Any { /
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_get_span_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns text embedded object key.
+*/
+//go:nosplit
+func (self class) ShapedGetSpanEmbeddedObject(shaped RID.Any, index int64) variant.Any { //gd:TextServer.shaped_get_span_embedded_object
+	var frame = callframe.New()
+	callframe.Arg(frame, shaped)
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[[3]uint64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_get_span_embedded_object, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
@@ -4600,9 +4717,12 @@ Returns an array of the word break boundaries. Elements in the returned array ar
 When [param chars_per_line] is greater than zero, line break boundaries are returned instead.
 [codeblock]
 var ts = TextServerManager.get_primary_interface()
-print(ts.string_get_word_breaks("The Godot Engine, 4")) # Prints [0, 3, 4, 9, 10, 16, 18, 19], which corresponds to the following substrings: "The", "Godot", "Engine", "4"
-print(ts.string_get_word_breaks("The Godot Engine, 4", "en", 5)) # Prints [0, 3, 4, 9, 10, 15, 15, 19], which corresponds to the following substrings: "The", "Godot", "Engin", "e, 4"
-print(ts.string_get_word_breaks("The Godot Engine, 4", "en", 10)) # Prints [0, 9, 10, 19], which corresponds to the following substrings: "The Godot", "Engine, 4"
+# Corresponds to the substrings "The", "Godot", "Engine", and "4".
+print(ts.string_get_word_breaks("The Godot Engine, 4")) # Prints [0, 3, 4, 9, 10, 16, 18, 19]
+# Corresponds to the substrings "The", "Godot", "Engin", and "e, 4".
+print(ts.string_get_word_breaks("The Godot Engine, 4", "en", 5)) # Prints [0, 3, 4, 9, 10, 15, 15, 19]
+# Corresponds to the substrings "The Godot" and "Engine, 4".
+print(ts.string_get_word_breaks("The Godot Engine, 4", "en", 10)) # Prints [0, 9, 10, 19]
 [/codeblock]
 */
 //go:nosplit
@@ -4622,7 +4742,7 @@ func (self class) StringGetWordBreaks(s String.Readable, language String.Readabl
 Returns array of the composite character boundaries.
 [codeblock]
 var ts = TextServerManager.get_primary_interface()
-print(ts.string_get_word_breaks("Test ❤️‍🔥 Test")) # Prints [1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14]
+print(ts.string_get_character_breaks("Test ❤️‍🔥 Test")) # Prints [1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14]
 [/codeblock]
 */
 //go:nosplit
@@ -4923,7 +5043,8 @@ const (
 type VisibleCharactersBehavior = gdclass.TextServerVisibleCharactersBehavior //gd:TextServer.VisibleCharactersBehavior
 
 const (
-	/*Trims text before the shaping. e.g, increasing [member Label.visible_characters] or [member RichTextLabel.visible_characters] value is visually identical to typing the text.*/
+	/*Trims text before the shaping. e.g, increasing [member Label.visible_characters] or [member RichTextLabel.visible_characters] value is visually identical to typing the text.
+	  [b]Note:[/b] In this mode, trimmed text is not processed at all. It is not accounted for in line breaking and size calculations.*/
 	VcCharsBeforeShaping VisibleCharactersBehavior = 0
 	/*Displays glyphs that are mapped to the first [member Label.visible_characters] or [member RichTextLabel.visible_characters] characters from the beginning of the text.*/
 	VcCharsAfterShaping VisibleCharactersBehavior = 1

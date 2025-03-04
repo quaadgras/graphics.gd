@@ -1,0 +1,316 @@
+// Package EditorContextMenuPlugin provides methods for working with EditorContextMenuPlugin object instances.
+package EditorContextMenuPlugin
+
+import "unsafe"
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+
+var _ Object.ID
+var _ RefCounted.Instance
+var _ unsafe.Pointer
+var _ reflect.Type
+var _ callframe.Frame
+var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
+var _ Callable.Function
+var _ Dictionary.Any
+var _ RID.Any
+var _ String.Readable
+var _ Path.ToNode
+var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
+var _ = slices.Delete[[]struct{}, struct{}]
+
+/*
+[EditorContextMenuPlugin] allows for the addition of custom options in the editor's context menu.
+Currently, context menus are supported for three commonly used areas: the file system, scene tree, and editor script list panel.
+
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorContextMenuPlugin)
+*/
+type Instance [1]gdclass.EditorContextMenuPlugin
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
+type Any interface {
+	gd.IsClass
+	AsEditorContextMenuPlugin() Instance
+}
+type Interface interface {
+	//Called when creating a context menu, custom options can be added by using the [method add_context_menu_item] or [method add_context_menu_item_from_shortcut] functions. [param paths] contains currently selected paths (depending on menu), which can be used to conditionally add options.
+	PopupMenu(paths []string)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation = implementation
+
+type implementation struct{}
+
+func (self implementation) PopupMenu(paths []string) { return }
+
+/*
+Called when creating a context menu, custom options can be added by using the [method add_context_menu_item] or [method add_context_menu_item_from_shortcut] functions. [param paths] contains currently selected paths (depending on menu), which can be used to conditionally add options.
+*/
+func (Instance) _popup_menu(impl func(ptr unsafe.Pointer, paths []string)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var paths = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
+		defer pointers.End(gd.InternalPackedStrings(paths))
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, paths.Strings())
+	}
+}
+
+/*
+Registers a shortcut associated with the plugin's context menu. This method should be called once (e.g. in plugin's [method Object._init]). [param callback] will be called when user presses the specified [param shortcut] while the menu's context is in effect (e.g. FileSystem dock is focused). Callback should take single [Array] argument; array contents depend on context menu slot.
+[codeblock]
+func _init():
+
+	add_menu_shortcut(SHORTCUT, handle)
+
+[/codeblock]
+*/
+func (self Instance) AddMenuShortcut(shortcut [1]gdclass.Shortcut, callback func(array []any)) { //gd:EditorContextMenuPlugin.add_menu_shortcut
+	class(self).AddMenuShortcut(shortcut, Callable.New(callback))
+}
+
+/*
+Add custom option to the context menu of the plugin's specified slot. When the option is activated, [param callback] will be called. Callback should take single [Array] argument; array contents depend on context menu slot.
+[codeblock]
+func _popup_menu(paths):
+
+	add_context_menu_item("File Custom options", handle, ICON)
+
+[/codeblock]
+If you want to assign shortcut to the menu item, use [method add_context_menu_item_from_shortcut] instead.
+*/
+func (self Instance) AddContextMenuItem(name string, callback func(array []any)) { //gd:EditorContextMenuPlugin.add_context_menu_item
+	class(self).AddContextMenuItem(String.New(name), Callable.New(callback), [1][1]gdclass.Texture2D{}[0])
+}
+
+/*
+Add custom option to the context menu of the plugin's specified slot. The option will have the [param shortcut] assigned and reuse its callback. The shortcut has to be registered beforehand with [method add_menu_shortcut].
+[codeblock]
+func _init():
+
+	add_menu_shortcut(SHORTCUT, handle)
+
+func _popup_menu(paths):
+
+	add_context_menu_item_from_shortcut("File Custom options", SHORTCUT, ICON)
+
+[/codeblock]
+*/
+func (self Instance) AddContextMenuItemFromShortcut(name string, shortcut [1]gdclass.Shortcut) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
+	class(self).AddContextMenuItemFromShortcut(String.New(name), shortcut, [1][1]gdclass.Texture2D{}[0])
+}
+
+/*
+Add a submenu to the context menu of the plugin's specified slot. The submenu is not automatically handled, you need to connect to its signals yourself. Also the submenu is freed on every popup, so provide a new [PopupMenu] every time.
+[codeblock]
+func _popup_menu(paths):
+
+	var popup_menu = PopupMenu.new()
+	popup_menu.add_item("Blue")
+	popup_menu.add_item("White")
+	popup_menu.id_pressed.connect(_on_color_submenu_option)
+
+	add_context_submenu_item("Set Node Color", popup_menu)
+
+[/codeblock]
+*/
+func (self Instance) AddContextSubmenuItem(name string, menu [1]gdclass.PopupMenu) { //gd:EditorContextMenuPlugin.add_context_submenu_item
+	class(self).AddContextSubmenuItem(String.New(name), menu, [1][1]gdclass.Texture2D{}[0])
+}
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
+type class [1]gdclass.EditorContextMenuPlugin
+
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func New() Instance {
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorContextMenuPlugin"))
+	casted := Instance{*(*gdclass.EditorContextMenuPlugin)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
+}
+
+/*
+Called when creating a context menu, custom options can be added by using the [method add_context_menu_item] or [method add_context_menu_item_from_shortcut] functions. [param paths] contains currently selected paths (depending on menu), which can be used to conditionally add options.
+*/
+func (class) _popup_menu(impl func(ptr unsafe.Pointer, paths Packed.Strings)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var paths = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
+		defer pointers.End(gd.InternalPackedStrings(paths))
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, paths)
+	}
+}
+
+/*
+Registers a shortcut associated with the plugin's context menu. This method should be called once (e.g. in plugin's [method Object._init]). [param callback] will be called when user presses the specified [param shortcut] while the menu's context is in effect (e.g. FileSystem dock is focused). Callback should take single [Array] argument; array contents depend on context menu slot.
+[codeblock]
+func _init():
+    add_menu_shortcut(SHORTCUT, handle)
+[/codeblock]
+*/
+//go:nosplit
+func (self class) AddMenuShortcut(shortcut [1]gdclass.Shortcut, callback Callable.Function) { //gd:EditorContextMenuPlugin.add_menu_shortcut
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorContextMenuPlugin.Bind_add_menu_shortcut, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Add custom option to the context menu of the plugin's specified slot. When the option is activated, [param callback] will be called. Callback should take single [Array] argument; array contents depend on context menu slot.
+[codeblock]
+func _popup_menu(paths):
+    add_context_menu_item("File Custom options", handle, ICON)
+[/codeblock]
+If you want to assign shortcut to the menu item, use [method add_context_menu_item_from_shortcut] instead.
+*/
+//go:nosplit
+func (self class) AddContextMenuItem(name String.Readable, callback Callable.Function, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(icon[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorContextMenuPlugin.Bind_add_context_menu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Add custom option to the context menu of the plugin's specified slot. The option will have the [param shortcut] assigned and reuse its callback. The shortcut has to be registered beforehand with [method add_menu_shortcut].
+[codeblock]
+func _init():
+    add_menu_shortcut(SHORTCUT, handle)
+
+func _popup_menu(paths):
+    add_context_menu_item_from_shortcut("File Custom options", SHORTCUT, ICON)
+[/codeblock]
+*/
+//go:nosplit
+func (self class) AddContextMenuItemFromShortcut(name String.Readable, shortcut [1]gdclass.Shortcut, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
+	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
+	callframe.Arg(frame, pointers.Get(icon[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorContextMenuPlugin.Bind_add_context_menu_item_from_shortcut, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Add a submenu to the context menu of the plugin's specified slot. The submenu is not automatically handled, you need to connect to its signals yourself. Also the submenu is freed on every popup, so provide a new [PopupMenu] every time.
+[codeblock]
+func _popup_menu(paths):
+    var popup_menu = PopupMenu.new()
+    popup_menu.add_item("Blue")
+    popup_menu.add_item("White")
+    popup_menu.id_pressed.connect(_on_color_submenu_option)
+
+    add_context_submenu_item("Set Node Color", popup_menu)
+[/codeblock]
+*/
+//go:nosplit
+func (self class) AddContextSubmenuItem(name String.Readable, menu [1]gdclass.PopupMenu, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_submenu_item
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
+	callframe.Arg(frame, pointers.Get(menu[0])[0])
+	callframe.Arg(frame, pointers.Get(icon[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorContextMenuPlugin.Bind_add_context_submenu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+func (self class) AsEditorContextMenuPlugin() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsEditorContextMenuPlugin() Instance {
+	return *((*Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+
+func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_popup_menu":
+		return reflect.ValueOf(self._popup_menu)
+	default:
+		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
+	}
+}
+
+func (self Instance) Virtual(name string) reflect.Value {
+	switch name {
+	case "_popup_menu":
+		return reflect.ValueOf(self._popup_menu)
+	default:
+		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
+	}
+}
+func init() {
+	gdclass.Register("EditorContextMenuPlugin", func(ptr gd.Object) any {
+		return [1]gdclass.EditorContextMenuPlugin{*(*gdclass.EditorContextMenuPlugin)(unsafe.Pointer(&ptr))}
+	})
+}
+
+type ContextMenuSlot = gdclass.EditorContextMenuPluginContextMenuSlot //gd:EditorContextMenuPlugin.ContextMenuSlot
+
+const (
+	/*Context menu of Scene dock. [method _popup_menu] will be called with a list of paths to currently selected nodes, while option callback will receive the list of currently selected nodes.*/
+	ContextSlotSceneTree ContextMenuSlot = 0
+	/*Context menu of FileSystem dock. [method _popup_menu] and option callback will be called with list of paths of the currently selected files.*/
+	ContextSlotFilesystem ContextMenuSlot = 1
+	/*Context menu of Script editor's script tabs. [method _popup_menu] will be called with the path to the currently edited script, while option callback will receive reference to that script.*/
+	ContextSlotScriptEditor ContextMenuSlot = 2
+	/*The "Create..." submenu of FileSystem dock's context menu. [method _popup_menu] and option callback will be called with list of paths of the currently selected files.*/
+	ContextSlotFilesystemCreate ContextMenuSlot = 3
+	/*Context menu of Script editor's code editor. [method _popup_menu] will be called with the path to the [CodeEdit] node. You can fetch it using this code:
+	  [codeblock]
+	  func _popup_menu(paths):
+	      var code_edit = Engine.get_main_loop().root.get_node(paths[0]);
+	  [/codeblock]
+	  The option callback will receive reference to that node. You can use [CodeEdit] methods to perform symbol lookups etc.*/
+	ContextSlotScriptEditorCode ContextMenuSlot = 4
+	/*Context menu of scene tabs. [method _popup_menu] will be called with the path of the clicked scene, or empty [PackedStringArray] if the menu was opened on empty space. The option callback will receive the path of the clicked scene, or empty [String] if none was clicked.*/
+	ContextSlotSceneTabs ContextMenuSlot = 5
+	/*Context menu of 2D editor's basic right-click menu. [method _popup_menu] will be called with paths to all [CanvasItem] nodes under the cursor. You can fetch them using this code:
+	  [codeblock]
+	  func _popup_menu(paths):
+	      var canvas_item = Engine.get_main_loop().root.get_node(paths[0]); # Replace 0 with the desired index.
+	  [/codeblock]
+	  The paths array is empty if there weren't any nodes under cursor. The option callback will receive a typed array of [CanvasItem] nodes.*/
+	ContextSlot2dEditor ContextMenuSlot = 6
+)

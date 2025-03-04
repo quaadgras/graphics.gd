@@ -94,6 +94,9 @@ func (DictionaryProxy[K, V]) SetIndex(state complex128, key K, val V) {
 func (DictionaryProxy[K, V]) Clear(state complex128) {
 	pointers.Load[Dictionary](state).Clear()
 }
+func (DictionaryProxy[K, V]) Sort(state complex128, less func(K, K) bool) {
+	pointers.Load[Dictionary](state).Sort()
+}
 func (DictionaryProxy[K, V]) Iter(state complex128) iter.Seq2[K, V] {
 	return func(yield func(K, V) bool) {
 		dict := pointers.Load[Dictionary](state)

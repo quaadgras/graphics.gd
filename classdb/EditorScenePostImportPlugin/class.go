@@ -58,17 +58,18 @@ type Any interface {
 type Interface interface {
 	//Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [method add_import_option] and [method add_import_option_advanced].
 	GetInternalImportOptions(category int)
-	//Return true or false whether a given option should be visible. Return null to ignore.
+	//Should return [code]true[/code] to show the given option, [code]false[/code] to hide the given option, or [code]null[/code] to ignore.
 	GetInternalOptionVisibility(category int, for_animation bool, option string) any
-	//Return true whether updating the 3D view of the import dialog needs to be updated if an option has changed.
+	//Should return [code]true[/code] if the 3D view of the import dialog needs to update when changing the given option.
 	GetInternalOptionUpdateViewRequired(category int, option string) any
 	//Process a specific node or resource for a given category.
 	InternalProcess(category int, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource)
 	//Override to add general import options. These will appear in the main import dock on the editor. Add options via [method add_import_option] and [method add_import_option_advanced].
 	GetImportOptions(path string)
-	//Return true or false whether a given option should be visible. Return null to ignore.
+	//Should return [code]true[/code] to show the given option, [code]false[/code] to hide the given option, or [code]null[/code] to ignore.
 	GetOptionVisibility(path string, for_animation bool, option string) any
 	//Pre Process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
+	//Pre process may be used to adjust internal import options in the [code]"nodes"[/code], [code]"meshes"[/code], [code]"animations"[/code] or [code]"materials"[/code] keys inside [code]get_option_value("_subresources")[/code].
 	PreProcess(scene [1]gdclass.Node)
 	//Post process the scene. This function is called after the final scene has been configured.
 	PostProcess(scene [1]gdclass.Node)
@@ -109,7 +110,7 @@ func (Instance) _get_internal_import_options(impl func(ptr unsafe.Pointer, categ
 }
 
 /*
-Return true or false whether a given option should be visible. Return null to ignore.
+Should return [code]true[/code] to show the given option, [code]false[/code] to hide the given option, or [code]null[/code] to ignore.
 */
 func (Instance) _get_internal_option_visibility(impl func(ptr unsafe.Pointer, category int, for_animation bool, option string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -131,7 +132,7 @@ func (Instance) _get_internal_option_visibility(impl func(ptr unsafe.Pointer, ca
 }
 
 /*
-Return true whether updating the 3D view of the import dialog needs to be updated if an option has changed.
+Should return [code]true[/code] if the 3D view of the import dialog needs to update when changing the given option.
 */
 func (Instance) _get_internal_option_update_view_required(impl func(ptr unsafe.Pointer, category int, option string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -184,7 +185,7 @@ func (Instance) _get_import_options(impl func(ptr unsafe.Pointer, path string)) 
 }
 
 /*
-Return true or false whether a given option should be visible. Return null to ignore.
+Should return [code]true[/code] to show the given option, [code]false[/code] to hide the given option, or [code]null[/code] to ignore.
 */
 func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string, for_animation bool, option string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -207,6 +208,7 @@ func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string
 
 /*
 Pre Process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
+Pre process may be used to adjust internal import options in the [code]"nodes"[/code], [code]"meshes"[/code], [code]"animations"[/code] or [code]"materials"[/code] keys inside [code]get_option_value("_subresources")[/code].
 */
 func (Instance) _pre_process(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -284,7 +286,7 @@ func (class) _get_internal_import_options(impl func(ptr unsafe.Pointer, category
 }
 
 /*
-Return true or false whether a given option should be visible. Return null to ignore.
+Should return [code]true[/code] to show the given option, [code]false[/code] to hide the given option, or [code]null[/code] to ignore.
 */
 func (class) _get_internal_option_visibility(impl func(ptr unsafe.Pointer, category int64, for_animation bool, option String.Readable) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -306,7 +308,7 @@ func (class) _get_internal_option_visibility(impl func(ptr unsafe.Pointer, categ
 }
 
 /*
-Return true whether updating the 3D view of the import dialog needs to be updated if an option has changed.
+Should return [code]true[/code] if the 3D view of the import dialog needs to update when changing the given option.
 */
 func (class) _get_internal_option_update_view_required(impl func(ptr unsafe.Pointer, category int64, option String.Readable) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -359,7 +361,7 @@ func (class) _get_import_options(impl func(ptr unsafe.Pointer, path String.Reada
 }
 
 /*
-Return true or false whether a given option should be visible. Return null to ignore.
+Should return [code]true[/code] to show the given option, [code]false[/code] to hide the given option, or [code]null[/code] to ignore.
 */
 func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path String.Readable, for_animation bool, option String.Readable) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -382,6 +384,7 @@ func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path String.Re
 
 /*
 Pre Process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
+Pre process may be used to adjust internal import options in the [code]"nodes"[/code], [code]"meshes"[/code], [code]"animations"[/code] or [code]"materials"[/code] keys inside [code]get_option_value("_subresources")[/code].
 */
 func (class) _pre_process(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -610,7 +613,7 @@ const (
 	  hintString = $"{Variant.Type.Array:D}:{Variant.Type.Array:D}:{elemType:D}/{elemHint:D}:{elemHintString}";
 	  [/csharp]
 	  [/codeblocks]
-	  Examples:
+	  [b]Examples:[/b]
 	  [codeblocks]
 	  [gdscript]
 	  hint_string = "%d:" % [TYPE_INT] # Array of integers.
@@ -654,6 +657,8 @@ const (
 	PropertyHintIntIsPointer PropertyHint = 30
 	/*Hints that a property is an [Array] with the stored type specified in the hint string.*/
 	PropertyHintArrayType PropertyHint = 31
+	/*Hints that a property is a [Dictionary] with the stored types specified in the hint string.*/
+	PropertyHintDictionaryType PropertyHint = 38
 	/*Hints that a string property is a locale code. Editing it will show a locale dialog for picking language and country.*/
 	PropertyHintLocaleId PropertyHint = 32
 	/*Hints that a dictionary property is string translation map. Dictionary keys are locale codes and, values are translated strings.*/
@@ -664,8 +669,17 @@ const (
 	PropertyHintHideQuaternionEdit PropertyHint = 35
 	/*Hints that a string property is a password, and every character is replaced with the secret character.*/
 	PropertyHintPassword PropertyHint = 36
+	/*Hints that a [Callable] property should be displayed as a clickable button. When the button is pressed, the callable is called. The hint string specifies the button text and optionally an icon from the [code]"EditorIcons"[/code] theme type.
+	  [codeblock lang=text]
+	  "Click me!" - A button with the text "Click me!" and the default "Callable" icon.
+	  "Click me!,ColorRect" - A button with the text "Click me!" and the "ColorRect" icon.
+	  [/codeblock]
+	  [b]Note:[/b] A [Callable] cannot be properly serialized and stored in a file, so it is recommended to use [constant PROPERTY_USAGE_EDITOR] instead of [constant PROPERTY_USAGE_DEFAULT].*/
+	PropertyHintToolButton PropertyHint = 39
+	/*Hints that a property will be changed on its own after setting, such as [member AudioStreamPlayer.playing] or [member GPUParticles3D.emitting].*/
+	PropertyHintOneshot PropertyHint = 40
 	/*Represents the size of the [enum PropertyHint] enum.*/
-	PropertyHintMax PropertyHint = 38
+	PropertyHintMax PropertyHint = 42
 )
 
 type VariantType int

@@ -13,6 +13,7 @@ import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
@@ -106,6 +107,22 @@ func (self Instance) SetMargin(value Float.X) {
 	class(self).SetMargin(float64(value))
 }
 
+func (self Instance) DebugColor() Color.RGBA {
+	return Color.RGBA(class(self).GetDebugColor())
+}
+
+func (self Instance) SetDebugColor(value Color.RGBA) {
+	class(self).SetDebugColor(Color.RGBA(value))
+}
+
+func (self Instance) DebugFill() bool {
+	return bool(class(self).GetEnableDebugFill())
+}
+
+func (self Instance) SetDebugFill(value bool) {
+	class(self).SetEnableDebugFill(value)
+}
+
 //go:nosplit
 func (self class) SetDepth(depth float64) { //gd:CollisionPolygon3D.set_depth
 	var frame = callframe.New()
@@ -158,6 +175,44 @@ func (self class) IsDisabled() bool { //gd:CollisionPolygon3D.is_disabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon3D.Bind_is_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetDebugColor(color Color.RGBA) { //gd:CollisionPolygon3D.set_debug_color
+	var frame = callframe.New()
+	callframe.Arg(frame, color)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon3D.Bind_set_debug_color, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetDebugColor() Color.RGBA { //gd:CollisionPolygon3D.get_debug_color
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Color.RGBA](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon3D.Bind_get_debug_color, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetEnableDebugFill(enable bool) { //gd:CollisionPolygon3D.set_enable_debug_fill
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon3D.Bind_set_enable_debug_fill, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetEnableDebugFill() bool { //gd:CollisionPolygon3D.get_enable_debug_fill
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon3D.Bind_get_enable_debug_fill, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

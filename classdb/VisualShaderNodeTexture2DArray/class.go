@@ -74,16 +74,16 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TextureArray() [1]gdclass.Texture2DArray {
-	return [1]gdclass.Texture2DArray(class(self).GetTextureArray())
+func (self Instance) TextureArray() [1]gdclass.TextureLayered {
+	return [1]gdclass.TextureLayered(class(self).GetTextureArray())
 }
 
-func (self Instance) SetTextureArray(value [1]gdclass.Texture2DArray) {
+func (self Instance) SetTextureArray(value [1]gdclass.TextureLayered) {
 	class(self).SetTextureArray(value)
 }
 
 //go:nosplit
-func (self class) SetTextureArray(value [1]gdclass.Texture2DArray) { //gd:VisualShaderNodeTexture2DArray.set_texture_array
+func (self class) SetTextureArray(value [1]gdclass.TextureLayered) { //gd:VisualShaderNodeTexture2DArray.set_texture_array
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value[0])[0])
 	var r_ret = callframe.Nil
@@ -92,11 +92,11 @@ func (self class) SetTextureArray(value [1]gdclass.Texture2DArray) { //gd:Visual
 }
 
 //go:nosplit
-func (self class) GetTextureArray() [1]gdclass.Texture2DArray { //gd:VisualShaderNodeTexture2DArray.get_texture_array
+func (self class) GetTextureArray() [1]gdclass.TextureLayered { //gd:VisualShaderNodeTexture2DArray.get_texture_array
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTexture2DArray.Bind_get_texture_array, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Texture2DArray{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2DArray](r_ret.Get())}
+	var ret = [1]gdclass.TextureLayered{gd.PointerWithOwnershipTransferredToGo[gdclass.TextureLayered](r_ret.Get())}
 	frame.Free()
 	return ret
 }

@@ -133,18 +133,18 @@ type ScriptLanguageExtensionProfilingInfo struct {
 type Glyph struct {
 	_ structs.HostLayout
 
-	Start    int32
-	End      int32
-	Count    uint8
-	Repeat   uint8
-	Flags    uint16
-	Xoffset  float32
-	Yoffset  float32
-	Advance  float32
-	FontRID  RID
-	FontSize int32
-	Index    int32
-	//SpanIndex int32
+	Start     int32
+	End       int32
+	Count     uint8
+	Repeat    uint8
+	Flags     uint16
+	Xoffset   float32
+	Yoffset   float32
+	Advance   float32
+	FontRID   RID
+	FontSize  int32
+	Index     int32
+	SpanIndex int32
 }
 type CaretInfo struct {
 	_ structs.HostLayout

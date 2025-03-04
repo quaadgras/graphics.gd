@@ -289,6 +289,13 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"get_edited_object": {
 			"return value": MustAssertInstanceID,
 		},
+		"edit": {
+			"object": IsTemporaryReference,
+		},
+		"instantiate_property_editor": {
+			"object":       IsTemporaryReference,
+			"return value": MustAssertInstanceID,
+		},
 	},
 	"EditorInspectorPlugin": {
 		"add_custom_control": {
@@ -340,6 +347,18 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		},
 		"get_edited_scene_root": {
 			"return value": MustAssertInstanceID,
+		},
+		"get_editor_toaster": {
+			"return value": LifetimeBoundToClass,
+		},
+		"get_editor_undo_redo": {
+			"return value": LifetimeBoundToClass,
+		},
+		"popup_node_selector": {
+			"current_value": IsTemporaryReference,
+		},
+		"popup_method_selector": {
+			"object": IsTemporaryReference,
 		},
 		"popup_dialog": {
 			"dialog": IsTemporaryReference,
@@ -427,6 +446,12 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		},
 		"get_edited_object": {
 			"return value": MustAssertInstanceID,
+		},
+		"set_object_and_property": {
+			"object": IsTemporaryReference,
+		},
+		"set_label_reference": {
+			"control": IsTemporaryReference,
 		},
 	},
 	"EditorResourceTooltipPlugin": {
@@ -533,6 +558,9 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"generate_scene": {
 			"return value": OwnershipTransferred,
 		},
+		"export_object_model_property": {
+			"godot_node": IsTemporaryReference,
+		},
 	},
 	"GLTFLight": {
 		"from_node": {
@@ -576,6 +604,9 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"get_node_index": {
 			"scene_node": IsTemporaryReference,
 		},
+		"append_gltf_node": {
+			"godot_scene_node": IsTemporaryReference,
+		},
 	},
 	"GPUParticles2D": {
 		"convert_from_particles": {
@@ -615,6 +646,9 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 	},
 	"ItemList": {
 		"get_v_scroll_bar": {
+			"return value": LifetimeBoundToClass,
+		},
+		"get_h_scroll_bar": {
 			"return value": LifetimeBoundToClass,
 		},
 	},
@@ -1163,6 +1197,12 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"gui_get_hovered_control": {
 			"return value": MustAssertInstanceID,
 		},
+		"get_audio_listener_2d": {
+			"return value": LifetimeBoundToClass,
+		},
+		"get_audio_listener_3d": {
+			"return value": LifetimeBoundToClass,
+		},
 	},
 	"VoxelGI": {
 		"bake": {
@@ -1203,6 +1243,12 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"unregister_composition_layer_provider": {
 			"extension": ReversesTheOwnership,
 		},
+		"register_projection_views_extension": {
+			"extension": OwnershipTransferred,
+		},
+		"unregister_projection_views_extension": {
+			"extension": ReversesTheOwnership,
+		},
 	},
 	"OpenXRCompositionLayer": {
 		"set_layer_viewport": {
@@ -1224,6 +1270,31 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		},
 		"add_undo_reference": {
 			"object": LifetimeBoundToClass,
+		},
+	},
+	"BoneAttachment3D": {
+		"get_skeleton": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"EditorContextMenuPlugin": {
+		"add_context_submenu_item": {
+			"menu": IsTemporaryReference,
+		},
+	},
+	"GridMapEditorPlugin": {
+		"get_current_grid_map": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"SplitContainer": {
+		"get_drag_area_control": {
+			"return value": LifetimeBoundToClass,
+		},
+	},
+	"SpringBoneCollision3D": {
+		"get_skeleton": {
+			"return value": MustAssertInstanceID,
 		},
 	},
 }

@@ -123,7 +123,7 @@ func (Instance) _can_use_render_priority(impl func(ptr unsafe.Pointer) bool) (cb
 }
 
 /*
-Only available when running in the editor. Opens a popup that visualizes the generated shader code, including all variants and internal shader code.
+Only available when running in the editor. Opens a popup that visualizes the generated shader code, including all variants and internal shader code. See also [method Shader.inspect_native_shader_code].
 */
 func (self Instance) InspectNativeShaderCode() { //gd:Material.inspect_native_shader_code
 	class(self).InspectNativeShaderCode()
@@ -254,7 +254,7 @@ func (self class) GetRenderPriority() int64 { //gd:Material.get_render_priority
 }
 
 /*
-Only available when running in the editor. Opens a popup that visualizes the generated shader code, including all variants and internal shader code.
+Only available when running in the editor. Opens a popup that visualizes the generated shader code, including all variants and internal shader code. See also [method Shader.inspect_native_shader_code].
 */
 //go:nosplit
 func (self class) InspectNativeShaderCode() { //gd:Material.inspect_native_shader_code

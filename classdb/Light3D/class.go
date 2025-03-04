@@ -249,6 +249,14 @@ func (self Instance) SetShadowBlur(value Float.X) {
 	class(self).SetParam(18, float64(value))
 }
 
+func (self Instance) ShadowCasterMask() int {
+	return int(int(class(self).GetShadowCasterMask()))
+}
+
+func (self Instance) SetShadowCasterMask(value int) {
+	class(self).SetShadowCasterMask(int64(value))
+}
+
 func (self Instance) DistanceFadeEnabled() bool {
 	return bool(class(self).IsDistanceFadeEnabled())
 }
@@ -501,6 +509,25 @@ func (self class) GetShadowReverseCullFace() bool { //gd:Light3D.get_shadow_reve
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_get_shadow_reverse_cull_face, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetShadowCasterMask(caster_mask int64) { //gd:Light3D.set_shadow_caster_mask
+	var frame = callframe.New()
+	callframe.Arg(frame, caster_mask)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_set_shadow_caster_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetShadowCasterMask() int64 { //gd:Light3D.get_shadow_caster_mask
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_get_shadow_caster_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

@@ -72,7 +72,7 @@ func (self Instance) GetSurfaceOverrideMaterialCount() int { //gd:MeshInstance3D
 
 /*
 Sets the override [param material] for the specified [param surface] of the [Mesh] resource. This material is associated with this [MeshInstance3D] rather than with [member mesh].
-[b]Note:[/b] This assigns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To set the material within the [Mesh] resource, use [method Mesh.surface_get_material] instead.
+[b]Note:[/b] This assigns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To set the material within the [Mesh] resource, use [method Mesh.surface_set_material] instead.
 */
 func (self Instance) SetSurfaceOverrideMaterial(surface int, material [1]gdclass.Material) { //gd:MeshInstance3D.set_surface_override_material
 	class(self).SetSurfaceOverrideMaterial(int64(surface), material)
@@ -158,6 +158,14 @@ Takes a snapshot from the current [ArrayMesh] with all blend shapes applied acco
 */
 func (self Instance) BakeMeshFromCurrentBlendShapeMix() [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_blend_shape_mix
 	return [1]gdclass.ArrayMesh(class(self).BakeMeshFromCurrentBlendShapeMix([1][1]gdclass.ArrayMesh{}[0]))
+}
+
+/*
+Takes a snapshot of the current animated skeleton pose of the skinned mesh and bakes it to the provided [param existing] mesh. If no [param existing] mesh is provided a new [ArrayMesh] is created, baked, and returned. Requires a skeleton with a registered skin to work. Blendshapes are ignored. Mesh surface materials are not copied.
+[b]Performance:[/b] [Mesh] data needs to be retrieved from the GPU, stalling the [RenderingServer] in the process.
+*/
+func (self Instance) BakeMeshFromCurrentSkeletonPose() [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_skeleton_pose
+	return [1]gdclass.ArrayMesh(class(self).BakeMeshFromCurrentSkeletonPose([1][1]gdclass.ArrayMesh{}[0]))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -287,7 +295,7 @@ func (self class) GetSurfaceOverrideMaterialCount() int64 { //gd:MeshInstance3D.
 
 /*
 Sets the override [param material] for the specified [param surface] of the [Mesh] resource. This material is associated with this [MeshInstance3D] rather than with [member mesh].
-[b]Note:[/b] This assigns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To set the material within the [Mesh] resource, use [method Mesh.surface_get_material] instead.
+[b]Note:[/b] This assigns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To set the material within the [Mesh] resource, use [method Mesh.surface_set_material] instead.
 */
 //go:nosplit
 func (self class) SetSurfaceOverrideMaterial(surface int64, material [1]gdclass.Material) { //gd:MeshInstance3D.set_surface_override_material
@@ -442,6 +450,21 @@ func (self class) BakeMeshFromCurrentBlendShapeMix(existing [1]gdclass.ArrayMesh
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_bake_mesh_from_current_blend_shape_mix, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Takes a snapshot of the current animated skeleton pose of the skinned mesh and bakes it to the provided [param existing] mesh. If no [param existing] mesh is provided a new [ArrayMesh] is created, baked, and returned. Requires a skeleton with a registered skin to work. Blendshapes are ignored. Mesh surface materials are not copied.
+[b]Performance:[/b] [Mesh] data needs to be retrieved from the GPU, stalling the [RenderingServer] in the process.
+*/
+//go:nosplit
+func (self class) BakeMeshFromCurrentSkeletonPose(existing [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_skeleton_pose
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(existing[0])[0])
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_bake_mesh_from_current_skeleton_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret.Get())}
 	frame.Free()
 	return ret

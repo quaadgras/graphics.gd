@@ -74,7 +74,7 @@ func (self Instance) GetCollisionCount() int { //gd:ShapeCast2D.get_collision_co
 
 /*
 Updates the collision information for the shape immediately, without waiting for the next [code]_physics_process[/code] call. Use this method, for example, when the shape or its parent has changed state.
-[b]Note:[/b] [code]enabled == true[/code] is not required for this to work.
+[b]Note:[/b] Setting [member enabled] to [code]true[/code] is not required for this to work.
 */
 func (self Instance) ForceShapecastUpdate() { //gd:ShapeCast2D.force_shapecast_update
 	class(self).ForceShapecastUpdate()
@@ -103,7 +103,7 @@ func (self Instance) GetColliderShape(index int) int { //gd:ShapeCast2D.get_coll
 
 /*
 Returns the collision point of one of the multiple collisions at [param index] where the shape intersects the colliding object.
-[b]Note:[/b] this point is in the [b]global[/b] coordinate system.
+[b]Note:[/b] This point is in the [b]global[/b] coordinate system.
 */
 func (self Instance) GetCollisionPoint(index int) Vector2.XY { //gd:ShapeCast2D.get_collision_point
 	return Vector2.XY(class(self).GetCollisionPoint(int64(index)))
@@ -117,14 +117,14 @@ func (self Instance) GetCollisionNormal(index int) Vector2.XY { //gd:ShapeCast2D
 }
 
 /*
-The fraction from the [ShapeCast2D]'s origin to its [member target_position] (between 0 and 1) of how far the shape can move without triggering a collision.
+Returns the fraction from this cast's origin to its [member target_position] of how far the shape can move without triggering a collision, as a value between [code]0.0[/code] and [code]1.0[/code].
 */
 func (self Instance) GetClosestCollisionSafeFraction() Float.X { //gd:ShapeCast2D.get_closest_collision_safe_fraction
 	return Float.X(Float.X(class(self).GetClosestCollisionSafeFraction()))
 }
 
 /*
-The fraction from the [ShapeCast2D]'s origin to its [member target_position] (between 0 and 1) of how far the shape must move to trigger a collision.
+Returns the fraction from this cast's origin to its [member target_position] of how far the shape must move to trigger a collision, as a value between [code]0.0[/code] and [code]1.0[/code].
 In ideal conditions this would be the same as [method get_closest_collision_safe_fraction], however shape casting is calculated in discrete steps, so the precise point of collision can occur between two calculated positions.
 */
 func (self Instance) GetClosestCollisionUnsafeFraction() Float.X { //gd:ShapeCast2D.get_closest_collision_unsafe_fraction
@@ -139,7 +139,7 @@ func (self Instance) AddExceptionRid(rid RID.Body2D) { //gd:ShapeCast2D.add_exce
 }
 
 /*
-Adds a collision exception so the shape does not report collisions with the specified [CollisionObject2D] node.
+Adds a collision exception so the shape does not report collisions with the specified node.
 */
 func (self Instance) AddException(node [1]gdclass.CollisionObject2D) { //gd:ShapeCast2D.add_exception
 	class(self).AddException(node)
@@ -153,7 +153,7 @@ func (self Instance) RemoveExceptionRid(rid RID.Body2D) { //gd:ShapeCast2D.remov
 }
 
 /*
-Removes a collision exception so the shape does report collisions with the specified [CollisionObject2D] node.
+Removes a collision exception so the shape does report collisions with the specified node.
 */
 func (self Instance) RemoveException(node [1]gdclass.CollisionObject2D) { //gd:ShapeCast2D.remove_exception
 	class(self).RemoveException(node)
@@ -252,6 +252,10 @@ func (self Instance) CollisionMask() int {
 
 func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
+}
+
+func (self Instance) CollisionResult() []any {
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetCollisionResult())))
 }
 
 func (self Instance) CollideWithAreas() bool {
@@ -393,7 +397,7 @@ func (self class) GetCollisionCount() int64 { //gd:ShapeCast2D.get_collision_cou
 
 /*
 Updates the collision information for the shape immediately, without waiting for the next [code]_physics_process[/code] call. Use this method, for example, when the shape or its parent has changed state.
-[b]Note:[/b] [code]enabled == true[/code] is not required for this to work.
+[b]Note:[/b] Setting [member enabled] to [code]true[/code] is not required for this to work.
 */
 //go:nosplit
 func (self class) ForceShapecastUpdate() { //gd:ShapeCast2D.force_shapecast_update
@@ -447,7 +451,7 @@ func (self class) GetColliderShape(index int64) int64 { //gd:ShapeCast2D.get_col
 
 /*
 Returns the collision point of one of the multiple collisions at [param index] where the shape intersects the colliding object.
-[b]Note:[/b] this point is in the [b]global[/b] coordinate system.
+[b]Note:[/b] This point is in the [b]global[/b] coordinate system.
 */
 //go:nosplit
 func (self class) GetCollisionPoint(index int64) Vector2.XY { //gd:ShapeCast2D.get_collision_point
@@ -475,7 +479,7 @@ func (self class) GetCollisionNormal(index int64) Vector2.XY { //gd:ShapeCast2D.
 }
 
 /*
-The fraction from the [ShapeCast2D]'s origin to its [member target_position] (between 0 and 1) of how far the shape can move without triggering a collision.
+Returns the fraction from this cast's origin to its [member target_position] of how far the shape can move without triggering a collision, as a value between [code]0.0[/code] and [code]1.0[/code].
 */
 //go:nosplit
 func (self class) GetClosestCollisionSafeFraction() float64 { //gd:ShapeCast2D.get_closest_collision_safe_fraction
@@ -488,7 +492,7 @@ func (self class) GetClosestCollisionSafeFraction() float64 { //gd:ShapeCast2D.g
 }
 
 /*
-The fraction from the [ShapeCast2D]'s origin to its [member target_position] (between 0 and 1) of how far the shape must move to trigger a collision.
+Returns the fraction from this cast's origin to its [member target_position] of how far the shape must move to trigger a collision, as a value between [code]0.0[/code] and [code]1.0[/code].
 In ideal conditions this would be the same as [method get_closest_collision_safe_fraction], however shape casting is calculated in discrete steps, so the precise point of collision can occur between two calculated positions.
 */
 //go:nosplit
@@ -514,7 +518,7 @@ func (self class) AddExceptionRid(rid RID.Any) { //gd:ShapeCast2D.add_exception_
 }
 
 /*
-Adds a collision exception so the shape does not report collisions with the specified [CollisionObject2D] node.
+Adds a collision exception so the shape does not report collisions with the specified node.
 */
 //go:nosplit
 func (self class) AddException(node [1]gdclass.CollisionObject2D) { //gd:ShapeCast2D.add_exception
@@ -538,7 +542,7 @@ func (self class) RemoveExceptionRid(rid RID.Any) { //gd:ShapeCast2D.remove_exce
 }
 
 /*
-Removes a collision exception so the shape does report collisions with the specified [CollisionObject2D] node.
+Removes a collision exception so the shape does report collisions with the specified node.
 */
 //go:nosplit
 func (self class) RemoveException(node [1]gdclass.CollisionObject2D) { //gd:ShapeCast2D.remove_exception
@@ -659,6 +663,16 @@ func (self class) IsCollideWithBodiesEnabled() bool { //gd:ShapeCast2D.is_collid
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_is_collide_with_bodies_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) GetCollisionResult() Array.Any { //gd:ShapeCast2D.get_collision_result
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_get_collision_result, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

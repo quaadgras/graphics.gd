@@ -45,7 +45,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A resource used by [AnimationNodeBlendTree].
-[AnimationNodeBlendSpace1D] represents a virtual 2D space on which [AnimationRootNode]s are placed. Outputs the linear blend of the three adjacent animations using a [Vector2] weight. Adjacent in this context means the three [AnimationRootNode]s making up the triangle that contains the current value.
+[AnimationNodeBlendSpace2D] represents a virtual 2D space on which [AnimationRootNode]s are placed. Outputs the linear blend of the three adjacent animations using a [Vector2] weight. Adjacent in this context means the three [AnimationRootNode]s making up the triangle that contains the current value.
 You can add vertices to the blend space with [method add_blend_point] and automatically triangulate it by setting [member auto_triangles] to [code]true[/code]. Otherwise, use [method add_triangle] and [method remove_triangle] to triangulate the blend space by hand.
 */
 type Instance [1]gdclass.AnimationNodeBlendSpace2D
@@ -66,7 +66,7 @@ func (self Instance) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos Vector
 }
 
 /*
-Updates the position of the point at index [param point] on the blend axis.
+Updates the position of the point at index [param point] in the blend space.
 */
 func (self Instance) SetBlendPointPosition(point int, pos Vector2.XY) { //gd:AnimationNodeBlendSpace2D.set_blend_point_position
 	class(self).SetBlendPointPosition(int64(point), Vector2.XY(pos))
@@ -233,7 +233,7 @@ func (self class) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos Vector2.X
 }
 
 /*
-Updates the position of the point at index [param point] on the blend axis.
+Updates the position of the point at index [param point] in the blend space.
 */
 //go:nosplit
 func (self class) SetBlendPointPosition(point int64, pos Vector2.XY) { //gd:AnimationNodeBlendSpace2D.set_blend_point_position

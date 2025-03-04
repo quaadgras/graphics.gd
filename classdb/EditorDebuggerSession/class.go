@@ -89,7 +89,7 @@ func (self Instance) IsActive() bool { //gd:EditorDebuggerSession.is_active
 }
 
 /*
-Adds the given [param control] to the debug session UI in the debugger bottom panel.
+Adds the given [param control] to the debug session UI in the debugger bottom panel. The [param control]'s node name will be used as the tab title.
 */
 func (self Instance) AddSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.add_session_tab
 	class(self).AddSessionTab(control)
@@ -195,7 +195,7 @@ func (self class) IsActive() bool { //gd:EditorDebuggerSession.is_active
 }
 
 /*
-Adds the given [param control] to the debug session UI in the debugger bottom panel.
+Adds the given [param control] to the debug session UI in the debugger bottom panel. The [param control]'s node name will be used as the tab title.
 */
 //go:nosplit
 func (self class) AddSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.add_session_tab

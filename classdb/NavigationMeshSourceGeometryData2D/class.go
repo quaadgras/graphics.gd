@@ -19,6 +19,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
@@ -115,6 +116,13 @@ Clears all projected obstructions.
 */
 func (self Instance) ClearProjectedObstructions() { //gd:NavigationMeshSourceGeometryData2D.clear_projected_obstructions
 	class(self).ClearProjectedObstructions()
+}
+
+/*
+Returns an axis-aligned bounding box that covers all the stored geometry data. The bounds are calculated when calling this function with the result cached until further geometry changes are made.
+*/
+func (self Instance) GetBounds() Rect2.PositionSize { //gd:NavigationMeshSourceGeometryData2D.get_bounds
+	return Rect2.PositionSize(class(self).GetBounds())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -347,6 +355,19 @@ func (self class) GetProjectedObstructions() Array.Any { //gd:NavigationMeshSour
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_get_projected_obstructions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns an axis-aligned bounding box that covers all the stored geometry data. The bounds are calculated when calling this function with the result cached until further geometry changes are made.
+*/
+//go:nosplit
+func (self class) GetBounds() Rect2.PositionSize { //gd:NavigationMeshSourceGeometryData2D.get_bounds
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_get_bounds, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

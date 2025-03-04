@@ -111,7 +111,7 @@ public partial class MySpecialPlugin : EditorImportPlugin
 
 	    public override string[] _GetRecognizedExtensions()
 	    {
-	        return new string[] { "special", "spec" };
+	        return ["special", "spec"];
 	    }
 
 	    public override string _GetSaveExtension()
@@ -136,14 +136,14 @@ public partial class MySpecialPlugin : EditorImportPlugin
 
 	    public override Godot.Collections.Array<Godot.Collections.Dictionary> _GetImportOptions(string path, int presetIndex)
 	    {
-	        return new Godot.Collections.Array<Godot.Collections.Dictionary>
-	        {
+	        return
+	        [
 	            new Godot.Collections.Dictionary
 	            {
 	                { "name", "myOption" },
 	                { "default_value", false },
-	            }
-	        };
+	            },
+	        ];
 	    }
 
 	    public override Error _Import(string sourceFile, string savePath, Godot.Collections.Dictionary options, Godot.Collections.Array<string> platformVariants, Godot.Collections.Array<string> genFiles)
@@ -199,7 +199,9 @@ type Interface interface {
 	GetPriority() Float.X
 	//Gets the order of this importer to be run when importing resources. Importers with [i]lower[/i] import orders will be called first, and higher values will be called later. Use this to ensure the importer runs after the dependencies are already imported. The default import order is [code]0[/code] unless overridden by a specific importer. See [enum ResourceImporter.ImportOrder] for some predefined values.
 	GetImportOrder() int
-	//This method can be overridden to hide specific import options if conditions are met. This is mainly useful for hiding options that depend on others if one of them is disabled. For example:
+	//Gets the format version of this importer. Increment this version when making incompatible changes to the format of the imported resources.
+	GetFormatVersion() int
+	//This method can be overridden to hide specific import options if conditions are met. This is mainly useful for hiding options that depend on others if one of them is disabled.
 	//[codeblocks]
 	//[gdscript]
 	//func _get_option_visibility(option, options):
@@ -228,7 +230,8 @@ type Interface interface {
 	//This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
 	Import(source_file string, save_path string, options map[any]any, platform_variants []string, gen_files []string) error
 	//Tells whether this importer can be run in parallel on threads, or, on the contrary, it's only safe for the editor to call it from the main thread, for one file at a time.
-	//If this method is not overridden, it will return [code]true[/code] by default (i.e., safe for parallel importing).
+	//If this method is not overridden, it will return [code]false[/code] by default.
+	//If this importer's implementation is thread-safe and can be run in parallel, override this with [code]true[/code] to optimize for concurrency.
 	CanImportThreaded() bool
 }
 
@@ -247,6 +250,7 @@ func (self implementation) GetSaveExtension() (_ string)                        
 func (self implementation) GetResourceType() (_ string)                                      { return }
 func (self implementation) GetPriority() (_ Float.X)                                         { return }
 func (self implementation) GetImportOrder() (_ int)                                          { return }
+func (self implementation) GetFormatVersion() (_ int)                                        { return }
 func (self implementation) GetOptionVisibility(path string, option_name string, options map[any]any) (_ bool) {
 	return
 }
@@ -407,7 +411,18 @@ func (Instance) _get_import_order(impl func(ptr unsafe.Pointer) int) (cb gd.Exte
 }
 
 /*
-This method can be overridden to hide specific import options if conditions are met. This is mainly useful for hiding options that depend on others if one of them is disabled. For example:
+Gets the format version of this importer. Increment this version when making incompatible changes to the format of the imported resources.
+*/
+func (Instance) _get_format_version(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, int64(ret))
+	}
+}
+
+/*
+This method can be overridden to hide specific import options if conditions are met. This is mainly useful for hiding options that depend on others if one of them is disabled.
 [codeblocks]
 [gdscript]
 func _get_option_visibility(option, options):
@@ -479,7 +494,8 @@ func (Instance) _import(impl func(ptr unsafe.Pointer, source_file string, save_p
 
 /*
 Tells whether this importer can be run in parallel on threads, or, on the contrary, it's only safe for the editor to call it from the main thread, for one file at a time.
-If this method is not overridden, it will return [code]true[/code] by default (i.e., safe for parallel importing).
+If this method is not overridden, it will return [code]false[/code] by default.
+If this importer's implementation is thread-safe and can be run in parallel, override this with [code]true[/code] to optimize for concurrency.
 */
 func (Instance) _can_import_threaded(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -667,7 +683,18 @@ func (class) _get_import_order(impl func(ptr unsafe.Pointer) int64) (cb gd.Exten
 }
 
 /*
-This method can be overridden to hide specific import options if conditions are met. This is mainly useful for hiding options that depend on others if one of them is disabled. For example:
+Gets the format version of this importer. Increment this version when making incompatible changes to the format of the imported resources.
+*/
+func (class) _get_format_version(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+This method can be overridden to hide specific import options if conditions are met. This is mainly useful for hiding options that depend on others if one of them is disabled.
 [codeblocks]
 [gdscript]
 func _get_option_visibility(option, options):
@@ -739,7 +766,8 @@ func (class) _import(impl func(ptr unsafe.Pointer, source_file String.Readable, 
 
 /*
 Tells whether this importer can be run in parallel on threads, or, on the contrary, it's only safe for the editor to call it from the main thread, for one file at a time.
-If this method is not overridden, it will return [code]true[/code] by default (i.e., safe for parallel importing).
+If this method is not overridden, it will return [code]false[/code] by default.
+If this importer's implementation is thread-safe and can be run in parallel, override this with [code]true[/code] to optimize for concurrency.
 */
 func (class) _can_import_threaded(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -802,6 +830,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_priority)
 	case "_get_import_order":
 		return reflect.ValueOf(self._get_import_order)
+	case "_get_format_version":
+		return reflect.ValueOf(self._get_format_version)
 	case "_get_option_visibility":
 		return reflect.ValueOf(self._get_option_visibility)
 	case "_import":
@@ -835,6 +865,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_priority)
 	case "_get_import_order":
 		return reflect.ValueOf(self._get_import_order)
+	case "_get_format_version":
+		return reflect.ValueOf(self._get_format_version)
 	case "_get_option_visibility":
 		return reflect.ValueOf(self._get_option_visibility)
 	case "_import":

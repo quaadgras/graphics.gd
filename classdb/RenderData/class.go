@@ -68,7 +68,7 @@ func (self Instance) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:Rend
 }
 
 /*
-Returns the [RID] of the environments object in the [RenderingServer] being used to render this viewport.
+Returns the [RID] of the environment object in the [RenderingServer] being used to render this viewport.
 */
 func (self Instance) GetEnvironment() RID.Environment { //gd:RenderData.get_environment
 	return RID.Environment(class(self).GetEnvironment())
@@ -126,7 +126,7 @@ func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:RenderD
 }
 
 /*
-Returns the [RID] of the environments object in the [RenderingServer] being used to render this viewport.
+Returns the [RID] of the environment object in the [RenderingServer] being used to render this viewport.
 */
 //go:nosplit
 func (self class) GetEnvironment() RID.Any { //gd:RenderData.get_environment

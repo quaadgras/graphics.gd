@@ -43,6 +43,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 MP3 audio stream driver. See [member data] if you want to load an MP3 file at run-time.
+[b]Note:[/b] This class can optionally support legacy MP1 and MP2 formats, provided that the engine is compiled with the [code]minimp3_extra_formats=yes[/code] SCons option. These extra formats are not enabled by default.
 */
 type Instance [1]gdclass.AudioStreamMP3
 
@@ -52,6 +53,22 @@ var Nil Instance
 type Any interface {
 	gd.IsClass
 	AsAudioStreamMP3() Instance
+}
+
+/*
+Creates a new [AudioStreamMP3] instance from the given buffer. The buffer must contain MP3 data.
+*/
+func LoadFromBuffer(stream_data []byte) [1]gdclass.AudioStreamMP3 { //gd:AudioStreamMP3.load_from_buffer
+	self := Instance{}
+	return [1]gdclass.AudioStreamMP3(class(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...))))
+}
+
+/*
+Creates a new [AudioStreamMP3] instance from the given file path. The file must be in MP3 format.
+*/
+func LoadFromFile(path string) [1]gdclass.AudioStreamMP3 { //gd:AudioStreamMP3.load_from_file
+	self := Instance{}
+	return [1]gdclass.AudioStreamMP3(class(self).LoadFromFile(String.New(path)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -119,6 +136,34 @@ func (self Instance) LoopOffset() Float.X {
 
 func (self Instance) SetLoopOffset(value Float.X) {
 	class(self).SetLoopOffset(float64(value))
+}
+
+/*
+Creates a new [AudioStreamMP3] instance from the given buffer. The buffer must contain MP3 data.
+*/
+//go:nosplit
+func (self class) LoadFromBuffer(stream_data Packed.Bytes) [1]gdclass.AudioStreamMP3 { //gd:AudioStreamMP3.load_from_buffer
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data))))
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamMP3.Bind_load_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.AudioStreamMP3{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamMP3](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Creates a new [AudioStreamMP3] instance from the given file path. The file must be in MP3 format.
+*/
+//go:nosplit
+func (self class) LoadFromFile(path String.Readable) [1]gdclass.AudioStreamMP3 { //gd:AudioStreamMP3.load_from_file
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamMP3.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.AudioStreamMP3{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamMP3](r_ret.Get())}
+	frame.Free()
+	return ret
 }
 
 //go:nosplit

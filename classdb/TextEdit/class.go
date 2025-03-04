@@ -204,14 +204,14 @@ func (self Instance) GetTabSize() int { //gd:TextEdit.get_tab_size
 }
 
 /*
-If [code]true[/code], sets the user into overtype mode. When the user types in this mode, it will override existing text.
+If [code]true[/code], enables overtype mode. In this mode, typing overrides existing text instead of inserting text. The [member ProjectSettings.input/ui_text_toggle_insert_mode] action toggles overtype mode. See [method is_overtype_mode_enabled].
 */
 func (self Instance) SetOvertypeModeEnabled(enabled bool) { //gd:TextEdit.set_overtype_mode_enabled
 	class(self).SetOvertypeModeEnabled(enabled)
 }
 
 /*
-Returns whether the user is in overtype mode.
+Returns [code]true[/code] if overtype mode is enabled. See [method set_overtype_mode_enabled].
 */
 func (self Instance) IsOvertypeModeEnabled() bool { //gd:TextEdit.is_overtype_mode_enabled
 	return bool(class(self).IsOvertypeModeEnabled())
@@ -247,6 +247,13 @@ func (self Instance) GetLine(line int) string { //gd:TextEdit.get_line
 }
 
 /*
+Returns line text as it is currently displayed, including IME composition string.
+*/
+func (self Instance) GetLineWithIme(line int) string { //gd:TextEdit.get_line_with_ime
+	return string(class(self).GetLineWithIme(int64(line)).String())
+}
+
+/*
 Returns the width in pixels of the [param wrap_index] on [param line].
 */
 func (self Instance) GetLineWidth(line int) int { //gd:TextEdit.get_line_width
@@ -262,14 +269,14 @@ func (self Instance) GetLineHeight() int { //gd:TextEdit.get_line_height
 }
 
 /*
-Returns the number of spaces and [code]tab * tab_size[/code] before the first char.
+Returns the indent level of the given line. This is the number of spaces and tabs at the beginning of the line, with the tabs taking the tab size into account (see [method get_tab_size]).
 */
 func (self Instance) GetIndentLevel(line int) int { //gd:TextEdit.get_indent_level
 	return int(int(class(self).GetIndentLevel(int64(line))))
 }
 
 /*
-Returns the first column containing a non-whitespace character.
+Returns the first column containing a non-whitespace character on the given line. If there is only whitespace, returns the number of characters.
 */
 func (self Instance) GetFirstNonWhitespaceColumn(line int) int { //gd:TextEdit.get_first_non_whitespace_column
 	return int(int(class(self).GetFirstNonWhitespaceColumn(int64(line))))
@@ -527,10 +534,12 @@ func (self Instance) GetWordAtPos(position Vector2.XY) string { //gd:TextEdit.ge
 }
 
 /*
-Returns the line and column at the given position. In the returned vector, [code]x[/code] is the column, [code]y[/code] is the line. If [param allow_out_of_bounds] is [code]false[/code] and the position is not over the text, both vector values will be set to [code]-1[/code].
+Returns the line and column at the given position. In the returned vector, [code]x[/code] is the column and [code]y[/code] is the line.
+If [param clamp_line] is [code]false[/code] and [param position] is below the last line, [code]Vector2i(-1, -1)[/code] is returned.
+If [param clamp_column] is [code]false[/code] and [param position] is outside the column range of the line, [code]Vector2i(-1, -1)[/code] is returned.
 */
 func (self Instance) GetLineColumnAtPos(position Vector2i.XY) Vector2i.XY { //gd:TextEdit.get_line_column_at_pos
-	return Vector2i.XY(class(self).GetLineColumnAtPos(Vector2i.XY(position), true))
+	return Vector2i.XY(class(self).GetLineColumnAtPos(Vector2i.XY(position), true, true))
 }
 
 /*
@@ -564,7 +573,7 @@ func (self Instance) IsDraggingCursor() bool { //gd:TextEdit.is_dragging_cursor
 }
 
 /*
-Returns whether the mouse is over selection. If [param edges] is [code]true[/code], the edges are considered part of the selection.
+Returns [code]true[/code] if the mouse is over a selection. If [param edges] is [code]true[/code], the edges are considered part of the selection.
 */
 func (self Instance) IsMouseOverSelection(edges bool) bool { //gd:TextEdit.is_mouse_over_selection
 	return bool(class(self).IsMouseOverSelection(edges, int64(-1)))
@@ -635,7 +644,6 @@ func (self Instance) MergeOverlappingCarets() { //gd:TextEdit.merge_overlapping_
 
 /*
 Starts an edit for multiple carets. The edit must be ended with [method end_multicaret_edit]. Multicaret edits can be used to edit text at multiple carets and delay merging the carets until the end, so the caret indexes aren't affected immediately. [method begin_multicaret_edit] and [method end_multicaret_edit] can be nested, and the merge will happen at the last [method end_multicaret_edit].
-Example usage:
 [codeblock]
 begin_complex_operation()
 begin_multicaret_edit()
@@ -676,7 +684,8 @@ func (self Instance) MulticaretEditIgnoreCaret(caret_index int) bool { //gd:Text
 }
 
 /*
-Returns [code]true[/code] if the caret is visible on the screen.
+Returns [code]true[/code] if the caret is visible, [code]false[/code] otherwise. A caret will be considered hidden if it is outside the scrollable area when scrolling is enabled.
+[b]Note:[/b] [method is_caret_visible] does not account for a caret being off-screen if it is still within the scrollable area. It will return [code]true[/code] even if the caret is off-screen as long as it meets [TextEdit]'s own conditions for being visible. This includes uses of [member scroll_fit_content_width] and [member scroll_fit_content_height] that cause the [TextEdit] to expand beyond the viewport's bounds.
 */
 func (self Instance) IsCaretVisible() bool { //gd:TextEdit.is_caret_visible
 	return bool(class(self).IsCaretVisible(int64(0)))
@@ -913,7 +922,7 @@ func (self Instance) GetLineWrapCount(line int) int { //gd:TextEdit.get_line_wra
 }
 
 /*
-Returns the wrap index of the given line column.
+Returns the wrap index of the given column on the given line. This ranges from [code]0[/code] to [method get_line_wrap_count].
 */
 func (self Instance) GetLineWrapIndexAtColumn(line int, column int) int { //gd:TextEdit.get_line_wrap_index_at_column
 	return int(int(class(self).GetLineWrapIndexAtColumn(int64(line), int64(column))))
@@ -990,21 +999,21 @@ func (self Instance) GetLastFullVisibleLineWrapIndex() int { //gd:TextEdit.get_l
 }
 
 /*
-Returns the number of visible lines, including wrapped text.
+Returns the number of lines that can visually fit, rounded down, based on this control's height.
 */
 func (self Instance) GetVisibleLineCount() int { //gd:TextEdit.get_visible_line_count
 	return int(int(class(self).GetVisibleLineCount()))
 }
 
 /*
-Returns the total number of visible + wrapped lines between the two lines.
+Returns the total number of lines between [param from_line] and [param to_line] (inclusive) in the text. This includes wrapped lines and excludes folded lines. If the range covers all lines it is equivalent to [method get_total_visible_line_count].
 */
 func (self Instance) GetVisibleLineCountInRange(from_line int, to_line int) int { //gd:TextEdit.get_visible_line_count_in_range
 	return int(int(class(self).GetVisibleLineCountInRange(int64(from_line), int64(to_line))))
 }
 
 /*
-Returns the number of lines that may be drawn.
+Returns the total number of lines in the text. This includes wrapped lines and excludes folded lines. If [member wrap_mode] is set to [constant LINE_WRAPPING_NONE] and no lines are folded (see [method CodeEdit.is_line_folded]) then this is equivalent to [method get_line_count]. See [method get_visible_line_count_in_range] for a limited range of lines.
 */
 func (self Instance) GetTotalVisibleLineCount() int { //gd:TextEdit.get_total_visible_line_count
 	return int(int(class(self).GetTotalVisibleLineCount()))
@@ -1039,7 +1048,7 @@ func (self Instance) AddGutter() { //gd:TextEdit.add_gutter
 }
 
 /*
-Removes the gutter from this [TextEdit].
+Removes the gutter at the given index.
 */
 func (self Instance) RemoveGutter(gutter int) { //gd:TextEdit.remove_gutter
 	class(self).RemoveGutter(int64(gutter))
@@ -1053,7 +1062,7 @@ func (self Instance) GetGutterCount() int { //gd:TextEdit.get_gutter_count
 }
 
 /*
-Sets the name of the gutter.
+Sets the name of the gutter at the given index.
 */
 func (self Instance) SetGutterName(gutter int, name string) { //gd:TextEdit.set_gutter_name
 	class(self).SetGutterName(int64(gutter), String.New(name))
@@ -1067,7 +1076,7 @@ func (self Instance) GetGutterName(gutter int) string { //gd:TextEdit.get_gutter
 }
 
 /*
-Sets the type of gutter. Gutters can contain icons, text, or custom visuals. See [enum TextEdit.GutterType] for options.
+Sets the type of gutter at the given index. Gutters can contain icons, text, or custom visuals. See [enum TextEdit.GutterType] for options.
 */
 func (self Instance) SetGutterType(gutter int, atype gdclass.TextEditGutterType) { //gd:TextEdit.set_gutter_type
 	class(self).SetGutterType(int64(gutter), atype)
@@ -1081,7 +1090,7 @@ func (self Instance) GetGutterType(gutter int) gdclass.TextEditGutterType { //gd
 }
 
 /*
-Set the width of the gutter.
+Set the width of the gutter at the given index.
 */
 func (self Instance) SetGutterWidth(gutter int, width int) { //gd:TextEdit.set_gutter_width
 	class(self).SetGutterWidth(int64(gutter), int64(width))
@@ -1095,56 +1104,56 @@ func (self Instance) GetGutterWidth(gutter int) int { //gd:TextEdit.get_gutter_w
 }
 
 /*
-Sets whether the gutter should be drawn.
+If [code]true[/code], the gutter at the given index is drawn. The gutter type ([method set_gutter_type]) determines how it is drawn. See [method is_gutter_drawn].
 */
 func (self Instance) SetGutterDraw(gutter int, draw bool) { //gd:TextEdit.set_gutter_draw
 	class(self).SetGutterDraw(int64(gutter), draw)
 }
 
 /*
-Returns whether the gutter is currently drawn.
+Returns [code]true[/code] if the gutter at the given index is currently drawn. See [method set_gutter_draw].
 */
 func (self Instance) IsGutterDrawn(gutter int) bool { //gd:TextEdit.is_gutter_drawn
 	return bool(class(self).IsGutterDrawn(int64(gutter)))
 }
 
 /*
-Sets the gutter as clickable. This will change the mouse cursor to a pointing hand when hovering over the gutter.
+If [code]true[/code], the mouse cursor will change to a pointing hand ([constant Control.CURSOR_POINTING_HAND]) when hovering over the gutter at the given index. See [method is_gutter_clickable] and [method set_line_gutter_clickable].
 */
 func (self Instance) SetGutterClickable(gutter int, clickable bool) { //gd:TextEdit.set_gutter_clickable
 	class(self).SetGutterClickable(int64(gutter), clickable)
 }
 
 /*
-Returns whether the gutter is clickable.
+Returns [code]true[/code] if the gutter at the given index is clickable. See [method set_gutter_clickable].
 */
 func (self Instance) IsGutterClickable(gutter int) bool { //gd:TextEdit.is_gutter_clickable
 	return bool(class(self).IsGutterClickable(int64(gutter)))
 }
 
 /*
-Sets the gutter to overwritable. See [method merge_gutters].
+If [code]true[/code], the line data of the gutter at the given index can be overridden when using [method merge_gutters]. See [method is_gutter_overwritable].
 */
 func (self Instance) SetGutterOverwritable(gutter int, overwritable bool) { //gd:TextEdit.set_gutter_overwritable
 	class(self).SetGutterOverwritable(int64(gutter), overwritable)
 }
 
 /*
-Returns whether the gutter is overwritable.
+Returns [code]true[/code] if the gutter at the given index is overwritable. See [method set_gutter_overwritable].
 */
 func (self Instance) IsGutterOverwritable(gutter int) bool { //gd:TextEdit.is_gutter_overwritable
 	return bool(class(self).IsGutterOverwritable(int64(gutter)))
 }
 
 /*
-Merge the gutters from [param from_line] into [param to_line]. Only overwritable gutters will be copied.
+Merge the gutters from [param from_line] into [param to_line]. Only overwritable gutters will be copied. See [method set_gutter_overwritable].
 */
 func (self Instance) MergeGutters(from_line int, to_line int) { //gd:TextEdit.merge_gutters
 	class(self).MergeGutters(int64(from_line), int64(to_line))
 }
 
 /*
-Set a custom draw method for the gutter. The callback method must take the following args: [code]line: int, gutter: int, Area: Rect2[/code]. This only works when the gutter type is [constant GUTTER_TYPE_CUSTOM] (see [method set_gutter_type]).
+Set a custom draw callback for the gutter at the given index. [param draw_callback] must take the following arguments: A line index [int], a gutter index [int], and an area [Rect2]. This callback only works when the gutter type is [constant GUTTER_TYPE_CUSTOM] (see [method set_gutter_type]).
 */
 func (self Instance) SetGutterCustomDraw(column int, draw_callback func(line int, gutter int, area Rect2.PositionSize)) { //gd:TextEdit.set_gutter_custom_draw
 	class(self).SetGutterCustomDraw(int64(column), Callable.New(draw_callback))
@@ -1214,28 +1223,28 @@ func (self Instance) GetLineGutterItemColor(line int, gutter int) Color.RGBA { /
 }
 
 /*
-If [param clickable] is [code]true[/code], makes the [param gutter] on [param line] clickable. See [signal gutter_clicked].
+If [param clickable] is [code]true[/code], makes the [param gutter] on the given [param line] clickable. This is like [method set_gutter_clickable], but for a single line. If [method is_gutter_clickable] is [code]true[/code], this will not have any effect. See [method is_line_gutter_clickable] and [signal gutter_clicked].
 */
 func (self Instance) SetLineGutterClickable(line int, gutter int, clickable bool) { //gd:TextEdit.set_line_gutter_clickable
 	class(self).SetLineGutterClickable(int64(line), int64(gutter), clickable)
 }
 
 /*
-Returns whether the gutter on the given line is clickable.
+Returns [code]true[/code] if the gutter at the given index on the given line is clickable. See [method set_line_gutter_clickable].
 */
 func (self Instance) IsLineGutterClickable(line int, gutter int) bool { //gd:TextEdit.is_line_gutter_clickable
 	return bool(class(self).IsLineGutterClickable(int64(line), int64(gutter)))
 }
 
 /*
-Sets the current background color of the line. Set to [code]Color(0, 0, 0, 0)[/code] for no color.
+Sets the custom background color of the given line. If transparent, this color is applied on top of the default background color (See [theme_item background_color]). If set to [code]Color(0, 0, 0, 0)[/code], no additional color is applied.
 */
 func (self Instance) SetLineBackgroundColor(line int, color Color.RGBA) { //gd:TextEdit.set_line_background_color
 	class(self).SetLineBackgroundColor(int64(line), Color.RGBA(color))
 }
 
 /*
-Returns the current background color of the line. [code]Color(0, 0, 0, 0)[/code] is returned if no color is set.
+Returns the custom background color of the given line. If no color is set, returns [code]Color(0, 0, 0, 0)[/code].
 */
 func (self Instance) GetLineBackgroundColor(line int) Color.RGBA { //gd:TextEdit.get_line_background_color
 	return Color.RGBA(class(self).GetLineBackgroundColor(int64(line)))
@@ -1295,7 +1304,7 @@ func (self Instance) GetMenu() [1]gdclass.PopupMenu { //gd:TextEdit.get_menu
 }
 
 /*
-Returns whether the menu is visible. Use this instead of [code]get_menu().visible[/code] to improve performance (so the creation of the menu is avoided).
+Returns [code]true[/code] if the menu is visible. Use this instead of [code]get_menu().visible[/code] to improve performance (so the creation of the menu is avoided). See [method get_menu].
 */
 func (self Instance) IsMenuVisible() bool { //gd:TextEdit.is_menu_visible
 	return bool(class(self).IsMenuVisible())
@@ -1386,6 +1395,14 @@ func (self Instance) SetContextMenuEnabled(value bool) {
 	class(self).SetContextMenuEnabled(value)
 }
 
+func (self Instance) EmojiMenuEnabled() bool {
+	return bool(class(self).IsEmojiMenuEnabled())
+}
+
+func (self Instance) SetEmojiMenuEnabled(value bool) {
+	class(self).SetEmojiMenuEnabled(value)
+}
+
 func (self Instance) ShortcutKeysEnabled() bool {
 	return bool(class(self).IsShortcutKeysEnabled())
 }
@@ -1432,6 +1449,14 @@ func (self Instance) MiddleMousePasteEnabled() bool {
 
 func (self Instance) SetMiddleMousePasteEnabled(value bool) {
 	class(self).SetMiddleMousePasteEnabled(value)
+}
+
+func (self Instance) EmptySelectionClipboardEnabled() bool {
+	return bool(class(self).IsEmptySelectionClipboardEnabled())
+}
+
+func (self Instance) SetEmptySelectionClipboardEnabled(value bool) {
+	class(self).SetEmptySelectionClipboardEnabled(value)
 }
 
 func (self Instance) WrapMode() gdclass.TextEditLineWrappingMode {
@@ -1504,6 +1529,14 @@ func (self Instance) ScrollFitContentHeight() bool {
 
 func (self Instance) SetScrollFitContentHeight(value bool) {
 	class(self).SetFitContentHeightEnabled(value)
+}
+
+func (self Instance) ScrollFitContentWidth() bool {
+	return bool(class(self).IsFitContentWidthEnabled())
+}
+
+func (self Instance) SetScrollFitContentWidth(value bool) {
+	class(self).SetFitContentWidthEnabled(value)
 }
 
 func (self Instance) MinimapDraw() bool {
@@ -1932,7 +1965,7 @@ func (self class) IsIndentWrappedLines() bool { //gd:TextEdit.is_indent_wrapped_
 }
 
 /*
-If [code]true[/code], sets the user into overtype mode. When the user types in this mode, it will override existing text.
+If [code]true[/code], enables overtype mode. In this mode, typing overrides existing text instead of inserting text. The [member ProjectSettings.input/ui_text_toggle_insert_mode] action toggles overtype mode. See [method is_overtype_mode_enabled].
 */
 //go:nosplit
 func (self class) SetOvertypeModeEnabled(enabled bool) { //gd:TextEdit.set_overtype_mode_enabled
@@ -1944,7 +1977,7 @@ func (self class) SetOvertypeModeEnabled(enabled bool) { //gd:TextEdit.set_overt
 }
 
 /*
-Returns whether the user is in overtype mode.
+Returns [code]true[/code] if overtype mode is enabled. See [method set_overtype_mode_enabled].
 */
 //go:nosplit
 func (self class) IsOvertypeModeEnabled() bool { //gd:TextEdit.is_overtype_mode_enabled
@@ -1970,6 +2003,25 @@ func (self class) IsContextMenuEnabled() bool { //gd:TextEdit.is_context_menu_en
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_context_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetEmojiMenuEnabled(enable bool) { //gd:TextEdit.set_emoji_menu_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_emoji_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsEmojiMenuEnabled() bool { //gd:TextEdit.is_emoji_menu_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_emoji_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2027,6 +2079,25 @@ func (self class) IsMiddleMousePasteEnabled() bool { //gd:TextEdit.is_middle_mou
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_middle_mouse_paste_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetEmptySelectionClipboardEnabled(enabled bool) { //gd:TextEdit.set_empty_selection_clipboard_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_empty_selection_clipboard_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsEmptySelectionClipboardEnabled() bool { //gd:TextEdit.is_empty_selection_clipboard_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_empty_selection_clipboard_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2123,6 +2194,20 @@ func (self class) GetLine(line int64) String.Readable { //gd:TextEdit.get_line
 }
 
 /*
+Returns line text as it is currently displayed, including IME composition string.
+*/
+//go:nosplit
+func (self class) GetLineWithIme(line int64) String.Readable { //gd:TextEdit.get_line_with_ime
+	var frame = callframe.New()
+	callframe.Arg(frame, line)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_with_ime, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
 Returns the width in pixels of the [param wrap_index] on [param line].
 */
 //go:nosplit
@@ -2152,7 +2237,7 @@ func (self class) GetLineHeight() int64 { //gd:TextEdit.get_line_height
 }
 
 /*
-Returns the number of spaces and [code]tab * tab_size[/code] before the first char.
+Returns the indent level of the given line. This is the number of spaces and tabs at the beginning of the line, with the tabs taking the tab size into account (see [method get_tab_size]).
 */
 //go:nosplit
 func (self class) GetIndentLevel(line int64) int64 { //gd:TextEdit.get_indent_level
@@ -2166,7 +2251,7 @@ func (self class) GetIndentLevel(line int64) int64 { //gd:TextEdit.get_indent_le
 }
 
 /*
-Returns the first column containing a non-whitespace character.
+Returns the first column containing a non-whitespace character on the given line. If there is only whitespace, returns the number of characters.
 */
 //go:nosplit
 func (self class) GetFirstNonWhitespaceColumn(line int64) int64 { //gd:TextEdit.get_first_non_whitespace_column
@@ -2611,13 +2696,16 @@ func (self class) GetWordAtPos(position Vector2.XY) String.Readable { //gd:TextE
 }
 
 /*
-Returns the line and column at the given position. In the returned vector, [code]x[/code] is the column, [code]y[/code] is the line. If [param allow_out_of_bounds] is [code]false[/code] and the position is not over the text, both vector values will be set to [code]-1[/code].
+Returns the line and column at the given position. In the returned vector, [code]x[/code] is the column and [code]y[/code] is the line.
+If [param clamp_line] is [code]false[/code] and [param position] is below the last line, [code]Vector2i(-1, -1)[/code] is returned.
+If [param clamp_column] is [code]false[/code] and [param position] is outside the column range of the line, [code]Vector2i(-1, -1)[/code] is returned.
 */
 //go:nosplit
-func (self class) GetLineColumnAtPos(position Vector2i.XY, allow_out_of_bounds bool) Vector2i.XY { //gd:TextEdit.get_line_column_at_pos
+func (self class) GetLineColumnAtPos(position Vector2i.XY, clamp_line bool, clamp_column bool) Vector2i.XY { //gd:TextEdit.get_line_column_at_pos
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	callframe.Arg(frame, allow_out_of_bounds)
+	callframe.Arg(frame, clamp_line)
+	callframe.Arg(frame, clamp_column)
 	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_column_at_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2685,7 +2773,7 @@ func (self class) IsDraggingCursor() bool { //gd:TextEdit.is_dragging_cursor
 }
 
 /*
-Returns whether the mouse is over selection. If [param edges] is [code]true[/code], the edges are considered part of the selection.
+Returns [code]true[/code] if the mouse is over a selection. If [param edges] is [code]true[/code], the edges are considered part of the selection.
 */
 //go:nosplit
 func (self class) IsMouseOverSelection(edges bool, caret_index int64) bool { //gd:TextEdit.is_mouse_over_selection
@@ -2945,7 +3033,6 @@ func (self class) MergeOverlappingCarets() { //gd:TextEdit.merge_overlapping_car
 
 /*
 Starts an edit for multiple carets. The edit must be ended with [method end_multicaret_edit]. Multicaret edits can be used to edit text at multiple carets and delay merging the carets until the end, so the caret indexes aren't affected immediately. [method begin_multicaret_edit] and [method end_multicaret_edit] can be nested, and the merge will happen at the last [method end_multicaret_edit].
-Example usage:
 [codeblock]
 begin_complex_operation()
 begin_multicaret_edit()
@@ -3005,7 +3092,8 @@ func (self class) MulticaretEditIgnoreCaret(caret_index int64) bool { //gd:TextE
 }
 
 /*
-Returns [code]true[/code] if the caret is visible on the screen.
+Returns [code]true[/code] if the caret is visible, [code]false[/code] otherwise. A caret will be considered hidden if it is outside the scrollable area when scrolling is enabled.
+[b]Note:[/b] [method is_caret_visible] does not account for a caret being off-screen if it is still within the scrollable area. It will return [code]true[/code] even if the caret is off-screen as long as it meets [TextEdit]'s own conditions for being visible. This includes uses of [member scroll_fit_content_width] and [member scroll_fit_content_height] that cause the [TextEdit] to expand beyond the viewport's bounds.
 */
 //go:nosplit
 func (self class) IsCaretVisible(caret_index int64) bool { //gd:TextEdit.is_caret_visible
@@ -3608,7 +3696,7 @@ func (self class) GetLineWrapCount(line int64) int64 { //gd:TextEdit.get_line_wr
 }
 
 /*
-Returns the wrap index of the given line column.
+Returns the wrap index of the given column on the given line. This ranges from [code]0[/code] to [method get_line_wrap_count].
 */
 //go:nosplit
 func (self class) GetLineWrapIndexAtColumn(line int64, column int64) int64 { //gd:TextEdit.get_line_wrap_index_at_column
@@ -3776,6 +3864,25 @@ func (self class) IsFitContentHeightEnabled() bool { //gd:TextEdit.is_fit_conten
 	return ret
 }
 
+//go:nosplit
+func (self class) SetFitContentWidthEnabled(enabled bool) { //gd:TextEdit.set_fit_content_width_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_fit_content_width_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsFitContentWidthEnabled() bool { //gd:TextEdit.is_fit_content_width_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_fit_content_width_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
 /*
 Returns the scroll position for [param wrap_index] of [param line].
 */
@@ -3870,7 +3977,7 @@ func (self class) GetLastFullVisibleLineWrapIndex() int64 { //gd:TextEdit.get_la
 }
 
 /*
-Returns the number of visible lines, including wrapped text.
+Returns the number of lines that can visually fit, rounded down, based on this control's height.
 */
 //go:nosplit
 func (self class) GetVisibleLineCount() int64 { //gd:TextEdit.get_visible_line_count
@@ -3883,7 +3990,7 @@ func (self class) GetVisibleLineCount() int64 { //gd:TextEdit.get_visible_line_c
 }
 
 /*
-Returns the total number of visible + wrapped lines between the two lines.
+Returns the total number of lines between [param from_line] and [param to_line] (inclusive) in the text. This includes wrapped lines and excludes folded lines. If the range covers all lines it is equivalent to [method get_total_visible_line_count].
 */
 //go:nosplit
 func (self class) GetVisibleLineCountInRange(from_line int64, to_line int64) int64 { //gd:TextEdit.get_visible_line_count_in_range
@@ -3898,7 +4005,7 @@ func (self class) GetVisibleLineCountInRange(from_line int64, to_line int64) int
 }
 
 /*
-Returns the number of lines that may be drawn.
+Returns the total number of lines in the text. This includes wrapped lines and excludes folded lines. If [member wrap_mode] is set to [constant LINE_WRAPPING_NONE] and no lines are folded (see [method CodeEdit.is_line_folded]) then this is equivalent to [method get_line_count]. See [method get_visible_line_count_in_range] for a limited range of lines.
 */
 //go:nosplit
 func (self class) GetTotalVisibleLineCount() int64 { //gd:TextEdit.get_total_visible_line_count
@@ -3998,7 +4105,7 @@ func (self class) AddGutter(at int64) { //gd:TextEdit.add_gutter
 }
 
 /*
-Removes the gutter from this [TextEdit].
+Removes the gutter at the given index.
 */
 //go:nosplit
 func (self class) RemoveGutter(gutter int64) { //gd:TextEdit.remove_gutter
@@ -4023,7 +4130,7 @@ func (self class) GetGutterCount() int64 { //gd:TextEdit.get_gutter_count
 }
 
 /*
-Sets the name of the gutter.
+Sets the name of the gutter at the given index.
 */
 //go:nosplit
 func (self class) SetGutterName(gutter int64, name String.Readable) { //gd:TextEdit.set_gutter_name
@@ -4050,7 +4157,7 @@ func (self class) GetGutterName(gutter int64) String.Readable { //gd:TextEdit.ge
 }
 
 /*
-Sets the type of gutter. Gutters can contain icons, text, or custom visuals. See [enum TextEdit.GutterType] for options.
+Sets the type of gutter at the given index. Gutters can contain icons, text, or custom visuals. See [enum TextEdit.GutterType] for options.
 */
 //go:nosplit
 func (self class) SetGutterType(gutter int64, atype gdclass.TextEditGutterType) { //gd:TextEdit.set_gutter_type
@@ -4077,7 +4184,7 @@ func (self class) GetGutterType(gutter int64) gdclass.TextEditGutterType { //gd:
 }
 
 /*
-Set the width of the gutter.
+Set the width of the gutter at the given index.
 */
 //go:nosplit
 func (self class) SetGutterWidth(gutter int64, width int64) { //gd:TextEdit.set_gutter_width
@@ -4104,7 +4211,7 @@ func (self class) GetGutterWidth(gutter int64) int64 { //gd:TextEdit.get_gutter_
 }
 
 /*
-Sets whether the gutter should be drawn.
+If [code]true[/code], the gutter at the given index is drawn. The gutter type ([method set_gutter_type]) determines how it is drawn. See [method is_gutter_drawn].
 */
 //go:nosplit
 func (self class) SetGutterDraw(gutter int64, draw bool) { //gd:TextEdit.set_gutter_draw
@@ -4117,7 +4224,7 @@ func (self class) SetGutterDraw(gutter int64, draw bool) { //gd:TextEdit.set_gut
 }
 
 /*
-Returns whether the gutter is currently drawn.
+Returns [code]true[/code] if the gutter at the given index is currently drawn. See [method set_gutter_draw].
 */
 //go:nosplit
 func (self class) IsGutterDrawn(gutter int64) bool { //gd:TextEdit.is_gutter_drawn
@@ -4131,7 +4238,7 @@ func (self class) IsGutterDrawn(gutter int64) bool { //gd:TextEdit.is_gutter_dra
 }
 
 /*
-Sets the gutter as clickable. This will change the mouse cursor to a pointing hand when hovering over the gutter.
+If [code]true[/code], the mouse cursor will change to a pointing hand ([constant Control.CURSOR_POINTING_HAND]) when hovering over the gutter at the given index. See [method is_gutter_clickable] and [method set_line_gutter_clickable].
 */
 //go:nosplit
 func (self class) SetGutterClickable(gutter int64, clickable bool) { //gd:TextEdit.set_gutter_clickable
@@ -4144,7 +4251,7 @@ func (self class) SetGutterClickable(gutter int64, clickable bool) { //gd:TextEd
 }
 
 /*
-Returns whether the gutter is clickable.
+Returns [code]true[/code] if the gutter at the given index is clickable. See [method set_gutter_clickable].
 */
 //go:nosplit
 func (self class) IsGutterClickable(gutter int64) bool { //gd:TextEdit.is_gutter_clickable
@@ -4158,7 +4265,7 @@ func (self class) IsGutterClickable(gutter int64) bool { //gd:TextEdit.is_gutter
 }
 
 /*
-Sets the gutter to overwritable. See [method merge_gutters].
+If [code]true[/code], the line data of the gutter at the given index can be overridden when using [method merge_gutters]. See [method is_gutter_overwritable].
 */
 //go:nosplit
 func (self class) SetGutterOverwritable(gutter int64, overwritable bool) { //gd:TextEdit.set_gutter_overwritable
@@ -4171,7 +4278,7 @@ func (self class) SetGutterOverwritable(gutter int64, overwritable bool) { //gd:
 }
 
 /*
-Returns whether the gutter is overwritable.
+Returns [code]true[/code] if the gutter at the given index is overwritable. See [method set_gutter_overwritable].
 */
 //go:nosplit
 func (self class) IsGutterOverwritable(gutter int64) bool { //gd:TextEdit.is_gutter_overwritable
@@ -4185,7 +4292,7 @@ func (self class) IsGutterOverwritable(gutter int64) bool { //gd:TextEdit.is_gut
 }
 
 /*
-Merge the gutters from [param from_line] into [param to_line]. Only overwritable gutters will be copied.
+Merge the gutters from [param from_line] into [param to_line]. Only overwritable gutters will be copied. See [method set_gutter_overwritable].
 */
 //go:nosplit
 func (self class) MergeGutters(from_line int64, to_line int64) { //gd:TextEdit.merge_gutters
@@ -4198,7 +4305,7 @@ func (self class) MergeGutters(from_line int64, to_line int64) { //gd:TextEdit.m
 }
 
 /*
-Set a custom draw method for the gutter. The callback method must take the following args: [code]line: int, gutter: int, Area: Rect2[/code]. This only works when the gutter type is [constant GUTTER_TYPE_CUSTOM] (see [method set_gutter_type]).
+Set a custom draw callback for the gutter at the given index. [param draw_callback] must take the following arguments: A line index [int], a gutter index [int], and an area [Rect2]. This callback only works when the gutter type is [constant GUTTER_TYPE_CUSTOM] (see [method set_gutter_type]).
 */
 //go:nosplit
 func (self class) SetGutterCustomDraw(column int64, draw_callback Callable.Function) { //gd:TextEdit.set_gutter_custom_draw
@@ -4340,7 +4447,7 @@ func (self class) GetLineGutterItemColor(line int64, gutter int64) Color.RGBA { 
 }
 
 /*
-If [param clickable] is [code]true[/code], makes the [param gutter] on [param line] clickable. See [signal gutter_clicked].
+If [param clickable] is [code]true[/code], makes the [param gutter] on the given [param line] clickable. This is like [method set_gutter_clickable], but for a single line. If [method is_gutter_clickable] is [code]true[/code], this will not have any effect. See [method is_line_gutter_clickable] and [signal gutter_clicked].
 */
 //go:nosplit
 func (self class) SetLineGutterClickable(line int64, gutter int64, clickable bool) { //gd:TextEdit.set_line_gutter_clickable
@@ -4354,7 +4461,7 @@ func (self class) SetLineGutterClickable(line int64, gutter int64, clickable boo
 }
 
 /*
-Returns whether the gutter on the given line is clickable.
+Returns [code]true[/code] if the gutter at the given index on the given line is clickable. See [method set_line_gutter_clickable].
 */
 //go:nosplit
 func (self class) IsLineGutterClickable(line int64, gutter int64) bool { //gd:TextEdit.is_line_gutter_clickable
@@ -4369,7 +4476,7 @@ func (self class) IsLineGutterClickable(line int64, gutter int64) bool { //gd:Te
 }
 
 /*
-Sets the current background color of the line. Set to [code]Color(0, 0, 0, 0)[/code] for no color.
+Sets the custom background color of the given line. If transparent, this color is applied on top of the default background color (See [theme_item background_color]). If set to [code]Color(0, 0, 0, 0)[/code], no additional color is applied.
 */
 //go:nosplit
 func (self class) SetLineBackgroundColor(line int64, color Color.RGBA) { //gd:TextEdit.set_line_background_color
@@ -4382,7 +4489,7 @@ func (self class) SetLineBackgroundColor(line int64, color Color.RGBA) { //gd:Te
 }
 
 /*
-Returns the current background color of the line. [code]Color(0, 0, 0, 0)[/code] is returned if no color is set.
+Returns the custom background color of the given line. If no color is set, returns [code]Color(0, 0, 0, 0)[/code].
 */
 //go:nosplit
 func (self class) GetLineBackgroundColor(line int64) Color.RGBA { //gd:TextEdit.get_line_background_color
@@ -4563,7 +4670,7 @@ func (self class) GetMenu() [1]gdclass.PopupMenu { //gd:TextEdit.get_menu
 }
 
 /*
-Returns whether the menu is visible. Use this instead of [code]get_menu().visible[/code] to improve performance (so the creation of the menu is avoided).
+Returns [code]true[/code] if the menu is visible. Use this instead of [code]get_menu().visible[/code] to improve performance (so the creation of the menu is avoided). See [method get_menu].
 */
 //go:nosplit
 func (self class) IsMenuVisible() bool { //gd:TextEdit.is_menu_visible
@@ -4790,8 +4897,10 @@ const (
 	MenuInsertWj MenuItems = 28
 	/*Inserts soft hyphen (SHY) character.*/
 	MenuInsertShy MenuItems = 29
+	/*Opens system emoji and symbol picker.*/
+	MenuEmojiAndSymbol MenuItems = 30
 	/*Represents the size of the [enum MenuItems] enum.*/
-	MenuMax MenuItems = 30
+	MenuMax MenuItems = 31
 )
 
 type EditAction = gdclass.TextEditEditAction //gd:TextEdit.EditAction

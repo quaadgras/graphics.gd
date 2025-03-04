@@ -41,7 +41,7 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-This binding resource binds an [OpenXRAction] to inputs or outputs. As most controllers have left hand and right versions that are handled by the same interaction profile we can specify multiple bindings. For instance an action "Fire" could be bound to both "/user/hand/left/input/trigger" and "/user/hand/right/input/trigger".
+This binding resource binds an [OpenXRAction] to an input or output. As most controllers have left hand and right versions that are handled by the same interaction profile we can specify multiple bindings. For instance an action "Fire" could be bound to both "/user/hand/left/input/trigger" and "/user/hand/right/input/trigger". This would require two binding entries.
 */
 type Instance [1]gdclass.OpenXRIPBinding
 
@@ -51,6 +51,20 @@ var Nil Instance
 type Any interface {
 	gd.IsClass
 	AsOpenXRIPBinding() Instance
+}
+
+/*
+Get the number of binding modifiers for this binding.
+*/
+func (self Instance) GetBindingModifierCount() int { //gd:OpenXRIPBinding.get_binding_modifier_count
+	return int(int(class(self).GetBindingModifierCount()))
+}
+
+/*
+Get the [OpenXRBindingModifier] at this index.
+*/
+func (self Instance) GetBindingModifier(index int) [1]gdclass.OpenXRActionBindingModifier { //gd:OpenXRIPBinding.get_binding_modifier
+	return [1]gdclass.OpenXRActionBindingModifier(class(self).GetBindingModifier(int64(index)))
 }
 
 /*
@@ -108,6 +122,22 @@ func (self Instance) SetAction(value [1]gdclass.OpenXRAction) {
 	class(self).SetAction(value)
 }
 
+func (self Instance) BindingPath() string {
+	return string(class(self).GetBindingPath().String())
+}
+
+func (self Instance) SetBindingPath(value string) {
+	class(self).SetBindingPath(String.New(value))
+}
+
+func (self Instance) BindingModifiers() []any {
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetBindingModifiers())))
+}
+
+func (self Instance) SetBindingModifiers(value []any) {
+	class(self).SetBindingModifiers(gd.EngineArrayFromSlice(value))
+}
+
 func (self Instance) Paths() []string {
 	return []string(class(self).GetPaths().Strings())
 }
@@ -135,15 +165,67 @@ func (self class) GetAction() [1]gdclass.OpenXRAction { //gd:OpenXRIPBinding.get
 	return ret
 }
 
+//go:nosplit
+func (self class) SetBindingPath(binding_path String.Readable) { //gd:OpenXRIPBinding.set_binding_path
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(binding_path)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_set_binding_path, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetBindingPath() String.Readable { //gd:OpenXRIPBinding.get_binding_path
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_binding_path, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
 /*
-Get the number of input/output paths in this binding.
+Get the number of binding modifiers for this binding.
 */
 //go:nosplit
-func (self class) GetPathCount() int64 { //gd:OpenXRIPBinding.get_path_count
+func (self class) GetBindingModifierCount() int64 { //gd:OpenXRIPBinding.get_binding_modifier_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_path_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_binding_modifier_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Get the [OpenXRBindingModifier] at this index.
+*/
+//go:nosplit
+func (self class) GetBindingModifier(index int64) [1]gdclass.OpenXRActionBindingModifier { //gd:OpenXRIPBinding.get_binding_modifier
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_binding_modifier, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.OpenXRActionBindingModifier{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionBindingModifier](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetBindingModifiers(binding_modifiers Array.Any) { //gd:OpenXRIPBinding.set_binding_modifiers
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(binding_modifiers)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_set_binding_modifiers, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetBindingModifiers() Array.Any { //gd:OpenXRIPBinding.get_binding_modifiers
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_binding_modifiers, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -163,6 +245,19 @@ func (self class) GetPaths() Packed.Strings { //gd:OpenXRIPBinding.get_paths
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_paths, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Get the number of input/output paths in this binding.
+*/
+//go:nosplit
+func (self class) GetPathCount() int64 { //gd:OpenXRIPBinding.get_path_count
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_path_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

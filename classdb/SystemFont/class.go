@@ -157,6 +157,14 @@ func (self Instance) SetSubpixelPositioning(value gdclass.TextServerSubpixelPosi
 	class(self).SetSubpixelPositioning(value)
 }
 
+func (self Instance) KeepRoundingRemainders() bool {
+	return bool(class(self).GetKeepRoundingRemainders())
+}
+
+func (self Instance) SetKeepRoundingRemainders(value bool) {
+	class(self).SetKeepRoundingRemainders(value)
+}
+
 func (self Instance) MultichannelSignedDistanceField() bool {
 	return bool(class(self).IsMultichannelSignedDistanceField())
 }
@@ -317,6 +325,25 @@ func (self class) GetSubpixelPositioning() gdclass.TextServerSubpixelPositioning
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerSubpixelPositioning](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_subpixel_positioning, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetKeepRoundingRemainders(keep_rounding_remainders bool) { //gd:SystemFont.set_keep_rounding_remainders
+	var frame = callframe.New()
+	callframe.Arg(frame, keep_rounding_remainders)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_set_keep_rounding_remainders, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetKeepRoundingRemainders() bool { //gd:SystemFont.get_keep_rounding_remainders
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_keep_rounding_remainders, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

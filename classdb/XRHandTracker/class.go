@@ -383,8 +383,10 @@ const (
 	HandTrackingSourceUnobstructed HandTrackingSource = 1
 	/*The source of hand tracking data is a controller, meaning that joint positions are inferred from controller inputs.*/
 	HandTrackingSourceController HandTrackingSource = 2
+	/*No hand tracking data is tracked, this either means the hand is obscured, the controller is turned off, or tracking is not supported for the current input type.*/
+	HandTrackingSourceNotTracked HandTrackingSource = 3
 	/*Represents the size of the [enum HandTrackingSource] enum.*/
-	HandTrackingSourceMax HandTrackingSource = 3
+	HandTrackingSourceMax HandTrackingSource = 4
 )
 
 type HandJoint = gdclass.XRHandTrackerHandJoint //gd:XRHandTracker.HandJoint

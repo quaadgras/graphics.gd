@@ -127,21 +127,21 @@ func (Instance) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer,
 }
 
 /*
-Perform an indent as if the user activated the "ui_text_indent" action.
+If there is no selection, indentation is inserted at the caret. Otherwise, the selected lines are indented like [method indent_lines]. Equivalent to the [member ProjectSettings.input/ui_text_indent] action. The indentation characters used depend on [member indent_use_spaces] and [member indent_size].
 */
 func (self Instance) DoIndent() { //gd:CodeEdit.do_indent
 	class(self).DoIndent()
 }
 
 /*
-Indents selected lines, or in the case of no selection the caret line by one.
+Indents all lines that are selected or have a caret on them. Uses spaces or a tab depending on [member indent_use_spaces]. See [method unindent_lines].
 */
 func (self Instance) IndentLines() { //gd:CodeEdit.indent_lines
 	class(self).IndentLines()
 }
 
 /*
-Unindents selected lines, or in the case of no selection the caret line by one. Same as performing "ui_text_unindent" action.
+Unindents all lines that are selected or have a caret on them. Uses spaces or a tab depending on [member indent_use_spaces]. Equivalent to the [member ProjectSettings.input/ui_text_dedent] action. See [method indent_lines].
 */
 func (self Instance) UnindentLines() { //gd:CodeEdit.unindent_lines
 	class(self).UnindentLines()
@@ -185,14 +185,14 @@ func (self Instance) GetAutoBraceCompletionCloseKey(open_key string) string { //
 }
 
 /*
-Sets the line as breakpointed.
+Sets the given line as a breakpoint. If [code]true[/code] and [member gutters_draw_breakpoints_gutter] is [code]true[/code], draws the [theme_item breakpoint] icon in the gutter for this line. See [method get_breakpointed_lines] and [method is_line_breakpointed].
 */
 func (self Instance) SetLineAsBreakpoint(line int, breakpointed bool) { //gd:CodeEdit.set_line_as_breakpoint
 	class(self).SetLineAsBreakpoint(int64(line), breakpointed)
 }
 
 /*
-Returns whether the line at the specified index is breakpointed or not.
+Returns [code]true[/code] if the given line is breakpointed. See [method set_line_as_breakpoint].
 */
 func (self Instance) IsLineBreakpointed(line int) bool { //gd:CodeEdit.is_line_breakpointed
 	return bool(class(self).IsLineBreakpointed(int64(line)))
@@ -213,14 +213,14 @@ func (self Instance) GetBreakpointedLines() []int32 { //gd:CodeEdit.get_breakpoi
 }
 
 /*
-Sets the line as bookmarked.
+Sets the given line as bookmarked. If [code]true[/code] and [member gutters_draw_bookmarks] is [code]true[/code], draws the [theme_item bookmark] icon in the gutter for this line. See [method get_bookmarked_lines] and [method is_line_bookmarked].
 */
 func (self Instance) SetLineAsBookmarked(line int, bookmarked bool) { //gd:CodeEdit.set_line_as_bookmarked
 	class(self).SetLineAsBookmarked(int64(line), bookmarked)
 }
 
 /*
-Returns whether the line at the specified index is bookmarked or not.
+Returns [code]true[/code] if the given line is bookmarked. See [method set_line_as_bookmarked].
 */
 func (self Instance) IsLineBookmarked(line int) bool { //gd:CodeEdit.is_line_bookmarked
 	return bool(class(self).IsLineBookmarked(int64(line)))
@@ -241,14 +241,14 @@ func (self Instance) GetBookmarkedLines() []int32 { //gd:CodeEdit.get_bookmarked
 }
 
 /*
-Sets the line as executing.
+Sets the given line as executing. If [code]true[/code] and [member gutters_draw_executing_lines] is [code]true[/code], draws the [theme_item executing_line] icon in the gutter for this line. See [method get_executing_lines] and [method is_line_executing].
 */
 func (self Instance) SetLineAsExecuting(line int, executing bool) { //gd:CodeEdit.set_line_as_executing
 	class(self).SetLineAsExecuting(int64(line), executing)
 }
 
 /*
-Returns whether the line at the specified index is marked as executing or not.
+Returns [code]true[/code] if the given line is marked as executing. See [method set_line_as_executing].
 */
 func (self Instance) IsLineExecuting(line int) bool { //gd:CodeEdit.is_line_executing
 	return bool(class(self).IsLineExecuting(int64(line)))
@@ -269,7 +269,7 @@ func (self Instance) GetExecutingLines() []int32 { //gd:CodeEdit.get_executing_l
 }
 
 /*
-Returns if the given line is foldable, that is, it has indented lines right below it or a comment / string block.
+Returns [code]true[/code] if the given line is foldable. A line is foldable if it is the start of a valid code region (see [method get_code_region_start_tag]), if it is the start of a comment or string block, or if the next non-empty line is more indented (see [method TextEdit.get_indent_level]).
 */
 func (self Instance) CanFoldLine(line int) bool { //gd:CodeEdit.can_fold_line
 	return bool(class(self).CanFoldLine(int64(line)))
@@ -283,7 +283,7 @@ func (self Instance) FoldLine(line int) { //gd:CodeEdit.fold_line
 }
 
 /*
-Unfolds all lines that were previously folded.
+Unfolds the given line if it is folded or if it is hidden under a folded line.
 */
 func (self Instance) UnfoldLine(line int) { //gd:CodeEdit.unfold_line
 	class(self).UnfoldLine(int64(line))
@@ -297,7 +297,7 @@ func (self Instance) FoldAllLines() { //gd:CodeEdit.fold_all_lines
 }
 
 /*
-Unfolds all lines, folded or not.
+Unfolds all lines that are folded.
 */
 func (self Instance) UnfoldAllLines() { //gd:CodeEdit.unfold_all_lines
 	class(self).UnfoldAllLines()
@@ -318,14 +318,14 @@ func (self Instance) ToggleFoldableLinesAtCarets() { //gd:CodeEdit.toggle_foldab
 }
 
 /*
-Returns whether the line at the specified index is folded or not.
+Returns [code]true[/code] if the given line is folded. See [method fold_line].
 */
 func (self Instance) IsLineFolded(line int) bool { //gd:CodeEdit.is_line_folded
 	return bool(class(self).IsLineFolded(int64(line)))
 }
 
 /*
-Returns all lines that are current folded.
+Returns all lines that are currently folded.
 */
 func (self Instance) GetFoldedLines() []int { //gd:CodeEdit.get_folded_lines
 	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetFoldedLines())))
@@ -363,14 +363,14 @@ func (self Instance) SetCodeRegionTags() { //gd:CodeEdit.set_code_region_tags
 }
 
 /*
-Returns whether the line at the specified index is a code region start.
+Returns [code]true[/code] if the given line is a code region start. See [method set_code_region_tags].
 */
 func (self Instance) IsLineCodeRegionStart(line int) bool { //gd:CodeEdit.is_line_code_region_start
 	return bool(class(self).IsLineCodeRegionStart(int64(line)))
 }
 
 /*
-Returns whether the line at the specified index is a code region end.
+Returns [code]true[/code] if the given line is a code region end. See [method set_code_region_tags].
 */
 func (self Instance) IsLineCodeRegionEnd(line int) bool { //gd:CodeEdit.is_line_code_region_end
 	return bool(class(self).IsLineCodeRegionEnd(int64(line)))
@@ -484,7 +484,7 @@ func (self Instance) SetCodeHint(code_hint string) { //gd:CodeEdit.set_code_hint
 }
 
 /*
-Sets if the code hint should draw below the text.
+If [code]true[/code], the code hint will draw below the main caret. If [code]false[/code], the code hint will draw above the main caret. See [method set_code_hint].
 */
 func (self Instance) SetCodeHintDrawBelow(draw_below bool) { //gd:CodeEdit.set_code_hint_draw_below
 	class(self).SetCodeHintDrawBelow(draw_below)
@@ -649,6 +649,14 @@ func (self Instance) SymbolLookupOnClick() bool {
 
 func (self Instance) SetSymbolLookupOnClick(value bool) {
 	class(self).SetSymbolLookupOnClickEnabled(value)
+}
+
+func (self Instance) SymbolTooltipOnHover() bool {
+	return bool(class(self).IsSymbolTooltipOnHoverEnabled())
+}
+
+func (self Instance) SetSymbolTooltipOnHover(value bool) {
+	class(self).SetSymbolTooltipOnHoverEnabled(value)
 }
 
 func (self Instance) LineFolding() bool {
@@ -923,7 +931,7 @@ func (self class) GetAutoIndentPrefixes() Array.Contains[String.Readable] { //gd
 }
 
 /*
-Perform an indent as if the user activated the "ui_text_indent" action.
+If there is no selection, indentation is inserted at the caret. Otherwise, the selected lines are indented like [method indent_lines]. Equivalent to the [member ProjectSettings.input/ui_text_indent] action. The indentation characters used depend on [member indent_use_spaces] and [member indent_size].
 */
 //go:nosplit
 func (self class) DoIndent() { //gd:CodeEdit.do_indent
@@ -934,7 +942,7 @@ func (self class) DoIndent() { //gd:CodeEdit.do_indent
 }
 
 /*
-Indents selected lines, or in the case of no selection the caret line by one.
+Indents all lines that are selected or have a caret on them. Uses spaces or a tab depending on [member indent_use_spaces]. See [method unindent_lines].
 */
 //go:nosplit
 func (self class) IndentLines() { //gd:CodeEdit.indent_lines
@@ -945,7 +953,7 @@ func (self class) IndentLines() { //gd:CodeEdit.indent_lines
 }
 
 /*
-Unindents selected lines, or in the case of no selection the caret line by one. Same as performing "ui_text_unindent" action.
+Unindents all lines that are selected or have a caret on them. Uses spaces or a tab depending on [member indent_use_spaces]. Equivalent to the [member ProjectSettings.input/ui_text_dedent] action. See [method indent_lines].
 */
 //go:nosplit
 func (self class) UnindentLines() { //gd:CodeEdit.unindent_lines
@@ -1140,7 +1148,7 @@ func (self class) IsDrawingExecutingLinesGutter() bool { //gd:CodeEdit.is_drawin
 }
 
 /*
-Sets the line as breakpointed.
+Sets the given line as a breakpoint. If [code]true[/code] and [member gutters_draw_breakpoints_gutter] is [code]true[/code], draws the [theme_item breakpoint] icon in the gutter for this line. See [method get_breakpointed_lines] and [method is_line_breakpointed].
 */
 //go:nosplit
 func (self class) SetLineAsBreakpoint(line int64, breakpointed bool) { //gd:CodeEdit.set_line_as_breakpoint
@@ -1153,7 +1161,7 @@ func (self class) SetLineAsBreakpoint(line int64, breakpointed bool) { //gd:Code
 }
 
 /*
-Returns whether the line at the specified index is breakpointed or not.
+Returns [code]true[/code] if the given line is breakpointed. See [method set_line_as_breakpoint].
 */
 //go:nosplit
 func (self class) IsLineBreakpointed(line int64) bool { //gd:CodeEdit.is_line_breakpointed
@@ -1191,7 +1199,7 @@ func (self class) GetBreakpointedLines() Packed.Array[int32] { //gd:CodeEdit.get
 }
 
 /*
-Sets the line as bookmarked.
+Sets the given line as bookmarked. If [code]true[/code] and [member gutters_draw_bookmarks] is [code]true[/code], draws the [theme_item bookmark] icon in the gutter for this line. See [method get_bookmarked_lines] and [method is_line_bookmarked].
 */
 //go:nosplit
 func (self class) SetLineAsBookmarked(line int64, bookmarked bool) { //gd:CodeEdit.set_line_as_bookmarked
@@ -1204,7 +1212,7 @@ func (self class) SetLineAsBookmarked(line int64, bookmarked bool) { //gd:CodeEd
 }
 
 /*
-Returns whether the line at the specified index is bookmarked or not.
+Returns [code]true[/code] if the given line is bookmarked. See [method set_line_as_bookmarked].
 */
 //go:nosplit
 func (self class) IsLineBookmarked(line int64) bool { //gd:CodeEdit.is_line_bookmarked
@@ -1242,7 +1250,7 @@ func (self class) GetBookmarkedLines() Packed.Array[int32] { //gd:CodeEdit.get_b
 }
 
 /*
-Sets the line as executing.
+Sets the given line as executing. If [code]true[/code] and [member gutters_draw_executing_lines] is [code]true[/code], draws the [theme_item executing_line] icon in the gutter for this line. See [method get_executing_lines] and [method is_line_executing].
 */
 //go:nosplit
 func (self class) SetLineAsExecuting(line int64, executing bool) { //gd:CodeEdit.set_line_as_executing
@@ -1255,7 +1263,7 @@ func (self class) SetLineAsExecuting(line int64, executing bool) { //gd:CodeEdit
 }
 
 /*
-Returns whether the line at the specified index is marked as executing or not.
+Returns [code]true[/code] if the given line is marked as executing. See [method set_line_as_executing].
 */
 //go:nosplit
 func (self class) IsLineExecuting(line int64) bool { //gd:CodeEdit.is_line_executing
@@ -1369,7 +1377,7 @@ func (self class) IsLineFoldingEnabled() bool { //gd:CodeEdit.is_line_folding_en
 }
 
 /*
-Returns if the given line is foldable, that is, it has indented lines right below it or a comment / string block.
+Returns [code]true[/code] if the given line is foldable. A line is foldable if it is the start of a valid code region (see [method get_code_region_start_tag]), if it is the start of a comment or string block, or if the next non-empty line is more indented (see [method TextEdit.get_indent_level]).
 */
 //go:nosplit
 func (self class) CanFoldLine(line int64) bool { //gd:CodeEdit.can_fold_line
@@ -1395,7 +1403,7 @@ func (self class) FoldLine(line int64) { //gd:CodeEdit.fold_line
 }
 
 /*
-Unfolds all lines that were previously folded.
+Unfolds the given line if it is folded or if it is hidden under a folded line.
 */
 //go:nosplit
 func (self class) UnfoldLine(line int64) { //gd:CodeEdit.unfold_line
@@ -1418,7 +1426,7 @@ func (self class) FoldAllLines() { //gd:CodeEdit.fold_all_lines
 }
 
 /*
-Unfolds all lines, folded or not.
+Unfolds all lines that are folded.
 */
 //go:nosplit
 func (self class) UnfoldAllLines() { //gd:CodeEdit.unfold_all_lines
@@ -1452,7 +1460,7 @@ func (self class) ToggleFoldableLinesAtCarets() { //gd:CodeEdit.toggle_foldable_
 }
 
 /*
-Returns whether the line at the specified index is folded or not.
+Returns [code]true[/code] if the given line is folded. See [method fold_line].
 */
 //go:nosplit
 func (self class) IsLineFolded(line int64) bool { //gd:CodeEdit.is_line_folded
@@ -1466,7 +1474,7 @@ func (self class) IsLineFolded(line int64) bool { //gd:CodeEdit.is_line_folded
 }
 
 /*
-Returns all lines that are current folded.
+Returns all lines that are currently folded.
 */
 //go:nosplit
 func (self class) GetFoldedLines() Array.Contains[int64] { //gd:CodeEdit.get_folded_lines
@@ -1532,7 +1540,7 @@ func (self class) SetCodeRegionTags(start String.Readable, end String.Readable) 
 }
 
 /*
-Returns whether the line at the specified index is a code region start.
+Returns [code]true[/code] if the given line is a code region start. See [method set_code_region_tags].
 */
 //go:nosplit
 func (self class) IsLineCodeRegionStart(line int64) bool { //gd:CodeEdit.is_line_code_region_start
@@ -1546,7 +1554,7 @@ func (self class) IsLineCodeRegionStart(line int64) bool { //gd:CodeEdit.is_line
 }
 
 /*
-Returns whether the line at the specified index is a code region end.
+Returns [code]true[/code] if the given line is a code region end. See [method set_code_region_tags].
 */
 //go:nosplit
 func (self class) IsLineCodeRegionEnd(line int64) bool { //gd:CodeEdit.is_line_code_region_end
@@ -1802,7 +1810,7 @@ func (self class) SetCodeHint(code_hint String.Readable) { //gd:CodeEdit.set_cod
 }
 
 /*
-Sets if the code hint should draw below the text.
+If [code]true[/code], the code hint will draw below the main caret. If [code]false[/code], the code hint will draw above the main caret. See [method set_code_hint].
 */
 //go:nosplit
 func (self class) SetCodeHintDrawBelow(draw_below bool) { //gd:CodeEdit.set_code_hint_draw_below
@@ -2068,6 +2076,25 @@ func (self class) SetSymbolLookupWordAsValid(valid bool) { //gd:CodeEdit.set_sym
 	frame.Free()
 }
 
+//go:nosplit
+func (self class) SetSymbolTooltipOnHoverEnabled(enable bool) { //gd:CodeEdit.set_symbol_tooltip_on_hover_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_symbol_tooltip_on_hover_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsSymbolTooltipOnHoverEnabled() bool { //gd:CodeEdit.is_symbol_tooltip_on_hover_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_symbol_tooltip_on_hover_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
 /*
 Moves all lines up that are selected or have a caret on them.
 */
@@ -2136,6 +2163,10 @@ func (self Instance) OnSymbolLookup(cb func(symbol string, line int, column int)
 
 func (self Instance) OnSymbolValidate(cb func(symbol string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_validate"), gd.NewCallable(cb), 0)
+}
+
+func (self Instance) OnSymbolHovered(cb func(symbol string, line int, column int)) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_hovered"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsCodeEdit() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

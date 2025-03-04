@@ -56,7 +56,43 @@ type Any interface {
 }
 
 /*
-Saves the AudioStreamWAV as a WAV file to [param path]. Samples with IMA ADPCM or QOA formats can't be saved.
+Creates a new [AudioStreamWAV] instance from the given buffer. The buffer must contain WAV data.
+The keys and values of [param options] match the properties of [ResourceImporterWAV]. The usage of [param options] is identical to [method AudioStreamWAV.load_from_file].
+*/
+func LoadFromBuffer(stream_data []byte) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_buffer
+	self := Instance{}
+	return [1]gdclass.AudioStreamWAV(class(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...)), Dictionary.Nil))
+}
+
+/*
+Creates a new [AudioStreamWAV] instance from the given file path. The file must be in WAV format.
+The keys and values of [param options] match the properties of [ResourceImporterWAV].
+[b]Example:[/b] Load the first file dropped as a WAV and play it:
+[codeblock]
+@onready var audio_player = $AudioStreamPlayer
+
+func _ready():
+
+	get_window().files_dropped.connect(_on_files_dropped)
+
+func _on_files_dropped(files):
+
+	if files[0].get_extension() == "wav":
+	    audio_player.stream = AudioStreamWAV.load_from_file(files[0], {
+	            "force/max_rate": true,
+	            "force/max_rate_hz": 11025
+	        })
+	    audio_player.play()
+
+[/codeblock]
+*/
+func LoadFromFile(path string) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_file
+	self := Instance{}
+	return [1]gdclass.AudioStreamWAV(class(self).LoadFromFile(String.New(path), Dictionary.Nil))
+}
+
+/*
+Saves the AudioStreamWAV as a WAV file to [param path]. Samples with IMA ADPCM or Quite OK Audio formats can't be saved.
 [b]Note:[/b] A [code].wav[/code] extension is automatically appended to [param path] if it is missing.
 */
 func (self Instance) SaveToWav(path string) error { //gd:AudioStreamWAV.save_to_wav
@@ -136,6 +172,53 @@ func (self Instance) Stereo() bool {
 
 func (self Instance) SetStereo(value bool) {
 	class(self).SetStereo(value)
+}
+
+/*
+Creates a new [AudioStreamWAV] instance from the given buffer. The buffer must contain WAV data.
+The keys and values of [param options] match the properties of [ResourceImporterWAV]. The usage of [param options] is identical to [method AudioStreamWAV.load_from_file].
+*/
+//go:nosplit
+func (self class) LoadFromBuffer(stream_data Packed.Bytes, options Dictionary.Any) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_buffer
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data))))
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(options)))
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_load_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.AudioStreamWAV{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamWAV](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Creates a new [AudioStreamWAV] instance from the given file path. The file must be in WAV format.
+The keys and values of [param options] match the properties of [ResourceImporterWAV].
+[b]Example:[/b] Load the first file dropped as a WAV and play it:
+[codeblock]
+@onready var audio_player = $AudioStreamPlayer
+
+func _ready():
+    get_window().files_dropped.connect(_on_files_dropped)
+
+func _on_files_dropped(files):
+    if files[0].get_extension() == "wav":
+        audio_player.stream = AudioStreamWAV.load_from_file(files[0], {
+                "force/max_rate": true,
+                "force/max_rate_hz": 11025
+            })
+        audio_player.play()
+[/codeblock]
+*/
+//go:nosplit
+func (self class) LoadFromFile(path String.Readable, options Dictionary.Any) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_file
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(options)))
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.AudioStreamWAV{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamWAV](r_ret.Get())}
+	frame.Free()
+	return ret
 }
 
 //go:nosplit
@@ -272,7 +355,7 @@ func (self class) IsStereo() bool { //gd:AudioStreamWAV.is_stereo
 }
 
 /*
-Saves the AudioStreamWAV as a WAV file to [param path]. Samples with IMA ADPCM or QOA formats can't be saved.
+Saves the AudioStreamWAV as a WAV file to [param path]. Samples with IMA ADPCM or Quite OK Audio formats can't be saved.
 [b]Note:[/b] A [code].wav[/code] extension is automatically appended to [param path] if it is missing.
 */
 //go:nosplit
@@ -328,13 +411,13 @@ func init() {
 type Format = gdclass.AudioStreamWAVFormat //gd:AudioStreamWAV.Format
 
 const (
-	/*8-bit audio codec.*/
+	/*8-bit PCM audio codec.*/
 	Format8Bits Format = 0
-	/*16-bit audio codec.*/
+	/*16-bit PCM audio codec.*/
 	Format16Bits Format = 1
-	/*Audio is compressed using IMA ADPCM.*/
+	/*Audio is lossily compressed as IMA ADPCM.*/
 	FormatImaAdpcm Format = 2
-	/*Audio is compressed as QOA ([url=https://qoaformat.org/]Quite OK Audio[/url]).*/
+	/*Audio is lossily compressed as [url=https://qoaformat.org/]Quite OK Audio[/url].*/
 	FormatQoa Format = 3
 )
 

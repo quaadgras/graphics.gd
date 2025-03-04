@@ -95,6 +95,13 @@ func (self Instance) GetAnimationList() []string { //gd:AnimationLibrary.get_ani
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAnimationList())))
 }
 
+/*
+Returns the key count for the [Animation]s stored in the library.
+*/
+func (self Instance) GetAnimationListSize() int { //gd:AnimationLibrary.get_animation_list_size
+	return int(int(class(self).GetAnimationListSize()))
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.AnimationLibrary
@@ -191,6 +198,19 @@ func (self class) GetAnimationList() Array.Contains[String.Name] { //gd:Animatio
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationLibrary.Bind_get_animation_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the key count for the [Animation]s stored in the library.
+*/
+//go:nosplit
+func (self class) GetAnimationListSize() int64 { //gd:AnimationLibrary.get_animation_list_size
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationLibrary.Bind_get_animation_list_size, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

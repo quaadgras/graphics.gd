@@ -12,6 +12,7 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
@@ -538,6 +539,76 @@ func (self Instance) AnimationTrackGetKeyAnimation(track_idx int, key_idx int) s
 }
 
 /*
+Adds a marker to this Animation.
+*/
+func (self Instance) AddMarker(name string, time Float.X) { //gd:Animation.add_marker
+	class(self).AddMarker(String.Name(String.New(name)), float64(time))
+}
+
+/*
+Removes the marker with the given name from this Animation.
+*/
+func (self Instance) RemoveMarker(name string) { //gd:Animation.remove_marker
+	class(self).RemoveMarker(String.Name(String.New(name)))
+}
+
+/*
+Returns [code]true[/code] if this Animation contains a marker with the given name.
+*/
+func (self Instance) HasMarker(name string) bool { //gd:Animation.has_marker
+	return bool(class(self).HasMarker(String.Name(String.New(name))))
+}
+
+/*
+Returns the name of the marker located at the given time.
+*/
+func (self Instance) GetMarkerAtTime(time Float.X) string { //gd:Animation.get_marker_at_time
+	return string(class(self).GetMarkerAtTime(float64(time)).String())
+}
+
+/*
+Returns the closest marker that comes after the given time. If no such marker exists, an empty string is returned.
+*/
+func (self Instance) GetNextMarker(time Float.X) string { //gd:Animation.get_next_marker
+	return string(class(self).GetNextMarker(float64(time)).String())
+}
+
+/*
+Returns the closest marker that comes before the given time. If no such marker exists, an empty string is returned.
+*/
+func (self Instance) GetPrevMarker(time Float.X) string { //gd:Animation.get_prev_marker
+	return string(class(self).GetPrevMarker(float64(time)).String())
+}
+
+/*
+Returns the given marker's time.
+*/
+func (self Instance) GetMarkerTime(name string) Float.X { //gd:Animation.get_marker_time
+	return Float.X(Float.X(class(self).GetMarkerTime(String.Name(String.New(name)))))
+}
+
+/*
+Returns every marker in this Animation, sorted ascending by time.
+*/
+func (self Instance) GetMarkerNames() []string { //gd:Animation.get_marker_names
+	return []string(class(self).GetMarkerNames().Strings())
+}
+
+/*
+Returns the given marker's color.
+*/
+func (self Instance) GetMarkerColor(name string) Color.RGBA { //gd:Animation.get_marker_color
+	return Color.RGBA(class(self).GetMarkerColor(String.Name(String.New(name))))
+}
+
+/*
+Sets the given marker's color.
+*/
+func (self Instance) SetMarkerColor(name string, color Color.RGBA) { //gd:Animation.set_marker_color
+	class(self).SetMarkerColor(String.Name(String.New(name)), Color.RGBA(color))
+}
+
+/*
 Clear the animation (clear all tracks and reset all).
 */
 func (self Instance) Clear() { //gd:Animation.clear
@@ -549,6 +620,13 @@ Adds a new track to [param to_animation] that is a copy of the given track from 
 */
 func (self Instance) CopyTrack(track_idx int, to_animation [1]gdclass.Animation) { //gd:Animation.copy_track
 	class(self).CopyTrack(int64(track_idx), to_animation)
+}
+
+/*
+Optimize the animation and all its tracks in-place. This will preserve only as many keys as are necessary to keep the animation within the specified bounds.
+*/
+func (self Instance) Optimize() { //gd:Animation.optimize
+	class(self).Optimize(float64(0.01), float64(0.01), int64(3))
 }
 
 /*
@@ -1545,6 +1623,141 @@ func (self class) AnimationTrackGetKeyAnimation(track_idx int64, key_idx int64) 
 	return ret
 }
 
+/*
+Adds a marker to this Animation.
+*/
+//go:nosplit
+func (self class) AddMarker(name String.Name, time float64) { //gd:Animation.add_marker
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, time)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_add_marker, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Removes the marker with the given name from this Animation.
+*/
+//go:nosplit
+func (self class) RemoveMarker(name String.Name) { //gd:Animation.remove_marker
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_remove_marker, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns [code]true[/code] if this Animation contains a marker with the given name.
+*/
+//go:nosplit
+func (self class) HasMarker(name String.Name) bool { //gd:Animation.has_marker
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_has_marker, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the name of the marker located at the given time.
+*/
+//go:nosplit
+func (self class) GetMarkerAtTime(time float64) String.Name { //gd:Animation.get_marker_at_time
+	var frame = callframe.New()
+	callframe.Arg(frame, time)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_marker_at_time, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the closest marker that comes after the given time. If no such marker exists, an empty string is returned.
+*/
+//go:nosplit
+func (self class) GetNextMarker(time float64) String.Name { //gd:Animation.get_next_marker
+	var frame = callframe.New()
+	callframe.Arg(frame, time)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_next_marker, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the closest marker that comes before the given time. If no such marker exists, an empty string is returned.
+*/
+//go:nosplit
+func (self class) GetPrevMarker(time float64) String.Name { //gd:Animation.get_prev_marker
+	var frame = callframe.New()
+	callframe.Arg(frame, time)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_prev_marker, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the given marker's time.
+*/
+//go:nosplit
+func (self class) GetMarkerTime(name String.Name) float64 { //gd:Animation.get_marker_time
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_marker_time, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns every marker in this Animation, sorted ascending by time.
+*/
+//go:nosplit
+func (self class) GetMarkerNames() Packed.Strings { //gd:Animation.get_marker_names
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_marker_names, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the given marker's color.
+*/
+//go:nosplit
+func (self class) GetMarkerColor(name String.Name) Color.RGBA { //gd:Animation.get_marker_color
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	var r_ret = callframe.Ret[Color.RGBA](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_marker_color, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the given marker's color.
+*/
+//go:nosplit
+func (self class) SetMarkerColor(name String.Name, color Color.RGBA) { //gd:Animation.set_marker_color
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, color)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_set_marker_color, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
 //go:nosplit
 func (self class) SetLength(time_sec float64) { //gd:Animation.set_length
 	var frame = callframe.New()
@@ -1623,6 +1836,20 @@ func (self class) CopyTrack(track_idx int64, to_animation [1]gdclass.Animation) 
 	callframe.Arg(frame, pointers.Get(to_animation[0])[0])
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_copy_track, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Optimize the animation and all its tracks in-place. This will preserve only as many keys as are necessary to keep the animation within the specified bounds.
+*/
+//go:nosplit
+func (self class) Optimize(allowed_velocity_err float64, allowed_angular_err float64, precision int64) { //gd:Animation.optimize
+	var frame = callframe.New()
+	callframe.Arg(frame, allowed_velocity_err)
+	callframe.Arg(frame, allowed_angular_err)
+	callframe.Arg(frame, precision)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_optimize, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 

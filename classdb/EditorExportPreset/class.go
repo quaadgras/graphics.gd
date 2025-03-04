@@ -1,0 +1,616 @@
+// Package EditorExportPreset provides methods for working with EditorExportPreset object instances.
+package EditorExportPreset
+
+import "unsafe"
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+
+var _ Object.ID
+var _ RefCounted.Instance
+var _ unsafe.Pointer
+var _ reflect.Type
+var _ callframe.Frame
+var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
+var _ Callable.Function
+var _ Dictionary.Any
+var _ RID.Any
+var _ String.Readable
+var _ Path.ToNode
+var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
+var _ = slices.Delete[[]struct{}, struct{}]
+
+/*
+Export preset configuration. Instances of [EditorExportPreset] by editor UI and intended to be used a read-only configuration passed to the [EditorExportPlatform] methods when exporting the project.
+*/
+type Instance [1]gdclass.EditorExportPreset
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
+type Any interface {
+	gd.IsClass
+	AsEditorExportPreset() Instance
+}
+
+/*
+Returns [code]true[/code] if preset has specified property.
+*/
+func (self Instance) Has(property string) bool { //gd:EditorExportPreset.has
+	return bool(class(self).Has(String.Name(String.New(property))))
+}
+
+/*
+Returns array of files to export.
+*/
+func (self Instance) GetFilesToExport() []string { //gd:EditorExportPreset.get_files_to_export
+	return []string(class(self).GetFilesToExport().Strings())
+}
+
+/*
+Returns [Dictionary] of files selected in the "Resources" tab of the export dialog. Dictionary keys are file names and values are export mode - [code]"strip"[/code], [code]"keep"[/code], or [code]"remove"[/code]. See also [method get_file_export_mode].
+*/
+func (self Instance) GetCustomizedFiles() map[string]string { //gd:EditorExportPreset.get_customized_files
+	return map[string]string(gd.DictionaryAs[map[string]string](class(self).GetCustomizedFiles()))
+}
+
+/*
+Returns number of files selected in the "Resources" tab of the export dialog.
+*/
+func (self Instance) GetCustomizedFilesCount() int { //gd:EditorExportPreset.get_customized_files_count
+	return int(int(class(self).GetCustomizedFilesCount()))
+}
+
+/*
+Returns [code]true[/code] if specified file is exported.
+*/
+func (self Instance) HasExportFile(path string) bool { //gd:EditorExportPreset.has_export_file
+	return bool(class(self).HasExportFile(String.New(path)))
+}
+
+/*
+Returns file export mode for the specified file.
+*/
+func (self Instance) GetFileExportMode(path string) gdclass.EditorExportPresetFileExportMode { //gd:EditorExportPreset.get_file_export_mode
+	return gdclass.EditorExportPresetFileExportMode(class(self).GetFileExportMode(String.New(path), 0))
+}
+
+/*
+Returns export preset name.
+*/
+func (self Instance) GetPresetName() string { //gd:EditorExportPreset.get_preset_name
+	return string(class(self).GetPresetName().String())
+}
+
+/*
+Returns [code]true[/code] if "Runnable" toggle is enabled in the export dialog.
+*/
+func (self Instance) IsRunnable() bool { //gd:EditorExportPreset.is_runnable
+	return bool(class(self).IsRunnable())
+}
+
+/*
+Returns [code]true[/code] if "Advanced" toggle is enabled in the export dialog.
+*/
+func (self Instance) AreAdvancedOptionsEnabled() bool { //gd:EditorExportPreset.are_advanced_options_enabled
+	return bool(class(self).AreAdvancedOptionsEnabled())
+}
+
+/*
+Returns [code]true[/code] if dedicated server export mode is selected in the export dialog.
+*/
+func (self Instance) IsDedicatedServer() bool { //gd:EditorExportPreset.is_dedicated_server
+	return bool(class(self).IsDedicatedServer())
+}
+
+/*
+Returns export file filter mode selected in the "Resources" tab of the export dialog.
+*/
+func (self Instance) GetExportFilter() gdclass.EditorExportPresetExportFilter { //gd:EditorExportPreset.get_export_filter
+	return gdclass.EditorExportPresetExportFilter(class(self).GetExportFilter())
+}
+
+/*
+Returns file filters to include during export.
+*/
+func (self Instance) GetIncludeFilter() string { //gd:EditorExportPreset.get_include_filter
+	return string(class(self).GetIncludeFilter().String())
+}
+
+/*
+Returns file filters to exclude during export.
+*/
+func (self Instance) GetExcludeFilter() string { //gd:EditorExportPreset.get_exclude_filter
+	return string(class(self).GetExcludeFilter().String())
+}
+
+/*
+Returns string with a comma separated list of custom features.
+*/
+func (self Instance) GetCustomFeatures() string { //gd:EditorExportPreset.get_custom_features
+	return string(class(self).GetCustomFeatures().String())
+}
+
+/*
+Returns the list of packs on which to base a patch export on.
+*/
+func (self Instance) GetPatches() []string { //gd:EditorExportPreset.get_patches
+	return []string(class(self).GetPatches().Strings())
+}
+
+/*
+Returns export target path.
+*/
+func (self Instance) GetExportPath() string { //gd:EditorExportPreset.get_export_path
+	return string(class(self).GetExportPath().String())
+}
+
+/*
+Returns file filters to include during PCK encryption.
+*/
+func (self Instance) GetEncryptionInFilter() string { //gd:EditorExportPreset.get_encryption_in_filter
+	return string(class(self).GetEncryptionInFilter().String())
+}
+
+/*
+Returns file filters to exclude during PCK encryption.
+*/
+func (self Instance) GetEncryptionExFilter() string { //gd:EditorExportPreset.get_encryption_ex_filter
+	return string(class(self).GetEncryptionExFilter().String())
+}
+
+/*
+Returns [code]true[/code], PCK encryption is enabled in the export dialog.
+*/
+func (self Instance) GetEncryptPck() bool { //gd:EditorExportPreset.get_encrypt_pck
+	return bool(class(self).GetEncryptPck())
+}
+
+/*
+Returns [code]true[/code], PCK directory encryption is enabled in the export dialog.
+*/
+func (self Instance) GetEncryptDirectory() bool { //gd:EditorExportPreset.get_encrypt_directory
+	return bool(class(self).GetEncryptDirectory())
+}
+
+/*
+Returns PCK encryption key.
+*/
+func (self Instance) GetEncryptionKey() string { //gd:EditorExportPreset.get_encryption_key
+	return string(class(self).GetEncryptionKey().String())
+}
+
+/*
+Returns script export mode.
+*/
+func (self Instance) GetScriptExportMode() int { //gd:EditorExportPreset.get_script_export_mode
+	return int(int(class(self).GetScriptExportMode()))
+}
+
+/*
+Returns export option value or value of environment variable if it is set.
+*/
+func (self Instance) GetOrEnv(name string, env_var string) any { //gd:EditorExportPreset.get_or_env
+	return any(class(self).GetOrEnv(String.Name(String.New(name)), String.New(env_var)).Interface())
+}
+
+/*
+Returns the preset's version number, or fall back to the [member ProjectSettings.application/config/version] project setting if set to an empty string.
+If [param windows_version] is [code]true[/code], formats the returned version number to be compatible with Windows executable metadata.
+*/
+func (self Instance) GetVersion(name string, windows_version bool) string { //gd:EditorExportPreset.get_version
+	return string(class(self).GetVersion(String.Name(String.New(name)), windows_version).String())
+}
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
+type class [1]gdclass.EditorExportPreset
+
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func New() Instance {
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorExportPreset"))
+	casted := Instance{*(*gdclass.EditorExportPreset)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
+}
+
+/*
+Returns [code]true[/code] if preset has specified property.
+*/
+//go:nosplit
+func (self class) Has(property String.Name) bool { //gd:EditorExportPreset.has
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_has, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns array of files to export.
+*/
+//go:nosplit
+func (self class) GetFilesToExport() Packed.Strings { //gd:EditorExportPreset.get_files_to_export
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_files_to_export, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [Dictionary] of files selected in the "Resources" tab of the export dialog. Dictionary keys are file names and values are export mode - [code]"strip"[/code], [code]"keep"[/code], or [code]"remove"[/code]. See also [method get_file_export_mode].
+*/
+//go:nosplit
+func (self class) GetCustomizedFiles() Dictionary.Any { //gd:EditorExportPreset.get_customized_files
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_customized_files, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns number of files selected in the "Resources" tab of the export dialog.
+*/
+//go:nosplit
+func (self class) GetCustomizedFilesCount() int64 { //gd:EditorExportPreset.get_customized_files_count
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_customized_files_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if specified file is exported.
+*/
+//go:nosplit
+func (self class) HasExportFile(path String.Readable) bool { //gd:EditorExportPreset.has_export_file
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_has_export_file, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns file export mode for the specified file.
+*/
+//go:nosplit
+func (self class) GetFileExportMode(path String.Readable, def gdclass.EditorExportPresetFileExportMode) gdclass.EditorExportPresetFileExportMode { //gd:EditorExportPreset.get_file_export_mode
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
+	callframe.Arg(frame, def)
+	var r_ret = callframe.Ret[gdclass.EditorExportPresetFileExportMode](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_file_export_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns export preset name.
+*/
+//go:nosplit
+func (self class) GetPresetName() String.Readable { //gd:EditorExportPreset.get_preset_name
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_preset_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if "Runnable" toggle is enabled in the export dialog.
+*/
+//go:nosplit
+func (self class) IsRunnable() bool { //gd:EditorExportPreset.is_runnable
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_is_runnable, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if "Advanced" toggle is enabled in the export dialog.
+*/
+//go:nosplit
+func (self class) AreAdvancedOptionsEnabled() bool { //gd:EditorExportPreset.are_advanced_options_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_are_advanced_options_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if dedicated server export mode is selected in the export dialog.
+*/
+//go:nosplit
+func (self class) IsDedicatedServer() bool { //gd:EditorExportPreset.is_dedicated_server
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_is_dedicated_server, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns export file filter mode selected in the "Resources" tab of the export dialog.
+*/
+//go:nosplit
+func (self class) GetExportFilter() gdclass.EditorExportPresetExportFilter { //gd:EditorExportPreset.get_export_filter
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.EditorExportPresetExportFilter](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_export_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns file filters to include during export.
+*/
+//go:nosplit
+func (self class) GetIncludeFilter() String.Readable { //gd:EditorExportPreset.get_include_filter
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_include_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns file filters to exclude during export.
+*/
+//go:nosplit
+func (self class) GetExcludeFilter() String.Readable { //gd:EditorExportPreset.get_exclude_filter
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_exclude_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns string with a comma separated list of custom features.
+*/
+//go:nosplit
+func (self class) GetCustomFeatures() String.Readable { //gd:EditorExportPreset.get_custom_features
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_custom_features, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the list of packs on which to base a patch export on.
+*/
+//go:nosplit
+func (self class) GetPatches() Packed.Strings { //gd:EditorExportPreset.get_patches
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_patches, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns export target path.
+*/
+//go:nosplit
+func (self class) GetExportPath() String.Readable { //gd:EditorExportPreset.get_export_path
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_export_path, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns file filters to include during PCK encryption.
+*/
+//go:nosplit
+func (self class) GetEncryptionInFilter() String.Readable { //gd:EditorExportPreset.get_encryption_in_filter
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_encryption_in_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns file filters to exclude during PCK encryption.
+*/
+//go:nosplit
+func (self class) GetEncryptionExFilter() String.Readable { //gd:EditorExportPreset.get_encryption_ex_filter
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_encryption_ex_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code], PCK encryption is enabled in the export dialog.
+*/
+//go:nosplit
+func (self class) GetEncryptPck() bool { //gd:EditorExportPreset.get_encrypt_pck
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_encrypt_pck, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code], PCK directory encryption is enabled in the export dialog.
+*/
+//go:nosplit
+func (self class) GetEncryptDirectory() bool { //gd:EditorExportPreset.get_encrypt_directory
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_encrypt_directory, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns PCK encryption key.
+*/
+//go:nosplit
+func (self class) GetEncryptionKey() String.Readable { //gd:EditorExportPreset.get_encryption_key
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_encryption_key, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns script export mode.
+*/
+//go:nosplit
+func (self class) GetScriptExportMode() int64 { //gd:EditorExportPreset.get_script_export_mode
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_script_export_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns export option value or value of environment variable if it is set.
+*/
+//go:nosplit
+func (self class) GetOrEnv(name String.Name, env_var String.Readable) variant.Any { //gd:EditorExportPreset.get_or_env
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(env_var)))
+	var r_ret = callframe.Ret[[3]uint64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_or_env, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the preset's version number, or fall back to the [member ProjectSettings.application/config/version] project setting if set to an empty string.
+If [param windows_version] is [code]true[/code], formats the returned version number to be compatible with Windows executable metadata.
+*/
+//go:nosplit
+func (self class) GetVersion(name String.Name, windows_version bool) String.Readable { //gd:EditorExportPreset.get_version
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, windows_version)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+func (self class) AsEditorExportPreset() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsEditorExportPreset() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+
+func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
+	}
+}
+
+func (self Instance) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
+	}
+}
+func init() {
+	gdclass.Register("EditorExportPreset", func(ptr gd.Object) any {
+		return [1]gdclass.EditorExportPreset{*(*gdclass.EditorExportPreset)(unsafe.Pointer(&ptr))}
+	})
+}
+
+type ExportFilter = gdclass.EditorExportPresetExportFilter //gd:EditorExportPreset.ExportFilter
+
+const (
+	ExportAllResources       ExportFilter = 0
+	ExportSelectedScenes     ExportFilter = 1
+	ExportSelectedResources  ExportFilter = 2
+	ExcludeSelectedResources ExportFilter = 3
+	ExportCustomized         ExportFilter = 4
+)
+
+type FileExportMode = gdclass.EditorExportPresetFileExportMode //gd:EditorExportPreset.FileExportMode
+
+const (
+	ModeFileNotCustomized FileExportMode = 0
+	ModeFileStrip         FileExportMode = 1
+	ModeFileKeep          FileExportMode = 2
+	ModeFileRemove        FileExportMode = 3
+)
+
+type ScriptExportMode = gdclass.EditorExportPresetScriptExportMode //gd:EditorExportPreset.ScriptExportMode
+
+const (
+	ModeScriptText                   ScriptExportMode = 0
+	ModeScriptBinaryTokens           ScriptExportMode = 1
+	ModeScriptBinaryTokensCompressed ScriptExportMode = 2
+)

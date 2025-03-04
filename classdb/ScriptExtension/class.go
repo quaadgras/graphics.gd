@@ -65,6 +65,7 @@ type Interface interface {
 	GetSourceCode() string
 	SetSourceCode(code string)
 	Reload(keep_state bool) error
+	GetDocClassName() string
 	GetDocumentation() []map[any]any
 	GetClassIconPath() string
 	HasMethod(method string) bool
@@ -112,6 +113,7 @@ func (self implementation) HasSourceCode() (_ bool)                            {
 func (self implementation) GetSourceCode() (_ string)                          { return }
 func (self implementation) SetSourceCode(code string)                          { return }
 func (self implementation) Reload(keep_state bool) (_ error)                   { return }
+func (self implementation) GetDocClassName() (_ string)                        { return }
 func (self implementation) GetDocumentation() (_ []map[any]any)                { return }
 func (self implementation) GetClassIconPath() (_ string)                       { return }
 func (self implementation) HasMethod(method string) (_ bool)                   { return }
@@ -263,6 +265,18 @@ func (Instance) _reload(impl func(ptr unsafe.Pointer, keep_state bool) error) (c
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, keep_state)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+func (Instance) _get_doc_class_name(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
 
 		if !ok {
 			return
@@ -677,6 +691,19 @@ func (class) _reload(impl func(ptr unsafe.Pointer, keep_state bool) Error.Code) 
 	}
 }
 
+func (class) _get_doc_class_name(impl func(ptr unsafe.Pointer) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalStringName(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
 func (class) _get_documentation(impl func(ptr unsafe.Pointer) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -981,6 +1008,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._set_source_code)
 	case "_reload":
 		return reflect.ValueOf(self._reload)
+	case "_get_doc_class_name":
+		return reflect.ValueOf(self._get_doc_class_name)
 	case "_get_documentation":
 		return reflect.ValueOf(self._get_documentation)
 	case "_get_class_icon_path":
@@ -1060,6 +1089,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._set_source_code)
 	case "_reload":
 		return reflect.ValueOf(self._reload)
+	case "_get_doc_class_name":
+		return reflect.ValueOf(self._get_doc_class_name)
 	case "_get_documentation":
 		return reflect.ValueOf(self._get_documentation)
 	case "_get_class_icon_path":

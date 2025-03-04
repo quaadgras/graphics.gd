@@ -132,6 +132,41 @@ func (self Instance) SetBottomEditor(editor [1]gdclass.Control) { //gd:EditorPro
 }
 
 /*
+Draw property as not selected. Used by the inspector.
+*/
+func (self Instance) Deselect() { //gd:EditorProperty.deselect
+	class(self).Deselect()
+}
+
+/*
+Returns [code]true[/code] if property is drawn as selected. Used by the inspector.
+*/
+func (self Instance) IsSelected() bool { //gd:EditorProperty.is_selected
+	return bool(class(self).IsSelected())
+}
+
+/*
+Draw property as selected. Used by the inspector.
+*/
+func (self Instance) Select() { //gd:EditorProperty.select
+	class(self).Select(int64(-1))
+}
+
+/*
+Assigns object and property to edit.
+*/
+func (self Instance) SetObjectAndProperty(obj Object.Instance, property string) { //gd:EditorProperty.set_object_and_property
+	class(self).SetObjectAndProperty(obj, String.Name(String.New(property)))
+}
+
+/*
+Used by the inspector, set to a control that will be used as a reference to calculate the size of the label.
+*/
+func (self Instance) SetLabelReference(control [1]gdclass.Control) { //gd:EditorProperty.set_label_reference
+	class(self).SetLabelReference(control)
+}
+
+/*
 If one or several properties have changed, this must be called. [param field] is used in case your editor can modify fields separately (as an example, Vector3.x). The [param changing] argument avoids the editor requesting this property to be refreshed (leave as [code]false[/code] if unsure).
 */
 func (self Instance) EmitChanged(property string, value any) { //gd:EditorProperty.emit_changed
@@ -166,6 +201,22 @@ func (self Instance) SetLabel(value string) {
 
 func (self Instance) ReadOnly() bool {
 	return bool(class(self).IsReadOnly())
+}
+
+func (self Instance) DrawLabel() bool {
+	return bool(class(self).IsDrawLabel())
+}
+
+func (self Instance) SetDrawLabel(value bool) {
+	class(self).SetDrawLabel(value)
+}
+
+func (self Instance) DrawBackground() bool {
+	return bool(class(self).IsDrawBackground())
+}
+
+func (self Instance) SetDrawBackground(value bool) {
+	class(self).SetDrawBackground(value)
 }
 
 func (self Instance) Checkable() bool {
@@ -206,6 +257,30 @@ func (self Instance) Deletable() bool {
 
 func (self Instance) SetDeletable(value bool) {
 	class(self).SetDeletable(value)
+}
+
+func (self Instance) Selectable() bool {
+	return bool(class(self).IsSelectable())
+}
+
+func (self Instance) SetSelectable(value bool) {
+	class(self).SetSelectable(value)
+}
+
+func (self Instance) UseFolding() bool {
+	return bool(class(self).IsUsingFolding())
+}
+
+func (self Instance) SetUseFolding(value bool) {
+	class(self).SetUseFolding(value)
+}
+
+func (self Instance) NameSplitRatio() Float.X {
+	return Float.X(Float.X(class(self).GetNameSplitRatio()))
+}
+
+func (self Instance) SetNameSplitRatio(value Float.X) {
+	class(self).SetNameSplitRatio(float64(value))
 }
 
 /*
@@ -263,6 +338,44 @@ func (self class) IsReadOnly() bool { //gd:EditorProperty.is_read_only
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_read_only, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetDrawLabel(draw_label bool) { //gd:EditorProperty.set_draw_label
+	var frame = callframe.New()
+	callframe.Arg(frame, draw_label)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_set_draw_label, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsDrawLabel() bool { //gd:EditorProperty.is_draw_label
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_draw_label, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetDrawBackground(draw_background bool) { //gd:EditorProperty.set_draw_background
+	var frame = callframe.New()
+	callframe.Arg(frame, draw_background)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_set_draw_background, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsDrawBackground() bool { //gd:EditorProperty.is_draw_background
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_draw_background, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -424,6 +537,124 @@ func (self class) SetBottomEditor(editor [1]gdclass.Control) { //gd:EditorProper
 	frame.Free()
 }
 
+//go:nosplit
+func (self class) SetSelectable(selectable bool) { //gd:EditorProperty.set_selectable
+	var frame = callframe.New()
+	callframe.Arg(frame, selectable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_set_selectable, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsSelectable() bool { //gd:EditorProperty.is_selectable
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_selectable, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetUseFolding(use_folding bool) { //gd:EditorProperty.set_use_folding
+	var frame = callframe.New()
+	callframe.Arg(frame, use_folding)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_set_use_folding, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsUsingFolding() bool { //gd:EditorProperty.is_using_folding
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_using_folding, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetNameSplitRatio(ratio float64) { //gd:EditorProperty.set_name_split_ratio
+	var frame = callframe.New()
+	callframe.Arg(frame, ratio)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_set_name_split_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetNameSplitRatio() float64 { //gd:EditorProperty.get_name_split_ratio
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_get_name_split_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Draw property as not selected. Used by the inspector.
+*/
+//go:nosplit
+func (self class) Deselect() { //gd:EditorProperty.deselect
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_deselect, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns [code]true[/code] if property is drawn as selected. Used by the inspector.
+*/
+//go:nosplit
+func (self class) IsSelected() bool { //gd:EditorProperty.is_selected
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_selected, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Draw property as selected. Used by the inspector.
+*/
+//go:nosplit
+func (self class) Select(focusable int64) { //gd:EditorProperty.select_
+	var frame = callframe.New()
+	callframe.Arg(frame, focusable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_select_, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Assigns object and property to edit.
+*/
+//go:nosplit
+func (self class) SetObjectAndProperty(obj [1]gd.Object, property String.Name) { //gd:EditorProperty.set_object_and_property
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(obj[0])[0])
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_set_object_and_property, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Used by the inspector, set to a control that will be used as a reference to calculate the size of the label.
+*/
+//go:nosplit
+func (self class) SetLabelReference(control [1]gdclass.Control) { //gd:EditorProperty.set_label_reference
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(control[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_set_label_reference, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
 /*
 If one or several properties have changed, this must be called. [param field] is used in case your editor can modify fields separately (as an example, Vector3.x). The [param changing] argument avoids the editor requesting this property to be refreshed (leave as [code]false[/code] if unsure).
 */
@@ -460,6 +691,10 @@ func (self Instance) OnPropertyKeyedWithValue(cb func(property string, value any
 
 func (self Instance) OnPropertyChecked(cb func(property string, checked bool)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_checked"), gd.NewCallable(cb), 0)
+}
+
+func (self Instance) OnPropertyFavorited(cb func(property string, favorited bool)) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_favorited"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPropertyPinned(cb func(property string, pinned bool)) {

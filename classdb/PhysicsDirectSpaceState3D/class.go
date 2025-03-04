@@ -116,7 +116,7 @@ func (self Instance) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParamet
 Checks the intersections of a shape, given through a [PhysicsShapeQueryParameters3D] object, against the space. If it collides with more than one shape, the nearest one is selected. The returned object is a dictionary containing the following fields:
 [code]collider_id[/code]: The colliding object's ID.
 [code]linear_velocity[/code]: The colliding object's velocity [Vector3]. If the object is an [Area3D], the result is [code](0, 0, 0)[/code].
-[code]normal[/code]: The object's surface normal at the intersection point.
+[code]normal[/code]: The collision normal of the query shape at the intersection point, pointing away from the intersecting object.
 [code]point[/code]: The intersection point.
 [code]rid[/code]: The intersecting object's [RID].
 [code]shape[/code]: The shape index of the colliding shape.
@@ -246,7 +246,7 @@ func (self class) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters
 Checks the intersections of a shape, given through a [PhysicsShapeQueryParameters3D] object, against the space. If it collides with more than one shape, the nearest one is selected. The returned object is a dictionary containing the following fields:
 [code]collider_id[/code]: The colliding object's ID.
 [code]linear_velocity[/code]: The colliding object's velocity [Vector3]. If the object is an [Area3D], the result is [code](0, 0, 0)[/code].
-[code]normal[/code]: The object's surface normal at the intersection point.
+[code]normal[/code]: The collision normal of the query shape at the intersection point, pointing away from the intersecting object.
 [code]point[/code]: The intersection point.
 [code]rid[/code]: The intersecting object's [RID].
 [code]shape[/code]: The shape index of the colliding shape.
@@ -289,6 +289,23 @@ func init() {
 	})
 }
 
+type PhysicsDirectSpaceState3D_Intersection struct {
+	Collider   Object.Instance `gd:"collider"`
+	ColliderID Object.ID       `gd:"collider_id"`
+	Normal     struct {
+		X float32
+		Y float32
+		Z float32
+	} `gd:"normal"`
+	Position struct {
+		X float32
+		Y float32
+		Z float32
+	} `gd:"position"`
+	FaceIndex int     `gd:"face_index"`
+	RID       RID.Any `gd:"rid"`
+	Shape     int     `gd:"shape"`
+}
 type PhysicsDirectSpaceState3D_RestInfo struct {
 	ColliderID     Object.ID `gd:"collider_id"`
 	LinearVelocity struct {
@@ -308,21 +325,4 @@ type PhysicsDirectSpaceState3D_RestInfo struct {
 	} `gd:"point"`
 	RID   RID.Any `gd:"rid"`
 	Shape int     `gd:"shape"`
-}
-type PhysicsDirectSpaceState3D_Intersection struct {
-	Collider   Object.Instance `gd:"collider"`
-	ColliderID Object.ID       `gd:"collider_id"`
-	Normal     struct {
-		X float32
-		Y float32
-		Z float32
-	} `gd:"normal"`
-	Position struct {
-		X float32
-		Y float32
-		Z float32
-	} `gd:"position"`
-	FaceIndex int     `gd:"face_index"`
-	RID       RID.Any `gd:"rid"`
-	Shape     int     `gd:"shape"`
 }

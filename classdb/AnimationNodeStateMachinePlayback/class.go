@@ -42,7 +42,6 @@ var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Allows control of [AnimationTree] state machines created with [AnimationNodeStateMachine]. Retrieve with [code]$AnimationTree.get("parameters/playback")[/code].
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 var state_machine = $AnimationTree.get("parameters/playback")

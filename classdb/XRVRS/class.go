@@ -18,6 +18,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2i"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
@@ -95,6 +96,14 @@ func (self Instance) SetVrsStrength(value Float.X) {
 	class(self).SetVrsStrength(float64(value))
 }
 
+func (self Instance) VrsRenderRegion() Rect2i.PositionSize {
+	return Rect2i.PositionSize(class(self).GetVrsRenderRegion())
+}
+
+func (self Instance) SetVrsRenderRegion(value Rect2i.PositionSize) {
+	class(self).SetVrsRenderRegion(Rect2i.PositionSize(value))
+}
+
 //go:nosplit
 func (self class) GetVrsMinRadius() float64 { //gd:XRVRS.get_vrs_min_radius
 	var frame = callframe.New()
@@ -130,6 +139,25 @@ func (self class) SetVrsStrength(strength float64) { //gd:XRVRS.set_vrs_strength
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRVRS.Bind_set_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetVrsRenderRegion() Rect2i.PositionSize { //gd:XRVRS.get_vrs_render_region
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Rect2i.PositionSize](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRVRS.Bind_get_vrs_render_region, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetVrsRenderRegion(render_region Rect2i.PositionSize) { //gd:XRVRS.set_vrs_render_region
+	var frame = callframe.New()
+	callframe.Arg(frame, render_region)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRVRS.Bind_set_vrs_render_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 

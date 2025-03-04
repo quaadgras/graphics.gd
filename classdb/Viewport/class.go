@@ -68,6 +68,14 @@ func (self Instance) FindWorld2d() [1]gdclass.World2D { //gd:Viewport.find_world
 }
 
 /*
+Returns the automatically computed 2D stretch transform, taking the [Viewport]'s stretch settings into account. The final value is multiplied by [member Window.content_scale_factor], but only for the root viewport. If this method is called on a [SubViewport] (e.g., in a scene tree with [SubViewportContainer] and [SubViewport]), the scale factor of the root window will not be applied. Using [method Transform2D.get_scale] on the returned value, this can be used to compensate for scaling when zooming a [Camera2D] node, or to scale down a [TextureRect] to be pixel-perfect regardless of the automatically computed scale factor.
+[b]Note:[/b] Due to how pixel scaling works, the returned transform's X and Y scale may differ slightly, even when [member Window.content_scale_aspect] is set to a mode that preserves the pixels' aspect ratio. If [member Window.content_scale_aspect] is [constant Window.CONTENT_SCALE_ASPECT_IGNORE], the X and Y scale may differ [i]significantly[/i].
+*/
+func (self Instance) GetStretchTransform() Transform2D.OriginXY { //gd:Viewport.get_stretch_transform
+	return Transform2D.OriginXY(class(self).GetStretchTransform())
+}
+
+/*
 Returns the transform from the viewport's coordinate system to the embedder's coordinate system.
 */
 func (self Instance) GetFinalTransform() Transform2D.OriginXY { //gd:Viewport.get_final_transform
@@ -105,6 +113,7 @@ func _ready():
 	$Viewport.get_texture().get_image().save_png("user://Screenshot.png")
 
 [/codeblock]
+[b]Note:[/b] When [member use_hdr_2d] is [code]true[/code] the returned texture will be an HDR image encoded in linear space.
 */
 func (self Instance) GetTexture() [1]gdclass.ViewportTexture { //gd:Viewport.get_texture
 	return [1]gdclass.ViewportTexture(class(self).GetTexture())
@@ -157,6 +166,22 @@ func (self Instance) PushUnhandledInput(event [1]gdclass.InputEvent) { //gd:View
 }
 
 /*
+Inform the Viewport that the mouse has entered its area. Use this function before sending an [InputEventMouseButton] or [InputEventMouseMotion] to the [Viewport] with [method Viewport.push_input]. See also [method notify_mouse_exited].
+[b]Note:[/b] In most cases, it is not necessary to call this function because [SubViewport] nodes that are children of [SubViewportContainer] are notified automatically. This is only necessary when interacting with viewports in non-default ways, for example as textures in [TextureRect] or with an [Area3D] that forwards input events.
+*/
+func (self Instance) NotifyMouseEntered() { //gd:Viewport.notify_mouse_entered
+	class(self).NotifyMouseEntered()
+}
+
+/*
+Inform the Viewport that the mouse has left its area. Use this function when the node that displays the viewport notices the mouse has left the area of the displayed viewport. See also [method notify_mouse_entered].
+[b]Note:[/b] In most cases, it is not necessary to call this function because [SubViewport] nodes that are children of [SubViewportContainer] are notified automatically. This is only necessary when interacting with viewports in non-default ways, for example as textures in [TextureRect] or with an [Area3D] that forwards input events.
+*/
+func (self Instance) NotifyMouseExited() { //gd:Viewport.notify_mouse_exited
+	class(self).NotifyMouseExited()
+}
+
+/*
 Returns the mouse's position in this [Viewport] using the coordinate system of this [Viewport].
 */
 func (self Instance) GetMousePosition() Vector2.XY { //gd:Viewport.get_mouse_position
@@ -179,6 +204,13 @@ func (self Instance) UpdateMouseCursorState() { //gd:Viewport.update_mouse_curso
 }
 
 /*
+Cancels the drag operation that was previously started through [method Control._get_drag_data] or forced with [method Control.force_drag].
+*/
+func (self Instance) GuiCancelDrag() { //gd:Viewport.gui_cancel_drag
+	class(self).GuiCancelDrag()
+}
+
+/*
 Returns the drag data from the GUI, that was previously returned by [method Control._get_drag_data].
 */
 func (self Instance) GuiGetDragData() any { //gd:Viewport.gui_get_drag_data
@@ -186,7 +218,7 @@ func (self Instance) GuiGetDragData() any { //gd:Viewport.gui_get_drag_data
 }
 
 /*
-Returns [code]true[/code] if the viewport is currently performing a drag operation.
+Returns [code]true[/code] if a drag operation is currently ongoing and where the drop action could happen in this viewport.
 Alternative to [constant Node.NOTIFICATION_DRAG_BEGIN] and [constant Node.NOTIFICATION_DRAG_END] when you prefer polling the value.
 */
 func (self Instance) GuiIsDragging() bool { //gd:Viewport.gui_is_dragging
@@ -208,14 +240,14 @@ func (self Instance) GuiReleaseFocus() { //gd:Viewport.gui_release_focus
 }
 
 /*
-Returns the [Control] having the focus within this viewport. If no [Control] has the focus, returns null.
+Returns the currently focused [Control] within this viewport. If no [Control] is focused, returns [code]null[/code].
 */
 func (self Instance) GuiGetFocusOwner() [1]gdclass.Control { //gd:Viewport.gui_get_focus_owner
 	return [1]gdclass.Control(class(self).GuiGetFocusOwner())
 }
 
 /*
-Returns the [Control] that the mouse is currently hovering over in this viewport. If no [Control] has the cursor, returns null.
+Returns the [Control] that the mouse is currently hovering over in this viewport. If no [Control] has the cursor, returns [code]null[/code].
 Typically the leaf [Control] node or deepest level of the subtree which claims hover. This is very useful when used together with [method Node.is_ancestor_of] to find if the mouse is within a control tree.
 */
 func (self Instance) GuiGetHoveredControl() [1]gdclass.Control { //gd:Viewport.gui_get_hovered_control
@@ -262,7 +294,14 @@ func (self Instance) GetCanvasCullMaskBit(layer int) bool { //gd:Viewport.get_ca
 }
 
 /*
-Returns the currently active 2D camera. Returns null if there are no active cameras.
+Returns the currently active 2D audio listener. Returns [code]null[/code] if there are no active 2D audio listeners, in which case the active 2D camera will be treated as listener.
+*/
+func (self Instance) GetAudioListener2d() [1]gdclass.AudioListener2D { //gd:Viewport.get_audio_listener_2d
+	return [1]gdclass.AudioListener2D(class(self).GetAudioListener2d())
+}
+
+/*
+Returns the currently active 2D camera. Returns [code]null[/code] if there are no active cameras.
 */
 func (self Instance) GetCamera2d() [1]gdclass.Camera2D { //gd:Viewport.get_camera_2d
 	return [1]gdclass.Camera2D(class(self).GetCamera2d())
@@ -273,6 +312,13 @@ Returns the first valid [World3D] for this viewport, searching the [member world
 */
 func (self Instance) FindWorld3d() [1]gdclass.World3D { //gd:Viewport.find_world_3d
 	return [1]gdclass.World3D(class(self).FindWorld3d())
+}
+
+/*
+Returns the currently active 3D audio listener. Returns [code]null[/code] if there are no active 3D audio listeners, in which case the active 3D camera will be treated as listener.
+*/
+func (self Instance) GetAudioListener3d() [1]gdclass.AudioListener3D { //gd:Viewport.get_audio_listener_3d
+	return [1]gdclass.AudioListener3D(class(self).GetAudioListener3d())
 }
 
 /*
@@ -466,6 +512,14 @@ func (self Instance) TextureMipmapBias() Float.X {
 
 func (self Instance) SetTextureMipmapBias(value Float.X) {
 	class(self).SetTextureMipmapBias(float64(value))
+}
+
+func (self Instance) AnisotropicFilteringLevel() gdclass.ViewportAnisotropicFiltering {
+	return gdclass.ViewportAnisotropicFiltering(class(self).GetAnisotropicFilteringLevel())
+}
+
+func (self Instance) SetAnisotropicFilteringLevel(value gdclass.ViewportAnisotropicFiltering) {
+	class(self).SetAnisotropicFilteringLevel(value)
 }
 
 func (self Instance) FsrSharpness() Float.X {
@@ -739,6 +793,20 @@ func (self class) GetGlobalCanvasTransform() Transform2D.OriginXY { //gd:Viewpor
 }
 
 /*
+Returns the automatically computed 2D stretch transform, taking the [Viewport]'s stretch settings into account. The final value is multiplied by [member Window.content_scale_factor], but only for the root viewport. If this method is called on a [SubViewport] (e.g., in a scene tree with [SubViewportContainer] and [SubViewport]), the scale factor of the root window will not be applied. Using [method Transform2D.get_scale] on the returned value, this can be used to compensate for scaling when zooming a [Camera2D] node, or to scale down a [TextureRect] to be pixel-perfect regardless of the automatically computed scale factor.
+[b]Note:[/b] Due to how pixel scaling works, the returned transform's X and Y scale may differ slightly, even when [member Window.content_scale_aspect] is set to a mode that preserves the pixels' aspect ratio. If [member Window.content_scale_aspect] is [constant Window.CONTENT_SCALE_ASPECT_IGNORE], the X and Y scale may differ [i]significantly[/i].
+*/
+//go:nosplit
+func (self class) GetStretchTransform() Transform2D.OriginXY { //gd:Viewport.get_stretch_transform
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_stretch_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns the transform from the viewport's coordinate system to the embedder's coordinate system.
 */
 //go:nosplit
@@ -971,6 +1039,7 @@ func _ready():
     await RenderingServer.frame_post_draw
     $Viewport.get_texture().get_image().save_png("user://Screenshot.png")
 [/codeblock]
+[b]Note:[/b] When [member use_hdr_2d] is [code]true[/code] the returned texture will be an HDR image encoded in linear space.
 */
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.ViewportTexture { //gd:Viewport.get_texture
@@ -1109,6 +1178,30 @@ func (self class) PushUnhandledInput(event [1]gdclass.InputEvent, in_local_coord
 }
 
 /*
+Inform the Viewport that the mouse has entered its area. Use this function before sending an [InputEventMouseButton] or [InputEventMouseMotion] to the [Viewport] with [method Viewport.push_input]. See also [method notify_mouse_exited].
+[b]Note:[/b] In most cases, it is not necessary to call this function because [SubViewport] nodes that are children of [SubViewportContainer] are notified automatically. This is only necessary when interacting with viewports in non-default ways, for example as textures in [TextureRect] or with an [Area3D] that forwards input events.
+*/
+//go:nosplit
+func (self class) NotifyMouseEntered() { //gd:Viewport.notify_mouse_entered
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_notify_mouse_entered, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Inform the Viewport that the mouse has left its area. Use this function when the node that displays the viewport notices the mouse has left the area of the displayed viewport. See also [method notify_mouse_entered].
+[b]Note:[/b] In most cases, it is not necessary to call this function because [SubViewport] nodes that are children of [SubViewportContainer] are notified automatically. This is only necessary when interacting with viewports in non-default ways, for example as textures in [TextureRect] or with an [Area3D] that forwards input events.
+*/
+//go:nosplit
+func (self class) NotifyMouseExited() { //gd:Viewport.notify_mouse_exited
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_notify_mouse_exited, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Returns the mouse's position in this [Viewport] using the coordinate system of this [Viewport].
 */
 //go:nosplit
@@ -1146,6 +1239,17 @@ func (self class) UpdateMouseCursorState() { //gd:Viewport.update_mouse_cursor_s
 }
 
 /*
+Cancels the drag operation that was previously started through [method Control._get_drag_data] or forced with [method Control.force_drag].
+*/
+//go:nosplit
+func (self class) GuiCancelDrag() { //gd:Viewport.gui_cancel_drag
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_cancel_drag, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Returns the drag data from the GUI, that was previously returned by [method Control._get_drag_data].
 */
 //go:nosplit
@@ -1159,7 +1263,7 @@ func (self class) GuiGetDragData() variant.Any { //gd:Viewport.gui_get_drag_data
 }
 
 /*
-Returns [code]true[/code] if the viewport is currently performing a drag operation.
+Returns [code]true[/code] if a drag operation is currently ongoing and where the drop action could happen in this viewport.
 Alternative to [constant Node.NOTIFICATION_DRAG_BEGIN] and [constant Node.NOTIFICATION_DRAG_END] when you prefer polling the value.
 */
 //go:nosplit
@@ -1197,7 +1301,7 @@ func (self class) GuiReleaseFocus() { //gd:Viewport.gui_release_focus
 }
 
 /*
-Returns the [Control] having the focus within this viewport. If no [Control] has the focus, returns null.
+Returns the currently focused [Control] within this viewport. If no [Control] is focused, returns [code]null[/code].
 */
 //go:nosplit
 func (self class) GuiGetFocusOwner() [1]gdclass.Control { //gd:Viewport.gui_get_focus_owner
@@ -1210,7 +1314,7 @@ func (self class) GuiGetFocusOwner() [1]gdclass.Control { //gd:Viewport.gui_get_
 }
 
 /*
-Returns the [Control] that the mouse is currently hovering over in this viewport. If no [Control] has the cursor, returns null.
+Returns the [Control] that the mouse is currently hovering over in this viewport. If no [Control] has the cursor, returns [code]null[/code].
 Typically the leaf [Control] node or deepest level of the subtree which claims hover. This is very useful when used together with [method Node.is_ancestor_of] to find if the mouse is within a control tree.
 */
 //go:nosplit
@@ -1604,7 +1708,20 @@ func (self class) IsAudioListener2d() bool { //gd:Viewport.is_audio_listener_2d
 }
 
 /*
-Returns the currently active 2D camera. Returns null if there are no active cameras.
+Returns the currently active 2D audio listener. Returns [code]null[/code] if there are no active 2D audio listeners, in which case the active 2D camera will be treated as listener.
+*/
+//go:nosplit
+func (self class) GetAudioListener2d() [1]gdclass.AudioListener2D { //gd:Viewport.get_audio_listener_2d
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_audio_listener_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.AudioListener2D{gd.PointerLifetimeBoundTo[gdclass.AudioListener2D](self.AsObject(), r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the currently active 2D camera. Returns [code]null[/code] if there are no active cameras.
 */
 //go:nosplit
 func (self class) GetCamera2d() [1]gdclass.Camera2D { //gd:Viewport.get_camera_2d
@@ -1663,6 +1780,19 @@ func (self class) IsUsingOwnWorld3d() bool { //gd:Viewport.is_using_own_world_3d
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_using_own_world_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the currently active 3D audio listener. Returns [code]null[/code] if there are no active 3D audio listeners, in which case the active 3D camera will be treated as listener.
+*/
+//go:nosplit
+func (self class) GetAudioListener3d() [1]gdclass.AudioListener3D { //gd:Viewport.get_audio_listener_3d
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_audio_listener_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.AudioListener3D{gd.PointerLifetimeBoundTo[gdclass.AudioListener3D](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1814,6 +1944,25 @@ func (self class) GetTextureMipmapBias() float64 { //gd:Viewport.get_texture_mip
 }
 
 //go:nosplit
+func (self class) SetAnisotropicFilteringLevel(anisotropic_filtering_level gdclass.ViewportAnisotropicFiltering) { //gd:Viewport.set_anisotropic_filtering_level
+	var frame = callframe.New()
+	callframe.Arg(frame, anisotropic_filtering_level)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_anisotropic_filtering_level, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetAnisotropicFilteringLevel() gdclass.ViewportAnisotropicFiltering { //gd:Viewport.get_anisotropic_filtering_level
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.ViewportAnisotropicFiltering](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_anisotropic_filtering_level, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
 func (self class) SetVrsMode(mode gdclass.ViewportVRSMode) { //gd:Viewport.set_vrs_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
@@ -1929,8 +2078,20 @@ const (
 	Scaling3dModeFsr Scaling3DMode = 1
 	/*Use AMD FidelityFX Super Resolution 2.2 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [member Viewport.scaling_3d_scale]. Values less than [code]1.0[/code] will be result in the viewport being upscaled using FSR2. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] will use FSR2 at native resolution as a TAA solution.*/
 	Scaling3dModeFsr2 Scaling3DMode = 2
+	/*Use the [url=https://developer.apple.com/documentation/metalfx/mtlfxspatialscaler#overview]MetalFX spatial upscaler[/url] for the viewport's 3D buffer.
+	  The amount of scaling can be set using [member scaling_3d_scale].
+	  Values less than [code]1.0[/code] will be result in the viewport being upscaled using MetalFX. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] disables scaling.
+	  More information: [url=https://developer.apple.com/documentation/metalfx]MetalFX[/url].
+	  [b]Note:[/b] Only supported when the Metal rendering driver is in use, which limits this scaling mode to macOS and iOS.*/
+	Scaling3dModeMetalfxSpatial Scaling3DMode = 3
+	/*Use the [url=https://developer.apple.com/documentation/metalfx/mtlfxtemporalscaler#overview]MetalFX temporal upscaler[/url] for the viewport's 3D buffer.
+	  The amount of scaling can be set using [member scaling_3d_scale]. To determine the minimum input scale, use the [method RenderingDevice.limit_get] method with [constant RenderingDevice.LIMIT_METALFX_TEMPORAL_SCALER_MIN_SCALE].
+	  Values less than [code]1.0[/code] will be result in the viewport being upscaled using MetalFX. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] will use MetalFX at native resolution as a TAA solution.
+	  More information: [url=https://developer.apple.com/documentation/metalfx]MetalFX[/url].
+	  [b]Note:[/b] Only supported when the Metal rendering driver is in use, which limits this scaling mode to macOS and iOS.*/
+	Scaling3dModeMetalfxTemporal Scaling3DMode = 4
 	/*Represents the size of the [enum Scaling3DMode] enum.*/
-	Scaling3dModeMax Scaling3DMode = 3
+	Scaling3dModeMax Scaling3DMode = 5
 )
 
 type MSAA = gdclass.ViewportMSAA //gd:Viewport.MSAA
@@ -1946,6 +2107,23 @@ const (
 	Msaa8x MSAA = 3
 	/*Represents the size of the [enum MSAA] enum.*/
 	MsaaMax MSAA = 4
+)
+
+type AnisotropicFiltering = gdclass.ViewportAnisotropicFiltering //gd:Viewport.AnisotropicFiltering
+
+const (
+	/*Anisotropic filtering is disabled.*/
+	AnisotropyDisabled AnisotropicFiltering = 0
+	/*Use 2× anisotropic filtering.*/
+	Anisotropy2x AnisotropicFiltering = 1
+	/*Use 4× anisotropic filtering. This is the default value.*/
+	Anisotropy4x AnisotropicFiltering = 2
+	/*Use 8× anisotropic filtering.*/
+	Anisotropy8x AnisotropicFiltering = 3
+	/*Use 16× anisotropic filtering.*/
+	Anisotropy16x AnisotropicFiltering = 4
+	/*Represents the size of the [enum AnisotropicFiltering] enum.*/
+	AnisotropyMax AnisotropicFiltering = 5
 )
 
 type ScreenSpaceAA = gdclass.ViewportScreenSpaceAA //gd:Viewport.ScreenSpaceAA
@@ -1996,7 +2174,8 @@ const (
 	DebugDrawLighting DebugDraw = 2
 	/*Objects are displayed semi-transparent with additive blending so you can see where they are drawing over top of one another. A higher overdraw means you are wasting performance on drawing pixels that are being hidden behind others.*/
 	DebugDrawOverdraw DebugDraw = 3
-	/*Objects are displayed as wireframe models.*/
+	/*Objects are displayed as wireframe models.
+	  [b]Note:[/b] [method RenderingServer.set_debug_generate_wireframes] must be called before loading any meshes for wireframes to be visible when using the Compatibility renderer.*/
 	DebugDrawWireframe DebugDraw = 4
 	/*Objects are displayed without lighting information and their textures replaced by normal mapping.*/
 	DebugDrawNormalBuffer DebugDraw = 5

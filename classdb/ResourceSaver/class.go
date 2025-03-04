@@ -88,6 +88,14 @@ func RemoveResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) { //
 	class(self).RemoveResourceFormatSaver(format_saver)
 }
 
+/*
+Returns the resource ID for the given path. If [param generate] is [code]true[/code], a new resource ID will be generated if one for the path is not found. If [param generate] is [code]false[/code] and the path is not found, [constant ResourceUID.INVALID_ID] is returned.
+*/
+func GetResourceIdForPath(path string) int { //gd:ResourceSaver.get_resource_id_for_path
+	once.Do(singleton)
+	return int(int(class(self).GetResourceIdForPath(String.New(path), false)))
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 func Advanced() class { once.Do(singleton); return self }
 
@@ -155,6 +163,21 @@ func (self class) RemoveResourceFormatSaver(format_saver [1]gdclass.ResourceForm
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_remove_resource_format_saver, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+}
+
+/*
+Returns the resource ID for the given path. If [param generate] is [code]true[/code], a new resource ID will be generated if one for the path is not found. If [param generate] is [code]false[/code] and the path is not found, [constant ResourceUID.INVALID_ID] is returned.
+*/
+//go:nosplit
+func (self class) GetResourceIdForPath(path String.Readable, generate bool) int64 { //gd:ResourceSaver.get_resource_id_for_path
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
+	callframe.Arg(frame, generate)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_get_resource_id_for_path, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

@@ -96,11 +96,43 @@ func (self Instance) Play() { //gd:AnimationPlayer.play
 }
 
 /*
+Plays the animation with key [param name] and the section starting from [param start_marker] and ending on [param end_marker].
+If the start marker is empty, the section starts from the beginning of the animation. If the end marker is empty, the section ends on the end of the animation. See also [method play].
+*/
+func (self Instance) PlaySectionWithMarkers() { //gd:AnimationPlayer.play_section_with_markers
+	class(self).PlaySectionWithMarkers(String.Name(String.New("")), String.Name(String.New("")), String.Name(String.New("")), float64(-1), float64(1.0), false)
+}
+
+/*
+Plays the animation with key [param name] and the section starting from [param start_time] and ending on [param end_time]. See also [method play].
+Setting [param start_time] to a value outside the range of the animation means the start of the animation will be used instead, and setting [param end_time] to a value outside the range of the animation means the end of the animation will be used instead. [param start_time] cannot be equal to [param end_time].
+*/
+func (self Instance) PlaySection() { //gd:AnimationPlayer.play_section
+	class(self).PlaySection(String.Name(String.New("")), float64(-1), float64(-1), float64(-1), float64(1.0), false)
+}
+
+/*
 Plays the animation with key [param name] in reverse.
 This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 */
 func (self Instance) PlayBackwards() { //gd:AnimationPlayer.play_backwards
 	class(self).PlayBackwards(String.Name(String.New("")), float64(-1))
+}
+
+/*
+Plays the animation with key [param name] and the section starting from [param start_marker] and ending on [param end_marker] in reverse.
+This method is a shorthand for [method play_section_with_markers] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], see its description for more information.
+*/
+func (self Instance) PlaySectionWithMarkersBackwards() { //gd:AnimationPlayer.play_section_with_markers_backwards
+	class(self).PlaySectionWithMarkersBackwards(String.Name(String.New("")), String.Name(String.New("")), String.Name(String.New("")), float64(-1))
+}
+
+/*
+Plays the animation with key [param name] and the section starting from [param start_time] and ending on [param end_time] in reverse.
+This method is a shorthand for [method play_section] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], see its description for more information.
+*/
+func (self Instance) PlaySectionBackwards() { //gd:AnimationPlayer.play_section_backwards
+	class(self).PlaySectionBackwards(String.Name(String.New("")), float64(-1), float64(-1), float64(-1))
 }
 
 /*
@@ -170,6 +202,49 @@ Returns a negative value if the current animation is playing backwards.
 */
 func (self Instance) GetPlayingSpeed() Float.X { //gd:AnimationPlayer.get_playing_speed
 	return Float.X(Float.X(class(self).GetPlayingSpeed()))
+}
+
+/*
+Changes the start and end markers of the section being played. The current playback position will be clamped within the new section. See also [method play_section_with_markers].
+If the argument is empty, the section uses the beginning or end of the animation. If both are empty, it means that the section is not set.
+*/
+func (self Instance) SetSectionWithMarkers() { //gd:AnimationPlayer.set_section_with_markers
+	class(self).SetSectionWithMarkers(String.Name(String.New("")), String.Name(String.New("")))
+}
+
+/*
+Changes the start and end times of the section being played. The current playback position will be clamped within the new section. See also [method play_section].
+*/
+func (self Instance) SetSection() { //gd:AnimationPlayer.set_section
+	class(self).SetSection(float64(-1), float64(-1))
+}
+
+/*
+Resets the current section if section is set.
+*/
+func (self Instance) ResetSection() { //gd:AnimationPlayer.reset_section
+	class(self).ResetSection()
+}
+
+/*
+Returns the start time of the section currently being played.
+*/
+func (self Instance) GetSectionStartTime() Float.X { //gd:AnimationPlayer.get_section_start_time
+	return Float.X(Float.X(class(self).GetSectionStartTime()))
+}
+
+/*
+Returns the end time of the section currently being played.
+*/
+func (self Instance) GetSectionEndTime() Float.X { //gd:AnimationPlayer.get_section_end_time
+	return Float.X(Float.X(class(self).GetSectionEndTime()))
+}
+
+/*
+Returns [code]true[/code] if an animation is currently playing with section.
+*/
+func (self Instance) HasSection() bool { //gd:AnimationPlayer.has_section
+	return bool(class(self).HasSection())
 }
 
 /*
@@ -499,6 +574,42 @@ func (self class) Play(name String.Name, custom_blend float64, custom_speed floa
 }
 
 /*
+Plays the animation with key [param name] and the section starting from [param start_marker] and ending on [param end_marker].
+If the start marker is empty, the section starts from the beginning of the animation. If the end marker is empty, the section ends on the end of the animation. See also [method play].
+*/
+//go:nosplit
+func (self class) PlaySectionWithMarkers(name String.Name, start_marker String.Name, end_marker String.Name, custom_blend float64, custom_speed float64, from_end bool) { //gd:AnimationPlayer.play_section_with_markers
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(start_marker)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(end_marker)))
+	callframe.Arg(frame, custom_blend)
+	callframe.Arg(frame, custom_speed)
+	callframe.Arg(frame, from_end)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_play_section_with_markers, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Plays the animation with key [param name] and the section starting from [param start_time] and ending on [param end_time]. See also [method play].
+Setting [param start_time] to a value outside the range of the animation means the start of the animation will be used instead, and setting [param end_time] to a value outside the range of the animation means the end of the animation will be used instead. [param start_time] cannot be equal to [param end_time].
+*/
+//go:nosplit
+func (self class) PlaySection(name String.Name, start_time float64, end_time float64, custom_blend float64, custom_speed float64, from_end bool) { //gd:AnimationPlayer.play_section
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, start_time)
+	callframe.Arg(frame, end_time)
+	callframe.Arg(frame, custom_blend)
+	callframe.Arg(frame, custom_speed)
+	callframe.Arg(frame, from_end)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_play_section, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Plays the animation with key [param name] in reverse.
 This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 */
@@ -509,6 +620,38 @@ func (self class) PlayBackwards(name String.Name, custom_blend float64) { //gd:A
 	callframe.Arg(frame, custom_blend)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_play_backwards, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Plays the animation with key [param name] and the section starting from [param start_marker] and ending on [param end_marker] in reverse.
+This method is a shorthand for [method play_section_with_markers] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], see its description for more information.
+*/
+//go:nosplit
+func (self class) PlaySectionWithMarkersBackwards(name String.Name, start_marker String.Name, end_marker String.Name, custom_blend float64) { //gd:AnimationPlayer.play_section_with_markers_backwards
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(start_marker)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(end_marker)))
+	callframe.Arg(frame, custom_blend)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_play_section_with_markers_backwards, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Plays the animation with key [param name] and the section starting from [param start_time] and ending on [param end_time] in reverse.
+This method is a shorthand for [method play_section] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], see its description for more information.
+*/
+//go:nosplit
+func (self class) PlaySectionBackwards(name String.Name, start_time float64, end_time float64, custom_blend float64) { //gd:AnimationPlayer.play_section_backwards
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
+	callframe.Arg(frame, start_time)
+	callframe.Arg(frame, end_time)
+	callframe.Arg(frame, custom_blend)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_play_section_backwards, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -738,6 +881,83 @@ func (self class) GetCurrentAnimationLength() float64 { //gd:AnimationPlayer.get
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation_length, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Changes the start and end markers of the section being played. The current playback position will be clamped within the new section. See also [method play_section_with_markers].
+If the argument is empty, the section uses the beginning or end of the animation. If both are empty, it means that the section is not set.
+*/
+//go:nosplit
+func (self class) SetSectionWithMarkers(start_marker String.Name, end_marker String.Name) { //gd:AnimationPlayer.set_section_with_markers
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(start_marker)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(end_marker)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_section_with_markers, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Changes the start and end times of the section being played. The current playback position will be clamped within the new section. See also [method play_section].
+*/
+//go:nosplit
+func (self class) SetSection(start_time float64, end_time float64) { //gd:AnimationPlayer.set_section
+	var frame = callframe.New()
+	callframe.Arg(frame, start_time)
+	callframe.Arg(frame, end_time)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_section, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Resets the current section if section is set.
+*/
+//go:nosplit
+func (self class) ResetSection() { //gd:AnimationPlayer.reset_section
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_reset_section, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the start time of the section currently being played.
+*/
+//go:nosplit
+func (self class) GetSectionStartTime() float64 { //gd:AnimationPlayer.get_section_start_time
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_section_start_time, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the end time of the section currently being played.
+*/
+//go:nosplit
+func (self class) GetSectionEndTime() float64 { //gd:AnimationPlayer.get_section_end_time
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_section_end_time, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if an animation is currently playing with section.
+*/
+//go:nosplit
+func (self class) HasSection() bool { //gd:AnimationPlayer.has_section
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_has_section, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

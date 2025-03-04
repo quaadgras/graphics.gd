@@ -239,6 +239,17 @@ func (self AnimationNodeBlendTree) AsObject() [1]Object {
 
 func (self AnimationNodeBlendTree) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type AnimationNodeExtension pointers.Trio[AnimationNodeExtension]
+
+func (self AnimationNodeExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self AnimationNodeExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self AnimationNodeExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type AnimationNodeOneShotOneShotRequest int64
 
 type AnimationNodeOneShotMixMode int64
@@ -805,6 +816,7 @@ func (self AudioStream) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Poin
 
 func (self AudioStream) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type AudioStreamGeneratorAudioStreamGeneratorMixRate int64
 type AudioStreamGenerator pointers.Trio[AudioStreamGenerator]
 
 func (self AudioStreamGenerator) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -1558,6 +1570,7 @@ func (self CircleShape2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Po
 
 func (self CircleShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type ClassDBAPIType int64
 type ClassDB pointers.Trio[ClassDB]
 
 func (self ClassDB) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -1644,6 +1657,15 @@ func (self CollisionShape3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free()
 func (self CollisionShape3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CollisionShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type ColorPalette pointers.Trio[ColorPalette]
+
+func (self ColorPalette) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self ColorPalette) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self ColorPalette) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ColorPickerColorModeType int64
 
@@ -2032,6 +2054,8 @@ type DisplayServerWindowFlags int64
 
 type DisplayServerWindowEvent int64
 
+type DisplayServerWindowResizeEdge int64
+
 type DisplayServerVSyncMode int64
 
 type DisplayServerHandleType int64
@@ -2090,6 +2114,18 @@ func (self EditorCommandPalette) AsObject() [1]Object { return (*(*[1]Object)(un
 
 func (self EditorCommandPalette) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type EditorContextMenuPluginContextMenuSlot int64
+type EditorContextMenuPlugin pointers.Trio[EditorContextMenuPlugin]
+
+func (self EditorContextMenuPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self EditorContextMenuPlugin) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self EditorContextMenuPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type EditorDebuggerPlugin pointers.Trio[EditorDebuggerPlugin]
 
 func (self EditorDebuggerPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -2108,6 +2144,9 @@ func (self EditorDebuggerSession) AsObject() [1]Object { return (*(*[1]Object)(u
 
 func (self EditorDebuggerSession) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type EditorExportPlatformExportMessageType int64
+
+type EditorExportPlatformDebugFlags int64
 type EditorExportPlatform pointers.Trio[EditorExportPlatform]
 
 func (self EditorExportPlatform) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -2127,6 +2166,17 @@ func (self EditorExportPlatformAndroid) AsObject() [1]Object {
 }
 
 func (self EditorExportPlatformAndroid) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type EditorExportPlatformExtension pointers.Trio[EditorExportPlatformExtension]
+
+func (self EditorExportPlatformExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self EditorExportPlatformExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self EditorExportPlatformExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type EditorExportPlatformIOS pointers.Trio[EditorExportPlatformIOS]
 
@@ -2202,6 +2252,20 @@ func (self EditorExportPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free
 func (self EditorExportPlugin) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorExportPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type EditorExportPresetExportFilter int64
+
+type EditorExportPresetFileExportMode int64
+
+type EditorExportPresetScriptExportMode int64
+type EditorExportPreset pointers.Trio[EditorExportPreset]
+
+func (self EditorExportPreset) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self EditorExportPreset) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self EditorExportPreset) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type EditorFeatureProfileFeature int64
 type EditorFeatureProfile pointers.Trio[EditorFeatureProfile]
@@ -2535,6 +2599,16 @@ func (self EditorSyntaxHighlighter) AsObject() [1]Object {
 
 func (self EditorSyntaxHighlighter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type EditorToasterSeverity int64
+type EditorToaster pointers.Trio[EditorToaster]
+
+func (self EditorToaster) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self EditorToaster) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self EditorToaster) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type EditorTranslationParserPlugin pointers.Trio[EditorTranslationParserPlugin]
 
 func (self EditorTranslationParserPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -2634,6 +2708,15 @@ func (self Expression) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 func (self Expression) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Expression) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type ExternalTexture pointers.Trio[ExternalTexture]
+
+func (self ExternalTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self ExternalTexture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self ExternalTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type FBXDocument pointers.Trio[FBXDocument]
 
@@ -2815,7 +2898,20 @@ func (self GDScript) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer
 
 func (self GDScript) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type GDScriptSyntaxHighlighter pointers.Trio[GDScriptSyntaxHighlighter]
+
+func (self GDScriptSyntaxHighlighter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self GDScriptSyntaxHighlighter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self GDScriptSyntaxHighlighter) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type GLTFAccessorGLTFAccessorType int64
+
+type GLTFAccessorGLTFComponentType int64
 type GLTFAccessor pointers.Trio[GLTFAccessor]
 
 func (self GLTFAccessor) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -2912,6 +3008,18 @@ func (self GLTFNode) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 func (self GLTFNode) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFNode) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type GLTFObjectModelPropertyGLTFObjectModelType int64
+type GLTFObjectModelProperty pointers.Trio[GLTFObjectModelProperty]
+
+func (self GLTFObjectModelProperty) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self GLTFObjectModelProperty) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self GLTFObjectModelProperty) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type GLTFPhysicsBody pointers.Trio[GLTFPhysicsBody]
 
@@ -3258,6 +3366,15 @@ func (self GridMap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 func (self GridMap) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GridMap) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type GridMapEditorPlugin pointers.Trio[GridMapEditorPlugin]
+
+func (self GridMapEditorPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self GridMapEditorPlugin) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self GridMapEditorPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type GrooveJoint2D pointers.Trio[GrooveJoint2D]
 
@@ -3755,6 +3872,15 @@ func (self JavaClassWrapper) AsObject() [1]Object { return (*(*[1]Object)(unsafe
 
 func (self JavaClassWrapper) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type JavaObject pointers.Trio[JavaObject]
+
+func (self JavaObject) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self JavaObject) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self JavaObject) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type JavaScriptBridge pointers.Trio[JavaScriptBridge]
 
 func (self JavaScriptBridge) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -3888,6 +4014,7 @@ func (self LightmapGI) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Point
 
 func (self LightmapGI) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type LightmapGIDataShadowmaskMode int64
 type LightmapGIData pointers.Trio[LightmapGIData]
 
 func (self LightmapGIData) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -3959,6 +4086,16 @@ func (self LinkButton) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 func (self LinkButton) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self LinkButton) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LookAtModifier3DOriginFrom int64
+type LookAtModifier3D pointers.Trio[LookAtModifier3D]
+
+func (self LookAtModifier3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self LookAtModifier3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self LookAtModifier3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type MainLoop pointers.Trio[MainLoop]
 
@@ -4155,6 +4292,8 @@ func (self MovieWriter) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Poin
 func (self MovieWriter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type MultiMeshTransformFormat int64
+
+type MultiMeshPhysicsInterpolationQuality int64
 type MultiMesh pointers.Trio[MultiMesh]
 
 func (self MultiMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -4433,6 +4572,8 @@ func (self NavigationPathQueryResult3D) AsObject() [1]Object {
 
 func (self NavigationPathQueryResult3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type NavigationPolygonSamplePartitionType int64
+
 type NavigationPolygonParsedGeometryType int64
 
 type NavigationPolygonSourceGeometryMode int64
@@ -4581,6 +4722,8 @@ func (self ORMMaterial3D) Virtual(name string) reflect.Value { return reflect.Va
 type OSRenderingDriver int64
 
 type OSSystemDir int64
+
+type OSStdHandleType int64
 type OS pointers.Trio[OS]
 
 func (self OS) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -4679,6 +4822,17 @@ func (self OpenXRAction) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Poi
 
 func (self OpenXRAction) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type OpenXRActionBindingModifier pointers.Trio[OpenXRActionBindingModifier]
+
+func (self OpenXRActionBindingModifier) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self OpenXRActionBindingModifier) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self OpenXRActionBindingModifier) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type OpenXRActionMap pointers.Trio[OpenXRActionMap]
 
 func (self OpenXRActionMap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -4696,6 +4850,37 @@ func (self OpenXRActionSet) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() 
 func (self OpenXRActionSet) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OpenXRActionSet) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type OpenXRAnalogThresholdModifier pointers.Trio[OpenXRAnalogThresholdModifier]
+
+func (self OpenXRAnalogThresholdModifier) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self OpenXRAnalogThresholdModifier) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self OpenXRAnalogThresholdModifier) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type OpenXRBindingModifier pointers.Trio[OpenXRBindingModifier]
+
+func (self OpenXRBindingModifier) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self OpenXRBindingModifier) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self OpenXRBindingModifier) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type OpenXRBindingModifierEditor pointers.Trio[OpenXRBindingModifierEditor]
+
+func (self OpenXRBindingModifierEditor) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self OpenXRBindingModifierEditor) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self OpenXRBindingModifierEditor) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type OpenXRCompositionLayer pointers.Trio[OpenXRCompositionLayer]
 
@@ -4741,6 +4926,17 @@ func (self OpenXRCompositionLayerQuad) AsObject() [1]Object {
 
 func (self OpenXRCompositionLayerQuad) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type OpenXRDpadBindingModifier pointers.Trio[OpenXRDpadBindingModifier]
+
+func (self OpenXRDpadBindingModifier) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self OpenXRDpadBindingModifier) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self OpenXRDpadBindingModifier) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type OpenXRExtensionWrapperExtension pointers.Trio[OpenXRExtensionWrapperExtension]
 
 func (self OpenXRExtensionWrapperExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -4770,6 +4966,24 @@ func (self OpenXRHand) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Point
 
 func (self OpenXRHand) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type OpenXRHapticBase pointers.Trio[OpenXRHapticBase]
+
+func (self OpenXRHapticBase) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self OpenXRHapticBase) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self OpenXRHapticBase) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type OpenXRHapticVibration pointers.Trio[OpenXRHapticVibration]
+
+func (self OpenXRHapticVibration) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self OpenXRHapticVibration) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self OpenXRHapticVibration) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type OpenXRIPBinding pointers.Trio[OpenXRIPBinding]
 
 func (self OpenXRIPBinding) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -4778,6 +4992,17 @@ func (self OpenXRIPBinding) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() 
 func (self OpenXRIPBinding) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OpenXRIPBinding) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type OpenXRIPBindingModifier pointers.Trio[OpenXRIPBindingModifier]
+
+func (self OpenXRIPBindingModifier) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self OpenXRIPBindingModifier) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self OpenXRIPBindingModifier) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type OpenXRInteractionProfile pointers.Trio[OpenXRInteractionProfile]
 
@@ -4789,6 +5014,30 @@ func (self OpenXRInteractionProfile) AsObject() [1]Object {
 }
 
 func (self OpenXRInteractionProfile) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type OpenXRInteractionProfileEditor pointers.Trio[OpenXRInteractionProfileEditor]
+
+func (self OpenXRInteractionProfileEditor) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self OpenXRInteractionProfileEditor) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self OpenXRInteractionProfileEditor) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type OpenXRInteractionProfileEditorBase pointers.Trio[OpenXRInteractionProfileEditorBase]
+
+func (self OpenXRInteractionProfileEditorBase) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self OpenXRInteractionProfileEditorBase) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self OpenXRInteractionProfileEditorBase) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type OpenXRInteractionProfileMetadata pointers.Trio[OpenXRInteractionProfileMetadata]
 
@@ -4820,6 +5069,15 @@ func (self OpenXRInterface) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() 
 func (self OpenXRInterface) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OpenXRInterface) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type OpenXRVisibilityMask pointers.Trio[OpenXRVisibilityMask]
+
+func (self OpenXRVisibilityMask) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self OpenXRVisibilityMask) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self OpenXRVisibilityMask) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type OptimizedTranslation pointers.Trio[OptimizedTranslation]
 
@@ -6116,6 +6374,8 @@ type RenderingDeviceIndexBufferFormat int64
 
 type RenderingDeviceStorageBufferUsage int64
 
+type RenderingDeviceBufferCreationBits int64
+
 type RenderingDeviceUniformType int64
 
 type RenderingDeviceRenderPrimitive int64
@@ -6146,9 +6406,15 @@ type RenderingDeviceShaderLanguage int64
 
 type RenderingDevicePipelineSpecializationConstantType int64
 
+type RenderingDeviceFeatures int64
+
 type RenderingDeviceLimit int64
 
 type RenderingDeviceMemoryType int64
+
+type RenderingDeviceBreadcrumbMarker int64
+
+type RenderingDeviceDrawFlags int64
 type RenderingDevice pointers.Trio[RenderingDevice]
 
 func (self RenderingDevice) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -6157,6 +6423,8 @@ func (self RenderingDevice) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() 
 func (self RenderingDevice) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RenderingDevice) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type RenderingServerTextureType int64
 
 type RenderingServerTextureLayeredType int64
 
@@ -6175,6 +6443,8 @@ type RenderingServerPrimitiveType int64
 type RenderingServerBlendShapeMode int64
 
 type RenderingServerMultimeshTransformFormat int64
+
+type RenderingServerMultimeshPhysicsInterpolationQuality int64
 
 type RenderingServerLightProjectorFilter int64
 
@@ -6227,6 +6497,8 @@ type RenderingServerViewportSDFOversize int64
 type RenderingServerViewportSDFScale int64
 
 type RenderingServerViewportMSAA int64
+
+type RenderingServerViewportAnisotropicFiltering int64
 
 type RenderingServerViewportScreenSpaceAA int64
 
@@ -6311,6 +6583,8 @@ type RenderingServerCanvasOccluderPolygonCullMode int64
 type RenderingServerGlobalShaderParameterType int64
 
 type RenderingServerRenderingInfo int64
+
+type RenderingServerPipelineSource int64
 
 type RenderingServerFeatures int64
 type RenderingServer pointers.Trio[RenderingServer]
@@ -6554,6 +6828,16 @@ func (self ResourceUID) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 func (self ResourceUID) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ResourceUID) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type RetargetModifier3DTransformFlag int64
+type RetargetModifier3D pointers.Trio[RetargetModifier3D]
+
+func (self RetargetModifier3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self RetargetModifier3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self RetargetModifier3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type RibbonTrailMeshShape int64
 type RibbonTrailMesh pointers.Trio[RibbonTrailMesh]
@@ -6842,6 +7126,15 @@ func (self ShaderInclude) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Po
 
 func (self ShaderInclude) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type ShaderIncludeDB pointers.Trio[ShaderIncludeDB]
+
+func (self ShaderIncludeDB) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self ShaderIncludeDB) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self ShaderIncludeDB) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type ShaderMaterial pointers.Trio[ShaderMaterial]
 
 func (self ShaderMaterial) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -7029,6 +7322,7 @@ func (self SkeletonModificationStack2D) AsObject() [1]Object {
 
 func (self SkeletonModificationStack2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type SkeletonModifier3DBoneAxis int64
 type SkeletonModifier3D pointers.Trio[SkeletonModifier3D]
 
 func (self SkeletonModifier3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -7181,6 +7475,62 @@ func (self SpringArm3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 func (self SpringArm3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SpringArm3D) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type SpringBoneCollision3D pointers.Trio[SpringBoneCollision3D]
+
+func (self SpringBoneCollision3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self SpringBoneCollision3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self SpringBoneCollision3D) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type SpringBoneCollisionCapsule3D pointers.Trio[SpringBoneCollisionCapsule3D]
+
+func (self SpringBoneCollisionCapsule3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self SpringBoneCollisionCapsule3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self SpringBoneCollisionCapsule3D) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type SpringBoneCollisionPlane3D pointers.Trio[SpringBoneCollisionPlane3D]
+
+func (self SpringBoneCollisionPlane3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self SpringBoneCollisionPlane3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self SpringBoneCollisionPlane3D) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type SpringBoneCollisionSphere3D pointers.Trio[SpringBoneCollisionSphere3D]
+
+func (self SpringBoneCollisionSphere3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self SpringBoneCollisionSphere3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self SpringBoneCollisionSphere3D) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type SpringBoneSimulator3DBoneDirection int64
+
+type SpringBoneSimulator3DCenterFrom int64
+
+type SpringBoneSimulator3DRotationAxis int64
+type SpringBoneSimulator3D pointers.Trio[SpringBoneSimulator3D]
+
+func (self SpringBoneSimulator3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self SpringBoneSimulator3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self SpringBoneSimulator3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type Sprite2D pointers.Trio[Sprite2D]
 
@@ -7379,6 +7729,15 @@ func (self SubViewportContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Fr
 func (self SubViewportContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SubViewportContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type SubtweenTweener pointers.Trio[SubtweenTweener]
+
+func (self SubtweenTweener) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self SubtweenTweener) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self SubtweenTweener) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type SurfaceToolCustomFormat int64
 
@@ -7878,6 +8237,15 @@ func (self Translation) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Poin
 
 func (self Translation) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type TranslationDomain pointers.Trio[TranslationDomain]
+
+func (self TranslationDomain) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+
+//go:nosplit
+func (self TranslationDomain) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self TranslationDomain) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type TranslationServer pointers.Trio[TranslationServer]
 
 func (self TranslationServer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -8113,6 +8481,8 @@ type ViewportPositionalShadowAtlasQuadrantSubdiv int64
 type ViewportScaling3DMode int64
 
 type ViewportMSAA int64
+
+type ViewportAnisotropicFiltering int64
 
 type ViewportScreenSpaceAA int64
 
@@ -8905,6 +9275,7 @@ func (self VisualShaderNodeRandomRange) AsObject() [1]Object {
 
 func (self VisualShaderNodeRandomRange) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type VisualShaderNodeRemapOpType int64
 type VisualShaderNodeRemap pointers.Trio[VisualShaderNodeRemap]
 
 func (self VisualShaderNodeRemap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }

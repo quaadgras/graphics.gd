@@ -132,8 +132,6 @@ func (self Instance) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label s
 Adds a new multistate item with text [param label].
 Contrarily to normal binary items, multistate items can have more than two states, as defined by [param max_states]. The default value is defined by [param default_state].
 An [param id] can optionally be provided, as well as an accelerator ([param accel]). If no [param id] is provided, one will be created from the index. If no [param accel] is provided, then the default value of 0 (corresponding to [constant @GlobalScope.KEY_NONE]) will be assigned to the item (which means it won't have any accelerator). See [method get_item_accelerator] for more info on accelerators.
-[b]Note:[/b] Multistate items don't update their state automatically and must be done manually. See [method toggle_item_multistate], [method set_item_multistate] and [method get_item_multistate] for more info on how to control it.
-Example usage:
 [codeblock]
 func _ready():
 
@@ -151,6 +149,7 @@ func _ready():
 	    )
 
 [/codeblock]
+[b]Note:[/b] Multistate items don't update their state automatically and must be done manually. See [method toggle_item_multistate], [method set_item_multistate] and [method get_item_multistate] for more info on how to control it.
 */
 func (self Instance) AddMultistateItem(label string, max_states int) { //gd:PopupMenu.add_multistate_item
 	class(self).AddMultistateItem(String.New(label), int64(max_states), int64(0), int64(-1), 0)
@@ -842,8 +841,6 @@ func (self class) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label Stri
 Adds a new multistate item with text [param label].
 Contrarily to normal binary items, multistate items can have more than two states, as defined by [param max_states]. The default value is defined by [param default_state].
 An [param id] can optionally be provided, as well as an accelerator ([param accel]). If no [param id] is provided, one will be created from the index. If no [param accel] is provided, then the default value of 0 (corresponding to [constant @GlobalScope.KEY_NONE]) will be assigned to the item (which means it won't have any accelerator). See [method get_item_accelerator] for more info on accelerators.
-[b]Note:[/b] Multistate items don't update their state automatically and must be done manually. See [method toggle_item_multistate], [method set_item_multistate] and [method get_item_multistate] for more info on how to control it.
-Example usage:
 [codeblock]
 func _ready():
     add_multistate_item("Item", 3, 0)
@@ -859,6 +856,7 @@ func _ready():
                     print("Third state")
         )
 [/codeblock]
+[b]Note:[/b] Multistate items don't update their state automatically and must be done manually. See [method toggle_item_multistate], [method set_item_multistate] and [method get_item_multistate] for more info on how to control it.
 */
 //go:nosplit
 func (self class) AddMultistateItem(label String.Readable, max_states int64, default_state int64, id int64, accel Key) { //gd:PopupMenu.add_multistate_item
@@ -2078,13 +2076,13 @@ const (
 	KeyHyper Key = 4194371
 	/*Help key.*/
 	KeyHelp Key = 4194373
-	/*Media back key. Not to be confused with the Back button on an Android device.*/
+	/*Back key.*/
 	KeyBack Key = 4194376
-	/*Media forward key.*/
+	/*Forward key.*/
 	KeyForward Key = 4194377
 	/*Media stop key.*/
 	KeyStop Key = 4194378
-	/*Media refresh key.*/
+	/*Refresh key.*/
 	KeyRefresh Key = 4194379
 	/*Volume down key.*/
 	KeyVolumedown Key = 4194380
@@ -2160,35 +2158,35 @@ const (
 	KeyUnknown Key = 8388607
 	/*Space key.*/
 	KeySpace Key = 32
-	/*! key.*/
+	/*Exclamation mark ([code]![/code]) key.*/
 	KeyExclam Key = 33
-	/*" key.*/
+	/*Double quotation mark ([code]"[/code]) key.*/
 	KeyQuotedbl Key = 34
-	/*# key.*/
+	/*Number sign or [i]hash[/i] ([code]#[/code]) key.*/
 	KeyNumbersign Key = 35
-	/*$ key.*/
+	/*Dollar sign ([code]$[/code]) key.*/
 	KeyDollar Key = 36
-	/*% key.*/
+	/*Percent sign ([code]%[/code]) key.*/
 	KeyPercent Key = 37
-	/*& key.*/
+	/*Ampersand ([code]&[/code]) key.*/
 	KeyAmpersand Key = 38
-	/*' key.*/
+	/*Apostrophe ([code]'[/code]) key.*/
 	KeyApostrophe Key = 39
-	/*( key.*/
+	/*Left parenthesis ([code]([/code]) key.*/
 	KeyParenleft Key = 40
-	/*) key.*/
+	/*Right parenthesis ([code])[/code]) key.*/
 	KeyParenright Key = 41
-	/** key.*/
+	/*Asterisk ([code]*[/code]) key.*/
 	KeyAsterisk Key = 42
-	/*+ key.*/
+	/*Plus ([code]+[/code]) key.*/
 	KeyPlus Key = 43
-	/*, key.*/
+	/*Comma ([code],[/code]) key.*/
 	KeyComma Key = 44
-	/*- key.*/
+	/*Minus ([code]-[/code]) key.*/
 	KeyMinus Key = 45
-	/*. key.*/
+	/*Period ([code].[/code]) key.*/
 	KeyPeriod Key = 46
-	/*/ key.*/
+	/*Slash ([code]/[/code]) key.*/
 	KeySlash Key = 47
 	/*Number 0 key.*/
 	Key0 Key = 48
@@ -2210,19 +2208,19 @@ const (
 	Key8 Key = 56
 	/*Number 9 key.*/
 	Key9 Key = 57
-	/*: key.*/
+	/*Colon ([code]:[/code]) key.*/
 	KeyColon Key = 58
-	/*; key.*/
+	/*Semicolon ([code];[/code]) key.*/
 	KeySemicolon Key = 59
-	/*< key.*/
+	/*Less-than sign ([code]<[/code]) key.*/
 	KeyLess Key = 60
-	/*= key.*/
+	/*Equal sign ([code]=[/code]) key.*/
 	KeyEqual Key = 61
-	/*> key.*/
+	/*Greater-than sign ([code]>[/code]) key.*/
 	KeyGreater Key = 62
-	/*? key.*/
+	/*Question mark ([code]?[/code]) key.*/
 	KeyQuestion Key = 63
-	/*@ key.*/
+	/*At sign ([code]@[/code]) key.*/
 	KeyAt Key = 64
 	/*A key.*/
 	KeyA Key = 65
@@ -2276,28 +2274,28 @@ const (
 	KeyY Key = 89
 	/*Z key.*/
 	KeyZ Key = 90
-	/*[ key.*/
+	/*Left bracket ([code][lb][/code]) key.*/
 	KeyBracketleft Key = 91
-	/*\ key.*/
+	/*Backslash ([code]\[/code]) key.*/
 	KeyBackslash Key = 92
-	/*] key.*/
+	/*Right bracket ([code][rb][/code]) key.*/
 	KeyBracketright Key = 93
-	/*^ key.*/
+	/*Caret ([code]^[/code]) key.*/
 	KeyAsciicircum Key = 94
-	/*_ key.*/
+	/*Underscore ([code]_[/code]) key.*/
 	KeyUnderscore Key = 95
-	/*` key.*/
+	/*Backtick ([code]`[/code]) key.*/
 	KeyQuoteleft Key = 96
-	/*{ key.*/
+	/*Left brace ([code]{[/code]) key.*/
 	KeyBraceleft Key = 123
-	/*| key.*/
+	/*Vertical bar or [i]pipe[/i] ([code]|[/code]) key.*/
 	KeyBar Key = 124
-	/*} key.*/
+	/*Right brace ([code]}[/code]) key.*/
 	KeyBraceright Key = 125
-	/*~ key.*/
+	/*Tilde ([code]~[/code]) key.*/
 	KeyAsciitilde Key = 126
-	/*¥ key.*/
+	/*Yen symbol ([code]¥[/code]) key.*/
 	KeyYen Key = 165
-	/*§ key.*/
+	/*Section sign ([code]§[/code]) key.*/
 	KeySection Key = 167
 )

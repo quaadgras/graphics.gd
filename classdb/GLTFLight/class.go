@@ -42,7 +42,7 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-Represents a light as defined by the [code]KHR_lights_punctual[/code] GLTF extension.
+Represents a light as defined by the [code]KHR_lights_punctual[/code] glTF extension.
 */
 type Instance [1]gdclass.GLTFLight
 

@@ -87,7 +87,8 @@ func (Instance) _create_mesh_array(impl func(ptr unsafe.Pointer) []any) (cb gd.E
 }
 
 /*
-Returns mesh arrays used to constitute surface of [Mesh]. The result can be passed to [method ArrayMesh.add_surface_from_arrays] to create a new surface. For example:
+Returns the mesh arrays used to make up the surface of this primitive mesh.
+[b]Example:[/b] Pass the result to [method ArrayMesh.add_surface_from_arrays] to create a new surface:
 [codeblocks]
 [gdscript]
 var c = CylinderMesh.new()
@@ -207,7 +208,8 @@ func (self class) GetMaterial() [1]gdclass.Material { //gd:PrimitiveMesh.get_mat
 }
 
 /*
-Returns mesh arrays used to constitute surface of [Mesh]. The result can be passed to [method ArrayMesh.add_surface_from_arrays] to create a new surface. For example:
+Returns the mesh arrays used to make up the surface of this primitive mesh.
+[b]Example:[/b] Pass the result to [method ArrayMesh.add_surface_from_arrays] to create a new surface:
 [codeblocks]
 [gdscript]
 var c = CylinderMesh.new()

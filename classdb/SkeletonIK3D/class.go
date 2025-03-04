@@ -77,7 +77,7 @@ type Any interface {
 }
 
 /*
-Returns the parent [Skeleton3D] Node that was present when SkeletonIK entered the [SceneTree]. Returns null if the parent node was not a [Skeleton3D] Node when SkeletonIK3D entered the [SceneTree].
+Returns the parent [Skeleton3D] node that was present when SkeletonIK entered the scene tree. Returns [code]null[/code] if the parent node was not a [Skeleton3D] node when SkeletonIK3D entered the scene tree.
 */
 func (self Instance) GetParentSkeleton() [1]gdclass.Skeleton3D { //gd:SkeletonIK3D.get_parent_skeleton
 	return [1]gdclass.Skeleton3D(class(self).GetParentSkeleton())
@@ -336,7 +336,7 @@ func (self class) GetMagnetPosition() Vector3.XYZ { //gd:SkeletonIK3D.get_magnet
 }
 
 /*
-Returns the parent [Skeleton3D] Node that was present when SkeletonIK entered the [SceneTree]. Returns null if the parent node was not a [Skeleton3D] Node when SkeletonIK3D entered the [SceneTree].
+Returns the parent [Skeleton3D] node that was present when SkeletonIK entered the scene tree. Returns [code]null[/code] if the parent node was not a [Skeleton3D] node when SkeletonIK3D entered the scene tree.
 */
 //go:nosplit
 func (self class) GetParentSkeleton() [1]gdclass.Skeleton3D { //gd:SkeletonIK3D.get_parent_skeleton

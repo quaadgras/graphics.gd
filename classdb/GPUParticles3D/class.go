@@ -64,9 +64,10 @@ type Any interface {
 /*
 Restarts the particle emission cycle, clearing existing particles. To avoid particles vanishing from the viewport, wait for the [signal finished] signal before calling.
 [b]Note:[/b] The [signal finished] signal is only emitted by [member one_shot] emitters.
+If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
 */
 func (self Instance) Restart() { //gd:GPUParticles3D.restart
-	class(self).Restart()
+	class(self).Restart(false)
 }
 
 /*
@@ -79,6 +80,7 @@ func (self Instance) CaptureAabb() AABB.PositionSize { //gd:GPUParticles3D.captu
 /*
 Emits a single particle. Whether [param xform], [param velocity], [param color] and [param custom] are applied depends on the value of [param flags]. See [enum EmitFlags].
 The default ParticleProcessMaterial will overwrite [param color] and use the contents of [param custom] as [code](rotation, age, animation, lifetime)[/code].
+[b]Note:[/b] [method emit_particle] is only supported on the Forward+ and Mobile rendering methods, not Compatibility.
 */
 func (self Instance) EmitParticle(xform Transform3D.BasisOrigin, velocity Vector3.XYZ, color Color.RGBA, custom Color.RGBA, flags int) { //gd:GPUParticles3D.emit_particle
 	class(self).EmitParticle(Transform3D.BasisOrigin(xform), Vector3.XYZ(velocity), Color.RGBA(color), Color.RGBA(custom), int64(flags))
@@ -89,6 +91,14 @@ Sets this node's properties to match a given [CPUParticles3D] node.
 */
 func (self Instance) ConvertFromParticles(particles [1]gdclass.Node) { //gd:GPUParticles3D.convert_from_particles
 	class(self).ConvertFromParticles(particles)
+}
+
+/*
+Requests the particles to process for extra process time during a single frame.
+Useful for particle playback, if used in combination with [member use_fixed_seed] or by calling [method restart] with parameter [code]keep_seed[/code] set to [code]true[/code].
+*/
+func (self Instance) RequestParticlesProcess(process_time Float.X) { //gd:GPUParticles3D.request_particles_process
+	class(self).RequestParticlesProcess(float64(process_time))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -195,6 +205,22 @@ func (self Instance) Randomness() Float.X {
 
 func (self Instance) SetRandomness(value Float.X) {
 	class(self).SetRandomnessRatio(float64(value))
+}
+
+func (self Instance) UseFixedSeed() bool {
+	return bool(class(self).GetUseFixedSeed())
+}
+
+func (self Instance) SetUseFixedSeed(value bool) {
+	class(self).SetUseFixedSeed(value)
+}
+
+func (self Instance) Seed() int {
+	return int(int(class(self).GetSeed()))
+}
+
+func (self Instance) SetSeed(value int) {
+	class(self).SetSeed(int64(value))
 }
 
 func (self Instance) FixedFps() int {
@@ -638,6 +664,44 @@ func (self class) GetInterpToEnd() float64 { //gd:GPUParticles3D.get_interp_to_e
 }
 
 //go:nosplit
+func (self class) SetUseFixedSeed(use_fixed_seed bool) { //gd:GPUParticles3D.set_use_fixed_seed
+	var frame = callframe.New()
+	callframe.Arg(frame, use_fixed_seed)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles3D.Bind_set_use_fixed_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetUseFixedSeed() bool { //gd:GPUParticles3D.get_use_fixed_seed
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles3D.Bind_get_use_fixed_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSeed(seed int64) { //gd:GPUParticles3D.set_seed
+	var frame = callframe.New()
+	callframe.Arg(frame, seed)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles3D.Bind_set_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetSeed() int64 { //gd:GPUParticles3D.get_seed
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles3D.Bind_get_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
 func (self class) SetDrawOrder(order gdclass.GPUParticles3DDrawOrder) { //gd:GPUParticles3D.set_draw_order
 	var frame = callframe.New()
 	callframe.Arg(frame, order)
@@ -724,10 +788,12 @@ func (self class) GetSkin() [1]gdclass.Skin { //gd:GPUParticles3D.get_skin
 /*
 Restarts the particle emission cycle, clearing existing particles. To avoid particles vanishing from the viewport, wait for the [signal finished] signal before calling.
 [b]Note:[/b] The [signal finished] signal is only emitted by [member one_shot] emitters.
+If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
 */
 //go:nosplit
-func (self class) Restart() { //gd:GPUParticles3D.restart
+func (self class) Restart(keep_seed bool) { //gd:GPUParticles3D.restart
 	var frame = callframe.New()
+	callframe.Arg(frame, keep_seed)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles3D.Bind_restart, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -768,6 +834,7 @@ func (self class) GetSubEmitter() Path.ToNode { //gd:GPUParticles3D.get_sub_emit
 /*
 Emits a single particle. Whether [param xform], [param velocity], [param color] and [param custom] are applied depends on the value of [param flags]. See [enum EmitFlags].
 The default ParticleProcessMaterial will overwrite [param color] and use the contents of [param custom] as [code](rotation, age, animation, lifetime)[/code].
+[b]Note:[/b] [method emit_particle] is only supported on the Forward+ and Mobile rendering methods, not Compatibility.
 */
 //go:nosplit
 func (self class) EmitParticle(xform Transform3D.BasisOrigin, velocity Vector3.XYZ, color Color.RGBA, custom Color.RGBA, flags int64) { //gd:GPUParticles3D.emit_particle
@@ -868,6 +935,19 @@ func (self class) GetAmountRatio() float64 { //gd:GPUParticles3D.get_amount_rati
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
+}
+
+/*
+Requests the particles to process for extra process time during a single frame.
+Useful for particle playback, if used in combination with [member use_fixed_seed] or by calling [method restart] with parameter [code]keep_seed[/code] set to [code]true[/code].
+*/
+//go:nosplit
+func (self class) RequestParticlesProcess(process_time float64) { //gd:GPUParticles3D.request_particles_process
+	var frame = callframe.New()
+	callframe.Arg(frame, process_time)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles3D.Bind_request_particles_process, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
 }
 func (self Instance) OnFinished(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), 0)

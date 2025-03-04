@@ -44,6 +44,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 Stores information about mouse, keyboard, and touch gesture input events. This includes information about which modifier keys are pressed, such as [kbd]Shift[/kbd] or [kbd]Alt[/kbd]. See [method Node._input].
+[b]Note:[/b] Modifier keys are considered modifiers only when used in combination with another key. As a result, their corresponding member variables, such as [member ctrl_pressed], will return [code]false[/code] if the key is pressed on its own.
 */
 type Instance [1]gdclass.InputEventWithModifiers
 
@@ -304,7 +305,7 @@ const (
 	/*Key Code mask.*/
 	KeyCodeMask KeyModifierMask = 8388607
 	/*Modifier key mask.*/
-	KeyModifierMaskDefault KeyModifierMask = 532676608
+	KeyModifierMaskDefault KeyModifierMask = 2130706432
 	/*Automatically remapped to [constant KEY_META] on macOS and [constant KEY_CTRL] on other platforms, this mask is never set in the actual events, and should be used for key mapping only.*/
 	KeyMaskCmdOrCtrl KeyModifierMask = 16777216
 	/*Shift key mask.*/

@@ -248,3 +248,16 @@ func Merge(a, b PositionSize) PositionSize { //gd:Rect2.merge
 	new_rect.Size = Vector2.Sub(new_rect.Size, new_rect.Position) // Make relative again.
 	return new_rect
 }
+
+// SupportPoint returns the vertex's position of this rect that's the farthest in the given direction.
+// This point is commonly known as the support point in collision detection algorithms.
+func SupportPoint(rect PositionSize, dir Vector2.XY) Vector2.XY { //gd:Rect2.get_support
+	var support = rect.Position
+	if dir.X > 0.0 {
+		support.X += rect.Size.X
+	}
+	if dir.Y > 0.0 {
+		support.Y += rect.Size.Y
+	}
+	return support
+}

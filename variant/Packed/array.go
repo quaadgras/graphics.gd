@@ -25,7 +25,7 @@ type Array[T Type] GenericArray.Contains[T]
 func New[T Type](values ...T) Array[T] { return (Array[T])(GenericArray.New(values...)) }
 
 // Index returns the element at the given index.
-func (array Array[T]) Index(idx int) T { return (GenericArray.Contains[T])(array).Index(idx) }
+func (array Array[T]) Index(idx int) T { return (GenericArray.Contains[T])(array).Index(idx) } //gd:PackedArray.get
 
 // Iter returns an iterator for the array.
 func (array Array[T]) Iter() iter.Seq2[int, T] {

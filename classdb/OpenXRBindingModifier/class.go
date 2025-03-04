@@ -1,0 +1,200 @@
+// Package OpenXRBindingModifier provides methods for working with OpenXRBindingModifier object instances.
+package OpenXRBindingModifier
+
+import "unsafe"
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+
+var _ Object.ID
+var _ RefCounted.Instance
+var _ unsafe.Pointer
+var _ reflect.Type
+var _ callframe.Frame
+var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
+var _ Callable.Function
+var _ Dictionary.Any
+var _ RID.Any
+var _ String.Readable
+var _ Path.ToNode
+var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
+var _ = slices.Delete[[]struct{}, struct{}]
+
+/*
+Binding modifier base class. Subclasses implement various modifiers that alter how an OpenXR runtime processes inputs.
+
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=OpenXRBindingModifier)
+*/
+type Instance [1]gdclass.OpenXRBindingModifier
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
+type Any interface {
+	gd.IsClass
+	AsOpenXRBindingModifier() Instance
+}
+type Interface interface {
+	//Return the description of this class that is used for the title bar of the binding modifier editor.
+	GetDescription() string
+	//Returns the data that is sent to OpenXR when submitting the suggested interacting bindings this modifier is a part of.
+	//[b]Note:[/b] This must be data compatible with a [code]XrBindingModificationBaseHeaderKHR[/code] structure.
+	GetIpModification() []byte
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation = implementation
+
+type implementation struct{}
+
+func (self implementation) GetDescription() (_ string)    { return }
+func (self implementation) GetIpModification() (_ []byte) { return }
+
+/*
+Return the description of this class that is used for the title bar of the binding modifier editor.
+*/
+func (Instance) _get_description(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Returns the data that is sent to OpenXR when submitting the suggested interacting bindings this modifier is a part of.
+[b]Note:[/b] This must be data compatible with a [code]XrBindingModificationBaseHeaderKHR[/code] structure.
+*/
+func (Instance) _get_ip_modification(impl func(ptr unsafe.Pointer) []byte) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](Packed.Bytes(Packed.New(ret...)))))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
+type class [1]gdclass.OpenXRBindingModifier
+
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func New() Instance {
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRBindingModifier"))
+	casted := Instance{*(*gdclass.OpenXRBindingModifier)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
+}
+
+/*
+Return the description of this class that is used for the title bar of the binding modifier editor.
+*/
+func (class) _get_description(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalString(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Returns the data that is sent to OpenXR when submitting the suggested interacting bindings this modifier is a part of.
+[b]Note:[/b] This must be data compatible with a [code]XrBindingModificationBaseHeaderKHR[/code] structure.
+*/
+func (class) _get_ip_modification(impl func(ptr unsafe.Pointer) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+func (self class) AsOpenXRBindingModifier() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsOpenXRBindingModifier() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsResource() Resource.Advanced {
+	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsResource() Resource.Instance {
+	return *((*Resource.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+
+func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_get_description":
+		return reflect.ValueOf(self._get_description)
+	case "_get_ip_modification":
+		return reflect.ValueOf(self._get_ip_modification)
+	default:
+		return gd.VirtualByName(Resource.Advanced(self.AsResource()), name)
+	}
+}
+
+func (self Instance) Virtual(name string) reflect.Value {
+	switch name {
+	case "_get_description":
+		return reflect.ValueOf(self._get_description)
+	case "_get_ip_modification":
+		return reflect.ValueOf(self._get_ip_modification)
+	default:
+		return gd.VirtualByName(Resource.Instance(self.AsResource()), name)
+	}
+}
+func init() {
+	gdclass.Register("OpenXRBindingModifier", func(ptr gd.Object) any {
+		return [1]gdclass.OpenXRBindingModifier{*(*gdclass.OpenXRBindingModifier)(unsafe.Pointer(&ptr))}
+	})
+}

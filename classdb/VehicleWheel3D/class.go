@@ -22,6 +22,7 @@ import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -68,6 +69,20 @@ Returns [code]null[/code] if the wheel is not in contact with a surface, or the 
 */
 func (self Instance) GetContactBody() [1]gdclass.Node3D { //gd:VehicleWheel3D.get_contact_body
 	return [1]gdclass.Node3D(class(self).GetContactBody())
+}
+
+/*
+Returns the point of the suspension's collision in world space if the wheel is in contact. If the wheel isn't in contact with anything, returns the maximum point of the wheel's ray cast in world space, which is defined by [code]wheel_rest_length + wheel_radius[/code].
+*/
+func (self Instance) GetContactPoint() Vector3.XYZ { //gd:VehicleWheel3D.get_contact_point
+	return Vector3.XYZ(class(self).GetContactPoint())
+}
+
+/*
+Returns the normal of the suspension's collision in world space if the wheel is in contact. If the wheel isn't in contact with anything, returns a vector pointing directly along the suspension axis toward the vehicle in world space.
+*/
+func (self Instance) GetContactNormal() Vector3.XYZ { //gd:VehicleWheel3D.get_contact_normal
+	return Vector3.XYZ(class(self).GetContactNormal())
 }
 
 /*
@@ -427,6 +442,32 @@ func (self class) GetContactBody() [1]gdclass.Node3D { //gd:VehicleWheel3D.get_c
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_contact_body, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node3D{gd.PointerMustAssertInstanceID[gdclass.Node3D](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the point of the suspension's collision in world space if the wheel is in contact. If the wheel isn't in contact with anything, returns the maximum point of the wheel's ray cast in world space, which is defined by [code]wheel_rest_length + wheel_radius[/code].
+*/
+//go:nosplit
+func (self class) GetContactPoint() Vector3.XYZ { //gd:VehicleWheel3D.get_contact_point
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_contact_point, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the normal of the suspension's collision in world space if the wheel is in contact. If the wheel isn't in contact with anything, returns a vector pointing directly along the suspension axis toward the vehicle in world space.
+*/
+//go:nosplit
+func (self class) GetContactNormal() Vector3.XYZ { //gd:VehicleWheel3D.get_contact_normal
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_contact_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

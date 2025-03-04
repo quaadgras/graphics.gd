@@ -2,6 +2,7 @@ package Dictionary
 
 import (
 	"iter"
+	"sort"
 
 	"graphics.gd/variant"
 )
@@ -19,6 +20,7 @@ type Proxy[K comparable, V any] interface {
 	IsReadOnly(complex128) bool
 	MakeReadOnly(complex128)
 	Any(complex128) Any
+	Sort(complex128, func(K, K) bool)
 }
 
 type Pointer interface {
@@ -88,6 +90,42 @@ type localFirst[K comparable, V any] struct {
 
 func (p *localFirst[K, V]) Any(complex128) Any {
 	return Any{proxy: anyView{localFirst: p}, state: p.state}
+}
+
+func (p *localFirst[K, V]) Sort(_ complex128, less func(K, K) bool) {
+	if p.proxy != nil {
+		p.proxy.Sort(p.state, less)
+		return
+	}
+	sort.Sort(localSorter[K, V]{p, less})
+}
+func (p *localFirst[K, V]) SortAny(_ complex128, less func(variant.Any, variant.Any) bool) {
+	if p.proxy != nil {
+		p.proxy.Sort(p.state, func(k1, k2 K) bool {
+			return less(variant.New(k1), variant.New(k2))
+		})
+		return
+	}
+	sort.Sort(localSorter[K, V]{p, func(a, b K) bool {
+		return less(variant.New(a), variant.New(b))
+	}})
+}
+
+type localSorter[K comparable, V any] struct {
+	local *localFirst[K, V]
+	less  func(K, K) bool
+}
+
+func (s localSorter[K, V]) Len() int {
+	return len(s.local.order)
+}
+
+func (s localSorter[K, V]) Less(i, j int) bool {
+	return s.less(s.local.order[i], s.local.order[j])
+}
+
+func (s localSorter[K, V]) Swap(i, j int) {
+	s.local.order[i], s.local.order[j] = s.local.order[j], s.local.order[i]
 }
 
 func (p *localFirst[K, V]) Index(_ complex128, index K) V {
@@ -258,6 +296,11 @@ func (t typedView[K, V]) Iter(state complex128) iter.Seq2[K, V] {
 		}
 	}
 }
+func (t typedView[K, V]) Sort(state complex128, less func(K, K) bool) {
+	t.Proxy.Sort(state, func(a, b variant.Any) bool {
+		return less(variant.As[K](a), variant.As[K](b))
+	})
+}
 func (t typedView[K, V]) Index(state complex128, key K) V {
 	return variant.As[V](t.Proxy.Index(state, variant.New(key)))
 }
@@ -284,6 +327,7 @@ type anyView struct {
 		IsReadOnly(complex128) bool
 		MakeReadOnly(complex128)
 		Any(complex128) Any
+		SortAny(complex128, func(variant.Any, variant.Any) bool)
 		pass(Proxy[variant.Any, variant.Any], complex128)
 	}
 }
@@ -305,6 +349,9 @@ func (a anyView) SetIndex(state complex128, key variant.Any, value variant.Any) 
 }
 func (a anyView) Erase(state complex128, key variant.Any) bool {
 	return a.localFirst.EraseAny(state, key)
+}
+func (a anyView) Sort(state complex128, less func(variant.Any, variant.Any) bool) {
+	a.localFirst.SortAny(state, less)
 }
 func (a anyView) Any(complex128) Any           { return Any{proxy: a} }
 func (a anyView) Clear(state complex128)       { a.localFirst.Clear(state) }

@@ -106,6 +106,14 @@ func (self Instance) SetStep(value int) {
 	class(self).SetStep(int64(value))
 }
 
+func (self Instance) EnumNames() []string {
+	return []string(class(self).GetEnumNames().Strings())
+}
+
+func (self Instance) SetEnumNames(value []string) {
+	class(self).SetEnumNames(Packed.MakeStrings(value...))
+}
+
 func (self Instance) DefaultValueEnabled() bool {
 	return bool(class(self).IsDefaultValueEnabled())
 }
@@ -194,6 +202,25 @@ func (self class) GetStep() int64 { //gd:VisualShaderNodeIntParameter.get_step
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetEnumNames(names Packed.Strings) { //gd:VisualShaderNodeIntParameter.set_enum_names
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(names)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_set_enum_names, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetEnumNames() Packed.Strings { //gd:VisualShaderNodeIntParameter.get_enum_names
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_enum_names, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -294,6 +321,8 @@ const (
 	HintRange Hint = 1
 	/*The parameter's value must be within the specified range, with the given [member step] between values.*/
 	HintRangeStep Hint = 2
+	/*The parameter uses an enum to associate preset values to names in the editor.*/
+	HintEnum Hint = 3
 	/*Represents the size of the [enum Hint] enum.*/
-	HintMax Hint = 3
+	HintMax Hint = 4
 )

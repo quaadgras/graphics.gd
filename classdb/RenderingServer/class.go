@@ -108,6 +108,15 @@ func TextureProxyCreate(base RID.TextureProxy) RID.TextureProxy { //gd:Rendering
 }
 
 /*
+Creates a texture based on a native handle that was created outside of Godot's renderer.
+[b]Note:[/b] If using only the rendering device renderer, it's recommend to use [method RenderingDevice.texture_create_from_extension] together with [method RenderingServer.texture_rd_create], rather than this method. It will give you much more control over the texture's format and usage.
+*/
+func TextureCreateFromNativeHandle(atype gdclass.RenderingServerTextureType, format gdclass.ImageFormat, native_handle int, width int, height int, depth int) RID.Texture { //gd:RenderingServer.texture_create_from_native_handle
+	once.Do(singleton)
+	return RID.Texture(class(self).TextureCreateFromNativeHandle(atype, format, int64(native_handle), int64(width), int64(height), int64(depth), int64(1), 0))
+}
+
+/*
 Updates the texture specified by the [param texture] [RID] with the data in [param image]. A [param layer] must also be specified, which should be [code]0[/code] when updating a single-layer texture ([Texture2D]).
 [b]Note:[/b] The [param image] must have the same width, height and format as the current [param texture] data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height or format, use [method texture_replace] instead.
 */
@@ -134,7 +143,7 @@ func TextureProxyUpdate(texture RID.TextureProxy, proxy_to RID.Texture) { //gd:R
 }
 
 /*
-Creates a placeholder for a 2-dimensional layered texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]texture_2d_layered_*[/code] RenderingServer functions, although it does nothing when used. See also [method texture_2d_layered_placeholder_create]
+Creates a placeholder for a 2-dimensional layered texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]texture_2d_layered_*[/code] RenderingServer functions, although it does nothing when used. See also [method texture_2d_layered_placeholder_create].
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent resource is [PlaceholderTexture2D].
 */
@@ -164,7 +173,7 @@ func Texture3dPlaceholderCreate() RID.Texture3D { //gd:RenderingServer.texture_3
 
 /*
 Returns an [Image] instance from the given [param texture] [RID].
-Example of getting the test texture from [method get_test_texture] and applying it to a [Sprite2D] node:
+[b]Example:[/b] Get the test texture from [method get_test_texture] and apply it to a [Sprite2D] node:
 [codeblock]
 var texture_rid = RenderingServer.get_test_texture()
 var texture = ImageTexture.create_from_image(RenderingServer.texture_2d_get(texture_rid))
@@ -515,6 +524,14 @@ func MeshGetCustomAabb(mesh RID.Mesh) AABB.PositionSize { //gd:RenderingServer.m
 }
 
 /*
+Removes the surface at the given index from the Mesh, shifting surfaces with higher index down by one.
+*/
+func MeshSurfaceRemove(mesh RID.Mesh, surface int) { //gd:RenderingServer.mesh_surface_remove
+	once.Do(singleton)
+	class(self).MeshSurfaceRemove(RID.Any(mesh), int64(surface))
+}
+
+/*
 Removes all surfaces from a mesh.
 */
 func MeshClear(mesh RID.Mesh) { //gd:RenderingServer.mesh_clear
@@ -550,7 +567,7 @@ func MultimeshCreate() RID.MultiMesh { //gd:RenderingServer.multimesh_create
 }
 func MultimeshAllocateData(multimesh RID.MultiMesh, instances int, transform_format gdclass.RenderingServerMultimeshTransformFormat) { //gd:RenderingServer.multimesh_allocate_data
 	once.Do(singleton)
-	class(self).MultimeshAllocateData(RID.Any(multimesh), int64(instances), transform_format, false, false)
+	class(self).MultimeshAllocateData(RID.Any(multimesh), int64(instances), transform_format, false, false, false)
 }
 
 /*
@@ -698,10 +715,49 @@ The per-instance data size and expected data order is:
   - Position + Vertex color + Custom data: 20 floats (12 floats for Transform3D, 4 floats for Color, 4 floats of custom data)
 
 [/codeblock]
+Instance transforms are in row-major order. Specifically:
+- For [Transform2D] the float-order is: [code](x.x, y.x, padding_float, origin.x, x.y, y.y, padding_float, origin.y)[/code].
+- For [Transform3D] the float-order is: [code](basis.x.x, basis.y.x, basis.z.x, origin.x, basis.x.y, basis.y.y, basis.z.y, origin.y, basis.x.z, basis.y.z, basis.z.z, origin.z)[/code].
 */
 func MultimeshSetBuffer(multimesh RID.MultiMesh, buffer []float32) { //gd:RenderingServer.multimesh_set_buffer
 	once.Do(singleton)
 	class(self).MultimeshSetBuffer(RID.Any(multimesh), Packed.New(buffer...))
+}
+
+/*
+Returns the [RenderingDevice] [RID] handle of the [MultiMesh] command buffer. This [RID] is only valid if [code]use_indirect[/code] is set to [code]true[/code] when allocating data through [method multimesh_allocate_data]. It can be used to directly modify the instance count via buffer.
+The data structure is dependent on both how many surfaces the mesh contains and whether it is indexed or not, the buffer has 5 integers in it, with the last unused if the mesh is not indexed.
+Each of the values in the buffer correspond to these options:
+[codeblock lang=text]
+Indexed:
+
+	0 - indexCount;
+	1 - instanceCount;
+	2 - firstIndex;
+	3 - vertexOffset;
+	4 - firstInstance;
+
+Non Indexed:
+
+	0 - vertexCount;
+	1 - instanceCount;
+	2 - firstVertex;
+	3 - firstInstance;
+	4 - unused;
+
+[/codeblock]
+*/
+func MultimeshGetCommandBufferRdRid(multimesh RID.MultiMesh) RID.Buffer { //gd:RenderingServer.multimesh_get_command_buffer_rd_rid
+	once.Do(singleton)
+	return RID.Buffer(class(self).MultimeshGetCommandBufferRdRid(RID.Any(multimesh)))
+}
+
+/*
+Returns the [RenderingDevice] [RID] handle of the [MultiMesh], which can be used as any other buffer on the Rendering Device.
+*/
+func MultimeshGetBufferRdRid(multimesh RID.MultiMesh) RID.Buffer { //gd:RenderingServer.multimesh_get_buffer_rd_rid
+	once.Do(singleton)
+	return RID.Buffer(class(self).MultimeshGetBufferRdRid(RID.Any(multimesh)))
 }
 
 /*
@@ -711,6 +767,41 @@ Returns the MultiMesh data (such as instance transforms, colors, etc.). See [met
 func MultimeshGetBuffer(multimesh RID.MultiMesh) []float32 { //gd:RenderingServer.multimesh_get_buffer
 	once.Do(singleton)
 	return []float32(slices.Collect(class(self).MultimeshGetBuffer(RID.Any(multimesh)).Values()))
+}
+
+/*
+Alternative version of [method multimesh_set_buffer] for use with physics interpolation.
+Takes both an array of current data and an array of data for the previous physics tick.
+*/
+func MultimeshSetBufferInterpolated(multimesh RID.MultiMesh, buffer []float32, buffer_previous []float32) { //gd:RenderingServer.multimesh_set_buffer_interpolated
+	once.Do(singleton)
+	class(self).MultimeshSetBufferInterpolated(RID.Any(multimesh), Packed.New(buffer...), Packed.New(buffer_previous...))
+}
+
+/*
+Turns on and off physics interpolation for this MultiMesh resource.
+*/
+func MultimeshSetPhysicsInterpolated(multimesh RID.MultiMesh, interpolated bool) { //gd:RenderingServer.multimesh_set_physics_interpolated
+	once.Do(singleton)
+	class(self).MultimeshSetPhysicsInterpolated(RID.Any(multimesh), interpolated)
+}
+
+/*
+Sets the physics interpolation quality for the [MultiMesh].
+A value of [constant MULTIMESH_INTERP_QUALITY_FAST] gives fast but low quality interpolation, a value of [constant MULTIMESH_INTERP_QUALITY_HIGH] gives slower but higher quality interpolation.
+*/
+func MultimeshSetPhysicsInterpolationQuality(multimesh RID.MultiMesh, quality gdclass.RenderingServerMultimeshPhysicsInterpolationQuality) { //gd:RenderingServer.multimesh_set_physics_interpolation_quality
+	once.Do(singleton)
+	class(self).MultimeshSetPhysicsInterpolationQuality(RID.Any(multimesh), quality)
+}
+
+/*
+Prevents physics interpolation for the specified instance during the current physics tick.
+This is useful when moving an instance to a new location, to give an instantaneous change rather than interpolation from the previous location.
+*/
+func MultimeshInstanceResetPhysicsInterpolation(multimesh RID.MultiMesh, index int) { //gd:RenderingServer.multimesh_instance_reset_physics_interpolation
+	once.Do(singleton)
+	class(self).MultimeshInstanceResetPhysicsInterpolation(RID.Any(multimesh), int64(index))
 }
 
 /*
@@ -867,6 +958,14 @@ func LightSetReverseCullFaceMode(light RID.Light, enabled bool) { //gd:Rendering
 }
 
 /*
+Sets the shadow caster mask for this 3D light. Shadows will only be cast using objects in the selected layers. Equivalent to [member Light3D.shadow_caster_mask].
+*/
+func LightSetShadowCasterMask(light RID.Light, mask int) { //gd:RenderingServer.light_set_shadow_caster_mask
+	once.Do(singleton)
+	class(self).LightSetShadowCasterMask(RID.Any(light), int64(mask))
+}
+
+/*
 Sets the bake mode to use for the specified 3D light. Equivalent to [member Light3D.light_bake_mode].
 */
 func LightSetBakeMode(light RID.Light, bake_mode gdclass.RenderingServerLightBakeMode) { //gd:RenderingServer.light_set_bake_mode
@@ -923,6 +1022,14 @@ func LightProjectorsSetFilter(filter gdclass.RenderingServerLightProjectorFilter
 }
 
 /*
+Toggles whether a bicubic filter should be used when lightmaps are sampled. This smoothens their appearance at a performance cost.
+*/
+func LightmapsSetBicubicFilter(enable bool) { //gd:RenderingServer.lightmaps_set_bicubic_filter
+	once.Do(singleton)
+	class(self).LightmapsSetBicubicFilter(enable)
+}
+
+/*
 Sets the filter quality for omni and spot light shadows in 3D. See also [member ProjectSettings.rendering/lights_and_shadows/positional_shadow/soft_shadow_filter_quality]. This parameter is global and cannot be set on a per-viewport basis.
 */
 func PositionalSoftShadowFilterSetQuality(quality gdclass.RenderingServerShadowQuality) { //gd:RenderingServer.positional_soft_shadow_filter_set_quality
@@ -971,6 +1078,14 @@ Sets the intensity of the reflection probe. Intensity modulates the strength of 
 func ReflectionProbeSetIntensity(probe RID.ReflectionProbe, intensity Float.X) { //gd:RenderingServer.reflection_probe_set_intensity
 	once.Do(singleton)
 	class(self).ReflectionProbeSetIntensity(RID.Any(probe), float64(intensity))
+}
+
+/*
+Sets the distance in meters over which a probe blends into the scene.
+*/
+func ReflectionProbeSetBlendDistance(probe RID.ReflectionProbe, blend_distance Float.X) { //gd:RenderingServer.reflection_probe_set_blend_distance
+	once.Do(singleton)
+	class(self).ReflectionProbeSetBlendDistance(RID.Any(probe), float64(blend_distance))
 }
 
 /*
@@ -1365,7 +1480,7 @@ func ParticlesSetMode(particles RID.Particles, mode gdclass.RenderingServerParti
 }
 
 /*
-If [code]true[/code], particles will emit over time. Setting to false does not reset the particles, but only stops their emission. Equivalent to [member GPUParticles3D.emitting].
+If [code]true[/code], particles will emit over time. Setting to [code]false[/code] does not reset the particles, but only stops their emission. Equivalent to [member GPUParticles3D.emitting].
 */
 func ParticlesSetEmitting(particles RID.Particles, emitting bool) { //gd:RenderingServer.particles_set_emitting
 	once.Do(singleton)
@@ -1418,6 +1533,14 @@ Sets the preprocess time for the particles' animation. This lets you delay start
 func ParticlesSetPreProcessTime(particles RID.Particles, time Float.X) { //gd:RenderingServer.particles_set_pre_process_time
 	once.Do(singleton)
 	class(self).ParticlesSetPreProcessTime(RID.Any(particles), float64(time))
+}
+
+/*
+Requests particles to process for extra process time during a single frame.
+*/
+func ParticlesRequestProcessTime(particles RID.Particles, time Float.X) { //gd:RenderingServer.particles_request_process_time
+	once.Do(singleton)
+	class(self).ParticlesRequestProcessTime(RID.Any(particles), float64(time))
 }
 
 /*
@@ -1691,6 +1814,14 @@ func ParticlesCollisionSetHeightFieldResolution(particles_collision RID.Particle
 }
 
 /*
+Sets the heightfield [param mask] for the 3D GPU particles heightfield collision specified by the [param particles_collision] RID. Equivalent to [member GPUParticlesCollisionHeightField3D.heightfield_mask].
+*/
+func ParticlesCollisionSetHeightFieldMask(particles_collision RID.ParticlesCollision, mask int) { //gd:RenderingServer.particles_collision_set_height_field_mask
+	once.Do(singleton)
+	class(self).ParticlesCollisionSetHeightFieldMask(RID.Any(particles_collision), int64(mask))
+}
+
+/*
 Creates a new fog volume and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]fog_volume_*[/code] RenderingServer functions.
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent node is [FogVolume].
@@ -1727,7 +1858,7 @@ func FogVolumeSetMaterial(fog_volume RID.FogVolume, material RID.Material) { //g
 /*
 Creates a new 3D visibility notifier object and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]visibility_notifier_*[/code] RenderingServer functions.
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
-To place in a scene, attach this mesh to an instance using [method instance_set_base] using the returned RID.
+To place in a scene, attach this notifier to an instance using [method instance_set_base] using the returned RID.
 [b]Note:[/b] The equivalent node is [VisibleOnScreenNotifier3D].
 */
 func VisibilityNotifierCreate() RID.VisibilityNotifier { //gd:RenderingServer.visibility_notifier_create
@@ -1888,13 +2019,12 @@ func ViewportSetParentViewport(viewport RID.Viewport, parent_viewport RID.Viewpo
 /*
 Copies the viewport to a region of the screen specified by [param rect]. If [method viewport_set_render_direct_to_screen] is [code]true[/code], then the viewport does not use a framebuffer and the contents of the viewport are rendered directly to screen. However, note that the root viewport is drawn last, therefore it will draw over the screen. Accordingly, you must set the root viewport to an area that does not cover the area that you have attached this viewport to.
 For example, you can set the root viewport to not render at all with the following code:
-FIXME: The method seems to be non-existent.
 [codeblocks]
 [gdscript]
 func _ready():
 
-	get_viewport().set_attach_to_screen_rect(Rect2())
-	$Viewport.set_attach_to_screen_rect(Rect2(0, 0, 600, 600))
+	RenderingServer.viewport_attach_to_screen(get_viewport().get_viewport_rid(), Rect2())
+	RenderingServer.viewport_attach_to_screen($Viewport.get_viewport_rid(), Rect2(0, 0, 600, 600))
 
 [/gdscript]
 [/codeblocks]
@@ -1953,6 +2083,17 @@ Affects the final texture sharpness by reading from a lower or higher mipmap (al
 func ViewportSetTextureMipmapBias(viewport RID.Viewport, mipmap_bias Float.X) { //gd:RenderingServer.viewport_set_texture_mipmap_bias
 	once.Do(singleton)
 	class(self).ViewportSetTextureMipmapBias(RID.Any(viewport), float64(mipmap_bias))
+}
+
+/*
+Sets the maximum number of samples to take when using anisotropic filtering on textures (as a power of two). A higher sample count will result in sharper textures at oblique angles, but is more expensive to compute. A value of [code]0[/code] forcibly disables anisotropic filtering, even on materials where it is enabled.
+The anisotropic filtering level also affects decals and light projectors if they are configured to use anisotropic filtering. See [member ProjectSettings.rendering/textures/decals/filter] and [member ProjectSettings.rendering/textures/light_projectors/filter].
+[b]Note:[/b] In 3D, for this setting to have an effect, set [member BaseMaterial3D.texture_filter] to [constant BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC] or [constant BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS_ANISOTROPIC] on materials.
+[b]Note:[/b] In 2D, for this setting to have an effect, set [member CanvasItem.texture_filter] to [constant CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC] or [constant CanvasItem.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS_ANISOTROPIC] on the [CanvasItem] node displaying the texture (or in [CanvasTexture]). However, anisotropic filtering is rarely useful in 2D, so only enable it for textures in 2D if it makes a meaningful visual difference.
+*/
+func ViewportSetAnisotropicFilteringLevel(viewport RID.Viewport, anisotropic_filtering_level gdclass.RenderingServerViewportAnisotropicFiltering) { //gd:RenderingServer.viewport_set_anisotropic_filtering_level
+	once.Do(singleton)
+	class(self).ViewportSetAnisotropicFilteringLevel(RID.Any(viewport), anisotropic_filtering_level)
 }
 
 /*
@@ -2143,7 +2284,7 @@ func ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport RID.Viewport, 
 }
 
 /*
-Sets the multisample anti-aliasing mode for 3D on the specified [param viewport] RID. See [enum ViewportMSAA] for options.
+Sets the multisample antialiasing mode for 3D on the specified [param viewport] RID. See [enum ViewportMSAA] for options. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/msaa_3d] or [member Viewport.msaa_3d].
 */
 func ViewportSetMsaa3d(viewport RID.Viewport, msaa gdclass.RenderingServerViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_3d
 	once.Do(singleton)
@@ -2151,7 +2292,7 @@ func ViewportSetMsaa3d(viewport RID.Viewport, msaa gdclass.RenderingServerViewpo
 }
 
 /*
-Sets the multisample anti-aliasing mode for 2D/Canvas on the specified [param viewport] RID. See [enum ViewportMSAA] for options.
+Sets the multisample antialiasing mode for 2D/Canvas on the specified [param viewport] RID. See [enum ViewportMSAA] for options. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/msaa_2d] or [member Viewport.msaa_2d].
 */
 func ViewportSetMsaa2d(viewport RID.Viewport, msaa gdclass.RenderingServerViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_2d
 	once.Do(singleton)
@@ -2160,7 +2301,7 @@ func ViewportSetMsaa2d(viewport RID.Viewport, msaa gdclass.RenderingServerViewpo
 
 /*
 If [code]true[/code], 2D rendering will use a high dynamic range (HDR) format framebuffer matching the bit depth of the 3D framebuffer. When using the Forward+ renderer this will be an [code]RGBA16[/code] framebuffer, while when using the Mobile renderer it will be an [code]RGB10_A2[/code] framebuffer. Additionally, 2D rendering will take place in linear color space and will be converted to sRGB space immediately before blitting to the screen (if the Viewport is attached to the screen). Practically speaking, this means that the end result of the Viewport will not be clamped into the [code]0-1[/code] range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients. This setting has the same effect as [member Viewport.use_hdr_2d].
-[b]Note:[/b] This setting will have no effect when using the GL Compatibility renderer as the GL Compatibility renderer always renders in low dynamic range for performance reasons.
+[b]Note:[/b] This setting will have no effect when using the Compatibility renderer, which always renders in low dynamic range for performance reasons.
 */
 func ViewportSetUseHdr2d(viewport RID.Viewport, enabled bool) { //gd:RenderingServer.viewport_set_use_hdr_2d
 	once.Do(singleton)
@@ -2168,7 +2309,7 @@ func ViewportSetUseHdr2d(viewport RID.Viewport, enabled bool) { //gd:RenderingSe
 }
 
 /*
-Sets the viewport's screen-space antialiasing mode.
+Sets the viewport's screen-space antialiasing mode. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/screen_space_aa] or [member Viewport.screen_space_aa].
 */
 func ViewportSetScreenSpaceAa(viewport RID.Viewport, mode gdclass.RenderingServerViewportScreenSpaceAA) { //gd:RenderingServer.viewport_set_screen_space_aa
 	once.Do(singleton)
@@ -2176,7 +2317,7 @@ func ViewportSetScreenSpaceAa(viewport RID.Viewport, mode gdclass.RenderingServe
 }
 
 /*
-If [code]true[/code], use Temporal Anti-Aliasing. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/use_taa].
+If [code]true[/code], use temporal antialiasing. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/use_taa] or [member Viewport.use_taa].
 */
 func ViewportSetUseTaa(viewport RID.Viewport, enable bool) { //gd:RenderingServer.viewport_set_use_taa
 	once.Do(singleton)
@@ -2184,7 +2325,7 @@ func ViewportSetUseTaa(viewport RID.Viewport, enable bool) { //gd:RenderingServe
 }
 
 /*
-If [code]true[/code], enables debanding on the specified viewport. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/use_debanding].
+If [code]true[/code], enables debanding on the specified viewport. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/use_debanding] or [member Viewport.use_debanding].
 */
 func ViewportSetUseDebanding(viewport RID.Viewport, enable bool) { //gd:RenderingServer.viewport_set_use_debanding
 	once.Do(singleton)
@@ -2264,7 +2405,7 @@ func ViewportGetMeasuredRenderTimeCpu(viewport RID.Viewport) Float.X { //gd:Rend
 }
 
 /*
-Returns the GPU time taken to render the last frame in milliseconds. To get a complete readout of GPU time spent to render the scene, sum the render times of all viewports that are drawn every frame. Unlike [method Engine.get_frames_per_second], this method accurately reflects GPU utilization even if framerate is capped via V-Sync or [member Engine.max_fps]. See also [method viewport_get_measured_render_time_gpu].
+Returns the GPU time taken to render the last frame in milliseconds. To get a complete readout of GPU time spent to render the scene, sum the render times of all viewports that are drawn every frame. Unlike [method Engine.get_frames_per_second], this method accurately reflects GPU utilization even if framerate is capped via V-Sync or [member Engine.max_fps]. See also [method viewport_get_measured_render_time_cpu].
 [b]Note:[/b] Requires measurements to be enabled on the specified [param viewport] using [method viewport_set_measure_render_time]. Otherwise, this method returns [code]0.0[/code].
 [b]Note:[/b] When GPU utilization is low enough during a certain period of time, GPUs will decrease their power state (which in turn decreases core and memory clock speeds). This can cause the reported GPU time to increase if GPU utilization is kept low enough by a framerate cap (compared to what it would be at the GPU's highest power state). Keep this in mind when benchmarking using [method viewport_get_measured_render_time_gpu]. This behavior can be overridden in the graphics driver settings at the cost of higher power usage.
 */
@@ -2407,6 +2548,14 @@ Sets the environment's background mode. Equivalent to [member Environment.backgr
 func EnvironmentSetBackground(env RID.Environment, bg gdclass.RenderingServerEnvironmentBG) { //gd:RenderingServer.environment_set_background
 	once.Do(singleton)
 	class(self).EnvironmentSetBackground(RID.Any(env), bg)
+}
+
+/*
+Sets the camera ID to be used as environment background.
+*/
+func EnvironmentSetCameraId(env RID.Environment, id int) { //gd:RenderingServer.environment_set_camera_id
+	once.Do(singleton)
+	class(self).EnvironmentSetCameraId(RID.Any(env), int64(id))
 }
 
 /*
@@ -2798,6 +2947,23 @@ func InstanceSetTransform(instance RID.VisualInstance, transform Transform3D.Bas
 }
 
 /*
+Turns on and off physics interpolation for the instance.
+*/
+func InstanceSetInterpolated(instance RID.VisualInstance, interpolated bool) { //gd:RenderingServer.instance_set_interpolated
+	once.Do(singleton)
+	class(self).InstanceSetInterpolated(RID.Any(instance), interpolated)
+}
+
+/*
+Prevents physics interpolation for the current physics tick.
+This is useful when moving an instance to a new location, to give an instantaneous change rather than interpolation from the previous location.
+*/
+func InstanceResetPhysicsInterpolation(instance RID.VisualInstance) { //gd:RenderingServer.instance_reset_physics_interpolation
+	once.Do(singleton)
+	class(self).InstanceResetPhysicsInterpolation(RID.Any(instance))
+}
+
+/*
 Attaches a unique Object ID to instance. Object ID must be attached to instance for proper culling with [method instances_cull_aabb], [method instances_cull_convex], and [method instances_cull_ray].
 */
 func InstanceAttachObjectInstanceId(instance RID.VisualInstance, id int) { //gd:RenderingServer.instance_attach_object_instance_id
@@ -3015,7 +3181,8 @@ func CanvasCreate() RID.Canvas { //gd:RenderingServer.canvas_create
 }
 
 /*
-A copy of the canvas item will be drawn with a local offset of the mirroring [Vector2].
+A copy of the canvas item will be drawn with a local offset of the [param mirroring].
+[b]Note:[/b] This is equivalent to calling [method canvas_set_item_repeat] like [code]canvas_set_item_repeat(item, mirroring, 1)[/code], with an additional check ensuring [param canvas] is a parent of [param item].
 */
 func CanvasSetItemMirroring(canvas RID.Canvas, item RID.CanvasItem, mirroring Vector2.XY) { //gd:RenderingServer.canvas_set_item_mirroring
 	once.Do(singleton)
@@ -3315,6 +3482,7 @@ func CanvasItemAddPrimitive(item RID.CanvasItem, points []Vector2.XY, colors []C
 
 /*
 Draws a 2D polygon on the [CanvasItem] pointed to by the [param item] [RID]. If you need more flexibility (such as being able to use bones), use [method canvas_item_add_triangle_array] instead. See also [method CanvasItem.draw_polygon].
+[b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method CanvasItem.draw_mesh], [method CanvasItem.draw_multimesh], or [method canvas_item_add_triangle_array].
 */
 func CanvasItemAddPolygon(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA) { //gd:RenderingServer.canvas_item_add_polygon
 	once.Do(singleton)
@@ -3363,7 +3531,7 @@ func CanvasItemAddSetTransform(item RID.CanvasItem, transform Transform2D.Origin
 }
 
 /*
-If [param ignore] is [code]true[/code], ignore clipping on items drawn with this canvas item until this is called again with [param ignore] set to false.
+If [param ignore] is [code]true[/code], ignore clipping on items drawn with this canvas item until this is called again with [param ignore] set to [code]false[/code].
 */
 func CanvasItemAddClipIgnore(item RID.CanvasItem, ignore bool) { //gd:RenderingServer.canvas_item_add_clip_ignore
 	once.Do(singleton)
@@ -3411,6 +3579,14 @@ func CanvasItemSetCopyToBackbuffer(item RID.CanvasItem, enabled bool, rect Rect2
 }
 
 /*
+Attaches a skeleton to the [CanvasItem]. Removes the previous skeleton.
+*/
+func CanvasItemAttachSkeleton(item RID.CanvasItem, skeleton RID.Skeleton) { //gd:RenderingServer.canvas_item_attach_skeleton
+	once.Do(singleton)
+	class(self).CanvasItemAttachSkeleton(RID.Any(item), RID.Any(skeleton))
+}
+
+/*
 Clears the [CanvasItem] and removes all commands in it.
 */
 func CanvasItemClear(item RID.CanvasItem) { //gd:RenderingServer.canvas_item_clear
@@ -3440,6 +3616,39 @@ Sets if the [CanvasItem] uses its parent's material.
 func CanvasItemSetUseParentMaterial(item RID.CanvasItem, enabled bool) { //gd:RenderingServer.canvas_item_set_use_parent_material
 	once.Do(singleton)
 	class(self).CanvasItemSetUseParentMaterial(RID.Any(item), enabled)
+}
+
+/*
+Sets the per-instance shader uniform on the specified canvas item instance. Equivalent to [method CanvasItem.set_instance_shader_parameter].
+*/
+func CanvasItemSetInstanceShaderParameter(instance RID.CanvasItem, parameter string, value any) { //gd:RenderingServer.canvas_item_set_instance_shader_parameter
+	once.Do(singleton)
+	class(self).CanvasItemSetInstanceShaderParameter(RID.Any(instance), String.Name(String.New(parameter)), variant.New(value))
+}
+
+/*
+Returns the value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [method CanvasItem.get_instance_shader_parameter].
+*/
+func CanvasItemGetInstanceShaderParameter(instance RID.CanvasItem, parameter string) any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter
+	once.Do(singleton)
+	return any(class(self).CanvasItemGetInstanceShaderParameter(RID.Any(instance), String.Name(String.New(parameter))).Interface())
+}
+
+/*
+Returns the default value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [method CanvasItem.get_instance_shader_parameter].
+*/
+func CanvasItemGetInstanceShaderParameterDefaultValue(instance RID.CanvasItem, parameter string) any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_default_value
+	once.Do(singleton)
+	return any(class(self).CanvasItemGetInstanceShaderParameterDefaultValue(RID.Any(instance), String.Name(String.New(parameter))).Interface())
+}
+
+/*
+Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified canvas item instance.
+The returned dictionary is in PropertyInfo format, with the keys [code]name[/code], [code]class_name[/code], [code]type[/code], [code]hint[/code], [code]hint_string[/code], and [code]usage[/code].
+*/
+func CanvasItemGetInstanceShaderParameterList(instance RID.CanvasItem) []PropertyInfo { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_list
+	once.Do(singleton)
+	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(class(self).CanvasItemGetInstanceShaderParameterList(RID.Any(instance)))))
 }
 
 /*
@@ -3650,7 +3859,7 @@ func CanvasLightResetPhysicsInterpolation(light RID.CanvasLight) { //gd:Renderin
 
 /*
 Transforms both the current and previous stored transform for a canvas light.
-This allows transforming a light without creating a "glitch" in the interpolation, which is is particularly useful for large worlds utilizing a shifting origin.
+This allows transforming a light without creating a "glitch" in the interpolation, which is particularly useful for large worlds utilizing a shifting origin.
 */
 func CanvasLightTransformPhysicsInterpolation(light RID.CanvasLight, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_transform_physics_interpolation
 	once.Do(singleton)
@@ -3895,7 +4104,7 @@ func GetVideoAdapterVendor() string { //gd:RenderingServer.get_video_adapter_ven
 
 /*
 Returns the type of the video adapter. Since dedicated graphics cards from a given generation will [i]usually[/i] be significantly faster than integrated graphics made in the same generation, the device type can be used as a basis for automatic graphics settings adjustment. However, this is not always true, so make sure to provide users with a way to manually override graphics settings.
-[b]Note:[/b] When using the OpenGL backend or when running in headless mode, this function always returns [constant RenderingDevice.DEVICE_TYPE_OTHER].
+[b]Note:[/b] When using the OpenGL rendering driver or when running in headless mode, this function always returns [constant RenderingDevice.DEVICE_TYPE_OTHER].
 */
 func GetVideoAdapterType() gdclass.RenderingDeviceDeviceType { //gd:RenderingServer.get_video_adapter_type
 	once.Do(singleton)
@@ -3909,6 +4118,24 @@ Returns the version of the graphics video adapter [i]currently in use[/i] (e.g. 
 func GetVideoAdapterApiVersion() string { //gd:RenderingServer.get_video_adapter_api_version
 	once.Do(singleton)
 	return string(class(self).GetVideoAdapterApiVersion().String())
+}
+
+/*
+Returns the name of the current rendering driver. This can be [code]vulkan[/code], [code]d3d12[/code], [code]metal[/code], [code]opengl3[/code], [code]opengl3_es[/code], or [code]opengl3_angle[/code]. See also [method get_current_rendering_method].
+The rendering driver is determined by [member ProjectSettings.rendering/rendering_device/driver], the [code]--rendering-driver[/code] command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
+*/
+func GetCurrentRenderingDriverName() string { //gd:RenderingServer.get_current_rendering_driver_name
+	once.Do(singleton)
+	return string(class(self).GetCurrentRenderingDriverName().String())
+}
+
+/*
+Returns the name of the current rendering method. This can be [code]forward_plus[/code], [code]mobile[/code], or [code]gl_compatibility[/code]. See also [method get_current_rendering_driver_name].
+The rendering method is determined by [member ProjectSettings.rendering/renderer/rendering_method], the [code]--rendering-method[/code] command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
+*/
+func GetCurrentRenderingMethod() string { //gd:RenderingServer.get_current_rendering_method
+	once.Do(singleton)
+	return string(class(self).GetCurrentRenderingMethod().String())
 }
 
 /*
@@ -3929,7 +4156,7 @@ func GetTestCube() RID.Mesh { //gd:RenderingServer.get_test_cube
 
 /*
 Returns the RID of a 256×256 texture with a testing pattern on it (in [constant Image.FORMAT_RGB8] format). This texture will be created and returned on the first call to [method get_test_texture], then it will be cached for subsequent calls. See also [method get_white_texture].
-Example of getting the test texture and applying it to a [Sprite2D] node:
+[b]Example:[/b] Get the test texture and apply it to a [Sprite2D] node:
 [codeblock]
 var texture_rid = RenderingServer.get_test_texture()
 var texture = ImageTexture.create_from_image(RenderingServer.texture_2d_get(texture_rid))
@@ -3943,7 +4170,7 @@ func GetTestTexture() RID.Texture { //gd:RenderingServer.get_test_texture
 
 /*
 Returns the ID of a 4×4 white texture (in [constant Image.FORMAT_RGB8] format). This texture will be created and returned on the first call to [method get_white_texture], then it will be cached for subsequent calls. See also [method get_test_texture].
-Example of getting the white texture and applying it to a [Sprite2D] node:
+[b]Example:[/b] Get the white texture and apply it to a [Sprite2D] node:
 [codeblock]
 var texture_rid = RenderingServer.get_white_texture()
 var texture = ImageTexture.create_from_image(RenderingServer.texture_2d_get(texture_rid))
@@ -3988,7 +4215,8 @@ func HasOsFeature(feature string) bool { //gd:RenderingServer.has_os_feature
 }
 
 /*
-This method is currently unimplemented and does nothing if called with [param generate] set to [code]true[/code].
+If [param generate] is [code]true[/code], generates debug wireframes for all meshes that are loaded when using the Compatibility renderer. By default, the engine does not generate debug wireframes at runtime, since they slow down loading of assets and take up VRAM.
+[b]Note:[/b] You must call this method before loading any meshes when using the Compatibility renderer, otherwise wireframes will not be used.
 */
 func SetDebugGenerateWireframes(generate bool) { //gd:RenderingServer.set_debug_generate_wireframes
 	once.Do(singleton)
@@ -4021,7 +4249,7 @@ func ForceDraw() { //gd:RenderingServer.force_draw
 
 /*
 Returns the global RenderingDevice.
-[b]Note:[/b] When using the OpenGL backend or when running in headless mode, this function always returns [code]null[/code].
+[b]Note:[/b] When using the OpenGL rendering driver or when running in headless mode, this function always returns [code]null[/code].
 */
 func GetRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.get_rendering_device
 	once.Do(singleton)
@@ -4030,7 +4258,7 @@ func GetRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.get_
 
 /*
 Creates a RenderingDevice that can be used to do draw and compute operations on a separate thread. Cannot draw to the screen nor share data with the global RenderingDevice.
-[b]Note:[/b] When using the OpenGL backend or when running in headless mode, this function always returns [code]null[/code].
+[b]Note:[/b] When using the OpenGL rendering driver or when running in headless mode, this function always returns [code]null[/code].
 */
 func CreateLocalRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.create_local_rendering_device
 	once.Do(singleton)
@@ -4149,6 +4377,28 @@ func (self class) TextureProxyCreate(base RID.Any) RID.Any { //gd:RenderingServe
 }
 
 /*
+Creates a texture based on a native handle that was created outside of Godot's renderer.
+[b]Note:[/b] If using only the rendering device renderer, it's recommend to use [method RenderingDevice.texture_create_from_extension] together with [method RenderingServer.texture_rd_create], rather than this method. It will give you much more control over the texture's format and usage.
+*/
+//go:nosplit
+func (self class) TextureCreateFromNativeHandle(atype gdclass.RenderingServerTextureType, format gdclass.ImageFormat, native_handle int64, width int64, height int64, depth int64, layers int64, layered_type gdclass.RenderingServerTextureLayeredType) RID.Any { //gd:RenderingServer.texture_create_from_native_handle
+	var frame = callframe.New()
+	callframe.Arg(frame, atype)
+	callframe.Arg(frame, format)
+	callframe.Arg(frame, native_handle)
+	callframe.Arg(frame, width)
+	callframe.Arg(frame, height)
+	callframe.Arg(frame, depth)
+	callframe.Arg(frame, layers)
+	callframe.Arg(frame, layered_type)
+	var r_ret = callframe.Ret[RID.Any](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_create_from_native_handle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Updates the texture specified by the [param texture] [RID] with the data in [param image]. A [param layer] must also be specified, which should be [code]0[/code] when updating a single-layer texture ([Texture2D]).
 [b]Note:[/b] The [param image] must have the same width, height and format as the current [param texture] data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height or format, use [method texture_replace] instead.
 */
@@ -4191,7 +4441,7 @@ func (self class) TextureProxyUpdate(texture RID.Any, proxy_to RID.Any) { //gd:R
 }
 
 /*
-Creates a placeholder for a 2-dimensional layered texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]texture_2d_layered_*[/code] RenderingServer functions, although it does nothing when used. See also [method texture_2d_layered_placeholder_create]
+Creates a placeholder for a 2-dimensional layered texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]texture_2d_layered_*[/code] RenderingServer functions, although it does nothing when used. See also [method texture_2d_layered_placeholder_create].
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent resource is [PlaceholderTexture2D].
 */
@@ -4237,7 +4487,7 @@ func (self class) Texture3dPlaceholderCreate() RID.Any { //gd:RenderingServer.te
 
 /*
 Returns an [Image] instance from the given [param texture] [RID].
-Example of getting the test texture from [method get_test_texture] and applying it to a [Sprite2D] node:
+[b]Example:[/b] Get the test texture from [method get_test_texture] and apply it to a [Sprite2D] node:
 [codeblock]
 var texture_rid = RenderingServer.get_test_texture()
 var texture = ImageTexture.create_from_image(RenderingServer.texture_2d_get(texture_rid))
@@ -4881,6 +5131,19 @@ func (self class) MeshGetCustomAabb(mesh RID.Any) AABB.PositionSize { //gd:Rende
 }
 
 /*
+Removes the surface at the given index from the Mesh, shifting surfaces with higher index down by one.
+*/
+//go:nosplit
+func (self class) MeshSurfaceRemove(mesh RID.Any, surface int64) { //gd:RenderingServer.mesh_surface_remove
+	var frame = callframe.New()
+	callframe.Arg(frame, mesh)
+	callframe.Arg(frame, surface)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_remove, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Removes all surfaces from a mesh.
 */
 //go:nosplit
@@ -4955,13 +5218,14 @@ func (self class) MultimeshCreate() RID.Any { //gd:RenderingServer.multimesh_cre
 }
 
 //go:nosplit
-func (self class) MultimeshAllocateData(multimesh RID.Any, instances int64, transform_format gdclass.RenderingServerMultimeshTransformFormat, color_format bool, custom_data_format bool) { //gd:RenderingServer.multimesh_allocate_data
+func (self class) MultimeshAllocateData(multimesh RID.Any, instances int64, transform_format gdclass.RenderingServerMultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, instances)
 	callframe.Arg(frame, transform_format)
 	callframe.Arg(frame, color_format)
 	callframe.Arg(frame, custom_data_format)
+	callframe.Arg(frame, use_indirect)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_allocate_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -5207,6 +5471,9 @@ The per-instance data size and expected data order is:
   - Position + Custom data: 16 floats (12 floats for Transform3D, 4 floats of custom data)
   - Position + Vertex color + Custom data: 20 floats (12 floats for Transform3D, 4 floats for Color, 4 floats of custom data)
 [/codeblock]
+Instance transforms are in row-major order. Specifically:
+- For [Transform2D] the float-order is: [code](x.x, y.x, padding_float, origin.x, x.y, y.y, padding_float, origin.y)[/code].
+- For [Transform3D] the float-order is: [code](basis.x.x, basis.y.x, basis.z.x, origin.x, basis.x.y, basis.y.y, basis.z.y, origin.y, basis.x.z, basis.y.z, basis.z.z, origin.z)[/code].
 */
 //go:nosplit
 func (self class) MultimeshSetBuffer(multimesh RID.Any, buffer Packed.Array[float32]) { //gd:RenderingServer.multimesh_set_buffer
@@ -5216,6 +5483,50 @@ func (self class) MultimeshSetBuffer(multimesh RID.Any, buffer Packed.Array[floa
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_set_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+}
+
+/*
+Returns the [RenderingDevice] [RID] handle of the [MultiMesh] command buffer. This [RID] is only valid if [code]use_indirect[/code] is set to [code]true[/code] when allocating data through [method multimesh_allocate_data]. It can be used to directly modify the instance count via buffer.
+The data structure is dependent on both how many surfaces the mesh contains and whether it is indexed or not, the buffer has 5 integers in it, with the last unused if the mesh is not indexed.
+Each of the values in the buffer correspond to these options:
+[codeblock lang=text]
+Indexed:
+  0 - indexCount;
+  1 - instanceCount;
+  2 - firstIndex;
+  3 - vertexOffset;
+  4 - firstInstance;
+Non Indexed:
+  0 - vertexCount;
+  1 - instanceCount;
+  2 - firstVertex;
+  3 - firstInstance;
+  4 - unused;
+[/codeblock]
+*/
+//go:nosplit
+func (self class) MultimeshGetCommandBufferRdRid(multimesh RID.Any) RID.Any { //gd:RenderingServer.multimesh_get_command_buffer_rd_rid
+	var frame = callframe.New()
+	callframe.Arg(frame, multimesh)
+	var r_ret = callframe.Ret[RID.Any](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_command_buffer_rd_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the [RenderingDevice] [RID] handle of the [MultiMesh], which can be used as any other buffer on the Rendering Device.
+*/
+//go:nosplit
+func (self class) MultimeshGetBufferRdRid(multimesh RID.Any) RID.Any { //gd:RenderingServer.multimesh_get_buffer_rd_rid
+	var frame = callframe.New()
+	callframe.Arg(frame, multimesh)
+	var r_ret = callframe.Ret[RID.Any](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_buffer_rd_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
 }
 
 /*
@@ -5231,6 +5542,62 @@ func (self class) MultimeshGetBuffer(multimesh RID.Any) Packed.Array[float32] { 
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
+}
+
+/*
+Alternative version of [method multimesh_set_buffer] for use with physics interpolation.
+Takes both an array of current data and an array of data for the previous physics tick.
+*/
+//go:nosplit
+func (self class) MultimeshSetBufferInterpolated(multimesh RID.Any, buffer Packed.Array[float32], buffer_previous Packed.Array[float32]) { //gd:RenderingServer.multimesh_set_buffer_interpolated
+	var frame = callframe.New()
+	callframe.Arg(frame, multimesh)
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer)))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer_previous)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_set_buffer_interpolated, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Turns on and off physics interpolation for this MultiMesh resource.
+*/
+//go:nosplit
+func (self class) MultimeshSetPhysicsInterpolated(multimesh RID.Any, interpolated bool) { //gd:RenderingServer.multimesh_set_physics_interpolated
+	var frame = callframe.New()
+	callframe.Arg(frame, multimesh)
+	callframe.Arg(frame, interpolated)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_set_physics_interpolated, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Sets the physics interpolation quality for the [MultiMesh].
+A value of [constant MULTIMESH_INTERP_QUALITY_FAST] gives fast but low quality interpolation, a value of [constant MULTIMESH_INTERP_QUALITY_HIGH] gives slower but higher quality interpolation.
+*/
+//go:nosplit
+func (self class) MultimeshSetPhysicsInterpolationQuality(multimesh RID.Any, quality gdclass.RenderingServerMultimeshPhysicsInterpolationQuality) { //gd:RenderingServer.multimesh_set_physics_interpolation_quality
+	var frame = callframe.New()
+	callframe.Arg(frame, multimesh)
+	callframe.Arg(frame, quality)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_set_physics_interpolation_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Prevents physics interpolation for the specified instance during the current physics tick.
+This is useful when moving an instance to a new location, to give an instantaneous change rather than interpolation from the previous location.
+*/
+//go:nosplit
+func (self class) MultimeshInstanceResetPhysicsInterpolation(multimesh RID.Any, index int64) { //gd:RenderingServer.multimesh_instance_reset_physics_interpolation
+	var frame = callframe.New()
+	callframe.Arg(frame, multimesh)
+	callframe.Arg(frame, index)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_reset_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
 }
 
 /*
@@ -5496,6 +5863,19 @@ func (self class) LightSetReverseCullFaceMode(light RID.Any, enabled bool) { //g
 }
 
 /*
+Sets the shadow caster mask for this 3D light. Shadows will only be cast using objects in the selected layers. Equivalent to [member Light3D.shadow_caster_mask].
+*/
+//go:nosplit
+func (self class) LightSetShadowCasterMask(light RID.Any, mask int64) { //gd:RenderingServer.light_set_shadow_caster_mask
+	var frame = callframe.New()
+	callframe.Arg(frame, light)
+	callframe.Arg(frame, mask)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_shadow_caster_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Sets the bake mode to use for the specified 3D light. Equivalent to [member Light3D.light_bake_mode].
 */
 //go:nosplit
@@ -5586,6 +5966,18 @@ func (self class) LightProjectorsSetFilter(filter gdclass.RenderingServerLightPr
 }
 
 /*
+Toggles whether a bicubic filter should be used when lightmaps are sampled. This smoothens their appearance at a performance cost.
+*/
+//go:nosplit
+func (self class) LightmapsSetBicubicFilter(enable bool) { //gd:RenderingServer.lightmaps_set_bicubic_filter
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmaps_set_bicubic_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Sets the filter quality for omni and spot light shadows in 3D. See also [member ProjectSettings.rendering/lights_and_shadows/positional_shadow/soft_shadow_filter_quality]. This parameter is global and cannot be set on a per-viewport basis.
 */
 //go:nosplit
@@ -5661,6 +6053,19 @@ func (self class) ReflectionProbeSetIntensity(probe RID.Any, intensity float64) 
 	callframe.Arg(frame, intensity)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_intensity, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Sets the distance in meters over which a probe blends into the scene.
+*/
+//go:nosplit
+func (self class) ReflectionProbeSetBlendDistance(probe RID.Any, blend_distance float64) { //gd:RenderingServer.reflection_probe_set_blend_distance
+	var frame = callframe.New()
+	callframe.Arg(frame, probe)
+	callframe.Arg(frame, blend_distance)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_blend_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6366,7 +6771,7 @@ func (self class) ParticlesSetMode(particles RID.Any, mode gdclass.RenderingServ
 }
 
 /*
-If [code]true[/code], particles will emit over time. Setting to false does not reset the particles, but only stops their emission. Equivalent to [member GPUParticles3D.emitting].
+If [code]true[/code], particles will emit over time. Setting to [code]false[/code] does not reset the particles, but only stops their emission. Equivalent to [member GPUParticles3D.emitting].
 */
 //go:nosplit
 func (self class) ParticlesSetEmitting(particles RID.Any, emitting bool) { //gd:RenderingServer.particles_set_emitting
@@ -6454,6 +6859,19 @@ func (self class) ParticlesSetPreProcessTime(particles RID.Any, time float64) { 
 	callframe.Arg(frame, time)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_pre_process_time, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Requests particles to process for extra process time during a single frame.
+*/
+//go:nosplit
+func (self class) ParticlesRequestProcessTime(particles RID.Any, time float64) { //gd:RenderingServer.particles_request_process_time
+	var frame = callframe.New()
+	callframe.Arg(frame, particles)
+	callframe.Arg(frame, time)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_request_process_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6918,6 +7336,19 @@ func (self class) ParticlesCollisionSetHeightFieldResolution(particles_collision
 }
 
 /*
+Sets the heightfield [param mask] for the 3D GPU particles heightfield collision specified by the [param particles_collision] RID. Equivalent to [member GPUParticlesCollisionHeightField3D.heightfield_mask].
+*/
+//go:nosplit
+func (self class) ParticlesCollisionSetHeightFieldMask(particles_collision RID.Any, mask int64) { //gd:RenderingServer.particles_collision_set_height_field_mask
+	var frame = callframe.New()
+	callframe.Arg(frame, particles_collision)
+	callframe.Arg(frame, mask)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_height_field_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Creates a new fog volume and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]fog_volume_*[/code] RenderingServer functions.
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent node is [FogVolume].
@@ -6974,7 +7405,7 @@ func (self class) FogVolumeSetMaterial(fog_volume RID.Any, material RID.Any) { /
 /*
 Creates a new 3D visibility notifier object and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]visibility_notifier_*[/code] RenderingServer functions.
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
-To place in a scene, attach this mesh to an instance using [method instance_set_base] using the returned RID.
+To place in a scene, attach this notifier to an instance using [method instance_set_base] using the returned RID.
 [b]Note:[/b] The equivalent node is [VisibleOnScreenNotifier3D].
 */
 //go:nosplit
@@ -7247,12 +7678,11 @@ func (self class) ViewportSetParentViewport(viewport RID.Any, parent_viewport RI
 /*
 Copies the viewport to a region of the screen specified by [param rect]. If [method viewport_set_render_direct_to_screen] is [code]true[/code], then the viewport does not use a framebuffer and the contents of the viewport are rendered directly to screen. However, note that the root viewport is drawn last, therefore it will draw over the screen. Accordingly, you must set the root viewport to an area that does not cover the area that you have attached this viewport to.
 For example, you can set the root viewport to not render at all with the following code:
-FIXME: The method seems to be non-existent.
 [codeblocks]
 [gdscript]
 func _ready():
-    get_viewport().set_attach_to_screen_rect(Rect2())
-    $Viewport.set_attach_to_screen_rect(Rect2(0, 0, 600, 600))
+    RenderingServer.viewport_attach_to_screen(get_viewport().get_viewport_rid(), Rect2())
+    RenderingServer.viewport_attach_to_screen($Viewport.get_viewport_rid(), Rect2(0, 0, 600, 600))
 [/gdscript]
 [/codeblocks]
 Using this can result in significant optimization, especially on lower-end devices. However, it comes at the cost of having to manage your viewports manually. For further optimization, see [method viewport_set_render_direct_to_screen].
@@ -7345,6 +7775,22 @@ func (self class) ViewportSetTextureMipmapBias(viewport RID.Any, mipmap_bias flo
 	callframe.Arg(frame, mipmap_bias)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_texture_mipmap_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Sets the maximum number of samples to take when using anisotropic filtering on textures (as a power of two). A higher sample count will result in sharper textures at oblique angles, but is more expensive to compute. A value of [code]0[/code] forcibly disables anisotropic filtering, even on materials where it is enabled.
+The anisotropic filtering level also affects decals and light projectors if they are configured to use anisotropic filtering. See [member ProjectSettings.rendering/textures/decals/filter] and [member ProjectSettings.rendering/textures/light_projectors/filter].
+[b]Note:[/b] In 3D, for this setting to have an effect, set [member BaseMaterial3D.texture_filter] to [constant BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC] or [constant BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS_ANISOTROPIC] on materials.
+[b]Note:[/b] In 2D, for this setting to have an effect, set [member CanvasItem.texture_filter] to [constant CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC] or [constant CanvasItem.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS_ANISOTROPIC] on the [CanvasItem] node displaying the texture (or in [CanvasTexture]). However, anisotropic filtering is rarely useful in 2D, so only enable it for textures in 2D if it makes a meaningful visual difference.
+*/
+//go:nosplit
+func (self class) ViewportSetAnisotropicFilteringLevel(viewport RID.Any, anisotropic_filtering_level gdclass.RenderingServerViewportAnisotropicFiltering) { //gd:RenderingServer.viewport_set_anisotropic_filtering_level
+	var frame = callframe.New()
+	callframe.Arg(frame, viewport)
+	callframe.Arg(frame, anisotropic_filtering_level)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_anisotropic_filtering_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7660,7 +8106,7 @@ func (self class) ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport R
 }
 
 /*
-Sets the multisample anti-aliasing mode for 3D on the specified [param viewport] RID. See [enum ViewportMSAA] for options.
+Sets the multisample antialiasing mode for 3D on the specified [param viewport] RID. See [enum ViewportMSAA] for options. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/msaa_3d] or [member Viewport.msaa_3d].
 */
 //go:nosplit
 func (self class) ViewportSetMsaa3d(viewport RID.Any, msaa gdclass.RenderingServerViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_3d
@@ -7673,7 +8119,7 @@ func (self class) ViewportSetMsaa3d(viewport RID.Any, msaa gdclass.RenderingServ
 }
 
 /*
-Sets the multisample anti-aliasing mode for 2D/Canvas on the specified [param viewport] RID. See [enum ViewportMSAA] for options.
+Sets the multisample antialiasing mode for 2D/Canvas on the specified [param viewport] RID. See [enum ViewportMSAA] for options. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/msaa_2d] or [member Viewport.msaa_2d].
 */
 //go:nosplit
 func (self class) ViewportSetMsaa2d(viewport RID.Any, msaa gdclass.RenderingServerViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_2d
@@ -7687,7 +8133,7 @@ func (self class) ViewportSetMsaa2d(viewport RID.Any, msaa gdclass.RenderingServ
 
 /*
 If [code]true[/code], 2D rendering will use a high dynamic range (HDR) format framebuffer matching the bit depth of the 3D framebuffer. When using the Forward+ renderer this will be an [code]RGBA16[/code] framebuffer, while when using the Mobile renderer it will be an [code]RGB10_A2[/code] framebuffer. Additionally, 2D rendering will take place in linear color space and will be converted to sRGB space immediately before blitting to the screen (if the Viewport is attached to the screen). Practically speaking, this means that the end result of the Viewport will not be clamped into the [code]0-1[/code] range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients. This setting has the same effect as [member Viewport.use_hdr_2d].
-[b]Note:[/b] This setting will have no effect when using the GL Compatibility renderer as the GL Compatibility renderer always renders in low dynamic range for performance reasons.
+[b]Note:[/b] This setting will have no effect when using the Compatibility renderer, which always renders in low dynamic range for performance reasons.
 */
 //go:nosplit
 func (self class) ViewportSetUseHdr2d(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_use_hdr_2d
@@ -7700,7 +8146,7 @@ func (self class) ViewportSetUseHdr2d(viewport RID.Any, enabled bool) { //gd:Ren
 }
 
 /*
-Sets the viewport's screen-space antialiasing mode.
+Sets the viewport's screen-space antialiasing mode. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/screen_space_aa] or [member Viewport.screen_space_aa].
 */
 //go:nosplit
 func (self class) ViewportSetScreenSpaceAa(viewport RID.Any, mode gdclass.RenderingServerViewportScreenSpaceAA) { //gd:RenderingServer.viewport_set_screen_space_aa
@@ -7713,7 +8159,7 @@ func (self class) ViewportSetScreenSpaceAa(viewport RID.Any, mode gdclass.Render
 }
 
 /*
-If [code]true[/code], use Temporal Anti-Aliasing. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/use_taa].
+If [code]true[/code], use temporal antialiasing. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/use_taa] or [member Viewport.use_taa].
 */
 //go:nosplit
 func (self class) ViewportSetUseTaa(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_use_taa
@@ -7726,7 +8172,7 @@ func (self class) ViewportSetUseTaa(viewport RID.Any, enable bool) { //gd:Render
 }
 
 /*
-If [code]true[/code], enables debanding on the specified viewport. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/use_debanding].
+If [code]true[/code], enables debanding on the specified viewport. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/use_debanding] or [member Viewport.use_debanding].
 */
 //go:nosplit
 func (self class) ViewportSetUseDebanding(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_use_debanding
@@ -7846,7 +8292,7 @@ func (self class) ViewportGetMeasuredRenderTimeCpu(viewport RID.Any) float64 { /
 }
 
 /*
-Returns the GPU time taken to render the last frame in milliseconds. To get a complete readout of GPU time spent to render the scene, sum the render times of all viewports that are drawn every frame. Unlike [method Engine.get_frames_per_second], this method accurately reflects GPU utilization even if framerate is capped via V-Sync or [member Engine.max_fps]. See also [method viewport_get_measured_render_time_gpu].
+Returns the GPU time taken to render the last frame in milliseconds. To get a complete readout of GPU time spent to render the scene, sum the render times of all viewports that are drawn every frame. Unlike [method Engine.get_frames_per_second], this method accurately reflects GPU utilization even if framerate is capped via V-Sync or [member Engine.max_fps]. See also [method viewport_get_measured_render_time_cpu].
 [b]Note:[/b] Requires measurements to be enabled on the specified [param viewport] using [method viewport_set_measure_render_time]. Otherwise, this method returns [code]0.0[/code].
 [b]Note:[/b] When GPU utilization is low enough during a certain period of time, GPUs will decrease their power state (which in turn decreases core and memory clock speeds). This can cause the reported GPU time to increase if GPU utilization is kept low enough by a framerate cap (compared to what it would be at the GPU's highest power state). Keep this in mind when benchmarking using [method viewport_get_measured_render_time_gpu]. This behavior can be overridden in the graphics driver settings at the cost of higher power usage.
 */
@@ -8084,6 +8530,19 @@ func (self class) EnvironmentSetBackground(env RID.Any, bg gdclass.RenderingServ
 }
 
 /*
+Sets the camera ID to be used as environment background.
+*/
+//go:nosplit
+func (self class) EnvironmentSetCameraId(env RID.Any, id int64) { //gd:RenderingServer.environment_set_camera_id
+	var frame = callframe.New()
+	callframe.Arg(frame, env)
+	callframe.Arg(frame, id)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_camera_id, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Sets the [Sky] to be used as the environment's background when using [i]BGMode[/i] sky. Equivalent to [member Environment.sky].
 */
 //go:nosplit
@@ -8166,13 +8625,13 @@ func (self class) EnvironmentSetCanvasMaxLayer(env RID.Any, max_layer int64) { /
 Sets the values to be used for ambient light rendering. See [Environment] for more details.
 */
 //go:nosplit
-func (self class) EnvironmentSetAmbientLight(env RID.Any, color Color.RGBA, ambient gdclass.RenderingServerEnvironmentAmbientSource, energy float64, sky_contibution float64, reflection_source gdclass.RenderingServerEnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
+func (self class) EnvironmentSetAmbientLight(env RID.Any, color Color.RGBA, ambient gdclass.RenderingServerEnvironmentAmbientSource, energy float64, sky_contribution float64, reflection_source gdclass.RenderingServerEnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, ambient)
 	callframe.Arg(frame, energy)
-	callframe.Arg(frame, sky_contibution)
+	callframe.Arg(frame, sky_contribution)
 	callframe.Arg(frame, reflection_source)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_ambient_light, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -8782,6 +9241,32 @@ func (self class) InstanceSetTransform(instance RID.Any, transform Transform3D.B
 }
 
 /*
+Turns on and off physics interpolation for the instance.
+*/
+//go:nosplit
+func (self class) InstanceSetInterpolated(instance RID.Any, interpolated bool) { //gd:RenderingServer.instance_set_interpolated
+	var frame = callframe.New()
+	callframe.Arg(frame, instance)
+	callframe.Arg(frame, interpolated)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_interpolated, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Prevents physics interpolation for the current physics tick.
+This is useful when moving an instance to a new location, to give an instantaneous change rather than interpolation from the previous location.
+*/
+//go:nosplit
+func (self class) InstanceResetPhysicsInterpolation(instance RID.Any) { //gd:RenderingServer.instance_reset_physics_interpolation
+	var frame = callframe.New()
+	callframe.Arg(frame, instance)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_reset_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Attaches a unique Object ID to instance. Object ID must be attached to instance for proper culling with [method instances_cull_aabb], [method instances_cull_convex], and [method instances_cull_ray].
 */
 //go:nosplit
@@ -9154,7 +9639,8 @@ func (self class) CanvasCreate() RID.Any { //gd:RenderingServer.canvas_create
 }
 
 /*
-A copy of the canvas item will be drawn with a local offset of the mirroring [Vector2].
+A copy of the canvas item will be drawn with a local offset of the [param mirroring].
+[b]Note:[/b] This is equivalent to calling [method canvas_set_item_repeat] like [code]canvas_set_item_repeat(item, mirroring, 1)[/code], with an additional check ensuring [param canvas] is a parent of [param item].
 */
 //go:nosplit
 func (self class) CanvasSetItemMirroring(canvas RID.Any, item RID.Any, mirroring Vector2.XY) { //gd:RenderingServer.canvas_set_item_mirroring
@@ -9687,6 +10173,7 @@ func (self class) CanvasItemAddPrimitive(item RID.Any, points Packed.Array[Vecto
 
 /*
 Draws a 2D polygon on the [CanvasItem] pointed to by the [param item] [RID]. If you need more flexibility (such as being able to use bones), use [method canvas_item_add_triangle_array] instead. See also [method CanvasItem.draw_polygon].
+[b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method CanvasItem.draw_mesh], [method CanvasItem.draw_multimesh], or [method canvas_item_add_triangle_array].
 */
 //go:nosplit
 func (self class) CanvasItemAddPolygon(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture RID.Any) { //gd:RenderingServer.canvas_item_add_polygon
@@ -9780,7 +10267,7 @@ func (self class) CanvasItemAddSetTransform(item RID.Any, transform Transform2D.
 }
 
 /*
-If [param ignore] is [code]true[/code], ignore clipping on items drawn with this canvas item until this is called again with [param ignore] set to false.
+If [param ignore] is [code]true[/code], ignore clipping on items drawn with this canvas item until this is called again with [param ignore] set to [code]false[/code].
 */
 //go:nosplit
 func (self class) CanvasItemAddClipIgnore(item RID.Any, ignore bool) { //gd:RenderingServer.canvas_item_add_clip_ignore
@@ -9862,6 +10349,19 @@ func (self class) CanvasItemSetCopyToBackbuffer(item RID.Any, enabled bool, rect
 }
 
 /*
+Attaches a skeleton to the [CanvasItem]. Removes the previous skeleton.
+*/
+//go:nosplit
+func (self class) CanvasItemAttachSkeleton(item RID.Any, skeleton RID.Any) { //gd:RenderingServer.canvas_item_attach_skeleton
+	var frame = callframe.New()
+	callframe.Arg(frame, item)
+	callframe.Arg(frame, skeleton)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_attach_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Clears the [CanvasItem] and removes all commands in it.
 */
 //go:nosplit
@@ -9910,6 +10410,65 @@ func (self class) CanvasItemSetUseParentMaterial(item RID.Any, enabled bool) { /
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_use_parent_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+}
+
+/*
+Sets the per-instance shader uniform on the specified canvas item instance. Equivalent to [method CanvasItem.set_instance_shader_parameter].
+*/
+//go:nosplit
+func (self class) CanvasItemSetInstanceShaderParameter(instance RID.Any, parameter String.Name, value variant.Any) { //gd:RenderingServer.canvas_item_set_instance_shader_parameter
+	var frame = callframe.New()
+	callframe.Arg(frame, instance)
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(parameter)))
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [method CanvasItem.get_instance_shader_parameter].
+*/
+//go:nosplit
+func (self class) CanvasItemGetInstanceShaderParameter(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter
+	var frame = callframe.New()
+	callframe.Arg(frame, instance)
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(parameter)))
+	var r_ret = callframe.Ret[[3]uint64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the default value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [method CanvasItem.get_instance_shader_parameter].
+*/
+//go:nosplit
+func (self class) CanvasItemGetInstanceShaderParameterDefaultValue(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_default_value
+	var frame = callframe.New()
+	callframe.Arg(frame, instance)
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(parameter)))
+	var r_ret = callframe.Ret[[3]uint64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified canvas item instance.
+The returned dictionary is in PropertyInfo format, with the keys [code]name[/code], [code]class_name[/code], [code]type[/code], [code]hint[/code], [code]hint_string[/code], and [code]usage[/code].
+*/
+//go:nosplit
+func (self class) CanvasItemGetInstanceShaderParameterList(instance RID.Any) Array.Contains[Dictionary.Any] { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_list
+	var frame = callframe.New()
+	callframe.Arg(frame, instance)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter_list, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	frame.Free()
+	return ret
 }
 
 /*
@@ -10254,7 +10813,7 @@ func (self class) CanvasLightResetPhysicsInterpolation(light RID.Any) { //gd:Ren
 
 /*
 Transforms both the current and previous stored transform for a canvas light.
-This allows transforming a light without creating a "glitch" in the interpolation, which is is particularly useful for large worlds utilizing a shifting origin.
+This allows transforming a light without creating a "glitch" in the interpolation, which is particularly useful for large worlds utilizing a shifting origin.
 */
 //go:nosplit
 func (self class) CanvasLightTransformPhysicsInterpolation(light RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_transform_physics_interpolation
@@ -10638,7 +11197,7 @@ func (self class) GetVideoAdapterVendor() String.Readable { //gd:RenderingServer
 
 /*
 Returns the type of the video adapter. Since dedicated graphics cards from a given generation will [i]usually[/i] be significantly faster than integrated graphics made in the same generation, the device type can be used as a basis for automatic graphics settings adjustment. However, this is not always true, so make sure to provide users with a way to manually override graphics settings.
-[b]Note:[/b] When using the OpenGL backend or when running in headless mode, this function always returns [constant RenderingDevice.DEVICE_TYPE_OTHER].
+[b]Note:[/b] When using the OpenGL rendering driver or when running in headless mode, this function always returns [constant RenderingDevice.DEVICE_TYPE_OTHER].
 */
 //go:nosplit
 func (self class) GetVideoAdapterType() gdclass.RenderingDeviceDeviceType { //gd:RenderingServer.get_video_adapter_type
@@ -10659,6 +11218,34 @@ func (self class) GetVideoAdapterApiVersion() String.Readable { //gd:RenderingSe
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_api_version, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the name of the current rendering driver. This can be [code]vulkan[/code], [code]d3d12[/code], [code]metal[/code], [code]opengl3[/code], [code]opengl3_es[/code], or [code]opengl3_angle[/code]. See also [method get_current_rendering_method].
+The rendering driver is determined by [member ProjectSettings.rendering/rendering_device/driver], the [code]--rendering-driver[/code] command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
+*/
+//go:nosplit
+func (self class) GetCurrentRenderingDriverName() String.Readable { //gd:RenderingServer.get_current_rendering_driver_name
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_current_rendering_driver_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the name of the current rendering method. This can be [code]forward_plus[/code], [code]mobile[/code], or [code]gl_compatibility[/code]. See also [method get_current_rendering_driver_name].
+The rendering method is determined by [member ProjectSettings.rendering/renderer/rendering_method], the [code]--rendering-method[/code] command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
+*/
+//go:nosplit
+func (self class) GetCurrentRenderingMethod() String.Readable { //gd:RenderingServer.get_current_rendering_method
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_current_rendering_method, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
@@ -10695,7 +11282,7 @@ func (self class) GetTestCube() RID.Any { //gd:RenderingServer.get_test_cube
 
 /*
 Returns the RID of a 256×256 texture with a testing pattern on it (in [constant Image.FORMAT_RGB8] format). This texture will be created and returned on the first call to [method get_test_texture], then it will be cached for subsequent calls. See also [method get_white_texture].
-Example of getting the test texture and applying it to a [Sprite2D] node:
+[b]Example:[/b] Get the test texture and apply it to a [Sprite2D] node:
 [codeblock]
 var texture_rid = RenderingServer.get_test_texture()
 var texture = ImageTexture.create_from_image(RenderingServer.texture_2d_get(texture_rid))
@@ -10714,7 +11301,7 @@ func (self class) GetTestTexture() RID.Any { //gd:RenderingServer.get_test_textu
 
 /*
 Returns the ID of a 4×4 white texture (in [constant Image.FORMAT_RGB8] format). This texture will be created and returned on the first call to [method get_white_texture], then it will be cached for subsequent calls. See also [method get_test_texture].
-Example of getting the white texture and applying it to a [Sprite2D] node:
+[b]Example:[/b] Get the white texture and apply it to a [Sprite2D] node:
 [codeblock]
 var texture_rid = RenderingServer.get_white_texture()
 var texture = ImageTexture.create_from_image(RenderingServer.texture_2d_get(texture_rid))
@@ -10786,7 +11373,8 @@ func (self class) HasOsFeature(feature String.Readable) bool { //gd:RenderingSer
 }
 
 /*
-This method is currently unimplemented and does nothing if called with [param generate] set to [code]true[/code].
+If [param generate] is [code]true[/code], generates debug wireframes for all meshes that are loaded when using the Compatibility renderer. By default, the engine does not generate debug wireframes at runtime, since they slow down loading of assets and take up VRAM.
+[b]Note:[/b] You must call this method before loading any meshes when using the Compatibility renderer, otherwise wireframes will not be used.
 */
 //go:nosplit
 func (self class) SetDebugGenerateWireframes(generate bool) { //gd:RenderingServer.set_debug_generate_wireframes
@@ -10855,7 +11443,7 @@ func (self class) ForceDraw(swap_buffers bool, frame_step float64) { //gd:Render
 
 /*
 Returns the global RenderingDevice.
-[b]Note:[/b] When using the OpenGL backend or when running in headless mode, this function always returns [code]null[/code].
+[b]Note:[/b] When using the OpenGL rendering driver or when running in headless mode, this function always returns [code]null[/code].
 */
 //go:nosplit
 func (self class) GetRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.get_rendering_device
@@ -10869,7 +11457,7 @@ func (self class) GetRenderingDevice() [1]gdclass.RenderingDevice { //gd:Renderi
 
 /*
 Creates a RenderingDevice that can be used to do draw and compute operations on a separate thread. Cannot draw to the screen nor share data with the global RenderingDevice.
-[b]Note:[/b] When using the OpenGL backend or when running in headless mode, this function always returns [code]null[/code].
+[b]Note:[/b] When using the OpenGL rendering driver or when running in headless mode, this function always returns [code]null[/code].
 */
 //go:nosplit
 func (self class) CreateLocalRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.create_local_rendering_device
@@ -10938,6 +11526,17 @@ func init() {
 		return [1]gdclass.RenderingServer{*(*gdclass.RenderingServer)(unsafe.Pointer(&ptr))}
 	})
 }
+
+type TextureType = gdclass.RenderingServerTextureType //gd:RenderingServer.TextureType
+
+const (
+	/*2D texture.*/
+	TextureType2d TextureType = 0
+	/*Layered texture.*/
+	TextureTypeLayered TextureType = 1
+	/*3D texture.*/
+	TextureType3d TextureType = 2
+)
 
 type TextureLayeredType = gdclass.RenderingServerTextureLayeredType //gd:RenderingServer.TextureLayeredType
 
@@ -11068,18 +11667,28 @@ const (
 	/*Flag used to mark a weights array.*/
 	ArrayFormatWeights ArrayFormat = 2048
 	/*Flag used to mark an index array.*/
-	ArrayFormatIndex          ArrayFormat = 4096
+	ArrayFormatIndex ArrayFormat = 4096
+	/*Mask of mesh channels permitted in blend shapes.*/
 	ArrayFormatBlendShapeMask ArrayFormat = 7
-	ArrayFormatCustomBase     ArrayFormat = 13
-	ArrayFormatCustomBits     ArrayFormat = 3
-	ArrayFormatCustom0Shift   ArrayFormat = 13
-	ArrayFormatCustom1Shift   ArrayFormat = 16
-	ArrayFormatCustom2Shift   ArrayFormat = 19
-	ArrayFormatCustom3Shift   ArrayFormat = 22
-	ArrayFormatCustomMask     ArrayFormat = 7
-	ArrayCompressFlagsBase    ArrayFormat = 25
+	/*Shift of first custom channel.*/
+	ArrayFormatCustomBase ArrayFormat = 13
+	/*Number of format bits per custom channel. See [enum ArrayCustomFormat].*/
+	ArrayFormatCustomBits ArrayFormat = 3
+	/*Amount to shift [enum ArrayCustomFormat] for custom channel index 0.*/
+	ArrayFormatCustom0Shift ArrayFormat = 13
+	/*Amount to shift [enum ArrayCustomFormat] for custom channel index 1.*/
+	ArrayFormatCustom1Shift ArrayFormat = 16
+	/*Amount to shift [enum ArrayCustomFormat] for custom channel index 2.*/
+	ArrayFormatCustom2Shift ArrayFormat = 19
+	/*Amount to shift [enum ArrayCustomFormat] for custom channel index 3.*/
+	ArrayFormatCustom3Shift ArrayFormat = 22
+	/*Mask of custom format bits per custom channel. Must be shifted by one of the SHIFT constants. See [enum ArrayCustomFormat].*/
+	ArrayFormatCustomMask ArrayFormat = 7
+	/*Shift of first compress flag. Compress flags should be passed to [method ArrayMesh.add_surface_from_arrays] and [method SurfaceTool.commit].*/
+	ArrayCompressFlagsBase ArrayFormat = 25
 	/*Flag used to mark that the array contains 2D vertices.*/
-	ArrayFlagUse2dVertices    ArrayFormat = 33554432
+	ArrayFlagUse2dVertices ArrayFormat = 33554432
+	/*Flag indices that the mesh data will use [code]GL_DYNAMIC_DRAW[/code] on GLES. Unused on Vulkan.*/
 	ArrayFlagUseDynamicUpdate ArrayFormat = 67108864
 	/*Flag used to mark that the array uses 8 bone weights instead of 4.*/
 	ArrayFlagUse8BoneWeights ArrayFormat = 134217728
@@ -11134,6 +11743,15 @@ const (
 	MultimeshTransform2d MultimeshTransformFormat = 0
 	/*Use [Transform3D] to store MultiMesh transform.*/
 	MultimeshTransform3d MultimeshTransformFormat = 1
+)
+
+type MultimeshPhysicsInterpolationQuality = gdclass.RenderingServerMultimeshPhysicsInterpolationQuality //gd:RenderingServer.MultimeshPhysicsInterpolationQuality
+
+const (
+	/*MultiMesh physics interpolation favors speed over quality.*/
+	MultimeshInterpQualityFast MultimeshPhysicsInterpolationQuality = 0
+	/*MultiMesh physics interpolation favors quality over speed.*/
+	MultimeshInterpQualityHigh MultimeshPhysicsInterpolationQuality = 1
 )
 
 type LightProjectorFilter = gdclass.RenderingServerLightProjectorFilter //gd:RenderingServer.LightProjectorFilter
@@ -11417,8 +12035,14 @@ const (
 	ViewportScaling3dModeFsr ViewportScaling3DMode = 1
 	/*Use AMD FidelityFX Super Resolution 2.2 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [member Viewport.scaling_3d_scale]. Values less than [code]1.0[/code] will be result in the viewport being upscaled using FSR2. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] will use FSR2 at native resolution as a TAA solution.*/
 	ViewportScaling3dModeFsr2 ViewportScaling3DMode = 2
+	/*Use MetalFX spatial upscaling for the viewport's 3D buffer. The amount of scaling can be set using [member Viewport.scaling_3d_scale]. Values less than [code]1.0[/code] will be result in the viewport being upscaled using MetalFX. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] disables scaling.
+	  [b]Note:[/b] Only supported when the Metal rendering driver is in use, which limits this scaling mode to macOS and iOS.*/
+	ViewportScaling3dModeMetalfxSpatial ViewportScaling3DMode = 3
+	/*Use MetalFX temporal upscaling for the viewport's 3D buffer. The amount of scaling can be set using [member Viewport.scaling_3d_scale]. Values less than [code]1.0[/code] will be result in the viewport being upscaled using MetalFX. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] will use MetalFX at native resolution as a TAA solution.
+	  [b]Note:[/b] Only supported when the Metal rendering driver is in use, which limits this scaling mode to macOS and iOS.*/
+	ViewportScaling3dModeMetalfxTemporal ViewportScaling3DMode = 4
 	/*Represents the size of the [enum ViewportScaling3DMode] enum.*/
-	ViewportScaling3dModeMax ViewportScaling3DMode = 3
+	ViewportScaling3dModeMax ViewportScaling3DMode = 5
 )
 
 type ViewportUpdateMode = gdclass.RenderingServerViewportUpdateMode //gd:RenderingServer.ViewportUpdateMode
@@ -11503,6 +12127,23 @@ const (
 	ViewportMsaaMax ViewportMSAA = 4
 )
 
+type ViewportAnisotropicFiltering = gdclass.RenderingServerViewportAnisotropicFiltering //gd:RenderingServer.ViewportAnisotropicFiltering
+
+const (
+	/*Anisotropic filtering is disabled.*/
+	ViewportAnisotropyDisabled ViewportAnisotropicFiltering = 0
+	/*Use 2× anisotropic filtering.*/
+	ViewportAnisotropy2x ViewportAnisotropicFiltering = 1
+	/*Use 4× anisotropic filtering. This is the default value.*/
+	ViewportAnisotropy4x ViewportAnisotropicFiltering = 2
+	/*Use 8× anisotropic filtering.*/
+	ViewportAnisotropy8x ViewportAnisotropicFiltering = 3
+	/*Use 16× anisotropic filtering.*/
+	ViewportAnisotropy16x ViewportAnisotropicFiltering = 4
+	/*Represents the size of the [enum ViewportAnisotropicFiltering] enum.*/
+	ViewportAnisotropyMax ViewportAnisotropicFiltering = 5
+)
+
 type ViewportScreenSpaceAA = gdclass.RenderingServerViewportScreenSpaceAA //gd:RenderingServer.ViewportScreenSpaceAA
 
 const (
@@ -11563,7 +12204,8 @@ const (
 	/*Objects are displayed semi-transparent with additive blending so you can see where they are drawing over top of one another. A higher overdraw (represented by brighter colors) means you are wasting performance on drawing pixels that are being hidden behind others.
 	  [b]Note:[/b] When using this debug draw mode, custom shaders will be ignored. This means vertex displacement won't be visible anymore.*/
 	ViewportDebugDrawOverdraw ViewportDebugDraw = 3
-	/*Debug draw draws objects in wireframe.*/
+	/*Debug draw draws objects in wireframe.
+	  [b]Note:[/b] [method set_debug_generate_wireframes] must be called before loading any meshes for wireframes to be visible when using the Compatibility renderer.*/
 	ViewportDebugDrawWireframe ViewportDebugDraw = 4
 	/*Normal buffer is drawn instead of regular scene so you can see the per-pixel normals that will be used by post-processing effects.*/
 	ViewportDebugDrawNormalBuffer ViewportDebugDraw = 5
@@ -11679,7 +12321,7 @@ const (
 	CompositorEffectCallbackTypePostSky CompositorEffectCallbackType = 2
 	/*The callback is called before our transparent rendering pass, but after our sky is rendered and we've created our back buffers.*/
 	CompositorEffectCallbackTypePreTransparent CompositorEffectCallbackType = 3
-	/*The callback is called after our transparent rendering pass, but before any build in post effects and output to our render target.*/
+	/*The callback is called after our transparent rendering pass, but before any built-in post-processing effects and output to our render target.*/
 	CompositorEffectCallbackTypePostTransparent CompositorEffectCallbackType = 4
 	CompositorEffectCallbackTypeAny             CompositorEffectCallbackType = -1
 )
@@ -11754,15 +12396,19 @@ const (
 type EnvironmentToneMapper = gdclass.RenderingServerEnvironmentToneMapper //gd:RenderingServer.EnvironmentToneMapper
 
 const (
-	/*Output color as they came in. This can cause bright lighting to look blown out, with noticeable clipping in the output colors.*/
+	/*Does not modify color data, resulting in a linear tonemapping curve which unnaturally clips bright values, causing bright lighting to look blown out. The simplest and fastest tonemapper.*/
 	EnvToneMapperLinear EnvironmentToneMapper = 0
-	/*Use the Reinhard tonemapper. Performs a variation on rendered pixels' colors by this formula: [code]color = color / (1 + color)[/code]. This avoids clipping bright highlights, but the resulting image can look a bit dull.*/
+	/*A simple tonemapping curve that rolls off bright values to prevent clipping. This results in an image that can appear dull and low contrast. Slower than [constant ENV_TONE_MAPPER_LINEAR].
+	  [b]Note:[/b] When [member Environment.tonemap_white] is left at the default value of [code]1.0[/code], [constant ENV_TONE_MAPPER_REINHARD] produces an identical image to [constant ENV_TONE_MAPPER_LINEAR].*/
 	EnvToneMapperReinhard EnvironmentToneMapper = 1
-	/*Use the filmic tonemapper. This avoids clipping bright highlights, with a resulting image that usually looks more vivid than [constant ENV_TONE_MAPPER_REINHARD].*/
+	/*Uses a film-like tonemapping curve to prevent clipping of bright values and provide better contrast than [constant ENV_TONE_MAPPER_REINHARD]. Slightly slower than [constant ENV_TONE_MAPPER_REINHARD].*/
 	EnvToneMapperFilmic EnvironmentToneMapper = 2
-	/*Use the Academy Color Encoding System tonemapper. ACES is slightly more expensive than other options, but it handles bright lighting in a more realistic fashion by desaturating it as it becomes brighter. ACES typically has a more contrasted output compared to [constant ENV_TONE_MAPPER_REINHARD] and [constant ENV_TONE_MAPPER_FILMIC].
+	/*Uses a high-contrast film-like tonemapping curve and desaturates bright values for a more realistic appearance. Slightly slower than [constant ENV_TONE_MAPPER_FILMIC].
 	  [b]Note:[/b] This tonemapping operator is called "ACES Fitted" in Godot 3.x.*/
 	EnvToneMapperAces EnvironmentToneMapper = 3
+	/*Uses a film-like tonemapping curve and desaturates bright values for a more realistic appearance. Better than other tonemappers at maintaining the hue of colors as they become brighter. The slowest tonemapping option.
+	  [b]Note:[/b] [member Environment.tonemap_white] is fixed at a value of [code]16.29[/code], which makes [constant ENV_TONE_MAPPER_AGX] unsuitable for use with the Mobile rendering method.*/
+	EnvToneMapperAgx EnvironmentToneMapper = 4
 )
 
 type EnvironmentSSRRoughnessQuality = gdclass.RenderingServerEnvironmentSSRRoughnessQuality //gd:RenderingServer.EnvironmentSSRRoughnessQuality
@@ -12177,8 +12823,10 @@ const (
 	GlobalVarTypeSampler3d GlobalShaderParameterType = 26
 	/*Cubemap sampler global shader parameter ([code]global uniform samplerCube ...[/code]). Exposed as a [Cubemap] in the editor UI.*/
 	GlobalVarTypeSamplercube GlobalShaderParameterType = 27
+	/*External sampler global shader parameter ([code]global uniform samplerExternalOES ...[/code]). Exposed as a [ExternalTexture] in the editor UI.*/
+	GlobalVarTypeSamplerext GlobalShaderParameterType = 28
 	/*Represents the size of the [enum GlobalShaderParameterType] enum.*/
-	GlobalVarTypeMax GlobalShaderParameterType = 28
+	GlobalVarTypeMax GlobalShaderParameterType = 29
 )
 
 type RenderingInfo = gdclass.RenderingServerRenderingInfo //gd:RenderingServer.RenderingInfo
@@ -12194,8 +12842,35 @@ const (
 	RenderingInfoTextureMemUsed RenderingInfo = 3
 	/*Buffer memory used (in bytes). This includes vertex data, uniform buffers, and many miscellaneous buffer types used internally.*/
 	RenderingInfoBufferMemUsed RenderingInfo = 4
-	/*Video memory used (in bytes). When using the Forward+ or mobile rendering backends, this is always greater than the sum of [constant RENDERING_INFO_TEXTURE_MEM_USED] and [constant RENDERING_INFO_BUFFER_MEM_USED], since there is miscellaneous data not accounted for by those two metrics. When using the GL Compatibility backend, this is equal to the sum of [constant RENDERING_INFO_TEXTURE_MEM_USED] and [constant RENDERING_INFO_BUFFER_MEM_USED].*/
+	/*Video memory used (in bytes). When using the Forward+ or Mobile renderers, this is always greater than the sum of [constant RENDERING_INFO_TEXTURE_MEM_USED] and [constant RENDERING_INFO_BUFFER_MEM_USED], since there is miscellaneous data not accounted for by those two metrics. When using the Compatibility renderer, this is equal to the sum of [constant RENDERING_INFO_TEXTURE_MEM_USED] and [constant RENDERING_INFO_BUFFER_MEM_USED].*/
 	RenderingInfoVideoMemUsed RenderingInfo = 5
+	/*Number of pipeline compilations that were triggered by the 2D canvas renderer.*/
+	RenderingInfoPipelineCompilationsCanvas RenderingInfo = 6
+	/*Number of pipeline compilations that were triggered by loading meshes. These compilations will show up as longer loading times the first time a user runs the game and the pipeline is required.*/
+	RenderingInfoPipelineCompilationsMesh RenderingInfo = 7
+	/*Number of pipeline compilations that were triggered by building the surface cache before rendering the scene. These compilations will show up as a stutter when loading an scene the first time a user runs the game and the pipeline is required.*/
+	RenderingInfoPipelineCompilationsSurface RenderingInfo = 8
+	/*Number of pipeline compilations that were triggered while drawing the scene. These compilations will show up as stutters during gameplay the first time a user runs the game and the pipeline is required.*/
+	RenderingInfoPipelineCompilationsDraw RenderingInfo = 9
+	/*Number of pipeline compilations that were triggered to optimize the current scene. These compilations are done in the background and should not cause any stutters whatsoever.*/
+	RenderingInfoPipelineCompilationsSpecialization RenderingInfo = 10
+)
+
+type PipelineSource = gdclass.RenderingServerPipelineSource //gd:RenderingServer.PipelineSource
+
+const (
+	/*Pipeline compilation that was triggered by the 2D canvas renderer.*/
+	PipelineSourceCanvas PipelineSource = 0
+	/*Pipeline compilation that was triggered by loading a mesh.*/
+	PipelineSourceMesh PipelineSource = 1
+	/*Pipeline compilation that was triggered by building the surface cache before rendering the scene.*/
+	PipelineSourceSurface PipelineSource = 2
+	/*Pipeline compilation that was triggered while drawing the scene.*/
+	PipelineSourceDraw PipelineSource = 3
+	/*Pipeline compilation that was triggered to optimize the current scene.*/
+	PipelineSourceSpecialization PipelineSource = 4
+	/*Represents the size of the [enum PipelineSource] enum.*/
+	PipelineSourceMax PipelineSource = 5
 )
 
 type Features = gdclass.RenderingServerFeatures //gd:RenderingServer.Features
@@ -12205,4 +12880,12 @@ const (
 	FeatureMultithreaded Features = 1
 )
 
+type PropertyInfo struct {
+	ClassName  string       `gd:"class_name"`
+	Name       string       `gd:"name"`
+	Hint       int          `gd:"hint"`
+	HintString string       `gd:"hint_string"`
+	Type       reflect.Type `gd:"type"`
+	Usage      int          `gd:"usage"`
+}
 type Surface map[interface{}]interface{}

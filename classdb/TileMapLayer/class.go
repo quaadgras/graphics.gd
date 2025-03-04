@@ -49,6 +49,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Node for 2D tile-based maps. A [TileMapLayer] uses a [TileSet] which contain a list of tiles which are used to create grid-based maps. Unlike the [TileMap] node, which is deprecated, [TileMapLayer] has only one layer of tiles. You can use several [TileMapLayer] to achieve the same result as a [TileMap] node.
 For performance reasons, all TileMap updates are batched at the end of a frame. Notably, this means that scene tiles from a [TileSetScenesCollectionSource] may be initialized after their parent. This is only queued when inside the scene tree.
 To force an update earlier on, call [method update_internals].
+[b]Note:[/b] For performance and compatibility reasons, the coordinates serialized by [TileMapLayer] are limited to 16-bit signed integers, i.e. the range for X and Y coordinates is from [code]-32768[/code] to [code]32767[/code]. When saving tile data, tiles outside this range are wrapped.
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
 
@@ -73,6 +74,15 @@ type Interface interface {
 	//[b]Warning:[/b] The [param tile_data] object's sub-resources are the same as the one in the TileSet. Modifying them might impact the whole TileSet. Instead, make sure to duplicate those resources.
 	//[b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the [TileMapLayer] it needs an update.
 	TileDataRuntimeUpdate(coords Vector2i.XY, tile_data [1]gdclass.TileData)
+	//Called when this [TileMapLayer]'s cells need an internal update. This update may be caused from individual cells being modified or by a change in the [member tile_set] (causing all cells to be queued for an update). The first call to this function is always for initializing all the [TileMapLayer]'s cells. [param coords] contains the coordinates of all modified cells, roughly in the order they were modified. [param forced_cleanup] is [code]true[/code] when the [TileMapLayer]'s internals should be fully cleaned up. This is the case when:
+	//- The layer is disabled;
+	//- The layer is not visible;
+	//- [member tile_set] is set to [code]null[/code];
+	//- The node is removed from the tree;
+	//- The node is freed.
+	//Note that any internal update happening while one of these conditions is verified is considered to be a "cleanup". See also [method update_internals].
+	//[b]Warning:[/b] Implementing this method may degrade the [TileMapLayer]'s performance.
+	UpdateCells(coords []Vector2i.XY, forced_cleanup bool)
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -84,6 +94,7 @@ func (self implementation) UseTileDataRuntimeUpdate(coords Vector2i.XY) (_ bool)
 func (self implementation) TileDataRuntimeUpdate(coords Vector2i.XY, tile_data [1]gdclass.TileData) {
 	return
 }
+func (self implementation) UpdateCells(coords []Vector2i.XY, forced_cleanup bool) { return }
 
 /*
 Should return [code]true[/code] if the tile at coordinates [param coords] requires a runtime update.
@@ -115,6 +126,27 @@ func (Instance) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, coords V
 		defer pointers.End(tile_data[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, coords, tile_data)
+	}
+}
+
+/*
+Called when this [TileMapLayer]'s cells need an internal update. This update may be caused from individual cells being modified or by a change in the [member tile_set] (causing all cells to be queued for an update). The first call to this function is always for initializing all the [TileMapLayer]'s cells. [param coords] contains the coordinates of all modified cells, roughly in the order they were modified. [param forced_cleanup] is [code]true[/code] when the [TileMapLayer]'s internals should be fully cleaned up. This is the case when:
+- The layer is disabled;
+- The layer is not visible;
+- [member tile_set] is set to [code]null[/code];
+- The node is removed from the tree;
+- The node is freed.
+Note that any internal update happening while one of these conditions is verified is considered to be a "cleanup". See also [method update_internals].
+[b]Warning:[/b] Implementing this method may degrade the [TileMapLayer]'s performance.
+*/
+func (Instance) _update_cells(impl func(ptr unsafe.Pointer, coords []Vector2i.XY, forced_cleanup bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var coords = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalArray(coords))
+		var forced_cleanup = gd.UnsafeGet[bool](p_args, 1)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(coords)), forced_cleanup)
 	}
 }
 
@@ -190,6 +222,27 @@ func (self Instance) GetCellTileData(coords Vector2i.XY) [1]gdclass.TileData { /
 }
 
 /*
+Returns [code]true[/code] if the cell at coordinates [param coords] is flipped horizontally. The result is valid only for atlas sources.
+*/
+func (self Instance) IsCellFlippedH(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_flipped_h
+	return bool(class(self).IsCellFlippedH(Vector2i.XY(coords)))
+}
+
+/*
+Returns [code]true[/code] if the cell at coordinates [param coords] is flipped vertically. The result is valid only for atlas sources.
+*/
+func (self Instance) IsCellFlippedV(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_flipped_v
+	return bool(class(self).IsCellFlippedV(Vector2i.XY(coords)))
+}
+
+/*
+Returns [code]true[/code] if the cell at coordinates [param coords] is transposed. The result is valid only for atlas sources.
+*/
+func (self Instance) IsCellTransposed(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_transposed
+	return bool(class(self).IsCellTransposed(Vector2i.XY(coords)))
+}
+
+/*
 Returns a [Vector2i] array with the positions of all cells containing a tile. A cell is considered empty if its source identifier equals [code]-1[/code], its atlas coordinate identifier is [code]Vector2(-1, -1)[/code] and its alternative identifier is [code]-1[/code].
 */
 func (self Instance) GetUsedCells() []Vector2i.XY { //gd:TileMapLayer.get_used_cells
@@ -228,7 +281,7 @@ func (self Instance) SetPattern(position Vector2i.XY, pattern [1]gdclass.TileMap
 
 /*
 Update all the cells in the [param cells] coordinates array so that they use the given [param terrain] for the given [param terrain_set]. If an updated cell has the same terrain as one of its neighboring cells, this function tries to join the two. This function might update neighboring tiles if needed to create correct terrain transitions.
-If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
+If [param ignore_empty_terrains] is [code]true[/code], empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
 [b]Note:[/b] To work correctly, this method requires the [TileMapLayer]'s TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
 func (self Instance) SetCellsTerrainConnect(cells []Vector2i.XY, terrain_set int, terrain int) { //gd:TileMapLayer.set_cells_terrain_connect
@@ -237,7 +290,7 @@ func (self Instance) SetCellsTerrainConnect(cells []Vector2i.XY, terrain_set int
 
 /*
 Update all the cells in the [param path] coordinates array so that they use the given [param terrain] for the given [param terrain_set]. The function will also connect two successive cell in the path with the same terrain. This function might update neighboring tiles if needed to create correct terrain transitions.
-If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
+If [param ignore_empty_terrains] is [code]true[/code], empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
 [b]Note:[/b] To work correctly, this method requires the [TileMapLayer]'s TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
 func (self Instance) SetCellsTerrainPath(path []Vector2i.XY, terrain_set int, terrain int) { //gd:TileMapLayer.set_cells_terrain_path
@@ -284,7 +337,7 @@ func (self Instance) MapPattern(position_in_tilemap Vector2i.XY, coords_in_patte
 }
 
 /*
-Returns the list of all neighboring cells to the one at [param coords].
+Returns the list of all neighboring cells to the one at [param coords]. Any neighboring cell is one that is touching edges, so for a square cell 4 cells would be returned, for a hexagon 6 cells are returned.
 */
 func (self Instance) GetSurroundingCells(coords Vector2i.XY) []Vector2i.XY { //gd:TileMapLayer.get_surrounding_cells
 	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetSurroundingCells(Vector2i.XY(coords)))))
@@ -367,6 +420,14 @@ func (self Instance) TileSet() [1]gdclass.TileSet {
 
 func (self Instance) SetTileSet(value [1]gdclass.TileSet) {
 	class(self).SetTileSet(value)
+}
+
+func (self Instance) OcclusionEnabled() bool {
+	return bool(class(self).IsOcclusionEnabled())
+}
+
+func (self Instance) SetOcclusionEnabled(value bool) {
+	class(self).SetOcclusionEnabled(value)
 }
 
 func (self Instance) YSortOrigin() int {
@@ -463,6 +524,27 @@ func (class) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, coords Vect
 		defer pointers.End(tile_data[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, coords, tile_data)
+	}
+}
+
+/*
+Called when this [TileMapLayer]'s cells need an internal update. This update may be caused from individual cells being modified or by a change in the [member tile_set] (causing all cells to be queued for an update). The first call to this function is always for initializing all the [TileMapLayer]'s cells. [param coords] contains the coordinates of all modified cells, roughly in the order they were modified. [param forced_cleanup] is [code]true[/code] when the [TileMapLayer]'s internals should be fully cleaned up. This is the case when:
+- The layer is disabled;
+- The layer is not visible;
+- [member tile_set] is set to [code]null[/code];
+- The node is removed from the tree;
+- The node is freed.
+Note that any internal update happening while one of these conditions is verified is considered to be a "cleanup". See also [method update_internals].
+[b]Warning:[/b] Implementing this method may degrade the [TileMapLayer]'s performance.
+*/
+func (class) _update_cells(impl func(ptr unsafe.Pointer, coords Array.Contains[Vector2i.XY], forced_cleanup bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var coords = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalArray(coords))
+		var forced_cleanup = gd.UnsafeGet[bool](p_args, 1)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, coords, forced_cleanup)
 	}
 }
 
@@ -585,6 +667,48 @@ func (self class) GetCellTileData(coords Vector2i.XY) [1]gdclass.TileData { //gd
 }
 
 /*
+Returns [code]true[/code] if the cell at coordinates [param coords] is flipped horizontally. The result is valid only for atlas sources.
+*/
+//go:nosplit
+func (self class) IsCellFlippedH(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_flipped_h
+	var frame = callframe.New()
+	callframe.Arg(frame, coords)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_is_cell_flipped_h, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the cell at coordinates [param coords] is flipped vertically. The result is valid only for atlas sources.
+*/
+//go:nosplit
+func (self class) IsCellFlippedV(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_flipped_v
+	var frame = callframe.New()
+	callframe.Arg(frame, coords)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_is_cell_flipped_v, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the cell at coordinates [param coords] is transposed. The result is valid only for atlas sources.
+*/
+//go:nosplit
+func (self class) IsCellTransposed(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_transposed
+	var frame = callframe.New()
+	callframe.Arg(frame, coords)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_is_cell_transposed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns a [Vector2i] array with the positions of all cells containing a tile. A cell is considered empty if its source identifier equals [code]-1[/code], its atlas coordinate identifier is [code]Vector2(-1, -1)[/code] and its alternative identifier is [code]-1[/code].
 */
 //go:nosplit
@@ -657,7 +781,7 @@ func (self class) SetPattern(position Vector2i.XY, pattern [1]gdclass.TileMapPat
 
 /*
 Update all the cells in the [param cells] coordinates array so that they use the given [param terrain] for the given [param terrain_set]. If an updated cell has the same terrain as one of its neighboring cells, this function tries to join the two. This function might update neighboring tiles if needed to create correct terrain transitions.
-If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
+If [param ignore_empty_terrains] is [code]true[/code], empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
 [b]Note:[/b] To work correctly, this method requires the [TileMapLayer]'s TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
 //go:nosplit
@@ -674,7 +798,7 @@ func (self class) SetCellsTerrainConnect(cells Array.Contains[Vector2i.XY], terr
 
 /*
 Update all the cells in the [param path] coordinates array so that they use the given [param terrain] for the given [param terrain_set]. The function will also connect two successive cell in the path with the same terrain. This function might update neighboring tiles if needed to create correct terrain transitions.
-If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
+If [param ignore_empty_terrains] is [code]true[/code], empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
 [b]Note:[/b] To work correctly, this method requires the [TileMapLayer]'s TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
 //go:nosplit
@@ -760,7 +884,7 @@ func (self class) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern 
 }
 
 /*
-Returns the list of all neighboring cells to the one at [param coords].
+Returns the list of all neighboring cells to the one at [param coords]. Any neighboring cell is one that is touching edges, so for a square cell 4 cells would be returned, for a hexagon 6 cells are returned.
 */
 //go:nosplit
 func (self class) GetSurroundingCells(coords Vector2i.XY) Array.Contains[Vector2i.XY] { //gd:TileMapLayer.get_surrounding_cells
@@ -989,6 +1113,25 @@ func (self class) GetCollisionVisibilityMode() gdclass.TileMapLayerDebugVisibili
 }
 
 //go:nosplit
+func (self class) SetOcclusionEnabled(enabled bool) { //gd:TileMapLayer.set_occlusion_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_set_occlusion_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsOcclusionEnabled() bool { //gd:TileMapLayer.is_occlusion_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_is_occlusion_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
 func (self class) SetNavigationEnabled(enabled bool) { //gd:TileMapLayer.set_navigation_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
@@ -1074,6 +1217,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._use_tile_data_runtime_update)
 	case "_tile_data_runtime_update":
 		return reflect.ValueOf(self._tile_data_runtime_update)
+	case "_update_cells":
+		return reflect.ValueOf(self._update_cells)
 	default:
 		return gd.VirtualByName(Node2D.Advanced(self.AsNode2D()), name)
 	}
@@ -1085,6 +1230,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._use_tile_data_runtime_update)
 	case "_tile_data_runtime_update":
 		return reflect.ValueOf(self._tile_data_runtime_update)
+	case "_update_cells":
+		return reflect.ValueOf(self._update_cells)
 	default:
 		return gd.VirtualByName(Node2D.Instance(self.AsNode2D()), name)
 	}

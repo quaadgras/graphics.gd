@@ -45,6 +45,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 /*
 [SubViewport] Isolates a rectangular region of a scene to be displayed independently. This can be used, for example, to display UI in 3D space.
 [b]Note:[/b] [SubViewport] is a [Viewport] that isn't a [Window], i.e. it doesn't draw anything by itself. To display anything, [SubViewport] must have a non-zero size and be either put inside a [SubViewportContainer] or assigned to a [ViewportTexture].
+[b]Note:[/b] [InputEvent]s are not passed to a standalone [SubViewport] by default. To ensure [InputEvent] propagation, a [SubViewport] can be placed inside of a [SubViewportContainer].
 */
 type Instance [1]gdclass.SubViewport
 

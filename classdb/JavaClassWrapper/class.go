@@ -43,6 +43,16 @@ var _ = slices.Delete[[]struct{}, struct{}]
 /*
 The JavaClassWrapper singleton provides a way for the Godot application to send and receive data through the [url=https://developer.android.com/training/articles/perf-jni]Java Native Interface[/url] (JNI).
 [b]Note:[/b] This singleton is only available in Android builds.
+[codeblock]
+var LocalDateTime = JavaClassWrapper.wrap("java.time.LocalDateTime")
+var DateTimeFormatter = JavaClassWrapper.wrap("java.time.format.DateTimeFormatter")
+
+var datetime = LocalDateTime.now()
+var formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+
+print(datetime.format(formatter))
+[/codeblock]
+[b]Warning:[/b] When calling Java methods, be sure to check [method JavaClassWrapper.get_exception] to check if the method threw an exception.
 */
 var self [1]gdclass.JavaClassWrapper
 var once sync.Once
@@ -59,6 +69,15 @@ Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type tha
 func Wrap(name string) [1]gdclass.JavaClass { //gd:JavaClassWrapper.wrap
 	once.Do(singleton)
 	return [1]gdclass.JavaClass(class(self).Wrap(String.New(name)))
+}
+
+/*
+Returns the Java exception from the last call into a Java class. If there was no exception, it will return [code]null[/code].
+[b]Note:[/b] This method only works on Android. On every other platform, this method will always return [code]null[/code].
+*/
+func GetException() [1]gdclass.JavaObject { //gd:JavaClassWrapper.get_exception
+	once.Do(singleton)
+	return [1]gdclass.JavaObject(class(self).GetException())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -82,6 +101,20 @@ func (self class) Wrap(name String.Readable) [1]gdclass.JavaClass { //gd:JavaCla
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaClassWrapper.Bind_wrap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.JavaClass{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaClass](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the Java exception from the last call into a Java class. If there was no exception, it will return [code]null[/code].
+[b]Note:[/b] This method only works on Android. On every other platform, this method will always return [code]null[/code].
+*/
+//go:nosplit
+func (self class) GetException() [1]gdclass.JavaObject { //gd:JavaClassWrapper.get_exception
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaClassWrapper.Bind_get_exception, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.JavaObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaObject](r_ret.Get())}
 	frame.Free()
 	return ret
 }

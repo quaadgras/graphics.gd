@@ -1,0 +1,369 @@
+// Package OpenXRDpadBindingModifier provides methods for working with OpenXRDpadBindingModifier object instances.
+package OpenXRDpadBindingModifier
+
+import "unsafe"
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/classdb/OpenXRBindingModifier"
+import "graphics.gd/classdb/OpenXRIPBindingModifier"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+
+var _ Object.ID
+var _ RefCounted.Instance
+var _ unsafe.Pointer
+var _ reflect.Type
+var _ callframe.Frame
+var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
+var _ Callable.Function
+var _ Dictionary.Any
+var _ RID.Any
+var _ String.Readable
+var _ Path.ToNode
+var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
+var _ = slices.Delete[[]struct{}, struct{}]
+
+/*
+The DPad binding modifier converts an axis input to a dpad output, emulating a DPad. New input paths for each dpad direction will be added to the interaction profile. When bound to actions the DPad emulation will be activated. You should [b]not[/b] combine dpad inputs with normal inputs in the same action set for the same control, this will result in an error being returned when suggested bindings are submitted to OpenXR.
+See [url=https://registry.khronos.org/OpenXR/specs/1.1/html/xrspec.html#XR_EXT_dpad_binding]XR_EXT_dpad_binding[/url] for in-depth details.
+[b]Note:[/b] If the DPad binding modifier extension is enabled, all dpad binding paths will be available in the action map. Adding the modifier to an interaction profile allows you to further customize the behavior.
+*/
+type Instance [1]gdclass.OpenXRDpadBindingModifier
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
+type Any interface {
+	gd.IsClass
+	AsOpenXRDpadBindingModifier() Instance
+}
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
+type class [1]gdclass.OpenXRDpadBindingModifier
+
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func New() Instance {
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRDpadBindingModifier"))
+	casted := Instance{*(*gdclass.OpenXRDpadBindingModifier)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
+}
+
+func (self Instance) ActionSet() [1]gdclass.OpenXRActionSet {
+	return [1]gdclass.OpenXRActionSet(class(self).GetActionSet())
+}
+
+func (self Instance) SetActionSet(value [1]gdclass.OpenXRActionSet) {
+	class(self).SetActionSet(value)
+}
+
+func (self Instance) InputPath() string {
+	return string(class(self).GetInputPath().String())
+}
+
+func (self Instance) SetInputPath(value string) {
+	class(self).SetInputPath(String.New(value))
+}
+
+func (self Instance) Threshold() Float.X {
+	return Float.X(Float.X(class(self).GetThreshold()))
+}
+
+func (self Instance) SetThreshold(value Float.X) {
+	class(self).SetThreshold(float64(value))
+}
+
+func (self Instance) ThresholdReleased() Float.X {
+	return Float.X(Float.X(class(self).GetThresholdReleased()))
+}
+
+func (self Instance) SetThresholdReleased(value Float.X) {
+	class(self).SetThresholdReleased(float64(value))
+}
+
+func (self Instance) CenterRegion() Float.X {
+	return Float.X(Float.X(class(self).GetCenterRegion()))
+}
+
+func (self Instance) SetCenterRegion(value Float.X) {
+	class(self).SetCenterRegion(float64(value))
+}
+
+func (self Instance) WedgeAngle() Float.X {
+	return Float.X(Float.X(class(self).GetWedgeAngle()))
+}
+
+func (self Instance) SetWedgeAngle(value Float.X) {
+	class(self).SetWedgeAngle(float64(value))
+}
+
+func (self Instance) IsSticky() bool {
+	return bool(class(self).GetIsSticky())
+}
+
+func (self Instance) SetIsSticky(value bool) {
+	class(self).SetIsSticky(value)
+}
+
+func (self Instance) OnHaptic() [1]gdclass.OpenXRHapticBase {
+	return [1]gdclass.OpenXRHapticBase(class(self).GetOnHaptic())
+}
+
+func (self Instance) SetOnHaptic(value [1]gdclass.OpenXRHapticBase) {
+	class(self).SetOnHaptic(value)
+}
+
+func (self Instance) OffHaptic() [1]gdclass.OpenXRHapticBase {
+	return [1]gdclass.OpenXRHapticBase(class(self).GetOffHaptic())
+}
+
+func (self Instance) SetOffHaptic(value [1]gdclass.OpenXRHapticBase) {
+	class(self).SetOffHaptic(value)
+}
+
+//go:nosplit
+func (self class) SetActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRDpadBindingModifier.set_action_set
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(action_set[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_action_set, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetActionSet() [1]gdclass.OpenXRActionSet { //gd:OpenXRDpadBindingModifier.get_action_set
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_action_set, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionSet](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetInputPath(input_path String.Readable) { //gd:OpenXRDpadBindingModifier.set_input_path
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(input_path)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_input_path, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetInputPath() String.Readable { //gd:OpenXRDpadBindingModifier.get_input_path
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_input_path, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetThreshold(threshold float64) { //gd:OpenXRDpadBindingModifier.set_threshold
+	var frame = callframe.New()
+	callframe.Arg(frame, threshold)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetThreshold() float64 { //gd:OpenXRDpadBindingModifier.get_threshold
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetThresholdReleased(threshold_released float64) { //gd:OpenXRDpadBindingModifier.set_threshold_released
+	var frame = callframe.New()
+	callframe.Arg(frame, threshold_released)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_threshold_released, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetThresholdReleased() float64 { //gd:OpenXRDpadBindingModifier.get_threshold_released
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_threshold_released, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetCenterRegion(center_region float64) { //gd:OpenXRDpadBindingModifier.set_center_region
+	var frame = callframe.New()
+	callframe.Arg(frame, center_region)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_center_region, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetCenterRegion() float64 { //gd:OpenXRDpadBindingModifier.get_center_region
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_center_region, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetWedgeAngle(wedge_angle float64) { //gd:OpenXRDpadBindingModifier.set_wedge_angle
+	var frame = callframe.New()
+	callframe.Arg(frame, wedge_angle)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_wedge_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetWedgeAngle() float64 { //gd:OpenXRDpadBindingModifier.get_wedge_angle
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_wedge_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetIsSticky(is_sticky bool) { //gd:OpenXRDpadBindingModifier.set_is_sticky
+	var frame = callframe.New()
+	callframe.Arg(frame, is_sticky)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_is_sticky, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetIsSticky() bool { //gd:OpenXRDpadBindingModifier.get_is_sticky
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_is_sticky, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetOnHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRDpadBindingModifier.set_on_haptic
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(haptic[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_on_haptic, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetOnHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRDpadBindingModifier.get_on_haptic
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_on_haptic, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.OpenXRHapticBase{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRHapticBase](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetOffHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRDpadBindingModifier.set_off_haptic
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(haptic[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_off_haptic, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetOffHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRDpadBindingModifier.get_off_haptic
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_off_haptic, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.OpenXRHapticBase{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRHapticBase](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+func (self class) AsOpenXRDpadBindingModifier() Advanced {
+	return *((*Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsOpenXRDpadBindingModifier() Instance {
+	return *((*Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsOpenXRIPBindingModifier() OpenXRIPBindingModifier.Advanced {
+	return *((*OpenXRIPBindingModifier.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsOpenXRIPBindingModifier() OpenXRIPBindingModifier.Instance {
+	return *((*OpenXRIPBindingModifier.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsOpenXRBindingModifier() OpenXRBindingModifier.Advanced {
+	return *((*OpenXRBindingModifier.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsOpenXRBindingModifier() OpenXRBindingModifier.Instance {
+	return *((*OpenXRBindingModifier.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsResource() Resource.Advanced {
+	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsResource() Resource.Instance {
+	return *((*Resource.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+
+func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(OpenXRIPBindingModifier.Advanced(self.AsOpenXRIPBindingModifier()), name)
+	}
+}
+
+func (self Instance) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(OpenXRIPBindingModifier.Instance(self.AsOpenXRIPBindingModifier()), name)
+	}
+}
+func init() {
+	gdclass.Register("OpenXRDpadBindingModifier", func(ptr gd.Object) any {
+		return [1]gdclass.OpenXRDpadBindingModifier{*(*gdclass.OpenXRDpadBindingModifier)(unsafe.Pointer(&ptr))}
+	})
+}

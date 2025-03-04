@@ -67,12 +67,20 @@ type Interface interface {
 	//Return [code]true[/code] if this plugin will customize resources based on the platform and features used.
 	//When enabled, [method _get_customization_configuration_hash] and [method _customize_resource] will be called and must be implemented.
 	BeginCustomizeResources(platform [1]gdclass.EditorExportPlatform, features []string) bool
-	//Customize a resource. If changes are made to it, return the same or a new resource. Otherwise, return [code]null[/code].
-	//The [i]path[/i] argument is only used when customizing an actual file, otherwise this means that this resource is part of another one and it will be empty.
+	//Customize a resource. If changes are made to it, return the same or a new resource. Otherwise, return [code]null[/code]. When a new resource is returned, [param resource] will be replaced by a copy of the new resource.
+	//The [param path] argument is only used when customizing an actual file, otherwise this means that this resource is part of another one and it will be empty.
 	//Implementing this method is required if [method _begin_customize_resources] returns [code]true[/code].
+	//[b]Note:[/b] When customizing any of the following types and returning another resource, the other resource should not be skipped using [method skip] in [method _export_file]:
+	//- [AtlasTexture]
+	//- [CompressedCubemap]
+	//- [CompressedCubemapArray]
+	//- [CompressedTexture2D]
+	//- [CompressedTexture2DArray]
+	//- [CompressedTexture3D]
 	CustomizeResource(resource [1]gdclass.Resource, path string) [1]gdclass.Resource
 	//Return [code]true[/code] if this plugin will customize scenes based on the platform and features used.
 	//When enabled, [method _get_customization_configuration_hash] and [method _customize_scene] will be called and must be implemented.
+	//[b]Note:[/b] [method _customize_scene] will only be called for scenes that have been modified since the last export.
 	BeginCustomizeScenes(platform [1]gdclass.EditorExportPlatform, features []string) bool
 	//Customize a scene. If changes are made to it, return the same or a new scene. Otherwise, return [code]null[/code]. If a new scene is returned, it is up to you to dispose of the old one.
 	//Implementing this method is required if [method _begin_customize_scenes] returns [code]true[/code].
@@ -111,6 +119,9 @@ type Interface interface {
 	GetExportOptionsOverrides(platform [1]gdclass.EditorExportPlatform) map[any]any
 	//Return [code]true[/code], if the result of [method _get_export_options] has changed and the export options of preset corresponding to [param platform] should be updated.
 	ShouldUpdateExportOptions(platform [1]gdclass.EditorExportPlatform) bool
+	//[b]Optional.[/b]
+	//Validates [param option] and returns the visibility for the specified [param platform]. The default implementation returns [code]true[/code] for all options.
+	GetExportOptionVisibility(platform [1]gdclass.EditorExportPlatform, option string) bool
 	//Check the requirements for the given [param option] and return a non-empty warning string if they are not met.
 	//[b]Note:[/b] Use [method get_option] to check the value of the export options.
 	GetExportOptionWarning(platform [1]gdclass.EditorExportPlatform, option string) string
@@ -177,6 +188,9 @@ func (self implementation) GetExportOptionsOverrides(platform [1]gdclass.EditorE
 	return
 }
 func (self implementation) ShouldUpdateExportOptions(platform [1]gdclass.EditorExportPlatform) (_ bool) {
+	return
+}
+func (self implementation) GetExportOptionVisibility(platform [1]gdclass.EditorExportPlatform, option string) (_ bool) {
 	return
 }
 func (self implementation) GetExportOptionWarning(platform [1]gdclass.EditorExportPlatform, option string) (_ string) {
@@ -271,9 +285,16 @@ func (Instance) _begin_customize_resources(impl func(ptr unsafe.Pointer, platfor
 }
 
 /*
-Customize a resource. If changes are made to it, return the same or a new resource. Otherwise, return [code]null[/code].
-The [i]path[/i] argument is only used when customizing an actual file, otherwise this means that this resource is part of another one and it will be empty.
+Customize a resource. If changes are made to it, return the same or a new resource. Otherwise, return [code]null[/code]. When a new resource is returned, [param resource] will be replaced by a copy of the new resource.
+The [param path] argument is only used when customizing an actual file, otherwise this means that this resource is part of another one and it will be empty.
 Implementing this method is required if [method _begin_customize_resources] returns [code]true[/code].
+[b]Note:[/b] When customizing any of the following types and returning another resource, the other resource should not be skipped using [method skip] in [method _export_file]:
+- [AtlasTexture]
+- [CompressedCubemap]
+- [CompressedCubemapArray]
+- [CompressedTexture2D]
+- [CompressedTexture2DArray]
+- [CompressedTexture3D]
 */
 func (Instance) _customize_resource(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path string) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -296,6 +317,7 @@ func (Instance) _customize_resource(impl func(ptr unsafe.Pointer, resource [1]gd
 /*
 Return [code]true[/code] if this plugin will customize scenes based on the platform and features used.
 When enabled, [method _get_customization_configuration_hash] and [method _customize_scene] will be called and must be implemented.
+[b]Note:[/b] [method _customize_scene] will only be called for scenes that have been modified since the last export.
 */
 func (Instance) _begin_customize_scenes(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, features []string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -435,6 +457,23 @@ func (Instance) _should_update_export_options(impl func(ptr unsafe.Pointer, plat
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+[b]Optional.[/b]
+Validates [param option] and returns the visibility for the specified [param platform]. The default implementation returns [code]true[/code] for all options.
+*/
+func (Instance) _get_export_option_visibility(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, option string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
+		defer pointers.End(platform[0])
+		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(option))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform, option.String())
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -740,6 +779,20 @@ func (self Instance) GetOption(name string) any { //gd:EditorExportPlugin.get_op
 	return any(class(self).GetOption(String.Name(String.New(name))).Interface())
 }
 
+/*
+Returns currently used export preset.
+*/
+func (self Instance) GetExportPreset() [1]gdclass.EditorExportPreset { //gd:EditorExportPlugin.get_export_preset
+	return [1]gdclass.EditorExportPreset(class(self).GetExportPreset())
+}
+
+/*
+Returns currently used export platform.
+*/
+func (self Instance) GetExportPlatform() [1]gdclass.EditorExportPlatform { //gd:EditorExportPlugin.get_export_platform
+	return [1]gdclass.EditorExportPlatform(class(self).GetExportPlatform())
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.EditorExportPlugin
@@ -822,9 +875,16 @@ func (class) _begin_customize_resources(impl func(ptr unsafe.Pointer, platform [
 }
 
 /*
-Customize a resource. If changes are made to it, return the same or a new resource. Otherwise, return [code]null[/code].
-The [i]path[/i] argument is only used when customizing an actual file, otherwise this means that this resource is part of another one and it will be empty.
+Customize a resource. If changes are made to it, return the same or a new resource. Otherwise, return [code]null[/code]. When a new resource is returned, [param resource] will be replaced by a copy of the new resource.
+The [param path] argument is only used when customizing an actual file, otherwise this means that this resource is part of another one and it will be empty.
 Implementing this method is required if [method _begin_customize_resources] returns [code]true[/code].
+[b]Note:[/b] When customizing any of the following types and returning another resource, the other resource should not be skipped using [method skip] in [method _export_file]:
+- [AtlasTexture]
+- [CompressedCubemap]
+- [CompressedCubemapArray]
+- [CompressedTexture2D]
+- [CompressedTexture2DArray]
+- [CompressedTexture3D]
 */
 func (class) _customize_resource(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path String.Readable) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -847,6 +907,7 @@ func (class) _customize_resource(impl func(ptr unsafe.Pointer, resource [1]gdcla
 /*
 Return [code]true[/code] if this plugin will customize scenes based on the platform and features used.
 When enabled, [method _get_customization_configuration_hash] and [method _customize_scene] will be called and must be implemented.
+[b]Note:[/b] [method _customize_scene] will only be called for scenes that have been modified since the last export.
 */
 func (class) _begin_customize_scenes(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, features Packed.Strings) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -986,6 +1047,23 @@ func (class) _should_update_export_options(impl func(ptr unsafe.Pointer, platfor
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+[b]Optional.[/b]
+Validates [param option] and returns the visibility for the specified [param platform]. The default implementation returns [code]true[/code] for all options.
+*/
+func (class) _get_export_option_visibility(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, option String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
+		defer pointers.End(platform[0])
+		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalString(option))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform, option)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -1355,6 +1433,32 @@ func (self class) GetOption(name String.Name) variant.Any { //gd:EditorExportPlu
 	frame.Free()
 	return ret
 }
+
+/*
+Returns currently used export preset.
+*/
+//go:nosplit
+func (self class) GetExportPreset() [1]gdclass.EditorExportPreset { //gd:EditorExportPlugin.get_export_preset
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_get_export_preset, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.EditorExportPreset{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorExportPreset](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Returns currently used export platform.
+*/
+//go:nosplit
+func (self class) GetExportPlatform() [1]gdclass.EditorExportPlatform { //gd:EditorExportPlugin.get_export_platform
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_get_export_platform, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.EditorExportPlatform{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorExportPlatform](r_ret.Get())}
+	frame.Free()
+	return ret
+}
 func (self class) AsEditorExportPlugin() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorExportPlugin() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
 func (self class) AsRefCounted() [1]gd.RefCounted {
@@ -1392,6 +1496,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_export_options_overrides)
 	case "_should_update_export_options":
 		return reflect.ValueOf(self._should_update_export_options)
+	case "_get_export_option_visibility":
+		return reflect.ValueOf(self._get_export_option_visibility)
 	case "_get_export_option_warning":
 		return reflect.ValueOf(self._get_export_option_warning)
 	case "_get_export_features":
@@ -1445,6 +1551,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_export_options_overrides)
 	case "_should_update_export_options":
 		return reflect.ValueOf(self._should_update_export_options)
+	case "_get_export_option_visibility":
+		return reflect.ValueOf(self._get_export_option_visibility)
 	case "_get_export_option_warning":
 		return reflect.ValueOf(self._get_export_option_warning)
 	case "_get_export_features":

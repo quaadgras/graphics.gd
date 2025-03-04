@@ -41,8 +41,8 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-GLTFAccessor is a data structure representing GLTF a [code]accessor[/code] that would be found in the [code]"accessors"[/code] array. A buffer is a blob of binary data. A buffer view is a slice of a buffer. An accessor is a typed interpretation of the data in a buffer view.
-Most custom data stored in GLTF does not need accessors, only buffer views (see [GLTFBufferView]). Accessors are for more advanced use cases such as interleaved mesh data encoded for the GPU.
+GLTFAccessor is a data structure representing a glTF [code]accessor[/code] that would be found in the [code]"accessors"[/code] array. A buffer is a blob of binary data. A buffer view is a slice of a buffer. An accessor is a typed interpretation of the data in a buffer view.
+Most custom data stored in glTF does not need accessors, only buffer views (see [GLTFBufferView]). Accessors are for more advanced use cases such as interleaved mesh data encoded for the GPU.
 */
 type Instance [1]gdclass.GLTFAccessor
 
@@ -528,4 +528,33 @@ const (
 	TypeMat3 GLTFAccessorType = 5
 	/*Accessor type "MAT4". For the glTF object model, this maps to "float4x4", represented in the glTF JSON as an array of sixteen floats.*/
 	TypeMat4 GLTFAccessorType = 6
+)
+
+type GLTFComponentType = gdclass.GLTFAccessorGLTFComponentType //gd:GLTFAccessor.GLTFComponentType
+
+const (
+	/*Component type "NONE". This is not a valid component type, and is used to indicate that the component type is not set.*/
+	ComponentTypeNone GLTFComponentType = 0
+	/*Component type "BYTE". The value is [code]0x1400[/code] which comes from OpenGL. This indicates data is stored in 1-byte or 8-bit signed integers. This is a core part of the glTF specification.*/
+	ComponentTypeSignedByte GLTFComponentType = 5120
+	/*Component type "UNSIGNED_BYTE". The value is [code]0x1401[/code] which comes from OpenGL. This indicates data is stored in 1-byte or 8-bit unsigned integers. This is a core part of the glTF specification.*/
+	ComponentTypeUnsignedByte GLTFComponentType = 5121
+	/*Component type "SHORT". The value is [code]0x1402[/code] which comes from OpenGL. This indicates data is stored in 2-byte or 16-bit signed integers. This is a core part of the glTF specification.*/
+	ComponentTypeSignedShort GLTFComponentType = 5122
+	/*Component type "UNSIGNED_SHORT". The value is [code]0x1403[/code] which comes from OpenGL. This indicates data is stored in 2-byte or 16-bit unsigned integers. This is a core part of the glTF specification.*/
+	ComponentTypeUnsignedShort GLTFComponentType = 5123
+	/*Component type "INT". The value is [code]0x1404[/code] which comes from OpenGL. This indicates data is stored in 4-byte or 32-bit signed integers. This is NOT a core part of the glTF specification, and may not be supported by all glTF importers. May be used by some extensions including [code]KHR_interactivity[/code].*/
+	ComponentTypeSignedInt GLTFComponentType = 5124
+	/*Component type "UNSIGNED_INT". The value is [code]0x1405[/code] which comes from OpenGL. This indicates data is stored in 4-byte or 32-bit unsigned integers. This is a core part of the glTF specification.*/
+	ComponentTypeUnsignedInt GLTFComponentType = 5125
+	/*Component type "FLOAT". The value is [code]0x1406[/code] which comes from OpenGL. This indicates data is stored in 4-byte or 32-bit floating-point numbers. This is a core part of the glTF specification.*/
+	ComponentTypeSingleFloat GLTFComponentType = 5126
+	/*Component type "DOUBLE". The value is [code]0x140A[/code] which comes from OpenGL. This indicates data is stored in 8-byte or 64-bit floating-point numbers. This is NOT a core part of the glTF specification, and may not be supported by all glTF importers. May be used by some extensions including [code]KHR_interactivity[/code].*/
+	ComponentTypeDoubleFloat GLTFComponentType = 5130
+	/*Component type "HALF_FLOAT". The value is [code]0x140B[/code] which comes from OpenGL. This indicates data is stored in 2-byte or 16-bit floating-point numbers. This is NOT a core part of the glTF specification, and may not be supported by all glTF importers. May be used by some extensions including [code]KHR_interactivity[/code].*/
+	ComponentTypeHalfFloat GLTFComponentType = 5131
+	/*Component type "LONG". The value is [code]0x140E[/code] which comes from OpenGL. This indicates data is stored in 8-byte or 64-bit signed integers. This is NOT a core part of the glTF specification, and may not be supported by all glTF importers. May be used by some extensions including [code]KHR_interactivity[/code].*/
+	ComponentTypeSignedLong GLTFComponentType = 5134
+	/*Component type "UNSIGNED_LONG". The value is [code]0x140F[/code] which comes from OpenGL. This indicates data is stored in 8-byte or 64-bit unsigned integers. This is NOT a core part of the glTF specification, and may not be supported by all glTF importers. May be used by some extensions including [code]KHR_interactivity[/code].*/
+	ComponentTypeUnsignedLong GLTFComponentType = 5135
 )

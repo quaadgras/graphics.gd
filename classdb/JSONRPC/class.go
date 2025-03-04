@@ -268,6 +268,10 @@ const (
 	InternalError ErrorCode = -32603
 )
 
+type Notification struct {
+	Method string      `gd:"method"`
+	Params interface{} `gd:"params"`
+}
 type Request struct {
 	Method string      `gd:"method"`
 	Params interface{} `gd:"params"`
@@ -276,10 +280,6 @@ type Request struct {
 type Response struct {
 	Result interface{} `gd:"result"`
 	ID     string      `gd:"id"`
-}
-type Notification struct {
-	Method string      `gd:"method"`
-	Params interface{} `gd:"params"`
 }
 type ResponseError struct {
 	Code    int    `gd:"code"`

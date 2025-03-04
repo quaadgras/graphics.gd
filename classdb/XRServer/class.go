@@ -199,6 +199,16 @@ func SetWorldOrigin(value Transform3D.BasisOrigin) {
 	class(self).SetWorldOrigin(Transform3D.BasisOrigin(value))
 }
 
+func CameraLockedToOrigin() bool {
+	once.Do(singleton)
+	return bool(class(self).IsCameraLockedToOrigin())
+}
+
+func SetCameraLockedToOrigin(value bool) {
+	once.Do(singleton)
+	class(self).SetCameraLockedToOrigin(value)
+}
+
 func PrimaryInterface() [1]gdclass.XRInterface {
 	once.Do(singleton)
 	return [1]gdclass.XRInterface(class(self).GetPrimaryInterface())
@@ -297,6 +307,25 @@ func (self class) GetHmdTransform() Transform3D.BasisOrigin { //gd:XRServer.get_
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_hmd_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetCameraLockedToOrigin(enabled bool) { //gd:XRServer.set_camera_locked_to_origin
+	var frame = callframe.New()
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_set_camera_locked_to_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsCameraLockedToOrigin() bool { //gd:XRServer.is_camera_locked_to_origin
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_is_camera_locked_to_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

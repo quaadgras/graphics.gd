@@ -396,6 +396,14 @@ func (self Instance) SetMaxLinesVisible(value int) {
 	class(self).SetMaxLinesVisible(int64(value))
 }
 
+func (self Instance) LineSpacing() Float.X {
+	return Float.X(Float.X(class(self).GetLineSpacing()))
+}
+
+func (self Instance) SetLineSpacing(value Float.X) {
+	class(self).SetLineSpacing(float64(value))
+}
+
 /*
 Clears text paragraph (removes text and inline objects).
 */
@@ -816,6 +824,25 @@ func (self class) GetMaxLinesVisible() int64 { //gd:TextParagraph.get_max_lines_
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_max_lines_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetLineSpacing(line_spacing float64) { //gd:TextParagraph.set_line_spacing
+	var frame = callframe.New()
+	callframe.Arg(frame, line_spacing)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_set_line_spacing, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetLineSpacing() float64 { //gd:TextParagraph.get_line_spacing
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_line_spacing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

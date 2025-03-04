@@ -73,6 +73,32 @@ func New() Instance {
 	return casted
 }
 
+func (self Instance) OpType() gdclass.VisualShaderNodeRemapOpType {
+	return gdclass.VisualShaderNodeRemapOpType(class(self).GetOpType())
+}
+
+func (self Instance) SetOpType(value gdclass.VisualShaderNodeRemapOpType) {
+	class(self).SetOpType(value)
+}
+
+//go:nosplit
+func (self class) SetOpType(op_type gdclass.VisualShaderNodeRemapOpType) { //gd:VisualShaderNodeRemap.set_op_type
+	var frame = callframe.New()
+	callframe.Arg(frame, op_type)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeRemap.Bind_set_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetOpType() gdclass.VisualShaderNodeRemapOpType { //gd:VisualShaderNodeRemap.get_op_type
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.VisualShaderNodeRemapOpType](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeRemap.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
 func (self class) AsVisualShaderNodeRemap() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsVisualShaderNodeRemap() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
 func (self class) AsVisualShaderNode() VisualShaderNode.Advanced {
@@ -112,3 +138,24 @@ func init() {
 		return [1]gdclass.VisualShaderNodeRemap{*(*gdclass.VisualShaderNodeRemap)(unsafe.Pointer(&ptr))}
 	})
 }
+
+type OpType = gdclass.VisualShaderNodeRemapOpType //gd:VisualShaderNodeRemap.OpType
+
+const (
+	/*A floating-point scalar type.*/
+	OpTypeScalar OpType = 0
+	/*A 2D vector type.*/
+	OpTypeVector2d OpType = 1
+	/*The [code]value[/code] port uses a 2D vector type, while the [code]input min[/code], [code]input max[/code], [code]output min[/code], and [code]output max[/code] ports use a floating-point scalar type.*/
+	OpTypeVector2dScalar OpType = 2
+	/*A 3D vector type.*/
+	OpTypeVector3d OpType = 3
+	/*The [code]value[/code] port uses a 3D vector type, while the [code]input min[/code], [code]input max[/code], [code]output min[/code], and [code]output max[/code] ports use a floating-point scalar type.*/
+	OpTypeVector3dScalar OpType = 4
+	/*A 4D vector type.*/
+	OpTypeVector4d OpType = 5
+	/*The [code]value[/code] port uses a 4D vector type, while the [code]input min[/code], [code]input max[/code], [code]output min[/code], and [code]output max[/code] ports use a floating-point scalar type.*/
+	OpTypeVector4dScalar OpType = 6
+	/*Represents the size of the [enum OpType] enum.*/
+	OpTypeMax OpType = 7
+)

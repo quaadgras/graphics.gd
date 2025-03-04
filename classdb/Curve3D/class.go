@@ -255,6 +255,14 @@ func New() Instance {
 	return casted
 }
 
+func (self Instance) Closed() bool {
+	return bool(class(self).IsClosed())
+}
+
+func (self Instance) SetClosed(value bool) {
+	class(self).SetClosed(value)
+}
+
 func (self Instance) BakeInterval() Float.X {
 	return Float.X(Float.X(class(self).GetBakeInterval()))
 }
@@ -471,6 +479,25 @@ func (self class) Samplef(fofs float64) Vector3.XYZ { //gd:Curve3D.samplef
 	callframe.Arg(frame, fofs)
 	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_samplef, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetClosed(closed bool) { //gd:Curve3D.set_closed
+	var frame = callframe.New()
+	callframe.Arg(frame, closed)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_closed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsClosed() bool { //gd:Curve3D.is_closed
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_is_closed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

@@ -1,0 +1,967 @@
+// Package LookAtModifier3D provides methods for working with LookAtModifier3D object instances.
+package LookAtModifier3D
+
+import "unsafe"
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/SkeletonModifier3D"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector3"
+
+var _ Object.ID
+var _ RefCounted.Instance
+var _ unsafe.Pointer
+var _ reflect.Type
+var _ callframe.Frame
+var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
+var _ Callable.Function
+var _ Dictionary.Any
+var _ RID.Any
+var _ String.Readable
+var _ Path.ToNode
+var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
+var _ = slices.Delete[[]struct{}, struct{}]
+
+/*
+This [SkeletonModifier3D] rotates a bone to look at a target. This is helpful for moving a character's head to look at the player, rotating a turret to look at a target, or any other case where you want to make a bone rotate towards something quickly and easily.
+When applying multiple [LookAtModifier3D]s, the [LookAtModifier3D] assigned to the parent bone must be put above the [LookAtModifier3D] assigned to the child bone in the list in order for the child bone results to be correct.
+*/
+type Instance [1]gdclass.LookAtModifier3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
+type Any interface {
+	gd.IsClass
+	AsLookAtModifier3D() Instance
+}
+
+/*
+Returns the remaining seconds of the time-based interpolation.
+*/
+func (self Instance) GetInterpolationRemaining() Float.X { //gd:LookAtModifier3D.get_interpolation_remaining
+	return Float.X(Float.X(class(self).GetInterpolationRemaining()))
+}
+
+/*
+Returns whether the time-based interpolation is running or not. If [code]true[/code], it is equivalent to [method get_interpolation_remaining] being [code]0[/code].
+This is useful to determine whether a [LookAtModifier3D] can be removed safely.
+*/
+func (self Instance) IsInterpolating() bool { //gd:LookAtModifier3D.is_interpolating
+	return bool(class(self).IsInterpolating())
+}
+
+/*
+Returns whether the target is within the angle limitations. It is useful for unsetting the [member target_node] when the target is outside of the angle limitations.
+[b]Note:[/b] The value is updated after [method SkeletonModifier3D._process_modification]. To retrieve this value correctly, we recommend using the signal [signal SkeletonModifier3D.modification_processed].
+*/
+func (self Instance) IsTargetWithinLimitation() bool { //gd:LookAtModifier3D.is_target_within_limitation
+	return bool(class(self).IsTargetWithinLimitation())
+}
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
+type class [1]gdclass.LookAtModifier3D
+
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func New() Instance {
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("LookAtModifier3D"))
+	casted := Instance{*(*gdclass.LookAtModifier3D)(unsafe.Pointer(&object))}
+	return casted
+}
+
+func (self Instance) TargetNode() string {
+	return string(class(self).GetTargetNode().String())
+}
+
+func (self Instance) SetTargetNode(value string) {
+	class(self).SetTargetNode(Path.ToNode(String.New(value)))
+}
+
+func (self Instance) BoneName() string {
+	return string(class(self).GetBoneName().String())
+}
+
+func (self Instance) SetBoneName(value string) {
+	class(self).SetBoneName(String.New(value))
+}
+
+func (self Instance) Bone() int {
+	return int(int(class(self).GetBone()))
+}
+
+func (self Instance) SetBone(value int) {
+	class(self).SetBone(int64(value))
+}
+
+func (self Instance) ForwardAxis() gdclass.SkeletonModifier3DBoneAxis {
+	return gdclass.SkeletonModifier3DBoneAxis(class(self).GetForwardAxis())
+}
+
+func (self Instance) SetForwardAxis(value gdclass.SkeletonModifier3DBoneAxis) {
+	class(self).SetForwardAxis(value)
+}
+
+func (self Instance) PrimaryRotationAxis() gd.Vector3Axis {
+	return gd.Vector3Axis(class(self).GetPrimaryRotationAxis())
+}
+
+func (self Instance) SetPrimaryRotationAxis(value gd.Vector3Axis) {
+	class(self).SetPrimaryRotationAxis(value)
+}
+
+func (self Instance) UseSecondaryRotation() bool {
+	return bool(class(self).IsUsingSecondaryRotation())
+}
+
+func (self Instance) SetUseSecondaryRotation(value bool) {
+	class(self).SetUseSecondaryRotation(value)
+}
+
+func (self Instance) OriginFrom() gdclass.LookAtModifier3DOriginFrom {
+	return gdclass.LookAtModifier3DOriginFrom(class(self).GetOriginFrom())
+}
+
+func (self Instance) SetOriginFrom(value gdclass.LookAtModifier3DOriginFrom) {
+	class(self).SetOriginFrom(value)
+}
+
+func (self Instance) OriginBoneName() string {
+	return string(class(self).GetOriginBoneName().String())
+}
+
+func (self Instance) SetOriginBoneName(value string) {
+	class(self).SetOriginBoneName(String.New(value))
+}
+
+func (self Instance) OriginBone() int {
+	return int(int(class(self).GetOriginBone()))
+}
+
+func (self Instance) SetOriginBone(value int) {
+	class(self).SetOriginBone(int64(value))
+}
+
+func (self Instance) OriginExternalNode() string {
+	return string(class(self).GetOriginExternalNode().String())
+}
+
+func (self Instance) SetOriginExternalNode(value string) {
+	class(self).SetOriginExternalNode(Path.ToNode(String.New(value)))
+}
+
+func (self Instance) OriginOffset() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetOriginOffset())
+}
+
+func (self Instance) SetOriginOffset(value Vector3.XYZ) {
+	class(self).SetOriginOffset(Vector3.XYZ(value))
+}
+
+func (self Instance) OriginSafeMargin() Float.X {
+	return Float.X(Float.X(class(self).GetOriginSafeMargin()))
+}
+
+func (self Instance) SetOriginSafeMargin(value Float.X) {
+	class(self).SetOriginSafeMargin(float64(value))
+}
+
+func (self Instance) Duration() Float.X {
+	return Float.X(Float.X(class(self).GetDuration()))
+}
+
+func (self Instance) SetDuration(value Float.X) {
+	class(self).SetDuration(float64(value))
+}
+
+func (self Instance) TransitionType() gdclass.TweenTransitionType {
+	return gdclass.TweenTransitionType(class(self).GetTransitionType())
+}
+
+func (self Instance) SetTransitionType(value gdclass.TweenTransitionType) {
+	class(self).SetTransitionType(value)
+}
+
+func (self Instance) EaseType() gdclass.TweenEaseType {
+	return gdclass.TweenEaseType(class(self).GetEaseType())
+}
+
+func (self Instance) SetEaseType(value gdclass.TweenEaseType) {
+	class(self).SetEaseType(value)
+}
+
+func (self Instance) UseAngleLimitation() bool {
+	return bool(class(self).IsUsingAngleLimitation())
+}
+
+func (self Instance) SetUseAngleLimitation(value bool) {
+	class(self).SetUseAngleLimitation(value)
+}
+
+func (self Instance) SymmetryLimitation() bool {
+	return bool(class(self).IsLimitationSymmetry())
+}
+
+func (self Instance) SetSymmetryLimitation(value bool) {
+	class(self).SetSymmetryLimitation(value)
+}
+
+func (self Instance) PrimaryLimitAngle() Float.X {
+	return Float.X(Float.X(class(self).GetPrimaryLimitAngle()))
+}
+
+func (self Instance) SetPrimaryLimitAngle(value Float.X) {
+	class(self).SetPrimaryLimitAngle(float64(value))
+}
+
+func (self Instance) PrimaryDampThreshold() Float.X {
+	return Float.X(Float.X(class(self).GetPrimaryDampThreshold()))
+}
+
+func (self Instance) SetPrimaryDampThreshold(value Float.X) {
+	class(self).SetPrimaryDampThreshold(float64(value))
+}
+
+func (self Instance) PrimaryPositiveLimitAngle() Float.X {
+	return Float.X(Float.X(class(self).GetPrimaryPositiveLimitAngle()))
+}
+
+func (self Instance) SetPrimaryPositiveLimitAngle(value Float.X) {
+	class(self).SetPrimaryPositiveLimitAngle(float64(value))
+}
+
+func (self Instance) PrimaryPositiveDampThreshold() Float.X {
+	return Float.X(Float.X(class(self).GetPrimaryPositiveDampThreshold()))
+}
+
+func (self Instance) SetPrimaryPositiveDampThreshold(value Float.X) {
+	class(self).SetPrimaryPositiveDampThreshold(float64(value))
+}
+
+func (self Instance) PrimaryNegativeLimitAngle() Float.X {
+	return Float.X(Float.X(class(self).GetPrimaryNegativeLimitAngle()))
+}
+
+func (self Instance) SetPrimaryNegativeLimitAngle(value Float.X) {
+	class(self).SetPrimaryNegativeLimitAngle(float64(value))
+}
+
+func (self Instance) PrimaryNegativeDampThreshold() Float.X {
+	return Float.X(Float.X(class(self).GetPrimaryNegativeDampThreshold()))
+}
+
+func (self Instance) SetPrimaryNegativeDampThreshold(value Float.X) {
+	class(self).SetPrimaryNegativeDampThreshold(float64(value))
+}
+
+func (self Instance) SecondaryLimitAngle() Float.X {
+	return Float.X(Float.X(class(self).GetSecondaryLimitAngle()))
+}
+
+func (self Instance) SetSecondaryLimitAngle(value Float.X) {
+	class(self).SetSecondaryLimitAngle(float64(value))
+}
+
+func (self Instance) SecondaryDampThreshold() Float.X {
+	return Float.X(Float.X(class(self).GetSecondaryDampThreshold()))
+}
+
+func (self Instance) SetSecondaryDampThreshold(value Float.X) {
+	class(self).SetSecondaryDampThreshold(float64(value))
+}
+
+func (self Instance) SecondaryPositiveLimitAngle() Float.X {
+	return Float.X(Float.X(class(self).GetSecondaryPositiveLimitAngle()))
+}
+
+func (self Instance) SetSecondaryPositiveLimitAngle(value Float.X) {
+	class(self).SetSecondaryPositiveLimitAngle(float64(value))
+}
+
+func (self Instance) SecondaryPositiveDampThreshold() Float.X {
+	return Float.X(Float.X(class(self).GetSecondaryPositiveDampThreshold()))
+}
+
+func (self Instance) SetSecondaryPositiveDampThreshold(value Float.X) {
+	class(self).SetSecondaryPositiveDampThreshold(float64(value))
+}
+
+func (self Instance) SecondaryNegativeLimitAngle() Float.X {
+	return Float.X(Float.X(class(self).GetSecondaryNegativeLimitAngle()))
+}
+
+func (self Instance) SetSecondaryNegativeLimitAngle(value Float.X) {
+	class(self).SetSecondaryNegativeLimitAngle(float64(value))
+}
+
+func (self Instance) SecondaryNegativeDampThreshold() Float.X {
+	return Float.X(Float.X(class(self).GetSecondaryNegativeDampThreshold()))
+}
+
+func (self Instance) SetSecondaryNegativeDampThreshold(value Float.X) {
+	class(self).SetSecondaryNegativeDampThreshold(float64(value))
+}
+
+//go:nosplit
+func (self class) SetTargetNode(target_node Path.ToNode) { //gd:LookAtModifier3D.set_target_node
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(target_node)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetTargetNode() Path.ToNode { //gd:LookAtModifier3D.get_target_node
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetBoneName(bone_name String.Readable) { //gd:LookAtModifier3D.set_bone_name
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bone_name)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetBoneName() String.Readable { //gd:LookAtModifier3D.get_bone_name
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetBone(bone int64) { //gd:LookAtModifier3D.set_bone
+	var frame = callframe.New()
+	callframe.Arg(frame, bone)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetBone() int64 { //gd:LookAtModifier3D.get_bone
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetForwardAxis(forward_axis gdclass.SkeletonModifier3DBoneAxis) { //gd:LookAtModifier3D.set_forward_axis
+	var frame = callframe.New()
+	callframe.Arg(frame, forward_axis)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_forward_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetForwardAxis() gdclass.SkeletonModifier3DBoneAxis { //gd:LookAtModifier3D.get_forward_axis
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.SkeletonModifier3DBoneAxis](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_forward_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPrimaryRotationAxis(axis gd.Vector3Axis) { //gd:LookAtModifier3D.set_primary_rotation_axis
+	var frame = callframe.New()
+	callframe.Arg(frame, axis)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_primary_rotation_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetPrimaryRotationAxis() gd.Vector3Axis { //gd:LookAtModifier3D.get_primary_rotation_axis
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.Vector3Axis](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_rotation_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetUseSecondaryRotation(enabled bool) { //gd:LookAtModifier3D.set_use_secondary_rotation
+	var frame = callframe.New()
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_use_secondary_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsUsingSecondaryRotation() bool { //gd:LookAtModifier3D.is_using_secondary_rotation
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_is_using_secondary_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetOriginSafeMargin(margin float64) { //gd:LookAtModifier3D.set_origin_safe_margin
+	var frame = callframe.New()
+	callframe.Arg(frame, margin)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_safe_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetOriginSafeMargin() float64 { //gd:LookAtModifier3D.get_origin_safe_margin
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_safe_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetOriginFrom(origin_from gdclass.LookAtModifier3DOriginFrom) { //gd:LookAtModifier3D.set_origin_from
+	var frame = callframe.New()
+	callframe.Arg(frame, origin_from)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_from, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetOriginFrom() gdclass.LookAtModifier3DOriginFrom { //gd:LookAtModifier3D.get_origin_from
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.LookAtModifier3DOriginFrom](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_from, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetOriginBoneName(bone_name String.Readable) { //gd:LookAtModifier3D.set_origin_bone_name
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bone_name)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetOriginBoneName() String.Readable { //gd:LookAtModifier3D.get_origin_bone_name
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetOriginBone(bone int64) { //gd:LookAtModifier3D.set_origin_bone
+	var frame = callframe.New()
+	callframe.Arg(frame, bone)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetOriginBone() int64 { //gd:LookAtModifier3D.get_origin_bone
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetOriginExternalNode(external_node Path.ToNode) { //gd:LookAtModifier3D.set_origin_external_node
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(external_node)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_external_node, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetOriginExternalNode() Path.ToNode { //gd:LookAtModifier3D.get_origin_external_node
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_external_node, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetOriginOffset(offset Vector3.XYZ) { //gd:LookAtModifier3D.set_origin_offset
+	var frame = callframe.New()
+	callframe.Arg(frame, offset)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetOriginOffset() Vector3.XYZ { //gd:LookAtModifier3D.get_origin_offset
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetDuration(duration float64) { //gd:LookAtModifier3D.set_duration
+	var frame = callframe.New()
+	callframe.Arg(frame, duration)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetDuration() float64 { //gd:LookAtModifier3D.get_duration
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetTransitionType(transition_type gdclass.TweenTransitionType) { //gd:LookAtModifier3D.set_transition_type
+	var frame = callframe.New()
+	callframe.Arg(frame, transition_type)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_transition_type, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetTransitionType() gdclass.TweenTransitionType { //gd:LookAtModifier3D.get_transition_type
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.TweenTransitionType](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_transition_type, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetEaseType(ease_type gdclass.TweenEaseType) { //gd:LookAtModifier3D.set_ease_type
+	var frame = callframe.New()
+	callframe.Arg(frame, ease_type)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_ease_type, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetEaseType() gdclass.TweenEaseType { //gd:LookAtModifier3D.get_ease_type
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.TweenEaseType](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_ease_type, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetUseAngleLimitation(enabled bool) { //gd:LookAtModifier3D.set_use_angle_limitation
+	var frame = callframe.New()
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_use_angle_limitation, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsUsingAngleLimitation() bool { //gd:LookAtModifier3D.is_using_angle_limitation
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_is_using_angle_limitation, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSymmetryLimitation(enabled bool) { //gd:LookAtModifier3D.set_symmetry_limitation
+	var frame = callframe.New()
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_symmetry_limitation, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsLimitationSymmetry() bool { //gd:LookAtModifier3D.is_limitation_symmetry
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_is_limitation_symmetry, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPrimaryLimitAngle(angle float64) { //gd:LookAtModifier3D.set_primary_limit_angle
+	var frame = callframe.New()
+	callframe.Arg(frame, angle)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_primary_limit_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetPrimaryLimitAngle() float64 { //gd:LookAtModifier3D.get_primary_limit_angle
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_limit_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPrimaryDampThreshold(power float64) { //gd:LookAtModifier3D.set_primary_damp_threshold
+	var frame = callframe.New()
+	callframe.Arg(frame, power)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_primary_damp_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetPrimaryDampThreshold() float64 { //gd:LookAtModifier3D.get_primary_damp_threshold
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_damp_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPrimaryPositiveLimitAngle(angle float64) { //gd:LookAtModifier3D.set_primary_positive_limit_angle
+	var frame = callframe.New()
+	callframe.Arg(frame, angle)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_primary_positive_limit_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetPrimaryPositiveLimitAngle() float64 { //gd:LookAtModifier3D.get_primary_positive_limit_angle
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_positive_limit_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPrimaryPositiveDampThreshold(power float64) { //gd:LookAtModifier3D.set_primary_positive_damp_threshold
+	var frame = callframe.New()
+	callframe.Arg(frame, power)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_primary_positive_damp_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetPrimaryPositiveDampThreshold() float64 { //gd:LookAtModifier3D.get_primary_positive_damp_threshold
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_positive_damp_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPrimaryNegativeLimitAngle(angle float64) { //gd:LookAtModifier3D.set_primary_negative_limit_angle
+	var frame = callframe.New()
+	callframe.Arg(frame, angle)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_primary_negative_limit_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetPrimaryNegativeLimitAngle() float64 { //gd:LookAtModifier3D.get_primary_negative_limit_angle
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_negative_limit_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPrimaryNegativeDampThreshold(power float64) { //gd:LookAtModifier3D.set_primary_negative_damp_threshold
+	var frame = callframe.New()
+	callframe.Arg(frame, power)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_primary_negative_damp_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetPrimaryNegativeDampThreshold() float64 { //gd:LookAtModifier3D.get_primary_negative_damp_threshold
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_negative_damp_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSecondaryLimitAngle(angle float64) { //gd:LookAtModifier3D.set_secondary_limit_angle
+	var frame = callframe.New()
+	callframe.Arg(frame, angle)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_secondary_limit_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetSecondaryLimitAngle() float64 { //gd:LookAtModifier3D.get_secondary_limit_angle
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_secondary_limit_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSecondaryDampThreshold(power float64) { //gd:LookAtModifier3D.set_secondary_damp_threshold
+	var frame = callframe.New()
+	callframe.Arg(frame, power)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_secondary_damp_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetSecondaryDampThreshold() float64 { //gd:LookAtModifier3D.get_secondary_damp_threshold
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_secondary_damp_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSecondaryPositiveLimitAngle(angle float64) { //gd:LookAtModifier3D.set_secondary_positive_limit_angle
+	var frame = callframe.New()
+	callframe.Arg(frame, angle)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_secondary_positive_limit_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetSecondaryPositiveLimitAngle() float64 { //gd:LookAtModifier3D.get_secondary_positive_limit_angle
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_secondary_positive_limit_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSecondaryPositiveDampThreshold(power float64) { //gd:LookAtModifier3D.set_secondary_positive_damp_threshold
+	var frame = callframe.New()
+	callframe.Arg(frame, power)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_secondary_positive_damp_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetSecondaryPositiveDampThreshold() float64 { //gd:LookAtModifier3D.get_secondary_positive_damp_threshold
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_secondary_positive_damp_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSecondaryNegativeLimitAngle(angle float64) { //gd:LookAtModifier3D.set_secondary_negative_limit_angle
+	var frame = callframe.New()
+	callframe.Arg(frame, angle)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_secondary_negative_limit_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetSecondaryNegativeLimitAngle() float64 { //gd:LookAtModifier3D.get_secondary_negative_limit_angle
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_secondary_negative_limit_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSecondaryNegativeDampThreshold(power float64) { //gd:LookAtModifier3D.set_secondary_negative_damp_threshold
+	var frame = callframe.New()
+	callframe.Arg(frame, power)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_secondary_negative_damp_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetSecondaryNegativeDampThreshold() float64 { //gd:LookAtModifier3D.get_secondary_negative_damp_threshold
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_secondary_negative_damp_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the remaining seconds of the time-based interpolation.
+*/
+//go:nosplit
+func (self class) GetInterpolationRemaining() float64 { //gd:LookAtModifier3D.get_interpolation_remaining
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_interpolation_remaining, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns whether the time-based interpolation is running or not. If [code]true[/code], it is equivalent to [method get_interpolation_remaining] being [code]0[/code].
+This is useful to determine whether a [LookAtModifier3D] can be removed safely.
+*/
+//go:nosplit
+func (self class) IsInterpolating() bool { //gd:LookAtModifier3D.is_interpolating
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_is_interpolating, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns whether the target is within the angle limitations. It is useful for unsetting the [member target_node] when the target is outside of the angle limitations.
+[b]Note:[/b] The value is updated after [method SkeletonModifier3D._process_modification]. To retrieve this value correctly, we recommend using the signal [signal SkeletonModifier3D.modification_processed].
+*/
+//go:nosplit
+func (self class) IsTargetWithinLimitation() bool { //gd:LookAtModifier3D.is_target_within_limitation
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_is_target_within_limitation, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+func (self class) AsLookAtModifier3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsLookAtModifier3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsSkeletonModifier3D() SkeletonModifier3D.Advanced {
+	return *((*SkeletonModifier3D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
+	return *((*SkeletonModifier3D.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+
+func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(SkeletonModifier3D.Advanced(self.AsSkeletonModifier3D()), name)
+	}
+}
+
+func (self Instance) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(SkeletonModifier3D.Instance(self.AsSkeletonModifier3D()), name)
+	}
+}
+func init() {
+	gdclass.Register("LookAtModifier3D", func(ptr gd.Object) any {
+		return [1]gdclass.LookAtModifier3D{*(*gdclass.LookAtModifier3D)(unsafe.Pointer(&ptr))}
+	})
+}
+
+type OriginFrom = gdclass.LookAtModifier3DOriginFrom //gd:LookAtModifier3D.OriginFrom
+
+const (
+	/*The bone rest position of the bone specified in [member bone] is used as origin.*/
+	OriginFromSelf OriginFrom = 0
+	/*The bone global pose position of the bone specified in [member origin_bone] is used as origin.
+	  [b]Note:[/b] It is recommended that you select only the parent bone unless you are familiar with the bone processing process. The specified bone pose at the time the [LookAtModifier3D] is processed is used as a reference. In other words, if you specify a child bone and the [LookAtModifier3D] causes the child bone to move, the rendered result and direction will not match.*/
+	OriginFromSpecificBone OriginFrom = 1
+	/*The global position of the [Node3D] specified in [member origin_external_node] is used as origin.
+	  [b]Note:[/b] Same as [constant ORIGIN_FROM_SPECIFIC_BONE], when specifying a [BoneAttachment3D] with a child bone assigned, the rendered result and direction will not match.*/
+	OriginFromExternalNode OriginFrom = 2
+)

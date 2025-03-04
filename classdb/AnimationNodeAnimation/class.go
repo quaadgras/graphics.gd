@@ -90,6 +90,14 @@ func (self Instance) SetPlayMode(value gdclass.AnimationNodeAnimationPlayMode) {
 	class(self).SetPlayMode(value)
 }
 
+func (self Instance) AdvanceOnStart() bool {
+	return bool(class(self).IsAdvanceOnStart())
+}
+
+func (self Instance) SetAdvanceOnStart(value bool) {
+	class(self).SetAdvanceOnStart(value)
+}
+
 func (self Instance) UseCustomTimeline() bool {
 	return bool(class(self).IsUsingCustomTimeline())
 }
@@ -163,6 +171,25 @@ func (self class) GetPlayMode() gdclass.AnimationNodeAnimationPlayMode { //gd:An
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AnimationNodeAnimationPlayMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_get_play_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAdvanceOnStart(advance_on_start bool) { //gd:AnimationNodeAnimation.set_advance_on_start
+	var frame = callframe.New()
+	callframe.Arg(frame, advance_on_start)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_set_advance_on_start, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsAdvanceOnStart() bool { //gd:AnimationNodeAnimation.is_advance_on_start
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_is_advance_on_start, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

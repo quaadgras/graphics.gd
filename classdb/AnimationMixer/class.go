@@ -178,14 +178,14 @@ See also [member root_motion_track] and [RootMotionView].
 The most basic example is applying position to [CharacterBody3D]:
 [codeblocks]
 [gdscript]
-var current_rotation: Quaternion
+var current_rotation
 
 func _process(delta):
 
 	if Input.is_action_just_pressed("animate"):
 	    current_rotation = get_quaternion()
 	    state_machine.travel("Animate")
-	var velocity: Vector3 = current_rotation * animation_tree.get_root_motion_position() / delta
+	var velocity = current_rotation * animation_tree.get_root_motion_position() / delta
 	set_velocity(velocity)
 	move_and_slide()
 
@@ -199,7 +199,22 @@ func _process(delta):
 	if Input.is_action_just_pressed("animate"):
 	    state_machine.travel("Animate")
 	set_quaternion(get_quaternion() * animation_tree.get_root_motion_rotation())
-	var velocity: Vector3 = (animation_tree.get_root_motion_rotation_accumulator().inverse() * get_quaternion()) * animation_tree.get_root_motion_position() / delta
+	var velocity = (animation_tree.get_root_motion_rotation_accumulator().inverse() * get_quaternion()) * animation_tree.get_root_motion_position() / delta
+	set_velocity(velocity)
+	move_and_slide()
+
+[/gdscript]
+[/codeblocks]
+If [member root_motion_local] is [code]true[/code], return the pre-multiplied translation value with the inverted rotation.
+In this case, the code can be written as follows:
+[codeblocks]
+[gdscript]
+func _process(delta):
+
+	if Input.is_action_just_pressed("animate"):
+	    state_machine.travel("Animate")
+	set_quaternion(get_quaternion() * animation_tree.get_root_motion_rotation())
+	var velocity = get_quaternion() * animation_tree.get_root_motion_position() / delta
 	set_velocity(velocity)
 	move_and_slide()
 
@@ -237,8 +252,8 @@ See also [member root_motion_track] and [RootMotionView].
 The most basic example is applying scale to [CharacterBody3D]:
 [codeblocks]
 [gdscript]
-var current_scale: Vector3 = Vector3(1, 1, 1)
-var scale_accum: Vector3 = Vector3(1, 1, 1)
+var current_scale = Vector3(1, 1, 1)
+var scale_accum = Vector3(1, 1, 1)
 
 func _process(delta):
 
@@ -262,14 +277,14 @@ This is useful in cases where you want to respect the initial key values of the 
 For example, if an animation with only one key [code]Vector3(0, 0, 0)[/code] is played in the previous frame and then an animation with only one key [code]Vector3(1, 0, 1)[/code] is played in the next frame, the difference can be calculated as follows:
 [codeblocks]
 [gdscript]
-var prev_root_motion_position_accumulator: Vector3
+var prev_root_motion_position_accumulator
 
 func _process(delta):
 
 	if Input.is_action_just_pressed("animate"):
 	    state_machine.travel("Animate")
-	var current_root_motion_position_accumulator: Vector3 = animation_tree.get_root_motion_position_accumulator()
-	var difference: Vector3 = current_root_motion_position_accumulator - prev_root_motion_position_accumulator
+	var current_root_motion_position_accumulator = animation_tree.get_root_motion_position_accumulator()
+	var difference = current_root_motion_position_accumulator - prev_root_motion_position_accumulator
 	prev_root_motion_position_accumulator = current_root_motion_position_accumulator
 	transform.origin += difference
 
@@ -288,14 +303,14 @@ Also, this is useful in cases where you want to respect the initial key values o
 For example, if an animation with only one key [code]Quaternion(0, 0, 0, 1)[/code] is played in the previous frame and then an animation with only one key [code]Quaternion(0, 0.707, 0, 0.707)[/code] is played in the next frame, the difference can be calculated as follows:
 [codeblocks]
 [gdscript]
-var prev_root_motion_rotation_accumulator: Quaternion
+var prev_root_motion_rotation_accumulator
 
 func _process(delta):
 
 	if Input.is_action_just_pressed("animate"):
 	    state_machine.travel("Animate")
-	var current_root_motion_rotation_accumulator: Quaternion = animation_tree.get_root_motion_rotation_accumulator()
-	var difference: Quaternion = prev_root_motion_rotation_accumulator.inverse() * current_root_motion_rotation_accumulator
+	var current_root_motion_rotation_accumulator = animation_tree.get_root_motion_rotation_accumulator()
+	var difference = prev_root_motion_rotation_accumulator.inverse() * current_root_motion_rotation_accumulator
 	prev_root_motion_rotation_accumulator = current_root_motion_rotation_accumulator
 	transform.basis *=  Basis(difference)
 
@@ -312,14 +327,14 @@ Retrieve the blended value of the scale tracks with the [member root_motion_trac
 For example, if an animation with only one key [code]Vector3(1, 1, 1)[/code] is played in the previous frame and then an animation with only one key [code]Vector3(2, 2, 2)[/code] is played in the next frame, the difference can be calculated as follows:
 [codeblocks]
 [gdscript]
-var prev_root_motion_scale_accumulator: Vector3
+var prev_root_motion_scale_accumulator
 
 func _process(delta):
 
 	if Input.is_action_just_pressed("animate"):
 	    state_machine.travel("Animate")
-	var current_root_motion_scale_accumulator: Vector3 = animation_tree.get_root_motion_scale_accumulator()
-	var difference: Vector3 = current_root_motion_scale_accumulator - prev_root_motion_scale_accumulator
+	var current_root_motion_scale_accumulator = animation_tree.get_root_motion_scale_accumulator()
+	var difference = current_root_motion_scale_accumulator - prev_root_motion_scale_accumulator
 	prev_root_motion_scale_accumulator = current_root_motion_scale_accumulator
 	transform.basis = transform.basis.scaled(difference)
 
@@ -424,6 +439,14 @@ func (self Instance) RootMotionTrack() string {
 
 func (self Instance) SetRootMotionTrack(value string) {
 	class(self).SetRootMotionTrack(Path.ToNode(String.New(value)))
+}
+
+func (self Instance) RootMotionLocal() bool {
+	return bool(class(self).IsRootMotionLocal())
+}
+
+func (self Instance) SetRootMotionLocal(value bool) {
+	class(self).SetRootMotionLocal(value)
 }
 
 func (self Instance) AudioMaxPolyphony() int {
@@ -767,6 +790,25 @@ func (self class) GetRootMotionTrack() Path.ToNode { //gd:AnimationMixer.get_roo
 	return ret
 }
 
+//go:nosplit
+func (self class) SetRootMotionLocal(enabled bool) { //gd:AnimationMixer.set_root_motion_local
+	var frame = callframe.New()
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_set_root_motion_local, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsRootMotionLocal() bool { //gd:AnimationMixer.is_root_motion_local
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_is_root_motion_local, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
 /*
 Retrieve the motion delta of position with the [member root_motion_track] as a [Vector3] that can be used elsewhere.
 If [member root_motion_track] is not a path to a track of type [constant Animation.TYPE_POSITION_3D], returns [code]Vector3(0, 0, 0)[/code].
@@ -774,13 +816,13 @@ See also [member root_motion_track] and [RootMotionView].
 The most basic example is applying position to [CharacterBody3D]:
 [codeblocks]
 [gdscript]
-var current_rotation: Quaternion
+var current_rotation
 
 func _process(delta):
     if Input.is_action_just_pressed("animate"):
         current_rotation = get_quaternion()
         state_machine.travel("Animate")
-    var velocity: Vector3 = current_rotation * animation_tree.get_root_motion_position() / delta
+    var velocity = current_rotation * animation_tree.get_root_motion_position() / delta
     set_velocity(velocity)
     move_and_slide()
 [/gdscript]
@@ -792,7 +834,20 @@ func _process(delta):
     if Input.is_action_just_pressed("animate"):
         state_machine.travel("Animate")
     set_quaternion(get_quaternion() * animation_tree.get_root_motion_rotation())
-    var velocity: Vector3 = (animation_tree.get_root_motion_rotation_accumulator().inverse() * get_quaternion()) * animation_tree.get_root_motion_position() / delta
+    var velocity = (animation_tree.get_root_motion_rotation_accumulator().inverse() * get_quaternion()) * animation_tree.get_root_motion_position() / delta
+    set_velocity(velocity)
+    move_and_slide()
+[/gdscript]
+[/codeblocks]
+If [member root_motion_local] is [code]true[/code], return the pre-multiplied translation value with the inverted rotation.
+In this case, the code can be written as follows:
+[codeblocks]
+[gdscript]
+func _process(delta):
+    if Input.is_action_just_pressed("animate"):
+        state_machine.travel("Animate")
+    set_quaternion(get_quaternion() * animation_tree.get_root_motion_rotation())
+    var velocity = get_quaternion() * animation_tree.get_root_motion_position() / delta
     set_velocity(velocity)
     move_and_slide()
 [/gdscript]
@@ -839,8 +894,8 @@ See also [member root_motion_track] and [RootMotionView].
 The most basic example is applying scale to [CharacterBody3D]:
 [codeblocks]
 [gdscript]
-var current_scale: Vector3 = Vector3(1, 1, 1)
-var scale_accum: Vector3 = Vector3(1, 1, 1)
+var current_scale = Vector3(1, 1, 1)
+var scale_accum = Vector3(1, 1, 1)
 
 func _process(delta):
     if Input.is_action_just_pressed("animate"):
@@ -868,13 +923,13 @@ This is useful in cases where you want to respect the initial key values of the 
 For example, if an animation with only one key [code]Vector3(0, 0, 0)[/code] is played in the previous frame and then an animation with only one key [code]Vector3(1, 0, 1)[/code] is played in the next frame, the difference can be calculated as follows:
 [codeblocks]
 [gdscript]
-var prev_root_motion_position_accumulator: Vector3
+var prev_root_motion_position_accumulator
 
 func _process(delta):
     if Input.is_action_just_pressed("animate"):
         state_machine.travel("Animate")
-    var current_root_motion_position_accumulator: Vector3 = animation_tree.get_root_motion_position_accumulator()
-    var difference: Vector3 = current_root_motion_position_accumulator - prev_root_motion_position_accumulator
+    var current_root_motion_position_accumulator = animation_tree.get_root_motion_position_accumulator()
+    var difference = current_root_motion_position_accumulator - prev_root_motion_position_accumulator
     prev_root_motion_position_accumulator = current_root_motion_position_accumulator
     transform.origin += difference
 [/gdscript]
@@ -898,13 +953,13 @@ Also, this is useful in cases where you want to respect the initial key values o
 For example, if an animation with only one key [code]Quaternion(0, 0, 0, 1)[/code] is played in the previous frame and then an animation with only one key [code]Quaternion(0, 0.707, 0, 0.707)[/code] is played in the next frame, the difference can be calculated as follows:
 [codeblocks]
 [gdscript]
-var prev_root_motion_rotation_accumulator: Quaternion
+var prev_root_motion_rotation_accumulator
 
 func _process(delta):
     if Input.is_action_just_pressed("animate"):
         state_machine.travel("Animate")
-    var current_root_motion_rotation_accumulator: Quaternion = animation_tree.get_root_motion_rotation_accumulator()
-    var difference: Quaternion = prev_root_motion_rotation_accumulator.inverse() * current_root_motion_rotation_accumulator
+    var current_root_motion_rotation_accumulator = animation_tree.get_root_motion_rotation_accumulator()
+    var difference = prev_root_motion_rotation_accumulator.inverse() * current_root_motion_rotation_accumulator
     prev_root_motion_rotation_accumulator = current_root_motion_rotation_accumulator
     transform.basis *=  Basis(difference)
 [/gdscript]
@@ -926,13 +981,13 @@ Retrieve the blended value of the scale tracks with the [member root_motion_trac
 For example, if an animation with only one key [code]Vector3(1, 1, 1)[/code] is played in the previous frame and then an animation with only one key [code]Vector3(2, 2, 2)[/code] is played in the next frame, the difference can be calculated as follows:
 [codeblocks]
 [gdscript]
-var prev_root_motion_scale_accumulator: Vector3
+var prev_root_motion_scale_accumulator
 
 func _process(delta):
     if Input.is_action_just_pressed("animate"):
         state_machine.travel("Animate")
-    var current_root_motion_scale_accumulator: Vector3 = animation_tree.get_root_motion_scale_accumulator()
-    var difference: Vector3 = current_root_motion_scale_accumulator - prev_root_motion_scale_accumulator
+    var current_root_motion_scale_accumulator = animation_tree.get_root_motion_scale_accumulator()
+    var difference = current_root_motion_scale_accumulator - prev_root_motion_scale_accumulator
     prev_root_motion_scale_accumulator = current_root_motion_scale_accumulator
     transform.basis = transform.basis.scaled(difference)
 [/gdscript]
@@ -1119,6 +1174,18 @@ const (
 	/*An [constant Animation.UPDATE_CONTINUOUS] or [constant Animation.UPDATE_CAPTURE] track value takes precedence when blending the [constant Animation.UPDATE_CONTINUOUS] or [constant Animation.UPDATE_CAPTURE] track values and the [constant Animation.UPDATE_DISCRETE] track values. This is the default behavior for [AnimationPlayer].*/
 	AnimationCallbackModeDiscreteRecessive AnimationCallbackModeDiscrete = 1
 	/*Always treat the [constant Animation.UPDATE_DISCRETE] track value as [constant Animation.UPDATE_CONTINUOUS] with [constant Animation.INTERPOLATION_NEAREST]. This is the default behavior for [AnimationTree].
-	  If a value track has non-numeric type key values, it is internally converted to use [constant ANIMATION_CALLBACK_MODE_DISCRETE_RECESSIVE] with [constant Animation.UPDATE_DISCRETE].*/
+	  If a value track has un-interpolatable type key values, it is internally converted to use [constant ANIMATION_CALLBACK_MODE_DISCRETE_RECESSIVE] with [constant Animation.UPDATE_DISCRETE].
+	  Un-interpolatable type list:
+	  - [constant @GlobalScope.TYPE_NIL]
+	  - [constant @GlobalScope.TYPE_NODE_PATH]
+	  - [constant @GlobalScope.TYPE_RID]
+	  - [constant @GlobalScope.TYPE_OBJECT]
+	  - [constant @GlobalScope.TYPE_CALLABLE]
+	  - [constant @GlobalScope.TYPE_SIGNAL]
+	  - [constant @GlobalScope.TYPE_DICTIONARY]
+	  - [constant @GlobalScope.TYPE_PACKED_BYTE_ARRAY]
+	  [constant @GlobalScope.TYPE_BOOL] and [constant @GlobalScope.TYPE_INT] are treated as [constant @GlobalScope.TYPE_FLOAT] during blending and rounded when the result is retrieved.
+	  It is same for arrays and vectors with them such as [constant @GlobalScope.TYPE_PACKED_INT32_ARRAY] or [constant @GlobalScope.TYPE_VECTOR2I], they are treated as [constant @GlobalScope.TYPE_PACKED_FLOAT32_ARRAY] or [constant @GlobalScope.TYPE_VECTOR2]. Also note that for arrays, the size is also interpolated.
+	  [constant @GlobalScope.TYPE_STRING] and [constant @GlobalScope.TYPE_STRING_NAME] are interpolated between character codes and lengths, but note that there is a difference in algorithm between interpolation between keys and interpolation by blending.*/
 	AnimationCallbackModeDiscreteForceContinuous AnimationCallbackModeDiscrete = 2
 )

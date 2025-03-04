@@ -52,6 +52,31 @@ type Any interface {
 	AsPolygonPathFinder() Instance
 }
 
+/*
+Sets up [PolygonPathFinder] with an array of points that define the vertices of the polygon, and an array of indices that determine the edges of the polygon.
+The length of [param connections] must be even, returns an error if odd.
+[codeblocks]
+[gdscript]
+var polygon_path_finder = PolygonPathFinder.new()
+var points = [Vector2(0.0, 0.0), Vector2(1.0, 0.0), Vector2(0.0, 1.0)]
+var connections = [0, 1, 1, 2, 2, 0]
+polygon_path_finder.setup(points, connections)
+[/gdscript]
+[csharp]
+var polygonPathFinder = new PolygonPathFinder();
+Vector2[] points =
+[
+
+	new Vector2(0.0f, 0.0f),
+	new Vector2(1.0f, 0.0f),
+	new Vector2(0.0f, 1.0f)
+
+];
+int[] connections = [0, 1, 1, 2, 2, 0];
+polygonPathFinder.Setup(points, connections);
+[/csharp]
+[/codeblocks]
+*/
 func (self Instance) Setup(points []Vector2.XY, connections []int32) { //gd:PolygonPathFinder.setup
 	class(self).Setup(Packed.New(points...), Packed.New(connections...))
 }
@@ -64,6 +89,35 @@ func (self Instance) GetIntersections(from Vector2.XY, to Vector2.XY) []Vector2.
 func (self Instance) GetClosestPoint(point Vector2.XY) Vector2.XY { //gd:PolygonPathFinder.get_closest_point
 	return Vector2.XY(class(self).GetClosestPoint(Vector2.XY(point)))
 }
+
+/*
+Returns [code]true[/code] if [param point] falls inside the polygon area.
+[codeblocks]
+[gdscript]
+var polygon_path_finder = PolygonPathFinder.new()
+var points = [Vector2(0.0, 0.0), Vector2(1.0, 0.0), Vector2(0.0, 1.0)]
+var connections = [0, 1, 1, 2, 2, 0]
+polygon_path_finder.setup(points, connections)
+print(polygon_path_finder.is_point_inside(Vector2(0.2, 0.2))) # Prints true
+print(polygon_path_finder.is_point_inside(Vector2(1.0, 1.0))) # Prints false
+[/gdscript]
+[csharp]
+var polygonPathFinder = new PolygonPathFinder();
+Vector2[] points =
+[
+
+	new Vector2(0.0f, 0.0f),
+	new Vector2(1.0f, 0.0f),
+	new Vector2(0.0f, 1.0f)
+
+];
+int[] connections = [0, 1, 1, 2, 2, 0];
+polygonPathFinder.Setup(points, connections);
+GD.Print(polygonPathFinder.IsPointInside(new Vector2(0.2f, 0.2f))); // Prints True
+GD.Print(polygonPathFinder.IsPointInside(new Vector2(1.0f, 1.0f))); // Prints False
+[/csharp]
+[/codeblocks]
+*/
 func (self Instance) IsPointInside(point Vector2.XY) bool { //gd:PolygonPathFinder.is_point_inside
 	return bool(class(self).IsPointInside(Vector2.XY(point)))
 }
@@ -96,6 +150,29 @@ func New() Instance {
 	return casted
 }
 
+/*
+Sets up [PolygonPathFinder] with an array of points that define the vertices of the polygon, and an array of indices that determine the edges of the polygon.
+The length of [param connections] must be even, returns an error if odd.
+[codeblocks]
+[gdscript]
+var polygon_path_finder = PolygonPathFinder.new()
+var points = [Vector2(0.0, 0.0), Vector2(1.0, 0.0), Vector2(0.0, 1.0)]
+var connections = [0, 1, 1, 2, 2, 0]
+polygon_path_finder.setup(points, connections)
+[/gdscript]
+[csharp]
+var polygonPathFinder = new PolygonPathFinder();
+Vector2[] points =
+[
+    new Vector2(0.0f, 0.0f),
+    new Vector2(1.0f, 0.0f),
+    new Vector2(0.0f, 1.0f)
+];
+int[] connections = [0, 1, 1, 2, 2, 0];
+polygonPathFinder.Setup(points, connections);
+[/csharp]
+[/codeblocks]
+*/
 //go:nosplit
 func (self class) Setup(points Packed.Array[Vector2.XY], connections Packed.Array[int32]) { //gd:PolygonPathFinder.setup
 	var frame = callframe.New()
@@ -141,6 +218,32 @@ func (self class) GetClosestPoint(point Vector2.XY) Vector2.XY { //gd:PolygonPat
 	return ret
 }
 
+/*
+Returns [code]true[/code] if [param point] falls inside the polygon area.
+[codeblocks]
+[gdscript]
+var polygon_path_finder = PolygonPathFinder.new()
+var points = [Vector2(0.0, 0.0), Vector2(1.0, 0.0), Vector2(0.0, 1.0)]
+var connections = [0, 1, 1, 2, 2, 0]
+polygon_path_finder.setup(points, connections)
+print(polygon_path_finder.is_point_inside(Vector2(0.2, 0.2))) # Prints true
+print(polygon_path_finder.is_point_inside(Vector2(1.0, 1.0))) # Prints false
+[/gdscript]
+[csharp]
+var polygonPathFinder = new PolygonPathFinder();
+Vector2[] points =
+[
+    new Vector2(0.0f, 0.0f),
+    new Vector2(1.0f, 0.0f),
+    new Vector2(0.0f, 1.0f)
+];
+int[] connections = [0, 1, 1, 2, 2, 0];
+polygonPathFinder.Setup(points, connections);
+GD.Print(polygonPathFinder.IsPointInside(new Vector2(0.2f, 0.2f))); // Prints True
+GD.Print(polygonPathFinder.IsPointInside(new Vector2(1.0f, 1.0f))); // Prints False
+[/csharp]
+[/codeblocks]
+*/
 //go:nosplit
 func (self class) IsPointInside(point Vector2.XY) bool { //gd:PolygonPathFinder.is_point_inside
 	var frame = callframe.New()

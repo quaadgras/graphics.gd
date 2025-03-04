@@ -21,6 +21,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
@@ -115,6 +116,13 @@ Returns [code]true[/code] when the [NavigationPolygon] is being baked on a backg
 */
 func (self Instance) IsBaking() bool { //gd:NavigationRegion2D.is_baking
 	return bool(class(self).IsBaking())
+}
+
+/*
+Returns the axis-aligned rectangle for the region's transformed navigation mesh.
+*/
+func (self Instance) GetBounds() Rect2.PositionSize { //gd:NavigationRegion2D.get_bounds
+	return Rect2.PositionSize(class(self).GetBounds())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -395,6 +403,19 @@ func (self class) IsBaking() bool { //gd:NavigationRegion2D.is_baking
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_is_baking, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the axis-aligned rectangle for the region's transformed navigation mesh.
+*/
+//go:nosplit
+func (self class) GetBounds() Rect2.PositionSize { //gd:NavigationRegion2D.get_bounds
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_get_bounds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

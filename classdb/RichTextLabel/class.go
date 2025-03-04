@@ -26,6 +26,7 @@ import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -47,6 +48,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 A control for displaying text that can contain custom fonts, images, and basic formatting. [RichTextLabel] manages these as an internal tag stack. It also adapts itself to given width/heights.
+[b]Note:[/b] [method newline], [method push_paragraph], [code]"\n"[/code], [code]"\r\n"[/code], [code]p[/code] tag, and alignment tags start a new paragraph. Each paragraph is processed independently, in its own BiDi context. If you want to force line wrapping within paragraph, any other line breaking character can be used, for example, Form Feed (U+000C), Next Line (U+0085), Line Separator (U+2028).
 [b]Note:[/b] Assignments to [member text] clear the tag stack and reconstruct it from the property's contents. Any edits made to [member text] will erase previous edits made from other manual sources such as [method append_text] and the [code]push_*[/code] / [method pop] methods.
 [b]Note:[/b] RichTextLabel doesn't support entangled BBCode tags. For example, instead of using [code skip-lint][b]bold[i]bold italic[/b]italic[/i][/code], use [code skip-lint][b]bold[i]bold italic[/i][/b][i]italic[/i][/code].
 [b]Note:[/b] [code]push_pop_*[/code] functions won't affect BBCode.
@@ -216,7 +218,7 @@ If [member meta_underlined] is [code]true[/code], meta tags display an underline
 [b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
 */
 func (self Instance) PushMeta(data any) { //gd:RichTextLabel.push_meta
-	class(self).PushMeta(variant.New(data), 1)
+	class(self).PushMeta(variant.New(data), 1, String.New(""))
 }
 
 /*
@@ -267,7 +269,7 @@ For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width wou
 If [param expand] is [code]false[/code], the column will not contribute to the total ratio.
 */
 func (self Instance) SetTableColumnExpand(column int, expand bool) { //gd:RichTextLabel.set_table_column_expand
-	class(self).SetTableColumnExpand(int64(column), expand, int64(1))
+	class(self).SetTableColumnExpand(int64(column), expand, int64(1), true)
 }
 
 /*
@@ -406,6 +408,13 @@ func (self Instance) GetSelectionTo() int { //gd:RichTextLabel.get_selection_to
 }
 
 /*
+Returns the current selection vertical line offset if a selection is active, [code]-1.0[/code] otherwise.
+*/
+func (self Instance) GetSelectionLineOffset() Float.X { //gd:RichTextLabel.get_selection_line_offset
+	return Float.X(Float.X(class(self).GetSelectionLineOffset()))
+}
+
+/*
 Select all the text.
 If [member selection_enabled] is [code]false[/code], no selection will occur.
 */
@@ -450,8 +459,15 @@ func (self Instance) IsReady() bool { //gd:RichTextLabel.is_ready
 }
 
 /*
+If [member threaded] is enabled, returns [code]true[/code] if the background thread has finished text processing, otherwise always return [code]true[/code].
+*/
+func (self Instance) IsFinished() bool { //gd:RichTextLabel.is_finished
+	return bool(class(self).IsFinished())
+}
+
+/*
 Returns the line number of the character position provided. Line and character numbers are both zero-indexed.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetCharacterLine(character int) int { //gd:RichTextLabel.get_character_line
 	return int(int(class(self).GetCharacterLine(int64(character))))
@@ -459,7 +475,7 @@ func (self Instance) GetCharacterLine(character int) int { //gd:RichTextLabel.ge
 
 /*
 Returns the paragraph number of the character position provided. Paragraph and character numbers are both zero-indexed.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetCharacterParagraph(character int) int { //gd:RichTextLabel.get_character_paragraph
 	return int(int(class(self).GetCharacterParagraph(int64(character))))
@@ -474,15 +490,25 @@ func (self Instance) GetTotalCharacterCount() int { //gd:RichTextLabel.get_total
 
 /*
 Returns the total number of lines in the text. Wrapped text is counted as multiple lines.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member visible_characters_behavior] is set to [constant TextServer.VC_CHARS_BEFORE_SHAPING] only visible wrapped lines are counted.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetLineCount() int { //gd:RichTextLabel.get_line_count
 	return int(int(class(self).GetLineCount()))
 }
 
 /*
+Returns the indexes of the first and last visible characters for the given [param line], as a [Vector2i].
+[b]Note:[/b] If [member visible_characters_behavior] is set to [constant TextServer.VC_CHARS_BEFORE_SHAPING] only visible wrapped lines are counted.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
+*/
+func (self Instance) GetLineRange(line int) Vector2i.XY { //gd:RichTextLabel.get_line_range
+	return Vector2i.XY(class(self).GetLineRange(int64(line)))
+}
+
+/*
 Returns the number of visible lines.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetVisibleLineCount() int { //gd:RichTextLabel.get_visible_line_count
 	return int(int(class(self).GetVisibleLineCount()))
@@ -497,7 +523,7 @@ func (self Instance) GetParagraphCount() int { //gd:RichTextLabel.get_paragraph_
 
 /*
 Returns the number of visible paragraphs. A paragraph is considered visible if at least one of its lines is visible.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetVisibleParagraphCount() int { //gd:RichTextLabel.get_visible_paragraph_count
 	return int(int(class(self).GetVisibleParagraphCount()))
@@ -505,7 +531,7 @@ func (self Instance) GetVisibleParagraphCount() int { //gd:RichTextLabel.get_vis
 
 /*
 Returns the height of the content.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetContentHeight() int { //gd:RichTextLabel.get_content_height
 	return int(int(class(self).GetContentHeight()))
@@ -513,7 +539,7 @@ func (self Instance) GetContentHeight() int { //gd:RichTextLabel.get_content_hei
 
 /*
 Returns the width of the content.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetContentWidth() int { //gd:RichTextLabel.get_content_width
 	return int(int(class(self).GetContentWidth()))
@@ -521,7 +547,7 @@ func (self Instance) GetContentWidth() int { //gd:RichTextLabel.get_content_widt
 
 /*
 Returns the vertical offset of the line found at the provided index.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetLineOffset(line int) Float.X { //gd:RichTextLabel.get_line_offset
 	return Float.X(Float.X(class(self).GetLineOffset(int64(line))))
@@ -529,7 +555,7 @@ func (self Instance) GetLineOffset(line int) Float.X { //gd:RichTextLabel.get_li
 
 /*
 Returns the vertical offset of the paragraph found at the provided index.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetParagraphOffset(paragraph int) Float.X { //gd:RichTextLabel.get_paragraph_offset
 	return Float.X(Float.X(class(self).GetParagraphOffset(int64(paragraph))))
@@ -543,8 +569,8 @@ func (self Instance) ParseExpressionsForValues(expressions []string) map[string]
 }
 
 /*
-Installs a custom effect. This can also be done in the RichTextLabel inspector using the [member custom_effects] property. [param effect] should be a valid [RichTextEffect].
-Example RichTextEffect:
+Installs a custom effect. This can also be done in the Inspector through the [member custom_effects] property. [param effect] should be a valid [RichTextEffect].
+[b]Example:[/b] With the following script extending from [RichTextEffect]:
 [codeblock]
 # effect.gd
 class_name MyCustomEffect
@@ -554,7 +580,7 @@ var bbcode = "my_custom_effect"
 
 # ...
 [/codeblock]
-Registering the above effect in RichTextLabel from script:
+The above effect can be installed in [RichTextLabel] from a script:
 [codeblock]
 # rich_text_label.gd
 extends RichTextLabel
@@ -727,6 +753,38 @@ func (self Instance) ShortcutKeysEnabled() bool {
 
 func (self Instance) SetShortcutKeysEnabled(value bool) {
 	class(self).SetShortcutKeysEnabled(value)
+}
+
+func (self Instance) HorizontalAlignment() HorizontalAlignment {
+	return HorizontalAlignment(class(self).GetHorizontalAlignment())
+}
+
+func (self Instance) SetHorizontalAlignment(value HorizontalAlignment) {
+	class(self).SetHorizontalAlignment(value)
+}
+
+func (self Instance) VerticalAlignment() VerticalAlignment {
+	return VerticalAlignment(class(self).GetVerticalAlignment())
+}
+
+func (self Instance) SetVerticalAlignment(value VerticalAlignment) {
+	class(self).SetVerticalAlignment(value)
+}
+
+func (self Instance) JustificationFlags() gdclass.TextServerJustificationFlag {
+	return gdclass.TextServerJustificationFlag(class(self).GetJustificationFlags())
+}
+
+func (self Instance) SetJustificationFlags(value gdclass.TextServerJustificationFlag) {
+	class(self).SetJustificationFlags(value)
+}
+
+func (self Instance) TabStops() []float32 {
+	return []float32(slices.Collect(class(self).GetTabStops().Values()))
+}
+
+func (self Instance) SetTabStops(value []float32) {
+	class(self).SetTabStops(Packed.New(value...))
 }
 
 func (self Instance) CustomEffects() []any {
@@ -1140,10 +1198,11 @@ If [member meta_underlined] is [code]true[/code], meta tags display an underline
 [b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
 */
 //go:nosplit
-func (self class) PushMeta(data variant.Any, underline_mode gdclass.RichTextLabelMetaUnderline) { //gd:RichTextLabel.push_meta
+func (self class) PushMeta(data variant.Any, underline_mode gdclass.RichTextLabelMetaUnderline, tooltip String.Readable) { //gd:RichTextLabel.push_meta
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalVariant(data)))
 	callframe.Arg(frame, underline_mode)
+	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1233,11 +1292,12 @@ For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width wou
 If [param expand] is [code]false[/code], the column will not contribute to the total ratio.
 */
 //go:nosplit
-func (self class) SetTableColumnExpand(column int64, expand bool, ratio int64) { //gd:RichTextLabel.set_table_column_expand
+func (self class) SetTableColumnExpand(column int64, expand bool, ratio int64, shrink bool) { //gd:RichTextLabel.set_table_column_expand
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, expand)
 	callframe.Arg(frame, ratio)
+	callframe.Arg(frame, shrink)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_table_column_expand, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1469,6 +1529,82 @@ func (self class) GetLanguage() String.Readable { //gd:RichTextLabel.get_languag
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:RichTextLabel.set_horizontal_alignment
+	var frame = callframe.New()
+	callframe.Arg(frame, alignment)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetHorizontalAlignment() HorizontalAlignment { //gd:RichTextLabel.get_horizontal_alignment
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[HorizontalAlignment](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetVerticalAlignment(alignment VerticalAlignment) { //gd:RichTextLabel.set_vertical_alignment
+	var frame = callframe.New()
+	callframe.Arg(frame, alignment)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_vertical_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetVerticalAlignment() VerticalAlignment { //gd:RichTextLabel.get_vertical_alignment
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[VerticalAlignment](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_vertical_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetJustificationFlags(justification_flags gdclass.TextServerJustificationFlag) { //gd:RichTextLabel.set_justification_flags
+	var frame = callframe.New()
+	callframe.Arg(frame, justification_flags)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_justification_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetJustificationFlags() gdclass.TextServerJustificationFlag { //gd:RichTextLabel.get_justification_flags
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.TextServerJustificationFlag](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_justification_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetTabStops(tab_stops Packed.Array[float32]) { //gd:RichTextLabel.set_tab_stops
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_tab_stops, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetTabStops() Packed.Array[float32] { //gd:RichTextLabel.get_tab_stops
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_tab_stops, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1777,6 +1913,19 @@ func (self class) GetSelectionTo() int64 { //gd:RichTextLabel.get_selection_to
 }
 
 /*
+Returns the current selection vertical line offset if a selection is active, [code]-1.0[/code] otherwise.
+*/
+//go:nosplit
+func (self class) GetSelectionLineOffset() float64 { //gd:RichTextLabel.get_selection_line_offset
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_selection_line_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Select all the text.
 If [member selection_enabled] is [code]false[/code], no selection will occur.
 */
@@ -1855,6 +2004,19 @@ func (self class) IsReady() bool { //gd:RichTextLabel.is_ready
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_ready, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+If [member threaded] is enabled, returns [code]true[/code] if the background thread has finished text processing, otherwise always return [code]true[/code].
+*/
+//go:nosplit
+func (self class) IsFinished() bool { //gd:RichTextLabel.is_finished
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_finished, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1957,7 +2119,7 @@ func (self class) GetVisibleRatio() float64 { //gd:RichTextLabel.get_visible_rat
 
 /*
 Returns the line number of the character position provided. Line and character numbers are both zero-indexed.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
 func (self class) GetCharacterLine(character int64) int64 { //gd:RichTextLabel.get_character_line
@@ -1972,7 +2134,7 @@ func (self class) GetCharacterLine(character int64) int64 { //gd:RichTextLabel.g
 
 /*
 Returns the paragraph number of the character position provided. Paragraph and character numbers are both zero-indexed.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
 func (self class) GetCharacterParagraph(character int64) int64 { //gd:RichTextLabel.get_character_paragraph
@@ -2019,7 +2181,8 @@ func (self class) IsUsingBbcode() bool { //gd:RichTextLabel.is_using_bbcode
 
 /*
 Returns the total number of lines in the text. Wrapped text is counted as multiple lines.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member visible_characters_behavior] is set to [constant TextServer.VC_CHARS_BEFORE_SHAPING] only visible wrapped lines are counted.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
 func (self class) GetLineCount() int64 { //gd:RichTextLabel.get_line_count
@@ -2032,8 +2195,24 @@ func (self class) GetLineCount() int64 { //gd:RichTextLabel.get_line_count
 }
 
 /*
+Returns the indexes of the first and last visible characters for the given [param line], as a [Vector2i].
+[b]Note:[/b] If [member visible_characters_behavior] is set to [constant TextServer.VC_CHARS_BEFORE_SHAPING] only visible wrapped lines are counted.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
+*/
+//go:nosplit
+func (self class) GetLineRange(line int64) Vector2i.XY { //gd:RichTextLabel.get_line_range
+	var frame = callframe.New()
+	callframe.Arg(frame, line)
+	var r_ret = callframe.Ret[Vector2i.XY](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_line_range, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns the number of visible lines.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
 func (self class) GetVisibleLineCount() int64 { //gd:RichTextLabel.get_visible_line_count
@@ -2060,7 +2239,7 @@ func (self class) GetParagraphCount() int64 { //gd:RichTextLabel.get_paragraph_c
 
 /*
 Returns the number of visible paragraphs. A paragraph is considered visible if at least one of its lines is visible.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
 func (self class) GetVisibleParagraphCount() int64 { //gd:RichTextLabel.get_visible_paragraph_count
@@ -2074,7 +2253,7 @@ func (self class) GetVisibleParagraphCount() int64 { //gd:RichTextLabel.get_visi
 
 /*
 Returns the height of the content.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
 func (self class) GetContentHeight() int64 { //gd:RichTextLabel.get_content_height
@@ -2088,7 +2267,7 @@ func (self class) GetContentHeight() int64 { //gd:RichTextLabel.get_content_heig
 
 /*
 Returns the width of the content.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
 func (self class) GetContentWidth() int64 { //gd:RichTextLabel.get_content_width
@@ -2102,7 +2281,7 @@ func (self class) GetContentWidth() int64 { //gd:RichTextLabel.get_content_width
 
 /*
 Returns the vertical offset of the line found at the provided index.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
 func (self class) GetLineOffset(line int64) float64 { //gd:RichTextLabel.get_line_offset
@@ -2117,7 +2296,7 @@ func (self class) GetLineOffset(line int64) float64 { //gd:RichTextLabel.get_lin
 
 /*
 Returns the vertical offset of the paragraph found at the provided index.
-[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
+[b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 //go:nosplit
 func (self class) GetParagraphOffset(paragraph int64) float64 { //gd:RichTextLabel.get_paragraph_offset
@@ -2164,8 +2343,8 @@ func (self class) GetEffects() Array.Any { //gd:RichTextLabel.get_effects
 }
 
 /*
-Installs a custom effect. This can also be done in the RichTextLabel inspector using the [member custom_effects] property. [param effect] should be a valid [RichTextEffect].
-Example RichTextEffect:
+Installs a custom effect. This can also be done in the Inspector through the [member custom_effects] property. [param effect] should be a valid [RichTextEffect].
+[b]Example:[/b] With the following script extending from [RichTextEffect]:
 [codeblock]
 # effect.gd
 class_name MyCustomEffect
@@ -2175,7 +2354,7 @@ var bbcode = "my_custom_effect"
 
 # ...
 [/codeblock]
-Registering the above effect in RichTextLabel from script:
+The above effect can be installed in [RichTextLabel] from a script:
 [codeblock]
 # rich_text_label.gd
 extends RichTextLabel
@@ -2421,4 +2600,17 @@ const (
 	InlineAlignmentImageMask InlineAlignment = 3
 	/*A bit mask for [code]INLINE_ALIGNMENT_TO_*[/code] alignment constants.*/
 	InlineAlignmentTextMask InlineAlignment = 12
+)
+
+type VerticalAlignment int
+
+const (
+	/*Vertical top alignment, usually for text-derived classes.*/
+	VerticalAlignmentTop VerticalAlignment = 0
+	/*Vertical center alignment, usually for text-derived classes.*/
+	VerticalAlignmentCenter VerticalAlignment = 1
+	/*Vertical bottom alignment, usually for text-derived classes.*/
+	VerticalAlignmentBottom VerticalAlignment = 2
+	/*Expand rows to fit height, usually for text-derived classes.*/
+	VerticalAlignmentFill VerticalAlignment = 3
 )

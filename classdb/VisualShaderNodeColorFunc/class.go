@@ -168,6 +168,29 @@ const (
 	  return vec3(r, g, b);
 	  [/codeblock]*/
 	FuncSepia Function = 3
+	/*Converts color from linear color space to sRGB color space using the following formula:
+	  [codeblock]
+	  vec3 c = clamp(c, vec3(0.0), vec3(1.0));
+	  const vec3 a = vec3(0.055f);
+	  return mix((vec3(1.0f) + a) * pow(c.rgb, vec3(1.0f / 2.4f)) - a, 12.92f * c.rgb, lessThan(c.rgb, vec3(0.0031308f)));
+	  [/codeblock]
+	  The Compatibility renderer uses a simpler formula:
+	  [codeblock]
+	  vec3 c = input;
+	  return max(vec3(1.055) * pow(c, vec3(0.416666667)) - vec3(0.055), vec3(0.0));
+	  [/codeblock]*/
+	FuncLinearToSrgb Function = 4
+	/*Converts color from sRGB color space to linear color space using the following formula:
+	  [codeblock]
+	  vec3 c = input;
+	  return mix(pow((c.rgb + vec3(0.055)) * (1.0 / (1.0 + 0.055)), vec3(2.4)), c.rgb * (1.0 / 12.92), lessThan(c.rgb, vec3(0.04045)));
+	  [/codeblock]
+	  The Compatibility renderer uses a simpler formula:
+	  [codeblock]
+	  vec3 c = input;
+	  return c * (c * (c * 0.305306011 + 0.682171111) + 0.012522878);
+	  [/codeblock]*/
+	FuncSrgbToLinear Function = 5
 	/*Represents the size of the [enum Function] enum.*/
-	FuncMax Function = 4
+	FuncMax Function = 6
 )

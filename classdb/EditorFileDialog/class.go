@@ -46,6 +46,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [EditorFileDialog] is an enhanced version of [FileDialog] available only to editor plugins. Additional features include list of favorited/recent files and the ability to see files as thumbnails grid instead of list.
+Unlike [FileDialog], [EditorFileDialog] does not have a property for using native dialogs. Instead, native dialogs can be enabled globally via the [member EditorSettings.interface/editor/use_native_file_dialogs] editor setting. They are also enabled automatically when running in sandbox (e.g. on macOS).
 */
 type Instance [1]gdclass.EditorFileDialog
 
@@ -58,7 +59,7 @@ type Any interface {
 }
 
 /*
-Removes all filters except for "All Files (*)".
+Removes all filters except for "All Files (*.*)".
 */
 func (self Instance) ClearFilters() { //gd:EditorFileDialog.clear_filters
 	class(self).ClearFilters()
@@ -128,6 +129,27 @@ Returns a [Dictionary] with the selected values of the additional [OptionButton]
 */
 func (self Instance) GetSelectedOptions() map[string]int { //gd:EditorFileDialog.get_selected_options
 	return map[string]int(gd.DictionaryAs[map[string]int](class(self).GetSelectedOptions()))
+}
+
+/*
+Clear the filter for file names.
+*/
+func (self Instance) ClearFilenameFilter() { //gd:EditorFileDialog.clear_filename_filter
+	class(self).ClearFilenameFilter()
+}
+
+/*
+Sets the value of the filter for file names.
+*/
+func (self Instance) SetFilenameFilter(filter string) { //gd:EditorFileDialog.set_filename_filter
+	class(self).SetFilenameFilter(String.New(filter))
+}
+
+/*
+Returns the value of the filter for file names.
+*/
+func (self Instance) GetFilenameFilter() string { //gd:EditorFileDialog.get_filename_filter
+	return string(class(self).GetFilenameFilter().String())
 }
 
 /*
@@ -266,7 +288,7 @@ func (self Instance) SetDisableOverwriteWarning(value bool) {
 }
 
 /*
-Removes all filters except for "All Files (*)".
+Removes all filters except for "All Files (*.*)".
 */
 //go:nosplit
 func (self class) ClearFilters() { //gd:EditorFileDialog.clear_filters
@@ -434,6 +456,42 @@ func (self class) GetSelectedOptions() Dictionary.Any { //gd:EditorFileDialog.ge
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_selected_options, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Clear the filter for file names.
+*/
+//go:nosplit
+func (self class) ClearFilenameFilter() { //gd:EditorFileDialog.clear_filename_filter
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_clear_filename_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Sets the value of the filter for file names.
+*/
+//go:nosplit
+func (self class) SetFilenameFilter(filter String.Readable) { //gd:EditorFileDialog.set_filename_filter
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(filter)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_set_filename_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the value of the filter for file names.
+*/
+//go:nosplit
+func (self class) GetFilenameFilter() String.Readable { //gd:EditorFileDialog.get_filename_filter
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_filename_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -662,6 +720,10 @@ func (self Instance) OnFilesSelected(cb func(paths []string)) {
 
 func (self Instance) OnDirSelected(cb func(dir string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("dir_selected"), gd.NewCallable(cb), 0)
+}
+
+func (self Instance) OnFilenameFilterChanged(cb func(filter string)) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("filename_filter_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsEditorFileDialog() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -61,6 +61,15 @@ type Any interface {
 }
 
 /*
+When using physics interpolation, there will be circumstances in which you want to know the interpolated (displayed) transform of a node rather than the standard transform (which may only be accurate to the most recent physics tick).
+This is particularly important for frame-based operations that take place in [method Node._process], rather than [method Node._physics_process]. Examples include [Camera3D]s focusing on a node, or finding where to fire lasers from on a frame rather than physics tick.
+[b]Note:[/b] This function creates an interpolation pump on the [Node3D] the first time it is called, which can respond to physics interpolation resets. If you get problems with "streaking" when initially following a [Node3D], be sure to call [method get_global_transform_interpolated] at least once [i]before[/i] resetting the [Node3D] physics interpolation.
+*/
+func (self Instance) GetGlobalTransformInterpolated() Transform3D.BasisOrigin { //gd:Node3D.get_global_transform_interpolated
+	return Transform3D.BasisOrigin(class(self).GetGlobalTransformInterpolated())
+}
+
+/*
 Returns the parent [Node3D], or [code]null[/code] if no parent exists, the parent is not of type [Node3D], or [member top_level] is [code]true[/code].
 [b]Note:[/b] Calling this method is not equivalent to [code]get_parent() as Node3D[/code], which does not take [member top_level] into account.
 */
@@ -149,6 +158,8 @@ func (self Instance) ClearSubgizmoSelection() { //gd:Node3D.clear_subgizmo_selec
 
 /*
 Returns [code]true[/code] if the node is present in the [SceneTree], its [member visible] property is [code]true[/code] and all its ancestors are also visible. If any ancestor is hidden, this node will not be visible in the scene tree.
+Visibility is checked only in parent nodes that inherit from [Node3D]. If the parent is of any other type (such as [Node], [AnimationPlayer], or [Node2D]), it is assumed to be visible.
+[b]Note:[/b] This method does not take [member VisualInstance3D.layers] into account, so even if this method returns [code]true[/code], the node might end up not being rendered.
 */
 func (self Instance) IsVisibleInTree() bool { //gd:Node3D.is_visible_in_tree
 	return bool(class(self).IsVisibleInTree())
@@ -291,7 +302,8 @@ func (self Instance) SetIdentity() { //gd:Node3D.set_identity
 /*
 Rotates the node so that the local forward axis (-Z, [constant Vector3.FORWARD]) points toward the [param target] position.
 The local up axis (+Y) points as close to the [param up] vector as possible while staying perpendicular to the local forward axis. The resulting transform is orthogonal, and the scale is preserved. Non-uniform scaling may not work correctly.
-The [param target] position cannot be the same as the node's position, the [param up] vector cannot be zero, and the direction from the node's position to the [param target] vector cannot be parallel to the [param up] vector.
+The [param target] position cannot be the same as the node's position, the [param up] vector cannot be zero.
+The [param target] and the [param up] cannot be [constant Vector3.ZERO], and shouldn't be colinear to avoid unintended rotation around local Z axis.
 Operations take place in global space, which means that the node must be in the scene tree.
 If [param use_model_front] is [code]true[/code], the +Z axis (asset front) is treated as forward (implies +X is left) and points toward the [param target] position. By default, the -Z axis (camera forward) is treated as forward (implies +X is right).
 */
@@ -664,6 +676,21 @@ func (self class) GetGlobalTransform() Transform3D.BasisOrigin { //gd:Node3D.get
 	return ret
 }
 
+/*
+When using physics interpolation, there will be circumstances in which you want to know the interpolated (displayed) transform of a node rather than the standard transform (which may only be accurate to the most recent physics tick).
+This is particularly important for frame-based operations that take place in [method Node._process], rather than [method Node._physics_process]. Examples include [Camera3D]s focusing on a node, or finding where to fire lasers from on a frame rather than physics tick.
+[b]Note:[/b] This function creates an interpolation pump on the [Node3D] the first time it is called, which can respond to physics interpolation resets. If you get problems with "streaking" when initially following a [Node3D], be sure to call [method get_global_transform_interpolated] at least once [i]before[/i] resetting the [Node3D] physics interpolation.
+*/
+//go:nosplit
+func (self class) GetGlobalTransformInterpolated() Transform3D.BasisOrigin { //gd:Node3D.get_global_transform_interpolated
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_transform_interpolated, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
 //go:nosplit
 func (self class) SetGlobalPosition(position Vector3.XYZ) { //gd:Node3D.set_global_position
 	var frame = callframe.New()
@@ -948,6 +975,8 @@ func (self class) IsVisible() bool { //gd:Node3D.is_visible
 
 /*
 Returns [code]true[/code] if the node is present in the [SceneTree], its [member visible] property is [code]true[/code] and all its ancestors are also visible. If any ancestor is hidden, this node will not be visible in the scene tree.
+Visibility is checked only in parent nodes that inherit from [Node3D]. If the parent is of any other type (such as [Node], [AnimationPlayer], or [Node2D]), it is assumed to be visible.
+[b]Note:[/b] This method does not take [member VisualInstance3D.layers] into account, so even if this method returns [code]true[/code], the node might end up not being rendered.
 */
 //go:nosplit
 func (self class) IsVisibleInTree() bool { //gd:Node3D.is_visible_in_tree
@@ -1192,7 +1221,8 @@ func (self class) SetIdentity() { //gd:Node3D.set_identity
 /*
 Rotates the node so that the local forward axis (-Z, [constant Vector3.FORWARD]) points toward the [param target] position.
 The local up axis (+Y) points as close to the [param up] vector as possible while staying perpendicular to the local forward axis. The resulting transform is orthogonal, and the scale is preserved. Non-uniform scaling may not work correctly.
-The [param target] position cannot be the same as the node's position, the [param up] vector cannot be zero, and the direction from the node's position to the [param target] vector cannot be parallel to the [param up] vector.
+The [param target] position cannot be the same as the node's position, the [param up] vector cannot be zero.
+The [param target] and the [param up] cannot be [constant Vector3.ZERO], and shouldn't be colinear to avoid unintended rotation around local Z axis.
 Operations take place in global space, which means that the node must be in the scene tree.
 If [param use_model_front] is [code]true[/code], the +Z axis (asset front) is treated as forward (implies +X is left) and points toward the [param target] position. By default, the -Z axis (camera forward) is treated as forward (implies +X is right).
 */

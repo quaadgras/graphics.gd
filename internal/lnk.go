@@ -94,9 +94,9 @@ func (Godot *API) linkMethods(editor bool) {
 			isEditorMethod = true
 		}
 		switch class.Name {
-		case "FileSystemDock", "ScriptCreateDialog", "ScriptEditor", "ScriptEditorBase":
+		case "FileSystemDock", "ScriptCreateDialog", "ScriptEditor", "ScriptEditorBase", "GridMapEditorPlugin":
 			isEditorMethod = true
-		case "JavaClassWrapper", "JavaScriptBridge":
+		case "JavaClassWrapper", "JavaScriptBridge", "JavaClass", "JavaObject":
 			continue
 		}
 		if runtime.GOOS == "js" && (strings.HasPrefix(class.Name, "OpenXR") || class.Name == "ResourceImporterOggVorbis") {

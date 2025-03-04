@@ -51,18 +51,20 @@ extends EditorPlugin
 
 class ExampleEditorDebugger extends EditorDebuggerPlugin:
 
-	func _has_capture(prefix):
-	    # Return true if you wish to handle message with this prefix.
-	    return prefix == "my_plugin"
+	func _has_capture(capture):
+	    # Return true if you wish to handle messages with the prefix "my_plugin:".
+	    return capture == "my_plugin"
 
 	func _capture(message, data, session_id):
 	    if message == "my_plugin:ping":
 	        get_session(session_id).send_message("my_plugin:echo", data)
+	        return true
+	    return false
 
 	func _setup_session(session_id):
 	    # Add a new tab in the debugger session UI containing a label.
 	    var label = Label.new()
-	    label.name = "Example plugin"
+	    label.name = "Example plugin" # Will be used as the tab title.
 	    label.text = "Example plugin"
 	    var session = get_session(session_id)
 	    # Listens to the session started and stopped signals.
@@ -82,6 +84,27 @@ func _exit_tree():
 
 [/gdscript]
 [/codeblocks]
+To connect on the running game side, use the [EngineDebugger] singleton:
+[codeblocks]
+[gdscript]
+extends Node
+
+func _ready():
+
+	EngineDebugger.register_message_capture("my_plugin", _capture)
+	EngineDebugger.send_message("my_plugin:ping", ["test"])
+
+func _capture(message, data):
+
+	# Note that the "my_plugin:" prefix is not used here.
+	if message == "echo":
+	    prints("Echo received:", data)
+	    return true
+	return false
+
+[/gdscript]
+[/codeblocks]
+[b]Note:[/b] While the game is running, [method @GlobalScope.print] and similar functions [i]called in the editor[/i] do not print anything, the Output Log prints only game messages.
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
 
@@ -97,11 +120,11 @@ type Any interface {
 	AsEditorDebuggerPlugin() Instance
 }
 type Interface interface {
-	//Override this method to be notified whenever a new [EditorDebuggerSession] is created (the session may be inactive during this stage).
+	//Override this method to be notified whenever a new [EditorDebuggerSession] is created. Note that the session may be inactive during this stage.
 	SetupSession(session_id int)
-	//Override this method to enable receiving messages from the debugger. If [param capture] is "my_message" then messages starting with "my_message:" will be passes to the [method _capture] method.
+	//Override this method to enable receiving messages from the debugger. If [param capture] is "my_message" then messages starting with "my_message:" will be passed to the [method _capture] method.
 	HasCapture(capture string) bool
-	//Override this method to process incoming messages. The [param session_id] is the ID of the [EditorDebuggerSession] that received the message (which you can retrieve via [method get_session]).
+	//Override this method to process incoming messages. The [param session_id] is the ID of the [EditorDebuggerSession] that received the [param message]. Use [method get_session] to retrieve the session. This method should return [code]true[/code] if the message is recognized.
 	Capture(message string, data []any, session_id int) bool
 	//Override this method to be notified when a breakpoint line has been clicked in the debugger breakpoint panel.
 	GotoScriptLine(script [1]gdclass.Script, line int)
@@ -126,7 +149,7 @@ func (self implementation) BreakpointSetInTree(script [1]gdclass.Script, line in
 }
 
 /*
-Override this method to be notified whenever a new [EditorDebuggerSession] is created (the session may be inactive during this stage).
+Override this method to be notified whenever a new [EditorDebuggerSession] is created. Note that the session may be inactive during this stage.
 */
 func (Instance) _setup_session(impl func(ptr unsafe.Pointer, session_id int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -138,7 +161,7 @@ func (Instance) _setup_session(impl func(ptr unsafe.Pointer, session_id int)) (c
 }
 
 /*
-Override this method to enable receiving messages from the debugger. If [param capture] is "my_message" then messages starting with "my_message:" will be passes to the [method _capture] method.
+Override this method to enable receiving messages from the debugger. If [param capture] is "my_message" then messages starting with "my_message:" will be passed to the [method _capture] method.
 */
 func (Instance) _has_capture(impl func(ptr unsafe.Pointer, capture string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -151,7 +174,7 @@ func (Instance) _has_capture(impl func(ptr unsafe.Pointer, capture string) bool)
 }
 
 /*
-Override this method to process incoming messages. The [param session_id] is the ID of the [EditorDebuggerSession] that received the message (which you can retrieve via [method get_session]).
+Override this method to process incoming messages. The [param session_id] is the ID of the [EditorDebuggerSession] that received the [param message]. Use [method get_session] to retrieve the session. This method should return [code]true[/code] if the message is recognized.
 */
 func (Instance) _capture(impl func(ptr unsafe.Pointer, message string, data []any, session_id int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -244,7 +267,7 @@ func New() Instance {
 }
 
 /*
-Override this method to be notified whenever a new [EditorDebuggerSession] is created (the session may be inactive during this stage).
+Override this method to be notified whenever a new [EditorDebuggerSession] is created. Note that the session may be inactive during this stage.
 */
 func (class) _setup_session(impl func(ptr unsafe.Pointer, session_id int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -256,7 +279,7 @@ func (class) _setup_session(impl func(ptr unsafe.Pointer, session_id int64)) (cb
 }
 
 /*
-Override this method to enable receiving messages from the debugger. If [param capture] is "my_message" then messages starting with "my_message:" will be passes to the [method _capture] method.
+Override this method to enable receiving messages from the debugger. If [param capture] is "my_message" then messages starting with "my_message:" will be passed to the [method _capture] method.
 */
 func (class) _has_capture(impl func(ptr unsafe.Pointer, capture String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -269,7 +292,7 @@ func (class) _has_capture(impl func(ptr unsafe.Pointer, capture String.Readable)
 }
 
 /*
-Override this method to process incoming messages. The [param session_id] is the ID of the [EditorDebuggerSession] that received the message (which you can retrieve via [method get_session]).
+Override this method to process incoming messages. The [param session_id] is the ID of the [EditorDebuggerSession] that received the [param message]. Use [method get_session] to retrieve the session. This method should return [code]true[/code] if the message is recognized.
 */
 func (class) _capture(impl func(ptr unsafe.Pointer, message String.Readable, data Array.Any, session_id int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {

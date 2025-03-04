@@ -351,6 +351,8 @@ const (
 	FeatureImportDock Feature = 6
 	/*The History dock. If this feature is disabled, the History dock won't be visible.*/
 	FeatureHistoryDock Feature = 7
+	/*The Game tab, which allows embedding the game window and selecting nodes by clicking inside of it. If this feature is disabled, the Game tab won't display.*/
+	FeatureGame Feature = 8
 	/*Represents the size of the [enum Feature] enum.*/
-	FeatureMax Feature = 8
+	FeatureMax Feature = 9
 )

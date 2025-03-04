@@ -239,29 +239,7 @@ func GetLicenseText() string { //gd:Engine.get_license_text
 
 /*
 Returns the name of the CPU architecture the Godot binary was built for. Possible return values include [code]"x86_64"[/code], [code]"x86_32"[/code], [code]"arm64"[/code], [code]"arm32"[/code], [code]"rv64"[/code], [code]"riscv"[/code], [code]"ppc64"[/code], [code]"ppc"[/code], [code]"wasm64"[/code], and [code]"wasm32"[/code].
-To detect whether the current build is 64-bit, you can use the fact that all 64-bit architecture names contain [code]64[/code] in their name:
-[codeblocks]
-[gdscript]
-if "64" in Engine.get_architecture_name():
-
-	print("Running a 64-bit build of Godot.")
-
-else:
-
-	print("Running a 32-bit build of Godot.")
-
-[/gdscript]
-[csharp]
-if (Engine.GetArchitectureName().Contains("64"))
-
-	GD.Print("Running a 64-bit build of Godot.");
-
-else
-
-	GD.Print("Running a 32-bit build of Godot.");
-
-[/csharp]
-[/codeblocks]
+To detect whether the current build is 64-bit, or the type of architecture, don't use the architecture name. Instead, use [method OS.has_feature] to check for the [code]"64"[/code] feature tag, or tags such as [code]"x86"[/code] or [code]"arm"[/code]. See the [url=$DOCS_URL/tutorials/export/feature_tags.html]Feature Tags[/url] documentation for more details.
 [b]Note:[/b] This method does [i]not[/i] return the name of the system's CPU architecture (like [method OS.get_processor_name]). For example, when running an [code]x86_32[/code] Godot binary on an [code]x86_64[/code] system, the returned value will still be [code]"x86_32"[/code].
 */
 func GetArchitectureName() string { //gd:Engine.get_architecture_name
@@ -303,10 +281,10 @@ print(Engine.has_singleton("AudioServer")) # Prints true
 print(Engine.has_singleton("Unknown"))     # Prints false
 [/gdscript]
 [csharp]
-GD.Print(Engine.HasSingleton("OS"));          // Prints true
-GD.Print(Engine.HasSingleton("Engine"));      // Prints true
-GD.Print(Engine.HasSingleton("AudioServer")); // Prints true
-GD.Print(Engine.HasSingleton("Unknown"));     // Prints false
+GD.Print(Engine.HasSingleton("OS"));          // Prints True
+GD.Print(Engine.HasSingleton("Engine"));      // Prints True
+GD.Print(Engine.HasSingleton("AudioServer")); // Prints True
+GD.Print(Engine.HasSingleton("Unknown"));     // Prints False
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
@@ -421,6 +399,14 @@ func IsEditorHint() bool { //gd:Engine.is_editor_hint
 }
 
 /*
+Returns [code]true[/code] if the engine is running embedded in the editor. This is useful to prevent attempting to update window mode or window flags that are not supported when running the project embedded in the editor.
+*/
+func IsEmbeddedInEditor() bool { //gd:Engine.is_embedded_in_editor
+	once.Do(singleton)
+	return bool(class(self).IsEmbeddedInEditor())
+}
+
+/*
 Returns the path to the [MovieWriter]'s output file, or an empty string if the engine wasn't started in Movie Maker mode. The default path can be changed in [member ProjectSettings.editor/movie_writer/movie_file].
 */
 func GetWriteMoviePath() string { //gd:Engine.get_write_movie_path
@@ -446,6 +432,16 @@ func PrintErrorMessages() bool {
 func SetPrintErrorMessages(value bool) {
 	once.Do(singleton)
 	class(self).SetPrintErrorMessages(value)
+}
+
+func PrintToStdout() bool {
+	once.Do(singleton)
+	return bool(class(self).IsPrintingToStdout())
+}
+
+func SetPrintToStdout(value bool) {
+	once.Do(singleton)
+	class(self).SetPrintToStdout(value)
 }
 
 func PhysicsTicksPerSecond() int {
@@ -825,21 +821,7 @@ func (self class) GetLicenseText() String.Readable { //gd:Engine.get_license_tex
 
 /*
 Returns the name of the CPU architecture the Godot binary was built for. Possible return values include [code]"x86_64"[/code], [code]"x86_32"[/code], [code]"arm64"[/code], [code]"arm32"[/code], [code]"rv64"[/code], [code]"riscv"[/code], [code]"ppc64"[/code], [code]"ppc"[/code], [code]"wasm64"[/code], and [code]"wasm32"[/code].
-To detect whether the current build is 64-bit, you can use the fact that all 64-bit architecture names contain [code]64[/code] in their name:
-[codeblocks]
-[gdscript]
-if "64" in Engine.get_architecture_name():
-    print("Running a 64-bit build of Godot.")
-else:
-    print("Running a 32-bit build of Godot.")
-[/gdscript]
-[csharp]
-if (Engine.GetArchitectureName().Contains("64"))
-    GD.Print("Running a 64-bit build of Godot.");
-else
-    GD.Print("Running a 32-bit build of Godot.");
-[/csharp]
-[/codeblocks]
+To detect whether the current build is 64-bit, or the type of architecture, don't use the architecture name. Instead, use [method OS.has_feature] to check for the [code]"64"[/code] feature tag, or tags such as [code]"x86"[/code] or [code]"arm"[/code]. See the [url=$DOCS_URL/tutorials/export/feature_tags.html]Feature Tags[/url] documentation for more details.
 [b]Note:[/b] This method does [i]not[/i] return the name of the system's CPU architecture (like [method OS.get_processor_name]). For example, when running an [code]x86_32[/code] Godot binary on an [code]x86_64[/code] system, the returned value will still be [code]"x86_32"[/code].
 */
 //go:nosplit
@@ -887,10 +869,10 @@ print(Engine.has_singleton("AudioServer")) # Prints true
 print(Engine.has_singleton("Unknown"))     # Prints false
 [/gdscript]
 [csharp]
-GD.Print(Engine.HasSingleton("OS"));          // Prints true
-GD.Print(Engine.HasSingleton("Engine"));      // Prints true
-GD.Print(Engine.HasSingleton("AudioServer")); // Prints true
-GD.Print(Engine.HasSingleton("Unknown"));     // Prints false
+GD.Print(Engine.HasSingleton("OS"));          // Prints True
+GD.Print(Engine.HasSingleton("Engine"));      // Prints True
+GD.Print(Engine.HasSingleton("AudioServer")); // Prints True
+GD.Print(Engine.HasSingleton("Unknown"));     // Prints False
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
@@ -1051,6 +1033,19 @@ func (self class) IsEditorHint() bool { //gd:Engine.is_editor_hint
 }
 
 /*
+Returns [code]true[/code] if the engine is running embedded in the editor. This is useful to prevent attempting to update window mode or window flags that are not supported when running the project embedded in the editor.
+*/
+//go:nosplit
+func (self class) IsEmbeddedInEditor() bool { //gd:Engine.is_embedded_in_editor
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_is_embedded_in_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns the path to the [MovieWriter]'s output file, or an empty string if the engine wasn't started in Movie Maker mode. The default path can be changed in [member ProjectSettings.editor/movie_writer/movie_file].
 */
 //go:nosplit
@@ -1059,6 +1054,25 @@ func (self class) GetWriteMoviePath() String.Readable { //gd:Engine.get_write_mo
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_write_movie_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPrintToStdout(enabled bool) { //gd:Engine.set_print_to_stdout
+	var frame = callframe.New()
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_set_print_to_stdout, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsPrintingToStdout() bool { //gd:Engine.is_printing_to_stdout
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_is_printing_to_stdout, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -1091,17 +1105,6 @@ func init() {
 	gdclass.Register("Engine", func(ptr gd.Object) any { return [1]gdclass.Engine{*(*gdclass.Engine)(unsafe.Pointer(&ptr))} })
 }
 
-type VersionInfo struct {
-	Major     int    `gd:"major"`
-	Minor     int    `gd:"minor"`
-	Patch     int    `gd:"patch"`
-	Hex       int    `gd:"hex"`
-	Status    string `gd:"status"`
-	Build     string `gd:"build"`
-	Hash      string `gd:"hash"`
-	Timestamp int    `gd:"timestamp"`
-	String    string `gd:"string"`
-}
 type AuthorInfo struct {
 	LeadDevelopers  []string `gd:"lead_developers"`
 	Founders        []string `gd:"founders"`
@@ -1112,11 +1115,6 @@ type Copyright struct {
 	Name  string `gd:"name"`
 	Parts []Part `gd:"parts"`
 }
-type Part struct {
-	Files     []string `gd:"files"`
-	Copyright []string `gd:"copyright"`
-	License   string   `gd:"license"`
-}
 type DonorInfo struct {
 	PlatinumSponsors []string `gd:"platinum_sponsors"`
 	GoldSponsors     []string `gd:"gold_sponsors"`
@@ -1126,4 +1124,20 @@ type DonorInfo struct {
 	GoldDonors       []string `gd:"gold_donors"`
 	SilverDonors     []string `gd:"silver_donors"`
 	BronzeDonors     []string `gd:"bronze_donors"`
+}
+type Part struct {
+	Files     []string `gd:"files"`
+	Copyright []string `gd:"copyright"`
+	License   string   `gd:"license"`
+}
+type VersionInfo struct {
+	Major     int    `gd:"major"`
+	Minor     int    `gd:"minor"`
+	Patch     int    `gd:"patch"`
+	Hex       int    `gd:"hex"`
+	Status    string `gd:"status"`
+	Build     string `gd:"build"`
+	Hash      string `gd:"hash"`
+	Timestamp int    `gd:"timestamp"`
+	String    string `gd:"string"`
 }

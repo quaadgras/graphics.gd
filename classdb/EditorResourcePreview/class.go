@@ -56,7 +56,7 @@ type Any interface {
 
 /*
 Queue a resource file located at [param path] for preview. Once the preview is ready, the [param receiver]'s [param receiver_func] will be called. The [param receiver_func] must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. [param userdata] can be anything, and will be returned when [param receiver_func] is called.
-[b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
+[b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be [code]null[/code].
 */
 func (self Instance) QueueResourcePreview(path string, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_resource_preview
 	class(self).QueueResourcePreview(String.New(path), receiver, String.Name(String.New(receiver_func)), variant.New(userdata))
@@ -64,7 +64,7 @@ func (self Instance) QueueResourcePreview(path string, receiver Object.Instance,
 
 /*
 Queue the [param resource] being edited for preview. Once the preview is ready, the [param receiver]'s [param receiver_func] will be called. The [param receiver_func] must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. [param userdata] can be anything, and will be returned when [param receiver_func] is called.
-[b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
+[b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be [code]null[/code].
 */
 func (self Instance) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_edited_resource_preview
 	class(self).QueueEditedResourcePreview(resource, receiver, String.Name(String.New(receiver_func)), variant.New(userdata))
@@ -111,7 +111,7 @@ func New() Instance {
 
 /*
 Queue a resource file located at [param path] for preview. Once the preview is ready, the [param receiver]'s [param receiver_func] will be called. The [param receiver_func] must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. [param userdata] can be anything, and will be returned when [param receiver_func] is called.
-[b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
+[b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be [code]null[/code].
 */
 //go:nosplit
 func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Object, receiver_func String.Name, userdata variant.Any) { //gd:EditorResourcePreview.queue_resource_preview
@@ -127,7 +127,7 @@ func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Obje
 
 /*
 Queue the [param resource] being edited for preview. Once the preview is ready, the [param receiver]'s [param receiver_func] will be called. The [param receiver_func] must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. [param userdata] can be anything, and will be returned when [param receiver_func] is called.
-[b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
+[b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be [code]null[/code].
 */
 //go:nosplit
 func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver [1]gd.Object, receiver_func String.Name, userdata variant.Any) { //gd:EditorResourcePreview.queue_edited_resource_preview

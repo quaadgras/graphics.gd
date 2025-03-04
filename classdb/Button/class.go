@@ -45,14 +45,14 @@ var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 [Button] is the standard themed button. It can contain text and an icon, and it will display them according to the current [Theme].
-[b]Example of creating a button and assigning an action when pressed by code:[/b]
+[b]Example:[/b] Create a button and connect a method that will be called when the button is pressed:
 [codeblocks]
 [gdscript]
 func _ready():
 
 	var button = Button.new()
 	button.text = "Click me"
-	button.pressed.connect(self._button_pressed)
+	button.pressed.connect(_button_pressed)
 	add_child(button)
 
 func _button_pressed():
@@ -79,7 +79,7 @@ private void ButtonPressed()
 [/csharp]
 [/codeblocks]
 See also [BaseButton] which contains common properties and methods associated with this node.
-[b]Note:[/b] Buttons do not interpret touch input and therefore don't support multitouch, since mouse emulation can only press one button at a given time. Use [TouchScreenButton] for buttons that trigger gameplay movement or actions.
+[b]Note:[/b] Buttons do not detect touch input and therefore don't support multitouch, since mouse emulation can only press one button at a given time. Use [TouchScreenButton] for buttons that trigger gameplay movement or actions.
 */
 type Instance [1]gdclass.Button
 

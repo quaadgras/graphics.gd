@@ -55,6 +55,13 @@ type Any interface {
 }
 
 /*
+Get parent or external [Skeleton3D] node if found.
+*/
+func (self Instance) GetSkeleton() [1]gdclass.Skeleton3D { //gd:BoneAttachment3D.get_skeleton
+	return [1]gdclass.Skeleton3D(class(self).GetSkeleton())
+}
+
+/*
 A function that is called automatically when the [Skeleton3D] is updated. This function is where the [BoneAttachment3D] node updates its position so it is correctly bound when it is [i]not[/i] set to override the bone pose.
 */
 func (self Instance) OnSkeletonUpdate() { //gd:BoneAttachment3D.on_skeleton_update
@@ -129,6 +136,19 @@ func (self Instance) OverridePose() bool {
 
 func (self Instance) SetOverridePose(value bool) {
 	class(self).SetOverridePose(value)
+}
+
+/*
+Get parent or external [Skeleton3D] node if found.
+*/
+//go:nosplit
+func (self class) GetSkeleton() [1]gdclass.Skeleton3D { //gd:BoneAttachment3D.get_skeleton
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneAttachment3D.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.Skeleton3D{gd.PointerMustAssertInstanceID[gdclass.Skeleton3D](r_ret.Get())}
+	frame.Free()
+	return ret
 }
 
 //go:nosplit

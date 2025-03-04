@@ -10,6 +10,9 @@ func (rid Any) Int64() int64  { return *(*int64)(unsafe.Pointer(&rid)) } //gd:RI
 type Either[A, B ~uint64] Any
 
 type (
+	ActionSet Any
+	Action    Any
+
 	Mesh                             Any
 	Material                         Any
 	CameraAttributes                 Any

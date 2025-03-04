@@ -121,6 +121,14 @@ func (self Instance) SetStretchShrink(value int) {
 	class(self).SetStretchShrink(int64(value))
 }
 
+func (self Instance) MouseTarget() bool {
+	return bool(class(self).IsMouseTargetEnabled())
+}
+
+func (self Instance) SetMouseTarget(value bool) {
+	class(self).SetMouseTarget(value)
+}
+
 /*
 Virtual method to be implemented by the user. If it returns [code]true[/code], the [param event] is propagated to [SubViewport] children. Propagation doesn't happen if it returns [code]false[/code]. If the function is not implemented, all events are propagated to SubViewports.
 */
@@ -168,6 +176,25 @@ func (self class) GetStretchShrink() int64 { //gd:SubViewportContainer.get_stret
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubViewportContainer.Bind_get_stretch_shrink, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetMouseTarget(amount bool) { //gd:SubViewportContainer.set_mouse_target
+	var frame = callframe.New()
+	callframe.Arg(frame, amount)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubViewportContainer.Bind_set_mouse_target, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsMouseTargetEnabled() bool { //gd:SubViewportContainer.is_mouse_target_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubViewportContainer.Bind_is_mouse_target_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

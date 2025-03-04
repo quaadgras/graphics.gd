@@ -121,6 +121,22 @@ func GetEditorSettings() [1]gdclass.EditorSettings { //gd:EditorInterface.get_ed
 }
 
 /*
+Returns the editor's [EditorToaster].
+*/
+func GetEditorToaster() [1]gdclass.EditorToaster { //gd:EditorInterface.get_editor_toaster
+	once.Do(singleton)
+	return [1]gdclass.EditorToaster(class(self).GetEditorToaster())
+}
+
+/*
+Returns the editor's [EditorUndoRedoManager].
+*/
+func GetEditorUndoRedo() [1]gdclass.EditorUndoRedoManager { //gd:EditorInterface.get_editor_undo_redo
+	once.Do(singleton)
+	return [1]gdclass.EditorUndoRedoManager(class(self).GetEditorUndoRedo())
+}
+
+/*
 Returns mesh previews rendered at the given size as an [Array] of [Texture2D]s.
 */
 func MakeMeshPreviews(meshes [][1]gdclass.Mesh, preview_size int) [][1]gdclass.Texture2D { //gd:EditorInterface.make_mesh_previews
@@ -282,8 +298,8 @@ func SetCurrentFeatureProfile(profile_name string) { //gd:EditorInterface.set_cu
 }
 
 /*
-Pops up an editor dialog for selecting a [Node] from the edited scene. The [param callback] must take a single argument of type [NodePath]. It is called on the selected [NodePath] or the empty path [code]^""[/code] if the dialog is canceled. If [param valid_types] is provided, the dialog will only show Nodes that match one of the listed Node types.
-[b]Example:[/b]
+Pops up an editor dialog for selecting a [Node] from the edited scene. The [param callback] must take a single argument of type [NodePath]. It is called on the selected [NodePath] or the empty path [code]^""[/code] if the dialog is canceled. If [param valid_types] is provided, the dialog will only show Nodes that match one of the listed Node types. If [param current_value] is provided, the Node will be automatically selected in the tree, if it exists.
+[b]Example:[/b] Display the node selection dialog as soon as this node is added to the tree for the first time:
 [codeblock]
 func _ready():
 
@@ -301,12 +317,11 @@ func _on_node_selected(node_path):
 */
 func PopupNodeSelector(callback func(selected string)) { //gd:EditorInterface.popup_node_selector
 	once.Do(singleton)
-	class(self).PopupNodeSelector(Callable.New(callback), gd.ArrayFromSlice[Array.Contains[String.Name]]([1][]string{}[0]))
+	class(self).PopupNodeSelector(Callable.New(callback), gd.ArrayFromSlice[Array.Contains[String.Name]]([1][]string{}[0]), [1][1]gdclass.Node{}[0])
 }
 
 /*
-Pops up an editor dialog for selecting properties from [param object]. The [param callback] must take a single argument of type [NodePath]. It is called on the selected property path (see [method NodePath.get_as_property_path]) or the empty path [code]^""[/code] if the dialog is canceled. If [param type_filter] is provided, the dialog will only show properties that match one of the listed [enum Variant.Type] values.
-[b]Example:[/b]
+Pops up an editor dialog for selecting properties from [param object]. The [param callback] must take a single argument of type [NodePath]. It is called on the selected property path (see [method NodePath.get_as_property_path]) or the empty path [code]^""[/code] if the dialog is canceled. If [param type_filter] is provided, the dialog will only show properties that match one of the listed [enum Variant.Type] values. If [param current_value] is provided, the property will be selected automatically in the property list, if it exists.
 [codeblock]
 func _ready():
 
@@ -324,7 +339,37 @@ func _on_property_selected(property_path):
 */
 func PopupPropertySelector(obj Object.Instance, callback func(selected string)) { //gd:EditorInterface.popup_property_selector
 	once.Do(singleton)
-	class(self).PopupPropertySelector(obj, Callable.New(callback), Packed.New([1][]int32{}[0]...))
+	class(self).PopupPropertySelector(obj, Callable.New(callback), Packed.New([1][]int32{}[0]...), String.New(""))
+}
+
+/*
+Pops up an editor dialog for selecting a method from [param object]. The [param callback] must take a single argument of type [String] which will contain the name of the selected method or be empty if the dialog is canceled. If [param current_value] is provided, the method will be selected automatically in the method list, if it exists.
+*/
+func PopupMethodSelector(obj Object.Instance, callback func(selected string)) { //gd:EditorInterface.popup_method_selector
+	once.Do(singleton)
+	class(self).PopupMethodSelector(obj, Callable.New(callback), String.New(""))
+}
+
+/*
+Pops up an editor dialog for quick selecting a resource file. The [param callback] must take a single argument of type [String] which will contain the path of the selected resource or be empty if the dialog is canceled. If [param base_types] is provided, the dialog will only show resources that match these types. Only types deriving from [Resource] are supported.
+*/
+func PopupQuickOpen(callback func(selected string)) { //gd:EditorInterface.popup_quick_open
+	once.Do(singleton)
+	class(self).PopupQuickOpen(Callable.New(callback), gd.ArrayFromSlice[Array.Contains[String.Name]]([1][]string{}[0]))
+}
+
+/*
+Pops up an editor dialog for creating an object.
+The [param callback] must take a single argument of type [StringName] which will contain the type name of the selected object or be empty if no item is selected.
+The [param base_type] specifies the base type of objects to display. For example, if you set this to "Resource", all types derived from [Resource] will display in the create dialog.
+The [param current_type] will be passed in the search box of the create dialog, and the specified type can be immediately selected when the dialog pops up. If the [param current_type] is not derived from [param base_type], there will be no result of the type in the dialog.
+The [param dialog_title] allows you to define a custom title for the dialog. This is useful if you want to accurately hint the usage of the dialog. If the [param dialog_title] is an empty string, the dialog will use "Create New 'Base Type'" as the default title.
+The [param type_blocklist] contains a list of type names, and the types in the blocklist will be hidden from the create dialog.
+[b]Note:[/b] Trying to list the base type in the [param type_blocklist] will hide all types derived from the base type from the create dialog.
+*/
+func PopupCreateDialog(callback func(selected string)) { //gd:EditorInterface.popup_create_dialog
+	once.Do(singleton)
+	class(self).PopupCreateDialog(Callable.New(callback), String.Name(String.New("")), String.New(""), String.New(""), gd.ArrayFromSlice[Array.Contains[String.Name]]([1][]string{}[0]))
 }
 
 /*
@@ -410,11 +455,11 @@ func EditScript(script [1]gdclass.Script) { //gd:EditorInterface.edit_script
 }
 
 /*
-Opens the scene at the given path.
+Opens the scene at the given path. If [param set_inherited] is [code]true[/code], creates a new inherited scene.
 */
 func OpenSceneFromPath(scene_filepath string) { //gd:EditorInterface.open_scene_from_path
 	once.Do(singleton)
-	class(self).OpenSceneFromPath(String.New(scene_filepath))
+	class(self).OpenSceneFromPath(String.New(scene_filepath), false)
 }
 
 /*
@@ -638,6 +683,32 @@ func (self class) GetEditorSettings() [1]gdclass.EditorSettings { //gd:EditorInt
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_settings, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.EditorSettings{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorSettings](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the editor's [EditorToaster].
+*/
+//go:nosplit
+func (self class) GetEditorToaster() [1]gdclass.EditorToaster { //gd:EditorInterface.get_editor_toaster
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_toaster, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.EditorToaster{gd.PointerLifetimeBoundTo[gdclass.EditorToaster](self.AsObject(), r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the editor's [EditorUndoRedoManager].
+*/
+//go:nosplit
+func (self class) GetEditorUndoRedo() [1]gdclass.EditorUndoRedoManager { //gd:EditorInterface.get_editor_undo_redo
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_undo_redo, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.EditorUndoRedoManager{gd.PointerLifetimeBoundTo[gdclass.EditorUndoRedoManager](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -916,8 +987,8 @@ func (self class) SetCurrentFeatureProfile(profile_name String.Readable) { //gd:
 }
 
 /*
-Pops up an editor dialog for selecting a [Node] from the edited scene. The [param callback] must take a single argument of type [NodePath]. It is called on the selected [NodePath] or the empty path [code]^""[/code] if the dialog is canceled. If [param valid_types] is provided, the dialog will only show Nodes that match one of the listed Node types.
-[b]Example:[/b]
+Pops up an editor dialog for selecting a [Node] from the edited scene. The [param callback] must take a single argument of type [NodePath]. It is called on the selected [NodePath] or the empty path [code]^""[/code] if the dialog is canceled. If [param valid_types] is provided, the dialog will only show Nodes that match one of the listed Node types. If [param current_value] is provided, the Node will be automatically selected in the tree, if it exists.
+[b]Example:[/b] Display the node selection dialog as soon as this node is added to the tree for the first time:
 [codeblock]
 func _ready():
     if Engine.is_editor_hint():
@@ -931,18 +1002,18 @@ func _on_node_selected(node_path):
 [/codeblock]
 */
 //go:nosplit
-func (self class) PopupNodeSelector(callback Callable.Function, valid_types Array.Contains[String.Name]) { //gd:EditorInterface.popup_node_selector
+func (self class) PopupNodeSelector(callback Callable.Function, valid_types Array.Contains[String.Name], current_value [1]gdclass.Node) { //gd:EditorInterface.popup_node_selector
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(valid_types)))
+	callframe.Arg(frame, pointers.Get(current_value[0])[0])
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_node_selector, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 /*
-Pops up an editor dialog for selecting properties from [param object]. The [param callback] must take a single argument of type [NodePath]. It is called on the selected property path (see [method NodePath.get_as_property_path]) or the empty path [code]^""[/code] if the dialog is canceled. If [param type_filter] is provided, the dialog will only show properties that match one of the listed [enum Variant.Type] values.
-[b]Example:[/b]
+Pops up an editor dialog for selecting properties from [param object]. The [param callback] must take a single argument of type [NodePath]. It is called on the selected property path (see [method NodePath.get_as_property_path]) or the empty path [code]^""[/code] if the dialog is canceled. If [param type_filter] is provided, the dialog will only show properties that match one of the listed [enum Variant.Type] values. If [param current_value] is provided, the property will be selected automatically in the property list, if it exists.
 [codeblock]
 func _ready():
     if Engine.is_editor_hint():
@@ -956,13 +1027,63 @@ func _on_property_selected(property_path):
 [/codeblock]
 */
 //go:nosplit
-func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Function, type_filter Packed.Array[int32]) { //gd:EditorInterface.popup_property_selector
+func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Function, type_filter Packed.Array[int32], current_value String.Readable) { //gd:EditorInterface.popup_property_selector
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](type_filter)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(current_value)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_property_selector, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Pops up an editor dialog for selecting a method from [param object]. The [param callback] must take a single argument of type [String] which will contain the name of the selected method or be empty if the dialog is canceled. If [param current_value] is provided, the method will be selected automatically in the method list, if it exists.
+*/
+//go:nosplit
+func (self class) PopupMethodSelector(obj [1]gd.Object, callback Callable.Function, current_value String.Readable) { //gd:EditorInterface.popup_method_selector
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(obj[0])[0])
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(current_value)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_method_selector, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Pops up an editor dialog for quick selecting a resource file. The [param callback] must take a single argument of type [String] which will contain the path of the selected resource or be empty if the dialog is canceled. If [param base_types] is provided, the dialog will only show resources that match these types. Only types deriving from [Resource] are supported.
+*/
+//go:nosplit
+func (self class) PopupQuickOpen(callback Callable.Function, base_types Array.Contains[String.Name]) { //gd:EditorInterface.popup_quick_open
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(base_types)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_quick_open, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Pops up an editor dialog for creating an object.
+The [param callback] must take a single argument of type [StringName] which will contain the type name of the selected object or be empty if no item is selected.
+The [param base_type] specifies the base type of objects to display. For example, if you set this to "Resource", all types derived from [Resource] will display in the create dialog.
+The [param current_type] will be passed in the search box of the create dialog, and the specified type can be immediately selected when the dialog pops up. If the [param current_type] is not derived from [param base_type], there will be no result of the type in the dialog.
+The [param dialog_title] allows you to define a custom title for the dialog. This is useful if you want to accurately hint the usage of the dialog. If the [param dialog_title] is an empty string, the dialog will use "Create New 'Base Type'" as the default title.
+The [param type_blocklist] contains a list of type names, and the types in the blocklist will be hidden from the create dialog.
+[b]Note:[/b] Trying to list the base type in the [param type_blocklist] will hide all types derived from the base type from the create dialog.
+*/
+//go:nosplit
+func (self class) PopupCreateDialog(callback Callable.Function, base_type String.Name, current_type String.Readable, dialog_title String.Readable, type_blocklist Array.Contains[String.Name]) { //gd:EditorInterface.popup_create_dialog
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(base_type)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(current_type)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(dialog_title)))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(type_blocklist)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_create_dialog, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1099,12 +1220,13 @@ func (self class) EditScript(script [1]gdclass.Script, line int64, column int64,
 }
 
 /*
-Opens the scene at the given path.
+Opens the scene at the given path. If [param set_inherited] is [code]true[/code], creates a new inherited scene.
 */
 //go:nosplit
-func (self class) OpenSceneFromPath(scene_filepath String.Readable) { //gd:EditorInterface.open_scene_from_path
+func (self class) OpenSceneFromPath(scene_filepath String.Readable, set_inherited bool) { //gd:EditorInterface.open_scene_from_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(scene_filepath)))
+	callframe.Arg(frame, set_inherited)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_open_scene_from_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

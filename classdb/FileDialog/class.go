@@ -74,6 +74,13 @@ func (self Instance) AddFilter(filter string) { //gd:FileDialog.add_filter
 }
 
 /*
+Clear the filter for file names.
+*/
+func (self Instance) ClearFilenameFilter() { //gd:FileDialog.clear_filename_filter
+	class(self).ClearFilenameFilter()
+}
+
+/*
 Returns the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) GetOptionName(option int) string { //gd:FileDialog.get_option_name
@@ -220,6 +227,14 @@ func (self Instance) SetFilters(value []string) {
 	class(self).SetFilters(Packed.MakeStrings(value...))
 }
 
+func (self Instance) FilenameFilter() string {
+	return string(class(self).GetFilenameFilter().String())
+}
+
+func (self Instance) SetFilenameFilter(value string) {
+	class(self).SetFilenameFilter(String.New(value))
+}
+
 func (self Instance) OptionCount() int {
 	return int(int(class(self).GetOptionCount()))
 }
@@ -309,6 +324,36 @@ func (self class) GetFilters() Packed.Strings { //gd:FileDialog.get_filters
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_filters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Clear the filter for file names.
+*/
+//go:nosplit
+func (self class) ClearFilenameFilter() { //gd:FileDialog.clear_filename_filter
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_clear_filename_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) SetFilenameFilter(filter String.Readable) { //gd:FileDialog.set_filename_filter
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(filter)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_filename_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetFilenameFilter() String.Readable { //gd:FileDialog.get_filename_filter
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_filename_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -673,6 +718,10 @@ func (self Instance) OnFilesSelected(cb func(paths []string)) {
 
 func (self Instance) OnDirSelected(cb func(dir string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("dir_selected"), gd.NewCallable(cb), 0)
+}
+
+func (self Instance) OnFilenameFilterChanged(cb func(filter string)) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("filename_filter_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsFileDialog() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -49,7 +49,7 @@ Below a small example of how it can be used:
 class_name ServerNode
 extends Node
 
-var server := UDPServer.new()
+var server = UDPServer.new()
 var peers = []
 
 func _ready():
@@ -60,7 +60,7 @@ func _process(delta):
 
 	server.poll() # Important!
 	if server.is_connection_available():
-	    var peer: PacketPeerUDP = server.take_connection()
+	    var peer = server.take_connection()
 	    var packet = peer.get_packet()
 	    print("Accepted peer: %s:%s" % [peer.get_packet_ip(), peer.get_packet_port()])
 	    print("Received data: %s" % [packet.get_string_from_utf8()])
@@ -118,7 +118,7 @@ public partial class ServerNode : Node
 class_name ClientNode
 extends Node
 
-var udp := PacketPeerUDP.new()
+var udp = PacketPeerUDP.new()
 var connected = false
 
 func _ready():

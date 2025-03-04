@@ -64,7 +64,7 @@ type Any interface {
 }
 
 /*
-Starts the timer, if it was not started already. Fails if the timer is not inside the tree. If [param time_sec] is greater than [code]0[/code], this value is used for the [member wait_time].
+Starts the timer, or resets the timer if it was started already. Fails if the timer is not inside the tree. If [param time_sec] is greater than [code]0[/code], this value is used for the [member wait_time].
 [b]Note:[/b] This method does not resume a paused timer. See [member paused].
 */
 func (self Instance) Start() { //gd:Timer.start
@@ -143,6 +143,14 @@ func (self Instance) SetPaused(value bool) {
 	class(self).SetPaused(value)
 }
 
+func (self Instance) IgnoreTimeScale() bool {
+	return bool(class(self).IsIgnoringTimeScale())
+}
+
+func (self Instance) SetIgnoreTimeScale(value bool) {
+	class(self).SetIgnoreTimeScale(value)
+}
+
 func (self Instance) TimeLeft() Float.X {
 	return Float.X(Float.X(class(self).GetTimeLeft()))
 }
@@ -205,7 +213,7 @@ func (self class) HasAutostart() bool { //gd:Timer.has_autostart
 }
 
 /*
-Starts the timer, if it was not started already. Fails if the timer is not inside the tree. If [param time_sec] is greater than [code]0[/code], this value is used for the [member wait_time].
+Starts the timer, or resets the timer if it was started already. Fails if the timer is not inside the tree. If [param time_sec] is greater than [code]0[/code], this value is used for the [member wait_time].
 [b]Note:[/b] This method does not resume a paused timer. See [member paused].
 */
 //go:nosplit
@@ -242,6 +250,25 @@ func (self class) IsPaused() bool { //gd:Timer.is_paused
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_is_paused, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetIgnoreTimeScale(ignore bool) { //gd:Timer.set_ignore_time_scale
+	var frame = callframe.New()
+	callframe.Arg(frame, ignore)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_set_ignore_time_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsIgnoringTimeScale() bool { //gd:Timer.is_ignoring_time_scale
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_is_ignoring_time_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

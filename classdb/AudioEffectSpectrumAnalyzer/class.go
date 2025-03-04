@@ -43,7 +43,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
 This audio effect does not affect sound output, but can be used for real-time audio visualizations.
-This resource configures an [AudioEffectSpectrumAnalyzerInstance], which performs the actual analysis at runtime. An instance can be acquired with [method AudioServer.get_bus_effect_instance].
+This resource configures an [AudioEffectSpectrumAnalyzerInstance], which performs the actual analysis at runtime. An instance can be obtained with [method AudioServer.get_bus_effect_instance].
 See also [AudioStreamGenerator] for procedurally generating sounds.
 */
 type Instance [1]gdclass.AudioEffectSpectrumAnalyzer

@@ -198,6 +198,14 @@ func OnExtensionsReloaded(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("extensions_reloaded"), gd.NewCallable(cb), 0)
 }
 
+func OnExtensionLoaded(cb func(extension [1]gdclass.GDExtension)) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("extension_loaded"), gd.NewCallable(cb), 0)
+}
+
+func OnExtensionUnloading(cb func(extension [1]gdclass.GDExtension)) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("extension_unloading"), gd.NewCallable(cb), 0)
+}
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

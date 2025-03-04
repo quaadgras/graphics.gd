@@ -32,7 +32,7 @@ import (
 	"runtime.link/api/xray"
 )
 
-const version = "4.3"
+const version = "4.4"
 
 // These are our initial Godot project template files, we create
 // these automatically when the user runs the 'gd' command. They

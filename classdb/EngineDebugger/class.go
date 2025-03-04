@@ -109,7 +109,8 @@ func ProfilerEnable(name string, enable bool) { //gd:EngineDebugger.profiler_ena
 
 /*
 Registers a message capture with given [param name]. If [param name] is "my_message" then messages starting with "my_message:" will be called with the given callable.
-Callable must accept a message string and a data array as argument. If the message and data are valid then callable must return [code]true[/code] otherwise [code]false[/code].
+The callable must accept a message string and a data array as argument. The callable should return [code]true[/code] if the message is recognized.
+[b]Note:[/b] The callable will receive the message with the prefix stripped, unlike [method EditorDebuggerPlugin._capture]. See the [EditorDebuggerPlugin] description for an example.
 */
 func RegisterMessageCapture(name string, callable func(message string, data []any)) { //gd:EngineDebugger.register_message_capture
 	once.Do(singleton)
@@ -133,7 +134,7 @@ func HasCapture(name string) bool { //gd:EngineDebugger.has_capture
 }
 
 /*
-Forces a processing loop of debugger events. The purpose of this method is just processing events every now and then when the script might get too busy, so that bugs like infinite loops can be caught
+Forces a processing loop of debugger events. The purpose of this method is just processing events every now and then when the script might get too busy, so that bugs like infinite loops can be caught.
 */
 func LinePoll() { //gd:EngineDebugger.line_poll
 	once.Do(singleton)
@@ -341,7 +342,8 @@ func (self class) ProfilerEnable(name String.Name, enable bool, arguments Array.
 
 /*
 Registers a message capture with given [param name]. If [param name] is "my_message" then messages starting with "my_message:" will be called with the given callable.
-Callable must accept a message string and a data array as argument. If the message and data are valid then callable must return [code]true[/code] otherwise [code]false[/code].
+The callable must accept a message string and a data array as argument. The callable should return [code]true[/code] if the message is recognized.
+[b]Note:[/b] The callable will receive the message with the prefix stripped, unlike [method EditorDebuggerPlugin._capture]. See the [EditorDebuggerPlugin] description for an example.
 */
 //go:nosplit
 func (self class) RegisterMessageCapture(name String.Name, callable Callable.Function) { //gd:EngineDebugger.register_message_capture
@@ -380,7 +382,7 @@ func (self class) HasCapture(name String.Name) bool { //gd:EngineDebugger.has_ca
 }
 
 /*
-Forces a processing loop of debugger events. The purpose of this method is just processing events every now and then when the script might get too busy, so that bugs like infinite loops can be caught
+Forces a processing loop of debugger events. The purpose of this method is just processing events every now and then when the script might get too busy, so that bugs like infinite loops can be caught.
 */
 //go:nosplit
 func (self class) LinePoll() { //gd:EngineDebugger.line_poll

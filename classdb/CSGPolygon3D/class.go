@@ -158,6 +158,14 @@ func (self Instance) SetPathRotation(value gdclass.CSGPolygon3DPathRotation) {
 	class(self).SetPathRotation(value)
 }
 
+func (self Instance) PathRotationAccurate() bool {
+	return bool(class(self).GetPathRotationAccurate())
+}
+
+func (self Instance) SetPathRotationAccurate(value bool) {
+	class(self).SetPathRotationAccurate(value)
+}
+
 func (self Instance) PathLocal() bool {
 	return bool(class(self).IsPathLocal())
 }
@@ -391,6 +399,25 @@ func (self class) GetPathRotation() gdclass.CSGPolygon3DPathRotation { //gd:CSGP
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CSGPolygon3DPathRotation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_get_path_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPathRotationAccurate(enable bool) { //gd:CSGPolygon3D.set_path_rotation_accurate
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_set_path_rotation_accurate, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetPathRotationAccurate() bool { //gd:CSGPolygon3D.get_path_rotation_accurate
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_get_path_rotation_accurate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

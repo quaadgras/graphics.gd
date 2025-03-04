@@ -95,6 +95,14 @@ func (self Instance) SetIntensity(value Float.X) {
 	class(self).SetIntensity(float64(value))
 }
 
+func (self Instance) BlendDistance() Float.X {
+	return Float.X(Float.X(class(self).GetBlendDistance()))
+}
+
+func (self Instance) SetBlendDistance(value Float.X) {
+	class(self).SetBlendDistance(float64(value))
+}
+
 func (self Instance) MaxDistance() Float.X {
 	return Float.X(Float.X(class(self).GetMaxDistance()))
 }
@@ -205,6 +213,25 @@ func (self class) GetIntensity() float64 { //gd:ReflectionProbe.get_intensity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_intensity, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetBlendDistance(blend_distance float64) { //gd:ReflectionProbe.set_blend_distance
+	var frame = callframe.New()
+	callframe.Arg(frame, blend_distance)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_blend_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetBlendDistance() float64 { //gd:ReflectionProbe.get_blend_distance
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_blend_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

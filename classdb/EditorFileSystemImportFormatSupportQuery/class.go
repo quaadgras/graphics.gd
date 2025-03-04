@@ -60,7 +60,7 @@ type Interface interface {
 	IsActive() bool
 	//Return the file extensions supported.
 	GetFileExtensions() []string
-	//Query support. Return false if import must not continue.
+	//Query support. Return [code]false[/code] if import must not continue.
 	Query() bool
 }
 
@@ -101,7 +101,7 @@ func (Instance) _get_file_extensions(impl func(ptr unsafe.Pointer) []string) (cb
 }
 
 /*
-Query support. Return false if import must not continue.
+Query support. Return [code]false[/code] if import must not continue.
 */
 func (Instance) _query(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -158,7 +158,7 @@ func (class) _get_file_extensions(impl func(ptr unsafe.Pointer) Packed.Strings) 
 }
 
 /*
-Query support. Return false if import must not continue.
+Query support. Return [code]false[/code] if import must not continue.
 */
 func (class) _query(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {

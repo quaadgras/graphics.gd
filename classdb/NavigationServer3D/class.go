@@ -10,6 +10,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -85,7 +86,7 @@ func MapSetActive(mapping RID.NavigationMap3D, active bool) { //gd:NavigationSer
 }
 
 /*
-Returns true if the map is active.
+Returns [code]true[/code] if the map is active.
 */
 func MapIsActive(mapping RID.NavigationMap3D) bool { //gd:NavigationServer3D.map_is_active
 	once.Do(singleton)
@@ -165,7 +166,7 @@ func MapSetUseEdgeConnections(mapping RID.NavigationMap3D, enabled bool) { //gd:
 }
 
 /*
-Returns true if the navigation [param map] allows navigation regions to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
+Returns [code]true[/code] if the navigation [param map] allows navigation regions to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
 */
 func MapGetUseEdgeConnections(mapping RID.NavigationMap3D) bool { //gd:NavigationServer3D.map_get_use_edge_connections
 	once.Do(singleton)
@@ -213,7 +214,8 @@ func MapGetPath(mapping RID.NavigationMap3D, origin Vector3.XYZ, destination Vec
 }
 
 /*
-Returns the closest point between the navigation surface and the segment.
+Returns the navigation mesh surface point closest to the provided [param start] and [param end] segment on the navigation [param map].
+If [param use_collision] is [code]true[/code], a closest point test is only done when the segment intersects with the navigation mesh surface.
 */
 func MapGetClosestPointToSegment(mapping RID.NavigationMap3D, start Vector3.XYZ, end Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_to_segment
 	once.Do(singleton)
@@ -221,7 +223,7 @@ func MapGetClosestPointToSegment(mapping RID.NavigationMap3D, start Vector3.XYZ,
 }
 
 /*
-Returns the point closest to the provided [param to_point] on the navigation mesh surface.
+Returns the navigation mesh surface point closest to the provided [param to_point] on the navigation [param map].
 */
 func MapGetClosestPoint(mapping RID.NavigationMap3D, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point
 	once.Do(singleton)
@@ -229,7 +231,7 @@ func MapGetClosestPoint(mapping RID.NavigationMap3D, to_point Vector3.XYZ) Vecto
 }
 
 /*
-Returns the normal for the point returned by [method map_get_closest_point].
+Returns the navigation mesh surface normal closest to the provided [param to_point] on the navigation [param map].
 */
 func MapGetClosestPointNormal(mapping RID.NavigationMap3D, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_normal
 	once.Do(singleton)
@@ -237,7 +239,7 @@ func MapGetClosestPointNormal(mapping RID.NavigationMap3D, to_point Vector3.XYZ)
 }
 
 /*
-Returns the owner region RID for the point returned by [method map_get_closest_point].
+Returns the owner region RID for the navigation mesh surface point closest to the provided [param to_point] on the navigation [param map].
 */
 func MapGetClosestPointOwner(mapping RID.NavigationMap3D, to_point Vector3.XYZ) RID.NavigationRegion3D { //gd:NavigationServer3D.map_get_closest_point_owner
 	once.Do(singleton)
@@ -297,6 +299,22 @@ func MapGetIterationId(mapping RID.NavigationMap3D) int { //gd:NavigationServer3
 }
 
 /*
+If [param enabled] is [code]true[/code] the [param map] synchronization uses an async process that runs on a background thread.
+*/
+func MapSetUseAsyncIterations(mapping RID.NavigationMap3D, enabled bool) { //gd:NavigationServer3D.map_set_use_async_iterations
+	once.Do(singleton)
+	class(self).MapSetUseAsyncIterations(RID.Any(mapping), enabled)
+}
+
+/*
+Returns [code]true[/code] if the [param map] synchronization uses an async process that runs on a background thread.
+*/
+func MapGetUseAsyncIterations(mapping RID.NavigationMap3D) bool { //gd:NavigationServer3D.map_get_use_async_iterations
+	once.Do(singleton)
+	return bool(class(self).MapGetUseAsyncIterations(RID.Any(mapping)))
+}
+
+/*
 Returns a random position picked from all map region polygons with matching [param navigation_layers].
 If [param uniformly] is [code]true[/code], all map regions, polygons, and faces are weighted by their surface area (slower).
 If [param uniformly] is [code]false[/code], just a random region and a random polygon are picked (faster).
@@ -307,11 +325,11 @@ func MapGetRandomPoint(mapping RID.NavigationMap3D, navigation_layers int, unifo
 }
 
 /*
-Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters3D]. Updates the provided [NavigationPathQueryResult3D] result object with the path among other results requested by the query.
+Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters3D]. Updates the provided [NavigationPathQueryResult3D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
 */
 func QueryPath(parameters [1]gdclass.NavigationPathQueryParameters3D, result [1]gdclass.NavigationPathQueryResult3D) { //gd:NavigationServer3D.query_path
 	once.Do(singleton)
-	class(self).QueryPath(parameters, result)
+	class(self).QueryPath(parameters, result, Callable.New(Callable.Nil))
 }
 
 /*
@@ -347,7 +365,7 @@ func RegionSetUseEdgeConnections(region RID.NavigationRegion3D, enabled bool) { 
 }
 
 /*
-Returns true if the navigation [param region] is set to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
+Returns [code]true[/code] if the navigation [param region] is set to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
 */
 func RegionGetUseEdgeConnections(region RID.NavigationRegion3D) bool { //gd:NavigationServer3D.region_get_use_edge_connections
 	once.Do(singleton)
@@ -501,6 +519,31 @@ func RegionGetConnectionPathwayEnd(region RID.NavigationRegion3D, connection int
 }
 
 /*
+Returns the navigation mesh surface point closest to the provided [param start] and [param end] segment on the navigation [param region].
+If [param use_collision] is [code]true[/code], a closest point test is only done when the segment intersects with the navigation mesh surface.
+*/
+func RegionGetClosestPointToSegment(region RID.NavigationRegion3D, start Vector3.XYZ, end Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point_to_segment
+	once.Do(singleton)
+	return Vector3.XYZ(class(self).RegionGetClosestPointToSegment(RID.Any(region), Vector3.XYZ(start), Vector3.XYZ(end), false))
+}
+
+/*
+Returns the navigation mesh surface point closest to the provided [param to_point] on the navigation [param region].
+*/
+func RegionGetClosestPoint(region RID.NavigationRegion3D, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point
+	once.Do(singleton)
+	return Vector3.XYZ(class(self).RegionGetClosestPoint(RID.Any(region), Vector3.XYZ(to_point)))
+}
+
+/*
+Returns the navigation mesh surface normal closest to the provided [param to_point] on the navigation [param region].
+*/
+func RegionGetClosestPointNormal(region RID.NavigationRegion3D, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point_normal
+	once.Do(singleton)
+	return Vector3.XYZ(class(self).RegionGetClosestPointNormal(RID.Any(region), Vector3.XYZ(to_point)))
+}
+
+/*
 Returns a random position picked from all region polygons with matching [param navigation_layers].
 If [param uniformly] is [code]true[/code], all region polygons and faces are weighted by their surface area (slower).
 If [param uniformly] is [code]false[/code], just a random polygon and face is picked (faster).
@@ -508,6 +551,14 @@ If [param uniformly] is [code]false[/code], just a random polygon and face is pi
 func RegionGetRandomPoint(region RID.NavigationRegion3D, navigation_layers int, uniformly bool) Vector3.XYZ { //gd:NavigationServer3D.region_get_random_point
 	once.Do(singleton)
 	return Vector3.XYZ(class(self).RegionGetRandomPoint(RID.Any(region), int64(navigation_layers), uniformly))
+}
+
+/*
+Returns the axis-aligned bounding box for the [param region]'s transformed navigation mesh.
+*/
+func RegionGetBounds(region RID.NavigationRegion3D) AABB.PositionSize { //gd:NavigationServer3D.region_get_bounds
+	once.Do(singleton)
+	return AABB.PositionSize(class(self).RegionGetBounds(RID.Any(region)))
 }
 
 /*
@@ -721,7 +772,7 @@ func AgentGetMap(agent RID.NavigationAgent3D) RID.NavigationMap3D { //gd:Navigat
 }
 
 /*
-If [param paused] is true the specified [param agent] will not be processed, e.g. calculate avoidance velocities or receive avoidance callbacks.
+If [param paused] is [code]true[/code] the specified [param agent] will not be processed, e.g. calculate avoidance velocities or receive avoidance callbacks.
 */
 func AgentSetPaused(agent RID.NavigationAgent3D, paused bool) { //gd:NavigationServer3D.agent_set_paused
 	once.Do(singleton)
@@ -889,7 +940,7 @@ func AgentGetPosition(agent RID.NavigationAgent3D) Vector3.XYZ { //gd:Navigation
 }
 
 /*
-Returns true if the map got changed the previous frame.
+Returns [code]true[/code] if the map got changed the previous frame.
 */
 func AgentIsMapChanged(agent RID.NavigationAgent3D) bool { //gd:NavigationServer3D.agent_is_map_changed
 	once.Do(singleton)
@@ -1019,7 +1070,7 @@ func ObstacleGetMap(obstacle RID.NavigationObstacle3D) RID.NavigationMap3D { //g
 }
 
 /*
-If [param paused] is true the specified [param obstacle] will not be processed, e.g. affect avoidance velocities.
+If [param paused] is [code]true[/code] the specified [param obstacle] will not be processed, e.g. affect avoidance velocities.
 */
 func ObstacleSetPaused(obstacle RID.NavigationObstacle3D, paused bool) { //gd:NavigationServer3D.obstacle_set_paused
 	once.Do(singleton)
@@ -1282,7 +1333,7 @@ func (self class) MapSetActive(mapping RID.Any, active bool) { //gd:NavigationSe
 }
 
 /*
-Returns true if the map is active.
+Returns [code]true[/code] if the map is active.
 */
 //go:nosplit
 func (self class) MapIsActive(mapping RID.Any) bool { //gd:NavigationServer3D.map_is_active
@@ -1417,7 +1468,7 @@ func (self class) MapSetUseEdgeConnections(mapping RID.Any, enabled bool) { //gd
 }
 
 /*
-Returns true if the navigation [param map] allows navigation regions to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
+Returns [code]true[/code] if the navigation [param map] allows navigation regions to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
 */
 //go:nosplit
 func (self class) MapGetUseEdgeConnections(mapping RID.Any) bool { //gd:NavigationServer3D.map_get_use_edge_connections
@@ -1503,7 +1554,8 @@ func (self class) MapGetPath(mapping RID.Any, origin Vector3.XYZ, destination Ve
 }
 
 /*
-Returns the closest point between the navigation surface and the segment.
+Returns the navigation mesh surface point closest to the provided [param start] and [param end] segment on the navigation [param map].
+If [param use_collision] is [code]true[/code], a closest point test is only done when the segment intersects with the navigation mesh surface.
 */
 //go:nosplit
 func (self class) MapGetClosestPointToSegment(mapping RID.Any, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_to_segment
@@ -1520,7 +1572,7 @@ func (self class) MapGetClosestPointToSegment(mapping RID.Any, start Vector3.XYZ
 }
 
 /*
-Returns the point closest to the provided [param to_point] on the navigation mesh surface.
+Returns the navigation mesh surface point closest to the provided [param to_point] on the navigation [param map].
 */
 //go:nosplit
 func (self class) MapGetClosestPoint(mapping RID.Any, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point
@@ -1535,7 +1587,7 @@ func (self class) MapGetClosestPoint(mapping RID.Any, to_point Vector3.XYZ) Vect
 }
 
 /*
-Returns the normal for the point returned by [method map_get_closest_point].
+Returns the navigation mesh surface normal closest to the provided [param to_point] on the navigation [param map].
 */
 //go:nosplit
 func (self class) MapGetClosestPointNormal(mapping RID.Any, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_normal
@@ -1550,7 +1602,7 @@ func (self class) MapGetClosestPointNormal(mapping RID.Any, to_point Vector3.XYZ
 }
 
 /*
-Returns the owner region RID for the point returned by [method map_get_closest_point].
+Returns the owner region RID for the navigation mesh surface point closest to the provided [param to_point] on the navigation [param map].
 */
 //go:nosplit
 func (self class) MapGetClosestPointOwner(mapping RID.Any, to_point Vector3.XYZ) RID.Any { //gd:NavigationServer3D.map_get_closest_point_owner
@@ -1651,6 +1703,33 @@ func (self class) MapGetIterationId(mapping RID.Any) int64 { //gd:NavigationServ
 }
 
 /*
+If [param enabled] is [code]true[/code] the [param map] synchronization uses an async process that runs on a background thread.
+*/
+//go:nosplit
+func (self class) MapSetUseAsyncIterations(mapping RID.Any, enabled bool) { //gd:NavigationServer3D.map_set_use_async_iterations
+	var frame = callframe.New()
+	callframe.Arg(frame, mapping)
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_map_set_use_async_iterations, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns [code]true[/code] if the [param map] synchronization uses an async process that runs on a background thread.
+*/
+//go:nosplit
+func (self class) MapGetUseAsyncIterations(mapping RID.Any) bool { //gd:NavigationServer3D.map_get_use_async_iterations
+	var frame = callframe.New()
+	callframe.Arg(frame, mapping)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_map_get_use_async_iterations, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns a random position picked from all map region polygons with matching [param navigation_layers].
 If [param uniformly] is [code]true[/code], all map regions, polygons, and faces are weighted by their surface area (slower).
 If [param uniformly] is [code]false[/code], just a random region and a random polygon are picked (faster).
@@ -1669,13 +1748,14 @@ func (self class) MapGetRandomPoint(mapping RID.Any, navigation_layers int64, un
 }
 
 /*
-Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters3D]. Updates the provided [NavigationPathQueryResult3D] result object with the path among other results requested by the query.
+Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters3D]. Updates the provided [NavigationPathQueryResult3D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
 */
 //go:nosplit
-func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters3D, result [1]gdclass.NavigationPathQueryResult3D) { //gd:NavigationServer3D.query_path
+func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters3D, result [1]gdclass.NavigationPathQueryResult3D, callback Callable.Function) { //gd:NavigationServer3D.query_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, pointers.Get(result[0])[0])
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_query_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1735,7 +1815,7 @@ func (self class) RegionSetUseEdgeConnections(region RID.Any, enabled bool) { //
 }
 
 /*
-Returns true if the navigation [param region] is set to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
+Returns [code]true[/code] if the navigation [param region] is set to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
 */
 //go:nosplit
 func (self class) RegionGetUseEdgeConnections(region RID.Any) bool { //gd:NavigationServer3D.region_get_use_edge_connections
@@ -1998,6 +2078,54 @@ func (self class) RegionGetConnectionPathwayEnd(region RID.Any, connection int64
 }
 
 /*
+Returns the navigation mesh surface point closest to the provided [param start] and [param end] segment on the navigation [param region].
+If [param use_collision] is [code]true[/code], a closest point test is only done when the segment intersects with the navigation mesh surface.
+*/
+//go:nosplit
+func (self class) RegionGetClosestPointToSegment(region RID.Any, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point_to_segment
+	var frame = callframe.New()
+	callframe.Arg(frame, region)
+	callframe.Arg(frame, start)
+	callframe.Arg(frame, end)
+	callframe.Arg(frame, use_collision)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_region_get_closest_point_to_segment, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the navigation mesh surface point closest to the provided [param to_point] on the navigation [param region].
+*/
+//go:nosplit
+func (self class) RegionGetClosestPoint(region RID.Any, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point
+	var frame = callframe.New()
+	callframe.Arg(frame, region)
+	callframe.Arg(frame, to_point)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_region_get_closest_point, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the navigation mesh surface normal closest to the provided [param to_point] on the navigation [param region].
+*/
+//go:nosplit
+func (self class) RegionGetClosestPointNormal(region RID.Any, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point_normal
+	var frame = callframe.New()
+	callframe.Arg(frame, region)
+	callframe.Arg(frame, to_point)
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_region_get_closest_point_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns a random position picked from all region polygons with matching [param navigation_layers].
 If [param uniformly] is [code]true[/code], all region polygons and faces are weighted by their surface area (slower).
 If [param uniformly] is [code]false[/code], just a random polygon and face is picked (faster).
@@ -2010,6 +2138,20 @@ func (self class) RegionGetRandomPoint(region RID.Any, navigation_layers int64, 
 	callframe.Arg(frame, uniformly)
 	var r_ret = callframe.Ret[Vector3.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_region_get_random_point, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the axis-aligned bounding box for the [param region]'s transformed navigation mesh.
+*/
+//go:nosplit
+func (self class) RegionGetBounds(region RID.Any) AABB.PositionSize { //gd:NavigationServer3D.region_get_bounds
+	var frame = callframe.New()
+	callframe.Arg(frame, region)
+	var r_ret = callframe.Ret[AABB.PositionSize](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_region_get_bounds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2368,7 +2510,7 @@ func (self class) AgentGetMap(agent RID.Any) RID.Any { //gd:NavigationServer3D.a
 }
 
 /*
-If [param paused] is true the specified [param agent] will not be processed, e.g. calculate avoidance velocities or receive avoidance callbacks.
+If [param paused] is [code]true[/code] the specified [param agent] will not be processed, e.g. calculate avoidance velocities or receive avoidance callbacks.
 */
 //go:nosplit
 func (self class) AgentSetPaused(agent RID.Any, paused bool) { //gd:NavigationServer3D.agent_set_paused
@@ -2651,7 +2793,7 @@ func (self class) AgentGetPosition(agent RID.Any) Vector3.XYZ { //gd:NavigationS
 }
 
 /*
-Returns true if the map got changed the previous frame.
+Returns [code]true[/code] if the map got changed the previous frame.
 */
 //go:nosplit
 func (self class) AgentIsMapChanged(agent RID.Any) bool { //gd:NavigationServer3D.agent_is_map_changed
@@ -2869,7 +3011,7 @@ func (self class) ObstacleGetMap(obstacle RID.Any) RID.Any { //gd:NavigationServ
 }
 
 /*
-If [param paused] is true the specified [param obstacle] will not be processed, e.g. affect avoidance velocities.
+If [param paused] is [code]true[/code] the specified [param obstacle] will not be processed, e.g. affect avoidance velocities.
 */
 //go:nosplit
 func (self class) ObstacleSetPaused(obstacle RID.Any, paused bool) { //gd:NavigationServer3D.obstacle_set_paused
@@ -3268,4 +3410,6 @@ const (
 	InfoEdgeConnectionCount ProcessInfo = 7
 	/*Constant to get the number of navigation mesh polygon edges that could not be merged but may be still connected by edge proximity or with links.*/
 	InfoEdgeFreeCount ProcessInfo = 8
+	/*Constant to get the number of active navigation obstacles.*/
+	InfoObstacleCount ProcessInfo = 9
 )

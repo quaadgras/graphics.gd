@@ -180,6 +180,16 @@ func BoundArgumentsCount(fn Function) int { //gd:Callable.get_bound_arguments_co
 	return bound.Len()
 }
 
+// UnboundArgumentsCount returns returns the total amount of arguments unbound via
+// successive bind or unbind calls.
+func UnboundArgumentsCount(fn Function) int { //gd:Callable.get_unbound_arguments_count
+	if fn == Nil {
+		return 0
+	}
+	argc, binds := fn.proxy.Args(fn.state)
+	return argc - binds.Len()
+}
+
 // Method returns the name of the function represented by this Callable or
 // an empty string if a name is not available.
 func Method(fn Function) string { //gd:Callable.get_method

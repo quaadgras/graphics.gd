@@ -176,6 +176,13 @@ func (self Instance) IsAbstract() bool { //gd:Script.is_abstract
 	return bool(class(self).IsAbstract())
 }
 
+/*
+Returns a [Dictionary] mapping method names to their RPC configuration defined by this script.
+*/
+func (self Instance) GetRpcConfig() any { //gd:Script.get_rpc_config
+	return any(class(self).GetRpcConfig().Interface())
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.Script
@@ -433,6 +440,19 @@ func (self class) IsAbstract() bool { //gd:Script.is_abstract
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_is_abstract, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns a [Dictionary] mapping method names to their RPC configuration defined by this script.
+*/
+//go:nosplit
+func (self class) GetRpcConfig() variant.Any { //gd:Script.get_rpc_config
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[3]uint64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_rpc_config, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

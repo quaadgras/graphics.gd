@@ -48,13 +48,14 @@ var _ = slices.Delete[[]struct{}, struct{}]
 /*
 Base class for all UI-related nodes. [Control] features a bounding rectangle that defines its extents, an anchor position relative to its parent control or the current viewport, and offsets relative to the anchor. The offsets update automatically when the node, any of its parents, or the screen size change.
 For more information on Godot's UI system, anchors, offsets, and containers, see the related tutorials in the manual. To build flexible UIs, you'll need a mix of UI elements that inherit from [Control] and [Container] nodes.
+[b]Note:[/b] Since both [Node2D] and [Control] inherit from [CanvasItem], they share several concepts from the class such as the [member CanvasItem.z_index] and [member CanvasItem.visible] properties.
 [b]User Interface nodes and input[/b]
 Godot propagates input events via viewports. Each [Viewport] is responsible for propagating [InputEvent]s to their child nodes. As the [member SceneTree.root] is a [Window], this already happens automatically for all UI elements in your game.
 Input events are propagated through the [SceneTree] from the root node to all child nodes by calling [method Node._input]. For UI elements specifically, it makes more sense to override the virtual method [method _gui_input], which filters out unrelated input events, such as by checking z-order, [member mouse_filter], focus, or if the event was inside of the control's bounding box.
 Call [method accept_event] so no other node receives the event. Once you accept an input, it becomes handled so [method Node._unhandled_input] will not process it.
 Only one [Control] node can be in focus. Only the node in focus will receive events. To get the focus, call [method grab_focus]. [Control] nodes lose focus when another node grabs it, or if you hide the node in focus.
 Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control] node to ignore mouse or touch events. You'll need it if you place an icon on top of a button.
-[Theme] resources change the Control's appearance. If you change the [Theme] on a [Control] node, it affects all of its children. To override some of the theme's parameters, call one of the [code]add_theme_*_override[/code] methods, like [method add_theme_font_override]. You can override the theme with the Inspector.
+[Theme] resources change the control's appearance. The [member theme] of a [Control] node affects all of its direct and indirect children (as long as a chain of controls is uninterrupted). To override some of the theme items, call one of the [code]add_theme_*_override[/code] methods, like [method add_theme_font_override]. You can also override theme items in the Inspector.
 [b]Note:[/b] Theme items are [i]not[/i] [Object] properties. This means you can't access their values using [method Object.get] and [method Object.set]. Instead, use the [code]get_theme_*[/code] and [code]add_theme_*_override[/code] methods provided by this class.
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
@@ -83,7 +84,7 @@ type Interface interface {
 	//[b]Note:[/b] This method will not be called when the script is attached to a [Control] node that already overrides its minimum size (e.g. [Label], [Button], [PanelContainer] etc.). It can only be used with most basic GUI nodes, like [Control], [Container], [Panel] etc.
 	GetMinimumSize() Vector2.XY
 	//Virtual method to be implemented by the user. Returns the tooltip text for the position [param at_position] in control's local coordinates, which will typically appear when the cursor is resting over this control. See [method get_tooltip].
-	//[b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
+	//[b]Note:[/b] If this method returns an empty [String] and [method _make_custom_tooltip] is not overridden, no tooltip is displayed.
 	GetTooltip(at_position Vector2.XY) string
 	//Godot calls this method to get data that can be dragged and dropped onto controls that expect drop data. Returns [code]null[/code] if there is no data to drag. Controls that want to receive drop data should implement [method _can_drop_data] and [method _drop_data]. [param at_position] is local to this control. Drag may be forced with [method force_drag].
 	//A preview that will follow the mouse that should represent the data can be set with [method set_drag_preview]. A good time to set the preview is in this method.
@@ -135,7 +136,7 @@ type Interface interface {
 	//[csharp]
 	//public override bool _CanDropData(Vector2 atPosition, Variant data)
 	//{
-	//    return data.VariantType == Variant.Type.Dictionary && dict.AsGodotDictionary().ContainsKey("color");
+	//    return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("color");
 	//}
 	//
 	//public override void _DropData(Vector2 atPosition, Variant data)
@@ -145,12 +146,13 @@ type Interface interface {
 	//[/csharp]
 	//[/codeblocks]
 	DropData(at_position Vector2.XY, data any)
-	//Virtual method to be implemented by the user. Returns a [Control] node that should be used as a tooltip instead of the default one. The [param for_text] includes the contents of the [member tooltip_text] property.
+	//Virtual method to be implemented by the user. Returns a [Control] node that should be used as a tooltip instead of the default one. [param for_text] is the return value of [method get_tooltip].
 	//The returned node must be of type [Control] or Control-derived. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance (if you want to use a pre-existing node from your scene tree, you can duplicate it and pass the duplicated instance). When [code]null[/code] or a non-Control node is returned, the default tooltip will be used instead.
 	//The returned node will be added as child to a [PopupPanel], so you should only provide the contents of that panel. That [PopupPanel] can be themed using [method Theme.set_stylebox] for the type [code]"TooltipPanel"[/code] (see [member tooltip_text] for an example).
 	//[b]Note:[/b] The tooltip is shrunk to minimal size. If you want to ensure it's fully visible, you might want to set its [member custom_minimum_size] to some non-zero value.
-	//[b]Note:[/b] The node (and any relevant children) should be [member CanvasItem.visible] when returned, otherwise, the viewport that instantiates it will not be able to calculate its minimum size reliably.
-	//[b]Example of usage with a custom-constructed node:[/b]
+	//[b]Note:[/b] The node (and any relevant children) should have their [member CanvasItem.visible] set to [code]true[/code] when returned, otherwise, the viewport that instantiates it will not be able to calculate its minimum size reliably.
+	//[b]Note:[/b] If overridden, this method is called even if [method get_tooltip] returns an empty string. When this happens with the default tooltip, it is not displayed. To copy this behavior, return [code]null[/code] in this method when [param for_text] is empty.
+	//[b]Example:[/b] Use a constructed node as a tooltip:
 	//[codeblocks]
 	//[gdscript]
 	//func _make_custom_tooltip(for_text):
@@ -167,7 +169,7 @@ type Interface interface {
 	//}
 	//[/csharp]
 	//[/codeblocks]
-	//[b]Example of usage with a custom scene instance:[/b]
+	//[b]Example:[/b] Usa a scene instance as a tooltip:
 	//[codeblocks]
 	//[gdscript]
 	//func _make_custom_tooltip(for_text):
@@ -185,8 +187,8 @@ type Interface interface {
 	//[/csharp]
 	//[/codeblocks]
 	MakeCustomTooltip(for_text string) Object.Instance
-	//Virtual method to be implemented by the user. Use this method to process and accept inputs on UI elements. See [method accept_event].
-	//[b]Example usage for clicking a control:[/b]
+	//Virtual method to be implemented by the user. Override this method to handle and accept inputs on UI elements. See also [method accept_event].
+	//[b]Example:[/b] Click on the control to print a message:
 	//[codeblocks]
 	//[gdscript]
 	//func _gui_input(event):
@@ -207,13 +209,13 @@ type Interface interface {
 	//}
 	//[/csharp]
 	//[/codeblocks]
-	//The event won't trigger if:
-	//* clicking outside the control (see [method _has_point]);
-	//* control has [member mouse_filter] set to [constant MOUSE_FILTER_IGNORE];
-	//* control is obstructed by another [Control] on top of it, which doesn't have [member mouse_filter] set to [constant MOUSE_FILTER_IGNORE];
-	//* control's parent has [member mouse_filter] set to [constant MOUSE_FILTER_STOP] or has accepted the event;
-	//* it happens outside the parent's rectangle and the parent has either [member clip_contents] enabled.
-	//[b]Note:[/b] Event position is relative to the control origin.
+	//If the [param event] inherits [InputEventMouse], this method will [b]not[/b] be called when:
+	//- the control's [member mouse_filter] is set to [constant MOUSE_FILTER_IGNORE];
+	//- the control is obstructed by another control on top, that doesn't have [member mouse_filter] set to [constant MOUSE_FILTER_IGNORE];
+	//- the control's parent has [member mouse_filter] set to [constant MOUSE_FILTER_STOP] or has accepted the event;
+	//- the control's parent has [member clip_contents] enabled and the [param event]'s position is outside the parent's rectangle;
+	//- the [param event]'s position is outside the control (see [method _has_point]).
+	//[b]Note:[/b] The [param event]'s position is relative to this control's origin.
 	GuiInput(event [1]gdclass.InputEvent)
 }
 
@@ -283,7 +285,7 @@ func (Instance) _get_minimum_size(impl func(ptr unsafe.Pointer) Vector2.XY) (cb 
 
 /*
 Virtual method to be implemented by the user. Returns the tooltip text for the position [param at_position] in control's local coordinates, which will typically appear when the cursor is resting over this control. See [method get_tooltip].
-[b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
+[b]Note:[/b] If this method returns an empty [String] and [method _make_custom_tooltip] is not overridden, no tooltip is displayed.
 */
 func (Instance) _get_tooltip(impl func(ptr unsafe.Pointer, at_position Vector2.XY) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -392,7 +394,7 @@ func _drop_data(position, data):
 public override bool _CanDropData(Vector2 atPosition, Variant data)
 
 	{
-	    return data.VariantType == Variant.Type.Dictionary && dict.AsGodotDictionary().ContainsKey("color");
+	    return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("color");
 	}
 
 public override void _DropData(Vector2 atPosition, Variant data)
@@ -416,12 +418,13 @@ func (Instance) _drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY,
 }
 
 /*
-Virtual method to be implemented by the user. Returns a [Control] node that should be used as a tooltip instead of the default one. The [param for_text] includes the contents of the [member tooltip_text] property.
+Virtual method to be implemented by the user. Returns a [Control] node that should be used as a tooltip instead of the default one. [param for_text] is the return value of [method get_tooltip].
 The returned node must be of type [Control] or Control-derived. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance (if you want to use a pre-existing node from your scene tree, you can duplicate it and pass the duplicated instance). When [code]null[/code] or a non-Control node is returned, the default tooltip will be used instead.
 The returned node will be added as child to a [PopupPanel], so you should only provide the contents of that panel. That [PopupPanel] can be themed using [method Theme.set_stylebox] for the type [code]"TooltipPanel"[/code] (see [member tooltip_text] for an example).
 [b]Note:[/b] The tooltip is shrunk to minimal size. If you want to ensure it's fully visible, you might want to set its [member custom_minimum_size] to some non-zero value.
-[b]Note:[/b] The node (and any relevant children) should be [member CanvasItem.visible] when returned, otherwise, the viewport that instantiates it will not be able to calculate its minimum size reliably.
-[b]Example of usage with a custom-constructed node:[/b]
+[b]Note:[/b] The node (and any relevant children) should have their [member CanvasItem.visible] set to [code]true[/code] when returned, otherwise, the viewport that instantiates it will not be able to calculate its minimum size reliably.
+[b]Note:[/b] If overridden, this method is called even if [method get_tooltip] returns an empty string. When this happens with the default tooltip, it is not displayed. To copy this behavior, return [code]null[/code] in this method when [param for_text] is empty.
+[b]Example:[/b] Use a constructed node as a tooltip:
 [codeblocks]
 [gdscript]
 func _make_custom_tooltip(for_text):
@@ -442,7 +445,7 @@ public override Control _MakeCustomTooltip(string forText)
 
 [/csharp]
 [/codeblocks]
-[b]Example of usage with a custom scene instance:[/b]
+[b]Example:[/b] Usa a scene instance as a tooltip:
 [codeblocks]
 [gdscript]
 func _make_custom_tooltip(for_text):
@@ -480,8 +483,8 @@ func (Instance) _make_custom_tooltip(impl func(ptr unsafe.Pointer, for_text stri
 }
 
 /*
-Virtual method to be implemented by the user. Use this method to process and accept inputs on UI elements. See [method accept_event].
-[b]Example usage for clicking a control:[/b]
+Virtual method to be implemented by the user. Override this method to handle and accept inputs on UI elements. See also [method accept_event].
+[b]Example:[/b] Click on the control to print a message:
 [codeblocks]
 [gdscript]
 func _gui_input(event):
@@ -506,13 +509,13 @@ public override void _GuiInput(InputEvent @event)
 
 [/csharp]
 [/codeblocks]
-The event won't trigger if:
-* clicking outside the control (see [method _has_point]);
-* control has [member mouse_filter] set to [constant MOUSE_FILTER_IGNORE];
-* control is obstructed by another [Control] on top of it, which doesn't have [member mouse_filter] set to [constant MOUSE_FILTER_IGNORE];
-* control's parent has [member mouse_filter] set to [constant MOUSE_FILTER_STOP] or has accepted the event;
-* it happens outside the parent's rectangle and the parent has either [member clip_contents] enabled.
-[b]Note:[/b] Event position is relative to the control origin.
+If the [param event] inherits [InputEventMouse], this method will [b]not[/b] be called when:
+- the control's [member mouse_filter] is set to [constant MOUSE_FILTER_IGNORE];
+- the control is obstructed by another control on top, that doesn't have [member mouse_filter] set to [constant MOUSE_FILTER_IGNORE];
+- the control's parent has [member mouse_filter] set to [constant MOUSE_FILTER_STOP] or has accepted the event;
+- the control's parent has [member clip_contents] enabled and the [param event]'s position is outside the parent's rectangle;
+- the [param event]'s position is outside the control (see [method _has_point]).
+[b]Note:[/b] The [param event]'s position is relative to this control's origin.
 */
 func (Instance) _gui_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -655,7 +658,7 @@ func (self Instance) GetParentAreaSize() Vector2.XY { //gd:Control.get_parent_ar
 /*
 Returns the position of this [Control] in global screen coordinates (i.e. taking window position into account). Mostly useful for editor plugins.
 Equals to [member global_position] if the window is embedded (see [member Viewport.gui_embed_subwindows]).
-[b]Example usage for showing a popup:[/b]
+[b]Example:[/b] Show a popup at the mouse position:
 [codeblock]
 popup_menu.position = get_screen_position() + get_local_mouse_position()
 popup_menu.reset_size()
@@ -753,10 +756,10 @@ func (self Instance) AddThemeIconOverride(name string, texture [1]gdclass.Textur
 /*
 Creates a local override for a theme [StyleBox] with the specified [param name]. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [method remove_theme_stylebox_override].
 See also [method get_theme_stylebox].
-[b]Example of modifying a property in a StyleBox by duplicating it:[/b]
+[b]Example:[/b] Modify a property in a [StyleBox] by duplicating it:
 [codeblocks]
 [gdscript]
-# The snippet below assumes the child node MyButton has a StyleBoxFlat assigned.
+# The snippet below assumes the child node "MyButton" has a StyleBoxFlat assigned.
 # Resources are shared across instances, so we need to duplicate it
 # to avoid modifying the appearance of all other buttons.
 var new_stylebox_normal = $MyButton.get_theme_stylebox("normal").duplicate()
@@ -767,7 +770,7 @@ $MyButton.add_theme_stylebox_override("normal", new_stylebox_normal)
 $MyButton.remove_theme_stylebox_override("normal")
 [/gdscript]
 [csharp]
-// The snippet below assumes the child node MyButton has a StyleBoxFlat assigned.
+// The snippet below assumes the child node "MyButton" has a StyleBoxFlat assigned.
 // Resources are shared across instances, so we need to duplicate it
 // to avoid modifying the appearance of all other buttons.
 StyleBoxFlat newStyleboxNormal = GetNode<Button>("MyButton").GetThemeStylebox("normal").Duplicate() as StyleBoxFlat;
@@ -802,7 +805,7 @@ func (self Instance) AddThemeFontSizeOverride(name string, font_size int) { //gd
 /*
 Creates a local override for a theme [Color] with the specified [param name]. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [method remove_theme_color_override].
 See also [method get_theme_color].
-[b]Example of overriding a label's color and resetting it later:[/b]
+[b]Example:[/b] Override a [Label]'s color and reset it later:
 [codeblocks]
 [gdscript]
 # Given the child Label node "MyLabel", override its font color with a custom value.
@@ -1076,7 +1079,7 @@ func (self Instance) GetParentControl() [1]gdclass.Control { //gd:Control.get_pa
 /*
 Returns the tooltip text for the position [param at_position] in control's local coordinates, which will typically appear when the cursor is resting over this control. By default, it returns [member tooltip_text].
 This method can be overridden to customize its behavior. See [method _get_tooltip].
-[b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
+[b]Note:[/b] If this method returns an empty [String] and [method _make_custom_tooltip] is not overridden, no tooltip is displayed.
 */
 func (self Instance) GetTooltip() string { //gd:Control.get_tooltip
 	return string(class(self).GetTooltip(Vector2.XY(gd.Vector2{0, 0})).String())
@@ -1098,7 +1101,7 @@ func (self Instance) ForceDrag(data any, preview [1]gdclass.Control) { //gd:Cont
 }
 
 /*
-Creates an [InputEventMouseButton] that attempts to click the control. If the event is received, the control acquires focus.
+Creates an [InputEventMouseButton] that attempts to click the control. If the event is received, the control gains focus.
 [codeblocks]
 [gdscript]
 func _process(delta):
@@ -1121,9 +1124,11 @@ func (self Instance) GrabClickFocus() { //gd:Control.grab_click_focus
 }
 
 /*
-Forwards the handling of this control's [method _get_drag_data],  [method _can_drop_data] and [method _drop_data] virtual functions to delegate callables.
-For each argument, if not empty, the delegate callable is used, otherwise the local (virtual) function is used.
-The function format for each callable should be exactly the same as the virtual functions described above.
+Sets the given callables to be used instead of the control's own drag-and-drop virtual methods. If a callable is empty, its respective virtual method is used as normal.
+The arguments for each callable should be exactly the same as their respective virtual methods, which would be:
+- [param drag_func] corresponds to [method _get_drag_data] and requires a [Vector2];
+- [param can_drop_func] corresponds to [method _can_drop_data] and requires both a [Vector2] and a [Variant];
+- [param drop_func] corresponds to [method _drop_data] and requires both a [Vector2] and a [Variant].
 */
 func (self Instance) SetDragForwarding(drag_func func(at_position Vector2.XY) any, can_drop_func func(at_position Vector2.XY, data any) bool, drop_func func(at_position Vector2.XY, data any)) { //gd:Control.set_drag_forwarding
 	class(self).SetDragForwarding(Callable.New(drag_func), Callable.New(can_drop_func), Callable.New(drop_func))
@@ -1191,7 +1196,7 @@ func (self Instance) UpdateMinimumSize() { //gd:Control.update_minimum_size
 }
 
 /*
-Returns [code]true[/code] if layout is right-to-left.
+Returns [code]true[/code] if layout is right-to-left. See also [member layout_direction].
 */
 func (self Instance) IsLayoutRtl() bool { //gd:Control.is_layout_rtl
 	return bool(class(self).IsLayoutRtl())
@@ -1395,6 +1400,14 @@ func (self Instance) SetTooltipText(value string) {
 	class(self).SetTooltipText(String.New(value))
 }
 
+func (self Instance) TooltipAutoTranslateMode() gdclass.NodeAutoTranslateMode {
+	return gdclass.NodeAutoTranslateMode(class(self).GetTooltipAutoTranslateMode())
+}
+
+func (self Instance) SetTooltipAutoTranslateMode(value gdclass.NodeAutoTranslateMode) {
+	class(self).SetTooltipAutoTranslateMode(value)
+}
+
 func (self Instance) FocusNeighborLeft() string {
 	return string(class(self).GetFocusNeighbor(0).String())
 }
@@ -1550,7 +1563,7 @@ func (class) _get_minimum_size(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.
 
 /*
 Virtual method to be implemented by the user. Returns the tooltip text for the position [param at_position] in control's local coordinates, which will typically appear when the cursor is resting over this control. See [method get_tooltip].
-[b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
+[b]Note:[/b] If this method returns an empty [String] and [method _make_custom_tooltip] is not overridden, no tooltip is displayed.
 */
 func (class) _get_tooltip(impl func(ptr unsafe.Pointer, at_position Vector2.XY) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -1659,7 +1672,7 @@ func _drop_data(position, data):
 public override bool _CanDropData(Vector2 atPosition, Variant data)
 
 	{
-	    return data.VariantType == Variant.Type.Dictionary && dict.AsGodotDictionary().ContainsKey("color");
+	    return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("color");
 	}
 
 public override void _DropData(Vector2 atPosition, Variant data)
@@ -1683,12 +1696,13 @@ func (class) _drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, da
 }
 
 /*
-Virtual method to be implemented by the user. Returns a [Control] node that should be used as a tooltip instead of the default one. The [param for_text] includes the contents of the [member tooltip_text] property.
+Virtual method to be implemented by the user. Returns a [Control] node that should be used as a tooltip instead of the default one. [param for_text] is the return value of [method get_tooltip].
 The returned node must be of type [Control] or Control-derived. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance (if you want to use a pre-existing node from your scene tree, you can duplicate it and pass the duplicated instance). When [code]null[/code] or a non-Control node is returned, the default tooltip will be used instead.
 The returned node will be added as child to a [PopupPanel], so you should only provide the contents of that panel. That [PopupPanel] can be themed using [method Theme.set_stylebox] for the type [code]"TooltipPanel"[/code] (see [member tooltip_text] for an example).
 [b]Note:[/b] The tooltip is shrunk to minimal size. If you want to ensure it's fully visible, you might want to set its [member custom_minimum_size] to some non-zero value.
-[b]Note:[/b] The node (and any relevant children) should be [member CanvasItem.visible] when returned, otherwise, the viewport that instantiates it will not be able to calculate its minimum size reliably.
-[b]Example of usage with a custom-constructed node:[/b]
+[b]Note:[/b] The node (and any relevant children) should have their [member CanvasItem.visible] set to [code]true[/code] when returned, otherwise, the viewport that instantiates it will not be able to calculate its minimum size reliably.
+[b]Note:[/b] If overridden, this method is called even if [method get_tooltip] returns an empty string. When this happens with the default tooltip, it is not displayed. To copy this behavior, return [code]null[/code] in this method when [param for_text] is empty.
+[b]Example:[/b] Use a constructed node as a tooltip:
 [codeblocks]
 [gdscript]
 func _make_custom_tooltip(for_text):
@@ -1709,7 +1723,7 @@ public override Control _MakeCustomTooltip(string forText)
 
 [/csharp]
 [/codeblocks]
-[b]Example of usage with a custom scene instance:[/b]
+[b]Example:[/b] Usa a scene instance as a tooltip:
 [codeblocks]
 [gdscript]
 func _make_custom_tooltip(for_text):
@@ -1747,8 +1761,8 @@ func (class) _make_custom_tooltip(impl func(ptr unsafe.Pointer, for_text String.
 }
 
 /*
-Virtual method to be implemented by the user. Use this method to process and accept inputs on UI elements. See [method accept_event].
-[b]Example usage for clicking a control:[/b]
+Virtual method to be implemented by the user. Override this method to handle and accept inputs on UI elements. See also [method accept_event].
+[b]Example:[/b] Click on the control to print a message:
 [codeblocks]
 [gdscript]
 func _gui_input(event):
@@ -1773,13 +1787,13 @@ public override void _GuiInput(InputEvent @event)
 
 [/csharp]
 [/codeblocks]
-The event won't trigger if:
-* clicking outside the control (see [method _has_point]);
-* control has [member mouse_filter] set to [constant MOUSE_FILTER_IGNORE];
-* control is obstructed by another [Control] on top of it, which doesn't have [member mouse_filter] set to [constant MOUSE_FILTER_IGNORE];
-* control's parent has [member mouse_filter] set to [constant MOUSE_FILTER_STOP] or has accepted the event;
-* it happens outside the parent's rectangle and the parent has either [member clip_contents] enabled.
-[b]Note:[/b] Event position is relative to the control origin.
+If the [param event] inherits [InputEventMouse], this method will [b]not[/b] be called when:
+- the control's [member mouse_filter] is set to [constant MOUSE_FILTER_IGNORE];
+- the control is obstructed by another control on top, that doesn't have [member mouse_filter] set to [constant MOUSE_FILTER_IGNORE];
+- the control's parent has [member mouse_filter] set to [constant MOUSE_FILTER_STOP] or has accepted the event;
+- the control's parent has [member clip_contents] enabled and the [param event]'s position is outside the parent's rectangle;
+- the [param event]'s position is outside the control (see [method _has_point]).
+[b]Note:[/b] The [param event]'s position is relative to this control's origin.
 */
 func (class) _gui_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -2190,7 +2204,7 @@ func (self class) GetGlobalPosition() Vector2.XY { //gd:Control.get_global_posit
 /*
 Returns the position of this [Control] in global screen coordinates (i.e. taking window position into account). Mostly useful for editor plugins.
 Equals to [member global_position] if the window is embedded (see [member Viewport.gui_embed_subwindows]).
-[b]Example usage for showing a popup:[/b]
+[b]Example:[/b] Show a popup at the mouse position:
 [codeblock]
 popup_menu.position = get_screen_position() + get_local_mouse_position()
 popup_menu.reset_size()
@@ -2467,10 +2481,10 @@ func (self class) AddThemeIconOverride(name String.Name, texture [1]gdclass.Text
 /*
 Creates a local override for a theme [StyleBox] with the specified [param name]. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [method remove_theme_stylebox_override].
 See also [method get_theme_stylebox].
-[b]Example of modifying a property in a StyleBox by duplicating it:[/b]
+[b]Example:[/b] Modify a property in a [StyleBox] by duplicating it:
 [codeblocks]
 [gdscript]
-# The snippet below assumes the child node MyButton has a StyleBoxFlat assigned.
+# The snippet below assumes the child node "MyButton" has a StyleBoxFlat assigned.
 # Resources are shared across instances, so we need to duplicate it
 # to avoid modifying the appearance of all other buttons.
 var new_stylebox_normal = $MyButton.get_theme_stylebox("normal").duplicate()
@@ -2481,7 +2495,7 @@ $MyButton.add_theme_stylebox_override("normal", new_stylebox_normal)
 $MyButton.remove_theme_stylebox_override("normal")
 [/gdscript]
 [csharp]
-// The snippet below assumes the child node MyButton has a StyleBoxFlat assigned.
+// The snippet below assumes the child node "MyButton" has a StyleBoxFlat assigned.
 // Resources are shared across instances, so we need to duplicate it
 // to avoid modifying the appearance of all other buttons.
 StyleBoxFlat newStyleboxNormal = GetNode<Button>("MyButton").GetThemeStylebox("normal").Duplicate() as StyleBoxFlat;
@@ -2534,7 +2548,7 @@ func (self class) AddThemeFontSizeOverride(name String.Name, font_size int64) { 
 /*
 Creates a local override for a theme [Color] with the specified [param name]. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [method remove_theme_color_override].
 See also [method get_theme_color].
-[b]Example of overriding a label's color and resetting it later:[/b]
+[b]Example:[/b] Override a [Label]'s color and reset it later:
 [codeblocks]
 [gdscript]
 # Given the child Label node "MyLabel", override its font color with a custom value.
@@ -3044,6 +3058,25 @@ func (self class) GetVGrowDirection() gdclass.ControlGrowDirection { //gd:Contro
 }
 
 //go:nosplit
+func (self class) SetTooltipAutoTranslateMode(mode gdclass.NodeAutoTranslateMode) { //gd:Control.set_tooltip_auto_translate_mode
+	var frame = callframe.New()
+	callframe.Arg(frame, mode)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_set_tooltip_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetTooltipAutoTranslateMode() gdclass.NodeAutoTranslateMode { //gd:Control.get_tooltip_auto_translate_mode
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gdclass.NodeAutoTranslateMode](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_tooltip_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
 func (self class) SetTooltipText(hint String.Readable) { //gd:Control.set_tooltip_text
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(hint)))
@@ -3065,7 +3098,7 @@ func (self class) GetTooltipText() String.Readable { //gd:Control.get_tooltip_te
 /*
 Returns the tooltip text for the position [param at_position] in control's local coordinates, which will typically appear when the cursor is resting over this control. By default, it returns [member tooltip_text].
 This method can be overridden to customize its behavior. See [method _get_tooltip].
-[b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
+[b]Note:[/b] If this method returns an empty [String] and [method _make_custom_tooltip] is not overridden, no tooltip is displayed.
 */
 //go:nosplit
 func (self class) GetTooltip(at_position Vector2.XY) String.Readable { //gd:Control.get_tooltip
@@ -3249,7 +3282,7 @@ func (self class) IsClippingContents() bool { //gd:Control.is_clipping_contents
 }
 
 /*
-Creates an [InputEventMouseButton] that attempts to click the control. If the event is received, the control acquires focus.
+Creates an [InputEventMouseButton] that attempts to click the control. If the event is received, the control gains focus.
 [codeblocks]
 [gdscript]
 func _process(delta):
@@ -3272,9 +3305,11 @@ func (self class) GrabClickFocus() { //gd:Control.grab_click_focus
 }
 
 /*
-Forwards the handling of this control's [method _get_drag_data],  [method _can_drop_data] and [method _drop_data] virtual functions to delegate callables.
-For each argument, if not empty, the delegate callable is used, otherwise the local (virtual) function is used.
-The function format for each callable should be exactly the same as the virtual functions described above.
+Sets the given callables to be used instead of the control's own drag-and-drop virtual methods. If a callable is empty, its respective virtual method is used as normal.
+The arguments for each callable should be exactly the same as their respective virtual methods, which would be:
+- [param drag_func] corresponds to [method _get_drag_data] and requires a [Vector2];
+- [param can_drop_func] corresponds to [method _can_drop_data] and requires both a [Vector2] and a [Variant];
+- [param drop_func] corresponds to [method _drop_data] and requires both a [Vector2] and a [Variant].
 */
 //go:nosplit
 func (self class) SetDragForwarding(drag_func Callable.Function, can_drop_func Callable.Function, drop_func Callable.Function) { //gd:Control.set_drag_forwarding
@@ -3403,7 +3438,7 @@ func (self class) GetLayoutDirection() gdclass.ControlLayoutDirection { //gd:Con
 }
 
 /*
-Returns [code]true[/code] if layout is right-to-left.
+Returns [code]true[/code] if layout is right-to-left. See also [member layout_direction].
 */
 //go:nosplit
 func (self class) IsLayoutRtl() bool { //gd:Control.is_layout_rtl
@@ -3673,11 +3708,12 @@ const (
 type MouseFilter = gdclass.ControlMouseFilter //gd:Control.MouseFilter
 
 const (
-	/*The control will receive mouse movement input events and mouse button input events if clicked on through [method _gui_input]. And the control will receive the [signal mouse_entered] and [signal mouse_exited] signals. These events are automatically marked as handled, and they will not propagate further to other controls. This also results in blocking signals in other controls.*/
+	/*The control will receive mouse movement input events and mouse button input events if clicked on through [method _gui_input]. The control will also receive the [signal mouse_entered] and [signal mouse_exited] signals. These events are automatically marked as handled, and they will not propagate further to other controls. This also results in blocking signals in other controls.*/
 	MouseFilterStop MouseFilter = 0
-	/*The control will receive mouse movement input events and mouse button input events if clicked on through [method _gui_input]. And the control will receive the [signal mouse_entered] and [signal mouse_exited] signals. If this control does not handle the event, the parent control (if any) will be considered, and so on until there is no more parent control to potentially handle it. This also allows signals to fire in other controls. If no control handled it, the event will be passed to [method Node._shortcut_input] for further processing.*/
+	/*The control will receive mouse movement input events and mouse button input events if clicked on through [method _gui_input]. The control will also receive the [signal mouse_entered] and [signal mouse_exited] signals.
+	  If this control does not handle the event, the event will propagate up to its parent control if it has one. The event is bubbled up the node hierarchy until it reaches a non-[CanvasItem], a control with [constant MOUSE_FILTER_STOP], or a [CanvasItem] with [member CanvasItem.top_level] enabled. This will allow signals to fire in all controls it reaches. If no control handled it, the event will be passed to [method Node._shortcut_input] for further processing.*/
 	MouseFilterPass MouseFilter = 1
-	/*The control will not receive mouse movement input events and mouse button input events if clicked on through [method _gui_input]. The control will also not receive the [signal mouse_entered] nor [signal mouse_exited] signals. This will not block other controls from receiving these events or firing the signals. Ignored events will not be handled automatically.
+	/*The control will not receive any mouse movement input events nor mouse button input events through [method _gui_input]. The control will also not receive the [signal mouse_entered] nor [signal mouse_exited] signals. This will not block other controls from receiving these events or firing the signals. Ignored events will not be handled automatically. If a child has [constant MOUSE_FILTER_PASS] and an event was passed to this control, the event will further propagate up to the control's parent.
 	  [b]Note:[/b] If the control has received [signal mouse_entered] but not [signal mouse_exited], changing the [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] will cause [signal mouse_exited] to be emitted.*/
 	MouseFilterIgnore MouseFilter = 2
 )
@@ -3707,12 +3743,17 @@ type LayoutDirection = gdclass.ControlLayoutDirection //gd:Control.LayoutDirecti
 const (
 	/*Automatic layout direction, determined from the parent control layout direction.*/
 	LayoutDirectionInherited LayoutDirection = 0
-	/*Automatic layout direction, determined from the current locale.*/
-	LayoutDirectionLocale LayoutDirection = 1
+	/*Automatic layout direction, determined from the current locale. Right-to-left layout direction is automatically used for languages that require it such as Arabic and Hebrew, but only if a valid translation file is loaded for the given language (unless said language is configured as a fallback in [member ProjectSettings.internationalization/locale/fallback]). For all other languages (or if no valid translation file is found by Godot), left-to-right layout direction is used. If using [TextServerFallback] ([member ProjectSettings.internationalization/rendering/text_driver]), left-to-right layout direction is always used regardless of the language. Right-to-left layout direction can also be forced using [member ProjectSettings.internationalization/rendering/force_right_to_left_layout_direction].*/
+	LayoutDirectionApplicationLocale LayoutDirection = 1
 	/*Left-to-right layout direction.*/
 	LayoutDirectionLtr LayoutDirection = 2
 	/*Right-to-left layout direction.*/
 	LayoutDirectionRtl LayoutDirection = 3
+	/*Automatic layout direction, determined from the system locale. Right-to-left layout direction is automatically used for languages that require it such as Arabic and Hebrew, but only if a valid translation file is loaded for the given language.. For all other languages (or if no valid translation file is found by Godot), left-to-right layout direction is used. If using [TextServerFallback] ([member ProjectSettings.internationalization/rendering/text_driver]), left-to-right layout direction is always used regardless of the language.*/
+	LayoutDirectionSystemLocale LayoutDirection = 4
+	/*Represents the size of the [enum LayoutDirection] enum.*/
+	LayoutDirectionMax    LayoutDirection = 5
+	LayoutDirectionLocale LayoutDirection = 1
 )
 
 type TextDirection = gdclass.ControlTextDirection //gd:Control.TextDirection

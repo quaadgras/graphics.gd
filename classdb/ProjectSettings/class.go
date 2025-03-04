@@ -64,7 +64,6 @@ func HasSetting(name string) bool { //gd:ProjectSettings.has_setting
 
 /*
 Sets the value of a setting.
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 ProjectSettings.set_setting("application/config/name", "Example")
@@ -82,7 +81,6 @@ func SetSetting(name string, value any) { //gd:ProjectSettings.set_setting
 
 /*
 Returns the value of the setting identified by [param name]. If the setting doesn't exist and [param default_value] is specified, the value of [param default_value] is returned. Otherwise, [code]null[/code] is returned.
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 print(ProjectSettings.get_setting("application/config/name"))
@@ -102,8 +100,7 @@ func GetSetting(name string) any { //gd:ProjectSettings.get_setting
 
 /*
 Similar to [method get_setting], but applies feature tag overrides if any exists and is valid.
-[b]Example:[/b]
-If the following setting override exists "application/config/name.windows", and the following code is executed:
+[b]Example:[/b] If the setting override [code]"application/config/name.windows"[/code] exists, and the following code is executed on a [i]Windows[/i] operating system, the overridden setting is printed instead:
 [codeblocks]
 [gdscript]
 print(ProjectSettings.get_setting_with_override("application/config/name"))
@@ -112,7 +109,6 @@ print(ProjectSettings.get_setting_with_override("application/config/name"))
 GD.Print(ProjectSettings.GetSettingWithOverride("application/config/name"));
 [/csharp]
 [/codeblocks]
-Then the overridden setting will be returned instead if the project is running on the [i]Windows[/i] operating system.
 */
 func GetSettingWithOverride(name string) any { //gd:ProjectSettings.get_setting_with_override
 	once.Do(singleton)
@@ -178,7 +174,6 @@ Adds a custom property info to a property. The dictionary must contain:
 - [code]"name"[/code]: [String] (the property's name)
 - [code]"type"[/code]: [int] (see [enum Variant.Type])
 - optionally [code]"hint"[/code]: [int] (see [enum PropertyHint]) and [code]"hint_string"[/code]: [String]
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 ProjectSettings.set("category/property_name", 0)
@@ -277,6 +272,7 @@ func Save() error { //gd:ProjectSettings.save
 Loads the contents of the .pck or .zip file specified by [param pack] into the resource filesystem ([code]res://[/code]). Returns [code]true[/code] on success.
 [b]Note:[/b] If a file from [param pack] shares the same path as a file already in the resource filesystem, any attempts to load that file will use the file from [param pack] unless [param replace_files] is set to [code]false[/code].
 [b]Note:[/b] The optional [param offset] parameter can be used to specify the offset in bytes to the start of the resource pack. This is only supported for .pck files.
+[b]Note:[/b] [DirAccess] will not show changes made to the contents of [code]res://[/code] after calling this function.
 */
 func LoadResourcePack(pack string) bool { //gd:ProjectSettings.load_resource_pack
 	once.Do(singleton)
@@ -317,7 +313,6 @@ func (self class) HasSetting(name String.Readable) bool { //gd:ProjectSettings.h
 
 /*
 Sets the value of a setting.
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 ProjectSettings.set_setting("application/config/name", "Example")
@@ -340,7 +335,6 @@ func (self class) SetSetting(name String.Readable, value variant.Any) { //gd:Pro
 
 /*
 Returns the value of the setting identified by [param name]. If the setting doesn't exist and [param default_value] is specified, the value of [param default_value] is returned. Otherwise, [code]null[/code] is returned.
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 print(ProjectSettings.get_setting("application/config/name"))
@@ -367,8 +361,7 @@ func (self class) GetSetting(name String.Readable, default_value variant.Any) va
 
 /*
 Similar to [method get_setting], but applies feature tag overrides if any exists and is valid.
-[b]Example:[/b]
-If the following setting override exists "application/config/name.windows", and the following code is executed:
+[b]Example:[/b] If the setting override [code]"application/config/name.windows"[/code] exists, and the following code is executed on a [i]Windows[/i] operating system, the overridden setting is printed instead:
 [codeblocks]
 [gdscript]
 print(ProjectSettings.get_setting_with_override("application/config/name"))
@@ -377,7 +370,6 @@ print(ProjectSettings.get_setting_with_override("application/config/name"))
 GD.Print(ProjectSettings.GetSettingWithOverride("application/config/name"));
 [/csharp]
 [/codeblocks]
-Then the overridden setting will be returned instead if the project is running on the [i]Windows[/i] operating system.
 */
 //go:nosplit
 func (self class) GetSettingWithOverride(name String.Name) variant.Any { //gd:ProjectSettings.get_setting_with_override
@@ -480,7 +472,6 @@ Adds a custom property info to a property. The dictionary must contain:
 - [code]"name"[/code]: [String] (the property's name)
 - [code]"type"[/code]: [int] (see [enum Variant.Type])
 - optionally [code]"hint"[/code]: [int] (see [enum PropertyHint]) and [code]"hint_string"[/code]: [String]
-[b]Example:[/b]
 [codeblocks]
 [gdscript]
 ProjectSettings.set("category/property_name", 0)
@@ -604,6 +595,7 @@ func (self class) Save() Error.Code { //gd:ProjectSettings.save
 Loads the contents of the .pck or .zip file specified by [param pack] into the resource filesystem ([code]res://[/code]). Returns [code]true[/code] on success.
 [b]Note:[/b] If a file from [param pack] shares the same path as a file already in the resource filesystem, any attempts to load that file will use the file from [param pack] unless [param replace_files] is set to [code]false[/code].
 [b]Note:[/b] The optional [param offset] parameter can be used to specify the offset in bytes to the start of the resource pack. This is only supported for .pck files.
+[b]Note:[/b] [DirAccess] will not show changes made to the contents of [code]res://[/code] after calling this function.
 */
 //go:nosplit
 func (self class) LoadResourcePack(pack String.Readable, replace_files bool, offset int64) bool { //gd:ProjectSettings.load_resource_pack

@@ -50,7 +50,7 @@ dir.make_dir("world1")
 # Static
 DirAccess.make_dir_absolute("user://levels/world1")
 [/codeblock]
-[b]Note:[/b] Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. Use [ResourceLoader] to access imported resources.
+[b]Note:[/b] Accessing project ("res://") directories once exported may behave unexpectedly as some files are converted to engine-specific formats and their original source files may not be present in the expected PCK package. Because of this, to access resources in an exported project, it is recommended to use [ResourceLoader] instead of [FileAccess].
 Here is an example on how to iterate through the files of a directory:
 [codeblocks]
 [gdscript]
@@ -100,6 +100,7 @@ public void DirContents(string path)
 
 [/csharp]
 [/codeblocks]
+Keep in mind that file names may change or be remapped after export. If you want to see the actual resource file list as it appears in the editor, use [method ResourceLoader.list_directory] instead.
 */
 type Instance [1]gdclass.DirAccess
 
@@ -126,6 +127,17 @@ Returns the result of the last [method open] call in the current thread.
 func GetOpenError() error { //gd:DirAccess.get_open_error
 	self := Instance{}
 	return error(gd.ToError(class(self).GetOpenError()))
+}
+
+/*
+Creates a temporary directory. This directory will be freed when the returned [DirAccess] is freed.
+If [param prefix] is not empty, it will be prefixed to the directory name, separated by a [code]-[/code].
+If [param keep] is [code]true[/code], the directory is not deleted when the returned [DirAccess] is freed.
+Returns [code]null[/code] if opening the directory failed. You can use [method get_open_error] to check the error that occurred.
+*/
+func CreateTemp() [1]gdclass.DirAccess { //gd:DirAccess.create_temp
+	self := Instance{}
+	return [1]gdclass.DirAccess(class(self).CreateTemp(String.New(""), false))
 }
 
 /*
@@ -171,6 +183,7 @@ func (self Instance) GetFiles() []string { //gd:DirAccess.get_files
 /*
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding directories, at the given [param path]. The array is sorted alphabetically.
 Use [method get_files] if you want more control of what gets included.
+[b]Note:[/b] When used on a [code]res://[/code] path in an exported project, only the files included in the PCK at the given folder level are returned. In practice, this means that since imported resources are stored in a top-level [code].godot/[/code] folder, only paths to [code].gd[/code] and [code].import[/code] files are returned (plus a few other files, such as [code]project.godot[/code] or [code]project.binary[/code] and the project icon). In an exported project, the list of returned files will also vary depending on [member ProjectSettings.editor/export/convert_text_resources_to_binary].
 */
 func GetFilesAt(path string) []string { //gd:DirAccess.get_files_at
 	self := Instance{}
@@ -180,6 +193,7 @@ func GetFilesAt(path string) []string { //gd:DirAccess.get_files_at
 /*
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding files. The array is sorted alphabetically.
 Affected by [member include_hidden] and [member include_navigational].
+[b]Note:[/b] The returned directories in the editor and after exporting in the [code]res://[/code] directory may differ as some files are converted to engine-specific formats when exported.
 */
 func (self Instance) GetDirectories() []string { //gd:DirAccess.get_directories
 	return []string(class(self).GetDirectories().Strings())
@@ -188,6 +202,7 @@ func (self Instance) GetDirectories() []string { //gd:DirAccess.get_directories
 /*
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding files, at the given [param path]. The array is sorted alphabetically.
 Use [method get_directories] if you want more control of what gets included.
+[b]Note:[/b] The returned directories in the editor and after exporting in the [code]res://[/code] directory may differ as some files are converted to engine-specific formats when exported.
 */
 func GetDirectoriesAt(path string) []string { //gd:DirAccess.get_directories_at
 	self := Instance{}
@@ -274,6 +289,7 @@ func MakeDirRecursiveAbsolute(path string) error { //gd:DirAccess.make_dir_recur
 /*
 Returns whether the target file exists. The argument can be relative to the current directory, or an absolute path.
 For a static equivalent, use [method FileAccess.file_exists].
+[b]Note:[/b] Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [method ResourceLoader.exists] for an alternative approach that takes resource remapping into account.
 */
 func (self Instance) FileExists(path string) bool { //gd:DirAccess.file_exists
 	return bool(class(self).FileExists(String.New(path)))
@@ -281,6 +297,7 @@ func (self Instance) FileExists(path string) bool { //gd:DirAccess.file_exists
 
 /*
 Returns whether the target directory exists. The argument can be relative to the current directory, or an absolute path.
+[b]Note:[/b] The returned [bool] in the editor and after exporting when used on a path in the [code]res://[/code] directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
 */
 func (self Instance) DirExists(path string) bool { //gd:DirAccess.dir_exists
 	return bool(class(self).DirExists(String.New(path)))
@@ -288,6 +305,7 @@ func (self Instance) DirExists(path string) bool { //gd:DirAccess.dir_exists
 
 /*
 Static version of [method dir_exists]. Supports only absolute paths.
+[b]Note:[/b] The returned [bool] in the editor and after exporting when used on a path in the [code]res://[/code] directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
 */
 func DirExistsAbsolute(path string) bool { //gd:DirAccess.dir_exists_absolute
 	self := Instance{}
@@ -377,6 +395,14 @@ func (self Instance) CreateLink(source string, target string) error { //gd:DirAc
 }
 
 /*
+Returns [code]true[/code] if the directory is a macOS bundle.
+[b]Note:[/b] This method is implemented on macOS.
+*/
+func (self Instance) IsBundle(path string) bool { //gd:DirAccess.is_bundle
+	return bool(class(self).IsBundle(String.New(path)))
+}
+
+/*
 Returns [code]true[/code] if the file system or directory use case sensitive file names.
 [b]Note:[/b] This method is implemented on macOS, Linux (for EXT4 and F2FS filesystems only) and Windows. On other platforms, it always returns [code]true[/code].
 */
@@ -443,6 +469,24 @@ func (self class) GetOpenError() Error.Code { //gd:DirAccess.get_open_error
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_open_error, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Creates a temporary directory. This directory will be freed when the returned [DirAccess] is freed.
+If [param prefix] is not empty, it will be prefixed to the directory name, separated by a [code]-[/code].
+If [param keep] is [code]true[/code], the directory is not deleted when the returned [DirAccess] is freed.
+Returns [code]null[/code] if opening the directory failed. You can use [method get_open_error] to check the error that occurred.
+*/
+//go:nosplit
+func (self class) CreateTemp(prefix String.Readable, keep bool) [1]gdclass.DirAccess { //gd:DirAccess.create_temp
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(prefix)))
+	callframe.Arg(frame, keep)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_create_temp, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.DirAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.DirAccess](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -518,6 +562,7 @@ func (self class) GetFiles() Packed.Strings { //gd:DirAccess.get_files
 /*
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding directories, at the given [param path]. The array is sorted alphabetically.
 Use [method get_files] if you want more control of what gets included.
+[b]Note:[/b] When used on a [code]res://[/code] path in an exported project, only the files included in the PCK at the given folder level are returned. In practice, this means that since imported resources are stored in a top-level [code].godot/[/code] folder, only paths to [code].gd[/code] and [code].import[/code] files are returned (plus a few other files, such as [code]project.godot[/code] or [code]project.binary[/code] and the project icon). In an exported project, the list of returned files will also vary depending on [member ProjectSettings.editor/export/convert_text_resources_to_binary].
 */
 //go:nosplit
 func (self class) GetFilesAt(path String.Readable) Packed.Strings { //gd:DirAccess.get_files_at
@@ -533,6 +578,7 @@ func (self class) GetFilesAt(path String.Readable) Packed.Strings { //gd:DirAcce
 /*
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding files. The array is sorted alphabetically.
 Affected by [member include_hidden] and [member include_navigational].
+[b]Note:[/b] The returned directories in the editor and after exporting in the [code]res://[/code] directory may differ as some files are converted to engine-specific formats when exported.
 */
 //go:nosplit
 func (self class) GetDirectories() Packed.Strings { //gd:DirAccess.get_directories
@@ -547,6 +593,7 @@ func (self class) GetDirectories() Packed.Strings { //gd:DirAccess.get_directori
 /*
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding files, at the given [param path]. The array is sorted alphabetically.
 Use [method get_directories] if you want more control of what gets included.
+[b]Note:[/b] The returned directories in the editor and after exporting in the [code]res://[/code] directory may differ as some files are converted to engine-specific formats when exported.
 */
 //go:nosplit
 func (self class) GetDirectoriesAt(path String.Readable) Packed.Strings { //gd:DirAccess.get_directories_at
@@ -696,6 +743,7 @@ func (self class) MakeDirRecursiveAbsolute(path String.Readable) Error.Code { //
 /*
 Returns whether the target file exists. The argument can be relative to the current directory, or an absolute path.
 For a static equivalent, use [method FileAccess.file_exists].
+[b]Note:[/b] Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [method ResourceLoader.exists] for an alternative approach that takes resource remapping into account.
 */
 //go:nosplit
 func (self class) FileExists(path String.Readable) bool { //gd:DirAccess.file_exists
@@ -710,6 +758,7 @@ func (self class) FileExists(path String.Readable) bool { //gd:DirAccess.file_ex
 
 /*
 Returns whether the target directory exists. The argument can be relative to the current directory, or an absolute path.
+[b]Note:[/b] The returned [bool] in the editor and after exporting when used on a path in the [code]res://[/code] directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
 */
 //go:nosplit
 func (self class) DirExists(path String.Readable) bool { //gd:DirAccess.dir_exists
@@ -724,6 +773,7 @@ func (self class) DirExists(path String.Readable) bool { //gd:DirAccess.dir_exis
 
 /*
 Static version of [method dir_exists]. Supports only absolute paths.
+[b]Note:[/b] The returned [bool] in the editor and after exporting when used on a path in the [code]res://[/code] directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
 */
 //go:nosplit
 func (self class) DirExistsAbsolute(path String.Readable) bool { //gd:DirAccess.dir_exists_absolute
@@ -887,6 +937,21 @@ func (self class) CreateLink(source String.Readable, target String.Readable) Err
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_create_link, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the directory is a macOS bundle.
+[b]Note:[/b] This method is implemented on macOS.
+*/
+//go:nosplit
+func (self class) IsBundle(path String.Readable) bool { //gd:DirAccess.is_bundle
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_is_bundle, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

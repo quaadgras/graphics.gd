@@ -85,6 +85,13 @@ func (self Instance) SetItemMeshTransform(id int, mesh_transform Transform3D.Bas
 }
 
 /*
+Sets the item's shadow casting mode. See [enum RenderingServer.ShadowCastingSetting] for possible values.
+*/
+func (self Instance) SetItemMeshCastShadow(id int, shadow_casting_setting gdclass.RenderingServerShadowCastingSetting) { //gd:MeshLibrary.set_item_mesh_cast_shadow
+	class(self).SetItemMeshCastShadow(int64(id), shadow_casting_setting)
+}
+
+/*
 Sets the item's navigation mesh.
 */
 func (self Instance) SetItemNavigationMesh(id int, navigation_mesh [1]gdclass.NavigationMesh) { //gd:MeshLibrary.set_item_navigation_mesh
@@ -139,6 +146,13 @@ Returns the transform applied to the item's mesh.
 */
 func (self Instance) GetItemMeshTransform(id int) Transform3D.BasisOrigin { //gd:MeshLibrary.get_item_mesh_transform
 	return Transform3D.BasisOrigin(class(self).GetItemMeshTransform(int64(id)))
+}
+
+/*
+Returns the item's shadow casting mode. See [enum RenderingServer.ShadowCastingSetting] for possible values.
+*/
+func (self Instance) GetItemMeshCastShadow(id int) gdclass.RenderingServerShadowCastingSetting { //gd:MeshLibrary.get_item_mesh_cast_shadow
+	return gdclass.RenderingServerShadowCastingSetting(class(self).GetItemMeshCastShadow(int64(id)))
 }
 
 /*
@@ -285,6 +299,19 @@ func (self class) SetItemMeshTransform(id int64, mesh_transform Transform3D.Basi
 }
 
 /*
+Sets the item's shadow casting mode. See [enum RenderingServer.ShadowCastingSetting] for possible values.
+*/
+//go:nosplit
+func (self class) SetItemMeshCastShadow(id int64, shadow_casting_setting gdclass.RenderingServerShadowCastingSetting) { //gd:MeshLibrary.set_item_mesh_cast_shadow
+	var frame = callframe.New()
+	callframe.Arg(frame, id)
+	callframe.Arg(frame, shadow_casting_setting)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_set_item_mesh_cast_shadow, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Sets the item's navigation mesh.
 */
 //go:nosplit
@@ -387,6 +414,20 @@ func (self class) GetItemMeshTransform(id int64) Transform3D.BasisOrigin { //gd:
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_mesh_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the item's shadow casting mode. See [enum RenderingServer.ShadowCastingSetting] for possible values.
+*/
+//go:nosplit
+func (self class) GetItemMeshCastShadow(id int64) gdclass.RenderingServerShadowCastingSetting { //gd:MeshLibrary.get_item_mesh_cast_shadow
+	var frame = callframe.New()
+	callframe.Arg(frame, id)
+	var r_ret = callframe.Ret[gdclass.RenderingServerShadowCastingSetting](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_mesh_cast_shadow, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

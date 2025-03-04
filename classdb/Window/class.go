@@ -187,6 +187,20 @@ func (self Instance) GrabFocus() { //gd:Window.grab_focus
 }
 
 /*
+Starts an interactive drag operation on the window, using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's title bar. Using this method allows the window to participate in space switching, tiling, and other system features.
+*/
+func (self Instance) StartDrag() { //gd:Window.start_drag
+	class(self).StartDrag()
+}
+
+/*
+Starts an interactive resize operation on the window, using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's edge.
+*/
+func (self Instance) StartResize(edge gdclass.DisplayServerWindowResizeEdge) { //gd:Window.start_resize
+	class(self).StartResize(edge)
+}
+
+/*
 If [param active] is [code]true[/code], enables system's native IME (Input Method Editor).
 */
 func (self Instance) SetImeActive(active bool) { //gd:Window.set_ime_active
@@ -788,6 +802,22 @@ func (self Instance) SetMousePassthrough(value bool) {
 	class(self).SetFlag(7, value)
 }
 
+func (self Instance) SharpCorners() bool {
+	return bool(class(self).GetFlag(8))
+}
+
+func (self Instance) SetSharpCorners(value bool) {
+	class(self).SetFlag(8, value)
+}
+
+func (self Instance) ExcludeFromCapture() bool {
+	return bool(class(self).GetFlag(9))
+}
+
+func (self Instance) SetExcludeFromCapture(value bool) {
+	class(self).SetFlag(9, value)
+}
+
 func (self Instance) ForceNative() bool {
 	return bool(class(self).GetForceNative())
 }
@@ -1317,6 +1347,29 @@ func (self class) GrabFocus() { //gd:Window.grab_focus
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_grab_focus, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Starts an interactive drag operation on the window, using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's title bar. Using this method allows the window to participate in space switching, tiling, and other system features.
+*/
+//go:nosplit
+func (self class) StartDrag() { //gd:Window.start_drag
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_start_drag, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Starts an interactive resize operation on the window, using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's edge.
+*/
+//go:nosplit
+func (self class) StartResize(edge gdclass.DisplayServerWindowResizeEdge) { //gd:Window.start_resize
+	var frame = callframe.New()
+	callframe.Arg(frame, edge)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_start_resize, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2364,6 +2417,10 @@ func (self Instance) OnTitlebarChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("titlebar_changed"), gd.NewCallable(cb), 0)
 }
 
+func (self Instance) OnTitleChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("title_changed"), gd.NewCallable(cb), 0)
+}
+
 func (self class) AsWindow() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsWindow() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
 func (self class) AsViewport() Viewport.Advanced {
@@ -2407,12 +2464,14 @@ const (
 	ModeMaximized Mode = 2
 	/*Full screen mode with full multi-window support.
 	  Full screen window covers the entire display area of a screen and has no decorations. The display's video mode is not changed.
+	  [b]On Android:[/b] This enables immersive mode.
 	  [b]On Windows:[/b] Multi-window full-screen mode has a 1px border of the [member ProjectSettings.rendering/environment/defaults/default_clear_color] color.
 	  [b]On macOS:[/b] A new desktop is used to display the running project.
 	  [b]Note:[/b] Regardless of the platform, enabling full screen will change the window size to match the monitor's size. Therefore, make sure your project supports [url=$DOCS_URL/tutorials/rendering/multiple_resolutions.html]multiple resolutions[/url] when enabling full screen mode.*/
 	ModeFullscreen Mode = 3
 	/*A single window full screen mode. This mode has less overhead, but only one window can be open on a given screen at a time (opening a child window or application switching will trigger a full screen transition).
 	  Full screen window covers the entire display area of a screen and has no border or decorations. The display's video mode is not changed.
+	  [b]On Android:[/b] This enables immersive mode.
 	  [b]On Windows:[/b] Depending on video driver, full screen transition might cause screens to go black for a moment.
 	  [b]On macOS:[/b] A new desktop is used to display the running project. Exclusive full screen mode prevents Dock and Menu from showing up when the mouse pointer is hovering the edge of the screen.
 	  [b]On Linux (X11):[/b] Exclusive full screen mode bypasses compositor.
@@ -2444,8 +2503,16 @@ const (
 	/*All mouse events are passed to the underlying window of the same application.
 	  [b]Note:[/b] This flag has no effect in embedded windows.*/
 	FlagMousePassthrough Flags = 7
+	/*Window style is overridden, forcing sharp corners.
+	  [b]Note:[/b] This flag has no effect in embedded windows.
+	  [b]Note:[/b] This flag is implemented only on Windows (11).*/
+	FlagSharpCorners Flags = 8
+	/*Windows is excluded from screenshots taken by [method DisplayServer.screen_get_image], [method DisplayServer.screen_get_image_rect], and [method DisplayServer.screen_get_pixel].
+	  [b]Note:[/b] This flag is implemented on macOS and Windows.
+	  [b]Note:[/b] Setting this flag will [b]NOT[/b] prevent other apps from capturing an image, it should not be used as a security measure.*/
+	FlagExcludeFromCapture Flags = 9
 	/*Max value of the [enum Flags].*/
-	FlagMax Flags = 8
+	FlagMax Flags = 10
 )
 
 type ContentScaleMode = gdclass.WindowContentScaleMode //gd:Window.ContentScaleMode
@@ -2489,11 +2556,16 @@ const (
 	/*Automatic layout direction, determined from the parent window layout direction.*/
 	LayoutDirectionInherited LayoutDirection = 0
 	/*Automatic layout direction, determined from the current locale.*/
-	LayoutDirectionLocale LayoutDirection = 1
+	LayoutDirectionApplicationLocale LayoutDirection = 1
 	/*Left-to-right layout direction.*/
 	LayoutDirectionLtr LayoutDirection = 2
 	/*Right-to-left layout direction.*/
 	LayoutDirectionRtl LayoutDirection = 3
+	/*Automatic layout direction, determined from the system locale.*/
+	LayoutDirectionSystemLocale LayoutDirection = 4
+	/*Represents the size of the [enum LayoutDirection] enum.*/
+	LayoutDirectionMax    LayoutDirection = 5
+	LayoutDirectionLocale LayoutDirection = 1
 )
 
 type WindowInitialPosition = gdclass.WindowWindowInitialPosition //gd:Window.WindowInitialPosition

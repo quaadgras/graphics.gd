@@ -90,6 +90,9 @@ type Interface interface {
 	//[b]Optional.[/b]
 	//Saves optional TextServer database (e.g. ICU break iterators and dictionaries) to the file.
 	SaveSupportData(filename string) bool
+	//[b]Optional.[/b]
+	//Returns default TextServer database (e.g. ICU break iterators and dictionaries).
+	GetSupportData() []byte
 	//[b]Required.[/b]
 	//Returns [code]true[/code] if locale is right-to-left.
 	IsLocaleRightToLeft(locale string) bool
@@ -225,6 +228,12 @@ type Interface interface {
 	//[b]Optional.[/b]
 	//Returns font subpixel glyph positioning mode.
 	FontGetSubpixelPositioning(font_rid RID.Any) gdclass.TextServerSubpixelPositioning
+	//[b]Optional.[/b]
+	//Sets glyph position rounding behavior. If set to [code]true[/code], when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
+	FontSetKeepRoundingRemainders(font_rid RID.Any, keep_rounding_remainders bool)
+	//[b]Optional.[/b]
+	//Returns glyph position rounding behavior. If set to [code]true[/code], when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
+	FontGetKeepRoundingRemainders(font_rid RID.Any) bool
 	//Sets font embolden strength. If [param strength] is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
 	FontSetEmbolden(font_rid RID.Any, strength Float.X)
 	//[b]Optional.[/b]
@@ -395,6 +404,9 @@ type Interface interface {
 	//[b]Required.[/b]
 	//Returns a string containing all the characters available in the font.
 	FontGetSupportedChars(font_rid RID.Any) string
+	//[b]Required.[/b]
+	//Returns an array containing all glyph indices in the font.
+	FontGetSupportedGlyphs(font_rid RID.Any) []int32
 	//[b]Optional.[/b]
 	//Renders the range of characters to the font cache texture.
 	FontRenderRange(font_rid RID.Any, size Vector2i.XY, start int, end int)
@@ -530,6 +542,9 @@ type Interface interface {
 	//[b]Required.[/b]
 	//Returns text span metadata.
 	ShapedGetSpanMeta(shaped RID.Any, index int) any
+	//[b]Required.[/b]
+	//Returns text embedded object key.
+	ShapedGetSpanEmbeddedObject(shaped RID.Any, index int) any
 	//[b]Required.[/b]
 	//Changes text span font, font size, and OpenType features, without changing the text.
 	ShapedSetSpanUpdateFont(shaped RID.Any, index int, fonts []RID.Any, size int, opentype_features map[any]any)
@@ -724,6 +739,7 @@ func (self implementation) LoadSupportData(filename string) (_ bool)            
 func (self implementation) GetSupportDataFilename() (_ string)                     { return }
 func (self implementation) GetSupportDataInfo() (_ string)                         { return }
 func (self implementation) SaveSupportData(filename string) (_ bool)               { return }
+func (self implementation) GetSupportData() (_ []byte)                             { return }
 func (self implementation) IsLocaleRightToLeft(locale string) (_ bool)             { return }
 func (self implementation) NameToTag(name string) (_ int)                          { return }
 func (self implementation) TagToName(tag int) (_ string)                           { return }
@@ -791,8 +807,12 @@ func (self implementation) FontSetSubpixelPositioning(font_rid RID.Any, subpixel
 func (self implementation) FontGetSubpixelPositioning(font_rid RID.Any) (_ gdclass.TextServerSubpixelPositioning) {
 	return
 }
-func (self implementation) FontSetEmbolden(font_rid RID.Any, strength Float.X) { return }
-func (self implementation) FontGetEmbolden(font_rid RID.Any) (_ Float.X)       { return }
+func (self implementation) FontSetKeepRoundingRemainders(font_rid RID.Any, keep_rounding_remainders bool) {
+	return
+}
+func (self implementation) FontGetKeepRoundingRemainders(font_rid RID.Any) (_ bool) { return }
+func (self implementation) FontSetEmbolden(font_rid RID.Any, strength Float.X)      { return }
+func (self implementation) FontGetEmbolden(font_rid RID.Any) (_ Float.X)            { return }
 func (self implementation) FontSetSpacing(font_rid RID.Any, spacing gdclass.TextServerSpacingType, value int) {
 	return
 }
@@ -902,8 +922,9 @@ func (self implementation) FontGetGlyphIndex(font_rid RID.Any, size int, char in
 func (self implementation) FontGetCharFromGlyphIndex(font_rid RID.Any, size int, glyph_index int) (_ int) {
 	return
 }
-func (self implementation) FontHasChar(font_rid RID.Any, char int) (_ bool)   { return }
-func (self implementation) FontGetSupportedChars(font_rid RID.Any) (_ string) { return }
+func (self implementation) FontHasChar(font_rid RID.Any, char int) (_ bool)     { return }
+func (self implementation) FontGetSupportedChars(font_rid RID.Any) (_ string)   { return }
+func (self implementation) FontGetSupportedGlyphs(font_rid RID.Any) (_ []int32) { return }
 func (self implementation) FontRenderRange(font_rid RID.Any, size Vector2i.XY, start int, end int) {
 	return
 }
@@ -991,8 +1012,9 @@ func (self implementation) ShapedTextAddObject(shaped RID.Any, key any, size Vec
 func (self implementation) ShapedTextResizeObject(shaped RID.Any, key any, size Vector2.XY, inline_align InlineAlignment, baseline Float.X) (_ bool) {
 	return
 }
-func (self implementation) ShapedGetSpanCount(shaped RID.Any) (_ int)           { return }
-func (self implementation) ShapedGetSpanMeta(shaped RID.Any, index int) (_ any) { return }
+func (self implementation) ShapedGetSpanCount(shaped RID.Any) (_ int)                     { return }
+func (self implementation) ShapedGetSpanMeta(shaped RID.Any, index int) (_ any)           { return }
+func (self implementation) ShapedGetSpanEmbeddedObject(shaped RID.Any, index int) (_ any) { return }
 func (self implementation) ShapedSetSpanUpdateFont(shaped RID.Any, index int, fonts []RID.Any, size int, opentype_features map[any]any) {
 	return
 }
@@ -1217,6 +1239,23 @@ func (Instance) _save_support_data(impl func(ptr unsafe.Pointer, filename string
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, filename.String())
 		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+[b]Optional.[/b]
+Returns default TextServer database (e.g. ICU break iterators and dictionaries).
+*/
+func (Instance) _get_support_data(impl func(ptr unsafe.Pointer) []byte) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](Packed.Bytes(Packed.New(ret...)))))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -1881,6 +1920,35 @@ func (Instance) _font_set_subpixel_positioning(impl func(ptr unsafe.Pointer, fon
 Returns font subpixel glyph positioning mode.
 */
 func (Instance) _font_get_subpixel_positioning(impl func(ptr unsafe.Pointer, font_rid RID.Any) gdclass.TextServerSubpixelPositioning) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+[b]Optional.[/b]
+Sets glyph position rounding behavior. If set to [code]true[/code], when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
+*/
+func (Instance) _font_set_keep_rounding_remainders(impl func(ptr unsafe.Pointer, font_rid RID.Any, keep_rounding_remainders bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+
+		var keep_rounding_remainders = gd.UnsafeGet[bool](p_args, 1)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, font_rid, keep_rounding_remainders)
+	}
+}
+
+/*
+[b]Optional.[/b]
+Returns glyph position rounding behavior. If set to [code]true[/code], when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
+*/
+func (Instance) _font_get_keep_rounding_remainders(impl func(ptr unsafe.Pointer, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 
@@ -2878,6 +2946,25 @@ func (Instance) _font_get_supported_chars(impl func(ptr unsafe.Pointer, font_rid
 }
 
 /*
+[b]Required.[/b]
+Returns an array containing all glyph indices in the font.
+*/
+func (Instance) _font_get_supported_glyphs(impl func(ptr unsafe.Pointer, font_rid RID.Any) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
 [b]Optional.[/b]
 Renders the range of characters to the font cache texture.
 */
@@ -3622,6 +3709,27 @@ func (Instance) _shaped_get_span_count(impl func(ptr unsafe.Pointer, shaped RID.
 Returns text span metadata.
 */
 func (Instance) _shaped_get_span_meta(impl func(ptr unsafe.Pointer, shaped RID.Any, index int) any) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
+
+		var index = gd.UnsafeGet[int64](p_args, 1)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, int(index))
+		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+[b]Required.[/b]
+Returns text embedded object key.
+*/
+func (Instance) _shaped_get_span_embedded_object(impl func(ptr unsafe.Pointer, shaped RID.Any, index int) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 
@@ -4815,6 +4923,23 @@ func (class) _save_support_data(impl func(ptr unsafe.Pointer, filename String.Re
 }
 
 /*
+[b]Optional.[/b]
+Returns default TextServer database (e.g. ICU break iterators and dictionaries).
+*/
+func (class) _get_support_data(impl func(ptr unsafe.Pointer) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
 [b]Required.[/b]
 Returns [code]true[/code] if locale is right-to-left.
 */
@@ -5475,6 +5600,35 @@ func (class) _font_set_subpixel_positioning(impl func(ptr unsafe.Pointer, font_r
 Returns font subpixel glyph positioning mode.
 */
 func (class) _font_get_subpixel_positioning(impl func(ptr unsafe.Pointer, font_rid RID.Any) gdclass.TextServerSubpixelPositioning) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+[b]Optional.[/b]
+Sets glyph position rounding behavior. If set to [code]true[/code], when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
+*/
+func (class) _font_set_keep_rounding_remainders(impl func(ptr unsafe.Pointer, font_rid RID.Any, keep_rounding_remainders bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+
+		var keep_rounding_remainders = gd.UnsafeGet[bool](p_args, 1)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, font_rid, keep_rounding_remainders)
+	}
+}
+
+/*
+[b]Optional.[/b]
+Returns glyph position rounding behavior. If set to [code]true[/code], when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
+*/
+func (class) _font_get_keep_rounding_remainders(impl func(ptr unsafe.Pointer, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 
@@ -6472,6 +6626,25 @@ func (class) _font_get_supported_chars(impl func(ptr unsafe.Pointer, font_rid RI
 }
 
 /*
+[b]Required.[/b]
+Returns an array containing all glyph indices in the font.
+*/
+func (class) _font_get_supported_glyphs(impl func(ptr unsafe.Pointer, font_rid RID.Any) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
 [b]Optional.[/b]
 Renders the range of characters to the font cache texture.
 */
@@ -7216,6 +7389,27 @@ func (class) _shaped_get_span_count(impl func(ptr unsafe.Pointer, shaped RID.Any
 Returns text span metadata.
 */
 func (class) _shaped_get_span_meta(impl func(ptr unsafe.Pointer, shaped RID.Any, index int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
+
+		var index = gd.UnsafeGet[int64](p_args, 1)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, index)
+		ptr, ok := pointers.End(gd.InternalVariant(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+[b]Required.[/b]
+Returns text embedded object key.
+*/
+func (class) _shaped_get_span_embedded_object(impl func(ptr unsafe.Pointer, shaped RID.Any, index int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 
@@ -8293,6 +8487,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_support_data_info)
 	case "_save_support_data":
 		return reflect.ValueOf(self._save_support_data)
+	case "_get_support_data":
+		return reflect.ValueOf(self._get_support_data)
 	case "_is_locale_right_to_left":
 		return reflect.ValueOf(self._is_locale_right_to_left)
 	case "_name_to_tag":
@@ -8383,6 +8579,10 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._font_set_subpixel_positioning)
 	case "_font_get_subpixel_positioning":
 		return reflect.ValueOf(self._font_get_subpixel_positioning)
+	case "_font_set_keep_rounding_remainders":
+		return reflect.ValueOf(self._font_set_keep_rounding_remainders)
+	case "_font_get_keep_rounding_remainders":
+		return reflect.ValueOf(self._font_get_keep_rounding_remainders)
 	case "_font_set_embolden":
 		return reflect.ValueOf(self._font_set_embolden)
 	case "_font_get_embolden":
@@ -8497,6 +8697,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._font_has_char)
 	case "_font_get_supported_chars":
 		return reflect.ValueOf(self._font_get_supported_chars)
+	case "_font_get_supported_glyphs":
+		return reflect.ValueOf(self._font_get_supported_glyphs)
 	case "_font_render_range":
 		return reflect.ValueOf(self._font_render_range)
 	case "_font_render_glyph":
@@ -8587,6 +8789,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._shaped_get_span_count)
 	case "_shaped_get_span_meta":
 		return reflect.ValueOf(self._shaped_get_span_meta)
+	case "_shaped_get_span_embedded_object":
+		return reflect.ValueOf(self._shaped_get_span_embedded_object)
 	case "_shaped_set_span_update_font":
 		return reflect.ValueOf(self._shaped_set_span_update_font)
 	case "_shaped_text_substr":
@@ -8732,6 +8936,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_support_data_info)
 	case "_save_support_data":
 		return reflect.ValueOf(self._save_support_data)
+	case "_get_support_data":
+		return reflect.ValueOf(self._get_support_data)
 	case "_is_locale_right_to_left":
 		return reflect.ValueOf(self._is_locale_right_to_left)
 	case "_name_to_tag":
@@ -8822,6 +9028,10 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._font_set_subpixel_positioning)
 	case "_font_get_subpixel_positioning":
 		return reflect.ValueOf(self._font_get_subpixel_positioning)
+	case "_font_set_keep_rounding_remainders":
+		return reflect.ValueOf(self._font_set_keep_rounding_remainders)
+	case "_font_get_keep_rounding_remainders":
+		return reflect.ValueOf(self._font_get_keep_rounding_remainders)
 	case "_font_set_embolden":
 		return reflect.ValueOf(self._font_set_embolden)
 	case "_font_get_embolden":
@@ -8936,6 +9146,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._font_has_char)
 	case "_font_get_supported_chars":
 		return reflect.ValueOf(self._font_get_supported_chars)
+	case "_font_get_supported_glyphs":
+		return reflect.ValueOf(self._font_get_supported_glyphs)
 	case "_font_render_range":
 		return reflect.ValueOf(self._font_render_range)
 	case "_font_render_glyph":
@@ -9026,6 +9238,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._shaped_get_span_count)
 	case "_shaped_get_span_meta":
 		return reflect.ValueOf(self._shaped_get_span_meta)
+	case "_shaped_get_span_embedded_object":
+		return reflect.ValueOf(self._shaped_get_span_embedded_object)
 	case "_shaped_set_span_update_font":
 		return reflect.ValueOf(self._shaped_set_span_update_font)
 	case "_shaped_text_substr":

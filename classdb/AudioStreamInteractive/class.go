@@ -42,7 +42,7 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-This is an audio stream that can playback music interactively, combining clips and a transition table. Clips must be added first, and the transition rules via the [method add_transition]. Additionally, this stream export a property parameter to control the playback via [AudioStreamPlayer], [AudioStreamPlayer2D], or [AudioStreamPlayer3D].
+This is an audio stream that can playback music interactively, combining clips and a transition table. Clips must be added first, and then the transition rules via the [method add_transition]. Additionally, this stream exports a property parameter to control the playback via [AudioStreamPlayer], [AudioStreamPlayer2D], or [AudioStreamPlayer3D].
 The way this is used is by filling a number of clips, then configuring the transition table. From there, clips are selected for playback and the music will smoothly go from the current to the new one while using the corresponding transition rule defined in the transition table.
 */
 type Instance [1]gdclass.AudioStreamInteractive
@@ -126,7 +126,7 @@ func (self Instance) AddTransition(from_clip int, to_clip int, from_time gdclass
 }
 
 /*
-Return true if a given transition exists (was added via [method add_transition]).
+Returns [code]true[/code] if a given transition exists (was added via [method add_transition]).
 */
 func (self Instance) HasTransition(from_clip int, to_clip int) bool { //gd:AudioStreamInteractive.has_transition
 	return bool(class(self).HasTransition(int64(from_clip), int64(to_clip)))
@@ -214,20 +214,20 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) InitialClip() int {
-	return int(int(class(self).GetInitialClip()))
-}
-
-func (self Instance) SetInitialClip(value int) {
-	class(self).SetInitialClip(int64(value))
-}
-
 func (self Instance) ClipCount() int {
 	return int(int(class(self).GetClipCount()))
 }
 
 func (self Instance) SetClipCount(value int) {
 	class(self).SetClipCount(int64(value))
+}
+
+func (self Instance) InitialClip() int {
+	return int(int(class(self).GetInitialClip()))
+}
+
+func (self Instance) SetInitialClip(value int) {
+	class(self).SetInitialClip(int64(value))
 }
 
 //go:nosplit
@@ -404,7 +404,7 @@ func (self class) AddTransition(from_clip int64, to_clip int64, from_time gdclas
 }
 
 /*
-Return true if a given transition exists (was added via [method add_transition]).
+Returns [code]true[/code] if a given transition exists (was added via [method add_transition]).
 */
 //go:nosplit
 func (self class) HasTransition(from_clip int64, to_clip int64) bool { //gd:AudioStreamInteractive.has_transition

@@ -1,0 +1,231 @@
+// Package SpringBoneCollision3D provides methods for working with SpringBoneCollision3D object instances.
+package SpringBoneCollision3D
+
+import "unsafe"
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Quaternion"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector3"
+
+var _ Object.ID
+var _ RefCounted.Instance
+var _ unsafe.Pointer
+var _ reflect.Type
+var _ callframe.Frame
+var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
+var _ Callable.Function
+var _ Dictionary.Any
+var _ RID.Any
+var _ String.Readable
+var _ Path.ToNode
+var _ Packed.Bytes
+var _ Error.Code
+var _ Float.X
+var _ = slices.Delete[[]struct{}, struct{}]
+
+/*
+A collision can be a child of [SpringBoneSimulator3D]. If it is not a child of [SpringBoneSimulator3D], it has no effect.
+The colliding and sliding are done in the [SpringBoneSimulator3D]'s modification process in order of its collision list which is set by [method SpringBoneSimulator3D.set_collision_path]. If [method SpringBoneSimulator3D.are_all_child_collisions_enabled] is [code]true[/code], the order matches [SceneTree].
+If [member bone] is set, it synchronizes with the bone pose of the ancestor [Skeleton3D], which is done in before the [SpringBoneSimulator3D]'s modification process as the pre-process.
+[b]Warning:[/b] A scaled [SpringBoneCollision3D] will likely not behave as expected. Make sure that the parent [Skeleton3D] and its bones are not scaled.
+*/
+type Instance [1]gdclass.SpringBoneCollision3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
+type Any interface {
+	gd.IsClass
+	AsSpringBoneCollision3D() Instance
+}
+
+/*
+Get parent [Skeleton3D] node of the parent [SpringBoneSimulator3D] if found.
+*/
+func (self Instance) GetSkeleton() [1]gdclass.Skeleton3D { //gd:SpringBoneCollision3D.get_skeleton
+	return [1]gdclass.Skeleton3D(class(self).GetSkeleton())
+}
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
+type class [1]gdclass.SpringBoneCollision3D
+
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func New() Instance {
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SpringBoneCollision3D"))
+	casted := Instance{*(*gdclass.SpringBoneCollision3D)(unsafe.Pointer(&object))}
+	return casted
+}
+
+func (self Instance) BoneName() string {
+	return string(class(self).GetBoneName().String())
+}
+
+func (self Instance) SetBoneName(value string) {
+	class(self).SetBoneName(String.New(value))
+}
+
+func (self Instance) Bone() int {
+	return int(int(class(self).GetBone()))
+}
+
+func (self Instance) SetBone(value int) {
+	class(self).SetBone(int64(value))
+}
+
+func (self Instance) PositionOffset() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetPositionOffset())
+}
+
+func (self Instance) SetPositionOffset(value Vector3.XYZ) {
+	class(self).SetPositionOffset(Vector3.XYZ(value))
+}
+
+func (self Instance) RotationOffset() Quaternion.IJKX {
+	return Quaternion.IJKX(class(self).GetRotationOffset())
+}
+
+func (self Instance) SetRotationOffset(value Quaternion.IJKX) {
+	class(self).SetRotationOffset(value)
+}
+
+/*
+Get parent [Skeleton3D] node of the parent [SpringBoneSimulator3D] if found.
+*/
+//go:nosplit
+func (self class) GetSkeleton() [1]gdclass.Skeleton3D { //gd:SpringBoneCollision3D.get_skeleton
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.Skeleton3D{gd.PointerMustAssertInstanceID[gdclass.Skeleton3D](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetBoneName(bone_name String.Readable) { //gd:SpringBoneCollision3D.set_bone_name
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(bone_name)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_set_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetBoneName() String.Readable { //gd:SpringBoneCollision3D.get_bone_name
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_get_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetBone(bone int64) { //gd:SpringBoneCollision3D.set_bone
+	var frame = callframe.New()
+	callframe.Arg(frame, bone)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_set_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetBone() int64 { //gd:SpringBoneCollision3D.get_bone
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_get_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPositionOffset(offset Vector3.XYZ) { //gd:SpringBoneCollision3D.set_position_offset
+	var frame = callframe.New()
+	callframe.Arg(frame, offset)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_set_position_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetPositionOffset() Vector3.XYZ { //gd:SpringBoneCollision3D.get_position_offset
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_get_position_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetRotationOffset(offset Quaternion.IJKX) { //gd:SpringBoneCollision3D.set_rotation_offset
+	var frame = callframe.New()
+	callframe.Arg(frame, offset)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_set_rotation_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetRotationOffset() Quaternion.IJKX { //gd:SpringBoneCollision3D.get_rotation_offset
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Quaternion.IJKX](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_get_rotation_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+func (self class) AsSpringBoneCollision3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsSpringBoneCollision3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced            { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode3D() Node3D.Instance         { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced                { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance             { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+
+func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(Node3D.Advanced(self.AsNode3D()), name)
+	}
+}
+
+func (self Instance) Virtual(name string) reflect.Value {
+	switch name {
+	default:
+		return gd.VirtualByName(Node3D.Instance(self.AsNode3D()), name)
+	}
+}
+func init() {
+	gdclass.Register("SpringBoneCollision3D", func(ptr gd.Object) any {
+		return [1]gdclass.SpringBoneCollision3D{*(*gdclass.SpringBoneCollision3D)(unsafe.Pointer(&ptr))}
+	})
+}

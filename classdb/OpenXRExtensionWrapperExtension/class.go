@@ -60,7 +60,7 @@ type Interface interface {
 	//- If the [code]bool *[/code] is a [code]nullptr[/code] this extension is mandatory.
 	//- If the [code]bool *[/code] points to a boolean, the boolean will be updated to [code]true[/code] if the extension is enabled.
 	GetRequestedExtensions() map[any]any
-	//Adds additional data structures when interogating OpenXR system abilities.
+	//Adds additional data structures when querying OpenXR system abilities.
 	SetSystemPropertiesAndGetNextPointer(next_pointer unsafe.Pointer) int
 	//Adds additional data structures when the OpenXR instance is created.
 	SetInstanceCreateInfoAndGetNextPointer(next_pointer unsafe.Pointer) int
@@ -70,6 +70,8 @@ type Interface interface {
 	SetSwapchainCreateInfoAndGetNextPointer(next_pointer unsafe.Pointer) int
 	//Adds additional data structures when each hand tracker is created.
 	SetHandJointLocationsAndGetNextPointer(hand_index int, next_pointer unsafe.Pointer) int
+	//Adds additional data structures to the projection view of the given [param view_index].
+	SetProjectionViewsAndGetNextPointer(view_index int, next_pointer unsafe.Pointer) int
 	//Returns the number of composition layers this extension wrapper provides via [method _get_composition_layer].
 	//This will only be called if the extension previously registered itself with [method OpenXRAPIExtension.register_composition_layer_provider].
 	GetCompositionLayerCount() int
@@ -98,6 +100,11 @@ type Interface interface {
 	OnPreRender()
 	//Called right after the main swapchains are (re)created.
 	OnMainSwapchainsCreated()
+	//Called right before the given viewport is rendered.
+	OnPreDrawViewport(viewport RID.Any)
+	//Called right after the given viewport is rendered.
+	//[b]Note:[/b] The draw commands might only be queued at this point, not executed.
+	OnPostDrawViewport(viewport RID.Any)
 	//Called right before the OpenXR session is destroyed.
 	OnSessionDestroyed()
 	//Called when the OpenXR session state is changed to idle.
@@ -129,6 +136,9 @@ type Interface interface {
 	//Called when a composition layer created via [OpenXRCompositionLayer] is destroyed.
 	//[param layer] is a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct.
 	OnViewportCompositionLayerDestroyed(layer unsafe.Pointer)
+	//Adds additional data structures to Android surface swapchains created by [OpenXRCompositionLayer].
+	//[param property_values] contains the values of the properties returned by [method _get_viewport_composition_layer_extension_properties].
+	SetAndroidSurfaceSwapchainCreateInfoAndGetNextPointer(property_values map[any]any, next_pointer unsafe.Pointer) int
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -152,6 +162,9 @@ func (self implementation) SetSwapchainCreateInfoAndGetNextPointer(next_pointer 
 func (self implementation) SetHandJointLocationsAndGetNextPointer(hand_index int, next_pointer unsafe.Pointer) (_ int) {
 	return
 }
+func (self implementation) SetProjectionViewsAndGetNextPointer(view_index int, next_pointer unsafe.Pointer) (_ int) {
+	return
+}
 func (self implementation) GetCompositionLayerCount() (_ int)           { return }
 func (self implementation) GetCompositionLayer(index int) (_ int)       { return }
 func (self implementation) GetCompositionLayerOrder(index int) (_ int)  { return }
@@ -164,6 +177,8 @@ func (self implementation) OnSessionCreated(session int)                { return
 func (self implementation) OnProcess()                                  { return }
 func (self implementation) OnPreRender()                                { return }
 func (self implementation) OnMainSwapchainsCreated()                    { return }
+func (self implementation) OnPreDrawViewport(viewport RID.Any)          { return }
+func (self implementation) OnPostDrawViewport(viewport RID.Any)         { return }
 func (self implementation) OnSessionDestroyed()                         { return }
 func (self implementation) OnStateIdle()                                { return }
 func (self implementation) OnStateReady()                               { return }
@@ -182,6 +197,9 @@ func (self implementation) GetViewportCompositionLayerExtensionPropertyDefaults(
 	return
 }
 func (self implementation) OnViewportCompositionLayerDestroyed(layer unsafe.Pointer) { return }
+func (self implementation) SetAndroidSurfaceSwapchainCreateInfoAndGetNextPointer(property_values map[any]any, next_pointer unsafe.Pointer) (_ int) {
+	return
+}
 
 /*
 Returns a [Dictionary] of OpenXR extensions related to this extension. The [Dictionary] should contain the name of the extension, mapped to a [code]bool *[/code] cast to an integer:
@@ -202,7 +220,7 @@ func (Instance) _get_requested_extensions(impl func(ptr unsafe.Pointer) map[any]
 }
 
 /*
-Adds additional data structures when interogating OpenXR system abilities.
+Adds additional data structures when querying OpenXR system abilities.
 */
 func (Instance) _set_system_properties_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -264,6 +282,21 @@ func (Instance) _set_hand_joint_locations_and_get_next_pointer(impl func(ptr uns
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(hand_index), next_pointer)
+		gd.UnsafeSet(p_back, int64(ret))
+	}
+}
+
+/*
+Adds additional data structures to the projection view of the given [param view_index].
+*/
+func (Instance) _set_projection_views_and_get_next_pointer(impl func(ptr unsafe.Pointer, view_index int, next_pointer unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var view_index = gd.UnsafeGet[int64](p_args, 0)
+
+		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(view_index), next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -406,6 +439,31 @@ func (Instance) _on_main_swapchains_created(impl func(ptr unsafe.Pointer)) (cb g
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
+	}
+}
+
+/*
+Called right before the given viewport is rendered.
+*/
+func (Instance) _on_pre_draw_viewport(impl func(ptr unsafe.Pointer, viewport RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var viewport = gd.UnsafeGet[RID.Any](p_args, 0)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, viewport)
+	}
+}
+
+/*
+Called right after the given viewport is rendered.
+[b]Note:[/b] The draw commands might only be queued at this point, not executed.
+*/
+func (Instance) _on_post_draw_viewport(impl func(ptr unsafe.Pointer, viewport RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var viewport = gd.UnsafeGet[RID.Any](p_args, 0)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, viewport)
 	}
 }
 
@@ -577,6 +635,22 @@ func (Instance) _on_viewport_composition_layer_destroyed(impl func(ptr unsafe.Po
 }
 
 /*
+Adds additional data structures to Android surface swapchains created by [OpenXRCompositionLayer].
+[param property_values] contains the values of the properties returned by [method _get_viewport_composition_layer_extension_properties].
+*/
+func (Instance) _set_android_surface_swapchain_create_info_and_get_next_pointer(impl func(ptr unsafe.Pointer, property_values map[any]any, next_pointer unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalDictionary(property_values))
+		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, gd.DictionaryAs[map[any]any](property_values), next_pointer)
+		gd.UnsafeSet(p_back, int64(ret))
+	}
+}
+
+/*
 Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR API.
 */
 func (self Instance) GetOpenxrApi() [1]gdclass.OpenXRAPIExtension { //gd:OpenXRExtensionWrapperExtension.get_openxr_api
@@ -627,7 +701,7 @@ func (class) _get_requested_extensions(impl func(ptr unsafe.Pointer) Dictionary.
 }
 
 /*
-Adds additional data structures when interogating OpenXR system abilities.
+Adds additional data structures when querying OpenXR system abilities.
 */
 func (class) _set_system_properties_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -689,6 +763,21 @@ func (class) _set_hand_joint_locations_and_get_next_pointer(impl func(ptr unsafe
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, hand_index, next_pointer)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+Adds additional data structures to the projection view of the given [param view_index].
+*/
+func (class) _set_projection_views_and_get_next_pointer(impl func(ptr unsafe.Pointer, view_index int64, next_pointer unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var view_index = gd.UnsafeGet[int64](p_args, 0)
+
+		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, view_index, next_pointer)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -831,6 +920,31 @@ func (class) _on_main_swapchains_created(impl func(ptr unsafe.Pointer)) (cb gd.E
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
+	}
+}
+
+/*
+Called right before the given viewport is rendered.
+*/
+func (class) _on_pre_draw_viewport(impl func(ptr unsafe.Pointer, viewport RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var viewport = gd.UnsafeGet[RID.Any](p_args, 0)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, viewport)
+	}
+}
+
+/*
+Called right after the given viewport is rendered.
+[b]Note:[/b] The draw commands might only be queued at this point, not executed.
+*/
+func (class) _on_post_draw_viewport(impl func(ptr unsafe.Pointer, viewport RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var viewport = gd.UnsafeGet[RID.Any](p_args, 0)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, viewport)
 	}
 }
 
@@ -1002,6 +1116,22 @@ func (class) _on_viewport_composition_layer_destroyed(impl func(ptr unsafe.Point
 }
 
 /*
+Adds additional data structures to Android surface swapchains created by [OpenXRCompositionLayer].
+[param property_values] contains the values of the properties returned by [method _get_viewport_composition_layer_extension_properties].
+*/
+func (class) _set_android_surface_swapchain_create_info_and_get_next_pointer(impl func(ptr unsafe.Pointer, property_values Dictionary.Any, next_pointer unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalDictionary(property_values))
+		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, property_values, next_pointer)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
 Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR API.
 */
 //go:nosplit
@@ -1045,6 +1175,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._set_swapchain_create_info_and_get_next_pointer)
 	case "_set_hand_joint_locations_and_get_next_pointer":
 		return reflect.ValueOf(self._set_hand_joint_locations_and_get_next_pointer)
+	case "_set_projection_views_and_get_next_pointer":
+		return reflect.ValueOf(self._set_projection_views_and_get_next_pointer)
 	case "_get_composition_layer_count":
 		return reflect.ValueOf(self._get_composition_layer_count)
 	case "_get_composition_layer":
@@ -1069,6 +1201,10 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._on_pre_render)
 	case "_on_main_swapchains_created":
 		return reflect.ValueOf(self._on_main_swapchains_created)
+	case "_on_pre_draw_viewport":
+		return reflect.ValueOf(self._on_pre_draw_viewport)
+	case "_on_post_draw_viewport":
+		return reflect.ValueOf(self._on_post_draw_viewport)
 	case "_on_session_destroyed":
 		return reflect.ValueOf(self._on_session_destroyed)
 	case "_on_state_idle":
@@ -1097,6 +1233,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_viewport_composition_layer_extension_property_defaults)
 	case "_on_viewport_composition_layer_destroyed":
 		return reflect.ValueOf(self._on_viewport_composition_layer_destroyed)
+	case "_set_android_surface_swapchain_create_info_and_get_next_pointer":
+		return reflect.ValueOf(self._set_android_surface_swapchain_create_info_and_get_next_pointer)
 	default:
 		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
@@ -1116,6 +1254,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._set_swapchain_create_info_and_get_next_pointer)
 	case "_set_hand_joint_locations_and_get_next_pointer":
 		return reflect.ValueOf(self._set_hand_joint_locations_and_get_next_pointer)
+	case "_set_projection_views_and_get_next_pointer":
+		return reflect.ValueOf(self._set_projection_views_and_get_next_pointer)
 	case "_get_composition_layer_count":
 		return reflect.ValueOf(self._get_composition_layer_count)
 	case "_get_composition_layer":
@@ -1140,6 +1280,10 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._on_pre_render)
 	case "_on_main_swapchains_created":
 		return reflect.ValueOf(self._on_main_swapchains_created)
+	case "_on_pre_draw_viewport":
+		return reflect.ValueOf(self._on_pre_draw_viewport)
+	case "_on_post_draw_viewport":
+		return reflect.ValueOf(self._on_post_draw_viewport)
 	case "_on_session_destroyed":
 		return reflect.ValueOf(self._on_session_destroyed)
 	case "_on_state_idle":
@@ -1168,6 +1312,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_viewport_composition_layer_extension_property_defaults)
 	case "_on_viewport_composition_layer_destroyed":
 		return reflect.ValueOf(self._on_viewport_composition_layer_destroyed)
+	case "_set_android_surface_swapchain_create_info_and_get_next_pointer":
+		return reflect.ValueOf(self._set_android_surface_swapchain_create_info_and_get_next_pointer)
 	default:
 		return gd.VirtualByName(Object.Instance(self.AsObject()), name)
 	}

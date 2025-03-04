@@ -108,7 +108,7 @@ func GetBusChannels(bus_idx int) int { //gd:AudioServer.get_bus_channels
 }
 
 /*
-Sets the volume of the bus at index [param bus_idx] to [param volume_db].
+Sets the volume in decibels of the bus at index [param bus_idx] to [param volume_db].
 */
 func SetBusVolumeDb(bus_idx int, volume_db Float.X) { //gd:AudioServer.set_bus_volume_db
 	once.Do(singleton)
@@ -121,6 +121,24 @@ Returns the volume of the bus at index [param bus_idx] in dB.
 func GetBusVolumeDb(bus_idx int) Float.X { //gd:AudioServer.get_bus_volume_db
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetBusVolumeDb(int64(bus_idx))))
+}
+
+/*
+Sets the volume as a linear value of the bus at index [param bus_idx] to [param volume_linear].
+[b]Note:[/b] Using this method is equivalent to calling [method set_bus_volume_db] with the result of [method @GlobalScope.linear_to_db] on a value.
+*/
+func SetBusVolumeLinear(bus_idx int, volume_linear Float.X) { //gd:AudioServer.set_bus_volume_linear
+	once.Do(singleton)
+	class(self).SetBusVolumeLinear(int64(bus_idx), float64(volume_linear))
+}
+
+/*
+Returns the volume of the bus at index [param bus_idx] as a linear value.
+[b]Note:[/b] The returned value is equivalent to the result of [method @GlobalScope.db_to_linear] on the result of [method get_bus_volume_db].
+*/
+func GetBusVolumeLinear(bus_idx int) Float.X { //gd:AudioServer.get_bus_volume_linear
+	once.Do(singleton)
+	return Float.X(Float.X(class(self).GetBusVolumeLinear(int64(bus_idx))))
 }
 
 /*
@@ -298,6 +316,22 @@ Returns the sample rate at the output of the [AudioServer].
 func GetMixRate() Float.X { //gd:AudioServer.get_mix_rate
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetMixRate()))
+}
+
+/*
+Returns the sample rate at the input of the [AudioServer].
+*/
+func GetInputMixRate() Float.X { //gd:AudioServer.get_input_mix_rate
+	once.Do(singleton)
+	return Float.X(Float.X(class(self).GetInputMixRate()))
+}
+
+/*
+Returns the name of the current audio driver. The default usually depends on the operating system, but may be overridden via the [code]--audio-driver[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url]. [code]--headless[/code] also automatically sets the audio driver to [code]Dummy[/code]. See also [member ProjectSettings.audio/driver/driver].
+*/
+func GetDriverName() string { //gd:AudioServer.get_driver_name
+	once.Do(singleton)
+	return string(class(self).GetDriverName().String())
 }
 
 /*
@@ -547,7 +581,7 @@ func (self class) GetBusChannels(bus_idx int64) int64 { //gd:AudioServer.get_bus
 }
 
 /*
-Sets the volume of the bus at index [param bus_idx] to [param volume_db].
+Sets the volume in decibels of the bus at index [param bus_idx] to [param volume_db].
 */
 //go:nosplit
 func (self class) SetBusVolumeDb(bus_idx int64, volume_db float64) { //gd:AudioServer.set_bus_volume_db
@@ -568,6 +602,35 @@ func (self class) GetBusVolumeDb(bus_idx int64) float64 { //gd:AudioServer.get_b
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_volume_db, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the volume as a linear value of the bus at index [param bus_idx] to [param volume_linear].
+[b]Note:[/b] Using this method is equivalent to calling [method set_bus_volume_db] with the result of [method @GlobalScope.linear_to_db] on a value.
+*/
+//go:nosplit
+func (self class) SetBusVolumeLinear(bus_idx int64, volume_linear float64) { //gd:AudioServer.set_bus_volume_linear
+	var frame = callframe.New()
+	callframe.Arg(frame, bus_idx)
+	callframe.Arg(frame, volume_linear)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_volume_linear, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the volume of the bus at index [param bus_idx] as a linear value.
+[b]Note:[/b] The returned value is equivalent to the result of [method @GlobalScope.db_to_linear] on the result of [method get_bus_volume_db].
+*/
+//go:nosplit
+func (self class) GetBusVolumeLinear(bus_idx int64) float64 { //gd:AudioServer.get_bus_volume_linear
+	var frame = callframe.New()
+	callframe.Arg(frame, bus_idx)
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_volume_linear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -890,6 +953,32 @@ func (self class) GetMixRate() float64 { //gd:AudioServer.get_mix_rate
 	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_mix_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the sample rate at the input of the [AudioServer].
+*/
+//go:nosplit
+func (self class) GetInputMixRate() float64 { //gd:AudioServer.get_input_mix_rate
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_input_mix_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the name of the current audio driver. The default usually depends on the operating system, but may be overridden via the [code]--audio-driver[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url]. [code]--headless[/code] also automatically sets the audio driver to [code]Dummy[/code]. See also [member ProjectSettings.audio/driver/driver].
+*/
+//go:nosplit
+func (self class) GetDriverName() String.Readable { //gd:AudioServer.get_driver_name
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_driver_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

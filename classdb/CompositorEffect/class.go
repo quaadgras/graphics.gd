@@ -356,7 +356,7 @@ const (
 	EffectCallbackTypePostSky EffectCallbackType = 2
 	/*The callback is called before our transparent rendering pass, but after our sky is rendered and we've created our back buffers.*/
 	EffectCallbackTypePreTransparent EffectCallbackType = 3
-	/*The callback is called after our transparent rendering pass, but before any build in post effects and output to our render target.*/
+	/*The callback is called after our transparent rendering pass, but before any built-in post-processing effects and output to our render target.*/
 	EffectCallbackTypePostTransparent EffectCallbackType = 4
 	/*Represents the size of the [enum EffectCallbackType] enum.*/
 	EffectCallbackTypeMax EffectCallbackType = 5

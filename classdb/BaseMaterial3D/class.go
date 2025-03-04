@@ -2461,7 +2461,7 @@ const (
 	ShadingModeUnshaded ShadingMode = 0
 	/*The object will be shaded per pixel. Useful for realistic shading effects.*/
 	ShadingModePerPixel ShadingMode = 1
-	/*The object will be shaded per vertex. Useful when you want cheaper shaders and do not care about visual quality. Not implemented yet (this mode will act like [constant SHADING_MODE_PER_PIXEL]).*/
+	/*The object will be shaded per vertex. Useful when you want cheaper shaders and do not care about visual quality.*/
 	ShadingModePerVertex ShadingMode = 2
 	/*Represents the size of the [enum ShadingMode] enum.*/
 	ShadingModeMax ShadingMode = 3

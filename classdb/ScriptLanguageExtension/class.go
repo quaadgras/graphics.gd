@@ -98,6 +98,7 @@ type Interface interface {
 	DebugParseStackLevelExpression(level int, expression string, max_subitems int, max_depth int) string
 	DebugGetCurrentStackInfo() []map[any]any
 	ReloadAllScripts()
+	ReloadScripts(scripts []any, soft_reload bool)
 	ReloadToolScript(script [1]gdclass.Script, soft_reload bool)
 	GetRecognizedExtensions() []string
 	GetPublicFunctions() []map[any]any
@@ -184,6 +185,7 @@ func (self implementation) DebugParseStackLevelExpression(level int, expression 
 }
 func (self implementation) DebugGetCurrentStackInfo() (_ []map[any]any)                 { return }
 func (self implementation) ReloadAllScripts()                                           { return }
+func (self implementation) ReloadScripts(scripts []any, soft_reload bool)               { return }
 func (self implementation) ReloadToolScript(script [1]gdclass.Script, soft_reload bool) { return }
 func (self implementation) GetRecognizedExtensions() (_ []string)                       { return }
 func (self implementation) GetPublicFunctions() (_ []map[any]any)                       { return }
@@ -749,6 +751,16 @@ func (Instance) _reload_all_scripts(impl func(ptr unsafe.Pointer)) (cb gd.Extens
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
+	}
+}
+func (Instance) _reload_scripts(impl func(ptr unsafe.Pointer, scripts []any, soft_reload bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var scripts = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalArray(scripts))
+		var soft_reload = gd.UnsafeGet[bool](p_args, 1)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, gd.ArrayAs[[]any](gd.InternalArray(scripts)), soft_reload)
 	}
 }
 func (Instance) _reload_tool_script(impl func(ptr unsafe.Pointer, script [1]gdclass.Script, soft_reload bool)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1494,6 +1506,17 @@ func (class) _reload_all_scripts(impl func(ptr unsafe.Pointer)) (cb gd.Extension
 	}
 }
 
+func (class) _reload_scripts(impl func(ptr unsafe.Pointer, scripts Array.Any, soft_reload bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var scripts = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalArray(scripts))
+		var soft_reload = gd.UnsafeGet[bool](p_args, 1)
+
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, scripts, soft_reload)
+	}
+}
+
 func (class) _reload_tool_script(impl func(ptr unsafe.Pointer, script [1]gdclass.Script, soft_reload bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var script = [1]gdclass.Script{pointers.New[gdclass.Script]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
@@ -1742,6 +1765,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._debug_get_current_stack_info)
 	case "_reload_all_scripts":
 		return reflect.ValueOf(self._reload_all_scripts)
+	case "_reload_scripts":
+		return reflect.ValueOf(self._reload_scripts)
 	case "_reload_tool_script":
 		return reflect.ValueOf(self._reload_tool_script)
 	case "_get_recognized_extensions":
@@ -1867,6 +1892,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._debug_get_current_stack_info)
 	case "_reload_all_scripts":
 		return reflect.ValueOf(self._reload_all_scripts)
+	case "_reload_scripts":
+		return reflect.ValueOf(self._reload_scripts)
 	case "_reload_tool_script":
 		return reflect.ValueOf(self._reload_tool_script)
 	case "_get_recognized_extensions":
@@ -1915,7 +1942,9 @@ const (
 	LookupResultClassEnum           LookupResultType = 6
 	LookupResultClassTbdGlobalscope LookupResultType = 7
 	LookupResultClassAnnotation     LookupResultType = 8
-	LookupResultMax                 LookupResultType = 9
+	LookupResultLocalConstant       LookupResultType = 9
+	LookupResultLocalVariable       LookupResultType = 10
+	LookupResultMax                 LookupResultType = 11
 )
 
 type CodeCompletionLocation = gdclass.ScriptLanguageExtensionCodeCompletionLocation //gd:ScriptLanguageExtension.CodeCompletionLocation

@@ -40,8 +40,8 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-Represents an object from the Java Native Interface. It is returned from [method JavaClassWrapper.wrap].
-[b]Note:[/b] This class only works on Android. For any other build, this class does nothing.
+Represents a class from the Java Native Interface. It is returned from [method JavaClassWrapper.wrap].
+[b]Note:[/b] This class only works on Android. On any other platform, this class does nothing.
 [b]Note:[/b] This class is not to be confused with [JavaScriptObject].
 */
 type Instance [1]gdclass.JavaClass
@@ -52,6 +52,27 @@ var Nil Instance
 type Any interface {
 	gd.IsClass
 	AsJavaClass() Instance
+}
+
+/*
+Returns the Java class name.
+*/
+func (self Instance) GetJavaClassName() string { //gd:JavaClass.get_java_class_name
+	return string(class(self).GetJavaClassName().String())
+}
+
+/*
+Returns the object's Java methods and their signatures as an [Array] of dictionaries, in the same format as [method Object.get_method_list].
+*/
+func (self Instance) GetJavaMethodList() []PropertyInfo { //gd:JavaClass.get_java_method_list
+	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(class(self).GetJavaMethodList())))
+}
+
+/*
+Returns a [JavaClass] representing the Java parent class of this class.
+*/
+func (self Instance) GetJavaParentClass() [1]gdclass.JavaClass { //gd:JavaClass.get_java_parent_class
+	return [1]gdclass.JavaClass(class(self).GetJavaParentClass())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -73,6 +94,44 @@ func New() Instance {
 	return casted
 }
 
+/*
+Returns the Java class name.
+*/
+//go:nosplit
+func (self class) GetJavaClassName() String.Readable { //gd:JavaClass.get_java_class_name
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaClass.Bind_get_java_class_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the object's Java methods and their signatures as an [Array] of dictionaries, in the same format as [method Object.get_method_list].
+*/
+//go:nosplit
+func (self class) GetJavaMethodList() Array.Contains[Dictionary.Any] { //gd:JavaClass.get_java_method_list
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaClass.Bind_get_java_method_list, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns a [JavaClass] representing the Java parent class of this class.
+*/
+//go:nosplit
+func (self class) GetJavaParentClass() [1]gdclass.JavaClass { //gd:JavaClass.get_java_parent_class
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaClass.Bind_get_java_parent_class, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.JavaClass{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaClass](r_ret.Get())}
+	frame.Free()
+	return ret
+}
 func (self class) AsJavaClass() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsJavaClass() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
 func (self class) AsRefCounted() [1]gd.RefCounted {
@@ -97,4 +156,13 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	gdclass.Register("JavaClass", func(ptr gd.Object) any { return [1]gdclass.JavaClass{*(*gdclass.JavaClass)(unsafe.Pointer(&ptr))} })
+}
+
+type PropertyInfo struct {
+	ClassName  string       `gd:"class_name"`
+	Name       string       `gd:"name"`
+	Hint       int          `gd:"hint"`
+	HintString string       `gd:"hint_string"`
+	Type       reflect.Type `gd:"type"`
+	Usage      int          `gd:"usage"`
 }

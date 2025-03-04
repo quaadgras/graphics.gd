@@ -56,6 +56,7 @@ packer.Flush();
 [/csharp]
 [/codeblocks]
 The above [PCKPacker] creates package [code]test.pck[/code], then adds a file named [code]text.txt[/code] at the root of the package.
+[b]Note:[/b] PCK is Godot's own pack file format. To create ZIP archives that can be read by any program, use [ZIPPacker] instead.
 */
 type Instance [1]gdclass.PCKPacker
 
@@ -68,17 +69,24 @@ type Any interface {
 }
 
 /*
-Creates a new PCK file with the name [param pck_name]. The [code].pck[/code] file extension isn't added automatically, so it should be part of [param pck_name] (even though it's not required).
+Creates a new PCK file at the file path [param pck_path]. The [code].pck[/code] file extension isn't added automatically, so it should be part of [param pck_path] (even though it's not required).
 */
-func (self Instance) PckStart(pck_name string) error { //gd:PCKPacker.pck_start
-	return error(gd.ToError(class(self).PckStart(String.New(pck_name), int64(32), String.New("0000000000000000000000000000000000000000000000000000000000000000"), false)))
+func (self Instance) PckStart(pck_path string) error { //gd:PCKPacker.pck_start
+	return error(gd.ToError(class(self).PckStart(String.New(pck_path), int64(32), String.New("0000000000000000000000000000000000000000000000000000000000000000"), false)))
 }
 
 /*
-Adds the [param source_path] file to the current PCK package at the [param pck_path] internal path (should start with [code]res://[/code]).
+Adds the [param source_path] file to the current PCK package at the [param target_path] internal path. The [code]res://[/code] prefix for [param target_path] is optional and stripped internally.
 */
-func (self Instance) AddFile(pck_path string, source_path string) error { //gd:PCKPacker.add_file
-	return error(gd.ToError(class(self).AddFile(String.New(pck_path), String.New(source_path), false)))
+func (self Instance) AddFile(target_path string, source_path string) error { //gd:PCKPacker.add_file
+	return error(gd.ToError(class(self).AddFile(String.New(target_path), String.New(source_path), false)))
+}
+
+/*
+Registers a file removal of the [param target_path] internal path to the PCK. This is mainly used for patches. If the file at this path has been loaded from a previous PCK, it will be removed. The [code]res://[/code] prefix for [param target_path] is optional and stripped internally.
+*/
+func (self Instance) AddFileRemoval(target_path string) error { //gd:PCKPacker.add_file_removal
+	return error(gd.ToError(class(self).AddFileRemoval(String.New(target_path))))
 }
 
 /*
@@ -108,12 +116,12 @@ func New() Instance {
 }
 
 /*
-Creates a new PCK file with the name [param pck_name]. The [code].pck[/code] file extension isn't added automatically, so it should be part of [param pck_name] (even though it's not required).
+Creates a new PCK file at the file path [param pck_path]. The [code].pck[/code] file extension isn't added automatically, so it should be part of [param pck_path] (even though it's not required).
 */
 //go:nosplit
-func (self class) PckStart(pck_name String.Readable, alignment int64, key String.Readable, encrypt_directory bool) Error.Code { //gd:PCKPacker.pck_start
+func (self class) PckStart(pck_path String.Readable, alignment int64, key String.Readable, encrypt_directory bool) Error.Code { //gd:PCKPacker.pck_start
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(pck_name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(pck_path)))
 	callframe.Arg(frame, alignment)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
 	callframe.Arg(frame, encrypt_directory)
@@ -125,16 +133,30 @@ func (self class) PckStart(pck_name String.Readable, alignment int64, key String
 }
 
 /*
-Adds the [param source_path] file to the current PCK package at the [param pck_path] internal path (should start with [code]res://[/code]).
+Adds the [param source_path] file to the current PCK package at the [param target_path] internal path. The [code]res://[/code] prefix for [param target_path] is optional and stripped internally.
 */
 //go:nosplit
-func (self class) AddFile(pck_path String.Readable, source_path String.Readable, encrypt bool) Error.Code { //gd:PCKPacker.add_file
+func (self class) AddFile(target_path String.Readable, source_path String.Readable, encrypt bool) Error.Code { //gd:PCKPacker.add_file
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(pck_path)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(target_path)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(source_path)))
 	callframe.Arg(frame, encrypt)
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_add_file, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Error.Code(r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Registers a file removal of the [param target_path] internal path to the PCK. This is mainly used for patches. If the file at this path has been loaded from a previous PCK, it will be removed. The [code]res://[/code] prefix for [param target_path] is optional and stripped internally.
+*/
+//go:nosplit
+func (self class) AddFileRemoval(target_path String.Readable) Error.Code { //gd:PCKPacker.add_file_removal
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(target_path)))
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_add_file_removal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret

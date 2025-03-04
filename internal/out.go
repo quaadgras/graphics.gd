@@ -131,113 +131,115 @@ type builtin struct {
 	float struct {
 	}
 	String struct {
-		casecmp_to          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
-		nocasecmp_to        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
-		naturalcasecmp_to   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
-		naturalnocasecmp_to func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
-		filecasecmp_to      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
-		filenocasecmp_to    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
-		length              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		substr              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"787537301"`
-		get_slice           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3535100402"`
-		get_slicec          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"787537301"`
-		get_slice_count     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
-		find                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
-		findn               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
-		count               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2343087891"`
-		countn              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2343087891"`
-		rfind               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
-		rfindn              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
-		match               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		matchn              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		begins_with         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		ends_with           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		is_subsequence_of   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		is_subsequence_ofn  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		bigrams             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"747180633"`
-		similarity          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2697460964"`
-		format              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3212199029"`
-		replace             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1340436205"`
-		replacen            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1340436205"`
-		repeat              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
-		reverse             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		insert              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"248737229"`
-		erase               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"787537301"`
-		capitalize          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		to_camel_case       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		to_pascal_case      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		to_snake_case       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		split               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1252735785"`
-		rsplit              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1252735785"`
-		split_floats        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2092079095"`
-		join                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3595973238"`
-		to_upper            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		to_lower            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		left                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
-		right               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
-		strip_edges         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"907855311"`
-		strip_escapes       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		lstrip              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
-		rstrip              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
-		get_extension       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		get_basename        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		path_join           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
-		unicode_at          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4103005248"`
-		indent              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
-		dedent              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		hash                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		md5_text            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		sha1_text           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		sha256_text         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		md5_buffer          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		sha1_buffer         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		sha256_buffer       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		is_empty            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		contains            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		containsn           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		is_absolute_path    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_relative_path    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		simplify_path       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		get_base_dir        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		get_file            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		xml_escape          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3429816538"`
-		xml_unescape        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		uri_encode          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		uri_decode          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		c_escape            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		c_unescape          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		json_escape         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		validate_node_name  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		validate_filename   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		is_valid_identifier func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_valid_int        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_valid_float      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_valid_hex_number func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"593672999"`
-		is_valid_html_color func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_valid_ip_address func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_valid_filename   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		to_int              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		to_float            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"466405837"`
-		hex_to_int          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		bin_to_int          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		lpad                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"248737229"`
-		rpad                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"248737229"`
-		pad_decimals        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
-		pad_zeros           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
-		trim_prefix         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
-		trim_suffix         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
-		to_ascii_buffer     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		to_utf8_buffer      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		to_utf16_buffer     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		to_utf32_buffer     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		hex_decode          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		to_wchar_buffer     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		num_scientific      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2710373411"`
-		num                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1555901022"`
-		num_int64           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2111271071"`
-		num_uint64          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2111271071"`
-		chr                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"897497541"`
-		humanize_size       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"897497541"`
+		casecmp_to                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
+		nocasecmp_to                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
+		naturalcasecmp_to           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
+		naturalnocasecmp_to         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
+		filecasecmp_to              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
+		filenocasecmp_to            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
+		length                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		substr                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"787537301"`
+		get_slice                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3535100402"`
+		get_slicec                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"787537301"`
+		get_slice_count             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
+		find                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
+		findn                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
+		count                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2343087891"`
+		countn                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2343087891"`
+		rfind                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
+		rfindn                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
+		match                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		matchn                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		begins_with                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		ends_with                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		is_subsequence_of           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		is_subsequence_ofn          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		bigrams                     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"747180633"`
+		similarity                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2697460964"`
+		format                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3212199029"`
+		replace                     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1340436205"`
+		replacen                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1340436205"`
+		repeat                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
+		reverse                     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		insert                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"248737229"`
+		erase                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"787537301"`
+		capitalize                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		to_camel_case               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		to_pascal_case              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		to_snake_case               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		split                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1252735785"`
+		rsplit                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1252735785"`
+		split_floats                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2092079095"`
+		join                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3595973238"`
+		to_upper                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		to_lower                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		left                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
+		right                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
+		strip_edges                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"907855311"`
+		strip_escapes               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		lstrip                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
+		rstrip                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
+		get_extension               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		get_basename                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		path_join                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
+		unicode_at                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4103005248"`
+		indent                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
+		dedent                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		hash                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		md5_text                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		sha1_text                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		sha256_text                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		md5_buffer                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		sha1_buffer                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		sha256_buffer               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		is_empty                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		contains                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		containsn                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		is_absolute_path            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_relative_path            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		simplify_path               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		get_base_dir                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		get_file                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		xml_escape                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3429816538"`
+		xml_unescape                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		uri_encode                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		uri_decode                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		c_escape                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		c_unescape                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		json_escape                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		validate_node_name          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		validate_filename           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		is_valid_ascii_identifier   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid_unicode_identifier func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid_identifier         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid_int                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid_float              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid_hex_number         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"593672999"`
+		is_valid_html_color         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid_ip_address         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid_filename           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		to_int                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		to_float                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"466405837"`
+		hex_to_int                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		bin_to_int                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		lpad                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"248737229"`
+		rpad                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"248737229"`
+		pad_decimals                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
+		pad_zeros                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
+		trim_prefix                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
+		trim_suffix                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
+		to_ascii_buffer             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		to_utf8_buffer              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		to_utf16_buffer             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		to_utf32_buffer             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		hex_decode                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		to_wchar_buffer             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		num_scientific              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2710373411"`
+		num                         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1555901022"`
+		num_int64                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2111271071"`
+		num_uint64                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2111271071"`
+		chr                         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"897497541"`
+		humanize_size               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"897497541"`
 	}
 	Vector2 struct {
 		angle                     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"466405837"`
@@ -320,6 +322,7 @@ type builtin struct {
 		intersection    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2282977743"`
 		merge           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2282977743"`
 		expand          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"293272265"`
+		get_support     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2026743667"`
 		grow            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"39664498"`
 		grow_side       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4177736158"`
 		grow_individual func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3203390369"`
@@ -634,109 +637,112 @@ type builtin struct {
 		from_hsv        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1573799446"`
 		from_ok_hsl     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1573799446"`
 		from_rgbe9995   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"351421375"`
+		from_rgba8      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3072934735"`
 	}
 	StringName struct {
-		casecmp_to          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
-		nocasecmp_to        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
-		naturalcasecmp_to   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
-		naturalnocasecmp_to func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
-		filecasecmp_to      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
-		filenocasecmp_to    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
-		length              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		substr              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"787537301"`
-		get_slice           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3535100402"`
-		get_slicec          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"787537301"`
-		get_slice_count     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
-		find                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
-		findn               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
-		count               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2343087891"`
-		countn              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2343087891"`
-		rfind               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
-		rfindn              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
-		match               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		matchn              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		begins_with         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		ends_with           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		is_subsequence_of   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		is_subsequence_ofn  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		bigrams             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"747180633"`
-		similarity          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2697460964"`
-		format              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3212199029"`
-		replace             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1340436205"`
-		replacen            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1340436205"`
-		repeat              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
-		reverse             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		insert              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"248737229"`
-		erase               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"787537301"`
-		capitalize          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		to_camel_case       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		to_pascal_case      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		to_snake_case       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		split               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1252735785"`
-		rsplit              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1252735785"`
-		split_floats        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2092079095"`
-		join                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3595973238"`
-		to_upper            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		to_lower            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		left                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
-		right               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
-		strip_edges         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"907855311"`
-		strip_escapes       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		lstrip              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
-		rstrip              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
-		get_extension       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		get_basename        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		path_join           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
-		unicode_at          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4103005248"`
-		indent              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
-		dedent              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		md5_text            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		sha1_text           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		sha256_text         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		md5_buffer          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		sha1_buffer         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		sha256_buffer       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		is_empty            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		contains            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		containsn           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
-		is_absolute_path    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_relative_path    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		simplify_path       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		get_base_dir        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		get_file            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		xml_escape          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3429816538"`
-		xml_unescape        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		uri_encode          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		uri_decode          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		c_escape            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		c_unescape          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		json_escape         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		validate_node_name  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		validate_filename   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
-		is_valid_identifier func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_valid_int        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_valid_float      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_valid_hex_number func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"593672999"`
-		is_valid_html_color func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_valid_ip_address func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_valid_filename   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		to_int              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		to_float            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"466405837"`
-		hex_to_int          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		bin_to_int          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		lpad                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"248737229"`
-		rpad                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"248737229"`
-		pad_decimals        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
-		pad_zeros           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
-		trim_prefix         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
-		trim_suffix         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
-		to_ascii_buffer     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		to_utf8_buffer      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		to_utf16_buffer     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		to_utf32_buffer     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		hex_decode          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		to_wchar_buffer     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
-		hash                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		casecmp_to                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
+		nocasecmp_to                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
+		naturalcasecmp_to           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
+		naturalnocasecmp_to         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
+		filecasecmp_to              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
+		filenocasecmp_to            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
+		length                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		substr                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"787537301"`
+		get_slice                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3535100402"`
+		get_slicec                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"787537301"`
+		get_slice_count             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
+		find                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
+		findn                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
+		count                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2343087891"`
+		countn                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2343087891"`
+		rfind                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
+		rfindn                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1760645412"`
+		match                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		matchn                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		begins_with                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		ends_with                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		is_subsequence_of           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		is_subsequence_ofn          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		bigrams                     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"747180633"`
+		similarity                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2697460964"`
+		format                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3212199029"`
+		replace                     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1340436205"`
+		replacen                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1340436205"`
+		repeat                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
+		reverse                     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		insert                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"248737229"`
+		erase                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"787537301"`
+		capitalize                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		to_camel_case               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		to_pascal_case              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		to_snake_case               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		split                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1252735785"`
+		rsplit                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1252735785"`
+		split_floats                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2092079095"`
+		join                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3595973238"`
+		to_upper                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		to_lower                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		left                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
+		right                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
+		strip_edges                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"907855311"`
+		strip_escapes               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		lstrip                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
+		rstrip                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
+		get_extension               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		get_basename                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		path_join                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
+		unicode_at                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4103005248"`
+		indent                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
+		dedent                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		md5_text                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		sha1_text                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		sha256_text                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		md5_buffer                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		sha1_buffer                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		sha256_buffer               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		is_empty                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		contains                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		containsn                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2566493496"`
+		is_absolute_path            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_relative_path            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		simplify_path               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		get_base_dir                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		get_file                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		xml_escape                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3429816538"`
+		xml_unescape                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		uri_encode                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		uri_decode                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		c_escape                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		c_unescape                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		json_escape                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		validate_node_name          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		validate_filename           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3942272618"`
+		is_valid_ascii_identifier   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid_unicode_identifier func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid_identifier         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid_int                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid_float              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid_hex_number         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"593672999"`
+		is_valid_html_color         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid_ip_address         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid_filename           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		to_int                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		to_float                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"466405837"`
+		hex_to_int                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		bin_to_int                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		lpad                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"248737229"`
+		rpad                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"248737229"`
+		pad_decimals                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
+		pad_zeros                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
+		trim_prefix                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
+		trim_suffix                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3134094431"`
+		to_ascii_buffer             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		to_utf8_buffer              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		to_utf16_buffer             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		to_utf32_buffer             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		hex_decode                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		to_wchar_buffer             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"247621236"`
+		hash                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
 	}
 	NodePath struct {
 		is_absolute               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
@@ -756,26 +762,27 @@ type builtin struct {
 		get_id   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
 	}
 	Callable struct {
-		create                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1709381114"`
-		callv                     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"413578926"`
-		is_null                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_custom                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_standard               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		is_valid                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		get_object                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4008621732"`
-		get_object_id             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		get_method                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1825232092"`
-		get_argument_count        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		get_bound_arguments_count func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		get_bound_arguments       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4144163970"`
-		hash                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		bindv                     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3564560322"`
-		unbind                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"755001590"`
-		call                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3643564216"`
-		call_deferred             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3286317445"`
-		rpc                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3286317445"`
-		rpc_id                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2270047679"`
-		bind                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3224143119"`
+		create                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1709381114"`
+		callv                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"413578926"`
+		is_null                     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_custom                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_standard                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_valid                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		get_object                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4008621732"`
+		get_object_id               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		get_method                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1825232092"`
+		get_argument_count          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		get_bound_arguments_count   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		get_bound_arguments         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4144163970"`
+		get_unbound_arguments_count func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		hash                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		bindv                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3564560322"`
+		unbind                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"755001590"`
+		call                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3643564216"`
+		call_deferred               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3286317445"`
+		rpc                         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3286317445"`
+		rpc_id                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2270047679"`
+		bind                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3224143119"`
 	}
 	Signal struct {
 		is_null         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
@@ -786,27 +793,43 @@ type builtin struct {
 		disconnect      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3470848906"`
 		is_connected    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4129521963"`
 		get_connections func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4144163970"`
+		has_connections func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
 		emit            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3286317445"`
 	}
 	Dictionary struct {
-		size            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		is_empty        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		clear           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3218959716"`
-		merge           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2079548978"`
-		merged          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2271165639"`
-		has             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3680194679"`
-		has_all         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2988181878"`
-		find_key        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1988825835"`
-		erase           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1776646889"`
-		hash            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
-		keys            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4144163970"`
-		values          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4144163970"`
-		duplicate       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"830099069"`
-		get             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2205440559"`
-		get_or_add      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1052551076"`
-		make_read_only  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3218959716"`
-		is_read_only    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		recursive_equal func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1404404751"`
+		size                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		is_empty                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		clear                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3218959716"`
+		assign                     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3642266950"`
+		sort                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3218959716"`
+		merge                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2079548978"`
+		merged                     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2271165639"`
+		has                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3680194679"`
+		has_all                    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2988181878"`
+		find_key                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1988825835"`
+		erase                      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1776646889"`
+		hash                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		keys                       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4144163970"`
+		values                     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4144163970"`
+		duplicate                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"830099069"`
+		get                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2205440559"`
+		get_or_add                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1052551076"`
+		set                        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2175348267"`
+		is_typed                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_typed_key               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_typed_value             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		is_same_typed              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3471775634"`
+		is_same_typed_key          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3471775634"`
+		is_same_typed_value        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3471775634"`
+		get_typed_key_builtin      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		get_typed_value_builtin    func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
+		get_typed_key_class_name   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1825232092"`
+		get_typed_value_class_name func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1825232092"`
+		get_typed_key_script       func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1460142086"`
+		get_typed_value_script     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1460142086"`
+		make_read_only             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3218959716"`
+		is_read_only               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
+		recursive_equal            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1404404751"`
 	}
 	Array struct {
 		size                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
@@ -814,6 +837,8 @@ type builtin struct {
 		clear                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3218959716"`
 		hash                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
 		assign               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2307260970"`
+		get                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"708700221"`
+		set                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3798478031"`
 		push_back            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3316032543"`
 		push_front           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3316032543"`
 		append               func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3316032543"`
@@ -827,7 +852,9 @@ type builtin struct {
 		back                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1460142086"`
 		pick_random          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1460142086"`
 		find                 func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2336346817"`
+		find_custom          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2145562546"`
 		rfind                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2336346817"`
+		rfind_custom         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2145562546"`
 		count                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1481661226"`
 		has                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3680194679"`
 		pop_back             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1321915136"`
@@ -857,9 +884,10 @@ type builtin struct {
 		is_read_only         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
 	}
 	PackedByteArray struct {
+		get                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4103005248"`
+		set                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3638975848"`
 		size                  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
 		is_empty              func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		set                   func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3638975848"`
 		push_back             func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"694024632"`
 		append                func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"694024632"`
 		append_array          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"791097111"`
@@ -918,9 +946,10 @@ type builtin struct {
 		encode_var            func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2604460497"`
 	}
 	PackedInt32Array struct {
+		get           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4103005248"`
+		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3638975848"`
 		size          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
 		is_empty      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3638975848"`
 		push_back     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"694024632"`
 		append        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"694024632"`
 		append_array  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1087733270"`
@@ -941,9 +970,10 @@ type builtin struct {
 		count         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4103005248"`
 	}
 	PackedInt64Array struct {
+		get           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4103005248"`
+		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3638975848"`
 		size          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
 		is_empty      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3638975848"`
 		push_back     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"694024632"`
 		append        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"694024632"`
 		append_array  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2090311302"`
@@ -964,9 +994,10 @@ type builtin struct {
 		count         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4103005248"`
 	}
 	PackedFloat32Array struct {
+		get           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1401583798"`
+		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1113000516"`
 		size          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
 		is_empty      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1113000516"`
 		push_back     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4094791666"`
 		append        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4094791666"`
 		append_array  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2981316639"`
@@ -987,9 +1018,10 @@ type builtin struct {
 		count         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2859915090"`
 	}
 	PackedFloat64Array struct {
+		get           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1401583798"`
+		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1113000516"`
 		size          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
 		is_empty      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1113000516"`
 		push_back     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4094791666"`
 		append        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4094791666"`
 		append_array  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"792078629"`
@@ -1010,9 +1042,10 @@ type builtin struct {
 		count         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2859915090"`
 	}
 	PackedStringArray struct {
+		get           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2162347432"`
+		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"725585539"`
 		size          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
 		is_empty      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"725585539"`
 		push_back     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"816187996"`
 		append        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"816187996"`
 		append_array  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1120103966"`
@@ -1033,9 +1066,10 @@ type builtin struct {
 		count         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2920860731"`
 	}
 	PackedVector2Array struct {
+		get           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2609058838"`
+		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"635767250"`
 		size          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
 		is_empty      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"635767250"`
 		push_back     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4188891560"`
 		append        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"4188891560"`
 		append_array  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3887534835"`
@@ -1056,9 +1090,10 @@ type builtin struct {
 		count         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2798848307"`
 	}
 	PackedVector3Array struct {
+		get           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1394941017"`
+		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3975343409"`
 		size          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
 		is_empty      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3975343409"`
 		push_back     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3295363524"`
 		append        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3295363524"`
 		append_array  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"203538016"`
@@ -1079,9 +1114,10 @@ type builtin struct {
 		count         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"194580386"`
 	}
 	PackedColorArray struct {
+		get           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"2972831132"`
+		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1444096570"`
 		size          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
 		is_empty      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1444096570"`
 		push_back     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1007858200"`
 		append        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1007858200"`
 		append_array  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"798822497"`
@@ -1102,9 +1138,10 @@ type builtin struct {
 		count         func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1682108616"`
 	}
 	PackedVector4Array struct {
+		get           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1227817084"`
+		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1350366223"`
 		size          func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3173160232"`
 		is_empty      func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3918633141"`
-		set           func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"1350366223"`
 		push_back     func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3289167688"`
 		append        func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"3289167688"`
 		append_array  func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:"537428395"`
@@ -1153,7 +1190,7 @@ type typeset struct {
 		RID                [2]func(callframe.Addr, callframe.Args)
 		Callable           [3]func(callframe.Addr, callframe.Args)
 		Signal             [3]func(callframe.Addr, callframe.Args)
-		Dictionary         [2]func(callframe.Addr, callframe.Args)
+		Dictionary         [3]func(callframe.Addr, callframe.Args)
 		Array              [13]func(callframe.Addr, callframe.Args)
 		PackedByteArray    [3]func(callframe.Addr, callframe.Args)
 		PackedInt32Array   [3]func(callframe.Addr, callframe.Args)
@@ -2160,6 +2197,10 @@ type typeset struct {
 			GreaterEqual struct {
 				RID func(a, b, ret callframe.Addr)
 			}
+			In struct {
+				Dictionary func(a, b, ret callframe.Addr)
+				Array      func(a, b, ret callframe.Addr)
+			}
 			Not func(a, b, ret callframe.Addr)
 		}
 		Callable struct {
@@ -2564,6 +2605,7 @@ type methods struct {
 		Bind_fill_weight_scale_region       MethodBind `hash:"2793244083"`
 		Bind_clear                          MethodBind `hash:"3218959716"`
 		Bind_get_point_position             MethodBind `hash:"108438297"`
+		Bind_get_point_data_in_region       MethodBind `hash:"3893818462"`
 		Bind_get_point_path                 MethodBind `hash:"1641925693"`
 		Bind_get_id_path                    MethodBind `hash:"1918132273"`
 	}
@@ -2601,8 +2643,8 @@ type methods struct {
 		Bind_set_autoplay           MethodBind `hash:"83702148"`
 		Bind_get_autoplay           MethodBind `hash:"201670096"`
 		Bind_is_playing             MethodBind `hash:"36873697"`
-		Bind_play                   MethodBind `hash:"2372066587"`
-		Bind_play_backwards         MethodBind `hash:"1421762485"`
+		Bind_play                   MethodBind `hash:"3269405555"`
+		Bind_play_backwards         MethodBind `hash:"3323268493"`
 		Bind_pause                  MethodBind `hash:"3218959716"`
 		Bind_stop                   MethodBind `hash:"3218959716"`
 		Bind_set_centered           MethodBind `hash:"2586408642"`
@@ -2630,8 +2672,8 @@ type methods struct {
 		Bind_set_autoplay           MethodBind `hash:"83702148"`
 		Bind_get_autoplay           MethodBind `hash:"201670096"`
 		Bind_is_playing             MethodBind `hash:"36873697"`
-		Bind_play                   MethodBind `hash:"2372066587"`
-		Bind_play_backwards         MethodBind `hash:"1421762485"`
+		Bind_play                   MethodBind `hash:"3269405555"`
+		Bind_play_backwards         MethodBind `hash:"3323268493"`
 		Bind_pause                  MethodBind `hash:"3218959716"`
 		Bind_stop                   MethodBind `hash:"3218959716"`
 		Bind_set_frame              MethodBind `hash:"1286410249"`
@@ -2724,6 +2766,16 @@ type methods struct {
 		Bind_animation_track_insert_key        MethodBind `hash:"158676774"`
 		Bind_animation_track_set_key_animation MethodBind `hash:"117615382"`
 		Bind_animation_track_get_key_animation MethodBind `hash:"351665558"`
+		Bind_add_marker                        MethodBind `hash:"4135858297"`
+		Bind_remove_marker                     MethodBind `hash:"3304788590"`
+		Bind_has_marker                        MethodBind `hash:"2619796661"`
+		Bind_get_marker_at_time                MethodBind `hash:"4079494655"`
+		Bind_get_next_marker                   MethodBind `hash:"4079494655"`
+		Bind_get_prev_marker                   MethodBind `hash:"4079494655"`
+		Bind_get_marker_time                   MethodBind `hash:"2349060816"`
+		Bind_get_marker_names                  MethodBind `hash:"1139954409"`
+		Bind_get_marker_color                  MethodBind `hash:"3742943038"`
+		Bind_set_marker_color                  MethodBind `hash:"4260178595"`
 		Bind_set_length                        MethodBind `hash:"373806689"`
 		Bind_get_length                        MethodBind `hash:"1740695150"`
 		Bind_set_loop_mode                     MethodBind `hash:"3155355575"`
@@ -2732,16 +2784,18 @@ type methods struct {
 		Bind_get_step                          MethodBind `hash:"1740695150"`
 		Bind_clear                             MethodBind `hash:"3218959716"`
 		Bind_copy_track                        MethodBind `hash:"148001024"`
+		Bind_optimize                          MethodBind `hash:"3303583852"`
 		Bind_compress                          MethodBind `hash:"3608408117"`
 		Bind_is_capture_included               MethodBind `hash:"36873697"`
 	}
 	AnimationLibrary struct {
-		Bind_add_animation      MethodBind `hash:"1811855551"`
-		Bind_remove_animation   MethodBind `hash:"3304788590"`
-		Bind_rename_animation   MethodBind `hash:"3740211285"`
-		Bind_has_animation      MethodBind `hash:"2619796661"`
-		Bind_get_animation      MethodBind `hash:"2933122410"`
-		Bind_get_animation_list MethodBind `hash:"3995934104"`
+		Bind_add_animation           MethodBind `hash:"1811855551"`
+		Bind_remove_animation        MethodBind `hash:"3304788590"`
+		Bind_rename_animation        MethodBind `hash:"3740211285"`
+		Bind_has_animation           MethodBind `hash:"2619796661"`
+		Bind_get_animation           MethodBind `hash:"2933122410"`
+		Bind_get_animation_list      MethodBind `hash:"3995934104"`
+		Bind_get_animation_list_size MethodBind `hash:"3905245786"`
 	}
 	AnimationMixer struct {
 		Bind_add_animation_library                MethodBind `hash:"618909818"`
@@ -2769,6 +2823,8 @@ type methods struct {
 		Bind_get_audio_max_polyphony              MethodBind `hash:"3905245786"`
 		Bind_set_root_motion_track                MethodBind `hash:"1348162250"`
 		Bind_get_root_motion_track                MethodBind `hash:"4075236667"`
+		Bind_set_root_motion_local                MethodBind `hash:"2586408642"`
+		Bind_is_root_motion_local                 MethodBind `hash:"36873697"`
 		Bind_get_root_motion_position             MethodBind `hash:"3360562783"`
 		Bind_get_root_motion_rotation             MethodBind `hash:"1222331677"`
 		Bind_get_root_motion_scale                MethodBind `hash:"3360562783"`
@@ -2784,21 +2840,23 @@ type methods struct {
 		Bind_find_animation_library               MethodBind `hash:"1559484580"`
 	}
 	AnimationNode struct {
-		Bind_add_input          MethodBind `hash:"2323990056"`
-		Bind_remove_input       MethodBind `hash:"1286410249"`
-		Bind_set_input_name     MethodBind `hash:"215573526"`
-		Bind_get_input_name     MethodBind `hash:"844755477"`
-		Bind_get_input_count    MethodBind `hash:"3905245786"`
-		Bind_find_input         MethodBind `hash:"1321353865"`
-		Bind_set_filter_path    MethodBind `hash:"3868023870"`
-		Bind_is_path_filtered   MethodBind `hash:"861721659"`
-		Bind_set_filter_enabled MethodBind `hash:"2586408642"`
-		Bind_is_filter_enabled  MethodBind `hash:"36873697"`
-		Bind_blend_animation    MethodBind `hash:"1630801826"`
-		Bind_blend_node         MethodBind `hash:"1746075988"`
-		Bind_blend_input        MethodBind `hash:"1361527350"`
-		Bind_set_parameter      MethodBind `hash:"3776071444"`
-		Bind_get_parameter      MethodBind `hash:"2760726917"`
+		Bind_add_input                                 MethodBind `hash:"2323990056"`
+		Bind_remove_input                              MethodBind `hash:"1286410249"`
+		Bind_set_input_name                            MethodBind `hash:"215573526"`
+		Bind_get_input_name                            MethodBind `hash:"844755477"`
+		Bind_get_input_count                           MethodBind `hash:"3905245786"`
+		Bind_find_input                                MethodBind `hash:"1321353865"`
+		Bind_set_filter_path                           MethodBind `hash:"3868023870"`
+		Bind_is_path_filtered                          MethodBind `hash:"861721659"`
+		Bind_set_filter_enabled                        MethodBind `hash:"2586408642"`
+		Bind_is_filter_enabled                         MethodBind `hash:"36873697"`
+		Bind_get_processing_animation_tree_instance_id MethodBind `hash:"3905245786"`
+		Bind_is_process_testing                        MethodBind `hash:"36873697"`
+		Bind_blend_animation                           MethodBind `hash:"1630801826"`
+		Bind_blend_node                                MethodBind `hash:"1746075988"`
+		Bind_blend_input                               MethodBind `hash:"1361527350"`
+		Bind_set_parameter                             MethodBind `hash:"3776071444"`
+		Bind_get_parameter                             MethodBind `hash:"2760726917"`
 	}
 	AnimationNodeAdd2 struct {
 	}
@@ -2809,6 +2867,8 @@ type methods struct {
 		Bind_get_animation            MethodBind `hash:"2002593661"`
 		Bind_set_play_mode            MethodBind `hash:"3347718873"`
 		Bind_get_play_mode            MethodBind `hash:"2061244637"`
+		Bind_set_advance_on_start     MethodBind `hash:"2586408642"`
+		Bind_is_advance_on_start      MethodBind `hash:"36873697"`
 		Bind_set_use_custom_timeline  MethodBind `hash:"2586408642"`
 		Bind_is_using_custom_timeline MethodBind `hash:"36873697"`
 		Bind_set_timeline_length      MethodBind `hash:"373806689"`
@@ -2886,6 +2946,10 @@ type methods struct {
 		Bind_get_node_position MethodBind `hash:"3100822709"`
 		Bind_set_graph_offset  MethodBind `hash:"743155724"`
 		Bind_get_graph_offset  MethodBind `hash:"3341600327"`
+	}
+	AnimationNodeExtension struct {
+		Bind_is_looping         MethodBind `hash:"2035584311"`
+		Bind_get_remaining_time MethodBind `hash:"2851904656"`
 	}
 	AnimationNodeOneShot struct {
 		Bind_set_fadein_time              MethodBind `hash:"373806689"`
@@ -2977,6 +3041,8 @@ type methods struct {
 	AnimationNodeTimeScale struct {
 	}
 	AnimationNodeTimeSeek struct {
+		Bind_set_explicit_elapse MethodBind `hash:"2586408642"`
+		Bind_is_explicit_elapse  MethodBind `hash:"36873697"`
 	}
 	AnimationNodeTransition struct {
 		Bind_set_input_count              MethodBind `hash:"1286410249"`
@@ -2994,49 +3060,59 @@ type methods struct {
 		Bind_is_allow_transition_to_self  MethodBind `hash:"36873697"`
 	}
 	AnimationPlayer struct {
-		Bind_animation_set_next               MethodBind `hash:"3740211285"`
-		Bind_animation_get_next               MethodBind `hash:"1965194235"`
-		Bind_set_blend_time                   MethodBind `hash:"3231131886"`
-		Bind_get_blend_time                   MethodBind `hash:"1958752504"`
-		Bind_set_default_blend_time           MethodBind `hash:"373806689"`
-		Bind_get_default_blend_time           MethodBind `hash:"1740695150"`
-		Bind_set_auto_capture                 MethodBind `hash:"2586408642"`
-		Bind_is_auto_capture                  MethodBind `hash:"36873697"`
-		Bind_set_auto_capture_duration        MethodBind `hash:"373806689"`
-		Bind_get_auto_capture_duration        MethodBind `hash:"1740695150"`
-		Bind_set_auto_capture_transition_type MethodBind `hash:"1058637742"`
-		Bind_get_auto_capture_transition_type MethodBind `hash:"3842314528"`
-		Bind_set_auto_capture_ease_type       MethodBind `hash:"1208105857"`
-		Bind_get_auto_capture_ease_type       MethodBind `hash:"631880200"`
-		Bind_play                             MethodBind `hash:"3697947785"`
-		Bind_play_backwards                   MethodBind `hash:"3890664824"`
-		Bind_play_with_capture                MethodBind `hash:"3180464118"`
-		Bind_pause                            MethodBind `hash:"3218959716"`
-		Bind_stop                             MethodBind `hash:"107499316"`
-		Bind_is_playing                       MethodBind `hash:"36873697"`
-		Bind_set_current_animation            MethodBind `hash:"83702148"`
-		Bind_get_current_animation            MethodBind `hash:"201670096"`
-		Bind_set_assigned_animation           MethodBind `hash:"83702148"`
-		Bind_get_assigned_animation           MethodBind `hash:"201670096"`
-		Bind_queue                            MethodBind `hash:"3304788590"`
-		Bind_get_queue                        MethodBind `hash:"2981934095"`
-		Bind_clear_queue                      MethodBind `hash:"3218959716"`
-		Bind_set_speed_scale                  MethodBind `hash:"373806689"`
-		Bind_get_speed_scale                  MethodBind `hash:"1740695150"`
-		Bind_get_playing_speed                MethodBind `hash:"1740695150"`
-		Bind_set_autoplay                     MethodBind `hash:"83702148"`
-		Bind_get_autoplay                     MethodBind `hash:"201670096"`
-		Bind_set_movie_quit_on_finish_enabled MethodBind `hash:"2586408642"`
-		Bind_is_movie_quit_on_finish_enabled  MethodBind `hash:"36873697"`
-		Bind_get_current_animation_position   MethodBind `hash:"1740695150"`
-		Bind_get_current_animation_length     MethodBind `hash:"1740695150"`
-		Bind_seek                             MethodBind `hash:"1807872683"`
-		Bind_set_process_callback             MethodBind `hash:"1663839457"`
-		Bind_get_process_callback             MethodBind `hash:"4207496604"`
-		Bind_set_method_call_mode             MethodBind `hash:"3413514846"`
-		Bind_get_method_call_mode             MethodBind `hash:"3583380054"`
-		Bind_set_root                         MethodBind `hash:"1348162250"`
-		Bind_get_root                         MethodBind `hash:"4075236667"`
+		Bind_animation_set_next                  MethodBind `hash:"3740211285"`
+		Bind_animation_get_next                  MethodBind `hash:"1965194235"`
+		Bind_set_blend_time                      MethodBind `hash:"3231131886"`
+		Bind_get_blend_time                      MethodBind `hash:"1958752504"`
+		Bind_set_default_blend_time              MethodBind `hash:"373806689"`
+		Bind_get_default_blend_time              MethodBind `hash:"1740695150"`
+		Bind_set_auto_capture                    MethodBind `hash:"2586408642"`
+		Bind_is_auto_capture                     MethodBind `hash:"36873697"`
+		Bind_set_auto_capture_duration           MethodBind `hash:"373806689"`
+		Bind_get_auto_capture_duration           MethodBind `hash:"1740695150"`
+		Bind_set_auto_capture_transition_type    MethodBind `hash:"1058637742"`
+		Bind_get_auto_capture_transition_type    MethodBind `hash:"3842314528"`
+		Bind_set_auto_capture_ease_type          MethodBind `hash:"1208105857"`
+		Bind_get_auto_capture_ease_type          MethodBind `hash:"631880200"`
+		Bind_play                                MethodBind `hash:"3118260607"`
+		Bind_play_section_with_markers           MethodBind `hash:"1421431412"`
+		Bind_play_section                        MethodBind `hash:"284774635"`
+		Bind_play_backwards                      MethodBind `hash:"2787282401"`
+		Bind_play_section_with_markers_backwards MethodBind `hash:"910195100"`
+		Bind_play_section_backwards              MethodBind `hash:"831955981"`
+		Bind_play_with_capture                   MethodBind `hash:"1572969103"`
+		Bind_pause                               MethodBind `hash:"3218959716"`
+		Bind_stop                                MethodBind `hash:"107499316"`
+		Bind_is_playing                          MethodBind `hash:"36873697"`
+		Bind_set_current_animation               MethodBind `hash:"83702148"`
+		Bind_get_current_animation               MethodBind `hash:"201670096"`
+		Bind_set_assigned_animation              MethodBind `hash:"83702148"`
+		Bind_get_assigned_animation              MethodBind `hash:"201670096"`
+		Bind_queue                               MethodBind `hash:"3304788590"`
+		Bind_get_queue                           MethodBind `hash:"2981934095"`
+		Bind_clear_queue                         MethodBind `hash:"3218959716"`
+		Bind_set_speed_scale                     MethodBind `hash:"373806689"`
+		Bind_get_speed_scale                     MethodBind `hash:"1740695150"`
+		Bind_get_playing_speed                   MethodBind `hash:"1740695150"`
+		Bind_set_autoplay                        MethodBind `hash:"83702148"`
+		Bind_get_autoplay                        MethodBind `hash:"201670096"`
+		Bind_set_movie_quit_on_finish_enabled    MethodBind `hash:"2586408642"`
+		Bind_is_movie_quit_on_finish_enabled     MethodBind `hash:"36873697"`
+		Bind_get_current_animation_position      MethodBind `hash:"1740695150"`
+		Bind_get_current_animation_length        MethodBind `hash:"1740695150"`
+		Bind_set_section_with_markers            MethodBind `hash:"794792241"`
+		Bind_set_section                         MethodBind `hash:"3749779719"`
+		Bind_reset_section                       MethodBind `hash:"3218959716"`
+		Bind_get_section_start_time              MethodBind `hash:"1740695150"`
+		Bind_get_section_end_time                MethodBind `hash:"1740695150"`
+		Bind_has_section                         MethodBind `hash:"36873697"`
+		Bind_seek                                MethodBind `hash:"1807872683"`
+		Bind_set_process_callback                MethodBind `hash:"1663839457"`
+		Bind_get_process_callback                MethodBind `hash:"4207496604"`
+		Bind_set_method_call_mode                MethodBind `hash:"3413514846"`
+		Bind_get_method_call_mode                MethodBind `hash:"3583380054"`
+		Bind_set_root                            MethodBind `hash:"1348162250"`
+		Bind_get_root                            MethodBind `hash:"4075236667"`
 	}
 	AnimationRootNode struct {
 	}
@@ -3150,6 +3226,7 @@ type methods struct {
 		Bind_get_blend_shape_mode            MethodBind `hash:"836485024"`
 		Bind_add_surface_from_arrays         MethodBind `hash:"1796411378"`
 		Bind_clear_surfaces                  MethodBind `hash:"3218959716"`
+		Bind_surface_remove                  MethodBind `hash:"1286410249"`
 		Bind_surface_update_vertex_region    MethodBind `hash:"3837166854"`
 		Bind_surface_update_attribute_region MethodBind `hash:"3837166854"`
 		Bind_surface_update_skin_region      MethodBind `hash:"3837166854"`
@@ -3197,8 +3274,10 @@ type methods struct {
 	AudioEffect struct {
 	}
 	AudioEffectAmplify struct {
-		Bind_set_volume_db MethodBind `hash:"373806689"`
-		Bind_get_volume_db MethodBind `hash:"1740695150"`
+		Bind_set_volume_db     MethodBind `hash:"373806689"`
+		Bind_get_volume_db     MethodBind `hash:"1740695150"`
+		Bind_set_volume_linear MethodBind `hash:"373806689"`
+		Bind_get_volume_linear MethodBind `hash:"1740695150"`
 	}
 	AudioEffectBandLimitFilter struct {
 	}
@@ -3437,6 +3516,8 @@ type methods struct {
 		Bind_get_bus_channels                      MethodBind `hash:"923996154"`
 		Bind_set_bus_volume_db                     MethodBind `hash:"1602489585"`
 		Bind_get_bus_volume_db                     MethodBind `hash:"2339986948"`
+		Bind_set_bus_volume_linear                 MethodBind `hash:"1602489585"`
+		Bind_get_bus_volume_linear                 MethodBind `hash:"2339986948"`
 		Bind_set_bus_send                          MethodBind `hash:"3780747571"`
 		Bind_get_bus_send                          MethodBind `hash:"659327637"`
 		Bind_set_bus_solo                          MethodBind `hash:"300928843"`
@@ -3461,6 +3542,8 @@ type methods struct {
 		Bind_unlock                                MethodBind `hash:"3218959716"`
 		Bind_get_speaker_mode                      MethodBind `hash:"2549190337"`
 		Bind_get_mix_rate                          MethodBind `hash:"1740695150"`
+		Bind_get_input_mix_rate                    MethodBind `hash:"1740695150"`
+		Bind_get_driver_name                       MethodBind `hash:"201670096"`
 		Bind_get_output_device_list                MethodBind `hash:"2981934095"`
 		Bind_get_output_device                     MethodBind `hash:"2841200299"`
 		Bind_set_output_device                     MethodBind `hash:"83702148"`
@@ -3487,6 +3570,8 @@ type methods struct {
 	AudioStreamGenerator struct {
 		Bind_set_mix_rate      MethodBind `hash:"373806689"`
 		Bind_get_mix_rate      MethodBind `hash:"1740695150"`
+		Bind_set_mix_rate_mode MethodBind `hash:"3354885803"`
+		Bind_get_mix_rate_mode MethodBind `hash:"3537132591"`
 		Bind_set_buffer_length MethodBind `hash:"373806689"`
 		Bind_get_buffer_length MethodBind `hash:"1740695150"`
 	}
@@ -3524,18 +3609,20 @@ type methods struct {
 		Bind_is_transition_holding_previous  MethodBind `hash:"2522259332"`
 	}
 	AudioStreamMP3 struct {
-		Bind_set_data        MethodBind `hash:"2971499966"`
-		Bind_get_data        MethodBind `hash:"2362200018"`
-		Bind_set_loop        MethodBind `hash:"2586408642"`
-		Bind_has_loop        MethodBind `hash:"36873697"`
-		Bind_set_loop_offset MethodBind `hash:"373806689"`
-		Bind_get_loop_offset MethodBind `hash:"1740695150"`
-		Bind_set_bpm         MethodBind `hash:"373806689"`
-		Bind_get_bpm         MethodBind `hash:"1740695150"`
-		Bind_set_beat_count  MethodBind `hash:"1286410249"`
-		Bind_get_beat_count  MethodBind `hash:"3905245786"`
-		Bind_set_bar_beats   MethodBind `hash:"1286410249"`
-		Bind_get_bar_beats   MethodBind `hash:"3905245786"`
+		Bind_load_from_buffer MethodBind `hash:"1674970313"`
+		Bind_load_from_file   MethodBind `hash:"4238362998"`
+		Bind_set_data         MethodBind `hash:"2971499966"`
+		Bind_get_data         MethodBind `hash:"2362200018"`
+		Bind_set_loop         MethodBind `hash:"2586408642"`
+		Bind_has_loop         MethodBind `hash:"36873697"`
+		Bind_set_loop_offset  MethodBind `hash:"373806689"`
+		Bind_get_loop_offset  MethodBind `hash:"1740695150"`
+		Bind_set_bpm          MethodBind `hash:"373806689"`
+		Bind_get_bpm          MethodBind `hash:"1740695150"`
+		Bind_set_beat_count   MethodBind `hash:"1286410249"`
+		Bind_get_beat_count   MethodBind `hash:"3905245786"`
+		Bind_set_bar_beats    MethodBind `hash:"1286410249"`
+		Bind_get_bar_beats    MethodBind `hash:"3905245786"`
 	}
 	AudioStreamMicrophone struct {
 	}
@@ -3556,12 +3643,20 @@ type methods struct {
 		Bind_get_bar_beats       MethodBind `hash:"3905245786"`
 	}
 	AudioStreamPlayback struct {
-		Bind_set_sample_playback MethodBind `hash:"3195455091"`
-		Bind_get_sample_playback MethodBind `hash:"3482738536"`
+		Bind_set_sample_playback   MethodBind `hash:"3195455091"`
+		Bind_get_sample_playback   MethodBind `hash:"3482738536"`
+		Bind_mix_audio             MethodBind `hash:"3341291446"`
+		Bind_start                 MethodBind `hash:"1958160172"`
+		Bind_seek                  MethodBind `hash:"1958160172"`
+		Bind_stop                  MethodBind `hash:"3218959716"`
+		Bind_get_loop_count        MethodBind `hash:"3905245786"`
+		Bind_get_playback_position MethodBind `hash:"1740695150"`
+		Bind_is_playing            MethodBind `hash:"36873697"`
 	}
 	AudioStreamPlaybackInteractive struct {
 		Bind_switch_to_clip_by_name MethodBind `hash:"3304788590"`
 		Bind_switch_to_clip         MethodBind `hash:"1286410249"`
+		Bind_get_current_clip_index MethodBind `hash:"3905245786"`
 	}
 	AudioStreamPlaybackOggVorbis struct {
 	}
@@ -3584,6 +3679,8 @@ type methods struct {
 		Bind_get_stream            MethodBind `hash:"160907539"`
 		Bind_set_volume_db         MethodBind `hash:"373806689"`
 		Bind_get_volume_db         MethodBind `hash:"1740695150"`
+		Bind_set_volume_linear     MethodBind `hash:"373806689"`
+		Bind_get_volume_linear     MethodBind `hash:"1740695150"`
 		Bind_set_pitch_scale       MethodBind `hash:"373806689"`
 		Bind_get_pitch_scale       MethodBind `hash:"1740695150"`
 		Bind_play                  MethodBind `hash:"1958160172"`
@@ -3597,6 +3694,7 @@ type methods struct {
 		Bind_is_autoplay_enabled   MethodBind `hash:"36873697"`
 		Bind_set_mix_target        MethodBind `hash:"2300306138"`
 		Bind_get_mix_target        MethodBind `hash:"172807476"`
+		Bind_set_playing           MethodBind `hash:"2586408642"`
 		Bind_set_stream_paused     MethodBind `hash:"2586408642"`
 		Bind_get_stream_paused     MethodBind `hash:"36873697"`
 		Bind_set_max_polyphony     MethodBind `hash:"1286410249"`
@@ -3611,6 +3709,8 @@ type methods struct {
 		Bind_get_stream            MethodBind `hash:"160907539"`
 		Bind_set_volume_db         MethodBind `hash:"373806689"`
 		Bind_get_volume_db         MethodBind `hash:"1740695150"`
+		Bind_set_volume_linear     MethodBind `hash:"373806689"`
+		Bind_get_volume_linear     MethodBind `hash:"1740695150"`
 		Bind_set_pitch_scale       MethodBind `hash:"373806689"`
 		Bind_get_pitch_scale       MethodBind `hash:"1740695150"`
 		Bind_play                  MethodBind `hash:"1958160172"`
@@ -3622,6 +3722,7 @@ type methods struct {
 		Bind_get_bus               MethodBind `hash:"2002593661"`
 		Bind_set_autoplay          MethodBind `hash:"2586408642"`
 		Bind_is_autoplay_enabled   MethodBind `hash:"36873697"`
+		Bind_set_playing           MethodBind `hash:"2586408642"`
 		Bind_set_max_distance      MethodBind `hash:"373806689"`
 		Bind_get_max_distance      MethodBind `hash:"1740695150"`
 		Bind_set_attenuation       MethodBind `hash:"373806689"`
@@ -3644,6 +3745,8 @@ type methods struct {
 		Bind_get_stream                               MethodBind `hash:"160907539"`
 		Bind_set_volume_db                            MethodBind `hash:"373806689"`
 		Bind_get_volume_db                            MethodBind `hash:"1740695150"`
+		Bind_set_volume_linear                        MethodBind `hash:"373806689"`
+		Bind_get_volume_linear                        MethodBind `hash:"1740695150"`
 		Bind_set_unit_size                            MethodBind `hash:"373806689"`
 		Bind_get_unit_size                            MethodBind `hash:"1740695150"`
 		Bind_set_max_db                               MethodBind `hash:"373806689"`
@@ -3659,6 +3762,7 @@ type methods struct {
 		Bind_get_bus                                  MethodBind `hash:"2002593661"`
 		Bind_set_autoplay                             MethodBind `hash:"2586408642"`
 		Bind_is_autoplay_enabled                      MethodBind `hash:"36873697"`
+		Bind_set_playing                              MethodBind `hash:"2586408642"`
 		Bind_set_max_distance                         MethodBind `hash:"373806689"`
 		Bind_get_max_distance                         MethodBind `hash:"1740695150"`
 		Bind_set_area_mask                            MethodBind `hash:"1286410249"`
@@ -3731,21 +3835,23 @@ type methods struct {
 		Bind_get_sync_stream_volume MethodBind `hash:"2339986948"`
 	}
 	AudioStreamWAV struct {
-		Bind_set_data       MethodBind `hash:"2971499966"`
-		Bind_get_data       MethodBind `hash:"2362200018"`
-		Bind_set_format     MethodBind `hash:"60648488"`
-		Bind_get_format     MethodBind `hash:"3151724922"`
-		Bind_set_loop_mode  MethodBind `hash:"2444882972"`
-		Bind_get_loop_mode  MethodBind `hash:"393560655"`
-		Bind_set_loop_begin MethodBind `hash:"1286410249"`
-		Bind_get_loop_begin MethodBind `hash:"3905245786"`
-		Bind_set_loop_end   MethodBind `hash:"1286410249"`
-		Bind_get_loop_end   MethodBind `hash:"3905245786"`
-		Bind_set_mix_rate   MethodBind `hash:"1286410249"`
-		Bind_get_mix_rate   MethodBind `hash:"3905245786"`
-		Bind_set_stereo     MethodBind `hash:"2586408642"`
-		Bind_is_stereo      MethodBind `hash:"36873697"`
-		Bind_save_to_wav    MethodBind `hash:"166001499"`
+		Bind_load_from_buffer MethodBind `hash:"4266838938"`
+		Bind_load_from_file   MethodBind `hash:"4015802384"`
+		Bind_set_data         MethodBind `hash:"2971499966"`
+		Bind_get_data         MethodBind `hash:"2362200018"`
+		Bind_set_format       MethodBind `hash:"60648488"`
+		Bind_get_format       MethodBind `hash:"3151724922"`
+		Bind_set_loop_mode    MethodBind `hash:"2444882972"`
+		Bind_get_loop_mode    MethodBind `hash:"393560655"`
+		Bind_set_loop_begin   MethodBind `hash:"1286410249"`
+		Bind_get_loop_begin   MethodBind `hash:"3905245786"`
+		Bind_set_loop_end     MethodBind `hash:"1286410249"`
+		Bind_get_loop_end     MethodBind `hash:"3905245786"`
+		Bind_set_mix_rate     MethodBind `hash:"1286410249"`
+		Bind_get_mix_rate     MethodBind `hash:"3905245786"`
+		Bind_set_stereo       MethodBind `hash:"2586408642"`
+		Bind_is_stereo        MethodBind `hash:"36873697"`
+		Bind_save_to_wav      MethodBind `hash:"166001499"`
 	}
 	BackBufferCopy struct {
 		Bind_set_rect      MethodBind `hash:"2046264180"`
@@ -3945,6 +4051,7 @@ type methods struct {
 		Bind_get_bone_angle                     MethodBind `hash:"1740695150"`
 	}
 	BoneAttachment3D struct {
+		Bind_get_skeleton              MethodBind `hash:"1814733083"`
 		Bind_set_bone_name             MethodBind `hash:"83702148"`
 		Bind_get_bone_name             MethodBind `hash:"201670096"`
 		Bind_set_bone_idx              MethodBind `hash:"1286410249"`
@@ -4034,6 +4141,7 @@ type methods struct {
 		Bind_set_fixed_fps              MethodBind `hash:"1286410249"`
 		Bind_set_fractional_delta       MethodBind `hash:"2586408642"`
 		Bind_set_speed_scale            MethodBind `hash:"373806689"`
+		Bind_request_particles_process  MethodBind `hash:"373806689"`
 		Bind_is_emitting                MethodBind `hash:"36873697"`
 		Bind_get_amount                 MethodBind `hash:"3905245786"`
 		Bind_get_lifetime               MethodBind `hash:"1740695150"`
@@ -4046,11 +4154,15 @@ type methods struct {
 		Bind_get_fixed_fps              MethodBind `hash:"3905245786"`
 		Bind_get_fractional_delta       MethodBind `hash:"36873697"`
 		Bind_get_speed_scale            MethodBind `hash:"1740695150"`
+		Bind_set_use_fixed_seed         MethodBind `hash:"2586408642"`
+		Bind_get_use_fixed_seed         MethodBind `hash:"36873697"`
+		Bind_set_seed                   MethodBind `hash:"1286410249"`
+		Bind_get_seed                   MethodBind `hash:"3905245786"`
 		Bind_set_draw_order             MethodBind `hash:"4183193490"`
 		Bind_get_draw_order             MethodBind `hash:"1668655735"`
 		Bind_set_texture                MethodBind `hash:"4051416890"`
 		Bind_get_texture                MethodBind `hash:"3635182373"`
-		Bind_restart                    MethodBind `hash:"3218959716"`
+		Bind_restart                    MethodBind `hash:"107499316"`
 		Bind_set_direction              MethodBind `hash:"743155724"`
 		Bind_get_direction              MethodBind `hash:"3341600327"`
 		Bind_set_spread                 MethodBind `hash:"373806689"`
@@ -4122,7 +4234,13 @@ type methods struct {
 		Bind_get_draw_order                 MethodBind `hash:"1321900776"`
 		Bind_set_mesh                       MethodBind `hash:"194775623"`
 		Bind_get_mesh                       MethodBind `hash:"1808005922"`
-		Bind_restart                        MethodBind `hash:"3218959716"`
+		Bind_set_use_fixed_seed             MethodBind `hash:"2586408642"`
+		Bind_get_use_fixed_seed             MethodBind `hash:"36873697"`
+		Bind_set_seed                       MethodBind `hash:"1286410249"`
+		Bind_get_seed                       MethodBind `hash:"3905245786"`
+		Bind_restart                        MethodBind `hash:"107499316"`
+		Bind_request_particles_process      MethodBind `hash:"373806689"`
+		Bind_capture_aabb                   MethodBind `hash:"1068685055"`
 		Bind_set_direction                  MethodBind `hash:"3460891852"`
 		Bind_get_direction                  MethodBind `hash:"3360562783"`
 		Bind_set_spread                     MethodBind `hash:"373806689"`
@@ -4163,6 +4281,8 @@ type methods struct {
 		Bind_get_emission_ring_radius       MethodBind `hash:"1740695150"`
 		Bind_set_emission_ring_inner_radius MethodBind `hash:"373806689"`
 		Bind_get_emission_ring_inner_radius MethodBind `hash:"1740695150"`
+		Bind_set_emission_ring_cone_angle   MethodBind `hash:"373806689"`
+		Bind_get_emission_ring_cone_angle   MethodBind `hash:"1740695150"`
 		Bind_get_gravity                    MethodBind `hash:"3360562783"`
 		Bind_set_gravity                    MethodBind `hash:"3460891852"`
 		Bind_get_split_scale                MethodBind `hash:"2240911060"`
@@ -4204,38 +4324,40 @@ type methods struct {
 		Bind_get_material MethodBind `hash:"5934680"`
 	}
 	CSGPolygon3D struct {
-		Bind_set_polygon             MethodBind `hash:"1509147220"`
-		Bind_get_polygon             MethodBind `hash:"2961356807"`
-		Bind_set_mode                MethodBind `hash:"3158377035"`
-		Bind_get_mode                MethodBind `hash:"1201612222"`
-		Bind_set_depth               MethodBind `hash:"373806689"`
-		Bind_get_depth               MethodBind `hash:"1740695150"`
-		Bind_set_spin_degrees        MethodBind `hash:"373806689"`
-		Bind_get_spin_degrees        MethodBind `hash:"1740695150"`
-		Bind_set_spin_sides          MethodBind `hash:"1286410249"`
-		Bind_get_spin_sides          MethodBind `hash:"3905245786"`
-		Bind_set_path_node           MethodBind `hash:"1348162250"`
-		Bind_get_path_node           MethodBind `hash:"4075236667"`
-		Bind_set_path_interval_type  MethodBind `hash:"3744240707"`
-		Bind_get_path_interval_type  MethodBind `hash:"3434618397"`
-		Bind_set_path_interval       MethodBind `hash:"373806689"`
-		Bind_get_path_interval       MethodBind `hash:"1740695150"`
-		Bind_set_path_simplify_angle MethodBind `hash:"373806689"`
-		Bind_get_path_simplify_angle MethodBind `hash:"1740695150"`
-		Bind_set_path_rotation       MethodBind `hash:"1412947288"`
-		Bind_get_path_rotation       MethodBind `hash:"647219346"`
-		Bind_set_path_local          MethodBind `hash:"2586408642"`
-		Bind_is_path_local           MethodBind `hash:"36873697"`
-		Bind_set_path_continuous_u   MethodBind `hash:"2586408642"`
-		Bind_is_path_continuous_u    MethodBind `hash:"36873697"`
-		Bind_set_path_u_distance     MethodBind `hash:"373806689"`
-		Bind_get_path_u_distance     MethodBind `hash:"1740695150"`
-		Bind_set_path_joined         MethodBind `hash:"2586408642"`
-		Bind_is_path_joined          MethodBind `hash:"36873697"`
-		Bind_set_material            MethodBind `hash:"2757459619"`
-		Bind_get_material            MethodBind `hash:"5934680"`
-		Bind_set_smooth_faces        MethodBind `hash:"2586408642"`
-		Bind_get_smooth_faces        MethodBind `hash:"36873697"`
+		Bind_set_polygon                MethodBind `hash:"1509147220"`
+		Bind_get_polygon                MethodBind `hash:"2961356807"`
+		Bind_set_mode                   MethodBind `hash:"3158377035"`
+		Bind_get_mode                   MethodBind `hash:"1201612222"`
+		Bind_set_depth                  MethodBind `hash:"373806689"`
+		Bind_get_depth                  MethodBind `hash:"1740695150"`
+		Bind_set_spin_degrees           MethodBind `hash:"373806689"`
+		Bind_get_spin_degrees           MethodBind `hash:"1740695150"`
+		Bind_set_spin_sides             MethodBind `hash:"1286410249"`
+		Bind_get_spin_sides             MethodBind `hash:"3905245786"`
+		Bind_set_path_node              MethodBind `hash:"1348162250"`
+		Bind_get_path_node              MethodBind `hash:"4075236667"`
+		Bind_set_path_interval_type     MethodBind `hash:"3744240707"`
+		Bind_get_path_interval_type     MethodBind `hash:"3434618397"`
+		Bind_set_path_interval          MethodBind `hash:"373806689"`
+		Bind_get_path_interval          MethodBind `hash:"1740695150"`
+		Bind_set_path_simplify_angle    MethodBind `hash:"373806689"`
+		Bind_get_path_simplify_angle    MethodBind `hash:"1740695150"`
+		Bind_set_path_rotation          MethodBind `hash:"1412947288"`
+		Bind_get_path_rotation          MethodBind `hash:"647219346"`
+		Bind_set_path_rotation_accurate MethodBind `hash:"2586408642"`
+		Bind_get_path_rotation_accurate MethodBind `hash:"36873697"`
+		Bind_set_path_local             MethodBind `hash:"2586408642"`
+		Bind_is_path_local              MethodBind `hash:"36873697"`
+		Bind_set_path_continuous_u      MethodBind `hash:"2586408642"`
+		Bind_is_path_continuous_u       MethodBind `hash:"36873697"`
+		Bind_set_path_u_distance        MethodBind `hash:"373806689"`
+		Bind_get_path_u_distance        MethodBind `hash:"1740695150"`
+		Bind_set_path_joined            MethodBind `hash:"2586408642"`
+		Bind_is_path_joined             MethodBind `hash:"36873697"`
+		Bind_set_material               MethodBind `hash:"2757459619"`
+		Bind_get_material               MethodBind `hash:"5934680"`
+		Bind_set_smooth_faces           MethodBind `hash:"2586408642"`
+		Bind_get_smooth_faces           MethodBind `hash:"36873697"`
 	}
 	CSGPrimitive3D struct {
 		Bind_set_flip_faces MethodBind `hash:"2586408642"`
@@ -4262,6 +4384,8 @@ type methods struct {
 		Bind_set_calculate_tangents    MethodBind `hash:"2586408642"`
 		Bind_is_calculating_tangents   MethodBind `hash:"36873697"`
 		Bind_get_meshes                MethodBind `hash:"3995934104"`
+		Bind_bake_static_mesh          MethodBind `hash:"1605880883"`
+		Bind_bake_collision_shape      MethodBind `hash:"36102322"`
 	}
 	CSGSphere3D struct {
 		Bind_set_radius          MethodBind `hash:"373806689"`
@@ -4446,14 +4570,22 @@ type methods struct {
 		Bind_get_auto_exposure_min_sensitivity MethodBind `hash:"1740695150"`
 	}
 	CameraFeed struct {
-		Bind_get_id        MethodBind `hash:"3905245786"`
-		Bind_is_active     MethodBind `hash:"36873697"`
-		Bind_set_active    MethodBind `hash:"2586408642"`
-		Bind_get_name      MethodBind `hash:"201670096"`
-		Bind_get_position  MethodBind `hash:"2711679033"`
-		Bind_get_transform MethodBind `hash:"3814499831"`
-		Bind_set_transform MethodBind `hash:"2761652528"`
-		Bind_get_datatype  MethodBind `hash:"1477782850"`
+		Bind_get_id             MethodBind `hash:"3905245786"`
+		Bind_is_active          MethodBind `hash:"36873697"`
+		Bind_set_active         MethodBind `hash:"2586408642"`
+		Bind_get_name           MethodBind `hash:"201670096"`
+		Bind_set_name           MethodBind `hash:"83702148"`
+		Bind_get_position       MethodBind `hash:"2711679033"`
+		Bind_set_position       MethodBind `hash:"611162623"`
+		Bind_get_transform      MethodBind `hash:"3814499831"`
+		Bind_set_transform      MethodBind `hash:"2761652528"`
+		Bind_set_rgb_image      MethodBind `hash:"532598488"`
+		Bind_set_ycbcr_image    MethodBind `hash:"532598488"`
+		Bind_set_external       MethodBind `hash:"3937882851"`
+		Bind_get_texture_tex_id MethodBind `hash:"1135699418"`
+		Bind_get_datatype       MethodBind `hash:"1477782850"`
+		Bind_get_formats        MethodBind `hash:"3995934104"`
+		Bind_set_format         MethodBind `hash:"31872775"`
 	}
 	CameraServer struct {
 		Bind_get_feed       MethodBind `hash:"361927068"`
@@ -4547,6 +4679,8 @@ type methods struct {
 		Bind_get_world_2d                            MethodBind `hash:"2339128592"`
 		Bind_set_material                            MethodBind `hash:"2757459619"`
 		Bind_get_material                            MethodBind `hash:"5934680"`
+		Bind_set_instance_shader_parameter           MethodBind `hash:"3776071444"`
+		Bind_get_instance_shader_parameter           MethodBind `hash:"2760726917"`
 		Bind_set_use_parent_material                 MethodBind `hash:"2586408642"`
 		Bind_get_use_parent_material                 MethodBind `hash:"36873697"`
 		Bind_set_notify_local_transform              MethodBind `hash:"2586408642"`
@@ -4796,16 +4930,20 @@ type methods struct {
 		Bind_is_parent_class                  MethodBind `hash:"471820014"`
 		Bind_can_instantiate                  MethodBind `hash:"2619796661"`
 		Bind_instantiate                      MethodBind `hash:"2760726917"`
+		Bind_class_get_api_type               MethodBind `hash:"2475317043"`
 		Bind_class_has_signal                 MethodBind `hash:"471820014"`
 		Bind_class_get_signal                 MethodBind `hash:"3061114238"`
 		Bind_class_get_signal_list            MethodBind `hash:"3504980660"`
 		Bind_class_get_property_list          MethodBind `hash:"3504980660"`
+		Bind_class_get_property_getter        MethodBind `hash:"3770832642"`
+		Bind_class_get_property_setter        MethodBind `hash:"3770832642"`
 		Bind_class_get_property               MethodBind `hash:"2498641674"`
 		Bind_class_set_property               MethodBind `hash:"1690314931"`
 		Bind_class_get_property_default_value MethodBind `hash:"2718203076"`
 		Bind_class_has_method                 MethodBind `hash:"3860701026"`
 		Bind_class_get_method_argument_count  MethodBind `hash:"3885694822"`
 		Bind_class_get_method_list            MethodBind `hash:"3504980660"`
+		Bind_class_call_static                MethodBind `hash:"3344196419"`
 		Bind_class_get_integer_constant_list  MethodBind `hash:"3031669221"`
 		Bind_class_has_integer_constant       MethodBind `hash:"471820014"`
 		Bind_class_get_integer_constant       MethodBind `hash:"2419549490"`
@@ -4921,6 +5059,8 @@ type methods struct {
 		Bind_get_text_for_symbol_lookup            MethodBind `hash:"201670096"`
 		Bind_get_text_with_cursor_char             MethodBind `hash:"1391810591"`
 		Bind_set_symbol_lookup_word_as_valid       MethodBind `hash:"2586408642"`
+		Bind_set_symbol_tooltip_on_hover_enabled   MethodBind `hash:"2586408642"`
+		Bind_is_symbol_tooltip_on_hover_enabled    MethodBind `hash:"36873697"`
 		Bind_move_lines_up                         MethodBind `hash:"3218959716"`
 		Bind_move_lines_down                       MethodBind `hash:"3218959716"`
 		Bind_delete_lines                          MethodBind `hash:"3218959716"`
@@ -5040,14 +5180,18 @@ type methods struct {
 		Bind_get_one_way_collision_margin MethodBind `hash:"1740695150"`
 	}
 	CollisionPolygon3D struct {
-		Bind_set_depth    MethodBind `hash:"373806689"`
-		Bind_get_depth    MethodBind `hash:"1740695150"`
-		Bind_set_polygon  MethodBind `hash:"1509147220"`
-		Bind_get_polygon  MethodBind `hash:"2961356807"`
-		Bind_set_disabled MethodBind `hash:"2586408642"`
-		Bind_is_disabled  MethodBind `hash:"36873697"`
-		Bind_set_margin   MethodBind `hash:"373806689"`
-		Bind_get_margin   MethodBind `hash:"1740695150"`
+		Bind_set_depth             MethodBind `hash:"373806689"`
+		Bind_get_depth             MethodBind `hash:"1740695150"`
+		Bind_set_polygon           MethodBind `hash:"1509147220"`
+		Bind_get_polygon           MethodBind `hash:"2961356807"`
+		Bind_set_disabled          MethodBind `hash:"2586408642"`
+		Bind_is_disabled           MethodBind `hash:"36873697"`
+		Bind_set_debug_color       MethodBind `hash:"2920490490"`
+		Bind_get_debug_color       MethodBind `hash:"3444240500"`
+		Bind_set_enable_debug_fill MethodBind `hash:"2586408642"`
+		Bind_get_enable_debug_fill MethodBind `hash:"36873697"`
+		Bind_set_margin            MethodBind `hash:"373806689"`
+		Bind_get_margin            MethodBind `hash:"1740695150"`
 	}
 	CollisionShape2D struct {
 		Bind_set_shape                    MethodBind `hash:"771364740"`
@@ -5068,6 +5212,14 @@ type methods struct {
 		Bind_set_disabled              MethodBind `hash:"2586408642"`
 		Bind_is_disabled               MethodBind `hash:"36873697"`
 		Bind_make_convex_from_siblings MethodBind `hash:"3218959716"`
+		Bind_set_debug_color           MethodBind `hash:"2920490490"`
+		Bind_get_debug_color           MethodBind `hash:"3444240500"`
+		Bind_set_enable_debug_fill     MethodBind `hash:"2586408642"`
+		Bind_get_enable_debug_fill     MethodBind `hash:"36873697"`
+	}
+	ColorPalette struct {
+		Bind_set_colors MethodBind `hash:"3546319833"`
+		Bind_get_colors MethodBind `hash:"1392750486"`
 	}
 	ColorPicker struct {
 		Bind_set_pick_color       MethodBind `hash:"2920490490"`
@@ -5260,24 +5412,24 @@ type methods struct {
 		Bind_remove_theme_font_size_override MethodBind `hash:"3304788590"`
 		Bind_remove_theme_color_override     MethodBind `hash:"3304788590"`
 		Bind_remove_theme_constant_override  MethodBind `hash:"3304788590"`
-		Bind_get_theme_icon                  MethodBind `hash:"2336455395"`
-		Bind_get_theme_stylebox              MethodBind `hash:"2759935355"`
-		Bind_get_theme_font                  MethodBind `hash:"387378635"`
-		Bind_get_theme_font_size             MethodBind `hash:"229578101"`
-		Bind_get_theme_color                 MethodBind `hash:"2377051548"`
-		Bind_get_theme_constant              MethodBind `hash:"229578101"`
+		Bind_get_theme_icon                  MethodBind `hash:"3163973443"`
+		Bind_get_theme_stylebox              MethodBind `hash:"604739069"`
+		Bind_get_theme_font                  MethodBind `hash:"2826986490"`
+		Bind_get_theme_font_size             MethodBind `hash:"1327056374"`
+		Bind_get_theme_color                 MethodBind `hash:"2798751242"`
+		Bind_get_theme_constant              MethodBind `hash:"1327056374"`
 		Bind_has_theme_icon_override         MethodBind `hash:"2619796661"`
 		Bind_has_theme_stylebox_override     MethodBind `hash:"2619796661"`
 		Bind_has_theme_font_override         MethodBind `hash:"2619796661"`
 		Bind_has_theme_font_size_override    MethodBind `hash:"2619796661"`
 		Bind_has_theme_color_override        MethodBind `hash:"2619796661"`
 		Bind_has_theme_constant_override     MethodBind `hash:"2619796661"`
-		Bind_has_theme_icon                  MethodBind `hash:"1187511791"`
-		Bind_has_theme_stylebox              MethodBind `hash:"1187511791"`
-		Bind_has_theme_font                  MethodBind `hash:"1187511791"`
-		Bind_has_theme_font_size             MethodBind `hash:"1187511791"`
-		Bind_has_theme_color                 MethodBind `hash:"1187511791"`
-		Bind_has_theme_constant              MethodBind `hash:"1187511791"`
+		Bind_has_theme_icon                  MethodBind `hash:"866386512"`
+		Bind_has_theme_stylebox              MethodBind `hash:"866386512"`
+		Bind_has_theme_font                  MethodBind `hash:"866386512"`
+		Bind_has_theme_font_size             MethodBind `hash:"866386512"`
+		Bind_has_theme_color                 MethodBind `hash:"866386512"`
+		Bind_has_theme_constant              MethodBind `hash:"866386512"`
 		Bind_get_theme_default_base_scale    MethodBind `hash:"1740695150"`
 		Bind_get_theme_default_font          MethodBind `hash:"3229501585"`
 		Bind_get_theme_default_font_size     MethodBind `hash:"3905245786"`
@@ -5286,6 +5438,8 @@ type methods struct {
 		Bind_get_h_grow_direction            MethodBind `hash:"3635610155"`
 		Bind_set_v_grow_direction            MethodBind `hash:"2022385301"`
 		Bind_get_v_grow_direction            MethodBind `hash:"3635610155"`
+		Bind_set_tooltip_auto_translate_mode MethodBind `hash:"776149714"`
+		Bind_get_tooltip_auto_translate_mode MethodBind `hash:"2498906432"`
 		Bind_set_tooltip_text                MethodBind `hash:"83702148"`
 		Bind_get_tooltip_text                MethodBind `hash:"201670096"`
 		Bind_get_tooltip                     MethodBind `hash:"2895288280"`
@@ -5377,6 +5531,12 @@ type methods struct {
 		Bind_set_min_value           MethodBind `hash:"373806689"`
 		Bind_get_max_value           MethodBind `hash:"1740695150"`
 		Bind_set_max_value           MethodBind `hash:"373806689"`
+		Bind_get_value_range         MethodBind `hash:"1740695150"`
+		Bind_get_min_domain          MethodBind `hash:"1740695150"`
+		Bind_set_min_domain          MethodBind `hash:"373806689"`
+		Bind_get_max_domain          MethodBind `hash:"1740695150"`
+		Bind_set_max_domain          MethodBind `hash:"373806689"`
+		Bind_get_domain_range        MethodBind `hash:"1740695150"`
 		Bind_clean_dupes             MethodBind `hash:"3218959716"`
 		Bind_bake                    MethodBind `hash:"3218959716"`
 		Bind_get_bake_resolution     MethodBind `hash:"3905245786"`
@@ -5423,6 +5583,8 @@ type methods struct {
 		Bind_clear_points               MethodBind `hash:"3218959716"`
 		Bind_sample                     MethodBind `hash:"3285246857"`
 		Bind_samplef                    MethodBind `hash:"2553580215"`
+		Bind_set_closed                 MethodBind `hash:"2586408642"`
+		Bind_is_closed                  MethodBind `hash:"36873697"`
 		Bind_set_bake_interval          MethodBind `hash:"373806689"`
 		Bind_get_bake_interval          MethodBind `hash:"1740695150"`
 		Bind_set_up_vector_enabled      MethodBind `hash:"2586408642"`
@@ -5520,7 +5682,8 @@ type methods struct {
 	DirAccess struct {
 		Bind_open                        MethodBind `hash:"1923528528"`
 		Bind_get_open_error              MethodBind `hash:"166280745"`
-		Bind_list_dir_begin              MethodBind `hash:"2610976713"`
+		Bind_create_temp                 MethodBind `hash:"812913566"`
+		Bind_list_dir_begin              MethodBind `hash:"166280745"`
 		Bind_get_next                    MethodBind `hash:"2841200299"`
 		Bind_current_is_dir              MethodBind `hash:"36873697"`
 		Bind_list_dir_end                MethodBind `hash:"3218959716"`
@@ -5550,6 +5713,7 @@ type methods struct {
 		Bind_is_link                     MethodBind `hash:"2323990056"`
 		Bind_read_link                   MethodBind `hash:"1703090593"`
 		Bind_create_link                 MethodBind `hash:"852856452"`
+		Bind_is_bundle                   MethodBind `hash:"3927539163"`
 		Bind_set_include_navigational    MethodBind `hash:"2586408642"`
 		Bind_get_include_navigational    MethodBind `hash:"36873697"`
 		Bind_set_include_hidden          MethodBind `hash:"2586408642"`
@@ -5574,13 +5738,13 @@ type methods struct {
 		Bind_help_set_search_callbacks              MethodBind `hash:"1687350599"`
 		Bind_global_menu_set_popup_callbacks        MethodBind `hash:"3893727526"`
 		Bind_global_menu_add_submenu_item           MethodBind `hash:"2828985934"`
-		Bind_global_menu_add_item                   MethodBind `hash:"3401266716"`
-		Bind_global_menu_add_check_item             MethodBind `hash:"3401266716"`
-		Bind_global_menu_add_icon_item              MethodBind `hash:"4245856523"`
-		Bind_global_menu_add_icon_check_item        MethodBind `hash:"4245856523"`
-		Bind_global_menu_add_radio_check_item       MethodBind `hash:"3401266716"`
-		Bind_global_menu_add_icon_radio_check_item  MethodBind `hash:"4245856523"`
-		Bind_global_menu_add_multistate_item        MethodBind `hash:"3431222859"`
+		Bind_global_menu_add_item                   MethodBind `hash:"3616842746"`
+		Bind_global_menu_add_check_item             MethodBind `hash:"3616842746"`
+		Bind_global_menu_add_icon_item              MethodBind `hash:"3867083847"`
+		Bind_global_menu_add_icon_check_item        MethodBind `hash:"3867083847"`
+		Bind_global_menu_add_radio_check_item       MethodBind `hash:"3616842746"`
+		Bind_global_menu_add_icon_radio_check_item  MethodBind `hash:"3867083847"`
+		Bind_global_menu_add_multistate_item        MethodBind `hash:"3297554655"`
 		Bind_global_menu_add_separator              MethodBind `hash:"3214812433"`
 		Bind_global_menu_get_item_index_from_text   MethodBind `hash:"2878152881"`
 		Bind_global_menu_get_item_index_from_tag    MethodBind `hash:"2941063483"`
@@ -5658,11 +5822,12 @@ type methods struct {
 		Bind_screen_get_usable_rect                 MethodBind `hash:"2439012528"`
 		Bind_screen_get_dpi                         MethodBind `hash:"181039630"`
 		Bind_screen_get_scale                       MethodBind `hash:"909105437"`
-		Bind_is_touchscreen_available               MethodBind `hash:"3323674545"`
+		Bind_is_touchscreen_available               MethodBind `hash:"36873697"`
 		Bind_screen_get_max_scale                   MethodBind `hash:"1740695150"`
 		Bind_screen_get_refresh_rate                MethodBind `hash:"909105437"`
 		Bind_screen_get_pixel                       MethodBind `hash:"1532707496"`
 		Bind_screen_get_image                       MethodBind `hash:"3813388802"`
+		Bind_screen_get_image_rect                  MethodBind `hash:"2601441065"`
 		Bind_screen_set_orientation                 MethodBind `hash:"2211511631"`
 		Bind_screen_get_orientation                 MethodBind `hash:"133818562"`
 		Bind_screen_set_keep_on                     MethodBind `hash:"2586408642"`
@@ -5713,11 +5878,14 @@ type methods struct {
 		Bind_window_is_maximize_allowed             MethodBind `hash:"1051549951"`
 		Bind_window_maximize_on_title_dbl_click     MethodBind `hash:"36873697"`
 		Bind_window_minimize_on_title_dbl_click     MethodBind `hash:"36873697"`
+		Bind_window_start_drag                      MethodBind `hash:"1995695955"`
+		Bind_window_start_resize                    MethodBind `hash:"4009722312"`
 		Bind_ime_get_selection                      MethodBind `hash:"3690982128"`
 		Bind_ime_get_text                           MethodBind `hash:"201670096"`
 		Bind_virtual_keyboard_show                  MethodBind `hash:"3042891259"`
 		Bind_virtual_keyboard_hide                  MethodBind `hash:"3218959716"`
 		Bind_virtual_keyboard_get_height            MethodBind `hash:"3905245786"`
+		Bind_has_hardware_keyboard                  MethodBind `hash:"36873697"`
 		Bind_cursor_set_shape                       MethodBind `hash:"2026291549"`
 		Bind_cursor_get_shape                       MethodBind `hash:"1087724927"`
 		Bind_cursor_set_custom_image                MethodBind `hash:"1816663697"`
@@ -5727,6 +5895,7 @@ type methods struct {
 		Bind_dialog_input_text                      MethodBind `hash:"3088703427"`
 		Bind_file_dialog_show                       MethodBind `hash:"1531299078"`
 		Bind_file_dialog_with_options_show          MethodBind `hash:"1305318754"`
+		Bind_beep                                   MethodBind `hash:"4051624405"`
 		Bind_keyboard_get_layout_count              MethodBind `hash:"3905245786"`
 		Bind_keyboard_get_current_layout            MethodBind `hash:"3905245786"`
 		Bind_keyboard_set_current_layout            MethodBind `hash:"1286410249"`
@@ -5734,6 +5903,7 @@ type methods struct {
 		Bind_keyboard_get_layout_name               MethodBind `hash:"844755477"`
 		Bind_keyboard_get_keycode_from_physical     MethodBind `hash:"3447613187"`
 		Bind_keyboard_get_label_from_physical       MethodBind `hash:"3447613187"`
+		Bind_show_emoji_and_symbol_picker           MethodBind `hash:"4051624405"`
 		Bind_process_events                         MethodBind `hash:"3218959716"`
 		Bind_force_process_and_drop_events          MethodBind `hash:"3218959716"`
 		Bind_set_native_icon                        MethodBind `hash:"83702148"`
@@ -5793,6 +5963,7 @@ type methods struct {
 		Bind_send                  MethodBind `hash:"120522849"`
 		Bind_throttle_configure    MethodBind `hash:"1649997291"`
 		Bind_set_timeout           MethodBind `hash:"1649997291"`
+		Bind_get_packet_flags      MethodBind `hash:"3905245786"`
 		Bind_get_remote_address    MethodBind `hash:"201670096"`
 		Bind_get_remote_port       MethodBind `hash:"3905245786"`
 		Bind_get_statistic         MethodBind `hash:"1642578323"`
@@ -5803,6 +5974,12 @@ type methods struct {
 	EditorCommandPalette struct {
 		Bind_add_command    MethodBind `hash:"864043298"`
 		Bind_remove_command MethodBind `hash:"83702148"`
+	}
+	EditorContextMenuPlugin struct {
+		Bind_add_menu_shortcut                   MethodBind `hash:"851596305"`
+		Bind_add_context_menu_item               MethodBind `hash:"2748336951"`
+		Bind_add_context_menu_item_from_shortcut MethodBind `hash:"3799546916"`
+		Bind_add_context_submenu_item            MethodBind `hash:"1994674995"`
 	}
 	EditorDebuggerPlugin struct {
 		Bind_get_session  MethodBind `hash:"3061968499"`
@@ -5819,9 +5996,41 @@ type methods struct {
 		Bind_set_breakpoint     MethodBind `hash:"4108344793"`
 	}
 	EditorExportPlatform struct {
-		Bind_get_os_name MethodBind `hash:"201670096"`
+		Bind_get_os_name               MethodBind `hash:"201670096"`
+		Bind_create_preset             MethodBind `hash:"2572397818"`
+		Bind_find_export_template      MethodBind `hash:"2248993622"`
+		Bind_get_current_presets       MethodBind `hash:"3995934104"`
+		Bind_save_pack                 MethodBind `hash:"3420080977"`
+		Bind_save_zip                  MethodBind `hash:"1485052307"`
+		Bind_save_pack_patch           MethodBind `hash:"1485052307"`
+		Bind_save_zip_patch            MethodBind `hash:"1485052307"`
+		Bind_gen_export_flags          MethodBind `hash:"2976483270"`
+		Bind_export_project_files      MethodBind `hash:"1063735070"`
+		Bind_export_project            MethodBind `hash:"3879521245"`
+		Bind_export_pack               MethodBind `hash:"3879521245"`
+		Bind_export_zip                MethodBind `hash:"3879521245"`
+		Bind_export_pack_patch         MethodBind `hash:"608021658"`
+		Bind_export_zip_patch          MethodBind `hash:"608021658"`
+		Bind_clear_messages            MethodBind `hash:"3218959716"`
+		Bind_add_message               MethodBind `hash:"782767225"`
+		Bind_get_message_count         MethodBind `hash:"3905245786"`
+		Bind_get_message_type          MethodBind `hash:"2667287293"`
+		Bind_get_message_category      MethodBind `hash:"844755477"`
+		Bind_get_message_text          MethodBind `hash:"844755477"`
+		Bind_get_worst_message_type    MethodBind `hash:"2580557466"`
+		Bind_ssh_run_on_remote         MethodBind `hash:"3163734797"`
+		Bind_ssh_run_on_remote_no_wait MethodBind `hash:"3606362233"`
+		Bind_ssh_push_to_remote        MethodBind `hash:"218756989"`
+		Bind_get_internal_export_files MethodBind `hash:"89550086"`
+		Bind_get_forced_export_files   MethodBind `hash:"2981934095"`
 	}
 	EditorExportPlatformAndroid struct {
+	}
+	EditorExportPlatformExtension struct {
+		Bind_set_config_error             MethodBind `hash:"3089850668"`
+		Bind_get_config_error             MethodBind `hash:"201670096"`
+		Bind_set_config_missing_templates MethodBind `hash:"1695273946"`
+		Bind_get_config_missing_templates MethodBind `hash:"36873697"`
 	}
 	EditorExportPlatformIOS struct {
 	}
@@ -5848,6 +6057,34 @@ type methods struct {
 		Bind_add_macos_plugin_file      MethodBind `hash:"83702148"`
 		Bind_skip                       MethodBind `hash:"3218959716"`
 		Bind_get_option                 MethodBind `hash:"2760726917"`
+		Bind_get_export_preset          MethodBind `hash:"1610607222"`
+		Bind_get_export_platform        MethodBind `hash:"282254641"`
+	}
+	EditorExportPreset struct {
+		Bind_has                          MethodBind `hash:"2619796661"`
+		Bind_get_files_to_export          MethodBind `hash:"1139954409"`
+		Bind_get_customized_files         MethodBind `hash:"3102165223"`
+		Bind_get_customized_files_count   MethodBind `hash:"3905245786"`
+		Bind_has_export_file              MethodBind `hash:"2323990056"`
+		Bind_get_file_export_mode         MethodBind `hash:"407825436"`
+		Bind_get_preset_name              MethodBind `hash:"201670096"`
+		Bind_is_runnable                  MethodBind `hash:"36873697"`
+		Bind_are_advanced_options_enabled MethodBind `hash:"36873697"`
+		Bind_is_dedicated_server          MethodBind `hash:"36873697"`
+		Bind_get_export_filter            MethodBind `hash:"4227045696"`
+		Bind_get_include_filter           MethodBind `hash:"201670096"`
+		Bind_get_exclude_filter           MethodBind `hash:"201670096"`
+		Bind_get_custom_features          MethodBind `hash:"201670096"`
+		Bind_get_patches                  MethodBind `hash:"1139954409"`
+		Bind_get_export_path              MethodBind `hash:"201670096"`
+		Bind_get_encryption_in_filter     MethodBind `hash:"201670096"`
+		Bind_get_encryption_ex_filter     MethodBind `hash:"201670096"`
+		Bind_get_encrypt_pck              MethodBind `hash:"36873697"`
+		Bind_get_encrypt_directory        MethodBind `hash:"36873697"`
+		Bind_get_encryption_key           MethodBind `hash:"201670096"`
+		Bind_get_script_export_mode       MethodBind `hash:"3905245786"`
+		Bind_get_or_env                   MethodBind `hash:"389838787"`
+		Bind_get_version                  MethodBind `hash:"1132184663"`
 	}
 	EditorFeatureProfile struct {
 		Bind_set_disable_class          MethodBind `hash:"2524380260"`
@@ -5877,6 +6114,9 @@ type methods struct {
 		Bind_get_option_count              MethodBind `hash:"3905245786"`
 		Bind_add_option                    MethodBind `hash:"149592325"`
 		Bind_get_selected_options          MethodBind `hash:"3102165223"`
+		Bind_clear_filename_filter         MethodBind `hash:"3218959716"`
+		Bind_set_filename_filter           MethodBind `hash:"83702148"`
+		Bind_get_filename_filter           MethodBind `hash:"201670096"`
 		Bind_get_current_dir               MethodBind `hash:"201670096"`
 		Bind_get_current_file              MethodBind `hash:"201670096"`
 		Bind_get_current_path              MethodBind `hash:"201670096"`
@@ -5932,8 +6172,10 @@ type methods struct {
 		Bind_append_import_external_resource MethodBind `hash:"320493106"`
 	}
 	EditorInspector struct {
-		Bind_get_selected_path MethodBind `hash:"201670096"`
-		Bind_get_edited_object MethodBind `hash:"2050059866"`
+		Bind_edit                        MethodBind `hash:"3975164845"`
+		Bind_get_selected_path           MethodBind `hash:"201670096"`
+		Bind_get_edited_object           MethodBind `hash:"2050059866"`
+		Bind_instantiate_property_editor MethodBind `hash:"1429914152"`
 	}
 	EditorInspectorPlugin struct {
 		Bind_add_custom_control                          MethodBind `hash:"1496901182"`
@@ -5948,6 +6190,8 @@ type methods struct {
 		Bind_get_resource_previewer           MethodBind `hash:"943486957"`
 		Bind_get_selection                    MethodBind `hash:"2690272531"`
 		Bind_get_editor_settings              MethodBind `hash:"4086932459"`
+		Bind_get_editor_toaster               MethodBind `hash:"3612675797"`
+		Bind_get_editor_undo_redo             MethodBind `hash:"3819628421"`
 		Bind_make_mesh_previews               MethodBind `hash:"878078554"`
 		Bind_set_plugin_enabled               MethodBind `hash:"2678287736"`
 		Bind_is_plugin_enabled                MethodBind `hash:"3927539163"`
@@ -5968,8 +6212,11 @@ type methods struct {
 		Bind_popup_dialog_centered_clamped    MethodBind `hash:"3763385571"`
 		Bind_get_current_feature_profile      MethodBind `hash:"201670096"`
 		Bind_set_current_feature_profile      MethodBind `hash:"83702148"`
-		Bind_popup_node_selector              MethodBind `hash:"2271411043"`
-		Bind_popup_property_selector          MethodBind `hash:"261221679"`
+		Bind_popup_node_selector              MethodBind `hash:"2444591477"`
+		Bind_popup_property_selector          MethodBind `hash:"2955609011"`
+		Bind_popup_method_selector            MethodBind `hash:"3585505226"`
+		Bind_popup_quick_open                 MethodBind `hash:"2271411043"`
+		Bind_popup_create_dialog              MethodBind `hash:"495277124"`
 		Bind_get_file_system_dock             MethodBind `hash:"3751012327"`
 		Bind_select_file                      MethodBind `hash:"83702148"`
 		Bind_get_selected_paths               MethodBind `hash:"1139954409"`
@@ -5980,7 +6227,7 @@ type methods struct {
 		Bind_edit_resource                    MethodBind `hash:"968641751"`
 		Bind_edit_node                        MethodBind `hash:"1078189570"`
 		Bind_edit_script                      MethodBind `hash:"219829402"`
-		Bind_open_scene_from_path             MethodBind `hash:"83702148"`
+		Bind_open_scene_from_path             MethodBind `hash:"1168363258"`
 		Bind_reload_scene_from_path           MethodBind `hash:"83702148"`
 		Bind_get_open_scenes                  MethodBind `hash:"1139954409"`
 		Bind_get_edited_scene_root            MethodBind `hash:"3160264692"`
@@ -6060,6 +6307,8 @@ type methods struct {
 		Bind_remove_scene_post_import_plugin           MethodBind `hash:"3045178206"`
 		Bind_add_export_plugin                         MethodBind `hash:"4095952207"`
 		Bind_remove_export_plugin                      MethodBind `hash:"4095952207"`
+		Bind_add_export_platform                       MethodBind `hash:"3431312373"`
+		Bind_remove_export_platform                    MethodBind `hash:"3431312373"`
 		Bind_add_node_3d_gizmo_plugin                  MethodBind `hash:"1541015022"`
 		Bind_remove_node_3d_gizmo_plugin               MethodBind `hash:"1541015022"`
 		Bind_add_inspector_plugin                      MethodBind `hash:"546395733"`
@@ -6068,6 +6317,8 @@ type methods struct {
 		Bind_remove_resource_conversion_plugin         MethodBind `hash:"2124849111"`
 		Bind_set_input_event_forwarding_always_enabled MethodBind `hash:"3218959716"`
 		Bind_set_force_draw_over_forwarding_enabled    MethodBind `hash:"3218959716"`
+		Bind_add_context_menu_plugin                   MethodBind `hash:"1904221872"`
+		Bind_remove_context_menu_plugin                MethodBind `hash:"2281511854"`
 		Bind_get_editor_interface                      MethodBind `hash:"4223731786"`
 		Bind_get_script_create_dialog                  MethodBind `hash:"3121871482"`
 		Bind_add_debugger_plugin                       MethodBind `hash:"3749880309"`
@@ -6075,26 +6326,41 @@ type methods struct {
 		Bind_get_plugin_version                        MethodBind `hash:"201670096"`
 	}
 	EditorProperty struct {
-		Bind_set_label           MethodBind `hash:"83702148"`
-		Bind_get_label           MethodBind `hash:"201670096"`
-		Bind_set_read_only       MethodBind `hash:"2586408642"`
-		Bind_is_read_only        MethodBind `hash:"36873697"`
-		Bind_set_checkable       MethodBind `hash:"2586408642"`
-		Bind_is_checkable        MethodBind `hash:"36873697"`
-		Bind_set_checked         MethodBind `hash:"2586408642"`
-		Bind_is_checked          MethodBind `hash:"36873697"`
-		Bind_set_draw_warning    MethodBind `hash:"2586408642"`
-		Bind_is_draw_warning     MethodBind `hash:"36873697"`
-		Bind_set_keying          MethodBind `hash:"2586408642"`
-		Bind_is_keying           MethodBind `hash:"36873697"`
-		Bind_set_deletable       MethodBind `hash:"2586408642"`
-		Bind_is_deletable        MethodBind `hash:"36873697"`
-		Bind_get_edited_property MethodBind `hash:"2002593661"`
-		Bind_get_edited_object   MethodBind `hash:"2050059866"`
-		Bind_update_property     MethodBind `hash:"3218959716"`
-		Bind_add_focusable       MethodBind `hash:"1496901182"`
-		Bind_set_bottom_editor   MethodBind `hash:"1496901182"`
-		Bind_emit_changed        MethodBind `hash:"3069422438"`
+		Bind_set_label               MethodBind `hash:"83702148"`
+		Bind_get_label               MethodBind `hash:"201670096"`
+		Bind_set_read_only           MethodBind `hash:"2586408642"`
+		Bind_is_read_only            MethodBind `hash:"36873697"`
+		Bind_set_draw_label          MethodBind `hash:"2586408642"`
+		Bind_is_draw_label           MethodBind `hash:"36873697"`
+		Bind_set_draw_background     MethodBind `hash:"2586408642"`
+		Bind_is_draw_background      MethodBind `hash:"36873697"`
+		Bind_set_checkable           MethodBind `hash:"2586408642"`
+		Bind_is_checkable            MethodBind `hash:"36873697"`
+		Bind_set_checked             MethodBind `hash:"2586408642"`
+		Bind_is_checked              MethodBind `hash:"36873697"`
+		Bind_set_draw_warning        MethodBind `hash:"2586408642"`
+		Bind_is_draw_warning         MethodBind `hash:"36873697"`
+		Bind_set_keying              MethodBind `hash:"2586408642"`
+		Bind_is_keying               MethodBind `hash:"36873697"`
+		Bind_set_deletable           MethodBind `hash:"2586408642"`
+		Bind_is_deletable            MethodBind `hash:"36873697"`
+		Bind_get_edited_property     MethodBind `hash:"2002593661"`
+		Bind_get_edited_object       MethodBind `hash:"2050059866"`
+		Bind_update_property         MethodBind `hash:"3218959716"`
+		Bind_add_focusable           MethodBind `hash:"1496901182"`
+		Bind_set_bottom_editor       MethodBind `hash:"1496901182"`
+		Bind_set_selectable          MethodBind `hash:"2586408642"`
+		Bind_is_selectable           MethodBind `hash:"36873697"`
+		Bind_set_use_folding         MethodBind `hash:"2586408642"`
+		Bind_is_using_folding        MethodBind `hash:"36873697"`
+		Bind_set_name_split_ratio    MethodBind `hash:"373806689"`
+		Bind_get_name_split_ratio    MethodBind `hash:"1740695150"`
+		Bind_deselect                MethodBind `hash:"3218959716"`
+		Bind_is_selected             MethodBind `hash:"36873697"`
+		Bind_select_                 MethodBind `hash:"1025054187"`
+		Bind_set_object_and_property MethodBind `hash:"4157606280"`
+		Bind_set_label_reference     MethodBind `hash:"1496901182"`
+		Bind_emit_changed            MethodBind `hash:"1822500399"`
 	}
 	EditorResourceConversionPlugin struct {
 	}
@@ -6123,6 +6389,8 @@ type methods struct {
 		Bind_request_thumbnail MethodBind `hash:"3245519720"`
 	}
 	EditorSceneFormatImporter struct {
+		Bind_add_import_option          MethodBind `hash:"402577236"`
+		Bind_add_import_option_advanced MethodBind `hash:"3674075649"`
 	}
 	EditorSceneFormatImporterBlend struct {
 	}
@@ -6175,18 +6443,23 @@ type methods struct {
 		Bind_mark_setting_changed            MethodBind `hash:"83702148"`
 	}
 	EditorSpinSlider struct {
-		Bind_set_label        MethodBind `hash:"83702148"`
-		Bind_get_label        MethodBind `hash:"201670096"`
-		Bind_set_suffix       MethodBind `hash:"83702148"`
-		Bind_get_suffix       MethodBind `hash:"201670096"`
-		Bind_set_read_only    MethodBind `hash:"2586408642"`
-		Bind_is_read_only     MethodBind `hash:"36873697"`
-		Bind_set_flat         MethodBind `hash:"2586408642"`
-		Bind_is_flat          MethodBind `hash:"36873697"`
-		Bind_set_hide_slider  MethodBind `hash:"2586408642"`
-		Bind_is_hiding_slider MethodBind `hash:"36873697"`
+		Bind_set_label           MethodBind `hash:"83702148"`
+		Bind_get_label           MethodBind `hash:"201670096"`
+		Bind_set_suffix          MethodBind `hash:"83702148"`
+		Bind_get_suffix          MethodBind `hash:"201670096"`
+		Bind_set_read_only       MethodBind `hash:"2586408642"`
+		Bind_is_read_only        MethodBind `hash:"36873697"`
+		Bind_set_flat            MethodBind `hash:"2586408642"`
+		Bind_is_flat             MethodBind `hash:"36873697"`
+		Bind_set_hide_slider     MethodBind `hash:"2586408642"`
+		Bind_is_hiding_slider    MethodBind `hash:"36873697"`
+		Bind_set_editing_integer MethodBind `hash:"2586408642"`
+		Bind_is_editing_integer  MethodBind `hash:"36873697"`
 	}
 	EditorSyntaxHighlighter struct {
+	}
+	EditorToaster struct {
+		Bind_push_toast MethodBind `hash:"1813923476"`
 	}
 	EditorTranslationParserPlugin struct {
 	}
@@ -6203,6 +6476,7 @@ type methods struct {
 		Bind_add_undo_reference    MethodBind `hash:"3975164845"`
 		Bind_get_object_history_id MethodBind `hash:"1107568780"`
 		Bind_get_history_undo_redo MethodBind `hash:"2417974513"`
+		Bind_clear_history         MethodBind `hash:"2020603371"`
 	}
 	EditorVCSInterface struct {
 		Bind_create_diff_line              MethodBind `hash:"2901184053"`
@@ -6253,7 +6527,10 @@ type methods struct {
 		Bind_get_script_language_count          MethodBind `hash:"2455072627"`
 		Bind_get_script_language                MethodBind `hash:"2151255799"`
 		Bind_is_editor_hint                     MethodBind `hash:"36873697"`
+		Bind_is_embedded_in_editor              MethodBind `hash:"36873697"`
 		Bind_get_write_movie_path               MethodBind `hash:"201670096"`
+		Bind_set_print_to_stdout                MethodBind `hash:"2586408642"`
+		Bind_is_printing_to_stdout              MethodBind `hash:"36873697"`
 		Bind_set_print_error_messages           MethodBind `hash:"2586408642"`
 		Bind_is_printing_error_messages         MethodBind `hash:"36873697"`
 	}
@@ -6476,6 +6753,11 @@ type methods struct {
 		Bind_has_execute_failed MethodBind `hash:"36873697"`
 		Bind_get_error_text     MethodBind `hash:"201670096"`
 	}
+	ExternalTexture struct {
+		Bind_set_size                MethodBind `hash:"743155724"`
+		Bind_get_external_texture_id MethodBind `hash:"3905245786"`
+		Bind_set_external_buffer_id  MethodBind `hash:"1286410249"`
+	}
 	FBXDocument struct {
 	}
 	FBXState struct {
@@ -6528,10 +6810,11 @@ type methods struct {
 	}
 	FileAccess struct {
 		Bind_open                     MethodBind `hash:"1247358404"`
-		Bind_open_encrypted           MethodBind `hash:"1482131466"`
+		Bind_open_encrypted           MethodBind `hash:"788003459"`
 		Bind_open_encrypted_with_pass MethodBind `hash:"790283377"`
 		Bind_open_compressed          MethodBind `hash:"3686439335"`
 		Bind_get_open_error           MethodBind `hash:"166280745"`
+		Bind_create_temp              MethodBind `hash:"3075606245"`
 		Bind_get_file_as_bytes        MethodBind `hash:"659035735"`
 		Bind_get_file_as_string       MethodBind `hash:"1703090593"`
 		Bind_resize                   MethodBind `hash:"844576869"`
@@ -6548,6 +6831,7 @@ type methods struct {
 		Bind_get_16                   MethodBind `hash:"3905245786"`
 		Bind_get_32                   MethodBind `hash:"3905245786"`
 		Bind_get_64                   MethodBind `hash:"3905245786"`
+		Bind_get_half                 MethodBind `hash:"1740695150"`
 		Bind_get_float                MethodBind `hash:"1740695150"`
 		Bind_get_double               MethodBind `hash:"1740695150"`
 		Bind_get_real                 MethodBind `hash:"1740695150"`
@@ -6561,19 +6845,20 @@ type methods struct {
 		Bind_set_big_endian           MethodBind `hash:"2586408642"`
 		Bind_get_error                MethodBind `hash:"3185525595"`
 		Bind_get_var                  MethodBind `hash:"189129690"`
-		Bind_store_8                  MethodBind `hash:"1286410249"`
-		Bind_store_16                 MethodBind `hash:"1286410249"`
-		Bind_store_32                 MethodBind `hash:"1286410249"`
-		Bind_store_64                 MethodBind `hash:"1286410249"`
-		Bind_store_float              MethodBind `hash:"373806689"`
-		Bind_store_double             MethodBind `hash:"373806689"`
-		Bind_store_real               MethodBind `hash:"373806689"`
-		Bind_store_buffer             MethodBind `hash:"2971499966"`
-		Bind_store_line               MethodBind `hash:"83702148"`
-		Bind_store_csv_line           MethodBind `hash:"2173791505"`
-		Bind_store_string             MethodBind `hash:"83702148"`
-		Bind_store_var                MethodBind `hash:"738511890"`
-		Bind_store_pascal_string      MethodBind `hash:"83702148"`
+		Bind_store_8                  MethodBind `hash:"3067735520"`
+		Bind_store_16                 MethodBind `hash:"3067735520"`
+		Bind_store_32                 MethodBind `hash:"3067735520"`
+		Bind_store_64                 MethodBind `hash:"3067735520"`
+		Bind_store_half               MethodBind `hash:"330693286"`
+		Bind_store_float              MethodBind `hash:"330693286"`
+		Bind_store_double             MethodBind `hash:"330693286"`
+		Bind_store_real               MethodBind `hash:"330693286"`
+		Bind_store_buffer             MethodBind `hash:"114037665"`
+		Bind_store_line               MethodBind `hash:"2323990056"`
+		Bind_store_csv_line           MethodBind `hash:"1611473434"`
+		Bind_store_string             MethodBind `hash:"2323990056"`
+		Bind_store_var                MethodBind `hash:"117357437"`
+		Bind_store_pascal_string      MethodBind `hash:"2323990056"`
 		Bind_get_pascal_string        MethodBind `hash:"2841200299"`
 		Bind_close                    MethodBind `hash:"3218959716"`
 		Bind_file_exists              MethodBind `hash:"2323990056"`
@@ -6590,6 +6875,9 @@ type methods struct {
 		Bind_add_filter               MethodBind `hash:"3388804757"`
 		Bind_set_filters              MethodBind `hash:"4015028928"`
 		Bind_get_filters              MethodBind `hash:"1139954409"`
+		Bind_clear_filename_filter    MethodBind `hash:"3218959716"`
+		Bind_set_filename_filter      MethodBind `hash:"83702148"`
+		Bind_get_filename_filter      MethodBind `hash:"201670096"`
 		Bind_get_option_name          MethodBind `hash:"844755477"`
 		Bind_get_option_values        MethodBind `hash:"647634434"`
 		Bind_get_option_default       MethodBind `hash:"923996154"`
@@ -6731,6 +7019,8 @@ type methods struct {
 		Bind_get_hinting                            MethodBind `hash:"3683214614"`
 		Bind_set_subpixel_positioning               MethodBind `hash:"4225742182"`
 		Bind_get_subpixel_positioning               MethodBind `hash:"1069238588"`
+		Bind_set_keep_rounding_remainders           MethodBind `hash:"2586408642"`
+		Bind_get_keep_rounding_remainders           MethodBind `hash:"36873697"`
 		Bind_set_oversampling                       MethodBind `hash:"373806689"`
 		Bind_get_oversampling                       MethodBind `hash:"1740695150"`
 		Bind_get_cache_count                        MethodBind `hash:"3905245786"`
@@ -6835,6 +7125,8 @@ type methods struct {
 	GDScript struct {
 		Bind_new MethodBind `hash:"1545262638"`
 	}
+	GDScriptSyntaxHighlighter struct {
+	}
 	GLTFAccessor struct {
 		Bind_get_buffer_view                   MethodBind `hash:"2455072627"`
 		Bind_set_buffer_view                   MethodBind `hash:"1286410249"`
@@ -6919,8 +7211,11 @@ type methods struct {
 		Bind_generate_scene                     MethodBind `hash:"596118388"`
 		Bind_generate_buffer                    MethodBind `hash:"741783455"`
 		Bind_write_to_filesystem                MethodBind `hash:"1784551478"`
+		Bind_import_object_model_property       MethodBind `hash:"1206708632"`
+		Bind_export_object_model_property       MethodBind `hash:"314209806"`
 		Bind_register_gltf_document_extension   MethodBind `hash:"3752678331"`
 		Bind_unregister_gltf_document_extension MethodBind `hash:"2684415758"`
+		Bind_get_supported_gltf_extensions      MethodBind `hash:"2981934095"`
 	}
 	GLTFDocumentExtension struct {
 	}
@@ -6983,10 +7278,32 @@ type methods struct {
 		Bind_set_scale           MethodBind `hash:"3460891852"`
 		Bind_get_children        MethodBind `hash:"969006518"`
 		Bind_set_children        MethodBind `hash:"3614634198"`
+		Bind_append_child_index  MethodBind `hash:"1286410249"`
 		Bind_get_light           MethodBind `hash:"2455072627"`
 		Bind_set_light           MethodBind `hash:"1286410249"`
 		Bind_get_additional_data MethodBind `hash:"2138907829"`
 		Bind_set_additional_data MethodBind `hash:"3776071444"`
+		Bind_get_scene_node_path MethodBind `hash:"573359477"`
+	}
+	GLTFObjectModelProperty struct {
+		Bind_append_node_path             MethodBind `hash:"1348162250"`
+		Bind_append_path_to_property      MethodBind `hash:"1331931644"`
+		Bind_get_accessor_type            MethodBind `hash:"1998183368"`
+		Bind_get_gltf_to_godot_expression MethodBind `hash:"2240072449"`
+		Bind_set_gltf_to_godot_expression MethodBind `hash:"1815845073"`
+		Bind_get_godot_to_gltf_expression MethodBind `hash:"2240072449"`
+		Bind_set_godot_to_gltf_expression MethodBind `hash:"1815845073"`
+		Bind_get_node_paths               MethodBind `hash:"3995934104"`
+		Bind_has_node_paths               MethodBind `hash:"36873697"`
+		Bind_set_node_paths               MethodBind `hash:"381264803"`
+		Bind_get_object_model_type        MethodBind `hash:"1094778507"`
+		Bind_set_object_model_type        MethodBind `hash:"4108684086"`
+		Bind_get_json_pointers            MethodBind `hash:"3995934104"`
+		Bind_has_json_pointers            MethodBind `hash:"36873697"`
+		Bind_set_json_pointers            MethodBind `hash:"381264803"`
+		Bind_get_variant_type             MethodBind `hash:"3416842102"`
+		Bind_set_variant_type             MethodBind `hash:"2887708385"`
+		Bind_set_types                    MethodBind `hash:"4150728237"`
 	}
 	GLTFPhysicsBody struct {
 		Bind_from_node               MethodBind `hash:"420544174"`
@@ -7082,6 +7399,7 @@ type methods struct {
 	GLTFState struct {
 		Bind_add_used_extension           MethodBind `hash:"2678287736"`
 		Bind_append_data_to_buffers       MethodBind `hash:"1460416665"`
+		Bind_append_gltf_node             MethodBind `hash:"3562288551"`
 		Bind_get_json                     MethodBind `hash:"2382534195"`
 		Bind_set_json                     MethodBind `hash:"4155329257"`
 		Bind_get_major_version            MethodBind `hash:"2455072627"`
@@ -7182,6 +7500,7 @@ type methods struct {
 		Bind_set_speed_scale                MethodBind `hash:"373806689"`
 		Bind_set_collision_base_size        MethodBind `hash:"373806689"`
 		Bind_set_interp_to_end              MethodBind `hash:"373806689"`
+		Bind_request_particles_process      MethodBind `hash:"373806689"`
 		Bind_is_emitting                    MethodBind `hash:"36873697"`
 		Bind_get_amount                     MethodBind `hash:"3905245786"`
 		Bind_get_lifetime                   MethodBind `hash:"1740695150"`
@@ -7203,7 +7522,7 @@ type methods struct {
 		Bind_set_texture                    MethodBind `hash:"4051416890"`
 		Bind_get_texture                    MethodBind `hash:"3635182373"`
 		Bind_capture_rect                   MethodBind `hash:"1639390495"`
-		Bind_restart                        MethodBind `hash:"3218959716"`
+		Bind_restart                        MethodBind `hash:"107499316"`
 		Bind_set_sub_emitter                MethodBind `hash:"1348162250"`
 		Bind_get_sub_emitter                MethodBind `hash:"4075236667"`
 		Bind_emit_particle                  MethodBind `hash:"2179202058"`
@@ -7218,6 +7537,10 @@ type methods struct {
 		Bind_convert_from_particles         MethodBind `hash:"1078189570"`
 		Bind_set_amount_ratio               MethodBind `hash:"373806689"`
 		Bind_get_amount_ratio               MethodBind `hash:"1740695150"`
+		Bind_set_use_fixed_seed             MethodBind `hash:"2586408642"`
+		Bind_get_use_fixed_seed             MethodBind `hash:"36873697"`
+		Bind_set_seed                       MethodBind `hash:"1286410249"`
+		Bind_get_seed                       MethodBind `hash:"3905245786"`
 	}
 	GPUParticles3D struct {
 		Bind_set_emitting              MethodBind `hash:"2586408642"`
@@ -7252,6 +7575,10 @@ type methods struct {
 		Bind_get_speed_scale           MethodBind `hash:"1740695150"`
 		Bind_get_collision_base_size   MethodBind `hash:"1740695150"`
 		Bind_get_interp_to_end         MethodBind `hash:"1740695150"`
+		Bind_set_use_fixed_seed        MethodBind `hash:"2586408642"`
+		Bind_get_use_fixed_seed        MethodBind `hash:"36873697"`
+		Bind_set_seed                  MethodBind `hash:"1286410249"`
+		Bind_get_seed                  MethodBind `hash:"3905245786"`
 		Bind_set_draw_order            MethodBind `hash:"1208074815"`
 		Bind_get_draw_order            MethodBind `hash:"3770381780"`
 		Bind_set_draw_passes           MethodBind `hash:"1286410249"`
@@ -7260,7 +7587,7 @@ type methods struct {
 		Bind_get_draw_pass_mesh        MethodBind `hash:"1576363275"`
 		Bind_set_skin                  MethodBind `hash:"3971435618"`
 		Bind_get_skin                  MethodBind `hash:"2074563878"`
-		Bind_restart                   MethodBind `hash:"3218959716"`
+		Bind_restart                   MethodBind `hash:"107499316"`
 		Bind_capture_aabb              MethodBind `hash:"1068685055"`
 		Bind_set_sub_emitter           MethodBind `hash:"1348162250"`
 		Bind_get_sub_emitter           MethodBind `hash:"4075236667"`
@@ -7274,6 +7601,7 @@ type methods struct {
 		Bind_convert_from_particles    MethodBind `hash:"1078189570"`
 		Bind_set_amount_ratio          MethodBind `hash:"373806689"`
 		Bind_get_amount_ratio          MethodBind `hash:"1740695150"`
+		Bind_request_particles_process MethodBind `hash:"373806689"`
 	}
 	GPUParticlesAttractor3D struct {
 		Bind_set_cull_mask      MethodBind `hash:"1286410249"`
@@ -7308,14 +7636,18 @@ type methods struct {
 		Bind_get_size MethodBind `hash:"3360562783"`
 	}
 	GPUParticlesCollisionHeightField3D struct {
-		Bind_set_size                  MethodBind `hash:"3460891852"`
-		Bind_get_size                  MethodBind `hash:"3360562783"`
-		Bind_set_resolution            MethodBind `hash:"1009996517"`
-		Bind_get_resolution            MethodBind `hash:"1156065644"`
-		Bind_set_update_mode           MethodBind `hash:"673680859"`
-		Bind_get_update_mode           MethodBind `hash:"1998141380"`
-		Bind_set_follow_camera_enabled MethodBind `hash:"2586408642"`
-		Bind_is_follow_camera_enabled  MethodBind `hash:"36873697"`
+		Bind_set_size                   MethodBind `hash:"3460891852"`
+		Bind_get_size                   MethodBind `hash:"3360562783"`
+		Bind_set_resolution             MethodBind `hash:"1009996517"`
+		Bind_get_resolution             MethodBind `hash:"1156065644"`
+		Bind_set_update_mode            MethodBind `hash:"673680859"`
+		Bind_get_update_mode            MethodBind `hash:"1998141380"`
+		Bind_set_heightfield_mask       MethodBind `hash:"1286410249"`
+		Bind_get_heightfield_mask       MethodBind `hash:"3905245786"`
+		Bind_set_heightfield_mask_value MethodBind `hash:"300928843"`
+		Bind_get_heightfield_mask_value MethodBind `hash:"1116898809"`
+		Bind_set_follow_camera_enabled  MethodBind `hash:"2586408642"`
+		Bind_is_follow_camera_enabled   MethodBind `hash:"36873697"`
 	}
 	GPUParticlesCollisionSDF3D struct {
 		Bind_set_size            MethodBind `hash:"3460891852"`
@@ -7373,6 +7705,7 @@ type methods struct {
 		Bind_offset_polygon                        MethodBind `hash:"1275354010"`
 		Bind_offset_polyline                       MethodBind `hash:"2328231778"`
 		Bind_make_atlas                            MethodBind `hash:"1337682371"`
+		Bind_bresenham_line                        MethodBind `hash:"1989391000"`
 	}
 	Geometry3D struct {
 		Bind_compute_convex_mesh_points            MethodBind `hash:"1936902142"`
@@ -7416,6 +7749,8 @@ type methods struct {
 		Bind_get_instance_shader_parameter     MethodBind `hash:"2760726917"`
 		Bind_set_extra_cull_margin             MethodBind `hash:"373806689"`
 		Bind_get_extra_cull_margin             MethodBind `hash:"1740695150"`
+		Bind_set_lightmap_texel_scale          MethodBind `hash:"373806689"`
+		Bind_get_lightmap_texel_scale          MethodBind `hash:"1740695150"`
 		Bind_set_lightmap_scale                MethodBind `hash:"2462696582"`
 		Bind_get_lightmap_scale                MethodBind `hash:"798767852"`
 		Bind_set_gi_mode                       MethodBind `hash:"2548557163"`
@@ -7468,11 +7803,13 @@ type methods struct {
 		Bind_get_repeat    MethodBind `hash:"3351758665"`
 	}
 	GraphEdit struct {
-		Bind_connect_node                           MethodBind `hash:"195065850"`
+		Bind_connect_node                           MethodBind `hash:"1376144231"`
 		Bind_is_node_connected                      MethodBind `hash:"4216241294"`
 		Bind_disconnect_node                        MethodBind `hash:"1933654315"`
 		Bind_set_connection_activity                MethodBind `hash:"1141899943"`
+		Bind_set_connections                        MethodBind `hash:"381264803"`
 		Bind_get_connection_list                    MethodBind `hash:"3995934104"`
+		Bind_get_connection_count                   MethodBind `hash:"861718734"`
 		Bind_get_closest_connection_at_point        MethodBind `hash:"453879819"`
 		Bind_get_connections_intersecting_with_rect MethodBind `hash:"2709748719"`
 		Bind_clear_connections                      MethodBind `hash:"3218959716"`
@@ -7657,6 +7994,16 @@ type methods struct {
 		Bind_clear_baked_meshes              MethodBind `hash:"3218959716"`
 		Bind_make_baked_meshes               MethodBind `hash:"3609286057"`
 	}
+	GridMapEditorPlugin struct {
+		Bind_get_current_grid_map      MethodBind `hash:"1184264483"`
+		Bind_set_selection             MethodBind `hash:"3659408297"`
+		Bind_clear_selection           MethodBind `hash:"3218959716"`
+		Bind_get_selection             MethodBind `hash:"1068685055"`
+		Bind_has_selection             MethodBind `hash:"36873697"`
+		Bind_get_selected_cells        MethodBind `hash:"3995934104"`
+		Bind_set_selected_palette_item MethodBind `hash:"998575451"`
+		Bind_get_selected_palette_item MethodBind `hash:"3905245786"`
+	}
 	GrooveJoint2D struct {
 		Bind_set_length         MethodBind `hash:"373806689"`
 		Bind_get_length         MethodBind `hash:"1740695150"`
@@ -7809,6 +8156,7 @@ type methods struct {
 		Bind_fix_alpha_edges        MethodBind `hash:"3218959716"`
 		Bind_premultiply_alpha      MethodBind `hash:"3218959716"`
 		Bind_srgb_to_linear         MethodBind `hash:"3218959716"`
+		Bind_linear_to_srgb         MethodBind `hash:"3218959716"`
 		Bind_normal_map_to_xy       MethodBind `hash:"3218959716"`
 		Bind_rgbe_to_srgb           MethodBind `hash:"564927088"`
 		Bind_bump_map_to_normal_map MethodBind `hash:"3423495036"`
@@ -8151,7 +8499,7 @@ type methods struct {
 	InputMap struct {
 		Bind_has_action                 MethodBind `hash:"2619796661"`
 		Bind_get_actions                MethodBind `hash:"2915620761"`
-		Bind_add_action                 MethodBind `hash:"4100757082"`
+		Bind_add_action                 MethodBind `hash:"1195233573"`
 		Bind_erase_action               MethodBind `hash:"3304788590"`
 		Bind_action_set_deadzone        MethodBind `hash:"4135858297"`
 		Bind_action_get_deadzone        MethodBind `hash:"1391627649"`
@@ -8171,79 +8519,86 @@ type methods struct {
 	IntervalTweener struct {
 	}
 	ItemList struct {
-		Bind_add_item                  MethodBind `hash:"359861678"`
-		Bind_add_icon_item             MethodBind `hash:"4256579627"`
-		Bind_set_item_text             MethodBind `hash:"501894301"`
-		Bind_get_item_text             MethodBind `hash:"844755477"`
-		Bind_set_item_icon             MethodBind `hash:"666127730"`
-		Bind_get_item_icon             MethodBind `hash:"3536238170"`
-		Bind_set_item_text_direction   MethodBind `hash:"1707680378"`
-		Bind_get_item_text_direction   MethodBind `hash:"4235602388"`
-		Bind_set_item_language         MethodBind `hash:"501894301"`
-		Bind_get_item_language         MethodBind `hash:"844755477"`
-		Bind_set_item_icon_transposed  MethodBind `hash:"300928843"`
-		Bind_is_item_icon_transposed   MethodBind `hash:"1116898809"`
-		Bind_set_item_icon_region      MethodBind `hash:"1356297692"`
-		Bind_get_item_icon_region      MethodBind `hash:"3327874267"`
-		Bind_set_item_icon_modulate    MethodBind `hash:"2878471219"`
-		Bind_get_item_icon_modulate    MethodBind `hash:"3457211756"`
-		Bind_set_item_selectable       MethodBind `hash:"300928843"`
-		Bind_is_item_selectable        MethodBind `hash:"1116898809"`
-		Bind_set_item_disabled         MethodBind `hash:"300928843"`
-		Bind_is_item_disabled          MethodBind `hash:"1116898809"`
-		Bind_set_item_metadata         MethodBind `hash:"2152698145"`
-		Bind_get_item_metadata         MethodBind `hash:"4227898402"`
-		Bind_set_item_custom_bg_color  MethodBind `hash:"2878471219"`
-		Bind_get_item_custom_bg_color  MethodBind `hash:"3457211756"`
-		Bind_set_item_custom_fg_color  MethodBind `hash:"2878471219"`
-		Bind_get_item_custom_fg_color  MethodBind `hash:"3457211756"`
-		Bind_get_item_rect             MethodBind `hash:"159227807"`
-		Bind_set_item_tooltip_enabled  MethodBind `hash:"300928843"`
-		Bind_is_item_tooltip_enabled   MethodBind `hash:"1116898809"`
-		Bind_set_item_tooltip          MethodBind `hash:"501894301"`
-		Bind_get_item_tooltip          MethodBind `hash:"844755477"`
-		Bind_select_                   MethodBind `hash:"972357352"`
-		Bind_deselect                  MethodBind `hash:"1286410249"`
-		Bind_deselect_all              MethodBind `hash:"3218959716"`
-		Bind_is_selected               MethodBind `hash:"1116898809"`
-		Bind_get_selected_items        MethodBind `hash:"969006518"`
-		Bind_move_item                 MethodBind `hash:"3937882851"`
-		Bind_set_item_count            MethodBind `hash:"1286410249"`
-		Bind_get_item_count            MethodBind `hash:"3905245786"`
-		Bind_remove_item               MethodBind `hash:"1286410249"`
-		Bind_clear                     MethodBind `hash:"3218959716"`
-		Bind_sort_items_by_text        MethodBind `hash:"3218959716"`
-		Bind_set_fixed_column_width    MethodBind `hash:"1286410249"`
-		Bind_get_fixed_column_width    MethodBind `hash:"3905245786"`
-		Bind_set_same_column_width     MethodBind `hash:"2586408642"`
-		Bind_is_same_column_width      MethodBind `hash:"36873697"`
-		Bind_set_max_text_lines        MethodBind `hash:"1286410249"`
-		Bind_get_max_text_lines        MethodBind `hash:"3905245786"`
-		Bind_set_max_columns           MethodBind `hash:"1286410249"`
-		Bind_get_max_columns           MethodBind `hash:"3905245786"`
-		Bind_set_select_mode           MethodBind `hash:"928267388"`
-		Bind_get_select_mode           MethodBind `hash:"1191945842"`
-		Bind_set_icon_mode             MethodBind `hash:"2025053633"`
-		Bind_get_icon_mode             MethodBind `hash:"3353929232"`
-		Bind_set_fixed_icon_size       MethodBind `hash:"1130785943"`
-		Bind_get_fixed_icon_size       MethodBind `hash:"3690982128"`
-		Bind_set_icon_scale            MethodBind `hash:"373806689"`
-		Bind_get_icon_scale            MethodBind `hash:"1740695150"`
-		Bind_set_allow_rmb_select      MethodBind `hash:"2586408642"`
-		Bind_get_allow_rmb_select      MethodBind `hash:"36873697"`
-		Bind_set_allow_reselect        MethodBind `hash:"2586408642"`
-		Bind_get_allow_reselect        MethodBind `hash:"36873697"`
-		Bind_set_allow_search          MethodBind `hash:"2586408642"`
-		Bind_get_allow_search          MethodBind `hash:"36873697"`
-		Bind_set_auto_height           MethodBind `hash:"2586408642"`
-		Bind_has_auto_height           MethodBind `hash:"36873697"`
-		Bind_is_anything_selected      MethodBind `hash:"2240911060"`
-		Bind_get_item_at_position      MethodBind `hash:"2300324924"`
-		Bind_ensure_current_is_visible MethodBind `hash:"3218959716"`
-		Bind_get_v_scroll_bar          MethodBind `hash:"2630340773"`
-		Bind_set_text_overrun_behavior MethodBind `hash:"1008890932"`
-		Bind_get_text_overrun_behavior MethodBind `hash:"3779142101"`
-		Bind_force_update_list_size    MethodBind `hash:"3218959716"`
+		Bind_add_item                     MethodBind `hash:"359861678"`
+		Bind_add_icon_item                MethodBind `hash:"4256579627"`
+		Bind_set_item_text                MethodBind `hash:"501894301"`
+		Bind_get_item_text                MethodBind `hash:"844755477"`
+		Bind_set_item_icon                MethodBind `hash:"666127730"`
+		Bind_get_item_icon                MethodBind `hash:"3536238170"`
+		Bind_set_item_text_direction      MethodBind `hash:"1707680378"`
+		Bind_get_item_text_direction      MethodBind `hash:"4235602388"`
+		Bind_set_item_language            MethodBind `hash:"501894301"`
+		Bind_get_item_language            MethodBind `hash:"844755477"`
+		Bind_set_item_auto_translate_mode MethodBind `hash:"287402019"`
+		Bind_get_item_auto_translate_mode MethodBind `hash:"906302372"`
+		Bind_set_item_icon_transposed     MethodBind `hash:"300928843"`
+		Bind_is_item_icon_transposed      MethodBind `hash:"1116898809"`
+		Bind_set_item_icon_region         MethodBind `hash:"1356297692"`
+		Bind_get_item_icon_region         MethodBind `hash:"3327874267"`
+		Bind_set_item_icon_modulate       MethodBind `hash:"2878471219"`
+		Bind_get_item_icon_modulate       MethodBind `hash:"3457211756"`
+		Bind_set_item_selectable          MethodBind `hash:"300928843"`
+		Bind_is_item_selectable           MethodBind `hash:"1116898809"`
+		Bind_set_item_disabled            MethodBind `hash:"300928843"`
+		Bind_is_item_disabled             MethodBind `hash:"1116898809"`
+		Bind_set_item_metadata            MethodBind `hash:"2152698145"`
+		Bind_get_item_metadata            MethodBind `hash:"4227898402"`
+		Bind_set_item_custom_bg_color     MethodBind `hash:"2878471219"`
+		Bind_get_item_custom_bg_color     MethodBind `hash:"3457211756"`
+		Bind_set_item_custom_fg_color     MethodBind `hash:"2878471219"`
+		Bind_get_item_custom_fg_color     MethodBind `hash:"3457211756"`
+		Bind_get_item_rect                MethodBind `hash:"159227807"`
+		Bind_set_item_tooltip_enabled     MethodBind `hash:"300928843"`
+		Bind_is_item_tooltip_enabled      MethodBind `hash:"1116898809"`
+		Bind_set_item_tooltip             MethodBind `hash:"501894301"`
+		Bind_get_item_tooltip             MethodBind `hash:"844755477"`
+		Bind_select_                      MethodBind `hash:"972357352"`
+		Bind_deselect                     MethodBind `hash:"1286410249"`
+		Bind_deselect_all                 MethodBind `hash:"3218959716"`
+		Bind_is_selected                  MethodBind `hash:"1116898809"`
+		Bind_get_selected_items           MethodBind `hash:"969006518"`
+		Bind_move_item                    MethodBind `hash:"3937882851"`
+		Bind_set_item_count               MethodBind `hash:"1286410249"`
+		Bind_get_item_count               MethodBind `hash:"3905245786"`
+		Bind_remove_item                  MethodBind `hash:"1286410249"`
+		Bind_clear                        MethodBind `hash:"3218959716"`
+		Bind_sort_items_by_text           MethodBind `hash:"3218959716"`
+		Bind_set_fixed_column_width       MethodBind `hash:"1286410249"`
+		Bind_get_fixed_column_width       MethodBind `hash:"3905245786"`
+		Bind_set_same_column_width        MethodBind `hash:"2586408642"`
+		Bind_is_same_column_width         MethodBind `hash:"36873697"`
+		Bind_set_max_text_lines           MethodBind `hash:"1286410249"`
+		Bind_get_max_text_lines           MethodBind `hash:"3905245786"`
+		Bind_set_max_columns              MethodBind `hash:"1286410249"`
+		Bind_get_max_columns              MethodBind `hash:"3905245786"`
+		Bind_set_select_mode              MethodBind `hash:"928267388"`
+		Bind_get_select_mode              MethodBind `hash:"1191945842"`
+		Bind_set_icon_mode                MethodBind `hash:"2025053633"`
+		Bind_get_icon_mode                MethodBind `hash:"3353929232"`
+		Bind_set_fixed_icon_size          MethodBind `hash:"1130785943"`
+		Bind_get_fixed_icon_size          MethodBind `hash:"3690982128"`
+		Bind_set_icon_scale               MethodBind `hash:"373806689"`
+		Bind_get_icon_scale               MethodBind `hash:"1740695150"`
+		Bind_set_allow_rmb_select         MethodBind `hash:"2586408642"`
+		Bind_get_allow_rmb_select         MethodBind `hash:"36873697"`
+		Bind_set_allow_reselect           MethodBind `hash:"2586408642"`
+		Bind_get_allow_reselect           MethodBind `hash:"36873697"`
+		Bind_set_allow_search             MethodBind `hash:"2586408642"`
+		Bind_get_allow_search             MethodBind `hash:"36873697"`
+		Bind_set_auto_width               MethodBind `hash:"2586408642"`
+		Bind_has_auto_width               MethodBind `hash:"36873697"`
+		Bind_set_auto_height              MethodBind `hash:"2586408642"`
+		Bind_has_auto_height              MethodBind `hash:"36873697"`
+		Bind_is_anything_selected         MethodBind `hash:"2240911060"`
+		Bind_get_item_at_position         MethodBind `hash:"2300324924"`
+		Bind_ensure_current_is_visible    MethodBind `hash:"3218959716"`
+		Bind_get_v_scroll_bar             MethodBind `hash:"2630340773"`
+		Bind_get_h_scroll_bar             MethodBind `hash:"4004517983"`
+		Bind_set_text_overrun_behavior    MethodBind `hash:"1008890932"`
+		Bind_get_text_overrun_behavior    MethodBind `hash:"3779142101"`
+		Bind_set_wraparound_items         MethodBind `hash:"2586408642"`
+		Bind_has_wraparound_items         MethodBind `hash:"36873697"`
+		Bind_force_update_list_size       MethodBind `hash:"3218959716"`
 	}
 	JNISingleton struct {
 	}
@@ -8256,6 +8611,8 @@ type methods struct {
 		Bind_get_parsed_text   MethodBind `hash:"201670096"`
 		Bind_get_error_line    MethodBind `hash:"3905245786"`
 		Bind_get_error_message MethodBind `hash:"201670096"`
+		Bind_from_native       MethodBind `hash:"2963479484"`
+		Bind_to_native         MethodBind `hash:"2963479484"`
 	}
 	JSONRPC struct {
 		Bind_set_scope           MethodBind `hash:"2572618360"`
@@ -8267,19 +8624,28 @@ type methods struct {
 		Bind_make_response_error MethodBind `hash:"928596297"`
 	}
 	JavaClass struct {
+		Bind_get_java_class_name   MethodBind `hash:"201670096"`
+		Bind_get_java_method_list  MethodBind `hash:"3995934104"`
+		Bind_get_java_parent_class MethodBind `hash:"541536347"`
 	}
 	JavaClassWrapper struct {
-		Bind_wrap MethodBind `hash:"1124367868"`
+		Bind_wrap          MethodBind `hash:"1124367868"`
+		Bind_get_exception MethodBind `hash:"3277089691"`
+	}
+	JavaObject struct {
+		Bind_get_java_class MethodBind `hash:"541536347"`
 	}
 	JavaScriptBridge struct {
-		Bind_eval             MethodBind `hash:"218087648"`
-		Bind_get_interface    MethodBind `hash:"1355533281"`
-		Bind_create_callback  MethodBind `hash:"422818440"`
-		Bind_create_object    MethodBind `hash:"3093893586"`
-		Bind_download_buffer  MethodBind `hash:"3352272093"`
-		Bind_pwa_needs_update MethodBind `hash:"36873697"`
-		Bind_pwa_update       MethodBind `hash:"166280745"`
-		Bind_force_fs_sync    MethodBind `hash:"3218959716"`
+		Bind_eval                           MethodBind `hash:"218087648"`
+		Bind_get_interface                  MethodBind `hash:"1355533281"`
+		Bind_create_callback                MethodBind `hash:"422818440"`
+		Bind_is_js_buffer                   MethodBind `hash:"821968997"`
+		Bind_js_buffer_to_packed_byte_array MethodBind `hash:"64409880"`
+		Bind_create_object                  MethodBind `hash:"3093893586"`
+		Bind_download_buffer                MethodBind `hash:"3352272093"`
+		Bind_pwa_needs_update               MethodBind `hash:"36873697"`
+		Bind_pwa_update                     MethodBind `hash:"166280745"`
+		Bind_force_fs_sync                  MethodBind `hash:"3218959716"`
 	}
 	JavaScriptObject struct {
 	}
@@ -8349,6 +8715,8 @@ type methods struct {
 		Bind_get_text_direction                        MethodBind `hash:"797257663"`
 		Bind_set_language                              MethodBind `hash:"83702148"`
 		Bind_get_language                              MethodBind `hash:"201670096"`
+		Bind_set_paragraph_separator                   MethodBind `hash:"83702148"`
+		Bind_get_paragraph_separator                   MethodBind `hash:"201670096"`
 		Bind_set_autowrap_mode                         MethodBind `hash:"3289138044"`
 		Bind_get_autowrap_mode                         MethodBind `hash:"1549071663"`
 		Bind_set_justification_flags                   MethodBind `hash:"2877345813"`
@@ -8445,24 +8813,26 @@ type methods struct {
 		Bind_generate_triangle_mesh                    MethodBind `hash:"3476533166"`
 	}
 	LabelSettings struct {
-		Bind_set_line_spacing  MethodBind `hash:"373806689"`
-		Bind_get_line_spacing  MethodBind `hash:"1740695150"`
-		Bind_set_font          MethodBind `hash:"1262170328"`
-		Bind_get_font          MethodBind `hash:"3229501585"`
-		Bind_set_font_size     MethodBind `hash:"1286410249"`
-		Bind_get_font_size     MethodBind `hash:"3905245786"`
-		Bind_set_font_color    MethodBind `hash:"2920490490"`
-		Bind_get_font_color    MethodBind `hash:"3444240500"`
-		Bind_set_outline_size  MethodBind `hash:"1286410249"`
-		Bind_get_outline_size  MethodBind `hash:"3905245786"`
-		Bind_set_outline_color MethodBind `hash:"2920490490"`
-		Bind_get_outline_color MethodBind `hash:"3444240500"`
-		Bind_set_shadow_size   MethodBind `hash:"1286410249"`
-		Bind_get_shadow_size   MethodBind `hash:"3905245786"`
-		Bind_set_shadow_color  MethodBind `hash:"2920490490"`
-		Bind_get_shadow_color  MethodBind `hash:"3444240500"`
-		Bind_set_shadow_offset MethodBind `hash:"743155724"`
-		Bind_get_shadow_offset MethodBind `hash:"3341600327"`
+		Bind_set_line_spacing      MethodBind `hash:"373806689"`
+		Bind_get_line_spacing      MethodBind `hash:"1740695150"`
+		Bind_set_paragraph_spacing MethodBind `hash:"373806689"`
+		Bind_get_paragraph_spacing MethodBind `hash:"1740695150"`
+		Bind_set_font              MethodBind `hash:"1262170328"`
+		Bind_get_font              MethodBind `hash:"3229501585"`
+		Bind_set_font_size         MethodBind `hash:"1286410249"`
+		Bind_get_font_size         MethodBind `hash:"3905245786"`
+		Bind_set_font_color        MethodBind `hash:"2920490490"`
+		Bind_get_font_color        MethodBind `hash:"3444240500"`
+		Bind_set_outline_size      MethodBind `hash:"1286410249"`
+		Bind_get_outline_size      MethodBind `hash:"3905245786"`
+		Bind_set_outline_color     MethodBind `hash:"2920490490"`
+		Bind_get_outline_color     MethodBind `hash:"3444240500"`
+		Bind_set_shadow_size       MethodBind `hash:"1286410249"`
+		Bind_get_shadow_size       MethodBind `hash:"3905245786"`
+		Bind_set_shadow_color      MethodBind `hash:"2920490490"`
+		Bind_get_shadow_color      MethodBind `hash:"3444240500"`
+		Bind_set_shadow_offset     MethodBind `hash:"743155724"`
+		Bind_get_shadow_offset     MethodBind `hash:"3341600327"`
 	}
 	Light2D struct {
 		Bind_set_enabled               MethodBind `hash:"2586408642"`
@@ -8521,6 +8891,8 @@ type methods struct {
 		Bind_get_color                    MethodBind `hash:"3444240500"`
 		Bind_set_shadow_reverse_cull_face MethodBind `hash:"2586408642"`
 		Bind_get_shadow_reverse_cull_face MethodBind `hash:"36873697"`
+		Bind_set_shadow_caster_mask       MethodBind `hash:"1286410249"`
+		Bind_get_shadow_caster_mask       MethodBind `hash:"3905245786"`
 		Bind_set_bake_mode                MethodBind `hash:"37739303"`
 		Bind_get_bake_mode                MethodBind `hash:"371737608"`
 		Bind_set_projector                MethodBind `hash:"4051416890"`
@@ -8562,6 +8934,10 @@ type methods struct {
 		Bind_get_texel_scale               MethodBind `hash:"1740695150"`
 		Bind_set_max_texture_size          MethodBind `hash:"1286410249"`
 		Bind_get_max_texture_size          MethodBind `hash:"3905245786"`
+		Bind_set_supersampling_enabled     MethodBind `hash:"2586408642"`
+		Bind_is_supersampling_enabled      MethodBind `hash:"36873697"`
+		Bind_set_supersampling_factor      MethodBind `hash:"373806689"`
+		Bind_get_supersampling_factor      MethodBind `hash:"1740695150"`
 		Bind_set_use_denoiser              MethodBind `hash:"2586408642"`
 		Bind_is_using_denoiser             MethodBind `hash:"36873697"`
 		Bind_set_denoiser_strength         MethodBind `hash:"373806689"`
@@ -8572,6 +8948,8 @@ type methods struct {
 		Bind_is_interior                   MethodBind `hash:"36873697"`
 		Bind_set_directional               MethodBind `hash:"2586408642"`
 		Bind_is_directional                MethodBind `hash:"36873697"`
+		Bind_set_shadowmask_mode           MethodBind `hash:"3451066572"`
+		Bind_get_shadowmask_mode           MethodBind `hash:"785478560"`
 		Bind_set_use_texture_for_bounces   MethodBind `hash:"2586408642"`
 		Bind_is_using_texture_for_bounces  MethodBind `hash:"36873697"`
 		Bind_set_camera_attributes         MethodBind `hash:"2817810567"`
@@ -8580,6 +8958,8 @@ type methods struct {
 	LightmapGIData struct {
 		Bind_set_lightmap_textures        MethodBind `hash:"381264803"`
 		Bind_get_lightmap_textures        MethodBind `hash:"3995934104"`
+		Bind_set_shadowmask_textures      MethodBind `hash:"381264803"`
+		Bind_get_shadowmask_textures      MethodBind `hash:"3995934104"`
 		Bind_set_uses_spherical_harmonics MethodBind `hash:"2586408642"`
 		Bind_is_using_spherical_harmonics MethodBind `hash:"36873697"`
 		Bind_add_user                     MethodBind `hash:"4272570515"`
@@ -8632,12 +9012,22 @@ type methods struct {
 		Bind_get_antialiased     MethodBind `hash:"36873697"`
 	}
 	LineEdit struct {
+		Bind_has_ime_text                              MethodBind `hash:"36873697"`
+		Bind_cancel_ime                                MethodBind `hash:"3218959716"`
+		Bind_apply_ime                                 MethodBind `hash:"3218959716"`
 		Bind_set_horizontal_alignment                  MethodBind `hash:"2312603777"`
 		Bind_get_horizontal_alignment                  MethodBind `hash:"341400642"`
+		Bind_edit                                      MethodBind `hash:"3218959716"`
+		Bind_unedit                                    MethodBind `hash:"3218959716"`
+		Bind_is_editing                                MethodBind `hash:"36873697"`
+		Bind_set_keep_editing_on_text_submit           MethodBind `hash:"2586408642"`
+		Bind_is_editing_kept_on_text_submit            MethodBind `hash:"36873697"`
 		Bind_clear                                     MethodBind `hash:"3218959716"`
 		Bind_select_                                   MethodBind `hash:"1328111411"`
 		Bind_select_all                                MethodBind `hash:"3218959716"`
 		Bind_deselect                                  MethodBind `hash:"3218959716"`
+		Bind_has_undo                                  MethodBind `hash:"36873697"`
+		Bind_has_redo                                  MethodBind `hash:"36873697"`
 		Bind_has_selection                             MethodBind `hash:"36873697"`
 		Bind_get_selected_text                         MethodBind `hash:"2841200299"`
 		Bind_get_selection_from_column                 MethodBind `hash:"3905245786"`
@@ -8685,6 +9075,8 @@ type methods struct {
 		Bind_is_menu_visible                           MethodBind `hash:"36873697"`
 		Bind_set_context_menu_enabled                  MethodBind `hash:"2586408642"`
 		Bind_is_context_menu_enabled                   MethodBind `hash:"2240911060"`
+		Bind_set_emoji_menu_enabled                    MethodBind `hash:"2586408642"`
+		Bind_is_emoji_menu_enabled                     MethodBind `hash:"36873697"`
 		Bind_set_virtual_keyboard_enabled              MethodBind `hash:"2586408642"`
 		Bind_is_virtual_keyboard_enabled               MethodBind `hash:"36873697"`
 		Bind_set_virtual_keyboard_type                 MethodBind `hash:"2696893573"`
@@ -8723,6 +9115,69 @@ type methods struct {
 		Bind_get_structured_text_bidi_override         MethodBind `hash:"3385126229"`
 		Bind_set_structured_text_bidi_override_options MethodBind `hash:"381264803"`
 		Bind_get_structured_text_bidi_override_options MethodBind `hash:"3995934104"`
+	}
+	LookAtModifier3D struct {
+		Bind_set_target_node                       MethodBind `hash:"1348162250"`
+		Bind_get_target_node                       MethodBind `hash:"4075236667"`
+		Bind_set_bone_name                         MethodBind `hash:"83702148"`
+		Bind_get_bone_name                         MethodBind `hash:"201670096"`
+		Bind_set_bone                              MethodBind `hash:"1286410249"`
+		Bind_get_bone                              MethodBind `hash:"3905245786"`
+		Bind_set_forward_axis                      MethodBind `hash:"3199955933"`
+		Bind_get_forward_axis                      MethodBind `hash:"4076020284"`
+		Bind_set_primary_rotation_axis             MethodBind `hash:"1144690656"`
+		Bind_get_primary_rotation_axis             MethodBind `hash:"3050976882"`
+		Bind_set_use_secondary_rotation            MethodBind `hash:"2586408642"`
+		Bind_is_using_secondary_rotation           MethodBind `hash:"36873697"`
+		Bind_set_origin_safe_margin                MethodBind `hash:"373806689"`
+		Bind_get_origin_safe_margin                MethodBind `hash:"1740695150"`
+		Bind_set_origin_from                       MethodBind `hash:"4254695669"`
+		Bind_get_origin_from                       MethodBind `hash:"4057166297"`
+		Bind_set_origin_bone_name                  MethodBind `hash:"83702148"`
+		Bind_get_origin_bone_name                  MethodBind `hash:"201670096"`
+		Bind_set_origin_bone                       MethodBind `hash:"1286410249"`
+		Bind_get_origin_bone                       MethodBind `hash:"3905245786"`
+		Bind_set_origin_external_node              MethodBind `hash:"1348162250"`
+		Bind_get_origin_external_node              MethodBind `hash:"4075236667"`
+		Bind_set_origin_offset                     MethodBind `hash:"3460891852"`
+		Bind_get_origin_offset                     MethodBind `hash:"3360562783"`
+		Bind_set_duration                          MethodBind `hash:"373806689"`
+		Bind_get_duration                          MethodBind `hash:"1740695150"`
+		Bind_set_transition_type                   MethodBind `hash:"1058637742"`
+		Bind_get_transition_type                   MethodBind `hash:"3842314528"`
+		Bind_set_ease_type                         MethodBind `hash:"1208105857"`
+		Bind_get_ease_type                         MethodBind `hash:"631880200"`
+		Bind_set_use_angle_limitation              MethodBind `hash:"2586408642"`
+		Bind_is_using_angle_limitation             MethodBind `hash:"36873697"`
+		Bind_set_symmetry_limitation               MethodBind `hash:"2586408642"`
+		Bind_is_limitation_symmetry                MethodBind `hash:"36873697"`
+		Bind_set_primary_limit_angle               MethodBind `hash:"373806689"`
+		Bind_get_primary_limit_angle               MethodBind `hash:"1740695150"`
+		Bind_set_primary_damp_threshold            MethodBind `hash:"373806689"`
+		Bind_get_primary_damp_threshold            MethodBind `hash:"1740695150"`
+		Bind_set_primary_positive_limit_angle      MethodBind `hash:"373806689"`
+		Bind_get_primary_positive_limit_angle      MethodBind `hash:"1740695150"`
+		Bind_set_primary_positive_damp_threshold   MethodBind `hash:"373806689"`
+		Bind_get_primary_positive_damp_threshold   MethodBind `hash:"1740695150"`
+		Bind_set_primary_negative_limit_angle      MethodBind `hash:"373806689"`
+		Bind_get_primary_negative_limit_angle      MethodBind `hash:"1740695150"`
+		Bind_set_primary_negative_damp_threshold   MethodBind `hash:"373806689"`
+		Bind_get_primary_negative_damp_threshold   MethodBind `hash:"1740695150"`
+		Bind_set_secondary_limit_angle             MethodBind `hash:"373806689"`
+		Bind_get_secondary_limit_angle             MethodBind `hash:"1740695150"`
+		Bind_set_secondary_damp_threshold          MethodBind `hash:"373806689"`
+		Bind_get_secondary_damp_threshold          MethodBind `hash:"1740695150"`
+		Bind_set_secondary_positive_limit_angle    MethodBind `hash:"373806689"`
+		Bind_get_secondary_positive_limit_angle    MethodBind `hash:"1740695150"`
+		Bind_set_secondary_positive_damp_threshold MethodBind `hash:"373806689"`
+		Bind_get_secondary_positive_damp_threshold MethodBind `hash:"1740695150"`
+		Bind_set_secondary_negative_limit_angle    MethodBind `hash:"373806689"`
+		Bind_get_secondary_negative_limit_angle    MethodBind `hash:"1740695150"`
+		Bind_set_secondary_negative_damp_threshold MethodBind `hash:"373806689"`
+		Bind_get_secondary_negative_damp_threshold MethodBind `hash:"1740695150"`
+		Bind_get_interpolation_remaining           MethodBind `hash:"1740695150"`
+		Bind_is_interpolating                      MethodBind `hash:"36873697"`
+		Bind_is_target_within_limitation           MethodBind `hash:"36873697"`
 	}
 	MainLoop struct {
 	}
@@ -8898,12 +9353,14 @@ type methods struct {
 		Bind_set_blend_shape_value                  MethodBind `hash:"1602489585"`
 		Bind_create_debug_tangents                  MethodBind `hash:"3218959716"`
 		Bind_bake_mesh_from_current_blend_shape_mix MethodBind `hash:"1457573577"`
+		Bind_bake_mesh_from_current_skeleton_pose   MethodBind `hash:"1457573577"`
 	}
 	MeshLibrary struct {
 		Bind_create_item                        MethodBind `hash:"1286410249"`
 		Bind_set_item_name                      MethodBind `hash:"501894301"`
 		Bind_set_item_mesh                      MethodBind `hash:"969122797"`
 		Bind_set_item_mesh_transform            MethodBind `hash:"3616898986"`
+		Bind_set_item_mesh_cast_shadow          MethodBind `hash:"3923400443"`
 		Bind_set_item_navigation_mesh           MethodBind `hash:"3483353960"`
 		Bind_set_item_navigation_mesh_transform MethodBind `hash:"3616898986"`
 		Bind_set_item_navigation_layers         MethodBind `hash:"3937882851"`
@@ -8912,6 +9369,7 @@ type methods struct {
 		Bind_get_item_name                      MethodBind `hash:"844755477"`
 		Bind_get_item_mesh                      MethodBind `hash:"1576363275"`
 		Bind_get_item_mesh_transform            MethodBind `hash:"1965739696"`
+		Bind_get_item_mesh_cast_shadow          MethodBind `hash:"1841766007"`
 		Bind_get_item_navigation_mesh           MethodBind `hash:"2729647406"`
 		Bind_get_item_navigation_mesh_transform MethodBind `hash:"1965739696"`
 		Bind_get_item_navigation_layers         MethodBind `hash:"923996154"`
@@ -8976,31 +9434,35 @@ type methods struct {
 		Bind_add_writer MethodBind `hash:"4023702871"`
 	}
 	MultiMesh struct {
-		Bind_set_mesh                   MethodBind `hash:"194775623"`
-		Bind_get_mesh                   MethodBind `hash:"1808005922"`
-		Bind_set_use_colors             MethodBind `hash:"2586408642"`
-		Bind_is_using_colors            MethodBind `hash:"36873697"`
-		Bind_set_use_custom_data        MethodBind `hash:"2586408642"`
-		Bind_is_using_custom_data       MethodBind `hash:"36873697"`
-		Bind_set_transform_format       MethodBind `hash:"2404750322"`
-		Bind_get_transform_format       MethodBind `hash:"2444156481"`
-		Bind_set_instance_count         MethodBind `hash:"1286410249"`
-		Bind_get_instance_count         MethodBind `hash:"3905245786"`
-		Bind_set_visible_instance_count MethodBind `hash:"1286410249"`
-		Bind_get_visible_instance_count MethodBind `hash:"3905245786"`
-		Bind_set_instance_transform     MethodBind `hash:"3616898986"`
-		Bind_set_instance_transform_2d  MethodBind `hash:"30160968"`
-		Bind_get_instance_transform     MethodBind `hash:"1965739696"`
-		Bind_get_instance_transform_2d  MethodBind `hash:"3836996910"`
-		Bind_set_instance_color         MethodBind `hash:"2878471219"`
-		Bind_get_instance_color         MethodBind `hash:"3457211756"`
-		Bind_set_instance_custom_data   MethodBind `hash:"2878471219"`
-		Bind_get_instance_custom_data   MethodBind `hash:"3457211756"`
-		Bind_set_custom_aabb            MethodBind `hash:"259215842"`
-		Bind_get_custom_aabb            MethodBind `hash:"1068685055"`
-		Bind_get_aabb                   MethodBind `hash:"1068685055"`
-		Bind_get_buffer                 MethodBind `hash:"675695659"`
-		Bind_set_buffer                 MethodBind `hash:"2899603908"`
+		Bind_set_mesh                             MethodBind `hash:"194775623"`
+		Bind_get_mesh                             MethodBind `hash:"1808005922"`
+		Bind_set_use_colors                       MethodBind `hash:"2586408642"`
+		Bind_is_using_colors                      MethodBind `hash:"36873697"`
+		Bind_set_use_custom_data                  MethodBind `hash:"2586408642"`
+		Bind_is_using_custom_data                 MethodBind `hash:"36873697"`
+		Bind_set_transform_format                 MethodBind `hash:"2404750322"`
+		Bind_get_transform_format                 MethodBind `hash:"2444156481"`
+		Bind_set_instance_count                   MethodBind `hash:"1286410249"`
+		Bind_get_instance_count                   MethodBind `hash:"3905245786"`
+		Bind_set_visible_instance_count           MethodBind `hash:"1286410249"`
+		Bind_get_visible_instance_count           MethodBind `hash:"3905245786"`
+		Bind_set_physics_interpolation_quality    MethodBind `hash:"1819488408"`
+		Bind_get_physics_interpolation_quality    MethodBind `hash:"1465701882"`
+		Bind_set_instance_transform               MethodBind `hash:"3616898986"`
+		Bind_set_instance_transform_2d            MethodBind `hash:"30160968"`
+		Bind_get_instance_transform               MethodBind `hash:"1965739696"`
+		Bind_get_instance_transform_2d            MethodBind `hash:"3836996910"`
+		Bind_set_instance_color                   MethodBind `hash:"2878471219"`
+		Bind_get_instance_color                   MethodBind `hash:"3457211756"`
+		Bind_set_instance_custom_data             MethodBind `hash:"2878471219"`
+		Bind_get_instance_custom_data             MethodBind `hash:"3457211756"`
+		Bind_reset_instance_physics_interpolation MethodBind `hash:"1286410249"`
+		Bind_set_custom_aabb                      MethodBind `hash:"259215842"`
+		Bind_get_custom_aabb                      MethodBind `hash:"1068685055"`
+		Bind_get_aabb                             MethodBind `hash:"1068685055"`
+		Bind_get_buffer                           MethodBind `hash:"675695659"`
+		Bind_set_buffer                           MethodBind `hash:"2899603908"`
+		Bind_set_buffer_interpolated              MethodBind `hash:"3514430332"`
 	}
 	MultiMeshInstance2D struct {
 		Bind_set_multimesh MethodBind `hash:"2246127404"`
@@ -9107,13 +9569,13 @@ type methods struct {
 		Bind_get_minimum_width            MethodBind `hash:"866169185"`
 		Bind_is_opened                    MethodBind `hash:"4155700596"`
 		Bind_add_submenu_item             MethodBind `hash:"1002030223"`
-		Bind_add_item                     MethodBind `hash:"2553375659"`
-		Bind_add_check_item               MethodBind `hash:"2553375659"`
-		Bind_add_icon_item                MethodBind `hash:"2987595282"`
-		Bind_add_icon_check_item          MethodBind `hash:"2987595282"`
-		Bind_add_radio_check_item         MethodBind `hash:"2553375659"`
-		Bind_add_icon_radio_check_item    MethodBind `hash:"2987595282"`
-		Bind_add_multistate_item          MethodBind `hash:"1558592568"`
+		Bind_add_item                     MethodBind `hash:"980552939"`
+		Bind_add_check_item               MethodBind `hash:"980552939"`
+		Bind_add_icon_item                MethodBind `hash:"1372188274"`
+		Bind_add_icon_check_item          MethodBind `hash:"1372188274"`
+		Bind_add_radio_check_item         MethodBind `hash:"980552939"`
+		Bind_add_icon_radio_check_item    MethodBind `hash:"1372188274"`
+		Bind_add_multistate_item          MethodBind `hash:"2674635658"`
 		Bind_add_separator                MethodBind `hash:"448810126"`
 		Bind_find_item_index_with_text    MethodBind `hash:"1362438794"`
 		Bind_find_item_index_with_tag     MethodBind `hash:"1260085030"`
@@ -9312,6 +9774,8 @@ type methods struct {
 		Bind_get_rid                    MethodBind `hash:"2944877500"`
 		Bind_set_enabled                MethodBind `hash:"2586408642"`
 		Bind_is_enabled                 MethodBind `hash:"36873697"`
+		Bind_set_navigation_map         MethodBind `hash:"2722037293"`
+		Bind_get_navigation_map         MethodBind `hash:"2944877500"`
 		Bind_set_bidirectional          MethodBind `hash:"2586408642"`
 		Bind_is_bidirectional           MethodBind `hash:"36873697"`
 		Bind_set_navigation_layers      MethodBind `hash:"1286410249"`
@@ -9335,6 +9799,8 @@ type methods struct {
 		Bind_get_rid                    MethodBind `hash:"2944877500"`
 		Bind_set_enabled                MethodBind `hash:"2586408642"`
 		Bind_is_enabled                 MethodBind `hash:"36873697"`
+		Bind_set_navigation_map         MethodBind `hash:"2722037293"`
+		Bind_get_navigation_map         MethodBind `hash:"2944877500"`
 		Bind_set_bidirectional          MethodBind `hash:"2586408642"`
 		Bind_is_bidirectional           MethodBind `hash:"36873697"`
 		Bind_set_navigation_layers      MethodBind `hash:"1286410249"`
@@ -9417,8 +9883,8 @@ type methods struct {
 	NavigationMeshGenerator struct {
 		Bind_bake                           MethodBind `hash:"1401173477"`
 		Bind_clear                          MethodBind `hash:"2923361153"`
-		Bind_parse_source_geometry_data     MethodBind `hash:"685862123"`
-		Bind_bake_from_source_geometry_data MethodBind `hash:"2469318639"`
+		Bind_parse_source_geometry_data     MethodBind `hash:"3172802542"`
+		Bind_bake_from_source_geometry_data MethodBind `hash:"1286748856"`
 	}
 	NavigationMeshSourceGeometryData2D struct {
 		Bind_clear                        MethodBind `hash:"3218959716"`
@@ -9436,6 +9902,7 @@ type methods struct {
 		Bind_clear_projected_obstructions MethodBind `hash:"3218959716"`
 		Bind_set_projected_obstructions   MethodBind `hash:"381264803"`
 		Bind_get_projected_obstructions   MethodBind `hash:"3995934104"`
+		Bind_get_bounds                   MethodBind `hash:"3248174"`
 	}
 	NavigationMeshSourceGeometryData3D struct {
 		Bind_set_vertices                 MethodBind `hash:"2899603908"`
@@ -9453,6 +9920,7 @@ type methods struct {
 		Bind_clear_projected_obstructions MethodBind `hash:"3218959716"`
 		Bind_set_projected_obstructions   MethodBind `hash:"381264803"`
 		Bind_get_projected_obstructions   MethodBind `hash:"3995934104"`
+		Bind_get_bounds                   MethodBind `hash:"1021181044"`
 	}
 	NavigationObstacle2D struct {
 		Bind_get_rid                    MethodBind `hash:"2944877500"`
@@ -9582,6 +10050,8 @@ type methods struct {
 		Bind_get_cell_size                   MethodBind `hash:"1740695150"`
 		Bind_set_border_size                 MethodBind `hash:"373806689"`
 		Bind_get_border_size                 MethodBind `hash:"1740695150"`
+		Bind_set_sample_partition_type       MethodBind `hash:"2441478482"`
+		Bind_get_sample_partition_type       MethodBind `hash:"3887422851"`
 		Bind_set_parsed_geometry_type        MethodBind `hash:"2507971764"`
 		Bind_get_parsed_geometry_type        MethodBind `hash:"1073219508"`
 		Bind_set_parsed_collision_mask       MethodBind `hash:"1286410249"`
@@ -9621,6 +10091,7 @@ type methods struct {
 		Bind_get_travel_cost            MethodBind `hash:"1740695150"`
 		Bind_bake_navigation_polygon    MethodBind `hash:"3216645846"`
 		Bind_is_baking                  MethodBind `hash:"36873697"`
+		Bind_get_bounds                 MethodBind `hash:"1639390495"`
 	}
 	NavigationRegion3D struct {
 		Bind_get_rid                    MethodBind `hash:"2944877500"`
@@ -9643,6 +10114,7 @@ type methods struct {
 		Bind_get_travel_cost            MethodBind `hash:"1740695150"`
 		Bind_bake_navigation_mesh       MethodBind `hash:"3216645846"`
 		Bind_is_baking                  MethodBind `hash:"36873697"`
+		Bind_get_bounds                 MethodBind `hash:"1068685055"`
 	}
 	NavigationServer2D struct {
 		Bind_get_maps                             MethodBind `hash:"3995934104"`
@@ -9657,7 +10129,7 @@ type methods struct {
 		Bind_map_get_edge_connection_margin       MethodBind `hash:"866169185"`
 		Bind_map_set_link_connection_radius       MethodBind `hash:"1794382983"`
 		Bind_map_get_link_connection_radius       MethodBind `hash:"866169185"`
-		Bind_map_get_path                         MethodBind `hash:"3146466012"`
+		Bind_map_get_path                         MethodBind `hash:"1279824844"`
 		Bind_map_get_closest_point                MethodBind `hash:"1358334418"`
 		Bind_map_get_closest_point_owner          MethodBind `hash:"1353467510"`
 		Bind_map_get_links                        MethodBind `hash:"2684255073"`
@@ -9666,8 +10138,10 @@ type methods struct {
 		Bind_map_get_obstacles                    MethodBind `hash:"2684255073"`
 		Bind_map_force_update                     MethodBind `hash:"2722037293"`
 		Bind_map_get_iteration_id                 MethodBind `hash:"2198884583"`
+		Bind_map_set_use_async_iterations         MethodBind `hash:"1265174801"`
+		Bind_map_get_use_async_iterations         MethodBind `hash:"4155700596"`
 		Bind_map_get_random_point                 MethodBind `hash:"3271000763"`
-		Bind_query_path                           MethodBind `hash:"3394638789"`
+		Bind_query_path                           MethodBind `hash:"1254915886"`
 		Bind_region_create                        MethodBind `hash:"529393457"`
 		Bind_region_set_enabled                   MethodBind `hash:"1265174801"`
 		Bind_region_get_enabled                   MethodBind `hash:"4155700596"`
@@ -9690,7 +10164,9 @@ type methods struct {
 		Bind_region_get_connections_count         MethodBind `hash:"2198884583"`
 		Bind_region_get_connection_pathway_start  MethodBind `hash:"2546185844"`
 		Bind_region_get_connection_pathway_end    MethodBind `hash:"2546185844"`
+		Bind_region_get_closest_point             MethodBind `hash:"1358334418"`
 		Bind_region_get_random_point              MethodBind `hash:"3271000763"`
+		Bind_region_get_bounds                    MethodBind `hash:"1097232729"`
 		Bind_link_create                          MethodBind `hash:"529393457"`
 		Bind_link_set_map                         MethodBind `hash:"395945892"`
 		Bind_link_get_map                         MethodBind `hash:"3814569979"`
@@ -9760,9 +10236,9 @@ type methods struct {
 		Bind_obstacle_get_vertices                MethodBind `hash:"2222557395"`
 		Bind_obstacle_set_avoidance_layers        MethodBind `hash:"3411492887"`
 		Bind_obstacle_get_avoidance_layers        MethodBind `hash:"2198884583"`
-		Bind_parse_source_geometry_data           MethodBind `hash:"1176164995"`
-		Bind_bake_from_source_geometry_data       MethodBind `hash:"2909414286"`
-		Bind_bake_from_source_geometry_data_async MethodBind `hash:"2909414286"`
+		Bind_parse_source_geometry_data           MethodBind `hash:"1766905497"`
+		Bind_bake_from_source_geometry_data       MethodBind `hash:"2179660022"`
+		Bind_bake_from_source_geometry_data_async MethodBind `hash:"2179660022"`
 		Bind_is_baking_navigation_polygon         MethodBind `hash:"3729405808"`
 		Bind_source_geometry_parser_create        MethodBind `hash:"529393457"`
 		Bind_source_geometry_parser_set_callback  MethodBind `hash:"3379118538"`
@@ -9790,7 +10266,7 @@ type methods struct {
 		Bind_map_get_edge_connection_margin       MethodBind `hash:"866169185"`
 		Bind_map_set_link_connection_radius       MethodBind `hash:"1794382983"`
 		Bind_map_get_link_connection_radius       MethodBind `hash:"866169185"`
-		Bind_map_get_path                         MethodBind `hash:"1187418690"`
+		Bind_map_get_path                         MethodBind `hash:"276783190"`
 		Bind_map_get_closest_point_to_segment     MethodBind `hash:"3830095642"`
 		Bind_map_get_closest_point                MethodBind `hash:"2056183332"`
 		Bind_map_get_closest_point_normal         MethodBind `hash:"2056183332"`
@@ -9801,8 +10277,10 @@ type methods struct {
 		Bind_map_get_obstacles                    MethodBind `hash:"2684255073"`
 		Bind_map_force_update                     MethodBind `hash:"2722037293"`
 		Bind_map_get_iteration_id                 MethodBind `hash:"2198884583"`
+		Bind_map_set_use_async_iterations         MethodBind `hash:"1265174801"`
+		Bind_map_get_use_async_iterations         MethodBind `hash:"4155700596"`
 		Bind_map_get_random_point                 MethodBind `hash:"722801526"`
-		Bind_query_path                           MethodBind `hash:"3415008901"`
+		Bind_query_path                           MethodBind `hash:"2146930868"`
 		Bind_region_create                        MethodBind `hash:"529393457"`
 		Bind_region_set_enabled                   MethodBind `hash:"1265174801"`
 		Bind_region_get_enabled                   MethodBind `hash:"4155700596"`
@@ -9826,7 +10304,11 @@ type methods struct {
 		Bind_region_get_connections_count         MethodBind `hash:"2198884583"`
 		Bind_region_get_connection_pathway_start  MethodBind `hash:"3440143363"`
 		Bind_region_get_connection_pathway_end    MethodBind `hash:"3440143363"`
+		Bind_region_get_closest_point_to_segment  MethodBind `hash:"3830095642"`
+		Bind_region_get_closest_point             MethodBind `hash:"2056183332"`
+		Bind_region_get_closest_point_normal      MethodBind `hash:"2056183332"`
 		Bind_region_get_random_point              MethodBind `hash:"722801526"`
+		Bind_region_get_bounds                    MethodBind `hash:"974181306"`
 		Bind_link_create                          MethodBind `hash:"529393457"`
 		Bind_link_set_map                         MethodBind `hash:"395945892"`
 		Bind_link_get_map                         MethodBind `hash:"3814569979"`
@@ -9904,9 +10386,9 @@ type methods struct {
 		Bind_obstacle_get_vertices                MethodBind `hash:"808965560"`
 		Bind_obstacle_set_avoidance_layers        MethodBind `hash:"3411492887"`
 		Bind_obstacle_get_avoidance_layers        MethodBind `hash:"2198884583"`
-		Bind_parse_source_geometry_data           MethodBind `hash:"685862123"`
-		Bind_bake_from_source_geometry_data       MethodBind `hash:"2469318639"`
-		Bind_bake_from_source_geometry_data_async MethodBind `hash:"2469318639"`
+		Bind_parse_source_geometry_data           MethodBind `hash:"3172802542"`
+		Bind_bake_from_source_geometry_data       MethodBind `hash:"1286748856"`
+		Bind_bake_from_source_geometry_data_async MethodBind `hash:"1286748856"`
 		Bind_is_baking_navigation_mesh            MethodBind `hash:"3142026141"`
 		Bind_source_geometry_parser_create        MethodBind `hash:"529393457"`
 		Bind_source_geometry_parser_set_callback  MethodBind `hash:"3379118538"`
@@ -10013,6 +10495,7 @@ type methods struct {
 		Bind_reset_physics_interpolation         MethodBind `hash:"3218959716"`
 		Bind_set_auto_translate_mode             MethodBind `hash:"776149714"`
 		Bind_get_auto_translate_mode             MethodBind `hash:"2498906432"`
+		Bind_set_translation_domain_inherited    MethodBind `hash:"3218959716"`
 		Bind_get_window                          MethodBind `hash:"1757182445"`
 		Bind_get_last_exclusive_window           MethodBind `hash:"1757182445"`
 		Bind_get_tree                            MethodBind `hash:"2958820483"`
@@ -10032,6 +10515,7 @@ type methods struct {
 		Bind_is_multiplayer_authority            MethodBind `hash:"36873697"`
 		Bind_get_multiplayer                     MethodBind `hash:"406750475"`
 		Bind_rpc_config                          MethodBind `hash:"3776071444"`
+		Bind_get_rpc_config                      MethodBind `hash:"1214101251"`
 		Bind_set_editor_description              MethodBind `hash:"83702148"`
 		Bind_get_editor_description              MethodBind `hash:"201670096"`
 		Bind_set_unique_name_in_owner            MethodBind `hash:"2586408642"`
@@ -10104,6 +10588,7 @@ type methods struct {
 		Bind_get_basis                               MethodBind `hash:"2716978435"`
 		Bind_set_global_transform                    MethodBind `hash:"2952846383"`
 		Bind_get_global_transform                    MethodBind `hash:"3229777777"`
+		Bind_get_global_transform_interpolated       MethodBind `hash:"4183770049"`
 		Bind_set_global_position                     MethodBind `hash:"3460891852"`
 		Bind_get_global_position                     MethodBind `hash:"3360562783"`
 		Bind_set_global_basis                        MethodBind `hash:"1055510324"`
@@ -10231,9 +10716,13 @@ type methods struct {
 		Bind_get_system_font_path                    MethodBind `hash:"626580860"`
 		Bind_get_system_font_path_for_text           MethodBind `hash:"197317981"`
 		Bind_get_executable_path                     MethodBind `hash:"201670096"`
-		Bind_read_string_from_stdin                  MethodBind `hash:"2841200299"`
+		Bind_read_string_from_stdin                  MethodBind `hash:"990163283"`
+		Bind_read_buffer_from_stdin                  MethodBind `hash:"47165747"`
+		Bind_get_stdin_type                          MethodBind `hash:"1704816237"`
+		Bind_get_stdout_type                         MethodBind `hash:"1704816237"`
+		Bind_get_stderr_type                         MethodBind `hash:"1704816237"`
 		Bind_execute                                 MethodBind `hash:"1488299882"`
-		Bind_execute_with_pipe                       MethodBind `hash:"3845631403"`
+		Bind_execute_with_pipe                       MethodBind `hash:"2851312030"`
 		Bind_create_process                          MethodBind `hash:"2903767230"`
 		Bind_create_instance                         MethodBind `hash:"1080601263"`
 		Bind_kill                                    MethodBind `hash:"844576869"`
@@ -10249,6 +10738,7 @@ type methods struct {
 		Bind_get_name                                MethodBind `hash:"201670096"`
 		Bind_get_distribution_name                   MethodBind `hash:"201670096"`
 		Bind_get_version                             MethodBind `hash:"201670096"`
+		Bind_get_version_alias                       MethodBind `hash:"201670096"`
 		Bind_get_cmdline_args                        MethodBind `hash:"2981934095"`
 		Bind_get_cmdline_user_args                   MethodBind `hash:"2981934095"`
 		Bind_get_video_adapter_driver_info           MethodBind `hash:"1139954409"`
@@ -10272,6 +10762,7 @@ type methods struct {
 		Bind_get_config_dir                          MethodBind `hash:"201670096"`
 		Bind_get_data_dir                            MethodBind `hash:"201670096"`
 		Bind_get_cache_dir                           MethodBind `hash:"201670096"`
+		Bind_get_temp_dir                            MethodBind `hash:"201670096"`
 		Bind_get_unique_id                           MethodBind `hash:"201670096"`
 		Bind_get_keycode_string                      MethodBind `hash:"2261993717"`
 		Bind_is_keycode_unicode                      MethodBind `hash:"1116898809"`
@@ -10325,13 +10816,16 @@ type methods struct {
 		Bind_connect                      MethodBind `hash:"1518946055"`
 		Bind_disconnect                   MethodBind `hash:"1874754934"`
 		Bind_is_connected                 MethodBind `hash:"768136979"`
+		Bind_has_connections              MethodBind `hash:"2619796661"`
 		Bind_set_block_signals            MethodBind `hash:"2586408642"`
 		Bind_is_blocking_signals          MethodBind `hash:"36873697"`
 		Bind_notify_property_list_changed MethodBind `hash:"3218959716"`
 		Bind_set_message_translation      MethodBind `hash:"2586408642"`
 		Bind_can_translate_messages       MethodBind `hash:"36873697"`
-		Bind_tr                           MethodBind `hash:"2475554935"`
-		Bind_tr_n                         MethodBind `hash:"4021311862"`
+		Bind_tr                           MethodBind `hash:"1195764410"`
+		Bind_tr_n                         MethodBind `hash:"162698058"`
+		Bind_get_translation_domain       MethodBind `hash:"2002593661"`
+		Bind_set_translation_domain       MethodBind `hash:"3304788590"`
 		Bind_is_queued_for_deletion       MethodBind `hash:"36873697"`
 		Bind_cancel_free                  MethodBind `hash:"3218959716"`
 	}
@@ -10378,21 +10872,43 @@ type methods struct {
 		Bind_get_instance                                   MethodBind `hash:"2455072627"`
 		Bind_get_system_id                                  MethodBind `hash:"2455072627"`
 		Bind_get_session                                    MethodBind `hash:"2455072627"`
-		Bind_transform_from_pose                            MethodBind `hash:"3255299855"`
+		Bind_transform_from_pose                            MethodBind `hash:"2963875352"`
 		Bind_xr_result                                      MethodBind `hash:"3886436197"`
 		Bind_openxr_is_enabled                              MethodBind `hash:"2703660260"`
 		Bind_get_instance_proc_addr                         MethodBind `hash:"1597066294"`
 		Bind_get_error_string                               MethodBind `hash:"990163283"`
 		Bind_get_swapchain_format_name                      MethodBind `hash:"990163283"`
+		Bind_set_object_name                                MethodBind `hash:"2285447957"`
+		Bind_begin_debug_label_region                       MethodBind `hash:"83702148"`
+		Bind_end_debug_label_region                         MethodBind `hash:"3218959716"`
+		Bind_insert_debug_label                             MethodBind `hash:"83702148"`
 		Bind_is_initialized                                 MethodBind `hash:"2240911060"`
 		Bind_is_running                                     MethodBind `hash:"2240911060"`
 		Bind_get_play_space                                 MethodBind `hash:"2455072627"`
 		Bind_get_predicted_display_time                     MethodBind `hash:"2455072627"`
 		Bind_get_next_frame_time                            MethodBind `hash:"2455072627"`
 		Bind_can_render                                     MethodBind `hash:"2240911060"`
+		Bind_find_action                                    MethodBind `hash:"4106179378"`
+		Bind_action_get_handle                              MethodBind `hash:"3917799429"`
 		Bind_get_hand_tracker                               MethodBind `hash:"3744713108"`
 		Bind_register_composition_layer_provider            MethodBind `hash:"1997997368"`
 		Bind_unregister_composition_layer_provider          MethodBind `hash:"1997997368"`
+		Bind_register_projection_views_extension            MethodBind `hash:"1997997368"`
+		Bind_unregister_projection_views_extension          MethodBind `hash:"1997997368"`
+		Bind_get_render_state_z_near                        MethodBind `hash:"191475506"`
+		Bind_get_render_state_z_far                         MethodBind `hash:"191475506"`
+		Bind_set_velocity_texture                           MethodBind `hash:"2722037293"`
+		Bind_set_velocity_depth_texture                     MethodBind `hash:"2722037293"`
+		Bind_set_velocity_target_size                       MethodBind `hash:"1130785943"`
+		Bind_get_supported_swapchain_formats                MethodBind `hash:"3851388692"`
+		Bind_openxr_swapchain_create                        MethodBind `hash:"2162228999"`
+		Bind_openxr_swapchain_free                          MethodBind `hash:"1286410249"`
+		Bind_openxr_swapchain_get_swapchain                 MethodBind `hash:"3744713108"`
+		Bind_openxr_swapchain_acquire                       MethodBind `hash:"1286410249"`
+		Bind_openxr_swapchain_get_image                     MethodBind `hash:"937000113"`
+		Bind_openxr_swapchain_release                       MethodBind `hash:"1286410249"`
+		Bind_get_projection_layer                           MethodBind `hash:"2455072627"`
+		Bind_set_render_region                              MethodBind `hash:"1763793166"`
 		Bind_set_emulate_environment_blend_mode_alpha_blend MethodBind `hash:"2586408642"`
 		Bind_is_environment_blend_mode_alpha_supported      MethodBind `hash:"1579290861"`
 	}
@@ -10403,6 +10919,8 @@ type methods struct {
 		Bind_get_action_type    MethodBind `hash:"3536542431"`
 		Bind_set_toplevel_paths MethodBind `hash:"4015028928"`
 		Bind_get_toplevel_paths MethodBind `hash:"1139954409"`
+	}
+	OpenXRActionBindingModifier struct {
 	}
 	OpenXRActionMap struct {
 		Bind_set_action_sets               MethodBind `hash:"381264803"`
@@ -10432,17 +10950,38 @@ type methods struct {
 		Bind_add_action         MethodBind `hash:"349361333"`
 		Bind_remove_action      MethodBind `hash:"349361333"`
 	}
+	OpenXRAnalogThresholdModifier struct {
+		Bind_set_on_threshold  MethodBind `hash:"373806689"`
+		Bind_get_on_threshold  MethodBind `hash:"1740695150"`
+		Bind_set_off_threshold MethodBind `hash:"373806689"`
+		Bind_get_off_threshold MethodBind `hash:"1740695150"`
+		Bind_set_on_haptic     MethodBind `hash:"2998020150"`
+		Bind_get_on_haptic     MethodBind `hash:"922310751"`
+		Bind_set_off_haptic    MethodBind `hash:"2998020150"`
+		Bind_get_off_haptic    MethodBind `hash:"922310751"`
+	}
+	OpenXRBindingModifier struct {
+	}
+	OpenXRBindingModifierEditor struct {
+		Bind_get_binding_modifier MethodBind `hash:"2930765082"`
+		Bind_setup                MethodBind `hash:"1284787389"`
+	}
 	OpenXRCompositionLayer struct {
-		Bind_set_layer_viewport    MethodBind `hash:"3888077664"`
-		Bind_get_layer_viewport    MethodBind `hash:"3750751911"`
-		Bind_set_enable_hole_punch MethodBind `hash:"2586408642"`
-		Bind_get_enable_hole_punch MethodBind `hash:"36873697"`
-		Bind_set_sort_order        MethodBind `hash:"1286410249"`
-		Bind_get_sort_order        MethodBind `hash:"3905245786"`
-		Bind_set_alpha_blend       MethodBind `hash:"2586408642"`
-		Bind_get_alpha_blend       MethodBind `hash:"36873697"`
-		Bind_is_natively_supported MethodBind `hash:"36873697"`
-		Bind_intersects_ray        MethodBind `hash:"1091262597"`
+		Bind_set_layer_viewport       MethodBind `hash:"3888077664"`
+		Bind_get_layer_viewport       MethodBind `hash:"3750751911"`
+		Bind_set_use_android_surface  MethodBind `hash:"2586408642"`
+		Bind_get_use_android_surface  MethodBind `hash:"36873697"`
+		Bind_set_android_surface_size MethodBind `hash:"1130785943"`
+		Bind_get_android_surface_size MethodBind `hash:"3690982128"`
+		Bind_set_enable_hole_punch    MethodBind `hash:"2586408642"`
+		Bind_get_enable_hole_punch    MethodBind `hash:"36873697"`
+		Bind_set_sort_order           MethodBind `hash:"1286410249"`
+		Bind_get_sort_order           MethodBind `hash:"3905245786"`
+		Bind_set_alpha_blend          MethodBind `hash:"2586408642"`
+		Bind_get_alpha_blend          MethodBind `hash:"36873697"`
+		Bind_get_android_surface      MethodBind `hash:"3277089691"`
+		Bind_is_natively_supported    MethodBind `hash:"36873697"`
+		Bind_intersects_ray           MethodBind `hash:"1091262597"`
 	}
 	OpenXRCompositionLayerCylinder struct {
 		Bind_set_radius            MethodBind `hash:"373806689"`
@@ -10470,6 +11009,26 @@ type methods struct {
 		Bind_set_quad_size MethodBind `hash:"743155724"`
 		Bind_get_quad_size MethodBind `hash:"3341600327"`
 	}
+	OpenXRDpadBindingModifier struct {
+		Bind_set_action_set         MethodBind `hash:"2093310581"`
+		Bind_get_action_set         MethodBind `hash:"619941079"`
+		Bind_set_input_path         MethodBind `hash:"83702148"`
+		Bind_get_input_path         MethodBind `hash:"201670096"`
+		Bind_set_threshold          MethodBind `hash:"373806689"`
+		Bind_get_threshold          MethodBind `hash:"1740695150"`
+		Bind_set_threshold_released MethodBind `hash:"373806689"`
+		Bind_get_threshold_released MethodBind `hash:"1740695150"`
+		Bind_set_center_region      MethodBind `hash:"373806689"`
+		Bind_get_center_region      MethodBind `hash:"1740695150"`
+		Bind_set_wedge_angle        MethodBind `hash:"373806689"`
+		Bind_get_wedge_angle        MethodBind `hash:"1740695150"`
+		Bind_set_is_sticky          MethodBind `hash:"2586408642"`
+		Bind_get_is_sticky          MethodBind `hash:"36873697"`
+		Bind_set_on_haptic          MethodBind `hash:"2998020150"`
+		Bind_get_on_haptic          MethodBind `hash:"922310751"`
+		Bind_set_off_haptic         MethodBind `hash:"2998020150"`
+		Bind_get_off_haptic         MethodBind `hash:"922310751"`
+	}
 	OpenXRExtensionWrapperExtension struct {
 		Bind_get_openxr_api             MethodBind `hash:"1637791613"`
 		Bind_register_extension_wrapper MethodBind `hash:"3218959716"`
@@ -10486,15 +11045,33 @@ type methods struct {
 		Bind_set_bone_update   MethodBind `hash:"3144625444"`
 		Bind_get_bone_update   MethodBind `hash:"1310695248"`
 	}
+	OpenXRHapticBase struct {
+	}
+	OpenXRHapticVibration struct {
+		Bind_set_duration  MethodBind `hash:"1286410249"`
+		Bind_get_duration  MethodBind `hash:"3905245786"`
+		Bind_set_frequency MethodBind `hash:"373806689"`
+		Bind_get_frequency MethodBind `hash:"1740695150"`
+		Bind_set_amplitude MethodBind `hash:"373806689"`
+		Bind_get_amplitude MethodBind `hash:"1740695150"`
+	}
 	OpenXRIPBinding struct {
-		Bind_set_action     MethodBind `hash:"349361333"`
-		Bind_get_action     MethodBind `hash:"4072409085"`
-		Bind_get_path_count MethodBind `hash:"3905245786"`
-		Bind_set_paths      MethodBind `hash:"4015028928"`
-		Bind_get_paths      MethodBind `hash:"1139954409"`
-		Bind_has_path       MethodBind `hash:"3927539163"`
-		Bind_add_path       MethodBind `hash:"83702148"`
-		Bind_remove_path    MethodBind `hash:"83702148"`
+		Bind_set_action                 MethodBind `hash:"349361333"`
+		Bind_get_action                 MethodBind `hash:"4072409085"`
+		Bind_set_binding_path           MethodBind `hash:"83702148"`
+		Bind_get_binding_path           MethodBind `hash:"201670096"`
+		Bind_get_binding_modifier_count MethodBind `hash:"3905245786"`
+		Bind_get_binding_modifier       MethodBind `hash:"3538296211"`
+		Bind_set_binding_modifiers      MethodBind `hash:"381264803"`
+		Bind_get_binding_modifiers      MethodBind `hash:"3995934104"`
+		Bind_set_paths                  MethodBind `hash:"4015028928"`
+		Bind_get_paths                  MethodBind `hash:"1139954409"`
+		Bind_get_path_count             MethodBind `hash:"3905245786"`
+		Bind_has_path                   MethodBind `hash:"3927539163"`
+		Bind_add_path                   MethodBind `hash:"83702148"`
+		Bind_remove_path                MethodBind `hash:"83702148"`
+	}
+	OpenXRIPBindingModifier struct {
 	}
 	OpenXRInteractionProfile struct {
 		Bind_set_interaction_profile_path MethodBind `hash:"83702148"`
@@ -10503,6 +11080,15 @@ type methods struct {
 		Bind_get_binding                  MethodBind `hash:"3934429652"`
 		Bind_set_bindings                 MethodBind `hash:"381264803"`
 		Bind_get_bindings                 MethodBind `hash:"3995934104"`
+		Bind_get_binding_modifier_count   MethodBind `hash:"3905245786"`
+		Bind_get_binding_modifier         MethodBind `hash:"2419896583"`
+		Bind_set_binding_modifiers        MethodBind `hash:"381264803"`
+		Bind_get_binding_modifiers        MethodBind `hash:"3995934104"`
+	}
+	OpenXRInteractionProfileEditor struct {
+	}
+	OpenXRInteractionProfileEditorBase struct {
+		Bind_setup MethodBind `hash:"421962938"`
 	}
 	OpenXRInteractionProfileMetadata struct {
 		Bind_register_profile_rename      MethodBind `hash:"3186203200"`
@@ -10540,6 +11126,8 @@ type methods struct {
 		Bind_set_vrs_min_radius                  MethodBind `hash:"373806689"`
 		Bind_get_vrs_strength                    MethodBind `hash:"1740695150"`
 		Bind_set_vrs_strength                    MethodBind `hash:"373806689"`
+	}
+	OpenXRVisibilityMask struct {
 	}
 	OptimizedTranslation struct {
 		Bind_generate MethodBind `hash:"1466479800"`
@@ -10581,9 +11169,10 @@ type methods struct {
 		Bind_set_disable_shortcuts   MethodBind `hash:"2586408642"`
 	}
 	PCKPacker struct {
-		Bind_pck_start MethodBind `hash:"508410629"`
-		Bind_add_file  MethodBind `hash:"2215643711"`
-		Bind_flush     MethodBind `hash:"1633102583"`
+		Bind_pck_start        MethodBind `hash:"508410629"`
+		Bind_add_file         MethodBind `hash:"2215643711"`
+		Bind_add_file_removal MethodBind `hash:"166001499"`
+		Bind_flush            MethodBind `hash:"1633102583"`
 	}
 	PackedDataContainer struct {
 		Bind_pack MethodBind `hash:"966674026"`
@@ -10750,6 +11339,8 @@ type methods struct {
 		Bind_get_emission_ring_radius            MethodBind `hash:"1740695150"`
 		Bind_set_emission_ring_inner_radius      MethodBind `hash:"373806689"`
 		Bind_get_emission_ring_inner_radius      MethodBind `hash:"1740695150"`
+		Bind_set_emission_ring_cone_angle        MethodBind `hash:"373806689"`
+		Bind_get_emission_ring_cone_angle        MethodBind `hash:"1740695150"`
 		Bind_set_emission_shape_offset           MethodBind `hash:"3460891852"`
 		Bind_get_emission_shape_offset           MethodBind `hash:"3360562783"`
 		Bind_set_emission_shape_scale            MethodBind `hash:"3460891852"`
@@ -10776,6 +11367,8 @@ type methods struct {
 		Bind_set_sub_emitter_amount_at_end       MethodBind `hash:"1286410249"`
 		Bind_get_sub_emitter_amount_at_collision MethodBind `hash:"3905245786"`
 		Bind_set_sub_emitter_amount_at_collision MethodBind `hash:"1286410249"`
+		Bind_get_sub_emitter_amount_at_start     MethodBind `hash:"3905245786"`
+		Bind_set_sub_emitter_amount_at_start     MethodBind `hash:"1286410249"`
 		Bind_get_sub_emitter_keep_velocity       MethodBind `hash:"36873697"`
 		Bind_set_sub_emitter_keep_velocity       MethodBind `hash:"2586408642"`
 		Bind_set_attractor_interaction_enabled   MethodBind `hash:"2586408642"`
@@ -12053,8 +12646,8 @@ type methods struct {
 		Bind_get_unnormalized_uvw MethodBind `hash:"36873697"`
 	}
 	RDShaderFile struct {
-		Bind_set_bytecode     MethodBind `hash:"1558064255"`
-		Bind_get_spirv        MethodBind `hash:"3340165340"`
+		Bind_set_bytecode     MethodBind `hash:"1526857008"`
+		Bind_get_spirv        MethodBind `hash:"2689310080"`
 		Bind_get_version_list MethodBind `hash:"3995934104"`
 		Bind_set_base_error   MethodBind `hash:"83702148"`
 		Bind_get_base_error   MethodBind `hash:"201670096"`
@@ -12090,6 +12683,10 @@ type methods struct {
 		Bind_get_samples             MethodBind `hash:"407791724"`
 		Bind_set_usage_bits          MethodBind `hash:"245642367"`
 		Bind_get_usage_bits          MethodBind `hash:"1313398998"`
+		Bind_set_is_resolve_buffer   MethodBind `hash:"2586408642"`
+		Bind_get_is_resolve_buffer   MethodBind `hash:"36873697"`
+		Bind_set_is_discardable      MethodBind `hash:"2586408642"`
+		Bind_get_is_discardable      MethodBind `hash:"36873697"`
 		Bind_add_shareable_format    MethodBind `hash:"565531219"`
 		Bind_remove_shareable_format MethodBind `hash:"565531219"`
 	}
@@ -12252,6 +12849,8 @@ type methods struct {
 	ReflectionProbe struct {
 		Bind_set_intensity             MethodBind `hash:"373806689"`
 		Bind_get_intensity             MethodBind `hash:"1740695150"`
+		Bind_set_blend_distance        MethodBind `hash:"373806689"`
+		Bind_get_blend_distance        MethodBind `hash:"1740695150"`
 		Bind_set_ambient_mode          MethodBind `hash:"1748981278"`
 		Bind_get_ambient_mode          MethodBind `hash:"1014607621"`
 		Bind_set_ambient_color         MethodBind `hash:"2920490490"`
@@ -12280,9 +12879,9 @@ type methods struct {
 		Bind_get_update_mode           MethodBind `hash:"2367550552"`
 	}
 	RegEx struct {
-		Bind_create_from_string MethodBind `hash:"2150300909"`
+		Bind_create_from_string MethodBind `hash:"4249111514"`
 		Bind_clear              MethodBind `hash:"3218959716"`
-		Bind_compile            MethodBind `hash:"166001499"`
+		Bind_compile            MethodBind `hash:"3565188097"`
 		Bind_search             MethodBind `hash:"3365977994"`
 		Bind_search_all         MethodBind `hash:"849021363"`
 		Bind_sub                MethodBind `hash:"54019702"`
@@ -12340,30 +12939,32 @@ type methods struct {
 		Bind_configure MethodBind `hash:"3072623270"`
 	}
 	RenderSceneBuffersConfiguration struct {
-		Bind_get_render_target       MethodBind `hash:"2944877500"`
-		Bind_set_render_target       MethodBind `hash:"2722037293"`
-		Bind_get_internal_size       MethodBind `hash:"3690982128"`
-		Bind_set_internal_size       MethodBind `hash:"1130785943"`
-		Bind_get_target_size         MethodBind `hash:"3690982128"`
-		Bind_set_target_size         MethodBind `hash:"1130785943"`
-		Bind_get_view_count          MethodBind `hash:"3905245786"`
-		Bind_set_view_count          MethodBind `hash:"1286410249"`
-		Bind_get_scaling_3d_mode     MethodBind `hash:"976778074"`
-		Bind_set_scaling_3d_mode     MethodBind `hash:"447477857"`
-		Bind_get_msaa_3d             MethodBind `hash:"3109158617"`
-		Bind_set_msaa_3d             MethodBind `hash:"3952630748"`
-		Bind_get_screen_space_aa     MethodBind `hash:"641513172"`
-		Bind_set_screen_space_aa     MethodBind `hash:"139543108"`
-		Bind_get_fsr_sharpness       MethodBind `hash:"1740695150"`
-		Bind_set_fsr_sharpness       MethodBind `hash:"373806689"`
-		Bind_get_texture_mipmap_bias MethodBind `hash:"1740695150"`
-		Bind_set_texture_mipmap_bias MethodBind `hash:"373806689"`
+		Bind_get_render_target               MethodBind `hash:"2944877500"`
+		Bind_set_render_target               MethodBind `hash:"2722037293"`
+		Bind_get_internal_size               MethodBind `hash:"3690982128"`
+		Bind_set_internal_size               MethodBind `hash:"1130785943"`
+		Bind_get_target_size                 MethodBind `hash:"3690982128"`
+		Bind_set_target_size                 MethodBind `hash:"1130785943"`
+		Bind_get_view_count                  MethodBind `hash:"3905245786"`
+		Bind_set_view_count                  MethodBind `hash:"1286410249"`
+		Bind_get_scaling_3d_mode             MethodBind `hash:"976778074"`
+		Bind_set_scaling_3d_mode             MethodBind `hash:"447477857"`
+		Bind_get_msaa_3d                     MethodBind `hash:"3109158617"`
+		Bind_set_msaa_3d                     MethodBind `hash:"3952630748"`
+		Bind_get_screen_space_aa             MethodBind `hash:"641513172"`
+		Bind_set_screen_space_aa             MethodBind `hash:"139543108"`
+		Bind_get_fsr_sharpness               MethodBind `hash:"1740695150"`
+		Bind_set_fsr_sharpness               MethodBind `hash:"373806689"`
+		Bind_get_texture_mipmap_bias         MethodBind `hash:"1740695150"`
+		Bind_set_texture_mipmap_bias         MethodBind `hash:"373806689"`
+		Bind_get_anisotropic_filtering_level MethodBind `hash:"1617414954"`
+		Bind_set_anisotropic_filtering_level MethodBind `hash:"2559658741"`
 	}
 	RenderSceneBuffersExtension struct {
 	}
 	RenderSceneBuffersRD struct {
 		Bind_has_texture                MethodBind `hash:"471820014"`
-		Bind_create_texture             MethodBind `hash:"3559915770"`
+		Bind_create_texture             MethodBind `hash:"2950875024"`
 		Bind_create_texture_from_format MethodBind `hash:"3344669382"`
 		Bind_create_texture_view        MethodBind `hash:"283055834"`
 		Bind_get_texture                MethodBind `hash:"750006389"`
@@ -12409,9 +13010,12 @@ type methods struct {
 		Bind_texture_create_from_extension          MethodBind `hash:"1397171480"`
 		Bind_texture_update                         MethodBind `hash:"1349464008"`
 		Bind_texture_get_data                       MethodBind `hash:"1859412099"`
+		Bind_texture_get_data_async                 MethodBind `hash:"498832090"`
 		Bind_texture_is_format_supported_for_usage  MethodBind `hash:"2592520478"`
 		Bind_texture_is_shared                      MethodBind `hash:"3521089500"`
 		Bind_texture_is_valid                       MethodBind `hash:"3521089500"`
+		Bind_texture_set_discardable                MethodBind `hash:"1265174801"`
+		Bind_texture_is_discardable                 MethodBind `hash:"3521089500"`
 		Bind_texture_copy                           MethodBind `hash:"2859522160"`
 		Bind_texture_clear                          MethodBind `hash:"3477703247"`
 		Bind_texture_resolve_multisample            MethodBind `hash:"3181288260"`
@@ -12428,10 +13032,10 @@ type methods struct {
 		Bind_framebuffer_is_valid                   MethodBind `hash:"4155700596"`
 		Bind_sampler_create                         MethodBind `hash:"2327892535"`
 		Bind_sampler_is_format_supported_for_filter MethodBind `hash:"2247922238"`
-		Bind_vertex_buffer_create                   MethodBind `hash:"3410049843"`
+		Bind_vertex_buffer_create                   MethodBind `hash:"2089548973"`
 		Bind_vertex_format_create                   MethodBind `hash:"1242678479"`
 		Bind_vertex_array_create                    MethodBind `hash:"3799816279"`
-		Bind_index_buffer_create                    MethodBind `hash:"3935920523"`
+		Bind_index_buffer_create                    MethodBind `hash:"2368684885"`
 		Bind_index_array_create                     MethodBind `hash:"2256026069"`
 		Bind_shader_compile_spirv_from_source       MethodBind `hash:"1178973306"`
 		Bind_shader_compile_binary_from_spirv       MethodBind `hash:"134910450"`
@@ -12439,8 +13043,8 @@ type methods struct {
 		Bind_shader_create_from_bytecode            MethodBind `hash:"1687031350"`
 		Bind_shader_create_placeholder              MethodBind `hash:"529393457"`
 		Bind_shader_get_vertex_input_attribute_mask MethodBind `hash:"3917799429"`
-		Bind_uniform_buffer_create                  MethodBind `hash:"34556762"`
-		Bind_storage_buffer_create                  MethodBind `hash:"2316365934"`
+		Bind_uniform_buffer_create                  MethodBind `hash:"2089548973"`
+		Bind_storage_buffer_create                  MethodBind `hash:"1609052553"`
 		Bind_texture_buffer_create                  MethodBind `hash:"1470338698"`
 		Bind_uniform_set_create                     MethodBind `hash:"2280795797"`
 		Bind_uniform_set_is_valid                   MethodBind `hash:"3521089500"`
@@ -12448,6 +13052,8 @@ type methods struct {
 		Bind_buffer_update                          MethodBind `hash:"3454956949"`
 		Bind_buffer_clear                           MethodBind `hash:"2452320800"`
 		Bind_buffer_get_data                        MethodBind `hash:"3101830688"`
+		Bind_buffer_get_data_async                  MethodBind `hash:"2370287848"`
+		Bind_buffer_get_device_address              MethodBind `hash:"3917799429"`
 		Bind_render_pipeline_create                 MethodBind `hash:"2385451958"`
 		Bind_render_pipeline_is_valid               MethodBind `hash:"3521089500"`
 		Bind_compute_pipeline_create                MethodBind `hash:"1448838280"`
@@ -12456,7 +13062,7 @@ type methods struct {
 		Bind_screen_get_height                      MethodBind `hash:"1591665591"`
 		Bind_screen_get_framebuffer_format          MethodBind `hash:"1591665591"`
 		Bind_draw_list_begin_for_screen             MethodBind `hash:"3988079995"`
-		Bind_draw_list_begin                        MethodBind `hash:"2686605154"`
+		Bind_draw_list_begin                        MethodBind `hash:"1317926357"`
 		Bind_draw_list_begin_split                  MethodBind `hash:"2406300660"`
 		Bind_draw_list_set_blend_constants          MethodBind `hash:"2878471219"`
 		Bind_draw_list_bind_render_pipeline         MethodBind `hash:"4040184819"`
@@ -12465,6 +13071,7 @@ type methods struct {
 		Bind_draw_list_bind_index_array             MethodBind `hash:"4040184819"`
 		Bind_draw_list_set_push_constant            MethodBind `hash:"2772371345"`
 		Bind_draw_list_draw                         MethodBind `hash:"4230067973"`
+		Bind_draw_list_draw_indirect                MethodBind `hash:"1092133571"`
 		Bind_draw_list_enable_scissor               MethodBind `hash:"244650101"`
 		Bind_draw_list_disable_scissor              MethodBind `hash:"1286410249"`
 		Bind_draw_list_switch_to_next_pass          MethodBind `hash:"2455072627"`
@@ -12485,6 +13092,7 @@ type methods struct {
 		Bind_get_captured_timestamp_gpu_time        MethodBind `hash:"923996154"`
 		Bind_get_captured_timestamp_cpu_time        MethodBind `hash:"923996154"`
 		Bind_get_captured_timestamp_name            MethodBind `hash:"844755477"`
+		Bind_has_feature                            MethodBind `hash:"1772728326"`
 		Bind_limit_get                              MethodBind `hash:"1559202131"`
 		Bind_get_frame_delay                        MethodBind `hash:"3905245786"`
 		Bind_submit                                 MethodBind `hash:"3218959716"`
@@ -12501,12 +13109,25 @@ type methods struct {
 		Bind_get_device_pipeline_cache_uuid         MethodBind `hash:"201670096"`
 		Bind_get_memory_usage                       MethodBind `hash:"251690689"`
 		Bind_get_driver_resource                    MethodBind `hash:"501815484"`
+		Bind_get_perf_report                        MethodBind `hash:"201670096"`
+		Bind_get_driver_and_device_memory_report    MethodBind `hash:"201670096"`
+		Bind_get_tracked_object_name                MethodBind `hash:"844755477"`
+		Bind_get_tracked_object_type_count          MethodBind `hash:"3905245786"`
+		Bind_get_driver_total_memory                MethodBind `hash:"3905245786"`
+		Bind_get_driver_allocation_count            MethodBind `hash:"3905245786"`
+		Bind_get_driver_memory_by_object_type       MethodBind `hash:"923996154"`
+		Bind_get_driver_allocs_by_object_type       MethodBind `hash:"923996154"`
+		Bind_get_device_total_memory                MethodBind `hash:"3905245786"`
+		Bind_get_device_allocation_count            MethodBind `hash:"3905245786"`
+		Bind_get_device_memory_by_object_type       MethodBind `hash:"923996154"`
+		Bind_get_device_allocs_by_object_type       MethodBind `hash:"923996154"`
 	}
 	RenderingServer struct {
 		Bind_texture_2d_create                                         MethodBind `hash:"2010018390"`
 		Bind_texture_2d_layered_create                                 MethodBind `hash:"913689023"`
 		Bind_texture_3d_create                                         MethodBind `hash:"4036838706"`
 		Bind_texture_proxy_create                                      MethodBind `hash:"41030802"`
+		Bind_texture_create_from_native_handle                         MethodBind `hash:"1682977582"`
 		Bind_texture_2d_update                                         MethodBind `hash:"999539803"`
 		Bind_texture_3d_update                                         MethodBind `hash:"684822712"`
 		Bind_texture_proxy_update                                      MethodBind `hash:"395945892"`
@@ -12559,13 +13180,14 @@ type methods struct {
 		Bind_mesh_get_surface_count                                    MethodBind `hash:"2198884583"`
 		Bind_mesh_set_custom_aabb                                      MethodBind `hash:"3696536120"`
 		Bind_mesh_get_custom_aabb                                      MethodBind `hash:"974181306"`
+		Bind_mesh_surface_remove                                       MethodBind `hash:"3411492887"`
 		Bind_mesh_clear                                                MethodBind `hash:"2722037293"`
 		Bind_mesh_surface_update_vertex_region                         MethodBind `hash:"2900195149"`
 		Bind_mesh_surface_update_attribute_region                      MethodBind `hash:"2900195149"`
 		Bind_mesh_surface_update_skin_region                           MethodBind `hash:"2900195149"`
 		Bind_mesh_set_shadow_mesh                                      MethodBind `hash:"395945892"`
 		Bind_multimesh_create                                          MethodBind `hash:"529393457"`
-		Bind_multimesh_allocate_data                                   MethodBind `hash:"283685892"`
+		Bind_multimesh_allocate_data                                   MethodBind `hash:"557240154"`
 		Bind_multimesh_get_instance_count                              MethodBind `hash:"2198884583"`
 		Bind_multimesh_set_mesh                                        MethodBind `hash:"395945892"`
 		Bind_multimesh_instance_set_transform                          MethodBind `hash:"675327471"`
@@ -12583,7 +13205,13 @@ type methods struct {
 		Bind_multimesh_set_visible_instances                           MethodBind `hash:"3411492887"`
 		Bind_multimesh_get_visible_instances                           MethodBind `hash:"2198884583"`
 		Bind_multimesh_set_buffer                                      MethodBind `hash:"2960552364"`
+		Bind_multimesh_get_command_buffer_rd_rid                       MethodBind `hash:"3814569979"`
+		Bind_multimesh_get_buffer_rd_rid                               MethodBind `hash:"3814569979"`
 		Bind_multimesh_get_buffer                                      MethodBind `hash:"3964669176"`
+		Bind_multimesh_set_buffer_interpolated                         MethodBind `hash:"659844711"`
+		Bind_multimesh_set_physics_interpolated                        MethodBind `hash:"1265174801"`
+		Bind_multimesh_set_physics_interpolation_quality               MethodBind `hash:"3934808223"`
+		Bind_multimesh_instance_reset_physics_interpolation            MethodBind `hash:"3411492887"`
 		Bind_skeleton_create                                           MethodBind `hash:"529393457"`
 		Bind_skeleton_allocate_data                                    MethodBind `hash:"1904426712"`
 		Bind_skeleton_get_bone_count                                   MethodBind `hash:"2198884583"`
@@ -12603,6 +13231,7 @@ type methods struct {
 		Bind_light_set_cull_mask                                       MethodBind `hash:"3411492887"`
 		Bind_light_set_distance_fade                                   MethodBind `hash:"1622292572"`
 		Bind_light_set_reverse_cull_face_mode                          MethodBind `hash:"1265174801"`
+		Bind_light_set_shadow_caster_mask                              MethodBind `hash:"3411492887"`
 		Bind_light_set_bake_mode                                       MethodBind `hash:"1048525260"`
 		Bind_light_set_max_sdfgi_cascade                               MethodBind `hash:"3411492887"`
 		Bind_light_omni_set_shadow_mode                                MethodBind `hash:"2552677200"`
@@ -12610,12 +13239,14 @@ type methods struct {
 		Bind_light_directional_set_blend_splits                        MethodBind `hash:"1265174801"`
 		Bind_light_directional_set_sky_mode                            MethodBind `hash:"2559740754"`
 		Bind_light_projectors_set_filter                               MethodBind `hash:"43944325"`
+		Bind_lightmaps_set_bicubic_filter                              MethodBind `hash:"2586408642"`
 		Bind_positional_soft_shadow_filter_set_quality                 MethodBind `hash:"3613045266"`
 		Bind_directional_soft_shadow_filter_set_quality                MethodBind `hash:"3613045266"`
 		Bind_directional_shadow_atlas_set_size                         MethodBind `hash:"300928843"`
 		Bind_reflection_probe_create                                   MethodBind `hash:"529393457"`
 		Bind_reflection_probe_set_update_mode                          MethodBind `hash:"3853670147"`
 		Bind_reflection_probe_set_intensity                            MethodBind `hash:"1794382983"`
+		Bind_reflection_probe_set_blend_distance                       MethodBind `hash:"1794382983"`
 		Bind_reflection_probe_set_ambient_mode                         MethodBind `hash:"184163074"`
 		Bind_reflection_probe_set_ambient_color                        MethodBind `hash:"2948539648"`
 		Bind_reflection_probe_set_ambient_energy                       MethodBind `hash:"1794382983"`
@@ -12678,6 +13309,7 @@ type methods struct {
 		Bind_particles_set_lifetime                                    MethodBind `hash:"1794382983"`
 		Bind_particles_set_one_shot                                    MethodBind `hash:"1265174801"`
 		Bind_particles_set_pre_process_time                            MethodBind `hash:"1794382983"`
+		Bind_particles_request_process_time                            MethodBind `hash:"1794382983"`
 		Bind_particles_set_explosiveness_ratio                         MethodBind `hash:"1794382983"`
 		Bind_particles_set_randomness_ratio                            MethodBind `hash:"1794382983"`
 		Bind_particles_set_interp_to_end                               MethodBind `hash:"1794382983"`
@@ -12714,6 +13346,7 @@ type methods struct {
 		Bind_particles_collision_set_field_texture                     MethodBind `hash:"395945892"`
 		Bind_particles_collision_height_field_update                   MethodBind `hash:"2722037293"`
 		Bind_particles_collision_set_height_field_resolution           MethodBind `hash:"962977297"`
+		Bind_particles_collision_set_height_field_mask                 MethodBind `hash:"3411492887"`
 		Bind_fog_volume_create                                         MethodBind `hash:"529393457"`
 		Bind_fog_volume_set_shape                                      MethodBind `hash:"3818703106"`
 		Bind_fog_volume_set_size                                       MethodBind `hash:"3227306858"`
@@ -12745,6 +13378,7 @@ type methods struct {
 		Bind_viewport_set_scaling_3d_scale                             MethodBind `hash:"1794382983"`
 		Bind_viewport_set_fsr_sharpness                                MethodBind `hash:"1794382983"`
 		Bind_viewport_set_texture_mipmap_bias                          MethodBind `hash:"1794382983"`
+		Bind_viewport_set_anisotropic_filtering_level                  MethodBind `hash:"3953214029"`
 		Bind_viewport_set_update_mode                                  MethodBind `hash:"3161116010"`
 		Bind_viewport_get_update_mode                                  MethodBind `hash:"3803901472"`
 		Bind_viewport_set_clear_mode                                   MethodBind `hash:"3628367896"`
@@ -12798,6 +13432,7 @@ type methods struct {
 		Bind_compositor_set_compositor_effects                         MethodBind `hash:"684822712"`
 		Bind_environment_create                                        MethodBind `hash:"529393457"`
 		Bind_environment_set_background                                MethodBind `hash:"3937328877"`
+		Bind_environment_set_camera_id                                 MethodBind `hash:"3411492887"`
 		Bind_environment_set_sky                                       MethodBind `hash:"395945892"`
 		Bind_environment_set_sky_custom_fov                            MethodBind `hash:"1794382983"`
 		Bind_environment_set_sky_orientation                           MethodBind `hash:"1735850857"`
@@ -12844,6 +13479,8 @@ type methods struct {
 		Bind_instance_set_layer_mask                                   MethodBind `hash:"3411492887"`
 		Bind_instance_set_pivot_data                                   MethodBind `hash:"1280615259"`
 		Bind_instance_set_transform                                    MethodBind `hash:"3935195649"`
+		Bind_instance_set_interpolated                                 MethodBind `hash:"1265174801"`
+		Bind_instance_reset_physics_interpolation                      MethodBind `hash:"2722037293"`
 		Bind_instance_attach_object_instance_id                        MethodBind `hash:"3411492887"`
 		Bind_instance_set_blend_shape_weight                           MethodBind `hash:"1892459533"`
 		Bind_instance_set_surface_override_material                    MethodBind `hash:"2310537182"`
@@ -12919,10 +13556,15 @@ type methods struct {
 		Bind_canvas_item_set_z_index                                   MethodBind `hash:"3411492887"`
 		Bind_canvas_item_set_z_as_relative_to_parent                   MethodBind `hash:"1265174801"`
 		Bind_canvas_item_set_copy_to_backbuffer                        MethodBind `hash:"2429202503"`
+		Bind_canvas_item_attach_skeleton                               MethodBind `hash:"395945892"`
 		Bind_canvas_item_clear                                         MethodBind `hash:"2722037293"`
 		Bind_canvas_item_set_draw_index                                MethodBind `hash:"3411492887"`
 		Bind_canvas_item_set_material                                  MethodBind `hash:"395945892"`
 		Bind_canvas_item_set_use_parent_material                       MethodBind `hash:"1265174801"`
+		Bind_canvas_item_set_instance_shader_parameter                 MethodBind `hash:"3477296213"`
+		Bind_canvas_item_get_instance_shader_parameter                 MethodBind `hash:"2621281810"`
+		Bind_canvas_item_get_instance_shader_parameter_default_value   MethodBind `hash:"2621281810"`
+		Bind_canvas_item_get_instance_shader_parameter_list            MethodBind `hash:"2684255073"`
 		Bind_canvas_item_set_visibility_notifier                       MethodBind `hash:"3568945579"`
 		Bind_canvas_item_set_canvas_group_mode                         MethodBind `hash:"3973586316"`
 		Bind_debug_canvas_item_get_rect                                MethodBind `hash:"624227424"`
@@ -12978,6 +13620,8 @@ type methods struct {
 		Bind_get_video_adapter_vendor                                  MethodBind `hash:"201670096"`
 		Bind_get_video_adapter_type                                    MethodBind `hash:"3099547011"`
 		Bind_get_video_adapter_api_version                             MethodBind `hash:"201670096"`
+		Bind_get_current_rendering_driver_name                         MethodBind `hash:"201670096"`
+		Bind_get_current_rendering_method                              MethodBind `hash:"201670096"`
 		Bind_make_sphere_mesh                                          MethodBind `hash:"2251015897"`
 		Bind_get_test_cube                                             MethodBind `hash:"529393457"`
 		Bind_get_test_texture                                          MethodBind `hash:"529393457"`
@@ -13002,6 +13646,7 @@ type methods struct {
 		Bind_set_path                 MethodBind `hash:"83702148"`
 		Bind_take_over_path           MethodBind `hash:"83702148"`
 		Bind_get_path                 MethodBind `hash:"201670096"`
+		Bind_set_path_cache           MethodBind `hash:"83702148"`
 		Bind_set_name                 MethodBind `hash:"83702148"`
 		Bind_get_name                 MethodBind `hash:"201670096"`
 		Bind_get_rid                  MethodBind `hash:"2944877500"`
@@ -13009,6 +13654,10 @@ type methods struct {
 		Bind_is_local_to_scene        MethodBind `hash:"36873697"`
 		Bind_get_local_scene          MethodBind `hash:"3160264692"`
 		Bind_setup_local_to_scene     MethodBind `hash:"3218959716"`
+		Bind_reset_state              MethodBind `hash:"3218959716"`
+		Bind_set_id_for_path          MethodBind `hash:"3186203200"`
+		Bind_get_id_for_path          MethodBind `hash:"3135753539"`
+		Bind_is_built_in              MethodBind `hash:"36873697"`
 		Bind_generate_scene_unique_id MethodBind `hash:"2841200299"`
 		Bind_set_scene_unique_id      MethodBind `hash:"83702148"`
 		Bind_get_scene_unique_id      MethodBind `hash:"201670096"`
@@ -13064,8 +13713,10 @@ type methods struct {
 		Bind_set_abort_on_missing_resources     MethodBind `hash:"2586408642"`
 		Bind_get_dependencies                   MethodBind `hash:"3538744774"`
 		Bind_has_cached                         MethodBind `hash:"2323990056"`
+		Bind_get_cached_ref                     MethodBind `hash:"1748875256"`
 		Bind_exists                             MethodBind `hash:"4185558881"`
 		Bind_get_resource_uid                   MethodBind `hash:"1597066294"`
+		Bind_list_directory                     MethodBind `hash:"3538744774"`
 	}
 	ResourcePreloader struct {
 		Bind_add_resource      MethodBind `hash:"1168801743"`
@@ -13080,6 +13731,7 @@ type methods struct {
 		Bind_get_recognized_extensions    MethodBind `hash:"4223597960"`
 		Bind_add_resource_format_saver    MethodBind `hash:"362894272"`
 		Bind_remove_resource_format_saver MethodBind `hash:"3373026878"`
+		Bind_get_resource_id_for_path     MethodBind `hash:"150756522"`
 	}
 	ResourceUID struct {
 		Bind_id_to_text  MethodBind `hash:"844755477"`
@@ -13090,6 +13742,20 @@ type methods struct {
 		Bind_set_id      MethodBind `hash:"501894301"`
 		Bind_get_id_path MethodBind `hash:"844755477"`
 		Bind_remove_id   MethodBind `hash:"1286410249"`
+	}
+	RetargetModifier3D struct {
+		Bind_set_profile          MethodBind `hash:"3870374136"`
+		Bind_get_profile          MethodBind `hash:"4291782652"`
+		Bind_set_use_global_pose  MethodBind `hash:"2586408642"`
+		Bind_is_using_global_pose MethodBind `hash:"36873697"`
+		Bind_set_enable_flags     MethodBind `hash:"2687954213"`
+		Bind_get_enable_flags     MethodBind `hash:"358995420"`
+		Bind_set_position_enabled MethodBind `hash:"2586408642"`
+		Bind_is_position_enabled  MethodBind `hash:"36873697"`
+		Bind_set_rotation_enabled MethodBind `hash:"2586408642"`
+		Bind_is_rotation_enabled  MethodBind `hash:"36873697"`
+		Bind_set_scale_enabled    MethodBind `hash:"2586408642"`
+		Bind_is_scale_enabled     MethodBind `hash:"36873697"`
 	}
 	RibbonTrailMesh struct {
 		Bind_set_size             MethodBind `hash:"373806689"`
@@ -13129,14 +13795,14 @@ type methods struct {
 		Bind_push_paragraph                            MethodBind `hash:"3089306873"`
 		Bind_push_indent                               MethodBind `hash:"1286410249"`
 		Bind_push_list                                 MethodBind `hash:"3017143144"`
-		Bind_push_meta                                 MethodBind `hash:"2206155733"`
+		Bind_push_meta                                 MethodBind `hash:"3765356747"`
 		Bind_push_hint                                 MethodBind `hash:"83702148"`
 		Bind_push_language                             MethodBind `hash:"83702148"`
 		Bind_push_underline                            MethodBind `hash:"3218959716"`
 		Bind_push_strikethrough                        MethodBind `hash:"3218959716"`
 		Bind_push_table                                MethodBind `hash:"2623499273"`
 		Bind_push_dropcap                              MethodBind `hash:"4061635501"`
-		Bind_set_table_column_expand                   MethodBind `hash:"2185176273"`
+		Bind_set_table_column_expand                   MethodBind `hash:"117236061"`
 		Bind_set_cell_row_background_color             MethodBind `hash:"3465483165"`
 		Bind_set_cell_border_color                     MethodBind `hash:"2920490490"`
 		Bind_set_cell_size_override                    MethodBind `hash:"3108078480"`
@@ -13158,6 +13824,14 @@ type methods struct {
 		Bind_get_text_direction                        MethodBind `hash:"797257663"`
 		Bind_set_language                              MethodBind `hash:"83702148"`
 		Bind_get_language                              MethodBind `hash:"201670096"`
+		Bind_set_horizontal_alignment                  MethodBind `hash:"2312603777"`
+		Bind_get_horizontal_alignment                  MethodBind `hash:"341400642"`
+		Bind_set_vertical_alignment                    MethodBind `hash:"1796458609"`
+		Bind_get_vertical_alignment                    MethodBind `hash:"3274884059"`
+		Bind_set_justification_flags                   MethodBind `hash:"2877345813"`
+		Bind_get_justification_flags                   MethodBind `hash:"1583363614"`
+		Bind_set_tab_stops                             MethodBind `hash:"2899603908"`
+		Bind_get_tab_stops                             MethodBind `hash:"675695659"`
 		Bind_set_autowrap_mode                         MethodBind `hash:"3289138044"`
 		Bind_get_autowrap_mode                         MethodBind `hash:"1549071663"`
 		Bind_set_meta_underline                        MethodBind `hash:"2586408642"`
@@ -13188,6 +13862,7 @@ type methods struct {
 		Bind_is_drag_and_drop_selection_enabled        MethodBind `hash:"36873697"`
 		Bind_get_selection_from                        MethodBind `hash:"3905245786"`
 		Bind_get_selection_to                          MethodBind `hash:"3905245786"`
+		Bind_get_selection_line_offset                 MethodBind `hash:"1740695150"`
 		Bind_select_all                                MethodBind `hash:"3218959716"`
 		Bind_get_selected_text                         MethodBind `hash:"201670096"`
 		Bind_deselect                                  MethodBind `hash:"3218959716"`
@@ -13195,6 +13870,7 @@ type methods struct {
 		Bind_append_text                               MethodBind `hash:"83702148"`
 		Bind_get_text                                  MethodBind `hash:"201670096"`
 		Bind_is_ready                                  MethodBind `hash:"36873697"`
+		Bind_is_finished                               MethodBind `hash:"36873697"`
 		Bind_set_threaded                              MethodBind `hash:"2586408642"`
 		Bind_is_threaded                               MethodBind `hash:"36873697"`
 		Bind_set_progress_bar_delay                    MethodBind `hash:"1286410249"`
@@ -13211,6 +13887,7 @@ type methods struct {
 		Bind_set_use_bbcode                            MethodBind `hash:"2586408642"`
 		Bind_is_using_bbcode                           MethodBind `hash:"36873697"`
 		Bind_get_line_count                            MethodBind `hash:"3905245786"`
+		Bind_get_line_range                            MethodBind `hash:"3665014314"`
 		Bind_get_visible_line_count                    MethodBind `hash:"3905245786"`
 		Bind_get_paragraph_count                       MethodBind `hash:"3905245786"`
 		Bind_get_visible_paragraph_count               MethodBind `hash:"3905245786"`
@@ -13489,6 +14166,7 @@ type methods struct {
 		Bind_get_property_default_value MethodBind `hash:"2138907829"`
 		Bind_is_tool                    MethodBind `hash:"36873697"`
 		Bind_is_abstract                MethodBind `hash:"36873697"`
+		Bind_get_rpc_config             MethodBind `hash:"1214101251"`
 	}
 	ScriptCreateDialog struct {
 		Bind_config MethodBind `hash:"869314288"`
@@ -13496,6 +14174,7 @@ type methods struct {
 	ScriptEditor struct {
 		Bind_get_current_editor            MethodBind `hash:"1906266726"`
 		Bind_get_open_script_editors       MethodBind `hash:"3995934104"`
+		Bind_get_breakpoints               MethodBind `hash:"2981934095"`
 		Bind_register_syntax_highlighter   MethodBind `hash:"1092774468"`
 		Bind_unregister_syntax_highlighter MethodBind `hash:"1092774468"`
 		Bind_goto_line                     MethodBind `hash:"1286410249"`
@@ -13503,6 +14182,7 @@ type methods struct {
 		Bind_get_open_scripts              MethodBind `hash:"3995934104"`
 		Bind_open_script_create_dialog     MethodBind `hash:"3186203200"`
 		Bind_goto_help                     MethodBind `hash:"83702148"`
+		Bind_update_docs_from_script       MethodBind `hash:"3657522847"`
 	}
 	ScriptEditorBase struct {
 		Bind_get_base_editor        MethodBind `hash:"2783021301"`
@@ -13538,6 +14218,8 @@ type methods struct {
 		Bind_get_h_scroll_bar           MethodBind `hash:"4004517983"`
 		Bind_get_v_scroll_bar           MethodBind `hash:"2630340773"`
 		Bind_ensure_control_visible     MethodBind `hash:"1496901182"`
+		Bind_set_draw_focus_border      MethodBind `hash:"2586408642"`
+		Bind_get_draw_focus_border      MethodBind `hash:"2240911060"`
 	}
 	SegmentShape2D struct {
 		Bind_set_a MethodBind `hash:"743155724"`
@@ -13548,7 +14230,7 @@ type methods struct {
 	Semaphore struct {
 		Bind_wait     MethodBind `hash:"3218959716"`
 		Bind_try_wait MethodBind `hash:"2240911060"`
-		Bind_post     MethodBind `hash:"3218959716"`
+		Bind_post     MethodBind `hash:"1667783136"`
 	}
 	SeparationRayShape2D struct {
 		Bind_set_length         MethodBind `hash:"373806689"`
@@ -13568,15 +14250,21 @@ type methods struct {
 		Bind_get_mode                      MethodBind `hash:"3392948163"`
 		Bind_set_code                      MethodBind `hash:"83702148"`
 		Bind_get_code                      MethodBind `hash:"201670096"`
-		Bind_set_default_texture_parameter MethodBind `hash:"2750740428"`
-		Bind_get_default_texture_parameter MethodBind `hash:"3090538643"`
+		Bind_set_default_texture_parameter MethodBind `hash:"3850209648"`
+		Bind_get_default_texture_parameter MethodBind `hash:"4213877425"`
 		Bind_get_shader_uniform_list       MethodBind `hash:"1230511656"`
+		Bind_inspect_native_shader_code    MethodBind `hash:"3218959716"`
 	}
 	ShaderGlobalsOverride struct {
 	}
 	ShaderInclude struct {
 		Bind_set_code MethodBind `hash:"83702148"`
 		Bind_get_code MethodBind `hash:"201670096"`
+	}
+	ShaderIncludeDB struct {
+		Bind_list_built_in_include_files MethodBind `hash:"2981934095"`
+		Bind_has_built_in_include_file   MethodBind `hash:"2323990056"`
+		Bind_get_built_in_include_file   MethodBind `hash:"1703090593"`
 	}
 	ShaderMaterial struct {
 		Bind_set_shader           MethodBind `hash:"3341921675"`
@@ -13637,6 +14325,7 @@ type methods struct {
 		Bind_is_collide_with_areas_enabled         MethodBind `hash:"36873697"`
 		Bind_set_collide_with_bodies               MethodBind `hash:"2586408642"`
 		Bind_is_collide_with_bodies_enabled        MethodBind `hash:"36873697"`
+		Bind_get_collision_result                  MethodBind `hash:"3995934104"`
 	}
 	ShapeCast3D struct {
 		Bind_resource_changed                      MethodBind `hash:"968641751"`
@@ -13675,6 +14364,7 @@ type methods struct {
 		Bind_is_collide_with_areas_enabled         MethodBind `hash:"36873697"`
 		Bind_set_collide_with_bodies               MethodBind `hash:"2586408642"`
 		Bind_is_collide_with_bodies_enabled        MethodBind `hash:"36873697"`
+		Bind_get_collision_result                  MethodBind `hash:"3995934104"`
 		Bind_set_debug_shape_custom_color          MethodBind `hash:"2920490490"`
 		Bind_get_debug_shape_custom_color          MethodBind `hash:"3444240500"`
 	}
@@ -13700,6 +14390,10 @@ type methods struct {
 		Bind_find_bone                                 MethodBind `hash:"1321353865"`
 		Bind_get_bone_name                             MethodBind `hash:"844755477"`
 		Bind_set_bone_name                             MethodBind `hash:"501894301"`
+		Bind_get_bone_meta                             MethodBind `hash:"203112058"`
+		Bind_get_bone_meta_list                        MethodBind `hash:"663333327"`
+		Bind_has_bone_meta                             MethodBind `hash:"921227809"`
+		Bind_set_bone_meta                             MethodBind `hash:"702482756"`
 		Bind_get_concatenated_bone_names               MethodBind `hash:"2002593661"`
 		Bind_get_bone_parent                           MethodBind `hash:"923996154"`
 		Bind_set_bone_parent                           MethodBind `hash:"3937882851"`
@@ -14033,7 +14727,7 @@ type methods struct {
 		Bind_set_drag_coefficient            MethodBind `hash:"373806689"`
 		Bind_get_drag_coefficient            MethodBind `hash:"191475506"`
 		Bind_get_point_transform             MethodBind `hash:"871989493"`
-		Bind_set_point_pinned                MethodBind `hash:"3814935226"`
+		Bind_set_point_pinned                MethodBind `hash:"528784402"`
 		Bind_is_point_pinned                 MethodBind `hash:"1116898809"`
 		Bind_set_ray_pickable                MethodBind `hash:"2586408642"`
 		Bind_is_ray_pickable                 MethodBind `hash:"36873697"`
@@ -14077,15 +14771,26 @@ type methods struct {
 		Bind_get_line_edit              MethodBind `hash:"4071694264"`
 	}
 	SplitContainer struct {
-		Bind_set_split_offset       MethodBind `hash:"1286410249"`
-		Bind_get_split_offset       MethodBind `hash:"3905245786"`
-		Bind_clamp_split_offset     MethodBind `hash:"3218959716"`
-		Bind_set_collapsed          MethodBind `hash:"2586408642"`
-		Bind_is_collapsed           MethodBind `hash:"36873697"`
-		Bind_set_dragger_visibility MethodBind `hash:"1168273952"`
-		Bind_get_dragger_visibility MethodBind `hash:"967297479"`
-		Bind_set_vertical           MethodBind `hash:"2586408642"`
-		Bind_is_vertical            MethodBind `hash:"36873697"`
+		Bind_set_split_offset                         MethodBind `hash:"1286410249"`
+		Bind_get_split_offset                         MethodBind `hash:"3905245786"`
+		Bind_clamp_split_offset                       MethodBind `hash:"3218959716"`
+		Bind_set_collapsed                            MethodBind `hash:"2586408642"`
+		Bind_is_collapsed                             MethodBind `hash:"36873697"`
+		Bind_set_dragger_visibility                   MethodBind `hash:"1168273952"`
+		Bind_get_dragger_visibility                   MethodBind `hash:"967297479"`
+		Bind_set_vertical                             MethodBind `hash:"2586408642"`
+		Bind_is_vertical                              MethodBind `hash:"36873697"`
+		Bind_set_dragging_enabled                     MethodBind `hash:"2586408642"`
+		Bind_is_dragging_enabled                      MethodBind `hash:"36873697"`
+		Bind_set_drag_area_margin_begin               MethodBind `hash:"1286410249"`
+		Bind_get_drag_area_margin_begin               MethodBind `hash:"3905245786"`
+		Bind_set_drag_area_margin_end                 MethodBind `hash:"1286410249"`
+		Bind_get_drag_area_margin_end                 MethodBind `hash:"3905245786"`
+		Bind_set_drag_area_offset                     MethodBind `hash:"1286410249"`
+		Bind_get_drag_area_offset                     MethodBind `hash:"3905245786"`
+		Bind_set_drag_area_highlight_in_editor        MethodBind `hash:"2586408642"`
+		Bind_is_drag_area_highlight_in_editor_enabled MethodBind `hash:"36873697"`
+		Bind_get_drag_area_control                    MethodBind `hash:"829782337"`
 	}
 	SpotLight3D struct {
 	}
@@ -14102,6 +14807,110 @@ type methods struct {
 		Bind_get_collision_mask     MethodBind `hash:"2455072627"`
 		Bind_set_margin             MethodBind `hash:"373806689"`
 		Bind_get_margin             MethodBind `hash:"191475506"`
+	}
+	SpringBoneCollision3D struct {
+		Bind_get_skeleton        MethodBind `hash:"1488626673"`
+		Bind_set_bone_name       MethodBind `hash:"83702148"`
+		Bind_get_bone_name       MethodBind `hash:"201670096"`
+		Bind_set_bone            MethodBind `hash:"1286410249"`
+		Bind_get_bone            MethodBind `hash:"3905245786"`
+		Bind_set_position_offset MethodBind `hash:"3460891852"`
+		Bind_get_position_offset MethodBind `hash:"3360562783"`
+		Bind_set_rotation_offset MethodBind `hash:"1727505552"`
+		Bind_get_rotation_offset MethodBind `hash:"1222331677"`
+	}
+	SpringBoneCollisionCapsule3D struct {
+		Bind_set_radius MethodBind `hash:"373806689"`
+		Bind_get_radius MethodBind `hash:"1740695150"`
+		Bind_set_height MethodBind `hash:"373806689"`
+		Bind_get_height MethodBind `hash:"1740695150"`
+		Bind_set_inside MethodBind `hash:"2586408642"`
+		Bind_is_inside  MethodBind `hash:"36873697"`
+	}
+	SpringBoneCollisionPlane3D struct {
+	}
+	SpringBoneCollisionSphere3D struct {
+		Bind_set_radius MethodBind `hash:"373806689"`
+		Bind_get_radius MethodBind `hash:"1740695150"`
+		Bind_set_inside MethodBind `hash:"2586408642"`
+		Bind_is_inside  MethodBind `hash:"36873697"`
+	}
+	SpringBoneSimulator3D struct {
+		Bind_set_root_bone_name               MethodBind `hash:"501894301"`
+		Bind_get_root_bone_name               MethodBind `hash:"844755477"`
+		Bind_set_root_bone                    MethodBind `hash:"3937882851"`
+		Bind_get_root_bone                    MethodBind `hash:"923996154"`
+		Bind_set_end_bone_name                MethodBind `hash:"501894301"`
+		Bind_get_end_bone_name                MethodBind `hash:"844755477"`
+		Bind_set_end_bone                     MethodBind `hash:"3937882851"`
+		Bind_get_end_bone                     MethodBind `hash:"923996154"`
+		Bind_set_extend_end_bone              MethodBind `hash:"300928843"`
+		Bind_is_end_bone_extended             MethodBind `hash:"1116898809"`
+		Bind_set_end_bone_direction           MethodBind `hash:"204796492"`
+		Bind_get_end_bone_direction           MethodBind `hash:"2438315700"`
+		Bind_set_end_bone_length              MethodBind `hash:"1602489585"`
+		Bind_get_end_bone_length              MethodBind `hash:"2339986948"`
+		Bind_set_center_from                  MethodBind `hash:"2551505749"`
+		Bind_get_center_from                  MethodBind `hash:"2721930813"`
+		Bind_set_center_node                  MethodBind `hash:"2761262315"`
+		Bind_get_center_node                  MethodBind `hash:"408788394"`
+		Bind_set_center_bone_name             MethodBind `hash:"501894301"`
+		Bind_get_center_bone_name             MethodBind `hash:"844755477"`
+		Bind_set_center_bone                  MethodBind `hash:"3937882851"`
+		Bind_get_center_bone                  MethodBind `hash:"923996154"`
+		Bind_set_radius                       MethodBind `hash:"1602489585"`
+		Bind_get_radius                       MethodBind `hash:"2339986948"`
+		Bind_set_rotation_axis                MethodBind `hash:"3534169209"`
+		Bind_get_rotation_axis                MethodBind `hash:"748837671"`
+		Bind_set_radius_damping_curve         MethodBind `hash:"1447180063"`
+		Bind_get_radius_damping_curve         MethodBind `hash:"747537754"`
+		Bind_set_stiffness                    MethodBind `hash:"1602489585"`
+		Bind_get_stiffness                    MethodBind `hash:"2339986948"`
+		Bind_set_stiffness_damping_curve      MethodBind `hash:"1447180063"`
+		Bind_get_stiffness_damping_curve      MethodBind `hash:"747537754"`
+		Bind_set_drag                         MethodBind `hash:"1602489585"`
+		Bind_get_drag                         MethodBind `hash:"2339986948"`
+		Bind_set_drag_damping_curve           MethodBind `hash:"1447180063"`
+		Bind_get_drag_damping_curve           MethodBind `hash:"747537754"`
+		Bind_set_gravity                      MethodBind `hash:"1602489585"`
+		Bind_get_gravity                      MethodBind `hash:"2339986948"`
+		Bind_set_gravity_damping_curve        MethodBind `hash:"1447180063"`
+		Bind_get_gravity_damping_curve        MethodBind `hash:"747537754"`
+		Bind_set_gravity_direction            MethodBind `hash:"1530502735"`
+		Bind_get_gravity_direction            MethodBind `hash:"711720468"`
+		Bind_set_setting_count                MethodBind `hash:"1286410249"`
+		Bind_get_setting_count                MethodBind `hash:"3905245786"`
+		Bind_clear_settings                   MethodBind `hash:"3218959716"`
+		Bind_set_individual_config            MethodBind `hash:"300928843"`
+		Bind_is_config_individual             MethodBind `hash:"1116898809"`
+		Bind_get_joint_bone_name              MethodBind `hash:"1391810591"`
+		Bind_get_joint_bone                   MethodBind `hash:"3175239445"`
+		Bind_set_joint_rotation_axis          MethodBind `hash:"4224018032"`
+		Bind_get_joint_rotation_axis          MethodBind `hash:"2488679199"`
+		Bind_set_joint_radius                 MethodBind `hash:"3506521499"`
+		Bind_get_joint_radius                 MethodBind `hash:"3085491603"`
+		Bind_set_joint_stiffness              MethodBind `hash:"3506521499"`
+		Bind_get_joint_stiffness              MethodBind `hash:"3085491603"`
+		Bind_set_joint_drag                   MethodBind `hash:"3506521499"`
+		Bind_get_joint_drag                   MethodBind `hash:"3085491603"`
+		Bind_set_joint_gravity                MethodBind `hash:"3506521499"`
+		Bind_get_joint_gravity                MethodBind `hash:"3085491603"`
+		Bind_set_joint_gravity_direction      MethodBind `hash:"2866752138"`
+		Bind_get_joint_gravity_direction      MethodBind `hash:"1592972041"`
+		Bind_get_joint_count                  MethodBind `hash:"923996154"`
+		Bind_set_enable_all_child_collisions  MethodBind `hash:"300928843"`
+		Bind_are_all_child_collisions_enabled MethodBind `hash:"1116898809"`
+		Bind_set_exclude_collision_path       MethodBind `hash:"132481804"`
+		Bind_get_exclude_collision_path       MethodBind `hash:"464924783"`
+		Bind_set_exclude_collision_count      MethodBind `hash:"3937882851"`
+		Bind_get_exclude_collision_count      MethodBind `hash:"923996154"`
+		Bind_clear_exclude_collisions         MethodBind `hash:"1286410249"`
+		Bind_set_collision_path               MethodBind `hash:"132481804"`
+		Bind_get_collision_path               MethodBind `hash:"464924783"`
+		Bind_set_collision_count              MethodBind `hash:"3937882851"`
+		Bind_get_collision_count              MethodBind `hash:"923996154"`
+		Bind_clear_collisions                 MethodBind `hash:"1286410249"`
+		Bind_reset                            MethodBind `hash:"3218959716"`
 	}
 	Sprite2D struct {
 		Bind_set_texture                    MethodBind `hash:"4051416890"`
@@ -14186,6 +14995,7 @@ type methods struct {
 	SpriteFrames struct {
 		Bind_add_animation       MethodBind `hash:"3304788590"`
 		Bind_has_animation       MethodBind `hash:"2619796661"`
+		Bind_duplicate_animation MethodBind `hash:"3740211285"`
 		Bind_remove_animation    MethodBind `hash:"3304788590"`
 		Bind_rename_animation    MethodBind `hash:"3740211285"`
 		Bind_get_animation_names MethodBind `hash:"1139954409"`
@@ -14247,6 +15057,7 @@ type methods struct {
 		Bind_put_u32               MethodBind `hash:"1286410249"`
 		Bind_put_64                MethodBind `hash:"1286410249"`
 		Bind_put_u64               MethodBind `hash:"1286410249"`
+		Bind_put_half              MethodBind `hash:"373806689"`
 		Bind_put_float             MethodBind `hash:"373806689"`
 		Bind_put_double            MethodBind `hash:"373806689"`
 		Bind_put_string            MethodBind `hash:"83702148"`
@@ -14260,6 +15071,7 @@ type methods struct {
 		Bind_get_u32               MethodBind `hash:"2455072627"`
 		Bind_get_64                MethodBind `hash:"2455072627"`
 		Bind_get_u64               MethodBind `hash:"2455072627"`
+		Bind_get_half              MethodBind `hash:"191475506"`
 		Bind_get_float             MethodBind `hash:"191475506"`
 		Bind_get_double            MethodBind `hash:"191475506"`
 		Bind_get_string            MethodBind `hash:"2309358862"`
@@ -14395,10 +15207,15 @@ type methods struct {
 		Bind_get_clear_mode                      MethodBind `hash:"331324495"`
 	}
 	SubViewportContainer struct {
-		Bind_set_stretch        MethodBind `hash:"2586408642"`
-		Bind_is_stretch_enabled MethodBind `hash:"36873697"`
-		Bind_set_stretch_shrink MethodBind `hash:"1286410249"`
-		Bind_get_stretch_shrink MethodBind `hash:"3905245786"`
+		Bind_set_stretch             MethodBind `hash:"2586408642"`
+		Bind_is_stretch_enabled      MethodBind `hash:"36873697"`
+		Bind_set_stretch_shrink      MethodBind `hash:"1286410249"`
+		Bind_get_stretch_shrink      MethodBind `hash:"3905245786"`
+		Bind_set_mouse_target        MethodBind `hash:"2586408642"`
+		Bind_is_mouse_target_enabled MethodBind `hash:"2240911060"`
+	}
+	SubtweenTweener struct {
+		Bind_set_delay MethodBind `hash:"449181780"`
 	}
 	SurfaceTool struct {
 		Bind_set_skin_weight_count      MethodBind `hash:"618679515"`
@@ -14456,6 +15273,8 @@ type methods struct {
 		Bind_get_hinting                            MethodBind `hash:"3683214614"`
 		Bind_set_subpixel_positioning               MethodBind `hash:"4225742182"`
 		Bind_get_subpixel_positioning               MethodBind `hash:"1069238588"`
+		Bind_set_keep_rounding_remainders           MethodBind `hash:"2586408642"`
+		Bind_get_keep_rounding_remainders           MethodBind `hash:"36873697"`
 		Bind_set_multichannel_signed_distance_field MethodBind `hash:"2586408642"`
 		Bind_is_multichannel_signed_distance_field  MethodBind `hash:"36873697"`
 		Bind_set_msdf_pixel_range                   MethodBind `hash:"1286410249"`
@@ -14621,12 +15440,16 @@ type methods struct {
 		Bind_is_overtype_mode_enabled                  MethodBind `hash:"36873697"`
 		Bind_set_context_menu_enabled                  MethodBind `hash:"2586408642"`
 		Bind_is_context_menu_enabled                   MethodBind `hash:"36873697"`
+		Bind_set_emoji_menu_enabled                    MethodBind `hash:"2586408642"`
+		Bind_is_emoji_menu_enabled                     MethodBind `hash:"36873697"`
 		Bind_set_shortcut_keys_enabled                 MethodBind `hash:"2586408642"`
 		Bind_is_shortcut_keys_enabled                  MethodBind `hash:"36873697"`
 		Bind_set_virtual_keyboard_enabled              MethodBind `hash:"2586408642"`
 		Bind_is_virtual_keyboard_enabled               MethodBind `hash:"36873697"`
 		Bind_set_middle_mouse_paste_enabled            MethodBind `hash:"2586408642"`
 		Bind_is_middle_mouse_paste_enabled             MethodBind `hash:"36873697"`
+		Bind_set_empty_selection_clipboard_enabled     MethodBind `hash:"2586408642"`
+		Bind_is_empty_selection_clipboard_enabled      MethodBind `hash:"36873697"`
 		Bind_clear                                     MethodBind `hash:"3218959716"`
 		Bind_set_text                                  MethodBind `hash:"83702148"`
 		Bind_get_text                                  MethodBind `hash:"201670096"`
@@ -14635,6 +15458,7 @@ type methods struct {
 		Bind_get_placeholder                           MethodBind `hash:"201670096"`
 		Bind_set_line                                  MethodBind `hash:"501894301"`
 		Bind_get_line                                  MethodBind `hash:"844755477"`
+		Bind_get_line_with_ime                         MethodBind `hash:"844755477"`
 		Bind_get_line_width                            MethodBind `hash:"688195400"`
 		Bind_get_line_height                           MethodBind `hash:"3905245786"`
 		Bind_get_indent_level                          MethodBind `hash:"923996154"`
@@ -14671,7 +15495,7 @@ type methods struct {
 		Bind_set_tooltip_request_func                  MethodBind `hash:"1611583062"`
 		Bind_get_local_mouse_pos                       MethodBind `hash:"3341600327"`
 		Bind_get_word_at_pos                           MethodBind `hash:"3674420000"`
-		Bind_get_line_column_at_pos                    MethodBind `hash:"239517838"`
+		Bind_get_line_column_at_pos                    MethodBind `hash:"3472935744"`
 		Bind_get_pos_at_line_column                    MethodBind `hash:"410388347"`
 		Bind_get_rect_at_line_column                   MethodBind `hash:"3256618057"`
 		Bind_get_minimap_line_at_pos                   MethodBind `hash:"2485466453"`
@@ -14767,6 +15591,8 @@ type methods struct {
 		Bind_get_v_scroll_speed                        MethodBind `hash:"1740695150"`
 		Bind_set_fit_content_height_enabled            MethodBind `hash:"2586408642"`
 		Bind_is_fit_content_height_enabled             MethodBind `hash:"36873697"`
+		Bind_set_fit_content_width_enabled             MethodBind `hash:"2586408642"`
+		Bind_is_fit_content_width_enabled              MethodBind `hash:"36873697"`
 		Bind_get_scroll_pos_for_line                   MethodBind `hash:"3929084198"`
 		Bind_set_line_as_first_visible                 MethodBind `hash:"2230941749"`
 		Bind_get_first_visible_line                    MethodBind `hash:"3905245786"`
@@ -14949,6 +15775,8 @@ type methods struct {
 		Bind_get_line_count               MethodBind `hash:"3905245786"`
 		Bind_set_max_lines_visible        MethodBind `hash:"1286410249"`
 		Bind_get_max_lines_visible        MethodBind `hash:"3905245786"`
+		Bind_set_line_spacing             MethodBind `hash:"373806689"`
+		Bind_get_line_spacing             MethodBind `hash:"1740695150"`
 		Bind_get_line_objects             MethodBind `hash:"663333327"`
 		Bind_get_line_object_rect         MethodBind `hash:"204315017"`
 		Bind_get_line_size                MethodBind `hash:"2299179447"`
@@ -14976,6 +15804,7 @@ type methods struct {
 		Bind_get_support_data_filename                   MethodBind `hash:"201670096"`
 		Bind_get_support_data_info                       MethodBind `hash:"201670096"`
 		Bind_save_support_data                           MethodBind `hash:"3927539163"`
+		Bind_get_support_data                            MethodBind `hash:"2362200018"`
 		Bind_is_locale_right_to_left                     MethodBind `hash:"3927539163"`
 		Bind_name_to_tag                                 MethodBind `hash:"1321353865"`
 		Bind_tag_to_name                                 MethodBind `hash:"844755477"`
@@ -15022,6 +15851,8 @@ type methods struct {
 		Bind_font_get_hinting                            MethodBind `hash:"3971592737"`
 		Bind_font_set_subpixel_positioning               MethodBind `hash:"3830459669"`
 		Bind_font_get_subpixel_positioning               MethodBind `hash:"2752233671"`
+		Bind_font_set_keep_rounding_remainders           MethodBind `hash:"1265174801"`
+		Bind_font_get_keep_rounding_remainders           MethodBind `hash:"4155700596"`
 		Bind_font_set_embolden                           MethodBind `hash:"1794382983"`
 		Bind_font_get_embolden                           MethodBind `hash:"866169185"`
 		Bind_font_set_spacing                            MethodBind `hash:"1307259930"`
@@ -15079,6 +15910,7 @@ type methods struct {
 		Bind_font_get_char_from_glyph_index              MethodBind `hash:"2156738276"`
 		Bind_font_has_char                               MethodBind `hash:"3120086654"`
 		Bind_font_get_supported_chars                    MethodBind `hash:"642473191"`
+		Bind_font_get_supported_glyphs                   MethodBind `hash:"788230395"`
 		Bind_font_render_range                           MethodBind `hash:"4254580980"`
 		Bind_font_render_glyph                           MethodBind `hash:"3810512262"`
 		Bind_font_draw_glyph                             MethodBind `hash:"1339057948"`
@@ -15124,6 +15956,7 @@ type methods struct {
 		Bind_shaped_text_resize_object                   MethodBind `hash:"790361552"`
 		Bind_shaped_get_span_count                       MethodBind `hash:"2198884583"`
 		Bind_shaped_get_span_meta                        MethodBind `hash:"4069510997"`
+		Bind_shaped_get_span_embedded_object             MethodBind `hash:"4069510997"`
 		Bind_shaped_set_span_update_font                 MethodBind `hash:"2022725822"`
 		Bind_shaped_text_substr                          MethodBind `hash:"1937682086"`
 		Bind_shaped_text_get_parent                      MethodBind `hash:"3814569979"`
@@ -15422,6 +16255,12 @@ type methods struct {
 		Bind_get_z_index                          MethodBind `hash:"3905245786"`
 		Bind_set_y_sort_origin                    MethodBind `hash:"1286410249"`
 		Bind_get_y_sort_origin                    MethodBind `hash:"3905245786"`
+		Bind_set_occluder_polygons_count          MethodBind `hash:"3937882851"`
+		Bind_get_occluder_polygons_count          MethodBind `hash:"923996154"`
+		Bind_add_occluder_polygon                 MethodBind `hash:"1286410249"`
+		Bind_remove_occluder_polygon              MethodBind `hash:"3937882851"`
+		Bind_set_occluder_polygon                 MethodBind `hash:"164249167"`
+		Bind_get_occluder_polygon                 MethodBind `hash:"971166743"`
 		Bind_set_occluder                         MethodBind `hash:"914399637"`
 		Bind_get_occluder                         MethodBind `hash:"2377324099"`
 		Bind_set_constant_linear_velocity         MethodBind `hash:"163021252"`
@@ -15451,6 +16290,7 @@ type methods struct {
 		Bind_get_probability                      MethodBind `hash:"1740695150"`
 		Bind_set_custom_data                      MethodBind `hash:"402577236"`
 		Bind_get_custom_data                      MethodBind `hash:"1868160156"`
+		Bind_has_custom_data                      MethodBind `hash:"3927539163"`
 		Bind_set_custom_data_by_layer_id          MethodBind `hash:"2152698145"`
 		Bind_get_custom_data_by_layer_id          MethodBind `hash:"4227898402"`
 	}
@@ -15494,6 +16334,9 @@ type methods struct {
 		Bind_get_cell_atlas_coords           MethodBind `hash:"1869815066"`
 		Bind_get_cell_alternative_tile       MethodBind `hash:"551761942"`
 		Bind_get_cell_tile_data              MethodBind `hash:"2849631287"`
+		Bind_is_cell_flipped_h               MethodBind `hash:"2908343862"`
+		Bind_is_cell_flipped_v               MethodBind `hash:"2908343862"`
+		Bind_is_cell_transposed              MethodBind `hash:"2908343862"`
 		Bind_get_coords_for_body_rid         MethodBind `hash:"291584212"`
 		Bind_get_layer_for_body_rid          MethodBind `hash:"3917799429"`
 		Bind_get_pattern                     MethodBind `hash:"2833570986"`
@@ -15523,6 +16366,9 @@ type methods struct {
 		Bind_get_cell_atlas_coords           MethodBind `hash:"3050897911"`
 		Bind_get_cell_alternative_tile       MethodBind `hash:"2485466453"`
 		Bind_get_cell_tile_data              MethodBind `hash:"205084707"`
+		Bind_is_cell_flipped_h               MethodBind `hash:"3900751641"`
+		Bind_is_cell_flipped_v               MethodBind `hash:"3900751641"`
+		Bind_is_cell_transposed              MethodBind `hash:"3900751641"`
 		Bind_get_used_cells                  MethodBind `hash:"3995934104"`
 		Bind_get_used_cells_by_id            MethodBind `hash:"4175304538"`
 		Bind_get_used_rect                   MethodBind `hash:"410525958"`
@@ -15533,7 +16379,7 @@ type methods struct {
 		Bind_has_body_rid                    MethodBind `hash:"4155700596"`
 		Bind_get_coords_for_body_rid         MethodBind `hash:"733700038"`
 		Bind_update_internals                MethodBind `hash:"3218959716"`
-		Bind_notify_runtime_tile_data_update MethodBind `hash:"2275361663"`
+		Bind_notify_runtime_tile_data_update MethodBind `hash:"3218959716"`
 		Bind_map_pattern                     MethodBind `hash:"1864516957"`
 		Bind_get_surrounding_cells           MethodBind `hash:"2673526557"`
 		Bind_get_neighbor_cell               MethodBind `hash:"986575103"`
@@ -15557,6 +16403,8 @@ type methods struct {
 		Bind_is_using_kinematic_bodies       MethodBind `hash:"36873697"`
 		Bind_set_collision_visibility_mode   MethodBind `hash:"3508099847"`
 		Bind_get_collision_visibility_mode   MethodBind `hash:"338220793"`
+		Bind_set_occlusion_enabled           MethodBind `hash:"2586408642"`
+		Bind_is_occlusion_enabled            MethodBind `hash:"36873697"`
 		Bind_set_navigation_enabled          MethodBind `hash:"2586408642"`
 		Bind_is_navigation_enabled           MethodBind `hash:"36873697"`
 		Bind_set_navigation_map              MethodBind `hash:"2722037293"`
@@ -15577,92 +16425,95 @@ type methods struct {
 		Bind_is_empty                  MethodBind `hash:"36873697"`
 	}
 	TileSet struct {
-		Bind_get_next_source_id                  MethodBind `hash:"3905245786"`
-		Bind_add_source                          MethodBind `hash:"1059186179"`
-		Bind_remove_source                       MethodBind `hash:"1286410249"`
-		Bind_set_source_id                       MethodBind `hash:"3937882851"`
-		Bind_get_source_count                    MethodBind `hash:"3905245786"`
-		Bind_get_source_id                       MethodBind `hash:"923996154"`
-		Bind_has_source                          MethodBind `hash:"1116898809"`
-		Bind_get_source                          MethodBind `hash:"1763540252"`
-		Bind_set_tile_shape                      MethodBind `hash:"2131427112"`
-		Bind_get_tile_shape                      MethodBind `hash:"716918169"`
-		Bind_set_tile_layout                     MethodBind `hash:"1071216679"`
-		Bind_get_tile_layout                     MethodBind `hash:"194628839"`
-		Bind_set_tile_offset_axis                MethodBind `hash:"3300198521"`
-		Bind_get_tile_offset_axis                MethodBind `hash:"762494114"`
-		Bind_set_tile_size                       MethodBind `hash:"1130785943"`
-		Bind_get_tile_size                       MethodBind `hash:"3690982128"`
-		Bind_set_uv_clipping                     MethodBind `hash:"2586408642"`
-		Bind_is_uv_clipping                      MethodBind `hash:"36873697"`
-		Bind_get_occlusion_layers_count          MethodBind `hash:"3905245786"`
-		Bind_add_occlusion_layer                 MethodBind `hash:"1025054187"`
-		Bind_move_occlusion_layer                MethodBind `hash:"3937882851"`
-		Bind_remove_occlusion_layer              MethodBind `hash:"1286410249"`
-		Bind_set_occlusion_layer_light_mask      MethodBind `hash:"3937882851"`
-		Bind_get_occlusion_layer_light_mask      MethodBind `hash:"923996154"`
-		Bind_set_occlusion_layer_sdf_collision   MethodBind `hash:"300928843"`
-		Bind_get_occlusion_layer_sdf_collision   MethodBind `hash:"1116898809"`
-		Bind_get_physics_layers_count            MethodBind `hash:"3905245786"`
-		Bind_add_physics_layer                   MethodBind `hash:"1025054187"`
-		Bind_move_physics_layer                  MethodBind `hash:"3937882851"`
-		Bind_remove_physics_layer                MethodBind `hash:"1286410249"`
-		Bind_set_physics_layer_collision_layer   MethodBind `hash:"3937882851"`
-		Bind_get_physics_layer_collision_layer   MethodBind `hash:"923996154"`
-		Bind_set_physics_layer_collision_mask    MethodBind `hash:"3937882851"`
-		Bind_get_physics_layer_collision_mask    MethodBind `hash:"923996154"`
-		Bind_set_physics_layer_physics_material  MethodBind `hash:"1018687357"`
-		Bind_get_physics_layer_physics_material  MethodBind `hash:"788318639"`
-		Bind_get_terrain_sets_count              MethodBind `hash:"3905245786"`
-		Bind_add_terrain_set                     MethodBind `hash:"1025054187"`
-		Bind_move_terrain_set                    MethodBind `hash:"3937882851"`
-		Bind_remove_terrain_set                  MethodBind `hash:"1286410249"`
-		Bind_set_terrain_set_mode                MethodBind `hash:"3943003916"`
-		Bind_get_terrain_set_mode                MethodBind `hash:"2084469411"`
-		Bind_get_terrains_count                  MethodBind `hash:"923996154"`
-		Bind_add_terrain                         MethodBind `hash:"1230568737"`
-		Bind_move_terrain                        MethodBind `hash:"1649997291"`
-		Bind_remove_terrain                      MethodBind `hash:"3937882851"`
-		Bind_set_terrain_name                    MethodBind `hash:"2285447957"`
-		Bind_get_terrain_name                    MethodBind `hash:"1391810591"`
-		Bind_set_terrain_color                   MethodBind `hash:"3733378741"`
-		Bind_get_terrain_color                   MethodBind `hash:"2165839948"`
-		Bind_get_navigation_layers_count         MethodBind `hash:"3905245786"`
-		Bind_add_navigation_layer                MethodBind `hash:"1025054187"`
-		Bind_move_navigation_layer               MethodBind `hash:"3937882851"`
-		Bind_remove_navigation_layer             MethodBind `hash:"1286410249"`
-		Bind_set_navigation_layer_layers         MethodBind `hash:"3937882851"`
-		Bind_get_navigation_layer_layers         MethodBind `hash:"923996154"`
-		Bind_set_navigation_layer_layer_value    MethodBind `hash:"1383440665"`
-		Bind_get_navigation_layer_layer_value    MethodBind `hash:"2522259332"`
-		Bind_get_custom_data_layers_count        MethodBind `hash:"3905245786"`
-		Bind_add_custom_data_layer               MethodBind `hash:"1025054187"`
-		Bind_move_custom_data_layer              MethodBind `hash:"3937882851"`
-		Bind_remove_custom_data_layer            MethodBind `hash:"1286410249"`
-		Bind_get_custom_data_layer_by_name       MethodBind `hash:"1321353865"`
-		Bind_set_custom_data_layer_name          MethodBind `hash:"501894301"`
-		Bind_get_custom_data_layer_name          MethodBind `hash:"844755477"`
-		Bind_set_custom_data_layer_type          MethodBind `hash:"3492912874"`
-		Bind_get_custom_data_layer_type          MethodBind `hash:"2990820875"`
-		Bind_set_source_level_tile_proxy         MethodBind `hash:"3937882851"`
-		Bind_get_source_level_tile_proxy         MethodBind `hash:"3744713108"`
-		Bind_has_source_level_tile_proxy         MethodBind `hash:"3067735520"`
-		Bind_remove_source_level_tile_proxy      MethodBind `hash:"1286410249"`
-		Bind_set_coords_level_tile_proxy         MethodBind `hash:"1769939278"`
-		Bind_get_coords_level_tile_proxy         MethodBind `hash:"2856536371"`
-		Bind_has_coords_level_tile_proxy         MethodBind `hash:"3957903770"`
-		Bind_remove_coords_level_tile_proxy      MethodBind `hash:"2311374912"`
-		Bind_set_alternative_level_tile_proxy    MethodBind `hash:"3862385460"`
-		Bind_get_alternative_level_tile_proxy    MethodBind `hash:"2303761075"`
-		Bind_has_alternative_level_tile_proxy    MethodBind `hash:"180086755"`
-		Bind_remove_alternative_level_tile_proxy MethodBind `hash:"2328951467"`
-		Bind_map_tile_proxy                      MethodBind `hash:"4267935328"`
-		Bind_cleanup_invalid_tile_proxies        MethodBind `hash:"3218959716"`
-		Bind_clear_tile_proxies                  MethodBind `hash:"3218959716"`
-		Bind_add_pattern                         MethodBind `hash:"763712015"`
-		Bind_get_pattern                         MethodBind `hash:"4207737510"`
-		Bind_remove_pattern                      MethodBind `hash:"1286410249"`
-		Bind_get_patterns_count                  MethodBind `hash:"2455072627"`
+		Bind_get_next_source_id                   MethodBind `hash:"3905245786"`
+		Bind_add_source                           MethodBind `hash:"1059186179"`
+		Bind_remove_source                        MethodBind `hash:"1286410249"`
+		Bind_set_source_id                        MethodBind `hash:"3937882851"`
+		Bind_get_source_count                     MethodBind `hash:"3905245786"`
+		Bind_get_source_id                        MethodBind `hash:"923996154"`
+		Bind_has_source                           MethodBind `hash:"1116898809"`
+		Bind_get_source                           MethodBind `hash:"1763540252"`
+		Bind_set_tile_shape                       MethodBind `hash:"2131427112"`
+		Bind_get_tile_shape                       MethodBind `hash:"716918169"`
+		Bind_set_tile_layout                      MethodBind `hash:"1071216679"`
+		Bind_get_tile_layout                      MethodBind `hash:"194628839"`
+		Bind_set_tile_offset_axis                 MethodBind `hash:"3300198521"`
+		Bind_get_tile_offset_axis                 MethodBind `hash:"762494114"`
+		Bind_set_tile_size                        MethodBind `hash:"1130785943"`
+		Bind_get_tile_size                        MethodBind `hash:"3690982128"`
+		Bind_set_uv_clipping                      MethodBind `hash:"2586408642"`
+		Bind_is_uv_clipping                       MethodBind `hash:"36873697"`
+		Bind_get_occlusion_layers_count           MethodBind `hash:"3905245786"`
+		Bind_add_occlusion_layer                  MethodBind `hash:"1025054187"`
+		Bind_move_occlusion_layer                 MethodBind `hash:"3937882851"`
+		Bind_remove_occlusion_layer               MethodBind `hash:"1286410249"`
+		Bind_set_occlusion_layer_light_mask       MethodBind `hash:"3937882851"`
+		Bind_get_occlusion_layer_light_mask       MethodBind `hash:"923996154"`
+		Bind_set_occlusion_layer_sdf_collision    MethodBind `hash:"300928843"`
+		Bind_get_occlusion_layer_sdf_collision    MethodBind `hash:"1116898809"`
+		Bind_get_physics_layers_count             MethodBind `hash:"3905245786"`
+		Bind_add_physics_layer                    MethodBind `hash:"1025054187"`
+		Bind_move_physics_layer                   MethodBind `hash:"3937882851"`
+		Bind_remove_physics_layer                 MethodBind `hash:"1286410249"`
+		Bind_set_physics_layer_collision_layer    MethodBind `hash:"3937882851"`
+		Bind_get_physics_layer_collision_layer    MethodBind `hash:"923996154"`
+		Bind_set_physics_layer_collision_mask     MethodBind `hash:"3937882851"`
+		Bind_get_physics_layer_collision_mask     MethodBind `hash:"923996154"`
+		Bind_set_physics_layer_collision_priority MethodBind `hash:"1602489585"`
+		Bind_get_physics_layer_collision_priority MethodBind `hash:"2339986948"`
+		Bind_set_physics_layer_physics_material   MethodBind `hash:"1018687357"`
+		Bind_get_physics_layer_physics_material   MethodBind `hash:"788318639"`
+		Bind_get_terrain_sets_count               MethodBind `hash:"3905245786"`
+		Bind_add_terrain_set                      MethodBind `hash:"1025054187"`
+		Bind_move_terrain_set                     MethodBind `hash:"3937882851"`
+		Bind_remove_terrain_set                   MethodBind `hash:"1286410249"`
+		Bind_set_terrain_set_mode                 MethodBind `hash:"3943003916"`
+		Bind_get_terrain_set_mode                 MethodBind `hash:"2084469411"`
+		Bind_get_terrains_count                   MethodBind `hash:"923996154"`
+		Bind_add_terrain                          MethodBind `hash:"1230568737"`
+		Bind_move_terrain                         MethodBind `hash:"1649997291"`
+		Bind_remove_terrain                       MethodBind `hash:"3937882851"`
+		Bind_set_terrain_name                     MethodBind `hash:"2285447957"`
+		Bind_get_terrain_name                     MethodBind `hash:"1391810591"`
+		Bind_set_terrain_color                    MethodBind `hash:"3733378741"`
+		Bind_get_terrain_color                    MethodBind `hash:"2165839948"`
+		Bind_get_navigation_layers_count          MethodBind `hash:"3905245786"`
+		Bind_add_navigation_layer                 MethodBind `hash:"1025054187"`
+		Bind_move_navigation_layer                MethodBind `hash:"3937882851"`
+		Bind_remove_navigation_layer              MethodBind `hash:"1286410249"`
+		Bind_set_navigation_layer_layers          MethodBind `hash:"3937882851"`
+		Bind_get_navigation_layer_layers          MethodBind `hash:"923996154"`
+		Bind_set_navigation_layer_layer_value     MethodBind `hash:"1383440665"`
+		Bind_get_navigation_layer_layer_value     MethodBind `hash:"2522259332"`
+		Bind_get_custom_data_layers_count         MethodBind `hash:"3905245786"`
+		Bind_add_custom_data_layer                MethodBind `hash:"1025054187"`
+		Bind_move_custom_data_layer               MethodBind `hash:"3937882851"`
+		Bind_remove_custom_data_layer             MethodBind `hash:"1286410249"`
+		Bind_get_custom_data_layer_by_name        MethodBind `hash:"1321353865"`
+		Bind_set_custom_data_layer_name           MethodBind `hash:"501894301"`
+		Bind_has_custom_data_layer_by_name        MethodBind `hash:"3927539163"`
+		Bind_get_custom_data_layer_name           MethodBind `hash:"844755477"`
+		Bind_set_custom_data_layer_type           MethodBind `hash:"3492912874"`
+		Bind_get_custom_data_layer_type           MethodBind `hash:"2990820875"`
+		Bind_set_source_level_tile_proxy          MethodBind `hash:"3937882851"`
+		Bind_get_source_level_tile_proxy          MethodBind `hash:"3744713108"`
+		Bind_has_source_level_tile_proxy          MethodBind `hash:"3067735520"`
+		Bind_remove_source_level_tile_proxy       MethodBind `hash:"1286410249"`
+		Bind_set_coords_level_tile_proxy          MethodBind `hash:"1769939278"`
+		Bind_get_coords_level_tile_proxy          MethodBind `hash:"2856536371"`
+		Bind_has_coords_level_tile_proxy          MethodBind `hash:"3957903770"`
+		Bind_remove_coords_level_tile_proxy       MethodBind `hash:"2311374912"`
+		Bind_set_alternative_level_tile_proxy     MethodBind `hash:"3862385460"`
+		Bind_get_alternative_level_tile_proxy     MethodBind `hash:"2303761075"`
+		Bind_has_alternative_level_tile_proxy     MethodBind `hash:"180086755"`
+		Bind_remove_alternative_level_tile_proxy  MethodBind `hash:"2328951467"`
+		Bind_map_tile_proxy                       MethodBind `hash:"4267935328"`
+		Bind_cleanup_invalid_tile_proxies         MethodBind `hash:"3218959716"`
+		Bind_clear_tile_proxies                   MethodBind `hash:"3218959716"`
+		Bind_add_pattern                          MethodBind `hash:"763712015"`
+		Bind_get_pattern                          MethodBind `hash:"4207737510"`
+		Bind_remove_pattern                       MethodBind `hash:"1286410249"`
+		Bind_get_patterns_count                   MethodBind `hash:"2455072627"`
 	}
 	TileSetAtlasSource struct {
 		Bind_set_texture                       MethodBind `hash:"4051416890"`
@@ -15762,6 +16613,8 @@ type methods struct {
 		Bind_stop                       MethodBind `hash:"3218959716"`
 		Bind_set_paused                 MethodBind `hash:"2586408642"`
 		Bind_is_paused                  MethodBind `hash:"36873697"`
+		Bind_set_ignore_time_scale      MethodBind `hash:"2586408642"`
+		Bind_is_ignoring_time_scale     MethodBind `hash:"2240911060"`
 		Bind_is_stopped                 MethodBind `hash:"36873697"`
 		Bind_get_time_left              MethodBind `hash:"1740695150"`
 		Bind_set_timer_process_callback MethodBind `hash:"3469495063"`
@@ -15801,21 +16654,48 @@ type methods struct {
 	Translation struct {
 		Bind_set_locale                  MethodBind `hash:"83702148"`
 		Bind_get_locale                  MethodBind `hash:"201670096"`
-		Bind_add_message                 MethodBind `hash:"971803314"`
-		Bind_add_plural_message          MethodBind `hash:"360316719"`
-		Bind_get_message                 MethodBind `hash:"58037827"`
-		Bind_get_plural_message          MethodBind `hash:"1333931916"`
-		Bind_erase_message               MethodBind `hash:"3919944288"`
+		Bind_add_message                 MethodBind `hash:"3898530326"`
+		Bind_add_plural_message          MethodBind `hash:"2356982266"`
+		Bind_get_message                 MethodBind `hash:"1829228469"`
+		Bind_get_plural_message          MethodBind `hash:"229954002"`
+		Bind_erase_message               MethodBind `hash:"3959009644"`
 		Bind_get_message_list            MethodBind `hash:"1139954409"`
 		Bind_get_translated_message_list MethodBind `hash:"1139954409"`
 		Bind_get_message_count           MethodBind `hash:"3905245786"`
+	}
+	TranslationDomain struct {
+		Bind_get_translation_object                           MethodBind `hash:"606768082"`
+		Bind_add_translation                                  MethodBind `hash:"1466479800"`
+		Bind_remove_translation                               MethodBind `hash:"1466479800"`
+		Bind_clear                                            MethodBind `hash:"3218959716"`
+		Bind_translate                                        MethodBind `hash:"1829228469"`
+		Bind_translate_plural                                 MethodBind `hash:"229954002"`
+		Bind_is_pseudolocalization_enabled                    MethodBind `hash:"36873697"`
+		Bind_set_pseudolocalization_enabled                   MethodBind `hash:"2586408642"`
+		Bind_is_pseudolocalization_accents_enabled            MethodBind `hash:"36873697"`
+		Bind_set_pseudolocalization_accents_enabled           MethodBind `hash:"2586408642"`
+		Bind_is_pseudolocalization_double_vowels_enabled      MethodBind `hash:"36873697"`
+		Bind_set_pseudolocalization_double_vowels_enabled     MethodBind `hash:"2586408642"`
+		Bind_is_pseudolocalization_fake_bidi_enabled          MethodBind `hash:"36873697"`
+		Bind_set_pseudolocalization_fake_bidi_enabled         MethodBind `hash:"2586408642"`
+		Bind_is_pseudolocalization_override_enabled           MethodBind `hash:"36873697"`
+		Bind_set_pseudolocalization_override_enabled          MethodBind `hash:"2586408642"`
+		Bind_is_pseudolocalization_skip_placeholders_enabled  MethodBind `hash:"36873697"`
+		Bind_set_pseudolocalization_skip_placeholders_enabled MethodBind `hash:"2586408642"`
+		Bind_get_pseudolocalization_expansion_ratio           MethodBind `hash:"1740695150"`
+		Bind_set_pseudolocalization_expansion_ratio           MethodBind `hash:"373806689"`
+		Bind_get_pseudolocalization_prefix                    MethodBind `hash:"201670096"`
+		Bind_set_pseudolocalization_prefix                    MethodBind `hash:"83702148"`
+		Bind_get_pseudolocalization_suffix                    MethodBind `hash:"201670096"`
+		Bind_set_pseudolocalization_suffix                    MethodBind `hash:"83702148"`
+		Bind_pseudolocalize                                   MethodBind `hash:"1965194235"`
 	}
 	TranslationServer struct {
 		Bind_set_locale                     MethodBind `hash:"83702148"`
 		Bind_get_locale                     MethodBind `hash:"201670096"`
 		Bind_get_tool_locale                MethodBind `hash:"2841200299"`
 		Bind_compare_locales                MethodBind `hash:"2878152881"`
-		Bind_standardize_locale             MethodBind `hash:"3135753539"`
+		Bind_standardize_locale             MethodBind `hash:"4216441673"`
 		Bind_get_all_languages              MethodBind `hash:"1139954409"`
 		Bind_get_language_name              MethodBind `hash:"3135753539"`
 		Bind_get_all_scripts                MethodBind `hash:"1139954409"`
@@ -15823,11 +16703,14 @@ type methods struct {
 		Bind_get_all_countries              MethodBind `hash:"1139954409"`
 		Bind_get_country_name               MethodBind `hash:"3135753539"`
 		Bind_get_locale_name                MethodBind `hash:"3135753539"`
-		Bind_translate                      MethodBind `hash:"58037827"`
-		Bind_translate_plural               MethodBind `hash:"1333931916"`
+		Bind_translate                      MethodBind `hash:"1829228469"`
+		Bind_translate_plural               MethodBind `hash:"229954002"`
 		Bind_add_translation                MethodBind `hash:"1466479800"`
 		Bind_remove_translation             MethodBind `hash:"1466479800"`
 		Bind_get_translation_object         MethodBind `hash:"2065240175"`
+		Bind_has_domain                     MethodBind `hash:"2619796661"`
+		Bind_get_or_add_domain              MethodBind `hash:"397200075"`
+		Bind_remove_domain                  MethodBind `hash:"3304788590"`
 		Bind_clear                          MethodBind `hash:"3218959716"`
 		Bind_get_loaded_locales             MethodBind `hash:"1139954409"`
 		Bind_is_pseudolocalization_enabled  MethodBind `hash:"36873697"`
@@ -15897,10 +16780,14 @@ type methods struct {
 		Bind_get_allow_reselect              MethodBind `hash:"36873697"`
 		Bind_set_allow_search                MethodBind `hash:"2586408642"`
 		Bind_get_allow_search                MethodBind `hash:"36873697"`
+		Bind_set_auto_tooltip                MethodBind `hash:"2586408642"`
+		Bind_is_auto_tooltip_enabled         MethodBind `hash:"36873697"`
 	}
 	TreeItem struct {
 		Bind_set_cell_mode                             MethodBind `hash:"289920701"`
 		Bind_get_cell_mode                             MethodBind `hash:"3406114978"`
+		Bind_set_auto_translate_mode                   MethodBind `hash:"287402019"`
+		Bind_get_auto_translate_mode                   MethodBind `hash:"906302372"`
 		Bind_set_edit_multiline                        MethodBind `hash:"300928843"`
 		Bind_is_edit_multiline                         MethodBind `hash:"1116898809"`
 		Bind_set_checked                               MethodBind `hash:"300928843"`
@@ -15926,6 +16813,8 @@ type methods struct {
 		Bind_get_suffix                                MethodBind `hash:"844755477"`
 		Bind_set_icon                                  MethodBind `hash:"666127730"`
 		Bind_get_icon                                  MethodBind `hash:"3536238170"`
+		Bind_set_icon_overlay                          MethodBind `hash:"666127730"`
+		Bind_get_icon_overlay                          MethodBind `hash:"3536238170"`
 		Bind_set_icon_region                           MethodBind `hash:"1356297692"`
 		Bind_get_icon_region                           MethodBind `hash:"3327874267"`
 		Bind_set_icon_max_width                        MethodBind `hash:"3937882851"`
@@ -15970,6 +16859,7 @@ type methods struct {
 		Bind_get_custom_bg_color                       MethodBind `hash:"3457211756"`
 		Bind_set_custom_as_button                      MethodBind `hash:"300928843"`
 		Bind_is_custom_set_as_button                   MethodBind `hash:"1116898809"`
+		Bind_clear_buttons                             MethodBind `hash:"3218959716"`
 		Bind_add_button                                MethodBind `hash:"1688223362"`
 		Bind_get_button_count                          MethodBind `hash:"923996154"`
 		Bind_get_button_tooltip_text                   MethodBind `hash:"1391810591"`
@@ -16036,6 +16926,7 @@ type methods struct {
 		Bind_tween_interval         MethodBind `hash:"413360199"`
 		Bind_tween_callback         MethodBind `hash:"1540176488"`
 		Bind_tween_method           MethodBind `hash:"2337877153"`
+		Bind_tween_subtween         MethodBind `hash:"1567358477"`
 		Bind_custom_step            MethodBind `hash:"330693286"`
 		Bind_stop                   MethodBind `hash:"3218959716"`
 		Bind_pause                  MethodBind `hash:"3218959716"`
@@ -16047,6 +16938,7 @@ type methods struct {
 		Bind_bind_node              MethodBind `hash:"2946786331"`
 		Bind_set_process_mode       MethodBind `hash:"855258840"`
 		Bind_set_pause_mode         MethodBind `hash:"3363368837"`
+		Bind_set_ignore_time_scale  MethodBind `hash:"1942052223"`
 		Bind_set_parallel           MethodBind `hash:"1942052223"`
 		Bind_set_loops              MethodBind `hash:"2670836414"`
 		Bind_get_loops_left         MethodBind `hash:"3905245786"`
@@ -16178,6 +17070,8 @@ type methods struct {
 		Bind_get_friction_slip          MethodBind `hash:"1740695150"`
 		Bind_is_in_contact              MethodBind `hash:"36873697"`
 		Bind_get_contact_body           MethodBind `hash:"151077316"`
+		Bind_get_contact_point          MethodBind `hash:"3360562783"`
+		Bind_get_contact_normal         MethodBind `hash:"3360562783"`
 		Bind_set_roll_influence         MethodBind `hash:"373806689"`
 		Bind_get_roll_influence         MethodBind `hash:"1740695150"`
 		Bind_get_skidinfo               MethodBind `hash:"1740695150"`
@@ -16236,6 +17130,7 @@ type methods struct {
 		Bind_get_canvas_transform                        MethodBind `hash:"3814499831"`
 		Bind_set_global_canvas_transform                 MethodBind `hash:"2761652528"`
 		Bind_get_global_canvas_transform                 MethodBind `hash:"3814499831"`
+		Bind_get_stretch_transform                       MethodBind `hash:"3814499831"`
 		Bind_get_final_transform                         MethodBind `hash:"3814499831"`
 		Bind_get_screen_transform                        MethodBind `hash:"3814499831"`
 		Bind_get_visible_rect                            MethodBind `hash:"1639390495"`
@@ -16269,9 +17164,12 @@ type methods struct {
 		Bind_push_text_input                             MethodBind `hash:"83702148"`
 		Bind_push_input                                  MethodBind `hash:"3644664830"`
 		Bind_push_unhandled_input                        MethodBind `hash:"3644664830"`
+		Bind_notify_mouse_entered                        MethodBind `hash:"3218959716"`
+		Bind_notify_mouse_exited                         MethodBind `hash:"3218959716"`
 		Bind_get_mouse_position                          MethodBind `hash:"3341600327"`
 		Bind_warp_mouse                                  MethodBind `hash:"743155724"`
 		Bind_update_mouse_cursor_state                   MethodBind `hash:"3218959716"`
+		Bind_gui_cancel_drag                             MethodBind `hash:"3218959716"`
 		Bind_gui_get_drag_data                           MethodBind `hash:"1214101251"`
 		Bind_gui_is_dragging                             MethodBind `hash:"36873697"`
 		Bind_gui_is_drag_successful                      MethodBind `hash:"36873697"`
@@ -16315,12 +17213,14 @@ type methods struct {
 		Bind_get_mesh_lod_threshold                      MethodBind `hash:"1740695150"`
 		Bind_set_as_audio_listener_2d                    MethodBind `hash:"2586408642"`
 		Bind_is_audio_listener_2d                        MethodBind `hash:"36873697"`
+		Bind_get_audio_listener_2d                       MethodBind `hash:"1840977180"`
 		Bind_get_camera_2d                               MethodBind `hash:"3551466917"`
 		Bind_set_world_3d                                MethodBind `hash:"1400875337"`
 		Bind_get_world_3d                                MethodBind `hash:"317588385"`
 		Bind_find_world_3d                               MethodBind `hash:"317588385"`
 		Bind_set_use_own_world_3d                        MethodBind `hash:"2586408642"`
 		Bind_is_using_own_world_3d                       MethodBind `hash:"36873697"`
+		Bind_get_audio_listener_3d                       MethodBind `hash:"3472246991"`
 		Bind_get_camera_3d                               MethodBind `hash:"2285090890"`
 		Bind_set_as_audio_listener_3d                    MethodBind `hash:"2586408642"`
 		Bind_is_audio_listener_3d                        MethodBind `hash:"36873697"`
@@ -16336,6 +17236,8 @@ type methods struct {
 		Bind_get_fsr_sharpness                           MethodBind `hash:"1740695150"`
 		Bind_set_texture_mipmap_bias                     MethodBind `hash:"373806689"`
 		Bind_get_texture_mipmap_bias                     MethodBind `hash:"1740695150"`
+		Bind_set_anisotropic_filtering_level             MethodBind `hash:"3445583046"`
+		Bind_get_anisotropic_filtering_level             MethodBind `hash:"3991528932"`
 		Bind_set_vrs_mode                                MethodBind `hash:"2749867817"`
 		Bind_get_vrs_mode                                MethodBind `hash:"349660525"`
 		Bind_set_vrs_update_mode                         MethodBind `hash:"3182412319"`
@@ -16474,8 +17376,8 @@ type methods struct {
 	VisualShaderNodeCubemap struct {
 		Bind_set_source       MethodBind `hash:"1625400621"`
 		Bind_get_source       MethodBind `hash:"2222048781"`
-		Bind_set_cube_map     MethodBind `hash:"2219800736"`
-		Bind_get_cube_map     MethodBind `hash:"1772111058"`
+		Bind_set_cube_map     MethodBind `hash:"1278366092"`
+		Bind_get_cube_map     MethodBind `hash:"3984243839"`
 		Bind_set_texture_type MethodBind `hash:"1899718876"`
 		Bind_get_texture_type MethodBind `hash:"3356498888"`
 	}
@@ -16607,6 +17509,8 @@ type methods struct {
 		Bind_get_max                   MethodBind `hash:"3905245786"`
 		Bind_set_step                  MethodBind `hash:"1286410249"`
 		Bind_get_step                  MethodBind `hash:"3905245786"`
+		Bind_set_enum_names            MethodBind `hash:"4015028928"`
+		Bind_get_enum_names            MethodBind `hash:"1139954409"`
 		Bind_set_default_value_enabled MethodBind `hash:"2586408642"`
 		Bind_is_default_value_enabled  MethodBind `hash:"36873697"`
 		Bind_set_default_value         MethodBind `hash:"1286410249"`
@@ -16683,6 +17587,8 @@ type methods struct {
 	VisualShaderNodeRandomRange struct {
 	}
 	VisualShaderNodeRemap struct {
+		Bind_set_op_type MethodBind `hash:"1703697889"`
+		Bind_get_op_type MethodBind `hash:"1678380563"`
 	}
 	VisualShaderNodeReroute struct {
 		Bind_get_port_type MethodBind `hash:"1287173294"`
@@ -16726,8 +17632,8 @@ type methods struct {
 		Bind_get_texture_type MethodBind `hash:"3290430153"`
 	}
 	VisualShaderNodeTexture2DArray struct {
-		Bind_set_texture_array MethodBind `hash:"2206200446"`
-		Bind_get_texture_array MethodBind `hash:"146117123"`
+		Bind_set_texture_array MethodBind `hash:"1278366092"`
+		Bind_get_texture_array MethodBind `hash:"3984243839"`
 	}
 	VisualShaderNodeTexture2DArrayParameter struct {
 	}
@@ -16999,6 +17905,8 @@ type methods struct {
 		Bind_set_outbound_buffer_size             MethodBind `hash:"1286410249"`
 		Bind_set_max_queued_packets               MethodBind `hash:"1286410249"`
 		Bind_get_max_queued_packets               MethodBind `hash:"3905245786"`
+		Bind_set_heartbeat_interval               MethodBind `hash:"373806689"`
+		Bind_get_heartbeat_interval               MethodBind `hash:"1740695150"`
 	}
 	WebXRInterface struct {
 		Bind_is_session_supported                MethodBind `hash:"83702148"`
@@ -17061,6 +17969,8 @@ type methods struct {
 		Bind_can_draw                         MethodBind `hash:"36873697"`
 		Bind_has_focus                        MethodBind `hash:"36873697"`
 		Bind_grab_focus                       MethodBind `hash:"3218959716"`
+		Bind_start_drag                       MethodBind `hash:"3218959716"`
+		Bind_start_resize                     MethodBind `hash:"122288853"`
 		Bind_set_ime_active                   MethodBind `hash:"2586408642"`
 		Bind_set_ime_position                 MethodBind `hash:"1130785943"`
 		Bind_is_embedded                      MethodBind `hash:"36873697"`
@@ -17104,24 +18014,24 @@ type methods struct {
 		Bind_remove_theme_font_size_override  MethodBind `hash:"3304788590"`
 		Bind_remove_theme_color_override      MethodBind `hash:"3304788590"`
 		Bind_remove_theme_constant_override   MethodBind `hash:"3304788590"`
-		Bind_get_theme_icon                   MethodBind `hash:"2336455395"`
-		Bind_get_theme_stylebox               MethodBind `hash:"2759935355"`
-		Bind_get_theme_font                   MethodBind `hash:"387378635"`
-		Bind_get_theme_font_size              MethodBind `hash:"229578101"`
-		Bind_get_theme_color                  MethodBind `hash:"2377051548"`
-		Bind_get_theme_constant               MethodBind `hash:"229578101"`
+		Bind_get_theme_icon                   MethodBind `hash:"3163973443"`
+		Bind_get_theme_stylebox               MethodBind `hash:"604739069"`
+		Bind_get_theme_font                   MethodBind `hash:"2826986490"`
+		Bind_get_theme_font_size              MethodBind `hash:"1327056374"`
+		Bind_get_theme_color                  MethodBind `hash:"2798751242"`
+		Bind_get_theme_constant               MethodBind `hash:"1327056374"`
 		Bind_has_theme_icon_override          MethodBind `hash:"2619796661"`
 		Bind_has_theme_stylebox_override      MethodBind `hash:"2619796661"`
 		Bind_has_theme_font_override          MethodBind `hash:"2619796661"`
 		Bind_has_theme_font_size_override     MethodBind `hash:"2619796661"`
 		Bind_has_theme_color_override         MethodBind `hash:"2619796661"`
 		Bind_has_theme_constant_override      MethodBind `hash:"2619796661"`
-		Bind_has_theme_icon                   MethodBind `hash:"1187511791"`
-		Bind_has_theme_stylebox               MethodBind `hash:"1187511791"`
-		Bind_has_theme_font                   MethodBind `hash:"1187511791"`
-		Bind_has_theme_font_size              MethodBind `hash:"1187511791"`
-		Bind_has_theme_color                  MethodBind `hash:"1187511791"`
-		Bind_has_theme_constant               MethodBind `hash:"1187511791"`
+		Bind_has_theme_icon                   MethodBind `hash:"866386512"`
+		Bind_has_theme_stylebox               MethodBind `hash:"866386512"`
+		Bind_has_theme_font                   MethodBind `hash:"866386512"`
+		Bind_has_theme_font_size              MethodBind `hash:"866386512"`
+		Bind_has_theme_color                  MethodBind `hash:"866386512"`
+		Bind_has_theme_constant               MethodBind `hash:"866386512"`
 		Bind_get_theme_default_base_scale     MethodBind `hash:"1740695150"`
 		Bind_get_theme_default_font           MethodBind `hash:"3229501585"`
 		Bind_get_theme_default_font_size      MethodBind `hash:"3905245786"`
@@ -17361,26 +18271,28 @@ type methods struct {
 		Bind_set_input           MethodBind `hash:"3776071444"`
 	}
 	XRServer struct {
-		Bind_get_world_scale       MethodBind `hash:"1740695150"`
-		Bind_set_world_scale       MethodBind `hash:"373806689"`
-		Bind_get_world_origin      MethodBind `hash:"3229777777"`
-		Bind_set_world_origin      MethodBind `hash:"2952846383"`
-		Bind_get_reference_frame   MethodBind `hash:"3229777777"`
-		Bind_clear_reference_frame MethodBind `hash:"3218959716"`
-		Bind_center_on_hmd         MethodBind `hash:"1450904707"`
-		Bind_get_hmd_transform     MethodBind `hash:"4183770049"`
-		Bind_add_interface         MethodBind `hash:"1898711491"`
-		Bind_get_interface_count   MethodBind `hash:"3905245786"`
-		Bind_remove_interface      MethodBind `hash:"1898711491"`
-		Bind_get_interface         MethodBind `hash:"4237347919"`
-		Bind_get_interfaces        MethodBind `hash:"3995934104"`
-		Bind_find_interface        MethodBind `hash:"1395192955"`
-		Bind_add_tracker           MethodBind `hash:"684804553"`
-		Bind_remove_tracker        MethodBind `hash:"684804553"`
-		Bind_get_trackers          MethodBind `hash:"3554694381"`
-		Bind_get_tracker           MethodBind `hash:"147382240"`
-		Bind_get_primary_interface MethodBind `hash:"2143545064"`
-		Bind_set_primary_interface MethodBind `hash:"1898711491"`
+		Bind_get_world_scale             MethodBind `hash:"1740695150"`
+		Bind_set_world_scale             MethodBind `hash:"373806689"`
+		Bind_get_world_origin            MethodBind `hash:"3229777777"`
+		Bind_set_world_origin            MethodBind `hash:"2952846383"`
+		Bind_get_reference_frame         MethodBind `hash:"3229777777"`
+		Bind_clear_reference_frame       MethodBind `hash:"3218959716"`
+		Bind_center_on_hmd               MethodBind `hash:"1450904707"`
+		Bind_get_hmd_transform           MethodBind `hash:"4183770049"`
+		Bind_set_camera_locked_to_origin MethodBind `hash:"2586408642"`
+		Bind_is_camera_locked_to_origin  MethodBind `hash:"36873697"`
+		Bind_add_interface               MethodBind `hash:"1898711491"`
+		Bind_get_interface_count         MethodBind `hash:"3905245786"`
+		Bind_remove_interface            MethodBind `hash:"1898711491"`
+		Bind_get_interface               MethodBind `hash:"4237347919"`
+		Bind_get_interfaces              MethodBind `hash:"3995934104"`
+		Bind_find_interface              MethodBind `hash:"1395192955"`
+		Bind_add_tracker                 MethodBind `hash:"684804553"`
+		Bind_remove_tracker              MethodBind `hash:"684804553"`
+		Bind_get_trackers                MethodBind `hash:"3554694381"`
+		Bind_get_tracker                 MethodBind `hash:"147382240"`
+		Bind_get_primary_interface       MethodBind `hash:"2143545064"`
+		Bind_set_primary_interface       MethodBind `hash:"1898711491"`
 	}
 	XRTracker struct {
 		Bind_get_tracker_type MethodBind `hash:"2784508102"`
@@ -17391,11 +18303,13 @@ type methods struct {
 		Bind_set_tracker_desc MethodBind `hash:"83702148"`
 	}
 	XRVRS struct {
-		Bind_get_vrs_min_radius MethodBind `hash:"1740695150"`
-		Bind_set_vrs_min_radius MethodBind `hash:"373806689"`
-		Bind_get_vrs_strength   MethodBind `hash:"1740695150"`
-		Bind_set_vrs_strength   MethodBind `hash:"373806689"`
-		Bind_make_vrs_texture   MethodBind `hash:"3647044786"`
+		Bind_get_vrs_min_radius    MethodBind `hash:"1740695150"`
+		Bind_set_vrs_min_radius    MethodBind `hash:"373806689"`
+		Bind_get_vrs_strength      MethodBind `hash:"1740695150"`
+		Bind_set_vrs_strength      MethodBind `hash:"373806689"`
+		Bind_get_vrs_render_region MethodBind `hash:"410525958"`
+		Bind_set_vrs_render_region MethodBind `hash:"1763793166"`
+		Bind_make_vrs_texture      MethodBind `hash:"3647044786"`
 	}
 	ZIPPacker struct {
 		Bind_open       MethodBind `hash:"1936816515"`

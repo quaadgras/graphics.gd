@@ -41,7 +41,7 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-Represents a camera as defined by the base GLTF spec.
+Represents a camera as defined by the base glTF spec.
 */
 type Instance [1]gdclass.GLTFCamera
 

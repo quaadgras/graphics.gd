@@ -55,15 +55,15 @@ type Any interface {
 }
 
 /*
-Creates a new AudioStreamOggVorbis instance from the given buffer. The buffer must contain Ogg Vorbis data.
+Creates a new [AudioStreamOggVorbis] instance from the given buffer. The buffer must contain Ogg Vorbis data.
 */
-func LoadFromBuffer(buffer []byte) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_buffer
+func LoadFromBuffer(stream_data []byte) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_buffer
 	self := Instance{}
-	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromBuffer(Packed.Bytes(Packed.New(buffer...))))
+	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...))))
 }
 
 /*
-Creates a new AudioStreamOggVorbis instance from the given file path. The file must be in Ogg Vorbis format.
+Creates a new [AudioStreamOggVorbis] instance from the given file path. The file must be in Ogg Vorbis format.
 */
 func LoadFromFile(path string) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_file
 	self := Instance{}
@@ -138,12 +138,12 @@ func (self Instance) SetLoopOffset(value Float.X) {
 }
 
 /*
-Creates a new AudioStreamOggVorbis instance from the given buffer. The buffer must contain Ogg Vorbis data.
+Creates a new [AudioStreamOggVorbis] instance from the given buffer. The buffer must contain Ogg Vorbis data.
 */
 //go:nosplit
-func (self class) LoadFromBuffer(buffer Packed.Bytes) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_buffer
+func (self class) LoadFromBuffer(stream_data Packed.Bytes) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_buffer
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data))))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamOggVorbis.Bind_load_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamOggVorbis](r_ret.Get())}
@@ -152,7 +152,7 @@ func (self class) LoadFromBuffer(buffer Packed.Bytes) [1]gdclass.AudioStreamOggV
 }
 
 /*
-Creates a new AudioStreamOggVorbis instance from the given file path. The file must be in Ogg Vorbis format.
+Creates a new [AudioStreamOggVorbis] instance from the given file path. The file must be in Ogg Vorbis format.
 */
 //go:nosplit
 func (self class) LoadFromFile(path String.Readable) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_file

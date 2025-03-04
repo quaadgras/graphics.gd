@@ -43,7 +43,7 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
-A horizontal menu bar that creates a [MenuButton] for each [PopupMenu] child. New items are created by adding [PopupMenu]s to this node.
+A horizontal menu bar that creates a menu for each [PopupMenu] child. New items are created by adding [PopupMenu]s to this node. Item title is determined by [member Window.title], or node name if [member Window.title] is empty. Item title can be overridden using [method set_menu_title].
 */
 type Instance [1]gdclass.MenuBar
 

@@ -81,11 +81,11 @@ func (self Instance) SetSource(value gdclass.VisualShaderNodeCubemapSource) {
 	class(self).SetSource(value)
 }
 
-func (self Instance) CubeMap() [1]gdclass.Cubemap {
-	return [1]gdclass.Cubemap(class(self).GetCubeMap())
+func (self Instance) CubeMap() [1]gdclass.TextureLayered {
+	return [1]gdclass.TextureLayered(class(self).GetCubeMap())
 }
 
-func (self Instance) SetCubeMap(value [1]gdclass.Cubemap) {
+func (self Instance) SetCubeMap(value [1]gdclass.TextureLayered) {
 	class(self).SetCubeMap(value)
 }
 
@@ -117,7 +117,7 @@ func (self class) GetSource() gdclass.VisualShaderNodeCubemapSource { //gd:Visua
 }
 
 //go:nosplit
-func (self class) SetCubeMap(value [1]gdclass.Cubemap) { //gd:VisualShaderNodeCubemap.set_cube_map
+func (self class) SetCubeMap(value [1]gdclass.TextureLayered) { //gd:VisualShaderNodeCubemap.set_cube_map
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value[0])[0])
 	var r_ret = callframe.Nil
@@ -126,11 +126,11 @@ func (self class) SetCubeMap(value [1]gdclass.Cubemap) { //gd:VisualShaderNodeCu
 }
 
 //go:nosplit
-func (self class) GetCubeMap() [1]gdclass.Cubemap { //gd:VisualShaderNodeCubemap.get_cube_map
+func (self class) GetCubeMap() [1]gdclass.TextureLayered { //gd:VisualShaderNodeCubemap.get_cube_map
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_get_cube_map, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Cubemap{gd.PointerWithOwnershipTransferredToGo[gdclass.Cubemap](r_ret.Get())}
+	var ret = [1]gdclass.TextureLayered{gd.PointerWithOwnershipTransferredToGo[gdclass.TextureLayered](r_ret.Get())}
 	frame.Free()
 	return ret
 }

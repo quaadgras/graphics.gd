@@ -69,13 +69,17 @@ type Any interface {
 type Interface interface {
 	//Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the [param delta] time since the previous frame is not constant. [param delta] is in seconds.
 	//It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process].
+	//Processing happens in order of [member process_priority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 	//Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Object._notification].
 	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	//[b]Note:[/b] [param delta] will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [method _process] and [method _physics_process]. As a result, avoid using [param delta] for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [method Time.get_ticks_usec].
 	Process(delta Float.X)
-	//Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the [param delta] variable should be constant. [param delta] is in seconds.
+	//Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the [param delta] parameter will [i]generally[/i] be constant (see exceptions below). [param delta] is in seconds.
 	//It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_physics_process].
+	//Processing happens in order of [member process_physics_priority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 	//Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [method Object._notification].
 	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	//[b]Note:[/b] [param delta] will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [method _process] and [method _physics_process]. As a result, avoid using [param delta] for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [method Time.get_ticks_usec].
 	PhysicsProcess(delta Float.X)
 	//Called when the node enters the [SceneTree] (e.g. upon instantiating, scene changing, or after calling [method add_child] in a script). If the node has children, its [method _enter_tree] callback will be called first, and then that of the children.
 	//Corresponds to the [constant NOTIFICATION_ENTER_TREE] notification in [method Object._notification].
@@ -150,8 +154,10 @@ func (self implementation) UnhandledKeyInput(event [1]gdclass.InputEvent) { retu
 /*
 Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the [param delta] time since the previous frame is not constant. [param delta] is in seconds.
 It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process].
+Processing happens in order of [member process_priority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Object._notification].
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+[b]Note:[/b] [param delta] will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [method _process] and [method _physics_process]. As a result, avoid using [param delta] for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [method Time.get_ticks_usec].
 */
 func (Instance) _process(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -163,10 +169,12 @@ func (Instance) _process(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.Ex
 }
 
 /*
-Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the [param delta] variable should be constant. [param delta] is in seconds.
+Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the [param delta] parameter will [i]generally[/i] be constant (see exceptions below). [param delta] is in seconds.
 It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_physics_process].
+Processing happens in order of [member process_physics_priority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [method Object._notification].
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+[b]Note:[/b] [param delta] will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [method _process] and [method _physics_process]. As a result, avoid using [param delta] for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [method Time.get_ticks_usec].
 */
 func (Instance) _physics_process(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -765,6 +773,7 @@ func (self Instance) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_proc
 
 /*
 Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [method _physics_process]'s [code]delta[/code] parameter, and is often consistent at run-time, unless [member Engine.physics_ticks_per_second] is changed. See also [constant NOTIFICATION_PHYSICS_PROCESS].
+[b]Note:[/b] The returned value will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [method _process] and [method _physics_process]. As a result, avoid using [code]delta[/code] for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [method Time.get_ticks_usec].
 */
 func (self Instance) GetPhysicsProcessDeltaTime() Float.X { //gd:Node.get_physics_process_delta_time
 	return Float.X(Float.X(class(self).GetPhysicsProcessDeltaTime()))
@@ -779,6 +788,7 @@ func (self Instance) IsPhysicsProcessing() bool { //gd:Node.is_physics_processin
 
 /*
 Returns the time elapsed (in seconds) since the last process callback. This value is identical to [method _process]'s [code]delta[/code] parameter, and may vary from frame to frame. See also [constant NOTIFICATION_PROCESS].
+[b]Note:[/b] The returned value will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [method _process] and [method _physics_process]. As a result, avoid using [code]delta[/code] for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [method Time.get_ticks_usec].
 */
 func (self Instance) GetProcessDeltaTime() Float.X { //gd:Node.get_process_delta_time
 	return Float.X(Float.X(class(self).GetProcessDeltaTime()))
@@ -945,6 +955,14 @@ func (self Instance) ResetPhysicsInterpolation() { //gd:Node.reset_physics_inter
 }
 
 /*
+Makes this node inherit the translation domain from its parent node. If this node has no parent, the main translation domain will be used.
+This is the default behavior for all nodes. Calling [method Object.set_translation_domain] disables this behavior.
+*/
+func (self Instance) SetTranslationDomainInherited() { //gd:Node.set_translation_domain_inherited
+	class(self).SetTranslationDomainInherited()
+}
+
+/*
 Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
 */
 func (self Instance) GetWindow() [1]gdclass.Window { //gd:Node.get_window
@@ -984,7 +1002,7 @@ func (self Instance) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
 }
 
 /*
-Duplicates the node, returning a new node with all of its properties, signals and groups copied from the original. The behavior can be tweaked through the [param flags] (see [enum DuplicateFlags]).
+Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the [param flags] (see [enum DuplicateFlags]).
 [b]Note:[/b] For nodes with a [Script] attached, if [method Object._init] has been defined with required parameters, the duplicated node will not have a [Script].
 */
 func (self Instance) Duplicate() [1]gdclass.Node { //gd:Node.duplicate
@@ -1093,6 +1111,13 @@ Changes the RPC configuration for the given [param method]. [param config] shoul
 */
 func (self Instance) RpcConfig(method string, config any) { //gd:Node.rpc_config
 	class(self).RpcConfig(String.Name(String.New(method)), variant.New(config))
+}
+
+/*
+Returns a [Dictionary] mapping method names to their RPC configuration defined for this node using [method rpc_config].
+*/
+func (self Instance) GetRpcConfig() any { //gd:Node.get_rpc_config
+	return any(class(self).GetRpcConfig().Interface())
 }
 
 /*
@@ -1281,8 +1306,10 @@ func (self Instance) SetEditorDescription(value string) {
 /*
 Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the [param delta] time since the previous frame is not constant. [param delta] is in seconds.
 It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process].
+Processing happens in order of [member process_priority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Object._notification].
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+[b]Note:[/b] [param delta] will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [method _process] and [method _physics_process]. As a result, avoid using [param delta] for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [method Time.get_ticks_usec].
 */
 func (class) _process(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -1294,10 +1321,12 @@ func (class) _process(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.Exten
 }
 
 /*
-Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the [param delta] variable should be constant. [param delta] is in seconds.
+Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the [param delta] parameter will [i]generally[/i] be constant (see exceptions below). [param delta] is in seconds.
 It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_physics_process].
+Processing happens in order of [member process_physics_priority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [method Object._notification].
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+[b]Note:[/b] [param delta] will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [method _process] and [method _physics_process]. As a result, avoid using [param delta] for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [method Time.get_ticks_usec].
 */
 func (class) _physics_process(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
@@ -2169,6 +2198,7 @@ func (self class) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_process
 
 /*
 Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [method _physics_process]'s [code]delta[/code] parameter, and is often consistent at run-time, unless [member Engine.physics_ticks_per_second] is changed. See also [constant NOTIFICATION_PHYSICS_PROCESS].
+[b]Note:[/b] The returned value will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [method _process] and [method _physics_process]. As a result, avoid using [code]delta[/code] for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [method Time.get_ticks_usec].
 */
 //go:nosplit
 func (self class) GetPhysicsProcessDeltaTime() float64 { //gd:Node.get_physics_process_delta_time
@@ -2195,6 +2225,7 @@ func (self class) IsPhysicsProcessing() bool { //gd:Node.is_physics_processing
 
 /*
 Returns the time elapsed (in seconds) since the last process callback. This value is identical to [method _process]'s [code]delta[/code] parameter, and may vary from frame to frame. See also [constant NOTIFICATION_PROCESS].
+[b]Note:[/b] The returned value will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [method _process] and [method _physics_process]. As a result, avoid using [code]delta[/code] for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [method Time.get_ticks_usec].
 */
 //go:nosplit
 func (self class) GetProcessDeltaTime() float64 { //gd:Node.get_process_delta_time
@@ -2629,6 +2660,18 @@ func (self class) GetAutoTranslateMode() gdclass.NodeAutoTranslateMode { //gd:No
 }
 
 /*
+Makes this node inherit the translation domain from its parent node. If this node has no parent, the main translation domain will be used.
+This is the default behavior for all nodes. Calling [method Object.set_translation_domain] disables this behavior.
+*/
+//go:nosplit
+func (self class) SetTranslationDomainInherited() { //gd:Node.set_translation_domain_inherited
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_translation_domain_inherited, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
 */
 //go:nosplit
@@ -2692,7 +2735,7 @@ func (self class) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
 }
 
 /*
-Duplicates the node, returning a new node with all of its properties, signals and groups copied from the original. The behavior can be tweaked through the [param flags] (see [enum DuplicateFlags]).
+Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the [param flags] (see [enum DuplicateFlags]).
 [b]Note:[/b] For nodes with a [Script] attached, if [method Object._init] has been defined with required parameters, the duplicated node will not have a [Script].
 */
 //go:nosplit
@@ -2894,6 +2937,19 @@ func (self class) RpcConfig(method String.Name, config variant.Any) { //gd:Node.
 	frame.Free()
 }
 
+/*
+Returns a [Dictionary] mapping method names to their RPC configuration defined for this node using [method rpc_config].
+*/
+//go:nosplit
+func (self class) GetRpcConfig() variant.Any { //gd:Node.get_rpc_config
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[3]uint64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_rpc_config, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
 //go:nosplit
 func (self class) SetEditorDescription(editor_description String.Readable) { //gd:Node.set_editor_description
 	var frame = callframe.New()
@@ -3072,6 +3128,10 @@ func (self Instance) OnEditorDescriptionChanged(cb func(node [1]gdclass.Node)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("editor_description_changed"), gd.NewCallable(cb), 0)
 }
 
+func (self Instance) OnEditorStateChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("editor_state_changed"), gd.NewCallable(cb), 0)
+}
+
 func (self class) AsNode() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsNode() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
 
@@ -3189,7 +3249,7 @@ const (
 	DuplicateGroups DuplicateFlags = 2
 	/*Duplicate the node's script (also overriding the duplicated children's scripts, if combined with [constant DUPLICATE_USE_INSTANTIATION]).*/
 	DuplicateScripts DuplicateFlags = 4
-	/*Duplicate using [method PackedScene.instantiate]. If the node comes from a scene saved on disk, re-uses [method PackedScene.instantiate] as the base for the duplicated node and its children.*/
+	/*Duplicate using [method PackedScene.instantiate]. If the node comes from a scene saved on disk, reuses [method PackedScene.instantiate] as the base for the duplicated node and its children.*/
 	DuplicateUseInstantiation DuplicateFlags = 8
 )
 

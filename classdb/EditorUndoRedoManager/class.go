@@ -70,7 +70,7 @@ func (self Instance) CreateAction(name string) { //gd:EditorUndoRedoManager.crea
 }
 
 /*
-Commit the action. If [param execute] is true (default), all "do" methods/properties are called/set when this function is called.
+Commits the action. If [param execute] is [code]true[/code] (default), all "do" methods/properties are called/set when this function is called.
 */
 func (self Instance) CommitAction() { //gd:EditorUndoRedoManager.commit_action
 	class(self).CommitAction(true)
@@ -137,6 +137,20 @@ func (self Instance) GetHistoryUndoRedo(id int) [1]gdclass.UndoRedo { //gd:Edito
 	return [1]gdclass.UndoRedo(class(self).GetHistoryUndoRedo(int64(id)))
 }
 
+/*
+Clears the given undo history. You can clear history for a specific scene, global history, or for all scenes at once if [param id] is [constant INVALID_HISTORY].
+If [param increase_version] is [code]true[/code], the undo history version will be increased, marking it as unsaved. Useful for operations that modify the scene, but don't support undo.
+[codeblock]
+var scene_root = EditorInterface.get_edited_scene_root()
+var undo_redo = EditorInterface.get_editor_undo_redo()
+undo_redo.clear_history(undo_redo.get_object_history_id(scene_root))
+[/codeblock]
+[b]Note:[/b] If you want to mark an edited scene as unsaved without clearing its history, use [method EditorInterface.mark_scene_as_unsaved] instead.
+*/
+func (self Instance) ClearHistory() { //gd:EditorUndoRedoManager.clear_history
+	class(self).ClearHistory(int64(-99), true)
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.EditorUndoRedoManager
@@ -174,7 +188,7 @@ func (self class) CreateAction(name String.Readable, merge_mode gdclass.UndoRedo
 }
 
 /*
-Commit the action. If [param execute] is true (default), all "do" methods/properties are called/set when this function is called.
+Commits the action. If [param execute] is [code]true[/code] (default), all "do" methods/properties are called/set when this function is called.
 */
 //go:nosplit
 func (self class) CommitAction(execute bool) { //gd:EditorUndoRedoManager.commit_action
@@ -292,6 +306,26 @@ func (self class) GetHistoryUndoRedo(id int64) [1]gdclass.UndoRedo { //gd:Editor
 	var ret = [1]gdclass.UndoRedo{gd.PointerLifetimeBoundTo[gdclass.UndoRedo](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
+}
+
+/*
+Clears the given undo history. You can clear history for a specific scene, global history, or for all scenes at once if [param id] is [constant INVALID_HISTORY].
+If [param increase_version] is [code]true[/code], the undo history version will be increased, marking it as unsaved. Useful for operations that modify the scene, but don't support undo.
+[codeblock]
+var scene_root = EditorInterface.get_edited_scene_root()
+var undo_redo = EditorInterface.get_editor_undo_redo()
+undo_redo.clear_history(undo_redo.get_object_history_id(scene_root))
+[/codeblock]
+[b]Note:[/b] If you want to mark an edited scene as unsaved without clearing its history, use [method EditorInterface.mark_scene_as_unsaved] instead.
+*/
+//go:nosplit
+func (self class) ClearHistory(id int64, increase_version bool) { //gd:EditorUndoRedoManager.clear_history
+	var frame = callframe.New()
+	callframe.Arg(frame, id)
+	callframe.Arg(frame, increase_version)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_clear_history, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
 }
 func (self Instance) OnHistoryChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("history_changed"), gd.NewCallable(cb), 0)

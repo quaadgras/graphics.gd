@@ -68,6 +68,13 @@ func (self Instance) HasAnimation(anim string) bool { //gd:SpriteFrames.has_anim
 }
 
 /*
+Duplicates the animation [param anim_from] to a new animation named [param anim_to]. Fails if [param anim_to] already exists, or if [param anim_from] does not exist.
+*/
+func (self Instance) DuplicateAnimation(anim_from string, anim_to string) { //gd:SpriteFrames.duplicate_animation
+	class(self).DuplicateAnimation(String.Name(String.New(anim_from)), String.Name(String.New(anim_to)))
+}
+
+/*
 Removes the [param anim] animation.
 */
 func (self Instance) RemoveAnimation(anim string) { //gd:SpriteFrames.remove_animation
@@ -219,6 +226,19 @@ func (self class) HasAnimation(anim String.Name) bool { //gd:SpriteFrames.has_an
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
+}
+
+/*
+Duplicates the animation [param anim_from] to a new animation named [param anim_to]. Fails if [param anim_to] already exists, or if [param anim_from] does not exist.
+*/
+//go:nosplit
+func (self class) DuplicateAnimation(anim_from String.Name, anim_to String.Name) { //gd:SpriteFrames.duplicate_animation
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim_from)))
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(anim_to)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_duplicate_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
 }
 
 /*

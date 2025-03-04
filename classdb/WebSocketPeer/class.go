@@ -86,6 +86,7 @@ type Any interface {
 
 /*
 Connects to the given URL. TLS certificates will be verified against the hostname when connecting using the [code]wss://[/code] protocol. You can pass the optional [param tls_client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
+[b]Note:[/b] This method is non-blocking, and will return [constant OK] before the connection is established as long as the provided parameters are valid and the peer is not in an invalid state (e.g. already connected). Regularly call [method poll] (e.g. during [Node] process) and check the result of [method get_ready_state] to know whether the connection succeeds or fails.
 [b]Note:[/b] To avoid mixed content warnings or errors in Web, you may have to use a [param url] that starts with [code]wss://[/code] (secure) instead of [code]ws://[/code]. When doing so, make sure to use the fully qualified domain name that matches the one defined in the server's TLS certificate. Do not connect directly via the IP address for [code]wss://[/code] connections, as it won't match with the TLS certificate.
 */
 func (self Instance) ConnectToUrl(url string) error { //gd:WebSocketPeer.connect_to_url
@@ -262,8 +263,17 @@ func (self Instance) SetMaxQueuedPackets(value int) {
 	class(self).SetMaxQueuedPackets(int64(value))
 }
 
+func (self Instance) HeartbeatInterval() Float.X {
+	return Float.X(Float.X(class(self).GetHeartbeatInterval()))
+}
+
+func (self Instance) SetHeartbeatInterval(value Float.X) {
+	class(self).SetHeartbeatInterval(float64(value))
+}
+
 /*
 Connects to the given URL. TLS certificates will be verified against the hostname when connecting using the [code]wss://[/code] protocol. You can pass the optional [param tls_client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
+[b]Note:[/b] This method is non-blocking, and will return [constant OK] before the connection is established as long as the provided parameters are valid and the peer is not in an invalid state (e.g. already connected). Regularly call [method poll] (e.g. during [Node] process) and check the result of [method get_ready_state] to know whether the connection succeeds or fails.
 [b]Note:[/b] To avoid mixed content warnings or errors in Web, you may have to use a [param url] that starts with [code]wss://[/code] (secure) instead of [code]ws://[/code]. When doing so, make sure to use the fully qualified domain name that matches the one defined in the server's TLS certificate. Do not connect directly via the IP address for [code]wss://[/code] connections, as it won't match with the TLS certificate.
 */
 //go:nosplit
@@ -570,6 +580,25 @@ func (self class) GetMaxQueuedPackets() int64 { //gd:WebSocketPeer.get_max_queue
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_max_queued_packets, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetHeartbeatInterval(interval float64) { //gd:WebSocketPeer.set_heartbeat_interval
+	var frame = callframe.New()
+	callframe.Arg(frame, interval)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_set_heartbeat_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetHeartbeatInterval() float64 { //gd:WebSocketPeer.get_heartbeat_interval
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[float64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_heartbeat_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

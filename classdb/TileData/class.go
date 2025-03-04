@@ -56,6 +56,49 @@ type Any interface {
 }
 
 /*
+Sets the occluder polygon count in the TileSet occlusion layer with index [param layer_id].
+*/
+func (self Instance) SetOccluderPolygonsCount(layer_id int, polygons_count int) { //gd:TileData.set_occluder_polygons_count
+	class(self).SetOccluderPolygonsCount(int64(layer_id), int64(polygons_count))
+}
+
+/*
+Returns the number of occluder polygons of the tile in the TileSet occlusion layer with index [param layer_id].
+*/
+func (self Instance) GetOccluderPolygonsCount(layer_id int) int { //gd:TileData.get_occluder_polygons_count
+	return int(int(class(self).GetOccluderPolygonsCount(int64(layer_id))))
+}
+
+/*
+Adds an occlusion polygon to the tile on the TileSet occlusion layer with index [param layer_id].
+*/
+func (self Instance) AddOccluderPolygon(layer_id int) { //gd:TileData.add_occluder_polygon
+	class(self).AddOccluderPolygon(int64(layer_id))
+}
+
+/*
+Removes the polygon at index [param polygon_index] for TileSet occlusion layer with index [param layer_id].
+*/
+func (self Instance) RemoveOccluderPolygon(layer_id int, polygon_index int) { //gd:TileData.remove_occluder_polygon
+	class(self).RemoveOccluderPolygon(int64(layer_id), int64(polygon_index))
+}
+
+/*
+Sets the occluder for polygon with index [param polygon_index] in the TileSet occlusion layer with index [param layer_id].
+*/
+func (self Instance) SetOccluderPolygon(layer_id int, polygon_index int, polygon [1]gdclass.OccluderPolygon2D) { //gd:TileData.set_occluder_polygon
+	class(self).SetOccluderPolygon(int64(layer_id), int64(polygon_index), polygon)
+}
+
+/*
+Returns the occluder polygon at index [param polygon_index] from the TileSet occlusion layer with index [param layer_id].
+The [param flip_h], [param flip_v], and [param transpose] parameters can be [code]true[/code] to transform the returned polygon.
+*/
+func (self Instance) GetOccluderPolygon(layer_id int, polygon_index int) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder_polygon
+	return [1]gdclass.OccluderPolygon2D(class(self).GetOccluderPolygon(int64(layer_id), int64(polygon_index), false, false, false))
+}
+
+/*
 Sets the occluder for the TileSet occlusion layer with index [param layer_id].
 */
 func (self Instance) SetOccluder(layer_id int, occluder_polygon [1]gdclass.OccluderPolygon2D) { //gd:TileData.set_occluder
@@ -155,7 +198,7 @@ func (self Instance) IsCollisionPolygonOneWay(layer_id int, polygon_index int) b
 }
 
 /*
-Enables/disables one-way collisions on the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
+Sets the one-way margin (for one-way platforms) of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 func (self Instance) SetCollisionPolygonOneWayMargin(layer_id int, polygon_index int, one_way_margin Float.X) { //gd:TileData.set_collision_polygon_one_way_margin
 	class(self).SetCollisionPolygonOneWayMargin(int64(layer_id), int64(polygon_index), float64(one_way_margin))
@@ -212,10 +255,17 @@ func (self Instance) SetCustomData(layer_name string, value any) { //gd:TileData
 }
 
 /*
-Returns the custom data value for custom data layer named [param layer_name].
+Returns the custom data value for custom data layer named [param layer_name]. To check if a custom data layer exists, use [method has_custom_data].
 */
 func (self Instance) GetCustomData(layer_name string) any { //gd:TileData.get_custom_data
 	return any(class(self).GetCustomData(String.New(layer_name)).Interface())
+}
+
+/*
+Returns whether there exists a custom data layer named [param layer_name].
+*/
+func (self Instance) HasCustomData(layer_name string) bool { //gd:TileData.has_custom_data
+	return bool(class(self).HasCustomData(String.New(layer_name)))
 }
 
 /*
@@ -491,6 +541,91 @@ func (self class) GetYSortOrigin() int64 { //gd:TileData.get_y_sort_origin
 }
 
 /*
+Sets the occluder polygon count in the TileSet occlusion layer with index [param layer_id].
+*/
+//go:nosplit
+func (self class) SetOccluderPolygonsCount(layer_id int64, polygons_count int64) { //gd:TileData.set_occluder_polygons_count
+	var frame = callframe.New()
+	callframe.Arg(frame, layer_id)
+	callframe.Arg(frame, polygons_count)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_set_occluder_polygons_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the number of occluder polygons of the tile in the TileSet occlusion layer with index [param layer_id].
+*/
+//go:nosplit
+func (self class) GetOccluderPolygonsCount(layer_id int64) int64 { //gd:TileData.get_occluder_polygons_count
+	var frame = callframe.New()
+	callframe.Arg(frame, layer_id)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_occluder_polygons_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Adds an occlusion polygon to the tile on the TileSet occlusion layer with index [param layer_id].
+*/
+//go:nosplit
+func (self class) AddOccluderPolygon(layer_id int64) { //gd:TileData.add_occluder_polygon
+	var frame = callframe.New()
+	callframe.Arg(frame, layer_id)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_add_occluder_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Removes the polygon at index [param polygon_index] for TileSet occlusion layer with index [param layer_id].
+*/
+//go:nosplit
+func (self class) RemoveOccluderPolygon(layer_id int64, polygon_index int64) { //gd:TileData.remove_occluder_polygon
+	var frame = callframe.New()
+	callframe.Arg(frame, layer_id)
+	callframe.Arg(frame, polygon_index)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_remove_occluder_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Sets the occluder for polygon with index [param polygon_index] in the TileSet occlusion layer with index [param layer_id].
+*/
+//go:nosplit
+func (self class) SetOccluderPolygon(layer_id int64, polygon_index int64, polygon [1]gdclass.OccluderPolygon2D) { //gd:TileData.set_occluder_polygon
+	var frame = callframe.New()
+	callframe.Arg(frame, layer_id)
+	callframe.Arg(frame, polygon_index)
+	callframe.Arg(frame, pointers.Get(polygon[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_set_occluder_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the occluder polygon at index [param polygon_index] from the TileSet occlusion layer with index [param layer_id].
+The [param flip_h], [param flip_v], and [param transpose] parameters can be [code]true[/code] to transform the returned polygon.
+*/
+//go:nosplit
+func (self class) GetOccluderPolygon(layer_id int64, polygon_index int64, flip_h bool, flip_v bool, transpose bool) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder_polygon
+	var frame = callframe.New()
+	callframe.Arg(frame, layer_id)
+	callframe.Arg(frame, polygon_index)
+	callframe.Arg(frame, flip_h)
+	callframe.Arg(frame, flip_v)
+	callframe.Arg(frame, transpose)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_occluder_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.OccluderPolygon2D{gd.PointerWithOwnershipTransferredToGo[gdclass.OccluderPolygon2D](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
 Sets the occluder for the TileSet occlusion layer with index [param layer_id].
 */
 //go:nosplit
@@ -686,7 +821,7 @@ func (self class) IsCollisionPolygonOneWay(layer_id int64, polygon_index int64) 
 }
 
 /*
-Enables/disables one-way collisions on the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
+Sets the one-way margin (for one-way platforms) of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 //go:nosplit
 func (self class) SetCollisionPolygonOneWayMargin(layer_id int64, polygon_index int64, one_way_margin float64) { //gd:TileData.set_collision_polygon_one_way_margin
@@ -857,7 +992,7 @@ func (self class) SetCustomData(layer_name String.Readable, value variant.Any) {
 }
 
 /*
-Returns the custom data value for custom data layer named [param layer_name].
+Returns the custom data value for custom data layer named [param layer_name]. To check if a custom data layer exists, use [method has_custom_data].
 */
 //go:nosplit
 func (self class) GetCustomData(layer_name String.Readable) variant.Any { //gd:TileData.get_custom_data
@@ -866,6 +1001,20 @@ func (self class) GetCustomData(layer_name String.Readable) variant.Any { //gd:T
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_custom_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns whether there exists a custom data layer named [param layer_name].
+*/
+//go:nosplit
+func (self class) HasCustomData(layer_name String.Readable) bool { //gd:TileData.has_custom_data
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(layer_name)))
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_has_custom_data, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

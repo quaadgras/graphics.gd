@@ -43,6 +43,11 @@ var _ = slices.Delete[[]struct{}, struct{}]
 /*
 A camera feed gives you access to a single physical camera attached to your device. When enabled, Godot will start capturing frames from the camera which can then be used. See also [CameraServer].
 [b]Note:[/b] Many cameras will return YCbCr images which are split into two textures and need to be combined in a shader. Godot does this automatically for you if you set the environment to show the camera image in the background.
+[b]Note:[/b] This class is currently only implemented on Linux, macOS, and iOS. On other platforms no [CameraFeed]s will be available. To get a [CameraFeed] on iOS, the camera plugin from [url=https://github.com/godotengine/godot-ios-plugins]godot-ios-plugins[/url] is required.
+
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=CameraFeed)
 */
 type Instance [1]gdclass.CameraFeed
 
@@ -52,6 +57,41 @@ var Nil Instance
 type Any interface {
 	gd.IsClass
 	AsCameraFeed() Instance
+}
+type Interface interface {
+	//Called when the camera feed is activated.
+	ActivateFeed() bool
+	//Called when the camera feed is deactivated.
+	DeactivateFeed()
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation = implementation
+
+type implementation struct{}
+
+func (self implementation) ActivateFeed() (_ bool) { return }
+func (self implementation) DeactivateFeed()        { return }
+
+/*
+Called when the camera feed is activated.
+*/
+func (Instance) _activate_feed(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+Called when the camera feed is deactivated.
+*/
+func (Instance) _deactivate_feed(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self)
+	}
 }
 
 /*
@@ -69,6 +109,13 @@ func (self Instance) GetName() string { //gd:CameraFeed.get_name
 }
 
 /*
+Sets the camera's name.
+*/
+func (self Instance) SetName(name string) { //gd:CameraFeed.set_name
+	class(self).SetName(String.New(name))
+}
+
+/*
 Returns the position of camera on the device.
 */
 func (self Instance) GetPosition() gdclass.CameraFeedFeedPosition { //gd:CameraFeed.get_position
@@ -76,10 +123,55 @@ func (self Instance) GetPosition() gdclass.CameraFeedFeedPosition { //gd:CameraF
 }
 
 /*
+Sets the position of this camera.
+*/
+func (self Instance) SetPosition(position gdclass.CameraFeedFeedPosition) { //gd:CameraFeed.set_position
+	class(self).SetPosition(position)
+}
+
+/*
+Sets RGB image for this feed.
+*/
+func (self Instance) SetRgbImage(rgb_image [1]gdclass.Image) { //gd:CameraFeed.set_rgb_image
+	class(self).SetRgbImage(rgb_image)
+}
+
+/*
+Sets YCbCr image for this feed.
+*/
+func (self Instance) SetYcbcrImage(ycbcr_image [1]gdclass.Image) { //gd:CameraFeed.set_ycbcr_image
+	class(self).SetYcbcrImage(ycbcr_image)
+}
+
+/*
+Sets the feed as external feed provided by another library.
+*/
+func (self Instance) SetExternal(width int, height int) { //gd:CameraFeed.set_external
+	class(self).SetExternal(int64(width), int64(height))
+}
+
+/*
+Returns the texture backend ID (usable by some external libraries that need a handle to a texture to write data).
+*/
+func (self Instance) GetTextureTexId(feed_image_type gdclass.CameraServerFeedImage) int { //gd:CameraFeed.get_texture_tex_id
+	return int(int(class(self).GetTextureTexId(feed_image_type)))
+}
+
+/*
 Returns feed image data type.
 */
 func (self Instance) GetDatatype() gdclass.CameraFeedFeedDataType { //gd:CameraFeed.get_datatype
 	return gdclass.CameraFeedFeedDataType(class(self).GetDatatype())
+}
+
+/*
+Sets the feed format parameters for the given index in the [member formats] array. Returns [code]true[/code] on success. By default YUYV encoded stream is transformed to FEED_RGB. YUYV encoded stream output format can be changed with [param parameters].output value:
+[code]separate[/code] will result in FEED_YCBCR_SEP
+[code]grayscale[/code] will result in desaturated FEED_RGB
+[code]copy[/code] will result in FEED_YCBCR
+*/
+func (self Instance) SetFormat(index int, parameters FormatParameters) bool { //gd:CameraFeed.set_format
+	return bool(class(self).SetFormat(int64(index), gd.DictionaryFromMap(parameters)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -115,6 +207,31 @@ func (self Instance) FeedTransform() Transform2D.OriginXY {
 
 func (self Instance) SetFeedTransform(value Transform2D.OriginXY) {
 	class(self).SetTransform(Transform2D.OriginXY(value))
+}
+
+func (self Instance) Formats() []any {
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetFormats())))
+}
+
+/*
+Called when the camera feed is activated.
+*/
+func (class) _activate_feed(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+Called when the camera feed is deactivated.
+*/
+func (class) _deactivate_feed(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self)
+	}
 }
 
 /*
@@ -163,6 +280,18 @@ func (self class) GetName() String.Readable { //gd:CameraFeed.get_name
 }
 
 /*
+Sets the camera's name.
+*/
+//go:nosplit
+func (self class) SetName(name String.Readable) { //gd:CameraFeed.set_name
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Returns the position of camera on the device.
 */
 //go:nosplit
@@ -173,6 +302,18 @@ func (self class) GetPosition() gdclass.CameraFeedFeedPosition { //gd:CameraFeed
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
+}
+
+/*
+Sets the position of this camera.
+*/
+//go:nosplit
+func (self class) SetPosition(position gdclass.CameraFeedFeedPosition) { //gd:CameraFeed.set_position
+	var frame = callframe.New()
+	callframe.Arg(frame, position)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_position, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
 }
 
 //go:nosplit
@@ -195,6 +336,57 @@ func (self class) SetTransform(transform Transform2D.OriginXY) { //gd:CameraFeed
 }
 
 /*
+Sets RGB image for this feed.
+*/
+//go:nosplit
+func (self class) SetRgbImage(rgb_image [1]gdclass.Image) { //gd:CameraFeed.set_rgb_image
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(rgb_image[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_rgb_image, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Sets YCbCr image for this feed.
+*/
+//go:nosplit
+func (self class) SetYcbcrImage(ycbcr_image [1]gdclass.Image) { //gd:CameraFeed.set_ycbcr_image
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(ycbcr_image[0])[0])
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_ycbcr_image, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Sets the feed as external feed provided by another library.
+*/
+//go:nosplit
+func (self class) SetExternal(width int64, height int64) { //gd:CameraFeed.set_external
+	var frame = callframe.New()
+	callframe.Arg(frame, width)
+	callframe.Arg(frame, height)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_external, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the texture backend ID (usable by some external libraries that need a handle to a texture to write data).
+*/
+//go:nosplit
+func (self class) GetTextureTexId(feed_image_type gdclass.CameraServerFeedImage) int64 { //gd:CameraFeed.get_texture_tex_id
+	var frame = callframe.New()
+	callframe.Arg(frame, feed_image_type)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_texture_tex_id, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns feed image data type.
 */
 //go:nosplit
@@ -206,6 +398,42 @@ func (self class) GetDatatype() gdclass.CameraFeedFeedDataType { //gd:CameraFeed
 	frame.Free()
 	return ret
 }
+
+//go:nosplit
+func (self class) GetFormats() Array.Any { //gd:CameraFeed.get_formats
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_formats, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the feed format parameters for the given index in the [member formats] array. Returns [code]true[/code] on success. By default YUYV encoded stream is transformed to FEED_RGB. YUYV encoded stream output format can be changed with [param parameters].output value:
+[code]separate[/code] will result in FEED_YCBCR_SEP
+[code]grayscale[/code] will result in desaturated FEED_RGB
+[code]copy[/code] will result in FEED_YCBCR
+*/
+//go:nosplit
+func (self class) SetFormat(index int64, parameters Dictionary.Any) bool { //gd:CameraFeed.set_format
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(parameters)))
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_format, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+func (self Instance) OnFrameChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("frame_changed"), gd.NewCallable(cb), 0)
+}
+
+func (self Instance) OnFormatChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("format_changed"), gd.NewCallable(cb), 0)
+}
+
 func (self class) AsCameraFeed() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsCameraFeed() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
 func (self class) AsRefCounted() [1]gd.RefCounted {
@@ -217,6 +445,10 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
+	case "_activate_feed":
+		return reflect.ValueOf(self._activate_feed)
+	case "_deactivate_feed":
+		return reflect.ValueOf(self._deactivate_feed)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -224,6 +456,10 @@ func (self class) Virtual(name string) reflect.Value {
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
+	case "_activate_feed":
+		return reflect.ValueOf(self._activate_feed)
+	case "_deactivate_feed":
+		return reflect.ValueOf(self._deactivate_feed)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}
@@ -243,6 +479,8 @@ const (
 	FeedYcbcr FeedDataType = 2
 	/*Feed supplies separate Y and CbCr images that need to be combined and converted to RGB.*/
 	FeedYcbcrSep FeedDataType = 3
+	/*Feed supplies external image.*/
+	FeedExternal FeedDataType = 4
 )
 
 type FeedPosition = gdclass.CameraFeedFeedPosition //gd:CameraFeed.FeedPosition
@@ -255,3 +493,7 @@ const (
 	/*Camera is mounted at the back of the device.*/
 	FeedBack FeedPosition = 2
 )
+
+type FormatParameters struct {
+	Output string `gd:"output"`
+}

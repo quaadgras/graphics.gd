@@ -67,8 +67,8 @@ func (self Instance) IsPixelOpaque(pos Vector2.XY) bool { //gd:Sprite2D.is_pixel
 }
 
 /*
-Returns a [Rect2] representing the Sprite2D's boundary in local coordinates. Can be used to detect if the Sprite2D was clicked.
-[b]Example:[/b]
+Returns a [Rect2] representing the Sprite2D's boundary in local coordinates.
+[b]Example:[/b] Detect if the Sprite2D was clicked:
 [codeblocks]
 [gdscript]
 func _input(event):
@@ -459,8 +459,8 @@ func (self class) GetHframes() int64 { //gd:Sprite2D.get_hframes
 }
 
 /*
-Returns a [Rect2] representing the Sprite2D's boundary in local coordinates. Can be used to detect if the Sprite2D was clicked.
-[b]Example:[/b]
+Returns a [Rect2] representing the Sprite2D's boundary in local coordinates.
+[b]Example:[/b] Detect if the Sprite2D was clicked:
 [codeblocks]
 [gdscript]
 func _input(event):

@@ -31,7 +31,7 @@ func Less(a, b RGBA) bool { //gd:Color<Color
 
 // Bytes returns a color represented in RGBA format by a red (r), green
 // (g), blue (b), and alpha (a) bytes from 0 to 255.
-func Bytes(r, g, b, a byte) RGBA { // Color8
+func Bytes(r, g, b, a byte) RGBA { //gd:Color.from_rgba8
 	return RGBA{
 		R: Float.X(r) / 255,
 		G: Float.X(g) / 255,

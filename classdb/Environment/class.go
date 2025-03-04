@@ -2653,15 +2653,19 @@ const (
 type ToneMapper = gdclass.EnvironmentToneMapper //gd:Environment.ToneMapper
 
 const (
-	/*Linear tonemapper operator. Reads the linear data and passes it on unmodified. This can cause bright lighting to look blown out, with noticeable clipping in the output colors.*/
+	/*Does not modify color data, resulting in a linear tonemapping curve which unnaturally clips bright values, causing bright lighting to look blown out. The simplest and fastest tonemapper.*/
 	ToneMapperLinear ToneMapper = 0
-	/*Reinhardt tonemapper operator. Performs a variation on rendered pixels' colors by this formula: [code]color = color / (1 + color)[/code]. This avoids clipping bright highlights, but the resulting image can look a bit dull.*/
+	/*A simple tonemapping curve that rolls off bright values to prevent clipping. This results in an image that can appear dull and low contrast. Slower than [constant TONE_MAPPER_LINEAR].
+	  [b]Note:[/b] When [member tonemap_white] is left at the default value of [code]1.0[/code], [constant TONE_MAPPER_REINHARDT] produces an identical image to [constant TONE_MAPPER_LINEAR].*/
 	ToneMapperReinhardt ToneMapper = 1
-	/*Filmic tonemapper operator. This avoids clipping bright highlights, with a resulting image that usually looks more vivid than [constant TONE_MAPPER_REINHARDT].*/
+	/*Uses a film-like tonemapping curve to prevent clipping of bright values and provide better contrast than [constant TONE_MAPPER_REINHARDT]. Slightly slower than [constant TONE_MAPPER_REINHARDT].*/
 	ToneMapperFilmic ToneMapper = 2
-	/*Use the Academy Color Encoding System tonemapper. ACES is slightly more expensive than other options, but it handles bright lighting in a more realistic fashion by desaturating it as it becomes brighter. ACES typically has a more contrasted output compared to [constant TONE_MAPPER_REINHARDT] and [constant TONE_MAPPER_FILMIC].
+	/*Uses a high-contrast film-like tonemapping curve and desaturates bright values for a more realistic appearance. Slightly slower than [constant TONE_MAPPER_FILMIC].
 	  [b]Note:[/b] This tonemapping operator is called "ACES Fitted" in Godot 3.x.*/
 	ToneMapperAces ToneMapper = 3
+	/*Uses a film-like tonemapping curve and desaturates bright values for a more realistic appearance. Better than other tonemappers at maintaining the hue of colors as they become brighter. The slowest tonemapping option.
+	  [b]Note:[/b] [member tonemap_white] is fixed at a value of [code]16.29[/code], which makes [constant TONE_MAPPER_AGX] unsuitable for use with the Mobile rendering method.*/
+	ToneMapperAgx ToneMapper = 4
 )
 
 type GlowBlendMode = gdclass.EnvironmentGlowBlendMode //gd:Environment.GlowBlendMode
