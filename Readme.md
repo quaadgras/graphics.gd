@@ -11,7 +11,7 @@ _Why use graphics.gd?_
 * General-purpose pure-Go 'variant' packages, reuse them in any Go project.
 * Recompile your code quickly, with a build experience similar to a scripting language.
 
-Not just a weapper! graphics.gd has been holistically designed and curated from the ground up to provide a cohesive way to interface with the engine. 
+Not just a wrapper! graphics.gd has been holistically designed and curated from the ground up to provide a cohesive way to interface with the engine. 
 
 We would love you to take part in our [active discussions](https://github.com/grow-graphics/gd/discussions)
 section with any questions, comments or feedback you may have. Show us what you're building!
