@@ -115,6 +115,7 @@ func (loop goMainLoop) Initialize() {
 	} else if pause_main != nil {
 		resume_main()
 	}
+	Callable.Cycle()
 }
 
 // Called each physics frame with the time since the last physics frame as argument ([param delta], in seconds). Equivalent to [method Node._physics_process].
