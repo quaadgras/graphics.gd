@@ -17,6 +17,7 @@ func (a Array) Index(index int64) Variant {
 
 func (a Array) SetIndex(index int64, value Variant) {
 	Global.Array.SetIndex(a, index, value)
+	pointers.End(value)
 }
 
 func (a Array) isArray() {}

@@ -153,6 +153,7 @@ func (p PackedStringArray) Index(idx Int) String {
 
 func (p PackedStringArray) SetIndex(idx Int, value String) {
 	Global.PackedStringArray.SetIndex(p, idx, value)
+	pointers.End(value)
 }
 
 func (p PackedStringArray) AsSlice() []String {
