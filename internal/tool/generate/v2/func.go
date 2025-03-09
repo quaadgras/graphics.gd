@@ -365,6 +365,11 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		fmt.Fprintf(w, "\tvar ret = r_ret.Get()\n")
 	}
 	fmt.Fprintf(w, "\tframe.Free()\n")
+
+	if method.Name == "queue_free" {
+		fmt.Fprintf(w, "\tpointers.End(self.AsObject()[0])\n")
+	}
+
 	if result != "" {
 		if strings.HasPrefix(result, "ArrayOf") || strings.HasPrefix(result, "gd.ArrayOf") {
 			result = strings.ReplaceAll(result, "gd.ArrayOf", "gd.TypedArray")

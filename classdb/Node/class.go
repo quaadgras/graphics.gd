@@ -2840,6 +2840,7 @@ func (self class) QueueFree() { //gd:Node.queue_free
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_queue_free, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+	pointers.End(self.AsObject()[0])
 }
 
 /*
