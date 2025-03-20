@@ -8,6 +8,8 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
 	"graphics.gd/variant"
+	"graphics.gd/variant/Error"
+	"graphics.gd/variant/Signal"
 )
 
 // ID uniquely and opaquely identifies an Object instance.
@@ -134,6 +136,31 @@ func (obj Instance) Translate(message string) string {
 // To translate strings in a static context, use [TranslationServer.TranslatePlural].
 func (obj Instance) Translation(message string, plural_message string, n int, context string) string {
 	return obj[0].TrN(gd.NewStringName(message), gd.NewStringName(plural_message), gd.Int(n), gd.NewStringName(context)).String()
+}
+
+// Connect connects a signal by name to a callable. Optional flags can be also added to configure the connection's behavior
+// (see Signal.Flags constants).
+//
+// A signal can only be connected once to the same Callable. If the signal is already connected, this method returns
+// Error.InvalidParameter and pushes an error message, unless the signal is connected with [Signal.Weak]. To prevent this,
+// use [Instance.IsConnected] first to check for existing connections.
+//
+// If the callable's object is freed, the connection will be lost.
+func (obj Instance) Connect(signal string, callable any, flags ...Signal.Flags) error {
+	var all_flags Signal.Flags
+	for _, f := range flags {
+		all_flags |= f
+	}
+	err := Error.Code(obj[0].Connect(gd.NewStringName(signal), gd.NewCallable(callable), gd.Int(all_flags)))
+	if err != 0 {
+		return err
+	}
+	return nil
+}
+
+// IsConnected returns true if a connection exists between the given signal name and callable.
+func (obj Instance) IsConnected(signal string, callable any) bool {
+	return obj[0].IsConnected(gd.NewStringName(signal), gd.NewCallable(callable))
 }
 
 // Use keeps an object alive, preventing it from being garbage collected until the next frame.
