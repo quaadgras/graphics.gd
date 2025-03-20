@@ -26,7 +26,11 @@ func Get(id ID) gd.Object { //gd:instance_from_id
 // As attempts to cast the given class to T, returning true
 // if the cast was successful.
 func As[T gd.IsClass](value gd.IsClass) (T, bool) {
-	ext, ok := gd.ExtensionInstances.Load(pointers.Get(value.AsObject()[0])[0])
+	raw := pointers.Get(value.AsObject()[0])[0]
+	if raw == 0 {
+		panic("classdb.As: value is nil")
+	}
+	ext, ok := gd.ExtensionInstances.Load(raw)
 	if ok {
 		if ref, ok := ext.(T); ok {
 			pointers.Lay(value.AsObject()[0])
