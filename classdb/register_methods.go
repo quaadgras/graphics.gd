@@ -293,11 +293,10 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 		if !ok {
 			panic(fmt.Sprintf("gdextension: unsupported Go -> Godot type %v", result.Type()))
 		}
-		vvalue := gd.NewVariant(result.Interface())
-		if vvalue.Type() != vtype {
-			panic(fmt.Sprintf("gdextension: expected %v, got %v (%s)", vtype, vvalue.Type(), result.Type()))
-		}
-		switch val := vvalue.Interface().(type) {
+		converted := false
+		ivalue := result.Interface()
+	retry:
+		switch val := ivalue.(type) {
 		case bool:
 			gd.UnsafeSet[bool](p_ret, val)
 		case gd.Int:
@@ -518,6 +517,15 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 				gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(in))
 			}
 		default:
+			if !converted {
+				vvalue := gd.NewVariant(result.Interface())
+				if vvalue.Type() != vtype {
+					panic(fmt.Sprintf("gdextension: expected %v, got %v (%s)", vtype, vvalue.Type(), result.Type()))
+				}
+				ivalue = vvalue.Interface()
+				converted = true
+				goto retry
+			}
 			panic(fmt.Sprintf("gdextension: unsupported Go -> Godot type %v", reflect.TypeOf(val)))
 		}
 	}

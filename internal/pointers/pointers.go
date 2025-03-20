@@ -556,6 +556,7 @@ func Load[T Generic[T, P], P Size](data complex128) T {
 		checksum P
 	}
 	*(*complex128)(unsafe.Pointer(&result.sentinal)) = data
+	result.checksum = Get[T](result)
 	return T(result)
 }
 
