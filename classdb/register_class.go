@@ -561,7 +561,7 @@ func (instance *instanceImplementation) Free() {
 	rvalue := reflect.ValueOf(instance.Value).Elem()
 	for i := range rvalue.NumField() {
 		field := rvalue.Type().Field(i)
-		if !field.IsExported() || field.Name == "Object" {
+		if !field.IsExported() || field.Name == "Extension" {
 			continue
 		}
 		type isNode interface {
