@@ -13,12 +13,14 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
+	EditorInterfaceClass "graphics.gd/classdb/EditorInterface"
 	EditorPluginClass "graphics.gd/classdb/EditorPlugin"
 	EngineClass "graphics.gd/classdb/Engine"
 	NodeClass "graphics.gd/classdb/Node"
 	ScriptClass "graphics.gd/classdb/Script"
 	ScriptLanguageClass "graphics.gd/classdb/ScriptLanguage"
 	ShaderMaterialClass "graphics.gd/classdb/ShaderMaterial"
+
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Path"
 	"graphics.gd/variant/Signal"
@@ -595,11 +597,10 @@ func (instance *instanceImplementation) ready() {
 	if !ok {
 		return
 	}
-
 	var rvalue = reflect.ValueOf(instance.Value).Elem()
-	for i := 0; i < rvalue.NumField(); i++ {
+	for i := range rvalue.NumField() {
 		field := rvalue.Type().Field(i)
-		if !field.IsExported() || field.Name == "Class" {
+		if !field.IsExported() || field.Name == "Extension" {
 			continue
 		}
 		instance.assertChild(rvalue.Field(i).Addr().Interface(), field, parent, parent)
@@ -664,7 +665,9 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		}
 		NodeClass.Advanced(class.AsNode()).SetName(String.New(field.Name))
 		NodeClass.Advanced(parent).AddChild(class.AsNode(), true, mode)
-		NodeClass.Advanced(class.AsNode()).SetOwner(owner)
+		if EngineClass.IsEditorHint() {
+			NodeClass.Advanced(class.AsNode()).SetOwner(EditorInterfaceClass.GetEditedSceneRoot())
+		}
 		return
 	}
 	var node = NodeClass.Advanced(parent).GetNode(path)
