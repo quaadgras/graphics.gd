@@ -31,8 +31,41 @@ You can create new instances, using [New].
 
 Objects can have a Script attached to them. Once the Script is instantiated, it effectively acts as an extension to the base class,
 allowing it to define and inherit new properties, methods and signals.
+
+Each [Interface] method can be overidden independently:
+
+	type Interface interface {
+		Get(property string) any
+		GetPropertyList() []ClassDB.PropertyInfo
+		Notification(what int, reversed bool)
+		PropertyCanRevert(property string) bool
+		PropertyGetRevert(property string) any
+		Set(property string, value any) bool
+		ToString() string
+		ValidateProperty(ClassDB.PropertyInfo)
+	}
 */
 type Instance [1]gdclass.Object
+
+type Interface interface {
+	Get(property string) any
+	GetPropertyList() []PropertyInfo
+	Notification(what int, reversed bool)
+	PropertyCanRevert(property string) bool
+	PropertyGetRevert(property string) any
+	Set(property string, value any) bool
+	ToString() string
+	ValidateProperty(PropertyInfo)
+}
+
+type PropertyInfo struct {
+	ClassName  string       `gd:"class_name"`
+	Name       string       `gd:"name"`
+	Hint       int          `gd:"hint"`
+	HintString string       `gd:"hint_string"`
+	Type       reflect.Type `gd:"type"`
+	Usage      int          `gd:"usage"`
+}
 
 // New creates a new Object instance.
 func New() Instance {

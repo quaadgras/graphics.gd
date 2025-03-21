@@ -8,11 +8,97 @@ import (
 	ArrayType "graphics.gd/variant/Array"
 	CallableType "graphics.gd/variant/Callable"
 	DictionaryType "graphics.gd/variant/Dictionary"
+	FloatType "graphics.gd/variant/Float"
 	PackedType "graphics.gd/variant/Packed"
 	"graphics.gd/variant/Path"
 	SignalType "graphics.gd/variant/Signal"
 	StringType "graphics.gd/variant/String"
 )
+
+func ConvieniantGoTypeOf(vtype VariantType) reflect.Type {
+	switch vtype {
+	case TypeNil:
+		return reflect.TypeFor[any]()
+	case TypeBool:
+		return reflect.TypeFor[bool]()
+	case TypeInt:
+		return reflect.TypeFor[int]()
+	case TypeFloat:
+		return reflect.TypeFor[FloatType.X]()
+	case TypeString:
+		return reflect.TypeFor[string]()
+	case TypeVector2:
+		return reflect.TypeFor[Vector2]()
+	case TypeVector2i:
+		return reflect.TypeFor[Vector2i]()
+	case TypeRect2:
+		return reflect.TypeFor[Rect2]()
+	case TypeRect2i:
+		return reflect.TypeFor[Rect2i]()
+	case TypeVector3:
+		return reflect.TypeFor[Vector3]()
+	case TypeVector3i:
+		return reflect.TypeFor[Vector3i]()
+	case TypeTransform2D:
+		return reflect.TypeFor[Transform2D]()
+	case TypeVector4:
+		return reflect.TypeFor[Vector4]()
+	case TypeVector4i:
+		return reflect.TypeFor[Vector4i]()
+	case TypePlane:
+		return reflect.TypeFor[Plane]()
+	case TypeQuaternion:
+		return reflect.TypeFor[Quaternion]()
+	case TypeAABB:
+		return reflect.TypeFor[AABB]()
+	case TypeBasis:
+		return reflect.TypeFor[Basis]()
+	case TypeTransform3D:
+		return reflect.TypeFor[Transform3D]()
+	case TypeProjection:
+		return reflect.TypeFor[Projection]()
+	case TypeColor:
+		return reflect.TypeFor[Color]()
+	case TypeStringName:
+		return reflect.TypeFor[string]()
+	case TypeNodePath:
+		return reflect.TypeFor[Path.ToNode]()
+	case TypeRID:
+		return reflect.TypeFor[RID]()
+	case TypeObject:
+		return reflect.TypeFor[Object]()
+	case TypeCallable:
+		return reflect.TypeFor[CallableType.Function]()
+	case TypeSignal:
+		return reflect.TypeFor[SignalType.Any]()
+	case TypeDictionary:
+		return reflect.TypeFor[DictionaryType.Any]()
+	case TypeArray:
+		return reflect.TypeFor[ArrayType.Any]()
+	case TypePackedByteArray:
+		return reflect.TypeFor[PackedType.Bytes]()
+	case TypePackedInt32Array:
+		return reflect.TypeFor[PackedType.Array[int32]]()
+	case TypePackedInt64Array:
+		return reflect.TypeFor[PackedType.Array[int64]]()
+	case TypePackedFloat32Array:
+		return reflect.TypeFor[PackedType.Array[float32]]()
+	case TypePackedFloat64Array:
+		return reflect.TypeFor[PackedType.Array[float64]]()
+	case TypePackedStringArray:
+		return reflect.TypeFor[PackedType.Strings]()
+	case TypePackedVector2Array:
+		return reflect.TypeFor[PackedType.Array[Vector2]]()
+	case TypePackedVector3Array:
+		return reflect.TypeFor[PackedType.Array[Vector3]]()
+	case TypePackedColorArray:
+		return reflect.TypeFor[PackedType.Array[Color]]()
+	case TypePackedVector4Array:
+		return reflect.TypeFor[PackedType.Array[Vector4]]()
+	default:
+		return nil
+	}
+}
 
 func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 	switch rtype.Kind() {

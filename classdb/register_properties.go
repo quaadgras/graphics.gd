@@ -9,6 +9,7 @@ import (
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Enum"
+	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/String"
 )
@@ -233,9 +234,22 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 
 func (instance *instanceImplementation) GetPropertyList() []gd.PropertyInfo {
 	if impl, ok := instance.Value.(interface {
-		GetPropertyList() []gd.PropertyInfo
+		GetPropertyList() []Object.PropertyInfo
 	}); ok {
-		return impl.GetPropertyList()
+		var list = impl.GetPropertyList()
+		var results = make([]gd.PropertyInfo, len(list))
+		for i, info := range list {
+			vtype, _ := gd.VariantTypeOf(info.Type)
+			results[i] = gd.PropertyInfo{
+				Type:       vtype,
+				Name:       gd.NewStringName(info.Name),
+				ClassName:  gd.NewStringName(info.ClassName),
+				HintString: gd.NewString(info.HintString),
+				Usage:      int64(info.Usage),
+				Hint:       int64(info.Hint),
+			}
+		}
+		return results
 	}
 	return nil
 }
@@ -299,9 +313,16 @@ func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (g
 func (instance *instanceImplementation) ValidateProperty(info *gd.PropertyInfo) bool {
 	switch validate := instance.Value.(type) {
 	case interface {
-		ValidateProperty(*gd.PropertyInfo) bool
+		ValidateProperty(Object.PropertyInfo) bool
 	}:
-		return bool(validate.ValidateProperty(info))
+		return bool(validate.ValidateProperty(Object.PropertyInfo{
+			ClassName:  info.ClassName.String(),
+			Usage:      int(info.Usage),
+			Type:       gd.ConvieniantGoTypeOf(info.Type),
+			HintString: info.HintString.String(),
+			Hint:       int(info.Hint),
+			Name:       info.Name.String(),
+		}))
 	}
 	return true
 }
