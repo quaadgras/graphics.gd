@@ -119,6 +119,16 @@ func (signal Any) IsNull() bool { //gd:Signal.is_null
 	return signal == Nil
 }
 
+// Void is a signal that does not emit any values, add this as a field inside a [classdb.Extension]
+// to register it as a signal.
+type Void struct {
+	Any
+}
+
+// Emit the signal to all connected signal handlers. Safe to call from any goroutine.
+// This function is safe to call from any goroutine.
+func (signal Void) Emit() { Callable.Defer(Callable.New(signal.Any.Emit)) }
+
 // Solo value that can be signaled, add this as a field inside a [classdb.Extension]
 // to register it as a signal.
 type Solo[A any] struct {
