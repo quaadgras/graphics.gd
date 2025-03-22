@@ -120,7 +120,7 @@ within The Engine.
 
 Use this in a main or init function to register your Go structs
 and they will become available within The Engine for use in the
-editor and/or within scripts.
+editor and/or within scripts. Call this before loading the scene.
 
 All exported fields and methods will be exposed to The Engine, so
 take caution when embedding types, as their fields and methods
