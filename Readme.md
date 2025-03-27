@@ -195,7 +195,7 @@ repo. All examples are designed to be run with `gd run` without any additional s
 
 ## Contributing
 
-The best way you can contribute to graphics.gd is to **try it**, we need your help to find out
+The best way you can contribute to graphics.gd is to **try it**, this project needs your help to find out
 what's working and what doesn't, so do please let us know of any trouble that you run into! Any 
 examples you can contibute are more than welcome.
 
@@ -213,7 +213,7 @@ you need!
 
 To run the go tests for graphics.gd, cd into the repo and run `cd internal && gd test`.
 
-
+Lastly, spread the word and let people know about the project!
 
 ## See Also
 
