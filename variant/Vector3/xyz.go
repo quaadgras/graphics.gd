@@ -461,8 +461,7 @@ func Project(v, b XYZ) XYZ { //gd:Vector3.project
 // Rotated returns the result of rotating this vector around a given axis by angle (in radians).
 // The axis must be a normalized vector.
 func Rotated(v, axis XYZ, angle Angle.Radians) XYZ { //gd:Vector3.rotated
-	panic("not implemented")
-	//return NewBasisRotatedAround(axis, angle).Transform(v)
+	return basis_transform(v, basis_rotates_axis_angle(axis, angle))
 }
 
 // Round returns a new vector with all components rounded to the nearest integer, with halfway cases
@@ -590,4 +589,43 @@ func Index[I Int.Any](v XYZ, i I) Float.X { //gd:Vector3[](index:int)
 	default:
 		panic("index out of range")
 	}
+}
+
+type basis = struct{ X, Y, Z XYZ }
+
+func basis_transform(v XYZ, m basis) XYZ {
+	return XYZ{
+		Dot(m.X, v),
+		Dot(m.Y, v),
+		Dot(m.Z, v),
+	}
+}
+
+func basis_rotates_axis_angle(axis XYZ, angle Angle.Radians) basis {
+	var rows basis
+	var axis_sq = New(axis.X*axis.X, axis.Y*axis.Y, axis.Z*axis.Z)
+	var cosine = Angle.Cos(angle)
+	rows.X.X = axis_sq.X + cosine*(1.0-axis_sq.X)
+	rows.Y.Y = axis_sq.Y + cosine*(1.0-axis_sq.Y)
+	rows.Z.Z = axis_sq.Z + cosine*(1.0-axis_sq.Z)
+	var sine = Angle.Sin(angle)
+	var t = 1 - cosine
+	var xyzt = axis.X * axis.Y * t
+	var zyxs = axis.Z * sine
+	rows.X.Y = xyzt - zyxs
+	rows.Y.X = xyzt + zyxs
+	xyzt = axis.X * axis.Z * t
+	zyxs = axis.Y * sine
+	rows.X.Z = xyzt + zyxs
+	rows.Y.X = xyzt - zyxs
+	xyzt = axis.Y * axis.Z * t
+	zyxs = axis.X * sine
+	rows.Y.Z = xyzt - zyxs
+	rows.Z.Y = xyzt + zyxs
+	return rows
+}
+
+// Random returns a new vector with each component set to a random value between 0 and 1.
+func Random() XYZ {
+	return XYZ{Float.Random(), Float.Random(), Float.Random()}
 }
