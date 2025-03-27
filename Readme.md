@@ -196,7 +196,8 @@ repo. All examples are designed to be run with `gd run` without any additional s
 ## Contributing
 
 The best way you can contribute to graphics.gd is to **try it**, we need your help to find out
-what's working and what doesn't, so do please let us know of any trouble that you run into!
+what's working and what doesn't, so do please let us know of any trouble that you run into! Any 
+examples you can contibute are more than welcome.
 
 The next best thing you can do to help is improve the Variant packages, these are general-purpose
 packages inspired by the Godot engine's Variant type. Specifically any changes you can make to
