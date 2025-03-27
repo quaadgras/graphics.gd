@@ -194,26 +194,26 @@ repo. All examples are designed to be run with `gd run` without any additional s
 * No console support, will likely be achieved in the future with WASM.
 
 ## Contributing
-
-The best way you can contribute to graphics.gd is to **try it**, this project needs your help to find out
+ 
+The best way you can contribute to graphics.gd is to **try it**, this project needs you to find out
 what's working and what doesn't, so do please let us know of any trouble that you run into! Any 
-examples you can contibute are more than welcome.
+examples you can contribute are more than welcome.
 
 The next best thing you can do to help is improve the Variant packages, these are general-purpose
 packages inspired by the Godot engine's Variant type. Specifically any changes you can make to
-optimise functionality and/or improve test converage of these packages is more than welcome
-(such as specialised assembly routines for vector operations, anyone?).
-
+optimize functionality and/or improve test coverage of these packages is more than welcome
+(such as specialized assembly routines for vector operations, anyone?).
+ 
 If you enjoy hunting down memory-safety issues, we would appreciate any issues being opened on
 this front.
-
+ 
 Thirdly, the project needs more tests to ensure that everything is working, the best way you can
 guarantee that graphics.gd won't break on you is to contribute tests that cover the functionality
 you need!
-
+ 
 To run the go tests for graphics.gd, cd into the repo and run `cd internal && gd test`.
 
-Lastly, spread the word and let people know about the project!
+Lastly, spread the word and let people know about graphics.gd!
 
 ## See Also
 
