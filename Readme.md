@@ -11,6 +11,12 @@ _Why use graphics.gd?_
 * General-purpose pure-Go 'variant' packages, reuse them in any Go project.
 * Recompile your code quickly, with a build experience similar to a scripting language.
 
+The shader code is written by calling shader-specific functions. The shader is then run once in Go which essentially records itself as an AST which is compiled down into Godot's GLSL variant.
+
+This sort of approach is often referred to as a language-hosted DSL. It's well suited for branchless shaders as any Go branches or side effects will only be evaluated at shader 'compile time'.
+
+The key benefits are the type safety, composition, language familiarity and IDE integration that result from this.
+ 
 Not just a wrapper! graphics.gd has been holistically designed and curated from the ground up to provide a cohesive way to interface with the engine. 
 
 We would love you to take part in our [active discussions](https://github.com/grow-graphics/gd/discussions)
