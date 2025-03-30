@@ -19,6 +19,9 @@ import (
 )
 
 func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.Value, error) {
+	if value.Type() == TypeNil {
+		return reflect.Zero(rtype), nil
+	}
 	switch rtype {
 	case reflect.TypeFor[any]():
 		return reflect.ValueOf(value.Interface()), nil
