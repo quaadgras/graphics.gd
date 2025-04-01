@@ -5,19 +5,13 @@ the GDExtension interface of any supported graphics/game engine (ie. Godot 4.4).
 
 _Why use graphics.gd?_
 
-* Write shaders in Go!
+* [Write shaders in Go!](./shaders)
 * Unlike with other options, RIDs, callables and dictionary arguments are all distinctly typed.
 * A good balance of performance and convenience.
 * General-purpose pure-Go 'variant' packages, reuse them in any Go project.
 * Recompile your code quickly, with a build experience similar to a scripting language.
 
-The shader code is written by calling shader-specific functions. The shader is then run once in Go which essentially records itself as an AST which is compiled down into Godot's GLSL variant.
-
-This sort of approach is often referred to as a language-hosted DSL. It's well suited for branchless shaders as any Go branches or side effects will only be evaluated at shader 'compile time'.
-
-The key benefits are the type safety, composition, language familiarity and IDE integration that result from this.
- 
-Not just a wrapper! graphics.gd has been holistically designed and curated from the ground up to provide a cohesive way to interface with the engine. 
+Not just a wrapper! graphics.gd has been holistically designed and curated from the ground up to provide a cohesive way to interface with the engine.
 
 We would love you to take part in our [active discussions](https://github.com/grow-graphics/gd/discussions)
 section with any questions, comments or feedback you may have. Show us what you're building!
@@ -200,23 +194,23 @@ repo. All examples are designed to be run with `gd run` without any additional s
 * No console support, will likely be achieved in the future with WASM.
 
 ## Contributing
- 
+
 The best way you can contribute to graphics.gd is to **try it**, this project needs you to find out
-what's working and what doesn't, so do please let us know of any trouble that you run into! Any 
+what's working and what doesn't, so do please let us know of any trouble that you run into! Any
 examples you can contribute are more than welcome.
 
 The next best thing you can do to help is improve the Variant packages, these are general-purpose
 packages inspired by the Godot engine's Variant types. Specifically any changes you can make to
 optimize functionality and/or improve test coverage of these packages is more than welcome
 (such as specialized assembly routines for vector operations, anyone?).
- 
+
 If you enjoy hunting down memory-safety issues, we would appreciate any issues being opened on
 this front.
- 
+
 Thirdly, the project needs more tests to ensure that everything is working, the best way you can
 guarantee that graphics.gd won't break on you is to contribute tests that cover the functionality
 you need!
- 
+
 To run the go tests for graphics.gd, cd into the repo and run `cd internal && gd test`.
 
 Lastly, spread the word and let people know about graphics.gd!
