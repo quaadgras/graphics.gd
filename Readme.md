@@ -5,7 +5,7 @@ the GDExtension interface of any supported graphics/game engine (ie. Godot 4.4).
 
 _Why use graphics.gd?_
 
-* [Write shaders in Go!](./shaders)
+* [Write shaders in Go!](./shaders/Readme.md)
 * Unlike with other options, RIDs, callables and dictionary arguments are all distinctly typed.
 * A good balance of performance and convenience.
 * General-purpose pure-Go 'variant' packages, reuse them in any Go project.
